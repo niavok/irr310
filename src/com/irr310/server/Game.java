@@ -60,7 +60,9 @@ public class Game {
 				String output = commandManager.execute(command);
 
 				if (output != null) {
-					System.out.println(output);
+					if(!output.isEmpty()) {
+						System.out.println(output);
+					}
 				} else {
 					System.out.println("Game : Exiting...");
 					break;

@@ -22,8 +22,36 @@ public class NetworkEngine extends Engine {
 		@Override
 		public void visit(QuitGameEvent event) {
 			System.out.println("stopping network engine");
+			stopAcceptor();
 			isRunning = false;
+			
 		}
+
+		@Override
+		public void visit(StartEngineEvent event) {
+			startAcceptor();
+			pause(false);
+			
+		}
+
+		@Override
+		public void visit(InitEngineEvent event) {
+		}
+
+		@Override
+		public void visit(PauseEngineEvent event) {
+			pause(true);
+			stopAcceptor();
+		}
+	}
+
+	public void stopAcceptor() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void startAcceptor() {
+		// TODO Auto-generated method stub
 	}
 
 }

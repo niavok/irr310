@@ -24,6 +24,21 @@ public class PhysicEngine extends Engine {
 		System.out.println("stopping physic engine");
 		isRunning = false;
 	}
+
+	@Override
+	public void visit(StartEngineEvent event) {
+		pause(false);		
+	}
+
+	@Override
+	public void visit(InitEngineEvent event) {
+	}
+
+	@Override
+	public void visit(PauseEngineEvent event) {
+pause(true);
+		
+	}
 }
 
 }
