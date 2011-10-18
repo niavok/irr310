@@ -1,9 +1,10 @@
 package com.irr310.server;
 
+import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+import com.irr310.server.UseScriptEvent.Type;
 
 public class CommandManager {
 
@@ -16,219 +17,285 @@ public class CommandManager {
 	private Pattern exprDelete;
 	private Pattern exprLoad;
 	private Pattern exprUse;
-	private final Game game;
+	private final ServerGame game;
 
-	public CommandManager(Game game) {
+	public CommandManager(ServerGame game) {
 		this.game = game;
 		exprComment = Pattern.compile("^//.*");
-		exprQuit = Pattern.compile( "^((quit)|(q))" );
-		exprInit = Pattern.compile( "^((init)|(i))" );
-		exprStart = Pattern.compile( "^((start)|(s))" );
-		exprPause = Pattern.compile( "^((pause)|(p))" );
+		exprQuit = Pattern.compile("^((quit)|(q))");
+		exprInit = Pattern.compile("^((init)|(i))");
+		exprStart = Pattern.compile("^((start)|(s))");
+		exprPause = Pattern.compile("^((pause)|(p))");
 
-		exprAdd = Pattern.compile( "^((add)|(a)).*" );
-		exprDelete = Pattern.compile( "^((delete)|(d)).*" );
-		exprLoad = Pattern.compile( "^((load)|(l)).*" );
-		exprUse = Pattern.compile("^((use)|(u)).*" );
+		exprAdd = Pattern.compile("^((add)|(a)).*");
+		exprDelete = Pattern.compile("^((delete)|(d)).*");
+		exprLoad = Pattern.compile("^((load)|(l)).*");
+		exprUse = Pattern.compile("^((use)|(u)).*");
 
 	}
 
 	public String execute(String command) {
-		
+
 		String out = "";
 
 		Matcher match;
-		if((match = exprComment.matcher(command)).matches()) {
+		if ((match = exprComment.matcher(command)).matches()) {
 			// ignore
-		} else if((match = exprQuit.matcher(command)).matches()) {
+		} else if ((match = exprQuit.matcher(command)).matches()) {
 			// quit
 			out = null;
-		} else if((match = exprStart.matcher(command)).matches()) {
+		} else if ((match = exprStart.matcher(command)).matches()) {
 			game.sendToAll(new StartEngineEvent());
-		} else if((match = exprInit.matcher(command)).matches()) {
+		} else if ((match = exprInit.matcher(command)).matches()) {
 			game.sendToAll(new InitEngineEvent());
-		} else if((match = exprPause.matcher(command)).matches()) {
+		} else if ((match = exprPause.matcher(command)).matches()) {
 			game.sendToAll(new PauseEngineEvent());
-		} else if((match = exprUse.matcher(command)).matches()) {
+		} else if ((match = exprUse.matcher(command)).matches()) {
+			out = useScriptCommand(command);
+		} else if ((match = exprAdd.matcher(command)).matches()) {
+			out = addCommand(command);
+		} else if ((match = exprDelete.matcher(command)).matches()) {
+			// TODO
 			/*
-			 *  EngineEvent *e = new EngineEvent(1);
-            e->type = EngineEvent::SCRIPT_USE;
-            boost::regex exprUseType( ".*((-t)|(--type)) ([A-Za-z_0-9]*).*" );
-            boost::regex exprUsePath( ".*((-p)|(--path)) ([./A-Za-z_0-9]*).*" );
-
-            boost::smatch what2;
-            if( boost::regex_match( command, what2, exprUseType )){
-                 e->s_data["type"] = what2[4];
-                        }
-            game->GetGameEngine()->PushEvent(e);
+			 * boost::regex exprDeleteName( "^(delete|d) (.*)$" ); boost::smatch
+			 * what2; if( boost::regex_match( command, what2, exprDeleteName )){
+			 * std::string name; name = what2[2];
+			 * 
+			 * 
+			 * EngineEvent *e = new EngineEvent(Game::ENGINE_COUNT); e->type =
+			 * EngineEvent::WORLD_DELETE_OBJECT;
+			 * 
+			 * e->s_data["name"]=name; game->SendToAll(e);
+			 * 
+			 * }
 			 */
-		} else if((match = exprAdd.matcher(command)).matches()) {
-           
-            /*    boost::regex exprAddType( ".*((-t)|(--type)) ([A-Za-z_0-9]*).*" );
-                boost::regex exprAddPosition( ".*((-p)|(--position)) ([0-9\\.\\-]*) ([0-9\\.\\-]*) ([0-9\\.\\-]*).*" );
-                boost::regex exprAddRotation( ".*((-q)|(--rotation)) ([0-9\\.\\-]*) ([0-9\\.\\-]*) ([0-9\\.\\-]*).*" );
-                boost::regex exprAddPositionSpeed( ".*((-v)|(--velocity)) ([0-9\\.\\-]*) ([0-9\\.\\-]*) ([0-9\\.\\-]*).*" );
-                boost::regex exprAddRotationSpeed( ".*((-w)|(--angular-velocity)) ([0-9\\.\\-]*) ([0-9\\.\\-]*) ([0-9\\.\\-]*).*" );
-    boost::regex exprAddMass( ".*((-m)|(--mass)) ([0-9\\.\\-]*).*" );
-        boost::regex exprAddName( ".*((-n)|(--name)) ([A-Za-z_0-9]*).*" );
-    boost::regex exprAddLink( ".*((-l)|(--link)) ([A-Za-z_0-9]*).*" );
+		} else if ((match = exprLoad.matcher(command)).matches()) {
+			//TODO
+			/*
+			 * 
+			 * 
+			 * 
+			 * // out = "plop"; boost::regex exprLoadUrl( "^(load|l) (.*)$" );
+			 * boost::smatch what2; if( boost::regex_match( command, what2,
+			 * exprLoadUrl )){ std::string url; url = what2[2]; std::ifstream
+			 * file(url.c_str(), std::ios::in);
+			 * 
+			 * if(file){
+			 * 
+			 * std::string line; std::string out2 = "";
+			 * 
+			 * out = "Executing script ...\n"; while(getline(file, line)){
+			 * if(out2!=""){ out +="\n"; } out2 =Execute(line); out+=out2;
+			 * 
+			 * } file.close(); }else{ out = "File load failed"; }
+			 * 
+			 * }
+			 */
 
-    EngineEvent *e = new EngineEvent(Game::ENGINE_COUNT);
-    e->type = EngineEvent::WORLD_ADD_OBJECT;
+		} else if (command.equals("")) {
+			// Empty command
 
+		} else {
+			out = "Unknow command";
+		}
+		return out;
 
-                std::string type;
-                boost::smatch what2;
+	}
 
-                if( boost::regex_match( command, what2, exprAddType )){
-        type = what2[4];
-                }
+	private String useScriptCommand(String command) {
+		Pattern exprUseType = Pattern
+				.compile(".*((-t)|(--type)) ([A-Za-z_0-9]*).*");
+		Pattern exprUsePath = Pattern
+				.compile(".*((-p)|(--path)) ([./A-Za-z_0-9]*).*");
 
-    if( boost::regex_match( command, what2, exprAddName )){
-        e->s_data["name"] = what2[4];
-                }else{
-        e->s_data["name"] = "";
-                }
+		Matcher typeMatch = exprUseType.matcher(command);
+		Matcher pathMatch = exprUsePath.matcher(command);
 
-                 if( boost::regex_match( command, what2, exprAddLink )){
-        e->s_data["link"] = what2[4];
-                }else{
-        e->s_data["link"] = "";
-                }
-                 if( boost::regex_match( command, what2, exprAddPosition )){
-                     std::string temp;
-                     temp = what2[4];
-                     e->d_data["x"] = strtod(temp.c_str(),NULL);
-                     temp = what2[5];
-                     e->d_data["y"] = strtod(temp.c_str(),NULL);
-                     temp = what2[6];
-                     e->d_data["z"] = strtod(temp.c_str(),NULL);
-             }
-             if( boost::regex_match( command, what2, exprAddRotation )){
-                     std::string temp;
-                     temp = what2[4];
-                     e->d_data["qx"] = strtod(temp.c_str(),NULL);
-                     temp = what2[5];
-                     e->d_data["qy"] = strtod(temp.c_str(),NULL);
-                     temp = what2[6];
-                     e->d_data["qz"] = strtod(temp.c_str(),NULL);
+		if (!typeMatch.matches()) {
+			return "Type parameter is missing";
+		} else if (!pathMatch.matches()) {
+			return "Path parameter is missing";
+		}
 
+		File script = new File(pathMatch.group(4));
+		if (!script.exists()) {
+			return "Script file not found at: " + script.getAbsolutePath();
+		}
 
+		String strType = typeMatch.group(4);
+		UseScriptEvent.Type type;
 
-             }
-             if( boost::regex_match( command, what2, exprAddPositionSpeed )){
-                     std::string temp;
-                     temp = what2[4];
-                     e->d_data["vx"] = strtod(temp.c_str(),NULL);
-                     temp = what2[5];
-                     e->d_data["vy"] = strtod(temp.c_str(),NULL);
-                     temp = what2[6];
-                     e->d_data["vz"] = strtod(temp.c_str(),NULL);
-             }
-             if( boost::regex_match( command, what2, exprAddRotationSpeed )){
-                     std::string temp;
-                     temp = what2[4];
-                     e->d_data["wx"] = strtod(temp.c_str(),NULL);
-                     temp = what2[5];
-                     e->d_data["wy"] = strtod(temp.c_str(),NULL);
-                     temp = what2[6];
-                     e->d_data["wz"] = strtod(temp.c_str(),NULL);
-             }
+		if (strType.equals("driver")) {
+			type = Type.DRIVER;
+		} else if (strType.equals("bind")) {
+			type = Type.BIND;
+		} else {
+			return "Invalid type '" + strType
+					+ "'. Valid type are 'driver' or 'bind' ";
+		}
 
-             if( boost::regex_match( command, what2, exprAddMass )){
-                     std::string temp;
-                     temp = what2[4];
-                     e->d_data["mass"] = strtod(temp.c_str(),NULL);
+		game.getGameEngine().processEvent(new UseScriptEvent(type, script));
+		return "";
+	}
 
-             }else{
-            	  e->d_data["mass"] = -1;
-             }
+	private String addCommand(String command) {
 
-              out ="Game : Add object > " + type;
+		Pattern exprAddType = Pattern
+				.compile(".*((-t)|(--type)) ([A-Za-z_0-9]*).*");
+		Pattern exprAddPosition = Pattern
+				.compile(".*((-p)|(--position)) ([0-9\\.\\-]*) ([0-9\\.\\-]*) ([0-9\\.\\-]*).*");
+		Pattern exprAddRotation = Pattern
+				.compile(".*((-q)|(--rotation)) ([0-9\\.\\-]*) ([0-9\\.\\-]*) ([0-9\\.\\-]*).*");
+		Pattern exprAddLinearSpeed = Pattern
+				.compile(".*((-v)|(--velocity)) ([0-9\\.\\-]*) ([0-9\\.\\-]*) ([0-9\\.\\-]*).*");
+		Pattern exprAddRotationSpeed = Pattern
+				.compile(".*((-w)|(--angular-velocity)) ([0-9\\.\\-]*) ([0-9\\.\\-]*) ([0-9\\.\\-]*).*");
+		Pattern exprAddMass = Pattern
+				.compile(".*((-m)|(--mass)) ([0-9\\.\\-]*).*");
+		Pattern exprAddName = Pattern
+				.compile(".*((-n)|(--name)) ([A-Za-z_0-9]*).*");
+		Pattern exprAddLink = Pattern
+				.compile(".*((-l)|(--link)) ([A-Za-z_0-9]*).*");
 
+		AddWorldObjectEvent event = new AddWorldObjectEvent();
 
+		Matcher typeMatch = exprAddType.matcher(command);
+		if (!typeMatch.matches()) {
+			return "Type parameter is missing";
+		}
 
+		// Type
+		String typeStr = typeMatch.group(4);
+		AddWorldObjectEvent.Type type;
 
-  if(type == "star"){
-      e->i_data["type"] = WorldObject::STAR;
+		if (typeStr.equals("reference")) {
+			type = AddWorldObjectEvent.Type.REFERENCE;
+		} else if (typeStr.equals("camera")) {
+			type = AddWorldObjectEvent.Type.CAMERA;
+		} else if (typeStr.equals("collection")) {
+			type = AddWorldObjectEvent.Type.COLLECTION;
+		} else if (typeStr.equals("linear_motor")) {
+			type = AddWorldObjectEvent.Type.LINEAR_MOTOR;
+		} else if (typeStr.equals("part")) {
+			type = AddWorldObjectEvent.Type.PART;
+		} else if (typeStr.equals("planet")) {
+			type = AddWorldObjectEvent.Type.PLANET;
+		} else if (typeStr.equals("star")) {
+			type = AddWorldObjectEvent.Type.STAR;
+		} else {
+			return "Invalid type '"
+					+ typeStr
+					+ "'. Valid type are 'reference' , 'camera', 'collection', 'linear_motor', 'part', 'planet' and 'star' ";
+		}
 
- }else if(type == "repere"){
-      e->i_data["type"] = WorldObject::REPERE;
- }else if(type == "planet"){
-      e->i_data["type"] = WorldObject::PLANET;
- }else if(type == "part"){
-      e->i_data["type"] = WorldObject::PART;
- }else if(type == "camera"){
-      e->i_data["type"] = WorldObject::CAMERA;
- }else if(type == "linear_motor"){
-      e->i_data["type"] = WorldObject::LINEAR_MOTOR;
- }else if(type == "collection"){
-      e->i_data["type"] = WorldObject::COLLECTION;
- }else{
-     out = " - Unknow type";
+		event.setType(type);
 
-  }
+		// Name
+		Matcher nameMatch = exprAddName.matcher(command);
+		if (nameMatch.matches()) {
+			event.setName(nameMatch.group(4));
+		} else {
+			event.setName("");
+		}
 
- game->SendToAll(e);*/
-		} else if((match = exprDelete.matcher(command)).matches()) {
-			
-			/* boost::regex exprDeleteName( "^(delete|d) (.*)$" );
-		      boost::smatch what2;
-		      if( boost::regex_match( command, what2, exprDeleteName )){
-		         std::string name;
-		         name = what2[2];
+		// Name
+		Matcher linkMatch = exprAddLink.matcher(command);
+		if (linkMatch.matches()) {
+			String linkStr = linkMatch.group(4);
+			WorldObject linkedObject = game.getWorld().getObjectByName(linkStr);
+			if (linkedObject == null) {
+				return "No objects named '" + linkStr + "'";
+			}
+			event.setLinkedObject(linkedObject);
+		}
 
+		// Position
+		Matcher positionMatch = exprAddPosition.matcher(command);
+		if (positionMatch.matches()) {
+			String xStr = positionMatch.group(4);
+			String yStr = positionMatch.group(5);
+			String zStr = positionMatch.group(6);
 
-		         EngineEvent *e = new EngineEvent(Game::ENGINE_COUNT);
-		         e->type = EngineEvent::WORLD_DELETE_OBJECT;
+			try {
+				Double x = Double.valueOf(xStr);
+				Double y = Double.valueOf(xStr);
+				Double z = Double.valueOf(xStr);
+				event.setPosition(new Vect3(x, y, z));
+			} catch (NumberFormatException e) {
+				return "Bad number format for position in '" + xStr + "', '"
+						+ yStr + "' or '" + zStr + "'";
+			}
+		}
 
-		         e->s_data["name"]=name;
-		         game->SendToAll(e);
+		// Rotation
+		Matcher rotationMatch = exprAddRotation.matcher(command);
+		if (rotationMatch.matches()) {
+			String xStr = rotationMatch.group(4);
+			String yStr = rotationMatch.group(5);
+			String zStr = rotationMatch.group(6);
 
-		      }
-*/
-		} else if((match = exprLoad.matcher(command)).matches()) {
-/*
-     
-                
+			try {
+				Double x = Double.valueOf(xStr);
+				Double y = Double.valueOf(xStr);
+				Double z = Double.valueOf(xStr);
+				event.setRotation(new Vect3(x, y, z));
+			} catch (NumberFormatException e) {
+				return "Bad number format for rotation in '" + xStr + "', '"
+						+ yStr + "' or '" + zStr + "'";
+			}
+		}
 
-   // out = "plop";
-     boost::regex exprLoadUrl( "^(load|l) (.*)$" );
-     boost::smatch what2;
-     if( boost::regex_match( command, what2, exprLoadUrl )){
-                        std::string url;
-        url = what2[2];
-        std::ifstream file(url.c_str(), std::ios::in);
+		// Linear speed
+		Matcher linearSpeedMatch = exprAddLinearSpeed.matcher(command);
+		if (linearSpeedMatch.matches()) {
+			String xStr = linearSpeedMatch.group(4);
+			String yStr = linearSpeedMatch.group(5);
+			String zStr = linearSpeedMatch.group(6);
 
-        if(file){
+			try {
+				Double x = Double.valueOf(xStr);
+				Double y = Double.valueOf(xStr);
+				Double z = Double.valueOf(xStr);
+				event.setLinearSpeed(new Vect3(x, y, z));
+			} catch (NumberFormatException e) {
+				return "Bad number format for linear speed in '" + xStr
+						+ "', '" + yStr + "' or '" + zStr + "'";
+			}
+		}
 
-            std::string line;
-            std::string out2 = "";
+		// Rotation speed
+		Matcher rotationSpeedMatch = exprAddRotationSpeed.matcher(command);
+		if (rotationSpeedMatch.matches()) {
+			String xStr = rotationSpeedMatch.group(4);
+			String yStr = rotationSpeedMatch.group(5);
+			String zStr = rotationSpeedMatch.group(6);
 
-            out = "Executing script ...\n";
-            while(getline(file, line)){
-                if(out2!=""){
-                    out +="\n";
-                }
-                out2 =Execute(line);
-                out+=out2;
+			try {
+				Double x = Double.valueOf(xStr);
+				Double y = Double.valueOf(xStr);
+				Double z = Double.valueOf(xStr);
+				event.setRotationSpeed(new Vect3(x, y, z));
+			} catch (NumberFormatException e) {
+				return "Bad number format for rotation speed in '" + xStr
+						+ "', '" + yStr + "' or '" + zStr + "'";
+			}
+		}
 
-            }
-            file.close();
-        }else{
-            out = "File load failed";
-        }
+		// Mass
+		Matcher massMatch = exprAddMass.matcher(command);
+		if (massMatch.matches()) {
+			String massStr = massMatch.group(4);
 
-                }
-                */
-                
-}else if(command.equals("")){
-    //Empty command
+			try {
+				Double mass = Double.valueOf(massStr);
+				event.setMass(mass);
+			} catch (NumberFormatException e) {
+				return "Bad number format for mass:'" + massStr + "'";
+			}
+		}
 
-}else{
-        out = "Unknow command";
-}
-return out;
-          
+		game.sendToAll(event);
+		return "Game : Add object > " + typeStr;
+
 	}
 }

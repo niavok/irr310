@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
-public class Game {
+public class ServerGame {
 	private GameEngine gameEngine;
 	private NetworkEngine networkEngine;
 	private PhysicEngine physicEngine;
@@ -14,7 +14,7 @@ public class Game {
 	private World world;
 	private CommandManager commandManager;
 
-	public Game(ParameterAnalyser parameterAnalyser) {
+	public ServerGame(ParameterAnalyser parameterAnalyser) {
 		this.parameterAnalyser = parameterAnalyser;
 		stillRunning = true;
 

@@ -5,7 +5,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public abstract class Engine extends Thread{
 
-	protected Game game;
+	protected ServerGame game;
 	protected boolean isRunning;
 	private boolean isPaused;
 	private Duration framerate; // nsec
@@ -13,7 +13,7 @@ public abstract class Engine extends Thread{
 	// private Time nextTime;
 	static int numRunningEngines = 0;
 
-	public Engine(Game game) {
+	public Engine(ServerGame game) {
 		this.game = game;
 		framerate = new Duration(20000000); // 20ms or 50fps
 		eventsQueue = new LinkedBlockingQueue<EngineEvent>();

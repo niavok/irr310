@@ -3,7 +3,7 @@ package com.irr310.server;
 
 public class NetworkEngine extends Engine {
 
-	public NetworkEngine(Game game) {
+	public NetworkEngine(ServerGame game) {
 		super(game);
 	}
 
@@ -42,6 +42,18 @@ public class NetworkEngine extends Engine {
 		public void visit(PauseEngineEvent event) {
 			pause(true);
 			stopAcceptor();
+		}
+
+		@Override
+		public void visit(UseScriptEvent event) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void visit(AddWorldObjectEvent event) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 

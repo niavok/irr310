@@ -9,4 +9,8 @@ public abstract class EngineEventVisitor {
 	public abstract void visit(InitEngineEvent event);
 	
 	public abstract void visit(PauseEngineEvent event);
+
+	public abstract void visit(UseScriptEvent event);
+
+	public abstract void visit(AddWorldObjectEvent event);
 }
