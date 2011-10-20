@@ -6,6 +6,10 @@ public class AddWorldObjectEvent extends EngineEvent {
 	private String name;
 	private WorldObject linkedObject;
 	private Vect3 position;
+	private Double mass;
+	private Vect3 rotationSpeed;
+	private Vect3 linearSpeed;
+	private Vect3 rotation;
 
 	public enum Type {
 		REFERENCE,
@@ -39,23 +43,51 @@ public class AddWorldObjectEvent extends EngineEvent {
 	}
 
 	public void setMass(Double mass) {
-		// TODO Auto-generated method stub
-		
+		this.mass = mass;
 	}
 
-	public void setRotationSpeed(Vect3 vect3) {
-		// TODO Auto-generated method stub
-		
+	public void setRotationSpeed(Vect3 rotationSpeed) {
+		this.rotationSpeed = rotationSpeed;
 	}
 
-	public void setLinearSpeed(Vect3 vect3) {
-		// TODO Auto-generated method stub
-		
+	public void setLinearSpeed(Vect3 linearSpeed) {
+		this.linearSpeed = linearSpeed;
 	}
 
-	public void setRotation(Vect3 vect3) {
-		// TODO Auto-generated method stub
-		
+	public void setRotation(Vect3 rotation) {
+		this.rotation = rotation;
+	}
+
+	public Type getType() {
+		return type;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public WorldObject getLinkedObject() {
+		return linkedObject;
+	}
+
+	public Vect3 getPosition() {
+		return position;
+	}
+
+	public Double getMass() {
+		return mass;
+	}
+
+	public Vect3 getRotationSpeed() {
+		return rotationSpeed;
+	}
+
+	public Vect3 getLinearSpeed() {
+		return linearSpeed;
+	}
+
+	public Vect3 getRotation() {
+		return rotation;
 	}
 
 	

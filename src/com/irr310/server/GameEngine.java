@@ -132,8 +132,87 @@ public class GameEngine extends Engine {
 
 		@Override
 		public void visit(AddWorldObjectEvent event) {
-			// TODO Auto-generated method stub
-			
+			WorldObject o;
+			/*
+			switch (event.getType()) {
+            case STAR :
+                 o = new Star(game.getWorld());
+                break;
+            case PART:
+                 o = new Part(game.getWorld());
+                break;
+            case PLANET :
+                 o = new Planet(game.getWorld());
+                break;
+            case CAMERA :
+                 o = new Camera(game.getWorld());
+                break;
+            case LINEAR_MOTOR :
+                 o = new LinearMotor(game.getWorld());
+                break;
+            case COLLECTION :
+                 o = new Collection(game.getWorld());
+                break;
+         }
+		 
+			if(event.getLinkedObject() != null && event.getLinkedObject().isCollection()) {
+				Collection c = (Collection) event.getLinkedObject();
+				c.addChild(o);
+			} else {
+				o.init();
+				
+				o.setPosition(event.getPosition());
+				o.setRotation(event.getRotation());
+				o.setLinearSpeed(event.getLinearSpeed());
+				o.setRotationSpeed(event.getRotationSpeed());
+				
+				if(event.getMass() != null) {
+					o.setMass(event.getMass());
+				}
+				
+				o.setName(game.getWorld().getUniqueName(event.getName()));
+				
+				
+				
+				
+			}
+
+        if(e->s_data["link"]!=""){
+
+                 Collection *c = (Collection *) world->GetObjectByName(e->s_data["link"]);
+
+                  if(c){
+                     c->AddChild(o);
+                  }
+
+
+              }else{
+                  o->Init();
+              }
+
+              o->SetPosition(e->d_data["x"],e->d_data["y"],e->d_data["z"]);
+              o->SetLineareSpeed(e->d_data["vx"],e->d_data["vy"],e->d_data["vz"]);
+              o->SetRotation(e->d_data["qx"],e->d_data["qy"],e->d_data["qz"]);
+              o->SetRotationSpeed(e->d_data["wx"],e->d_data["wy"],e->d_data["wz"]);
+
+              if(e->d_data["mass"]!=-1){
+                  o->SetMass(e->d_data["mass"]);
+              }
+
+              if(e->s_data["name"]!=""){
+                  world->SetObjectName(e->s_data["name"],o);
+              }
+
+
+
+              //TODO : delete
+
+              EngineEvent *e = new EngineEvent(Game::ENGINE_COUNT);
+              e->type = EngineEvent::WORLD_OBJECT_ADDED;
+              e->p_data["OBJECT"] = o;
+              sendMessageToAll(e);
+          }
+			*/
 		}
 	}
 
