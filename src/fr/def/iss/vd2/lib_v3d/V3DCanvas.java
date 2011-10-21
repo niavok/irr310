@@ -70,6 +70,7 @@ public class V3DCanvas {
     public V3DCanvas(final V3DContext context, int width, int height) {
         this.context = context;
         //TODO repai
+        init();
         //initListeners();
     }
    
@@ -155,7 +156,6 @@ public class V3DCanvas {
     
     public void start() throws LWJGLException {
 		
-		init();
 		
 		final long NANO_IN_MILLI = 1000000;
         long currentTime = System.nanoTime()/NANO_IN_MILLI;
