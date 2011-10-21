@@ -1,5 +1,9 @@
 package com.irr310.server;
 
+import com.irr310.server.world.Camera;
+import com.irr310.server.world.LinearMotor;
+import com.irr310.server.world.WorldObject;
+
 public class GameEngine extends Engine {
 
 	public GameEngine(ServerGame game) {
@@ -133,7 +137,8 @@ public class GameEngine extends Engine {
 		@Override
 		public void visit(AddWorldObjectEvent event) {
 			WorldObject o;
-			/*
+			
+			
 			switch (event.getType()) {
             case STAR :
                  o = new Star(game.getWorld());
@@ -155,6 +160,9 @@ public class GameEngine extends Engine {
                 break;
          }
 		 
+			
+			
+			
 			if(event.getLinkedObject() != null && event.getLinkedObject().isCollection()) {
 				Collection c = (Collection) event.getLinkedObject();
 				c.addChild(o);

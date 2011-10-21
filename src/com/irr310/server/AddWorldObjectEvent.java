@@ -1,5 +1,7 @@
 package com.irr310.server;
 
+import com.irr310.server.world.WorldObject;
+
 public class AddWorldObjectEvent extends EngineEvent {
 
 	private Type type;

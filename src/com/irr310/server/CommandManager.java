@@ -5,6 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.irr310.server.UseScriptEvent.Type;
+import com.irr310.server.world.WorldObject;
 
 public class CommandManager {
 

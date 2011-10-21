@@ -1,24 +1,34 @@
-package com.irr310.server;
+package com.irr310.server.game.world;
+
+import java.util.List;
+
+import com.irr310.server.Vect3;
 
 
-public abstract class WorldObject {
+public class Component extends WorldObject {
 
-	protected final World world;
 	private Vect3 position;
 	private Double mass;
 	private Vect3 rotationSpeed;
 	private Vect3 linearSpeed;
 	private Vect3 rotation;
 	private String name;
-	private WorldObject parent;
-
-	public WorldObject(World world) {
-		this.world = world;
+	private Shape shape;
+	private double durabilityMax;
+	private double durability;
+	private double quality;
+	private double efficiency;
+	private Container container;
+	
+	public Component() {
+		
 	}
 	
-	public void setName(String name) {
-		this.name = name;
+	public Slot getSlot(int face, int slot) {
+		
+		return shape.getSlot(face, slot);
 	}
+
 	
 	public void setPosition(Vect3 position) {
 		this.position = position;
@@ -27,7 +37,6 @@ public abstract class WorldObject {
 	public void setMass(Double mass) {
 		this.mass = mass;
 	}
-	
 
 	public void setRotationSpeed(Vect3 rotationSpeed) {
 		this.rotationSpeed = rotationSpeed;
@@ -43,10 +52,6 @@ public abstract class WorldObject {
 
 	public String getName() {
 		return getName();
-	}
-
-	public WorldObject getLinkedObject() {
-		return this.parent;
 	}
 
 	public Vect3 getPosition() {
@@ -68,5 +73,27 @@ public abstract class WorldObject {
 	public Vect3 getRotation() {
 		return rotation;
 	}
+	
+	private void computeEfficiency() {
+		double durabilityFactor = (((durability/ durabilityMax) -0.3)/0.7) -1;
+		efficiency = quality*(1-durabilityFactor*durabilityFactor);
+	}
+	
+	public double getEfficiency() {
+		return efficiency;
+	}
 
+	public boolean isUnusable() {
+		return efficiency <=0; 
+	}
+
+	public Container getContainer() {
+		
+		return container;
+	}
+
+	public void setContainer(Container container) {
+		this.container = container;
+	}
+	
 }
