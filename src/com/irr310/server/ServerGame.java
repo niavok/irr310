@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
-import com.irr310.server.world.World;
+import com.irr310.server.game.Game;
+import com.irr310.server.game.world.World;
+
 
 public class ServerGame {
 	private GameEngine gameEngine;
@@ -13,14 +15,14 @@ public class ServerGame {
 	private PhysicEngine physicEngine;
 	private ParameterAnalyser parameterAnalyser;
 	private boolean stillRunning;
-	private World world;
+	private Game game;
 	private CommandManager commandManager;
 
 	public ServerGame(ParameterAnalyser parameterAnalyser) {
 		this.parameterAnalyser = parameterAnalyser;
 		stillRunning = true;
 
-		world = new World();
+		game = new Game();
 
 		gameEngine = new GameEngine(this);
 		physicEngine = new PhysicEngine(this);
@@ -93,8 +95,8 @@ public class ServerGame {
 
 	}
 
-	public World getWorld() {
-		return world;
+	public Game getGame() {
+		return game;
 	}
 
 	public void sendToAll(EngineEvent e) {

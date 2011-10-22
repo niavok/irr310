@@ -5,7 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.irr310.server.UseScriptEvent.Type;
-import com.irr310.server.world.WorldObject;
+import com.irr310.server.game.world.WorldObject;
 
 public class CommandManager {
 
@@ -203,11 +203,11 @@ public class CommandManager {
 		Matcher linkMatch = exprAddLink.matcher(command);
 		if (linkMatch.matches()) {
 			String linkStr = linkMatch.group(4);
-			WorldObject linkedObject = game.getWorld().getObjectByName(linkStr);
+			/*WorldObject linkedObject = game.getGame().getWorld().getObjectByName(linkStr);
 			if (linkedObject == null) {
 				return "No objects named '" + linkStr + "'";
 			}
-			event.setLinkedObject(linkedObject);
+			event.setLinkedObject(linkedObject);*/
 		}
 
 		// Position

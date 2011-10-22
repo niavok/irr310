@@ -1,8 +1,5 @@
 package com.irr310.server;
 
-import com.irr310.server.world.Camera;
-import com.irr310.server.world.LinearMotor;
-import com.irr310.server.world.WorldObject;
 
 public class GameEngine extends Engine {
 
@@ -136,7 +133,7 @@ public class GameEngine extends Engine {
 
 		@Override
 		public void visit(AddWorldObjectEvent event) {
-			WorldObject o;
+			/*WorldObject o;
 			
 			
 			switch (event.getType()) {

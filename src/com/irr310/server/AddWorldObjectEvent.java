@@ -1,6 +1,7 @@
 package com.irr310.server;
 
-import com.irr310.server.world.WorldObject;
+import com.irr310.server.game.world.WorldObject;
+
 
 public class AddWorldObjectEvent extends EngineEvent {
 

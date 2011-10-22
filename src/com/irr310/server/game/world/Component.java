@@ -3,6 +3,7 @@ package com.irr310.server.game.world;
 import java.util.List;
 
 import com.irr310.server.Vect3;
+import com.irr310.server.game.world.Shape.Face;
 
 
 public class Component extends WorldObject {
@@ -19,14 +20,16 @@ public class Component extends WorldObject {
 	private double quality;
 	private double efficiency;
 	private Container container;
+	private Vect3 shipPosition;
+	private Vect3 shipRotation;
 	
 	public Component() {
 		
 	}
 	
-	public Slot getSlot(int face, int slot) {
+	public Slot getSlot(Face face, int slotX, int slotY) {
 		
-		return shape.getSlot(face, slot);
+		return shape.getSlot(face, slotX, slotY);
 	}
 
 	
@@ -94,6 +97,18 @@ public class Component extends WorldObject {
 
 	public void setContainer(Container container) {
 		this.container = container;
+	}
+
+	public void setShipPosition(Vect3 shipPosition) {
+		this.shipPosition = shipPosition;
+	}
+
+	public void setShipRotation(Vect3 shipRotation) {
+		this.shipRotation = shipRotation;
+	}
+
+	public Shape getShape() {
+		return shape;
 	}
 	
 }

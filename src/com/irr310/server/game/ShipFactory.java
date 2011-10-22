@@ -55,7 +55,7 @@ public class ShipFactory {
 		newShip.assign(topPropeller);
 		newShip.assign(bottomPropeller);
 		
-		newShip.link(harvester.getSlot(1,1), harvester.getSlot(2, 1));
+		//newShip.link(harvester.getSlot(1,1), harvester.getSlot(2, 1), 0);
 		
 		
 		return newShip;

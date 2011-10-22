@@ -18,6 +18,8 @@ public class World {
 	}
 
 	public void placeShipSafely(Ship playerShip, Vect3 vect3) {
+		
+		
 		// TODO Auto-generated method stub
 		
 	}

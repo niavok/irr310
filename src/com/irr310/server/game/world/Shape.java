@@ -1,34 +1,53 @@
 package com.irr310.server.game.world;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.irr310.server.Vect3;
 
 public class Shape {
 
-	List<List<Slot>> faces;
+	Map<Face, List<Slot>> faces;
+	private final Component parentComponent;
+	private final Vect3 size;
 	
 	
-	public Shape(Vect3 size) {
-		faces = new ArrayList<List<Slot>>(6);
-		for(int i = 0; i < 6; i++) {
-			faces.add(new ArrayList<Slot>());
+	public enum Face {
+		FRONT,
+		BACK,
+		LEFT,
+		RIGHT,
+		TOP,
+		BOTTOM
+	}
+	
+	public Shape(Component parentComponent, Vect3 size) {
+		this.parentComponent = parentComponent;
+		this.size = size;
+		faces = new HashMap<Face, List<Slot>>();
+		for(Face face: Face.values()) {
+			faces.put(face, new ArrayList<Slot>());
 		}
 	}
 	
-	public void declareSlot(int face, int position) {
-		faces.get(face).add(new Slot(position));
+	public void declareSlot(Face face, int positionX, int positionY) {
+		faces.get(face).add(new Slot(parentComponent, face, positionX, positionY));
 	}
 
-	public Slot getSlot(int faceId, int slotId) {
-		List<Slot> face = faces.get(faceId);
-		for(Slot slot: face) {
-			if(slot.getPosition() == slotId) {
+	public Slot getSlot(Face face, int positionX, int positionY) {
+		List<Slot> slotList = faces.get(face);
+		for(Slot slot: slotList) {
+			if(slot.getPositionX() == positionX && slot.getPositionY() == positionY) {
 				return slot;
 			}
 		}
 		return null;
+	}
+
+	public Vect3 getSize() {
+		return size;
 	}
 	
 }

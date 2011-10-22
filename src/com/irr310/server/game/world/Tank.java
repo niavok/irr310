@@ -15,7 +15,7 @@ public class Tank  extends Component implements Container  {
 	}
 
 	@Override
-	public boolean assign(WorldObject object) {
+	public boolean assign(Component component) {
 		if(isUnusable()) {
 			return false;
 		}
@@ -24,6 +24,12 @@ public class Tank  extends Component implements Container  {
 		
 		
 		return false;
+	}
+
+	@Override
+	public void remove(Component component) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
