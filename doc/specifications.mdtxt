@@ -1,0 +1,206 @@
+=Spaceships=
+
+A spaceship is a craft with one or more "user control module".
+
+=Modules list=
+= =
+==Structure==
+A lot of stucture bricks
+A lot of pipe
+Shield
+
+==Storage==
+
+Solid part store
+Fluid store
+Energie store
+SDT module ( small distance teleportation)
+==Factory==
+part maker
+==Movement==
+Linear motor
+Rotating motor
+
+==Sensor==
+Camera
+distance calculation
+speed calculation
+position detector
+control field detector
+
+
+== tools==
+control filed emmiter
+master control unit -> can be set on slave mode
+slaver control unit
+text transmiter
+ciphered text transmoter
+capture module
+system defense module
+
+==Services==
+trade service
+action sale
+user command module
+
+
+
+
+
+
+==Others==
+Light
+Weapons
+...
+
+
+
+== ==
+== ==
+
+
+- Le monde à un coté limineux et l'autre sombre
+- des balises détermine la porté controlable
+- hors de la portée les robots on en auto
+- il y a une porte centrale avec un espace d'apparition qui ejecte les vaisseau, 1 pop à la fois
+- Il est possible de faire les balises de controles custom pour définir des terriroires exclusif
+- en cas de tentative de fusion des 2 vaisseaux, il doit y avoir un seul maitre. Il faut sinon utilise un système de capture
+- le monde est remplis d'une sorte de liquide. les joueurs subissent une force inverse à leur vitesse proportionnelle à leur vitesse et à la section de surface qu'ils présentent. 
+- les vaisseaux subissent une résistance à la rotation proportionnelle à la vitesse de rotation et à la section latérale.
+- les vaisseaux subissent une résistance à la rotation proportionnelle à la vitesse linéaire
+- des portes spaciales permettent de faire des sauts vers une autre porte à peut prêt dans le même axe
+
+
+
+
+
+- Un vaisseau est un ensemble de Composant
+- Les composant d'un vaiseau sont lié par des slots
+
+Slots
+-----
+
+Un Slot est positionné sur un composant est occupe au moins 1x1 tuile.
+
+Les fonctions : 
+- Structure : ce type de slot ne sert à rien sauf à lier les composants et l'information (gris) les autres slots sont aussi des slots de structure
+- energie : alimentation en energie
+- transport : transport d'objet, carburant, munitions, ...
+   
+Un slot de transport a un débit de matiere max
+Un slot d'energie a un debit d'energie max
+
+
+Composant
+---------
+
+Les composants ont une forme de pavé en 3D d'une taille variable
+
+Un composant est une instance d'un patron.
+
+Les composants d'un vaisseaux sont forcement attaché entre eux, sinon ils forment 2 vaisseaux.
+
+Les composants ont un certain nombre de slots de taille variable sur leur face et disposent d'au moins 1 slot.
+
+Un composant à une durabilité qui correspond à la résistance maximale du composant.
+Il a un état de santé, qui correspond  à un nombre compris entre 0 et la durabilité
+
+Il a une qualité qui correspond à la qualité de réalisation
+
+
+
+
+Le composant a une performance, qui correspond à sa son efficaté par rapport aux caractéristiques théorique.
+
+La performance des composants est proportionnel à sa durabilité et à sa qualité.
+
+
+Un moteur a une poussée théorique de 120N et une durabilité théorique de 200J.
+
+Il a été construit avec des matériaux de qualité moyen et a une qualité de 80% et un durabilité de 100J sans dommage.
+
+La formule de l'efficacité est :
+
+
+qualité*(1-(((%etat-30)/70)-1)^2)
+
+à 80% de la durabilité, l'efficacité sera de 73%.
+
+Liens
+-----
+
+Un liens est une connexion entre 2 slots
+
+Un a comme propriété un angle qui défini avec quel angle les composants sont liés
+
+
+
+Zone morte
+----------
+
+Un composant peutr avoir une zone morte. Une zone morte  est une zone qui doit être vide pour que certaines fonction du vaisseau fonction. Une zone morte peut exigé d'être relié à l'espace pour être vide. Par exemple un moteur aura souvent des zones mortes
+
+
+
+Fonction de composant
+---------------------
+
+### Noyau
+
+Le coeur du vaisseau. Il a un propriétaire, et emet une position.
+
+Il est programmable
+
+
+### Moteur linear
+
+Permet d'exercer une poussée
+
+
+### Moteur de couple
+
+Permet de faire tourner un composant par rapport a un autre
+
+
+### Pistion
+
+Permet de faire translater un composant par rapport à un autre
+
+
+### Camera
+
+Permet de récupérer des données sur la nature des composants pour un noyau à moyenne distante
+
+
+### Poutre
+
+element de structure
+
+### Tank
+
+
+
+### Hangar
+
+
+### Crusher
+
+
+### Factory
+
+### refinery
+
+### harvester
+
+### Light captor
+
+
+
+The game use multiple programs, multiple engine and multiple layout.
+
+Layout
+- User input layout (only for client)
+- Command layout (only for client)
+- Game layout
+- Physic layout
+- Graphic layout (only for client)
