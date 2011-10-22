@@ -2,6 +2,7 @@ package com.irr310.server;
 
 import org.lwjgl.opengl.Display;
 
+import com.irr310.server.Vect3.ChangeListener;
 import com.irr310.server.event.AddWorldObjectEvent;
 import com.irr310.server.event.DefaultEngineEventVisitor;
 import com.irr310.server.event.EngineEvent;
@@ -85,11 +86,21 @@ public class DebugGraphicEngine extends Engine {
 		Display.destroy();
 	}
 	
-	protected void addObject(WorldObject object) {
-		V3DBox box = new V3DBox(context);
-		box.setPosition(object.getPosition().toV3DVect3());
+	protected void addObject(final WorldObject object) {
+		final V3DBox box = new V3DBox(context);
+		Vect3 position = object.getPosition();
+		box.setPosition(position.toV3DVect3());
 		box.setSize(object.getShape().getSize().toV3DVect3());
 		scene.add(new V3DColorElement(box, V3DColor.red));
+		
+		position.addListener(new ChangeListener() {
+			
+			@Override
+			public void valueChanged() {
+				box.setPosition(object.getPosition().toV3DVect3());
+			}
+		});
+		
 	}
 	
 	@Override

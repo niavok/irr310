@@ -5,43 +5,27 @@ import com.irr310.server.game.GameEntity;
 
 public abstract class WorldObject extends GameEntity {
 
-	private Vect3 position;
+	private final Vect3 position;
 	private Double mass;
-	private Vect3 rotationSpeed;
-	private Vect3 linearSpeed;
-	private Vect3 rotation;
+	private final Vect3 rotationSpeed;
+	private final Vect3 linearSpeed;
+	private final Vect3 rotation;
 	private String name;
 	private Shape shape;
 	
 	public WorldObject() {
-		position = Vect3.ORIGIN;
-		rotationSpeed = Vect3.ORIGIN;
-		linearSpeed = Vect3.ORIGIN;
-		rotation = Vect3.ORIGIN;
+		position = Vect3.origin();
+		rotationSpeed = Vect3.origin();
+		linearSpeed = Vect3.origin();
+		rotation = Vect3.origin();
 		mass = 0.;
 		name = "unamed object";
-		shape = new Shape(this, Vect3.ONE);
+		shape = new Shape(this, Vect3.one());
 	}
 
-	
-	public void setPosition(Vect3 position) {
-		this.position = position;
-	}
 
 	public void setMass(Double mass) {
 		this.mass = mass;
-	}
-
-	public void setRotationSpeed(Vect3 rotationSpeed) {
-		this.rotationSpeed = rotationSpeed;
-	}
-
-	public void setLinearSpeed(Vect3 linearSpeed) {
-		this.linearSpeed = linearSpeed;
-	}
-
-	public void setRotation(Vect3 rotation) {
-		this.rotation = rotation;
 	}
 
 	public String getName() {

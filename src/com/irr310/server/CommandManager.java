@@ -212,8 +212,8 @@ public class CommandManager {
 
 			try {
 				Double x = Double.valueOf(xStr);
-				Double y = Double.valueOf(xStr);
-				Double z = Double.valueOf(xStr);
+				Double y = Double.valueOf(yStr);
+				Double z = Double.valueOf(zStr);
 				event.setPosition(new Vect3(x, y, z));
 			} catch (NumberFormatException e) {
 				return "Bad number format for position in '" + xStr + "', '"
@@ -230,8 +230,8 @@ public class CommandManager {
 
 			try {
 				Double x = Double.valueOf(xStr);
-				Double y = Double.valueOf(xStr);
-				Double z = Double.valueOf(xStr);
+				Double y = Double.valueOf(yStr);
+				Double z = Double.valueOf(zStr);
 				event.setRotation(new Vect3(x, y, z));
 			} catch (NumberFormatException e) {
 				return "Bad number format for rotation in '" + xStr + "', '"
@@ -248,8 +248,8 @@ public class CommandManager {
 
 			try {
 				Double x = Double.valueOf(xStr);
-				Double y = Double.valueOf(xStr);
-				Double z = Double.valueOf(xStr);
+				Double y = Double.valueOf(yStr);
+				Double z = Double.valueOf(zStr);
 				event.setLinearSpeed(new Vect3(x, y, z));
 			} catch (NumberFormatException e) {
 				return "Bad number format for linear speed in '" + xStr
@@ -266,8 +266,8 @@ public class CommandManager {
 
 			try {
 				Double x = Double.valueOf(xStr);
-				Double y = Double.valueOf(xStr);
-				Double z = Double.valueOf(xStr);
+				Double y = Double.valueOf(yStr);
+				Double z = Double.valueOf(zStr);
 				event.setRotationSpeed(new Vect3(x, y, z));
 			} catch (NumberFormatException e) {
 				return "Bad number format for rotation speed in '" + xStr

@@ -16,6 +16,7 @@ import com.bulletphysics.dynamics.constraintsolver.ConstraintSolver;
 import com.bulletphysics.dynamics.constraintsolver.SequentialImpulseConstraintSolver;
 import com.bulletphysics.linearmath.Clock;
 import com.bulletphysics.linearmath.DefaultMotionState;
+import com.bulletphysics.linearmath.MotionState;
 import com.bulletphysics.linearmath.Transform;
 import com.bulletphysics.util.ObjectArrayList;
 import com.irr310.server.event.DefaultEngineEventVisitor;
@@ -24,6 +25,7 @@ import com.irr310.server.event.InitEngineEvent;
 import com.irr310.server.event.PauseEngineEvent;
 import com.irr310.server.event.QuitGameEvent;
 import com.irr310.server.event.StartEngineEvent;
+import com.irr310.server.event.WorldObjectAddedEvent;
 import com.irr310.server.game.world.WorldObject;
 
 public class PhysicEngine extends Engine {
@@ -53,6 +55,7 @@ public class PhysicEngine extends Engine {
 		if (dynamicsWorld != null) {
 			dynamicsWorld.stepSimulation(ms / 1000000f);
 		}
+		
 	}
 	
 	
@@ -120,20 +123,22 @@ public class PhysicEngine extends Engine {
 	}
 	
 	
-	private void createObject(WorldObject object)
-	{
+	
+	protected void addObject(WorldObject object) {
+	
 		// create a few dynamic rigidbodies
 		// Re-using the same collision is better for memory usage and performance
 
-		CollisionShape colShape = new BoxShape(new Vector3f(1, 1, 1));
+		
+		
+		CollisionShape colShape = new BoxShape(object.getShape().getSize().toVector3f());
 		//CollisionShape colShape = new SphereShape(1f);
 		collisionShapes.add(colShape);
 
 		// Create Dynamic Objects
-		Transform startTransform = new Transform();
-		startTransform.setIdentity();
+		
 
-		float mass = 1f;
+		float mass = object.getMass().floatValue();
 
 		// rigidbody is dynamic if and only if mass is non zero, otherwise static
 		boolean isDynamic = (mass != 0f);
@@ -143,19 +148,46 @@ public class PhysicEngine extends Engine {
 			colShape.calculateLocalInertia(mass, localInertia);
 		}
 
-					startTransform.origin.set(
-							 0,
-							0,
-							0);
+		
+		//TODO rotation
 
 		// using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
-		DefaultMotionState myMotionState = new DefaultMotionState(startTransform);
+		MotionState myMotionState = new WorldObjectMotionState(object);
 		RigidBodyConstructionInfo rbInfo = new RigidBodyConstructionInfo(mass, myMotionState, colShape, localInertia);
 		RigidBody body = new RigidBody(rbInfo);
 		body.setActivationState(RigidBody.ISLAND_SLEEPING);
 
 		dynamicsWorld.addRigidBody(body);
-		body.setActivationState(RigidBody.ISLAND_SLEEPING);
+		
+		body.setLinearVelocity(object.getLinearSpeed().toVector3f());
+		body.setAngularVelocity(object.getRotationSpeed().toVector3f());
+		body.setActivationState(RigidBody.ACTIVE_TAG);
+		
+	}
+	
+	public class WorldObjectMotionState extends MotionState {
+
+		private final WorldObject object;
+
+		WorldObjectMotionState(WorldObject object) {
+			this.object = object;
+			
+		}
+		
+		@Override
+		public Transform getWorldTransform(Transform out) {
+			out.setIdentity();
+			out.origin.set(object.getPosition().toVector3d());
+			return out;
+		}
+
+		@Override
+		public void setWorldTransform(Transform worldTrans) {
+			Vector3f origin = worldTrans.origin;
+			object.getPosition().set(origin.x, origin.y, origin.z);
+			System.out.println("setWorldTransform");
+		}
+		
 	}
 	
 
@@ -177,14 +209,18 @@ public class PhysicEngine extends Engine {
 		}
 
 		@Override
-		public void visit(InitEngineEvent event) {
-		}
-
-		@Override
 		public void visit(PauseEngineEvent event) {
 			pause(true);
 
 		}
+
+		@Override
+		public void visit(WorldObjectAddedEvent event) {
+			addObject(event.getObject());
+		}
+		
+		
+		
 	}
 
 	@Override
