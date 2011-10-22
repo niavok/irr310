@@ -84,6 +84,7 @@ public class V3DCanvas {
      * @see javax.media.openGL11.GLEventListener#init(javax.media.openGL11.GLAutoDrawable)
      */
     public void init() {
+    	System.out.println("Init OpenGl Canvas");
     	width=1024;
         height=768;
     
@@ -166,8 +167,9 @@ public class V3DCanvas {
 			
 			if(Display.isCloseRequested())
 			done=true;
-			display();
-			Display.update();
+			if(!frame()) {
+				break;
+			}
 			frameMesureCount++;
 			currentTime = System.nanoTime()/NANO_IN_MILLI;
             updateFpsCounter(currentTime);
@@ -176,6 +178,16 @@ public class V3DCanvas {
 		Display.destroy();
 
 	}
+    
+    public boolean frame() {
+    	if(Display.isCloseRequested()) {
+    		return false;
+    	}
+    	
+    	display();
+		Display.update();
+		return true;
+    }
     
     private void updateFpsCounter(long currentTime) {
         if(currentTime > lastFpsMesureTime+1000) {

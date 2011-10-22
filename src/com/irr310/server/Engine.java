@@ -29,6 +29,9 @@ public abstract class Engine extends Thread{
 		isRunning = true;
 		isPaused = true;
 		numRunningEngines++;
+		
+		init();
+		
 		while (isRunning) {
 			processQueue();
 			if (!isPaused) {
@@ -47,9 +50,16 @@ public abstract class Engine extends Thread{
 				 */
 			}
 		}
+		
+		end();
+		
 		numRunningEngines--;
 
 	}
+
+	protected abstract void init() ;
+	
+	protected abstract void end();
 
 	public static int getRunningEngineCount() {
 		return numRunningEngines;

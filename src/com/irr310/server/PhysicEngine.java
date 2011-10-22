@@ -193,4 +193,16 @@ public class PhysicEngine extends Engine {
 		}
 	}
 
+	@Override
+	protected void init() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void end() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

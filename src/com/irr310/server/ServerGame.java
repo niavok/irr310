@@ -17,6 +17,7 @@ public class ServerGame {
 	private boolean stillRunning;
 	private Game game;
 	private CommandManager commandManager;
+	private DebugGraphicEngine debugGraphicEngine;
 
 	public ServerGame(ParameterAnalyser parameterAnalyser) {
 		this.parameterAnalyser = parameterAnalyser;
@@ -27,6 +28,7 @@ public class ServerGame {
 		gameEngine = new GameEngine(this);
 		physicEngine = new PhysicEngine(this);
 		networkEngine = new NetworkEngine(this);
+		debugGraphicEngine = new DebugGraphicEngine(this);
 
 		commandManager = new CommandManager(this);
 
@@ -38,6 +40,7 @@ public class ServerGame {
 		gameEngine.start();
 		physicEngine.start();
 		networkEngine.start();
+		debugGraphicEngine.start();
 
 		// currentStillRunning = stillRunning;
 		// std::string i;
@@ -45,7 +48,7 @@ public class ServerGame {
 
 		
 		//Wait engines started
-		while ((Engine.getRunningEngineCount()) < 3) {
+		while ((Engine.getRunningEngineCount()) < 4) {
 			new Duration(100000000).sleep();
 		}
 		
@@ -103,6 +106,7 @@ public class ServerGame {
 		gameEngine.pushEvent(e);
 		physicEngine.pushEvent(e);
 		networkEngine.pushEvent(e);
+		debugGraphicEngine.pushEvent(e);
 	}
 
 	public GameEngine getGameEngine() {
