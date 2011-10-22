@@ -83,6 +83,8 @@ public class GameEngine extends Engine {
 
 			if (event.getMass() != null) {
 				o.setMass(event.getMass());
+			} else {
+			    o.setMass(1.0);
 			}
 
 			o.setName(event.getName());

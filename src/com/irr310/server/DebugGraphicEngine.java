@@ -36,6 +36,7 @@ public class DebugGraphicEngine extends Engine {
 	private V3DScene scene;
 	
 	public DebugGraphicEngine() {
+	    framerate = new Duration(0);
 	}
 	
 	@Override

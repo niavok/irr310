@@ -9,7 +9,7 @@ public abstract class Engine extends Thread{
 
 	protected boolean isRunning;
 	private boolean isPaused;
-	private Duration framerate; // nsec
+	protected Duration framerate; // nsec
 	protected Queue<EngineEvent> eventsQueue;
 	// private Time nextTime;
 	static int numRunningEngines = 0;

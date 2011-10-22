@@ -185,9 +185,7 @@ public class PhysicEngine extends Engine {
 		public void setWorldTransform(Transform worldTrans) {
 			Vector3f origin = worldTrans.origin;
 			object.getPosition().set(origin.x, origin.y, origin.z);
-			System.out.println("setWorldTransform");
-		}
-		
+		}		
 	}
 	
 
