@@ -63,10 +63,22 @@ public class GameEngine extends Engine {
 				break;
 			}
 
-			o.setPosition(event.getPosition());
-			o.setRotation(event.getRotation());
-			o.setLinearSpeed(event.getLinearSpeed());
-			o.setRotationSpeed(event.getRotationSpeed());
+			if(event.getPosition() != null) {
+				o.setPosition(event.getPosition());
+			}
+			
+			if(event.getRotation() != null) {
+				o.setRotation(event.getRotation());
+			}
+			
+			if(event.getLinearSpeed() != null) {
+				o.setLinearSpeed(event.getLinearSpeed());
+			}
+			
+			if(event.getRotationSpeed() != null) {
+				o.setRotationSpeed(event.getRotationSpeed());
+			}
+			
 			o.setShape(new Shape(o, new Vect3(1, 1, 1)));
 
 			if (event.getMass() != null) {
