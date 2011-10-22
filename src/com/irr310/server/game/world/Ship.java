@@ -40,7 +40,7 @@ public class Ship extends GameEntity implements Container {
 		if (components.contains(slot2.getComponent())) {
 			System.err.println("the second slot must not be in the ship");
 		}
-		assign(slot2.getComponent());
+		//assign(slot2.getComponent());
 
 		Shape shape1 = slot1.getComponent().getShape();
 		

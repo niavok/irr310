@@ -1,6 +1,7 @@
-package com.irr310.server;
+package com.irr310.server.event;
 
-public abstract class EngineEventVisitor {
+
+public interface EngineEventVisitor {
 
 	public abstract void visit(QuitGameEvent event);
 
@@ -13,4 +14,6 @@ public abstract class EngineEventVisitor {
 	public abstract void visit(UseScriptEvent event);
 
 	public abstract void visit(AddWorldObjectEvent event);
+
+	public abstract void visit(WorldObjectAddedEvent worldObjectAddedEvent);
 }

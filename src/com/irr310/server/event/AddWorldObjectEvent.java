@@ -1,5 +1,6 @@
-package com.irr310.server;
+package com.irr310.server.event;
 
+import com.irr310.server.Vect3;
 import com.irr310.server.game.world.WorldObject;
 
 
@@ -15,13 +16,7 @@ public class AddWorldObjectEvent extends EngineEvent {
 	private Vect3 rotation;
 
 	public enum Type {
-		REFERENCE,
-		STAR,
-		PLANET,
-		PART,
-		CAMERA,
-		LINEAR_MOTOR,
-		COLLECTION,
+		LINEAR_ENGINE, CAMERA,
 	}
 
 	@Override

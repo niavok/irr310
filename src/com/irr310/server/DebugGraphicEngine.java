@@ -2,6 +2,15 @@ package com.irr310.server;
 
 import org.lwjgl.opengl.Display;
 
+import com.irr310.server.event.AddWorldObjectEvent;
+import com.irr310.server.event.DefaultEngineEventVisitor;
+import com.irr310.server.event.EngineEvent;
+import com.irr310.server.event.InitEngineEvent;
+import com.irr310.server.event.PauseEngineEvent;
+import com.irr310.server.event.QuitGameEvent;
+import com.irr310.server.event.StartEngineEvent;
+import com.irr310.server.event.UseScriptEvent;
+
 import fr.def.iss.vd2.lib_v3d.V3DCanvas;
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DContext;
@@ -10,7 +19,6 @@ import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
 import fr.def.iss.vd2.lib_v3d.camera.V3DSimple3DCamera;
 import fr.def.iss.vd2.lib_v3d.controller.V3DSimple3DCameraController;
-import fr.def.iss.vd2.lib_v3d.element.V3DCircle;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DLine;
 
@@ -23,8 +31,7 @@ public class DebugGraphicEngine extends Engine {
     V3DCanvas canvas;
 	private V3DScene scene;
 	
-	public DebugGraphicEngine(ServerGame game) {
-		super(game);
+	public DebugGraphicEngine() {
 	}
 	
 	@Override
@@ -86,7 +93,7 @@ public class DebugGraphicEngine extends Engine {
 	}
 	
 	private final class DebugGraphicEngineEventVisitor extends
-		EngineEventVisitor {
+		DefaultEngineEventVisitor {
 		@Override
 		public void visit(QuitGameEvent event) {
 			System.out.println("stopping debug graphic engine");

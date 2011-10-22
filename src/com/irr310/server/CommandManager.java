@@ -4,7 +4,12 @@ import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.irr310.server.UseScriptEvent.Type;
+import com.irr310.server.event.AddWorldObjectEvent;
+import com.irr310.server.event.InitEngineEvent;
+import com.irr310.server.event.PauseEngineEvent;
+import com.irr310.server.event.StartEngineEvent;
+import com.irr310.server.event.UseScriptEvent;
+import com.irr310.server.event.UseScriptEvent.Type;
 import com.irr310.server.game.world.WorldObject;
 
 public class CommandManager {
@@ -18,10 +23,8 @@ public class CommandManager {
 	private Pattern exprDelete;
 	private Pattern exprLoad;
 	private Pattern exprUse;
-	private final ServerGame game;
 
-	public CommandManager(ServerGame game) {
-		this.game = game;
+	public CommandManager() {
 		exprComment = Pattern.compile("^//.*");
 		exprQuit = Pattern.compile("^((quit)|(q))");
 		exprInit = Pattern.compile("^((init)|(i))");
@@ -46,11 +49,11 @@ public class CommandManager {
 			// quit
 			out = null;
 		} else if ((match = exprStart.matcher(command)).matches()) {
-			game.sendToAll(new StartEngineEvent());
+			GameServer.getInstance().sendToAll(new StartEngineEvent());
 		} else if ((match = exprInit.matcher(command)).matches()) {
-			game.sendToAll(new InitEngineEvent());
+			GameServer.getInstance().sendToAll(new InitEngineEvent());
 		} else if ((match = exprPause.matcher(command)).matches()) {
-			game.sendToAll(new PauseEngineEvent());
+			GameServer.getInstance().sendToAll(new PauseEngineEvent());
 		} else if ((match = exprUse.matcher(command)).matches()) {
 			out = useScriptCommand(command);
 		} else if ((match = exprAdd.matcher(command)).matches()) {
@@ -135,7 +138,7 @@ public class CommandManager {
 					+ "'. Valid type are 'driver' or 'bind' ";
 		}
 
-		game.getGameEngine().processEvent(new UseScriptEvent(type, script));
+		GameServer.getInstance().getGameEngine().processEvent(new UseScriptEvent(type, script));
 		return "";
 	}
 
@@ -169,20 +172,10 @@ public class CommandManager {
 		String typeStr = typeMatch.group(4);
 		AddWorldObjectEvent.Type type;
 
-		if (typeStr.equals("reference")) {
-			type = AddWorldObjectEvent.Type.REFERENCE;
-		} else if (typeStr.equals("camera")) {
+		if (typeStr.equals("camera")) {
 			type = AddWorldObjectEvent.Type.CAMERA;
-		} else if (typeStr.equals("collection")) {
-			type = AddWorldObjectEvent.Type.COLLECTION;
 		} else if (typeStr.equals("linear_motor")) {
-			type = AddWorldObjectEvent.Type.LINEAR_MOTOR;
-		} else if (typeStr.equals("part")) {
-			type = AddWorldObjectEvent.Type.PART;
-		} else if (typeStr.equals("planet")) {
-			type = AddWorldObjectEvent.Type.PLANET;
-		} else if (typeStr.equals("star")) {
-			type = AddWorldObjectEvent.Type.STAR;
+			type = AddWorldObjectEvent.Type.LINEAR_ENGINE;
 		} else {
 			return "Invalid type '"
 					+ typeStr
@@ -295,7 +288,7 @@ public class CommandManager {
 			}
 		}
 
-		game.sendToAll(event);
+		GameServer.getInstance().sendToAll(event);
 		return "Game : Add object > " + typeStr;
 
 	}

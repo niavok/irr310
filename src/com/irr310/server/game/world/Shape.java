@@ -10,7 +10,7 @@ import com.irr310.server.Vect3;
 public class Shape {
 
 	Map<Face, List<Slot>> faces;
-	private final Component parentComponent;
+	private final WorldObject parentComponent;
 	private final Vect3 size;
 	
 	
@@ -23,8 +23,8 @@ public class Shape {
 		BOTTOM
 	}
 	
-	public Shape(Component parentComponent, Vect3 size) {
-		this.parentComponent = parentComponent;
+	public Shape(WorldObject o, Vect3 size) {
+		this.parentComponent = o;
 		this.size = size;
 		faces = new HashMap<Face, List<Slot>>();
 		for(Face face: Face.values()) {

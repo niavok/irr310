@@ -8,13 +8,7 @@ import com.irr310.server.game.world.Shape.Face;
 
 public class Component extends WorldObject {
 
-	private Vect3 position;
-	private Double mass;
-	private Vect3 rotationSpeed;
-	private Vect3 linearSpeed;
-	private Vect3 rotation;
-	private String name;
-	private Shape shape;
+	
 	private double durabilityMax;
 	private double durability;
 	private double quality;
@@ -29,53 +23,11 @@ public class Component extends WorldObject {
 	
 	public Slot getSlot(Face face, int slotX, int slotY) {
 		
-		return shape.getSlot(face, slotX, slotY);
+		return getShape().getSlot(face, slotX, slotY);
 	}
 
 	
-	public void setPosition(Vect3 position) {
-		this.position = position;
-	}
-
-	public void setMass(Double mass) {
-		this.mass = mass;
-	}
-
-	public void setRotationSpeed(Vect3 rotationSpeed) {
-		this.rotationSpeed = rotationSpeed;
-	}
-
-	public void setLinearSpeed(Vect3 linearSpeed) {
-		this.linearSpeed = linearSpeed;
-	}
-
-	public void setRotation(Vect3 rotation) {
-		this.rotation = rotation;
-	}
-
-	public String getName() {
-		return getName();
-	}
-
-	public Vect3 getPosition() {
-		return position;
-	}
-
-	public Double getMass() {
-		return mass;
-	}
-
-	public Vect3 getRotationSpeed() {
-		return rotationSpeed;
-	}
-
-	public Vect3 getLinearSpeed() {
-		return linearSpeed;
-	}
-
-	public Vect3 getRotation() {
-		return rotation;
-	}
+	
 	
 	private void computeEfficiency() {
 		double durabilityFactor = (((durability/ durabilityMax) -0.3)/0.7) -1;
@@ -107,8 +59,6 @@ public class Component extends WorldObject {
 		this.shipRotation = shipRotation;
 	}
 
-	public Shape getShape() {
-		return shape;
-	}
+	
 	
 }

@@ -8,17 +8,17 @@ public class Slot extends GameEntity {
 
 	private final int positionX;
 	private final int positionY;
-	private final Component parentComponent;
+	private final WorldObject parentComponent;
 	private final Face face;
 	private Shape shape;
 
-	public Slot(Component parentComponent, Face face, int positionX,
+	public Slot(WorldObject parentComponent2, Face face, int positionX,
 			int positionY) {
-		this.parentComponent = parentComponent;
+		this.parentComponent = parentComponent2;
 		this.positionX = positionX;
 		this.positionY = positionY;
 		this.face = face;
-		shape = parentComponent.getShape();
+		shape = parentComponent2.getShape();
 	}
 
 	public int getPositionX() {
@@ -29,7 +29,7 @@ public class Slot extends GameEntity {
 		return positionY;
 	}
 
-	public Component getComponent() {
+	public WorldObject getComponent() {
 		return parentComponent;
 	}
 

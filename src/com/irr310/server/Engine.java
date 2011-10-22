@@ -3,9 +3,10 @@ package com.irr310.server;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import com.irr310.server.event.EngineEvent;
+
 public abstract class Engine extends Thread{
 
-	protected ServerGame game;
 	protected boolean isRunning;
 	private boolean isPaused;
 	private Duration framerate; // nsec
@@ -13,8 +14,7 @@ public abstract class Engine extends Thread{
 	// private Time nextTime;
 	static int numRunningEngines = 0;
 
-	public Engine(ServerGame game) {
-		this.game = game;
+	public Engine() {
 		framerate = new Duration(20000000); // 20ms or 50fps
 		eventsQueue = new LinkedBlockingQueue<EngineEvent>();
 	}

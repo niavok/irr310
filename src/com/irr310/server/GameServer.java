@@ -5,11 +5,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
+import com.irr310.server.event.EngineEvent;
+import com.irr310.server.event.QuitGameEvent;
 import com.irr310.server.game.Game;
 import com.irr310.server.game.world.World;
 
 
-public class ServerGame {
+public class GameServer {
 	private GameEngine gameEngine;
 	private NetworkEngine networkEngine;
 	private PhysicEngine physicEngine;
@@ -19,18 +21,24 @@ public class ServerGame {
 	private CommandManager commandManager;
 	private DebugGraphicEngine debugGraphicEngine;
 
-	public ServerGame(ParameterAnalyser parameterAnalyser) {
+	public static GameServer instance = null;
+	public static GameServer getInstance() {
+		return instance;
+	}
+	
+	public GameServer(ParameterAnalyser parameterAnalyser) {
 		this.parameterAnalyser = parameterAnalyser;
+		instance = this;
 		stillRunning = true;
 
 		game = new Game();
 
-		gameEngine = new GameEngine(this);
-		physicEngine = new PhysicEngine(this);
-		networkEngine = new NetworkEngine(this);
-		debugGraphicEngine = new DebugGraphicEngine(this);
+		gameEngine = new GameEngine();
+		physicEngine = new PhysicEngine();
+		networkEngine = new NetworkEngine();
+		debugGraphicEngine = new DebugGraphicEngine();
 
-		commandManager = new CommandManager(this);
+		commandManager = new CommandManager();
 
 	}
 

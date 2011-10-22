@@ -1,6 +1,7 @@
-package com.irr310.server;
+package com.irr310.server.event;
 
 import java.io.File;
+
 
 
 public class UseScriptEvent extends EngineEvent {

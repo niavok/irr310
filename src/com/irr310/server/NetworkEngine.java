@@ -1,10 +1,16 @@
 package com.irr310.server;
 
+import com.irr310.server.event.DefaultEngineEventVisitor;
+import com.irr310.server.event.EngineEvent;
+import com.irr310.server.event.InitEngineEvent;
+import com.irr310.server.event.PauseEngineEvent;
+import com.irr310.server.event.QuitGameEvent;
+import com.irr310.server.event.StartEngineEvent;
+
 
 public class NetworkEngine extends Engine {
 
-	public NetworkEngine(ServerGame game) {
-		super(game);
+	public NetworkEngine() {
 	}
 
 	@Override
@@ -18,7 +24,7 @@ public class NetworkEngine extends Engine {
 		e.accept(new NetworkEngineEventVisitor());
 	}
 
-	private final class NetworkEngineEventVisitor extends EngineEventVisitor {
+	private final class NetworkEngineEventVisitor extends DefaultEngineEventVisitor {
 		@Override
 		public void visit(QuitGameEvent event) {
 			System.out.println("stopping network engine");
@@ -42,18 +48,6 @@ public class NetworkEngine extends Engine {
 		public void visit(PauseEngineEvent event) {
 			pause(true);
 			stopAcceptor();
-		}
-
-		@Override
-		public void visit(UseScriptEvent event) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void visit(AddWorldObjectEvent event) {
-			// TODO Auto-generated method stub
-			
 		}
 	}
 

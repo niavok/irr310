@@ -29,7 +29,7 @@ public class Game {
 		return newPlayer;
 	}
 
-	public Object getWorld() {
+	public World getWorld() {
 		return world;
 	}
 }

@@ -1,4 +1,4 @@
-package com.irr310.server;
+package com.irr310.server.event;
 
 public abstract class EngineEvent {
 	

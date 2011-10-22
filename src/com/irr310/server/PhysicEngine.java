@@ -18,6 +18,12 @@ import com.bulletphysics.linearmath.Clock;
 import com.bulletphysics.linearmath.DefaultMotionState;
 import com.bulletphysics.linearmath.Transform;
 import com.bulletphysics.util.ObjectArrayList;
+import com.irr310.server.event.DefaultEngineEventVisitor;
+import com.irr310.server.event.EngineEvent;
+import com.irr310.server.event.InitEngineEvent;
+import com.irr310.server.event.PauseEngineEvent;
+import com.irr310.server.event.QuitGameEvent;
+import com.irr310.server.event.StartEngineEvent;
 import com.irr310.server.game.world.WorldObject;
 
 public class PhysicEngine extends Engine {
@@ -34,8 +40,7 @@ public class PhysicEngine extends Engine {
 	protected DynamicsWorld dynamicsWorld = null;
 
 	
-	public PhysicEngine(ServerGame game) {
-		super(game);
+	public PhysicEngine() {
 		initPhysics();
 	}
 
@@ -159,7 +164,7 @@ public class PhysicEngine extends Engine {
 		e.accept(new PhysicEngineEventVisitor());
 	}
 
-	private final class PhysicEngineEventVisitor extends EngineEventVisitor {
+	private final class PhysicEngineEventVisitor extends DefaultEngineEventVisitor {
 		@Override
 		public void visit(QuitGameEvent event) {
 			System.out.println("stopping physic engine");
@@ -179,17 +184,6 @@ public class PhysicEngine extends Engine {
 		public void visit(PauseEngineEvent event) {
 			pause(true);
 
-		}
-
-		@Override
-		public void visit(UseScriptEvent event) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void visit(AddWorldObjectEvent event) {
-			
 		}
 	}
 
