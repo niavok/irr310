@@ -12,9 +12,15 @@ public abstract class WorldObject extends GameEntity {
 	private Vect3 rotation;
 	private String name;
 	private Shape shape;
-	private Shape shape2;
 	
 	public WorldObject() {
+		position = Vect3.ORIGIN;
+		rotationSpeed = Vect3.ORIGIN;
+		linearSpeed = Vect3.ORIGIN;
+		rotation = Vect3.ORIGIN;
+		mass = 0.;
+		name = "unamed object";
+		shape = new Shape(this, Vect3.ONE);
 	}
 
 	
@@ -67,7 +73,7 @@ public abstract class WorldObject extends GameEntity {
 	}
 
 	public void setShape(Shape shape) {
-		shape2 = shape;
+		this.shape = shape;
 	}
 
 

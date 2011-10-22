@@ -174,12 +174,12 @@ public class CommandManager {
 
 		if (typeStr.equals("camera")) {
 			type = AddWorldObjectEvent.Type.CAMERA;
-		} else if (typeStr.equals("linear_motor")) {
+		} else if (typeStr.equals("linear_engine")) {
 			type = AddWorldObjectEvent.Type.LINEAR_ENGINE;
 		} else {
 			return "Invalid type '"
 					+ typeStr
-					+ "'. Valid type are 'reference' , 'camera', 'collection', 'linear_motor', 'part', 'planet' and 'star' ";
+					+ "'. Valid type are  'camera', 'linear_engine' ";
 		}
 
 		event.setType(type);

@@ -16,6 +16,10 @@ public class Game {
 	private List<Player> playerList = new ArrayList<Player>();
 	private Map<Integer, Player> playerMap = new HashMap<Integer, Player>();
 
+	public Game() {
+		world = new World();
+	}
+	
 	public List<Player> getPlayerList() {
 		return playerList;
 	}
