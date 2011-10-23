@@ -1,5 +1,6 @@
 package com.irr310.server.game.world;
 
+import com.irr310.server.RotationMatrix;
 import com.irr310.server.Vect3;
 import com.irr310.server.game.GameEntity;
 
@@ -9,7 +10,7 @@ public abstract class WorldObject extends GameEntity {
 	private Double mass;
 	private final Vect3 rotationSpeed;
 	private final Vect3 linearSpeed;
-	private final Vect3 rotation;
+	private final RotationMatrix rotation;
 	private String name;
 	private Shape shape;
 	
@@ -17,7 +18,7 @@ public abstract class WorldObject extends GameEntity {
 		position = Vect3.origin();
 		rotationSpeed = Vect3.origin();
 		linearSpeed = Vect3.origin();
-		rotation = Vect3.origin();
+		rotation = new RotationMatrix();
 		mass = 0.;
 		name = "unamed object";
 		shape = new Shape(this, Vect3.one());
@@ -48,7 +49,7 @@ public abstract class WorldObject extends GameEntity {
 		return linearSpeed;
 	}
 
-	public Vect3 getRotation() {
+	public RotationMatrix getRotation() {
 		return rotation;
 	}
 	

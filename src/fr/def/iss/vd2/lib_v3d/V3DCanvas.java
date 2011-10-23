@@ -69,6 +69,8 @@ public class V3DCanvas {
      */
     public V3DCanvas(final V3DContext context, int width, int height) {
         this.context = context;
+		this.width = width;
+		this.height = height;
         //TODO repai
         init();
         //initListeners();
@@ -85,8 +87,6 @@ public class V3DCanvas {
      */
     public void init() {
     	System.out.println("Init OpenGl Canvas");
-    	width=1024;
-        height=768;
     
         try{
             Display.setDisplayMode(new DisplayMode(width, height));

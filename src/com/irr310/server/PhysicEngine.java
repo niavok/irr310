@@ -1,5 +1,6 @@
 package com.irr310.server;
 
+import javax.vecmath.Quat4f;
 import javax.vecmath.Vector3f;
 
 import com.bulletphysics.collision.broadphase.BroadphaseInterface;
@@ -133,7 +134,7 @@ public class PhysicEngine extends Engine {
 
 		
 		
-		CollisionShape colShape = new BoxShape(object.getShape().getSize().divide(2).toVector3f());
+		CollisionShape colShape = new BoxShape(object.getShape().getSize().toVector3f());
 		//CollisionShape colShape = new SphereShape(1f);
 		collisionShapes.add(colShape);
 
@@ -198,7 +199,13 @@ public class PhysicEngine extends Engine {
 		public void setWorldTransform(Transform worldTrans) {
 			Vector3f origin = worldTrans.origin;
 			object.getPosition().set(origin.x, origin.y, origin.z);
-			Vector3f linearVelocity = body.getLinearVelocity(new Vector3f());
+			//Vector3f linearVelocity = body.getLinearVelocity(new Vector3f());
+			worldTrans.getOpenGLMatrix(object.getRotation().getData());
+			object.getRotation().fireChanged();
+			Quat4f rotation = worldTrans.getRotation(new Quat4f());
+			
+			//System.out.println("w="+rotation.w+" x="+rotation.x+" y="+rotation.y+" z="+rotation.z);
+			
 			//System.out.println("x="+origin.x+" y="+origin.y+" z="+origin.z+" vx="+linearVelocity.x+" vy="+linearVelocity.y+" vz="+linearVelocity.z+ " desactivation_time="+body.getDeactivationTime()+""+body.getLinearSleepingThreshold());
 		}		
 	}

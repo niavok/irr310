@@ -15,20 +15,20 @@ public class Vect3 {
 	public  Double y;
 	public  Double z;
 	
-	private List<ChangeListener>  changeListeners;
+	private List<Vect3ChangeListener>  changeListeners;
 
 	public Vect3(Double x, Double y, Double z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		changeListeners = new ArrayList<Vect3.ChangeListener>();
+		changeListeners = new ArrayList<Vect3.Vect3ChangeListener>();
 	}
 
 	public Vect3(int x, int y, int z) {
 		this.x = (double) x;
 		this.y = (double) y;
 		this.z = (double) z;
-		changeListeners = new ArrayList<Vect3.ChangeListener>();
+		changeListeners = new ArrayList<Vect3.Vect3ChangeListener>();
 	}
 
 	public V3DVect3 toV3DVect3() {
@@ -66,17 +66,17 @@ public class Vect3 {
 		return new Vect3(1, 1, 1);
 	}
 	
-	public void addListener(ChangeListener listener) {
+	public void addListener(Vect3ChangeListener listener) {
 		changeListeners.add(listener);
 	}
 	
 	public void fireChanged() {
-		for(ChangeListener listener: changeListeners) {
+		for(Vect3ChangeListener listener: changeListeners) {
 			listener.valueChanged();
 		}
 	}
 	
-	public interface ChangeListener {
+	public interface Vect3ChangeListener {
 		
 		public void valueChanged();
 	}

@@ -2,15 +2,13 @@ package com.irr310.server;
 
 import org.lwjgl.opengl.Display;
 
-import com.irr310.server.Vect3.ChangeListener;
-import com.irr310.server.event.AddWorldObjectEvent;
+import com.irr310.server.RotationMatrix.RotationMatrixChangeListener;
+import com.irr310.server.Vect3.Vect3ChangeListener;
 import com.irr310.server.event.DefaultEngineEventVisitor;
 import com.irr310.server.event.EngineEvent;
-import com.irr310.server.event.InitEngineEvent;
 import com.irr310.server.event.PauseEngineEvent;
 import com.irr310.server.event.QuitGameEvent;
 import com.irr310.server.event.StartEngineEvent;
-import com.irr310.server.event.UseScriptEvent;
 import com.irr310.server.event.WorldObjectAddedEvent;
 import com.irr310.server.game.world.WorldObject;
 
@@ -25,6 +23,7 @@ import fr.def.iss.vd2.lib_v3d.controller.V3DSimple3DCameraController;
 import fr.def.iss.vd2.lib_v3d.element.V3DBox;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DLine;
+import fr.def.iss.vd2.lib_v3d.element.V3DBox.RenderMode;
 
 
 public class DebugGraphicEngine extends Engine {
@@ -41,7 +40,7 @@ public class DebugGraphicEngine extends Engine {
 	
 	@Override
 	protected void init() {
-		canvas = new V3DCanvas(context, 1024, 768);
+		canvas = new V3DCanvas(context, 1600, 1024);
 
         activeCamera = new V3DSimple3DCamera(context);
         fullscreenBinding = V3DCameraBinding.buildFullscreenCamera(activeCamera);
@@ -72,7 +71,9 @@ public class DebugGraphicEngine extends Engine {
         
         //activeCamera.setShowCenter(true);
         
-        activeCamera.fitAll();
+        //activeCamera.fitAll();
+        
+        activeCamera.fit(new V3DVect3(0,0,0), new V3DVect3(5,5,5));
 
         canvas.addCamera(fullscreenBinding);
 
@@ -91,10 +92,15 @@ public class DebugGraphicEngine extends Engine {
 		final V3DBox box = new V3DBox(context);
 		Vect3 position = object.getPosition();
 		box.setPosition(position.toV3DVect3());
+		box.setRenderMode(RenderMode.SOLID);
+		
+		RotationMatrix rotation= object.getRotation();
+		box.setRotationMatrix(rotation.toFloatBuffer());
+		
 		box.setSize(object.getShape().getSize().toV3DVect3());
 		scene.add(new V3DColorElement(box, V3DColor.red));
 		
-		position.addListener(new ChangeListener() {
+		position.addListener(new Vect3ChangeListener() {
 			
 			@Override
 			public void valueChanged() {
@@ -102,11 +108,19 @@ public class DebugGraphicEngine extends Engine {
 			}
 		});
 		
+		rotation.addListener(new RotationMatrixChangeListener() {
+			
+			@Override
+			public void valueChanged() {
+				box.setRotationMatrix(object.getRotation().toFloatBuffer());
+			}
+		});
+		
 	}
 	
 	@Override
 	protected void frame() {
-		activeCamera.fitAll();
+		//activeCamera.fit(new V3DVect3(0,0,0), new V3DVect3(15,15,15));
 		canvas.frame();
 		
 	}

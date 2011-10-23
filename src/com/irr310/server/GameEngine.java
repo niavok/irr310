@@ -67,9 +67,9 @@ public class GameEngine extends Engine {
 				o.getPosition().set(event.getPosition());
 			}
 			
-			if(event.getRotation() != null) {
+			/*if(event.getRotation() != null) {
 				o.getRotation().set(event.getRotation());
-			}
+			}*/
 			
 			if(event.getLinearSpeed() != null) {
 				o.getLinearSpeed().set(event.getLinearSpeed());
