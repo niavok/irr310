@@ -134,7 +134,7 @@ public class PhysicEngine extends Engine {
 
 		
 		
-		CollisionShape colShape = new BoxShape(object.getShape().getSize().toVector3f());
+		CollisionShape colShape = new BoxShape(object.getShape().getSize().divide(2).toVector3f());
 		//CollisionShape colShape = new SphereShape(1f);
 		collisionShapes.add(colShape);
 

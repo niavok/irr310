@@ -1,5 +1,7 @@
 package com.irr310.server;
 
+import java.security.acl.Group;
+
 import org.lwjgl.opengl.Display;
 
 import com.irr310.server.RotationMatrix.RotationMatrixChangeListener;
@@ -22,6 +24,8 @@ import fr.def.iss.vd2.lib_v3d.camera.V3DSimple3DCamera;
 import fr.def.iss.vd2.lib_v3d.controller.V3DSimple3DCameraController;
 import fr.def.iss.vd2.lib_v3d.element.V3DBox;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
+import fr.def.iss.vd2.lib_v3d.element.V3DElement;
+import fr.def.iss.vd2.lib_v3d.element.V3DGroupElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DLine;
 import fr.def.iss.vd2.lib_v3d.element.V3DBox.RenderMode;
 
@@ -40,7 +44,7 @@ public class DebugGraphicEngine extends Engine {
 	
 	@Override
 	protected void init() {
-		canvas = new V3DCanvas(context, 1600, 1024);
+		canvas = new V3DCanvas(context, 1024, 768);
 
         activeCamera = new V3DSimple3DCamera(context);
         fullscreenBinding = V3DCameraBinding.buildFullscreenCamera(activeCamera);
@@ -54,19 +58,17 @@ public class DebugGraphicEngine extends Engine {
         scene = new V3DScene(context);
         activeCamera.setScene(scene);
         
-       // Add reference
-        V3DLine xAxis = new V3DLine(context);
-    	xAxis.setLocation(new V3DVect3(0,0,0), new V3DVect3(1,0,0));
-    	
-    	V3DLine yAxis = new V3DLine(context);
-    	yAxis.setLocation(new V3DVect3(0,0,0), new V3DVect3(0,1,0));
-    	
-    	V3DLine zAxis = new V3DLine(context);
-    	zAxis.setLocation(new V3DVect3(0,0,0), new V3DVect3(0,0,1));
+        // Add reference
+        V3DElement ref0 = generateReference();
+        ref0.setPosition(0, 0, 0);
+        V3DElement ref1 = generateReference();
+        ref1.setPosition(1, 0, 0);
+        V3DElement ref2 = generateReference();
+        ref2.setPosition(2, 0, 0);
         
-        scene.add(new V3DColorElement(xAxis, V3DColor.red));
-        scene.add(new V3DColorElement(yAxis, V3DColor.green));
-        scene.add(new V3DColorElement(zAxis, V3DColor.blue));
+        scene.add(ref0);
+        scene.add(ref1);
+        scene.add(ref2);
 
         
         //activeCamera.setShowCenter(true);
@@ -83,6 +85,24 @@ public class DebugGraphicEngine extends Engine {
 		
 	}
 	
+	private V3DElement generateReference() {
+	    V3DLine xAxis = new V3DLine(context);
+        xAxis.setLocation(new V3DVect3(0,0,0), new V3DVect3(1,0,0));
+        
+        V3DLine yAxis = new V3DLine(context);
+        yAxis.setLocation(new V3DVect3(0,0,0), new V3DVect3(0,1,0));
+        
+        V3DLine zAxis = new V3DLine(context);
+        zAxis.setLocation(new V3DVect3(0,0,0), new V3DVect3(0,0,1));
+        
+        V3DGroupElement group = new V3DGroupElement(context);
+        
+        group.add(new V3DColorElement(xAxis, V3DColor.red));
+        group.add(new V3DColorElement(yAxis, V3DColor.green));
+        group.add(new V3DColorElement(zAxis, V3DColor.blue));
+        return group;
+	}
+	
 	@Override
 	protected void end() {
 		Display.destroy();
@@ -95,24 +115,24 @@ public class DebugGraphicEngine extends Engine {
 		box.setRenderMode(RenderMode.SOLID);
 		
 		RotationMatrix rotation= object.getRotation();
-		box.setRotationMatrix(rotation.toFloatBuffer());
+		box.setTransformMatrix(rotation.toFloatBuffer());
 		
 		box.setSize(object.getShape().getSize().toV3DVect3());
 		scene.add(new V3DColorElement(box, V3DColor.red));
 		
-		position.addListener(new Vect3ChangeListener() {
+		/*position.addListener(new Vect3ChangeListener() {
 			
 			@Override
 			public void valueChanged() {
 				box.setPosition(object.getPosition().toV3DVect3());
 			}
-		});
+		});*/
 		
 		rotation.addListener(new RotationMatrixChangeListener() {
 			
 			@Override
 			public void valueChanged() {
-				box.setRotationMatrix(object.getRotation().toFloatBuffer());
+				box.setTransformMatrix(object.getRotation().toFloatBuffer());
 			}
 		});
 		

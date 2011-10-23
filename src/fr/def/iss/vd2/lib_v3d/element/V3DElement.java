@@ -298,8 +298,8 @@ abstract public class V3DElement extends V3DContextElement {
 		this.rotation.z = z;
 	}
 
-	public void setRotationMatrix(FloatBuffer rotationMatrix) {
-		this.rotationMatrix = rotationMatrix;
+	public void setTransformMatrix(FloatBuffer matrix) {
+		this.transformMatrix = matrix;
 	}
 	
 	public void setScale(float x, float y, float z) {
@@ -390,7 +390,7 @@ abstract public class V3DElement extends V3DContextElement {
 	private Boolean inited = false;
 	private V3DVect3 position = new V3DVect3(0, 0, 0);
 	private V3DVect3 rotation = new V3DVect3(0, 0, 0);
-	private FloatBuffer rotationMatrix = null;
+	private FloatBuffer transformMatrix = null;
 	private V3DVect3 scale = new V3DVect3(1, 1, 1);
 	private V3DAnimation animation = new V3DNullAnimation();
 	private boolean showBoundingBox = false;
@@ -420,14 +420,8 @@ abstract public class V3DElement extends V3DContextElement {
 		}
 
 		GL11.glPushMatrix();
-		if (rotationMatrix != null) {
-			if (position.x != 0 || position.y != 0 || position.z != 0) {
-				GL11.glTranslatef(position.x, position.y, position.z);
-			}
-			
-			GL11.glMultMatrix(rotationMatrix);
-			
-			
+		if (transformMatrix != null) {
+			GL11.glMultMatrix(transformMatrix);
 		} else {
 			if (rotation.x != 0) {
 				GL11.glRotatef(rotation.x, 1, 0, 0);
