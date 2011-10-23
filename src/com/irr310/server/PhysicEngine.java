@@ -43,6 +43,8 @@ public class PhysicEngine extends Engine {
 
 	
 	public PhysicEngine() {
+		framerate = new Duration(10000000);
+		
 		initPhysics();
 	}
 
@@ -115,7 +117,7 @@ public class PhysicEngine extends Engine {
 			RigidBody body = new RigidBody(rbInfo);
 
 			// add the body to the dynamics world
-			dynamicsWorld.addRigidBody(body);
+			//dynamicsWorld.addRigidBody(body);
 		}
 
 		
@@ -131,7 +133,7 @@ public class PhysicEngine extends Engine {
 
 		
 		
-		CollisionShape colShape = new BoxShape(object.getShape().getSize().toVector3f());
+		CollisionShape colShape = new BoxShape(object.getShape().getSize().divide(2).toVector3f());
 		//CollisionShape colShape = new SphereShape(1f);
 		collisionShapes.add(colShape);
 
@@ -152,10 +154,16 @@ public class PhysicEngine extends Engine {
 		//TODO rotation
 
 		// using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
-		MotionState myMotionState = new WorldObjectMotionState(object);
+		WorldObjectMotionState myMotionState = new WorldObjectMotionState(object);
 		RigidBodyConstructionInfo rbInfo = new RigidBodyConstructionInfo(mass, myMotionState, colShape, localInertia);
 		RigidBody body = new RigidBody(rbInfo);
+		
+		myMotionState.setBody(body);
+		
 		body.setActivationState(RigidBody.ISLAND_SLEEPING);
+		body.setDamping(0.001f, 0.001f);
+		body.setSleepingThresholds(0.001f, 0.001f);
+		//body.setDeactivationTime(deactivationTime)
 
 		dynamicsWorld.addRigidBody(body);
 		
@@ -168,12 +176,17 @@ public class PhysicEngine extends Engine {
 	public class WorldObjectMotionState extends MotionState {
 
 		private final WorldObject object;
+		private RigidBody body;
 
 		WorldObjectMotionState(WorldObject object) {
 			this.object = object;
 			
 		}
 		
+		public void setBody(RigidBody body) {
+			this.body = body;
+		}
+
 		@Override
 		public Transform getWorldTransform(Transform out) {
 			out.setIdentity();
@@ -185,6 +198,8 @@ public class PhysicEngine extends Engine {
 		public void setWorldTransform(Transform worldTrans) {
 			Vector3f origin = worldTrans.origin;
 			object.getPosition().set(origin.x, origin.y, origin.z);
+			Vector3f linearVelocity = body.getLinearVelocity(new Vector3f());
+			//System.out.println("x="+origin.x+" y="+origin.y+" z="+origin.z+" vx="+linearVelocity.x+" vy="+linearVelocity.y+" vz="+linearVelocity.z+ " desactivation_time="+body.getDeactivationTime()+""+body.getLinearSleepingThreshold());
 		}		
 	}
 	

@@ -6,7 +6,7 @@ public class Duration {
 	public final static Duration ONE_SECOND = new Duration(1000000000);
 
 	
-	public Duration(int nanotime) {
+	public Duration(long nanotime) {
 		this.nanotime = nanotime;
 	}
 
@@ -26,5 +26,9 @@ public class Duration {
 			// TODO Handle error
 		}
 		
+	}
+
+	public long getMiliseconds() {
+		return nanotime/1000000;
 	}
 }

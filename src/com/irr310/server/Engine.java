@@ -29,6 +29,7 @@ public abstract class Engine extends Thread{
 		isRunning = true;
 		isPaused = true;
 		numRunningEngines++;
+		Time lastTime = new Time();
 		
 		init();
 		
@@ -36,18 +37,20 @@ public abstract class Engine extends Thread{
 			processQueue();
 			if (!isPaused) {
 
+				lastTime = new Time();
 				frame();
 
-				// nextTime.add(framerate);
-				framerate.sleep();
-				// boost::thread::sleep(nextTime);
+				Time currentTime = new Time();
+				Time nextTime = lastTime.add(framerate);
+				if(nextTime.after(currentTime)) {
+					// Pause
+					currentTime.durationTo(nextTime).sleep();
+				} else {
+					System.err.println(this.getClass().getSimpleName()+" engine is late by "+nextTime.durationTo(currentTime).getDuration()+" ns ! No pause !");
+				}
 
 			} else {
 				Duration.ONE_SECOND.sleep();
-				/*
-				 * boost::xtime xt; boost::xtime_get(&xt,boost::TIME_UTC);
-				 * xt.sec += 1; boost::thread::sleep(xt);
-				 */
 			}
 		}
 		

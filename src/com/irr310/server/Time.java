@@ -7,7 +7,7 @@ public class Time {
 		nanotime = System.nanoTime(); 
 	}
 	
-	public Time(int nanotime) {
+	public Time(long nanotime) {
 		this.nanotime = nanotime;
 	}
 
@@ -17,5 +17,13 @@ public class Time {
 	
 	public boolean after(Time otherTime) {
 		return nanotime > otherTime.getTime();
+	}
+
+	public Time add(Duration duration) {
+		return new Time(nanotime + duration.getDuration());
+	}
+
+	public Duration durationTo(Time otherTime) {
+		return new Duration(otherTime.nanotime - nanotime);
 	}
 }

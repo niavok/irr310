@@ -52,8 +52,8 @@ public class Vect3 {
 	
 	public void set(Vect3 vect) {
 		this.x = vect.x;
-		this.y = vect.x;
-		this.z = vect.x;
+		this.y = vect.y;
+		this.z = vect.z;
 		fireChanged();
 		
 	}
@@ -79,6 +79,10 @@ public class Vect3 {
 	public interface ChangeListener {
 		
 		public void valueChanged();
+	}
+
+	public Vect3 divide(double i) {
+		return new Vect3(x/2.0, y/2.0, y/2.0);
 	}
 
 	

@@ -36,7 +36,7 @@ public class DebugGraphicEngine extends Engine {
 	private V3DScene scene;
 	
 	public DebugGraphicEngine() {
-	    framerate = new Duration(0);
+	    framerate = new Duration(16666666);
 	}
 	
 	@Override
@@ -106,6 +106,7 @@ public class DebugGraphicEngine extends Engine {
 	
 	@Override
 	protected void frame() {
+		activeCamera.fitAll();
 		canvas.frame();
 		
 	}
