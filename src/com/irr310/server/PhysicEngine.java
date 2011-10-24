@@ -162,7 +162,7 @@ public class PhysicEngine extends Engine {
 		myMotionState.setBody(body);
 		
 		body.setActivationState(RigidBody.ISLAND_SLEEPING);
-		body.setDamping(0.001f, 0.001f);
+		body.setDamping(0.001f, 0.1f);
 		body.setSleepingThresholds(0.001f, 0.001f);
 		//body.setDeactivationTime(deactivationTime)
 
@@ -171,7 +171,6 @@ public class PhysicEngine extends Engine {
 		body.setLinearVelocity(object.getLinearSpeed().toVector3f());
 		body.setAngularVelocity(object.getRotationSpeed().toVector3f());
 		body.setActivationState(RigidBody.ACTIVE_TAG);
-		
 	}
 	
 	public class WorldObjectMotionState extends MotionState {
