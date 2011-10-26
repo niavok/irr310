@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.irr310.server.event.AddShipEvent;
 import com.irr310.server.event.AddWorldObjectEvent;
 import com.irr310.server.event.InitEngineEvent;
 import com.irr310.server.event.PauseEngineEvent;
@@ -23,6 +24,7 @@ public class CommandManager {
 	private Pattern exprDelete;
 	private Pattern exprLoad;
 	private Pattern exprUse;
+	private Pattern exprAddShip;
 
 	public CommandManager() {
 		exprComment = Pattern.compile("^//.*");
@@ -32,6 +34,7 @@ public class CommandManager {
 		exprPause = Pattern.compile("^((pause)|(p))");
 
 		exprAdd = Pattern.compile("^((add)|(a)).*");
+		exprAddShip = Pattern.compile("^((add_ship)|(s)).*");
 		exprDelete = Pattern.compile("^((delete)|(d)).*");
 		exprLoad = Pattern.compile("^((load)|(l)).*");
 		exprUse = Pattern.compile("^((use)|(u)).*");
@@ -56,6 +59,8 @@ public class CommandManager {
 			GameServer.getInstance().sendToAll(new PauseEngineEvent());
 		} else if ((match = exprUse.matcher(command)).matches()) {
 			out = useScriptCommand(command);
+		} else if ((match = exprAddShip.matcher(command)).matches()) {
+			out = addShipCommand(command);
 		} else if ((match = exprAdd.matcher(command)).matches()) {
 			out = addCommand(command);
 		} else if ((match = exprDelete.matcher(command)).matches()) {
@@ -74,7 +79,7 @@ public class CommandManager {
 			 * }
 			 */
 		} else if ((match = exprLoad.matcher(command)).matches()) {
-			//TODO
+			// TODO
 			/*
 			 * 
 			 * 
@@ -138,7 +143,8 @@ public class CommandManager {
 					+ "'. Valid type are 'driver' or 'bind' ";
 		}
 
-		GameServer.getInstance().getGameEngine().processEvent(new UseScriptEvent(type, script));
+		GameServer.getInstance().getGameEngine()
+				.processEvent(new UseScriptEvent(type, script));
 		return "";
 	}
 
@@ -177,8 +183,7 @@ public class CommandManager {
 		} else if (typeStr.equals("linear_engine")) {
 			type = AddWorldObjectEvent.Type.LINEAR_ENGINE;
 		} else {
-			return "Invalid type '"
-					+ typeStr
+			return "Invalid type '" + typeStr
 					+ "'. Valid type are  'camera', 'linear_engine' ";
 		}
 
@@ -196,11 +201,12 @@ public class CommandManager {
 		Matcher linkMatch = exprAddLink.matcher(command);
 		if (linkMatch.matches()) {
 			String linkStr = linkMatch.group(4);
-			/*WorldObject linkedObject = game.getGame().getWorld().getObjectByName(linkStr);
-			if (linkedObject == null) {
-				return "No objects named '" + linkStr + "'";
-			}
-			event.setLinkedObject(linkedObject);*/
+			/*
+			 * WorldObject linkedObject =
+			 * game.getGame().getWorld().getObjectByName(linkStr); if
+			 * (linkedObject == null) { return "No objects named '" + linkStr +
+			 * "'"; } event.setLinkedObject(linkedObject);
+			 */
 		}
 
 		// Position
@@ -292,4 +298,112 @@ public class CommandManager {
 		return "Game : Add object > " + typeStr;
 
 	}
+
+	private String addShipCommand(String command) {
+
+		Pattern exprAddType = Pattern
+				.compile(".*((-t)|(--type)) ([A-Za-z_0-9]*).*");
+		Pattern exprAddPosition = Pattern
+				.compile(".*((-p)|(--position)) ([0-9\\.\\-]*) ([0-9\\.\\-]*) ([0-9\\.\\-]*).*");
+		Pattern exprAddRotation = Pattern
+				.compile(".*((-q)|(--rotation)) ([0-9\\.\\-]*) ([0-9\\.\\-]*) ([0-9\\.\\-]*).*");
+		Pattern exprAddLinearSpeed = Pattern
+				.compile(".*((-v)|(--velocity)) ([0-9\\.\\-]*) ([0-9\\.\\-]*) ([0-9\\.\\-]*).*");
+		Pattern exprAddRotationSpeed = Pattern
+				.compile(".*((-w)|(--angular-velocity)) ([0-9\\.\\-]*) ([0-9\\.\\-]*) ([0-9\\.\\-]*).*");
+
+		AddShipEvent event = new AddShipEvent();
+
+		// Type
+
+		AddShipEvent.Type type = AddShipEvent.Type.SIMPLE;
+
+		Matcher typeMatch = exprAddType.matcher(command);
+		if (typeMatch.matches()) {
+
+			String typeStr = typeMatch.group(4);
+
+			if (typeStr.equals("simple")) {
+				type = AddShipEvent.Type.SIMPLE;
+			}
+		}
+		event.setType(type);
+
+		// Position
+		Matcher positionMatch = exprAddPosition.matcher(command);
+		if (positionMatch.matches()) {
+			String xStr = positionMatch.group(4);
+			String yStr = positionMatch.group(5);
+			String zStr = positionMatch.group(6);
+
+			try {
+				Double x = Double.valueOf(xStr);
+				Double y = Double.valueOf(yStr);
+				Double z = Double.valueOf(zStr);
+				event.setPosition(new Vect3(x, y, z));
+			} catch (NumberFormatException e) {
+				return "Bad number format for position in '" + xStr + "', '"
+						+ yStr + "' or '" + zStr + "'";
+			}
+		}
+
+		// Rotation
+		Matcher rotationMatch = exprAddRotation.matcher(command);
+		if (rotationMatch.matches()) {
+			String xStr = rotationMatch.group(4);
+			String yStr = rotationMatch.group(5);
+			String zStr = rotationMatch.group(6);
+
+			try {
+				Double x = Double.valueOf(xStr);
+				Double y = Double.valueOf(yStr);
+				Double z = Double.valueOf(zStr);
+				event.setRotation(new Vect3(x, y, z));
+			} catch (NumberFormatException e) {
+				return "Bad number format for rotation in '" + xStr + "', '"
+						+ yStr + "' or '" + zStr + "'";
+			}
+		}
+
+		// Linear speed
+		Matcher linearSpeedMatch = exprAddLinearSpeed.matcher(command);
+		if (linearSpeedMatch.matches()) {
+			String xStr = linearSpeedMatch.group(4);
+			String yStr = linearSpeedMatch.group(5);
+			String zStr = linearSpeedMatch.group(6);
+
+			try {
+				Double x = Double.valueOf(xStr);
+				Double y = Double.valueOf(yStr);
+				Double z = Double.valueOf(zStr);
+				event.setLinearSpeed(new Vect3(x, y, z));
+			} catch (NumberFormatException e) {
+				return "Bad number format for linear speed in '" + xStr
+						+ "', '" + yStr + "' or '" + zStr + "'";
+			}
+		}
+
+		// Rotation speed
+		Matcher rotationSpeedMatch = exprAddRotationSpeed.matcher(command);
+		if (rotationSpeedMatch.matches()) {
+			String xStr = rotationSpeedMatch.group(4);
+			String yStr = rotationSpeedMatch.group(5);
+			String zStr = rotationSpeedMatch.group(6);
+
+			try {
+				Double x = Double.valueOf(xStr);
+				Double y = Double.valueOf(yStr);
+				Double z = Double.valueOf(zStr);
+				event.setRotationSpeed(new Vect3(x, y, z));
+			} catch (NumberFormatException e) {
+				return "Bad number format for rotation speed in '" + xStr
+						+ "', '" + yStr + "' or '" + zStr + "'";
+			}
+		}
+
+		GameServer.getInstance().sendToAll(event);
+		return "Game : Ship object > " + type.toString();
+
+	}
+
 }

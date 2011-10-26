@@ -1,27 +1,28 @@
 package com.irr310.server.game.world;
 
-import com.irr310.server.RotationMatrix;
+import com.irr310.server.TransformMatrix;
 import com.irr310.server.Vect3;
 import com.irr310.server.game.GameEntity;
 
 public abstract class WorldObject extends GameEntity {
 
-	private final Vect3 position;
+	//private final Vect3 position;
 	private Double mass;
 	private final Vect3 rotationSpeed;
 	private final Vect3 linearSpeed;
-	private final RotationMatrix rotation;
+	private final TransformMatrix transform;
 	private String name;
-	private Shape shape;
+	private Vect3 shape;
+	
 	
 	public WorldObject() {
-		position = Vect3.origin();
+		//position = Vect3.origin();
 		rotationSpeed = Vect3.origin();
 		linearSpeed = Vect3.origin();
-		rotation = new RotationMatrix();
+		transform = TransformMatrix.identity();
 		mass = 0.;
 		name = "unamed object";
-		shape = new Shape(this, Vect3.one());
+		shape = Vect3.one();
 	}
 
 
@@ -33,9 +34,9 @@ public abstract class WorldObject extends GameEntity {
 		return getName();
 	}
 
-	public Vect3 getPosition() {
-		return position;
-	}
+	/*public Vect3 getPosition() {
+		return transform.getTranslation();
+	}*/
 
 	public Double getMass() {
 		return mass;
@@ -49,15 +50,15 @@ public abstract class WorldObject extends GameEntity {
 		return linearSpeed;
 	}
 
-	public RotationMatrix getRotation() {
-		return rotation;
+	public TransformMatrix getTransform() {
+		return transform;
 	}
 	
-	public Shape getShape() {
+	public Vect3 getShape() {
 		return shape;
 	}
 
-	public void setShape(Shape shape) {
+	public void setShape(Vect3 shape) {
 		this.shape = shape;
 	}
 

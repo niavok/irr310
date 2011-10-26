@@ -8,97 +8,56 @@ import com.irr310.server.game.GameEntity;
 
 public class Ship extends GameEntity implements Container {
 
+	
+	private static final double MIN_LINK_DISTANCE = 0.1;
 	List<Link> links = new ArrayList<Link>();
 	List<Component> components = new ArrayList<Component>();
-	Component rootComponent;
-
-	public boolean setRootComposent(Component component) {
-		if (rootComponent != null) {
-			return false;
-		}
-		assign(component);
-		rootComponent = component;
-		component.setShipPosition(new Vect3(0, 0, 0));
-		component.setShipRotation(new Vect3(0, 0, 0));
-
-		return true;
-	}
 
 	@Override
 	public boolean assign(Component component) {
-		component.getContainer().remove(component);
+		if(component.getContainer() != null) {
+			component.getContainer().remove(component);
+		}
 		components.add(component);
 		component.setContainer(this);
 		return true;
 	}
 
-	public void link(Slot slot1, Slot slot2, double angle) {
+	public Link link(Slot slot1, Slot slot2) {
 		if (!components.contains(slot1.getComponent())) {
 			System.err.println("the first slot must be in the ship");
+			return null;
 		}
 
-		if (components.contains(slot2.getComponent())) {
-			System.err.println("the second slot must not be in the ship");
+		if (!components.contains(slot2.getComponent())) {
+			System.err.println("the second slot must be in the ship");
+			return null;
 		}
-		//assign(slot2.getComponent());
-
-		Shape shape1 = slot1.getComponent().getShape();
 		
 		
-		Vect3 slot1Position = slot1.getLocalPosition();
-		Vect3 slot1Normal = slot1.getLocalNormal();
-		
-		
-		// Find slot 1 position
-		switch (slot1.getFace()) {
-		case BACK:
-			double slot1X = slot1.getPositionX() - 0.5;
-			double slot1Y = shape1.getSize().y;
-			double slot1Z = slot1.getPositionY() - 0.5;
-
-			switch (slot2.getFace()) {
-			case BACK:
-
-				break;
-			case BOTTOM:
-				break;
-			case FRONT:
-				double slot2X = slot1.getPositionX() - 0.5;
-				double slot2Y = shape1.getSize().y;
-				double slot2Z = slot1.getPositionY() - 0.5;
-				
-				
-				
-				break;
-			case LEFT:
-				break;
-			case RIGHT:
-				break;
-			case TOP:
-				break;
-			}
-
-			break;
-		case BOTTOM:
-			break;
-		case FRONT:
-			break;
-		case LEFT:
-			break;
-		case RIGHT:
-			break;
-		case TOP:
-			break;
-
+		if(slot1.getPosition().plus(slot1.getComponent().getShipPosition()).distanceTo(slot2.getPosition().plus(slot2.getComponent().getShipPosition())) > MIN_LINK_DISTANCE) {
+			System.err.println("the distance between slot is "+slot1.getPosition().distanceTo(slot2.getPosition())+" but must be lesser than "+MIN_LINK_DISTANCE);
+			return null;
 		}
-
-		links.add(new Link(slot1, slot2));
+		
+		Link link = new Link(slot1, slot2);
+		links.add(link);
+		
+		return link;
 	}
 
 	@Override
 	public void remove(Component component) {
 		components.remove(component);
 		component.setContainer(null);
+	}
+
+	public Link link(Kernel kernel, Camera camera, Vect3 position) {
+		return link(kernel.getSlot(kernel.getShipPosition().diff(position)), camera.getSlot(camera.getShipPosition().diff(position)));
+	}
+
+	public List<Component> getComponents() {
+		return  components;
 	}
 
 }

@@ -17,7 +17,7 @@ public class Vect3 {
 	
 	private List<Vect3ChangeListener>  changeListeners;
 
-	public Vect3(Double x, Double y, Double z) {
+	public Vect3(double x, double y, double z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -25,10 +25,12 @@ public class Vect3 {
 	}
 
 	public Vect3(int x, int y, int z) {
-		this.x = (double) x;
-		this.y = (double) y;
-		this.z = (double) z;
-		changeListeners = new ArrayList<Vect3.Vect3ChangeListener>();
+		this((double) x, (double) y,(double) z);
+	}
+
+
+	public Vect3(float x, float y, float z) {
+		this((double) x, (double) y,(double) z);
 	}
 
 	public V3DVect3 toV3DVect3() {
@@ -85,6 +87,32 @@ public class Vect3 {
 		return new Vect3(x/2.0, y/2.0, y/2.0);
 	}
 
+	
+	public Double length() {
+		return Math.sqrt(x*x+y*y+z*z);
+	}
+	
+	public Double distanceTo(Vect3 vect) {
+		return this.diff(vect).length();
+	}
+	
+	public Vect3 diff(Vect3 vect) {
+		return new Vect3(vect.x - x, vect.y - y, vect.z - z);
+	}
+	
+	public Vect3 plus(Vect3 vect) {
+		return new Vect3(vect.x + x, vect.y + y, vect.z + z);
+	}
+
+	@Override
+	public String toString() {
+		return "[x=" + x + ", y=" + y + ", z=" + z + "]";
+	}
+
+	
+
+	
+	
 	
 
 }

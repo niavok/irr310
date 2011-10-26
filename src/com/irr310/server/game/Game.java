@@ -28,7 +28,7 @@ public class Game {
 		Player newPlayer = new Player();
 		Ship playerShip = ShipFactory.createSimpleShip();
 		
-		world.placeShipSafely(playerShip, new Vect3(10.0,20.0,30.0));
+		world.addShip(playerShip, new Vect3(10.0,20.0,30.0));
 		
 		return newPlayer;
 	}

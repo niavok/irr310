@@ -134,7 +134,7 @@ public class PhysicEngine extends Engine {
 
 		
 		
-		CollisionShape colShape = new BoxShape(object.getShape().getSize().divide(2).toVector3f());
+		CollisionShape colShape = new BoxShape(object.getShape().divide(2).toVector3f());
 		//CollisionShape colShape = new SphereShape(1f);
 		collisionShapes.add(colShape);
 
@@ -190,17 +190,17 @@ public class PhysicEngine extends Engine {
 		@Override
 		public Transform getWorldTransform(Transform out) {
 			out.setIdentity();
-			out.origin.set(object.getPosition().toVector3d());
+			out.origin.set(object.getTransform().getTranslation().toVector3d());
 			return out;
 		}
 
 		@Override
 		public void setWorldTransform(Transform worldTrans) {
 			Vector3f origin = worldTrans.origin;
-			object.getPosition().set(origin.x, origin.y, origin.z);
+			object.getTransform().setTranslation(origin.x, origin.y, origin.z);
 			//Vector3f linearVelocity = body.getLinearVelocity(new Vector3f());
-			worldTrans.getOpenGLMatrix(object.getRotation().getData());
-			object.getRotation().fireChanged();
+			worldTrans.getOpenGLMatrix(object.getTransform().getData());
+			object.getTransform().fireChanged();
 			Quat4f rotation = worldTrans.getRotation(new Quat4f());
 			
 			//System.out.println("w="+rotation.w+" x="+rotation.x+" y="+rotation.y+" z="+rotation.z);

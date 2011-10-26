@@ -4,7 +4,7 @@ import java.security.acl.Group;
 
 import org.lwjgl.opengl.Display;
 
-import com.irr310.server.RotationMatrix.RotationMatrixChangeListener;
+import com.irr310.server.TransformMatrix.TransformMatrixChangeListener;
 import com.irr310.server.Vect3.Vect3ChangeListener;
 import com.irr310.server.event.DefaultEngineEventVisitor;
 import com.irr310.server.event.EngineEvent;
@@ -48,6 +48,7 @@ public class DebugGraphicEngine extends Engine {
 
         activeCamera = new V3DSimple3DCamera(context);
         fullscreenBinding = V3DCameraBinding.buildFullscreenCamera(activeCamera);
+        activeCamera.setBackgroundColor(V3DColor.white);
 
 
         // Add zoom and pane camera controlleur
@@ -110,14 +111,12 @@ public class DebugGraphicEngine extends Engine {
 	
 	protected void addObject(final WorldObject object) {
 		final V3DBox box = new V3DBox(context);
-		Vect3 position = object.getPosition();
-		box.setPosition(position.toV3DVect3());
 		box.setRenderMode(RenderMode.SOLID);
 		
-		RotationMatrix rotation= object.getRotation();
-		box.setTransformMatrix(rotation.toFloatBuffer());
+		TransformMatrix transform= object.getTransform();
+		box.setTransformMatrix(transform.toFloatBuffer());
 		
-		box.setSize(object.getShape().getSize().toV3DVect3());
+		box.setSize(object.getShape().toV3DVect3());
 		scene.add(new V3DColorElement(box, V3DColor.red));
 		
 		/*position.addListener(new Vect3ChangeListener() {
@@ -128,11 +127,11 @@ public class DebugGraphicEngine extends Engine {
 			}
 		});*/
 		
-		rotation.addListener(new RotationMatrixChangeListener() {
+		transform.addListener(new TransformMatrixChangeListener() {
 			
 			@Override
 			public void valueChanged() {
-				box.setTransformMatrix(object.getRotation().toFloatBuffer());
+				box.setTransformMatrix(object.getTransform().toFloatBuffer());
 			}
 		});
 		

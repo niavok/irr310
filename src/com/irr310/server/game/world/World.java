@@ -17,16 +17,22 @@ public class World {
 		objects = new ArrayList<WorldObject>();
 	}
 	
-	public void placeShipSafely(Ship playerShip, Vect3 vect3) {
-		
-		
-		// TODO Auto-generated method stub
-		
-	}
-
 	public void addObject(WorldObject o) {
 		objects.add(o);
 		GameServer.getInstance().sendToAll(new WorldObjectAddedEvent(o));
+	}
+
+	public void addShip(Ship ship, Vect3 vect3) {
+		System.out.println("Add ship, "+ship.getComponents().size()+" components");
+		for(Component component: ship.getComponents()) {
+			System.out.println("Add component '"+component.getClass().getSimpleName()+"' in world at position "+component.getShipPosition().toString());
+			component.getTransform().setTranslation(vect3.plus(component.getShipPosition()));
+			addObject(component);
+			
+		}
+		
+		
+		
 	}
 
 }

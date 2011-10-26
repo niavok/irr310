@@ -20,6 +20,10 @@ part maker
 ==Movement==
 Linear motor
 Rotating motor
+Brake
+Détourneur de vitesse
+
+
 
 ==Sensor==
 Camera

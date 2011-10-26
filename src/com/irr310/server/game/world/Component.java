@@ -1,9 +1,9 @@
 package com.irr310.server.game.world;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.irr310.server.Vect3;
-import com.irr310.server.game.world.Shape.Face;
 
 
 public class Component extends WorldObject {
@@ -16,16 +16,31 @@ public class Component extends WorldObject {
 	private Container container;
 	private Vect3 shipPosition;
 	private Vect3 shipRotation;
+	List<Slot> slots;
 	
 	public Component() {
-		
+		slots = new ArrayList<Slot>();
 	}
 	
-	public Slot getSlot(Face face, int slotX, int slotY) {
-		
-		return getShape().getSlot(face, slotX, slotY);
+	public Slot getSlot(Vect3 position) {
+		Slot minSlot = null;
+		double minLenght = Double.MAX_VALUE;
+		for(Slot slot: slots) {
+			Double distanceTo = slot.getPosition().distanceTo(position);
+			if(minLenght > distanceTo) {
+				minLenght = distanceTo;
+				minSlot = slot;
+			}
+		}
+		return minSlot;
 	}
-
+	
+	public Slot addSlot(Vect3 position) {
+		Slot slot = new Slot(this, position);
+		slots.add(slot);
+		return slot;
+		
+	}
 	
 	
 	
@@ -58,6 +73,16 @@ public class Component extends WorldObject {
 	public void setShipRotation(Vect3 shipRotation) {
 		this.shipRotation = shipRotation;
 	}
+
+	public Vect3 getShipPosition() {
+		return shipPosition;
+	}
+
+	public Vect3 getShipRotation() {
+		return shipRotation;
+	}
+	
+	
 
 	
 	
