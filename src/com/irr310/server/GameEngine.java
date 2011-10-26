@@ -10,9 +10,9 @@ import com.irr310.server.event.QuitGameEvent;
 import com.irr310.server.event.StartEngineEvent;
 import com.irr310.server.game.ShipFactory;
 import com.irr310.server.game.world.Camera;
+import com.irr310.server.game.world.Component;
 import com.irr310.server.game.world.LinearEngine;
 import com.irr310.server.game.world.Ship;
-import com.irr310.server.game.world.WorldObject;
 
 public class GameEngine extends Engine {
 
@@ -53,8 +53,8 @@ public class GameEngine extends Engine {
 
 		@Override
 		public void visit(AddWorldObjectEvent event) {
-			WorldObject o = null;
-
+			Component o = null;
+			
 			switch (event.getType()) {
 			case CAMERA:
 				o = new Camera();
@@ -65,7 +65,7 @@ public class GameEngine extends Engine {
 			}
 
 			if(event.getPosition() != null) {
-				o.getTransform().setTranslation(event.getPosition());
+				o.changeTranslation(event.getPosition());
 			}
 			
 			/*if(event.getRotation() != null) {
@@ -73,23 +73,15 @@ public class GameEngine extends Engine {
 			}*/
 			
 			if(event.getLinearSpeed() != null) {
-				o.getLinearSpeed().set(event.getLinearSpeed());
+				o.changeLinearSpeed(event.getLinearSpeed());
 			}
 			
 			if(event.getRotationSpeed() != null) {
-				o.getRotationSpeed().set(event.getRotationSpeed());
+				o.changeRotationSpeed(event.getRotationSpeed());
 			}
 			
-			o.setShape(Vect3.one());
-
-			if (event.getMass() != null) {
-				o.setMass(event.getMass());
-			} else {
-			    o.setMass(1.0);
-			}
 
 			o.setName(event.getName());
-			o.init();
 			
 			GameServer.getInstance().getGame().getWorld().addObject(o);
 		}

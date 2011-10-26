@@ -52,12 +52,15 @@ public class Ship extends GameEntity implements Container {
 		component.setContainer(null);
 	}
 
-	public Link link(Kernel kernel, Camera camera, Vect3 position) {
-		return link(kernel.getSlot(kernel.getShipPosition().diff(position)), camera.getSlot(camera.getShipPosition().diff(position)));
+	public Link link(Component component1, Component component2, Vect3 position) {
+		return link(component1.getSlot(component1.getShipPosition().diff(position)), component2.getSlot(component2.getShipPosition().diff(position)));
 	}
 
 	public List<Component> getComponents() {
 		return  components;
 	}
 
+	public List<Link> getLinks() {
+		return  links;
+	}
 }

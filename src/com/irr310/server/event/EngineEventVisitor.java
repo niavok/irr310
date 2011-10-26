@@ -18,4 +18,6 @@ public interface EngineEventVisitor {
 	public abstract void visit(WorldObjectAddedEvent event);
 
 	public abstract void visit(AddShipEvent event);
+
+	public abstract void visit(WorldShipAddedEvent event);
 }

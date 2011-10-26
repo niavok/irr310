@@ -6,7 +6,7 @@ import java.util.List;
 import com.irr310.server.Vect3;
 
 
-public class Component extends WorldObject {
+public abstract class  Component extends WorldObject {
 
 	
 	private double durabilityMax;
@@ -35,8 +35,8 @@ public class Component extends WorldObject {
 		return minSlot;
 	}
 	
-	public Slot addSlot(Vect3 position) {
-		Slot slot = new Slot(this, position);
+	public Slot addSlot(Part part, Vect3 position) {
+		Slot slot = new Slot(this,part, position);
 		slots.add(slot);
 		return slot;
 		
@@ -81,6 +81,13 @@ public class Component extends WorldObject {
 	public Vect3 getShipRotation() {
 		return shipRotation;
 	}
+
+	public abstract void changeTranslation(Vect3 position);
+
+	public abstract void changeLinearSpeed(Vect3 linearSpeed) ;
+
+	public abstract void changeRotationSpeed(Vect3 rotationSpeed) ;
+
 	
 	
 

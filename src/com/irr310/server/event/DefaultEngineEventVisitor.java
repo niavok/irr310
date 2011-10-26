@@ -26,6 +26,12 @@ public abstract class DefaultEngineEventVisitor implements EngineEventVisitor {
 	@Override
 	public void visit(AddShipEvent event) {
 	}
+
+	@Override
+	public void visit(WorldShipAddedEvent event) {
+	}
+	
+	
 	
 	
 }

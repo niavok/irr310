@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Tank  extends Component implements Container  {
+public class Tank  extends SimpleComponent implements Container  {
 
 	List<WorldObject> contents = new ArrayList<WorldObject>();
 	

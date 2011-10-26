@@ -11,32 +11,25 @@ public class ShipFactory {
 		
 		// Kernel
 		Kernel kernel = new Kernel();
-		kernel.setMass(1d);
 		kernel.setShipPosition(new Vect3(0, 0, 0));
-		kernel.setShape(new Vect3(1, 1, 1));
-		kernel.addSlot(new Vect3(0.5, 0., 0.));
-		kernel.addSlot(new Vect3(-0.5, 0., 0.));
-		kernel.addSlot(new Vect3(0., 0.5, 0.));
-		kernel.addSlot(new Vect3(0., -0.5, 0.));
-		kernel.addSlot(new Vect3(0., 0., 0.5));
-		kernel.addSlot(new Vect3(0., 0., -0.5));
 		newShip.assign(kernel);
 		
 		// Camera
 		Camera camera = new Camera();
-		camera.setMass(1d);
 		camera.setShipPosition(new Vect3(0, -1, 0));
-		camera.setShape(new Vect3(1, 1, 1));
-		camera.addSlot(new Vect3(0.5, 0., 0.));
-		camera.addSlot(new Vect3(-0.5, 0., 0.));
-		camera.addSlot(new Vect3(0., 0.5, 0.));
-		camera.addSlot(new Vect3(0., -0.5, 0.));
-		camera.addSlot(new Vect3(0., 0., 0.5));
-		camera.addSlot(new Vect3(0., 0., -0.5));
 		newShip.assign(camera);
 		
 		
+		// Camera2
+		Camera camera2 = new Camera();
+		camera2.setShipPosition(new Vect3(-1, -1, 0));
+		newShip.assign(camera2);
+		
+		
+		
+		
 		newShip.link(kernel, camera, new Vect3(0.,-0.5,0.));
+		newShip.link(camera, camera2, new Vect3(-0.5,-1,0.));
 		
 		
 		/*Harvester harvester = new Harvester();

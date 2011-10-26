@@ -7,9 +7,11 @@ public class Slot extends GameEntity {
 
 	private final Vect3 position;
 	private final Component parentComponent;
+	private final Part part;
 
-	public Slot(Component parentComponent,  Vect3 position) {
+	public Slot(Component parentComponent, Part part,  Vect3 position) {
 		this.parentComponent = parentComponent;
+		this.part = part;
 		this.position = position;
 	}
 
@@ -21,4 +23,7 @@ public class Slot extends GameEntity {
 		return parentComponent;
 	}
 
+	public Part getPart() {
+		return part;
+	}
 }

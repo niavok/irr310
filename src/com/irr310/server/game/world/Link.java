@@ -10,4 +10,14 @@ public class Link {
 		this.slot2 = slot2;
 	}
 
+	public Slot getSlot1() {
+		return slot1;
+	}
+
+	public Slot getSlot2() {
+		return slot2;
+	}
+	
+	
+
 }
