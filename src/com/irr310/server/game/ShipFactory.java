@@ -2,6 +2,7 @@ package com.irr310.server.game;
 
 import com.irr310.server.Vect3;
 import com.irr310.server.game.world.Camera;
+import com.irr310.server.game.world.Factory;
 import com.irr310.server.game.world.Kernel;
 import com.irr310.server.game.world.Ship;
 
@@ -19,22 +20,19 @@ public class ShipFactory {
 		camera.setShipPosition(new Vect3(0, -1, 0));
 		newShip.assign(camera);
 		
-		
-		// Camera2
-		Camera camera2 = new Camera();
-		camera2.setShipPosition(new Vect3(-1, -1, 0));
-		newShip.assign(camera2);
-		
-		
+		// Factory
+		Factory factory = new Factory();
+		factory.setShipPosition(new Vect3(0, 0, -2));
+		newShip.assign(factory);
 		
 		
 		newShip.link(kernel, camera, new Vect3(0.,-0.5,0.));
-		newShip.link(camera, camera2, new Vect3(-0.5,-1,0.));
+		newShip.link(kernel, factory, new Vect3(0,0, -0.5));
 		
 		
 		/*Harvester harvester = new Harvester();
 		Tank tank = new Tank();
-		Factory factory = new Factory();
+		
 		Refinery rafinery = new Refinery();
 		Hangar hangar = new Hangar();
 		

@@ -59,7 +59,7 @@ public class PhysicEngine extends Engine {
 	
 	// this is the most important class
 	protected DynamicsWorld dynamicsWorld = null;
-	private Map<Part, RigidBody> bodyMap;
+	private Map<Part, RigidBody> partToBodyMap;
 
 	
 	public PhysicEngine() {
@@ -89,7 +89,7 @@ public class PhysicEngine extends Engine {
 	
 	public void initPhysics() {
 
-		bodyMap = new HashMap<Part, RigidBody>();
+		partToBodyMap = new HashMap<Part, RigidBody>();
 		
 		// collision configuration contains default setup for memory, collision setup
 		collisionConfiguration = new DefaultCollisionConfiguration();
@@ -112,24 +112,30 @@ public class PhysicEngine extends Engine {
 		dynamicsWorld.setGravity(new Vector3f(0f, 0f, 0f));
 
 		
-		/*dynamicsWorld.getPairCache().setOverlapFilterCallback(new OverlapFilterCallback() {
+		dynamicsWorld.getPairCache().setOverlapFilterCallback(new OverlapFilterCallback() {
 			
 			@Override
 			public boolean needBroadphaseCollision(BroadphaseProxy proxy0,
 					BroadphaseProxy proxy1) {
 				
-				System.out.println("proxy0 "+proxy0.clientObject.getClass().getSimpleName());
-				System.out.println("proxy1 "+proxy1.clientObject.getClass().getSimpleName());
+				
+				UserData data0 = (UserData)((RigidBody) proxy0.clientObject).getUserPointer();
+				UserData data1 = (UserData)((RigidBody) proxy0.clientObject).getUserPointer();
+				
+				if(data0 != null && data1 != null && data0.ship == data1.ship) {
+					return false;
+				}
 				
 				return true;
 			}
-		});*/
+		});
 
 		
 
 	}
 	
 	
+		
 	
 	protected void addObject(WorldObject object) {
 		for(final Part part: object.getParts()) {
@@ -143,7 +149,11 @@ public class PhysicEngine extends Engine {
 		
 		for(Component component:  ship.getComponents()) {
 			for(final Part part: component.getParts()) {
-				bodyMap.put(part, addPart(part));
+				RigidBody rigidBody = addPart(part);
+				partToBodyMap.put(part, rigidBody);
+				UserData userData = new UserData();
+				userData.ship = ship;
+				rigidBody.setUserPointer(userData);
 			}
 		}
 		
@@ -155,8 +165,8 @@ public class PhysicEngine extends Engine {
 	protected  void addLink(Link link) {
 		Slot slot1 = link.getSlot1();
 		Slot slot2 = link.getSlot2();
-		RigidBody body1 = bodyMap.get(slot1.getPart());
-		RigidBody body2 = bodyMap.get(link.getSlot2().getPart());
+		RigidBody body1 = partToBodyMap.get(slot1.getPart());
+		RigidBody body2 = partToBodyMap.get(link.getSlot2().getPart());
 		
 		
 		{
@@ -231,6 +241,12 @@ public class PhysicEngine extends Engine {
 		body.setActivationState(RigidBody.ACTIVE_TAG);
 		
 		return body;
+		
+	}
+	
+	public class UserData {
+		
+		public Ship ship = null;
 		
 	}
 	
