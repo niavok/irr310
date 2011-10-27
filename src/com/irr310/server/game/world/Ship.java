@@ -36,7 +36,7 @@ public class Ship extends GameEntity implements Container {
 		
 		
 		if(slot1.getPosition().plus(slot1.getComponent().getShipPosition()).distanceTo(slot2.getPosition().plus(slot2.getComponent().getShipPosition())) > MIN_LINK_DISTANCE) {
-			System.err.println("the distance between slot is "+slot1.getPosition().distanceTo(slot2.getPosition())+" but must be lesser than "+MIN_LINK_DISTANCE);
+			System.err.println("the distance between slot is "+slot1.getPosition().plus(slot1.getComponent().getShipPosition()).distanceTo(slot2.getPosition().plus(slot2.getComponent().getShipPosition()))+" but must be lesser than "+MIN_LINK_DISTANCE);
 			return null;
 		}
 		

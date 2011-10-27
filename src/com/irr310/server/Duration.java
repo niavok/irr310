@@ -28,7 +28,11 @@ public class Duration {
 		
 	}
 
-	public long getMiliseconds() {
+	public long getMilliseconds() {
 		return nanotime/1000000;
+	}
+
+	public float getSeconds() {
+		return (float) ((double) nanotime / (double) 1000000000);
 	}
 }

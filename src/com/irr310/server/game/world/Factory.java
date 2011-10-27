@@ -7,7 +7,7 @@ public class Factory extends SimpleComponent {
 
 	public Factory() {
 		
-		uniquePart.setMass(1d);
+		uniquePart.setMass(48d);
 		uniquePart.setShape(new Vect3(4, 4, 3));
 
 		addSlot(uniquePart, new Vect3(0, 0., 1.5));

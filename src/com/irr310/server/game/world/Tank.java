@@ -3,6 +3,8 @@ package com.irr310.server.game.world;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.irr310.server.Vect3;
+
 
 public class Tank  extends SimpleComponent implements Container  {
 
@@ -12,6 +14,16 @@ public class Tank  extends SimpleComponent implements Container  {
 	double capacityAvailable;
 	
 	public Tank( ) {
+		uniquePart.setMass(20d);
+		uniquePart.setShape(new Vect3(4, 7, 4));
+
+		addSlot(uniquePart, new Vect3(0, 0., 2));
+		addSlot(uniquePart, new Vect3(0, 0., -2));
+		addSlot(uniquePart, new Vect3(0, 3.5, 0));
+		addSlot(uniquePart, new Vect3(0, -3.5, 0));
+		addSlot(uniquePart, new Vect3(2, 0., 0));
+		addSlot(uniquePart, new Vect3(-2, 0., 0));
+		
 	}
 
 	@Override

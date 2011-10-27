@@ -3,8 +3,10 @@ package com.irr310.server.game;
 import com.irr310.server.Vect3;
 import com.irr310.server.game.world.Camera;
 import com.irr310.server.game.world.Factory;
+import com.irr310.server.game.world.Harvester;
 import com.irr310.server.game.world.Kernel;
 import com.irr310.server.game.world.Ship;
+import com.irr310.server.game.world.Tank;
 
 public class ShipFactory {
 	public static Ship createSimpleShip() {
@@ -26,13 +28,24 @@ public class ShipFactory {
 		newShip.assign(factory);
 		
 		
+		// Tank
+		Tank tank = new Tank();
+		tank.setShipPosition(new Vect3(0, 5.5, -2));
+		newShip.assign(tank);
+		
+		// Harvester
+		Harvester harvester = new Harvester();
+		harvester.setShipPosition(new Vect3(0, 11, -2));
+		newShip.assign(harvester);
+		
 		newShip.link(kernel, camera, new Vect3(0.,-0.5,0.));
 		newShip.link(kernel, factory, new Vect3(0,0, -0.5));
+		newShip.link(factory, tank, new Vect3(0,2, -2));
+		newShip.link(tank, harvester, new Vect3(0,9, -2));
 		
 		
-		/*Harvester harvester = new Harvester();
-		Tank tank = new Tank();
-		
+
+		/*
 		Refinery rafinery = new Refinery();
 		Hangar hangar = new Hangar();
 		
