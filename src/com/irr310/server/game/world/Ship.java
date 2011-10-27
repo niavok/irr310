@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.irr310.server.Vect3;
 import com.irr310.server.game.GameEntity;
+import com.irr310.server.game.driver.Controller;
 
 public class Ship extends GameEntity implements Container {
 
@@ -12,6 +13,7 @@ public class Ship extends GameEntity implements Container {
 	private static final double MIN_LINK_DISTANCE = 0.1;
 	List<Link> links = new ArrayList<Link>();
 	List<Component> components = new ArrayList<Component>();
+	Kernel kernel;
 
 	@Override
 	public boolean assign(Component component) {
@@ -65,5 +67,13 @@ public class Ship extends GameEntity implements Container {
 
 	public List<Link> getLinks() {
 		return  links;
+	}
+
+	public void setKernel(Kernel kernel) {
+		this.kernel = kernel;
+	}
+	
+	public Controller getController() {
+		return kernel;
 	}
 }

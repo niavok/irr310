@@ -1,7 +1,10 @@
-package com.irr310.server;
+package com.irr310.server.ui;
 
 import org.lwjgl.opengl.Display;
 
+import com.irr310.server.Duration;
+import com.irr310.server.Engine;
+import com.irr310.server.TransformMatrix;
 import com.irr310.server.TransformMatrix.TransformMatrixChangeListener;
 import com.irr310.server.event.DefaultEngineEventVisitor;
 import com.irr310.server.event.EngineEvent;

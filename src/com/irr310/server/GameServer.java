@@ -11,6 +11,7 @@ import com.irr310.server.event.QuitGameEvent;
 import com.irr310.server.event.StartEngineEvent;
 import com.irr310.server.game.Game;
 import com.irr310.server.game.world.World;
+import com.irr310.server.ui.DebugGraphicEngine;
 
 
 public class GameServer {
@@ -67,6 +68,8 @@ public class GameServer {
 		AddShipEvent addShipEvent = new AddShipEvent();
 		addShipEvent.setType(AddShipEvent.Type.SIMPLE);
 		sendToAll(addShipEvent);
+		
+		
 		
 		
 		System.out.println("Irr310 - v0.1a");

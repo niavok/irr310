@@ -98,6 +98,8 @@ public class GameEngine extends Engine {
 			}
 
 			
+			//ship.getKernel().exec("leftProperller.setThrustTarget(1)");
+			
 			GameServer.getInstance().getGame().getWorld().addShip(ship, new Vect3(0, 0, 0));
 		}
 		
