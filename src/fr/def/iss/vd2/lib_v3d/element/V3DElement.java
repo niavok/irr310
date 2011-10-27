@@ -20,6 +20,8 @@ import java.nio.FloatBuffer;
 
 import org.lwjgl.opengl.GL11;
 
+import com.irr310.server.Vect3;
+
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.V3DContextElement;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
@@ -300,6 +302,10 @@ abstract public class V3DElement extends V3DContextElement {
 
 	public void setTransformMatrix(FloatBuffer matrix) {
 		this.transformMatrix = matrix;
+		
+		this.position.x = matrix.get(12);
+		this.position.y = matrix.get(13);
+		this.position.z = matrix.get(14);
 	}
 	
 	public void setScale(float x, float y, float z) {
