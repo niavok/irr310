@@ -3,6 +3,7 @@ package com.irr310.server.game.world;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.irr310.server.TransformMatrix;
 import com.irr310.server.Vect3;
 
 
@@ -20,6 +21,8 @@ public abstract class  Component extends WorldObject {
 	
 	public Component() {
 		slots = new ArrayList<Slot>();
+		shipRotation = Vect3.origin();
+		shipPosition = Vect3.origin();
 	}
 	
 	public Slot getSlot(Vect3 position) {
@@ -87,6 +90,34 @@ public abstract class  Component extends WorldObject {
 	public abstract void changeLinearSpeed(Vect3 linearSpeed) ;
 
 	public abstract void changeRotationSpeed(Vect3 rotationSpeed) ;
+
+	public Vect3 getLocalShipPosition(Vect3 absolutePosition) {
+
+		TransformMatrix tmp = TransformMatrix.identity();
+		
+		tmp.setTranslation(shipPosition.negative());
+		tmp.setTranslation(absolutePosition);
+		
+		
+		tmp.rotateX(Math.toRadians(shipRotation.x));
+		tmp.rotateY(Math.toRadians(shipRotation.y));
+		tmp.rotateZ(Math.toRadians(shipRotation.z));
+		
+		return tmp.getTranslation();
+	}
+
+	public Vect3 getAbsoluteShipPosition(Vect3 position) {
+		TransformMatrix tmp = TransformMatrix.identity();
+		
+		tmp.rotateX(Math.toRadians(shipRotation.x));
+		tmp.rotateY(Math.toRadians(shipRotation.y));
+		tmp.rotateZ(Math.toRadians(shipRotation.z));
+		
+		tmp.setTranslation(shipPosition);
+		tmp.setTranslation(position);
+		
+		return tmp.getTranslation();
+	}
 
 	
 	

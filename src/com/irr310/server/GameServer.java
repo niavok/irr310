@@ -5,8 +5,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
+import com.irr310.server.event.AddShipEvent;
 import com.irr310.server.event.EngineEvent;
 import com.irr310.server.event.QuitGameEvent;
+import com.irr310.server.event.StartEngineEvent;
 import com.irr310.server.game.Game;
 import com.irr310.server.game.world.World;
 
@@ -59,6 +61,12 @@ public class GameServer {
 		while ((Engine.getRunningEngineCount()) < 4) {
 			new Duration(100000000).sleep();
 		}
+		
+		
+		sendToAll(new StartEngineEvent());
+		AddShipEvent addShipEvent = new AddShipEvent();
+		addShipEvent.setType(AddShipEvent.Type.SIMPLE);
+		sendToAll(addShipEvent);
 		
 		
 		System.out.println("Irr310 - v0.1a");

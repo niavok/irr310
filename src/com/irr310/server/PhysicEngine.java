@@ -150,6 +150,8 @@ public class PhysicEngine extends Engine {
 		for (Component component : ship.getComponents()) {
 			for (final Part part : component.getParts()) {
 
+				part.getTransform().rotate(component.getShipRotation());
+
 				part.getTransform().setTranslation(
 						position.plus(component.getShipPosition()));
 
@@ -170,41 +172,41 @@ public class PhysicEngine extends Engine {
 		Slot slot1 = link.getSlot1();
 		Slot slot2 = link.getSlot2();
 		RigidBody body1 = partToBodyMap.get(slot1.getPart());
-		RigidBody body2 = partToBodyMap.get(link.getSlot2().getPart());
+		RigidBody body2 = partToBodyMap.get(slot2.getPart());
 
-		{
-			Transform localA = new Transform(), localB = new Transform();
-			localA.setIdentity();
-			localB.setIdentity();
-			MatrixUtil.setEulerZYX(localA.basis, 0, PI_2, 0);
-			localA.origin.set(slot1.getPosition().x.floatValue(),
-					slot1.getPosition().y.floatValue(),
-					slot1.getPosition().z.floatValue());
-			MatrixUtil.setEulerZYX(localB.basis, 0, PI_2, 0);
-			localB.origin.set(slot2.getPosition().x.floatValue(),
-					slot2.getPosition().y.floatValue(),
-					slot2.getPosition().z.floatValue());
-			HingeConstraint constraint = new HingeConstraint(body1, body2,
-					localA, localB);
-			dynamicsWorld.addConstraint(constraint, true);
-		}
+		Vect3 shipRotation1 = slot1.getComponent().getShipRotation();
+		Vect3 shipRotation2 = slot2.getComponent().getShipRotation();
 
-		{
-			Transform localA = new Transform(), localB = new Transform();
-			localA.setIdentity();
-			localB.setIdentity();
-			MatrixUtil.setEulerZYX(localA.basis, PI_2, 0, 0);
-			localA.origin.set(slot1.getPosition().x.floatValue(),
-					slot1.getPosition().y.floatValue(),
-					slot1.getPosition().z.floatValue());
-			MatrixUtil.setEulerZYX(localB.basis, PI_2, 0, 0);
-			localB.origin.set(slot2.getPosition().x.floatValue(),
-					slot2.getPosition().y.floatValue(),
-					slot2.getPosition().z.floatValue());
-			HingeConstraint constraint = new HingeConstraint(body1, body2,
-					localA, localB);
-			dynamicsWorld.addConstraint(constraint, true);
-		}
+		Transform localA = new Transform(), localB = new Transform();
+		localA.setIdentity();
+		localA.origin.set(slot1.getPosition().x.floatValue(),
+				slot1.getPosition().y.floatValue(),
+				slot1.getPosition().z.floatValue());
+
+		MatrixUtil.setEulerZYX(localA.basis,
+				(float) -(Math.toRadians(shipRotation1.x)),
+				(float) -Math.toRadians(shipRotation1.y),
+				(float) -Math.toRadians(shipRotation1.z));
+
+		localB.setIdentity();
+		localB.origin.set(slot2.getPosition().x.floatValue(),
+				slot2.getPosition().y.floatValue(),
+				slot2.getPosition().z.floatValue());
+
+		MatrixUtil.setEulerZYX(localB.basis,
+				(float) -(Math.toRadians(shipRotation2.x)),
+				(float) -Math.toRadians(shipRotation2.y),
+				(float) -Math.toRadians(shipRotation2.z));
+
+		Generic6DofConstraint constraint = new Generic6DofConstraint(body1,
+				body2, localA, localB, false);
+		constraint.setLinearLowerLimit(new Vector3f());
+		constraint.setLinearUpperLimit(new Vector3f());
+
+		constraint.setAngularLowerLimit(new Vector3f(0, 0, 0));
+		constraint.setAngularUpperLimit(new Vector3f(0, 0, 0));
+
+		dynamicsWorld.addConstraint(constraint, true);
 
 	}
 
@@ -281,7 +283,8 @@ public class PhysicEngine extends Engine {
 		@Override
 		public Transform getWorldTransform(Transform out) {
 			out.setIdentity();
-			out.origin.set(part.getTransform().getTranslation().toVector3d());
+			// out.origin.set(part.getTransform().getTranslation().toVector3d());
+			out.setFromOpenGLMatrix(part.getTransform().getData());
 			return out;
 		}
 

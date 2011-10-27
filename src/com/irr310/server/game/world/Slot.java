@@ -26,4 +26,8 @@ public class Slot extends GameEntity {
 	public Part getPart() {
 		return part;
 	}
+
+	public Vect3 getAbsoluteShipPosition() {
+		return parentComponent.getAbsoluteShipPosition(position);
+	}
 }

@@ -109,6 +109,10 @@ public class Vect3 {
 		return "[x=" + x + ", y=" + y + ", z=" + z + "]";
 	}
 
+	public Vect3 negative() {
+		return new Vect3(- x, - y, - z);
+	}
+
 	
 
 	

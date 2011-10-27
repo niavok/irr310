@@ -20,7 +20,6 @@ public class TransformMatrix {
 
 	public TransformMatrix() {
 		transform = new float[16];
-		
 
 		changeListeners = new ArrayList<TransformMatrix.TransformMatrixChangeListener>();
 	}
@@ -50,7 +49,7 @@ public class TransformMatrix {
 	}
 
 	public void fireChanged() {
-		
+
 		for (TransformMatrixChangeListener listener : changeListeners) {
 			listener.valueChanged();
 		}
@@ -66,7 +65,8 @@ public class TransformMatrix {
 	}
 
 	public void setTranslation(Vect3 vect) {
-		setTranslation(vect.x.floatValue(), vect.y.floatValue(), vect.z.floatValue());
+		setTranslation(vect.x.floatValue(), vect.y.floatValue(),
+				vect.z.floatValue());
 	}
 
 	public void setTranslation(float x, float y, float z) {
@@ -108,8 +108,59 @@ public class TransformMatrix {
 		mat.set(1, 1, 1);
 		mat.set(2, 2, 1);
 		mat.set(3, 3, 1);
-		
+
 		return mat;
+	}
+
+	public void rotateX(double theta) { // rotate transformation about the X
+										// axis
+
+		TransformMatrix tmp = TransformMatrix.identity();
+		double c = Math.cos(theta);
+		double s = Math.sin(theta);
+
+		tmp.set(1, 1, (float) c);
+		tmp.set(1, 2, (float) -s);
+		tmp.set(2, 1, (float) s);
+		tmp.set(2, 2, (float) c);
+
+		preMultiply(tmp);
+	}
+
+	public void rotateY(double theta) { // rotate transformation about the Y
+										// axis
+
+		TransformMatrix tmp = TransformMatrix.identity();
+		double c = Math.cos(theta);
+		double s = Math.sin(theta);
+
+		tmp.set(2, 2, (float) c);
+		tmp.set(2, 0, (float) -s);
+		tmp.set(0, 2, (float) s);
+		tmp.set(0, 0, (float) c);
+
+		preMultiply(tmp);
+	}
+
+	public void rotateZ(double theta) { // rotate transformation about the Z
+										// axis
+
+		TransformMatrix tmp = TransformMatrix.identity();
+		double c = Math.cos(theta);
+		double s = Math.sin(theta);
+
+		tmp.set(0, 0, (float) c);
+		tmp.set(0, 1, (float) -s);
+		tmp.set(1, 0, (float) s);
+		tmp.set(1, 1, (float) c);
+
+		preMultiply(tmp);
+	}
+
+	public void rotate(Vect3 rotation) {
+		rotateX(Math.toRadians(rotation.x));
+		rotateY(Math.toRadians(rotation.y));
+		rotateZ(Math.toRadians(rotation.z));
 	}
 
 }

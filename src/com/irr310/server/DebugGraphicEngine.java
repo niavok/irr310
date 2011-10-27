@@ -153,7 +153,7 @@ public class DebugGraphicEngine extends Engine {
 
 	@Override
 	protected void frame() {
-		// activeCamera.fit(new V3DVect3(0,0,0), new V3DVect3(15,15,15));
+		 activeCamera.fitAll();
 		canvas.frame();
 
 	}
