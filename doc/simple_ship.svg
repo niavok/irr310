@@ -24,18 +24,18 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.959798"
-     inkscape:cx="211.13182"
-     inkscape:cy="470.12177"
+     inkscape:zoom="7.919596"
+     inkscape:cx="217.78362"
+     inkscape:cy="465.08198"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:snap-global="false"
-     inkscape:window-width="839"
+     inkscape:window-width="1680"
      inkscape:window-height="1022"
-     inkscape:window-x="2760"
+     inkscape:window-x="1919"
      inkscape:window-y="0"
-     inkscape:window-maximized="0">
+     inkscape:window-maximized="1">
     <inkscape:grid
        type="xygrid"
        id="grid2985" />
@@ -48,7 +48,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -93,6 +93,22 @@
          x="202.24515"
          y="533.26959">Harvester</tspan></text>
     <rect
+       ry="0"
+       y="572.45471"
+       x="220.50763"
+       height="29.718033"
+       width="29.642853"
+       id="rect3050"
+       style="fill:#0000ff;fill-opacity:1;stroke:#000000;stroke-opacity:1" />
+    <rect
+       style="fill:#0000ff;fill-opacity:1;stroke:#000000;stroke-opacity:1"
+       id="rect3052"
+       width="29.642853"
+       height="29.718033"
+       x="220.50763"
+       y="602.38049"
+       ry="0" />
+    <rect
        ry="6.0714288"
        y="542.36218"
        x="200"
@@ -122,14 +138,14 @@
     <text
        xml:space="preserve"
        style="font-size:4px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Sans"
-       x="202.41052"
-       y="589.76605"
+       x="202.78934"
+       y="594.31177"
        id="text3769"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan3771"
-         x="202.41052"
-         y="589.76605">Factory</tspan></text>
+         x="202.78934"
+         y="594.31177">Factory</tspan></text>
     <rect
        style="fill:#803300;fill-opacity:1;stroke:#000000;stroke-opacity:1"
        id="rect3773"
@@ -179,10 +195,10 @@
     <rect
        style="fill:#0000ff;fill-opacity:1;stroke:#000000;stroke-opacity:1"
        id="rect3785"
-       width="29.642857"
-       height="4.4643121"
+       width="29.642853"
+       height="29.718033"
        x="170"
-       y="582.57654"
+       y="572.45471"
        ry="0" />
     <rect
        rx="0"
@@ -195,14 +211,6 @@
        ry="0" />
     <rect
        ry="0"
-       y="587.57654"
-       x="170"
-       height="4.4643121"
-       width="29.642857"
-       id="rect3789"
-       style="fill:#0000ff;fill-opacity:1;stroke:#000000;stroke-opacity:1" />
-    <rect
-       ry="0"
        y="591.90863"
        x="250.50761"
        height="98.126175"
@@ -210,14 +218,6 @@
        id="rect3898"
        style="fill:none;stroke:#e70000;stroke-width:0.5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:1.5, 0.5;stroke-dashoffset:0"
        rx="0" />
-    <rect
-       style="fill:#0000ff;fill-opacity:1;stroke:#000000;stroke-opacity:1"
-       id="rect3791"
-       width="29.642857"
-       height="4.4643121"
-       x="220.53572"
-       y="587.75507"
-       ry="0" />
     <rect
        rx="0"
        style="fill:none;stroke:#e70000;stroke-width:0.5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:1.5, 0.5;stroke-dashoffset:0"
@@ -227,14 +227,6 @@
        x="250.50761"
        y="484.83246"
        ry="0" />
-    <rect
-       ry="0"
-       y="582.93365"
-       x="220.53572"
-       height="4.4643121"
-       width="29.642857"
-       id="rect3793"
-       style="fill:#0000ff;fill-opacity:1;stroke:#000000;stroke-opacity:1" />
     <rect
        ry="0"
        y="582.57654"
@@ -256,7 +248,7 @@
        id="text3803"
        y="596.2193"
        x="172.32143"
-       style="font-size:4px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       style="font-size:4px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Sans"
        xml:space="preserve"><tspan
          y="596.2193"
          x="172.32143"
@@ -272,8 +264,8 @@
        ry="0" />
     <rect
        ry="0"
-       y="582.21936"
-       x="179.51532"
+       y="584.87103"
+       x="182.29324"
        height="4.8214545"
        width="5.3571448"
        id="rect3809"
@@ -283,8 +275,8 @@
        id="rect3811"
        width="5.3571448"
        height="4.8214545"
-       x="234.34827"
-       y="582.21936"
+       x="232.83304"
+       y="584.61847"
        ry="0" />
     <rect
        style="fill:#ff8080;fill-opacity:1;stroke:#000000;stroke-opacity:1"
@@ -408,13 +400,13 @@
        id="rect3865"
        width="5.3571448"
        height="4.8214545"
-       x="204.39034"
-       y="571.8653"
+       x="207.54706"
+       y="579.1889"
        ry="0" />
     <rect
        ry="0"
-       y="572.11786"
-       x="210.07245"
+       y="584.99731"
+       x="207.6102"
        height="4.8214545"
        width="5.3571448"
        id="rect3867"
@@ -422,24 +414,32 @@
     <text
        xml:space="preserve"
        style="font-size:4px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="221.85596"
-       y="574.85388"
+       x="222.23477"
+       y="577.88434"
        id="text3869"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan3871"
-         x="221.85596"
-         y="574.85388">Kernel</tspan></text>
+         x="222.23477"
+         y="577.88434">Kernel</tspan></text>
     <text
        sodipodi:linespacing="125%"
        id="text3873"
-       y="574.85388"
-       x="184.48032"
+       y="575.61151"
+       x="181.19733"
        style="font-size:4px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
        xml:space="preserve"><tspan
-         y="574.85388"
-         x="184.48032"
+         y="575.61151"
+         x="181.19733"
          id="tspan3875"
          sodipodi:role="line">Camera</tspan></text>
+    <rect
+       ry="0"
+       y="602.38049"
+       x="170"
+       height="29.718033"
+       width="29.642853"
+       id="rect3048"
+       style="fill:#0000ff;fill-opacity:1;stroke:#000000;stroke-opacity:1" />
   </g>
 </svg>
