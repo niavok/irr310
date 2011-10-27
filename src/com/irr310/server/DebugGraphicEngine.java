@@ -111,11 +111,11 @@ public class DebugGraphicEngine extends Engine {
 
 	protected void addShip(final Ship ship) {
 		for(Component component : ship.getComponents()) {
-			addObject(component);
+			addObject(component, true);
 		}
 	}
 	
-	protected void addObject(final WorldObject object) {
+	protected void addObject(final WorldObject object, boolean inShip) {
 		for(final Part part: object.getParts()) {
 		
 
@@ -126,7 +126,11 @@ public class DebugGraphicEngine extends Engine {
 			box.setTransformMatrix(transform.toFloatBuffer());
 
 			box.setSize(part.getShape().toV3DVect3());
-			scene.add(new V3DColorElement(box, V3DColor.red));
+			if(inShip) {
+				scene.add(new V3DColorElement(box, V3DColor.blue));
+			} else {
+				scene.add(new V3DColorElement(box, V3DColor.red));
+			}
 
 			/*
 			 * position.addListener(new Vect3ChangeListener() {
@@ -179,7 +183,7 @@ public class DebugGraphicEngine extends Engine {
 
 		@Override
 		public void visit(WorldObjectAddedEvent event) {
-			addObject(event.getObject());
+			addObject(event.getObject(), false);
 		}
 		
 		@Override
