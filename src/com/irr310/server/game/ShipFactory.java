@@ -1,6 +1,7 @@
 package com.irr310.server.game;
 
 import com.irr310.server.Vect3;
+import com.irr310.server.game.world.BigPropeller;
 import com.irr310.server.game.world.Camera;
 import com.irr310.server.game.world.Factory;
 import com.irr310.server.game.world.Hangar;
@@ -53,15 +54,30 @@ public class ShipFactory {
 		// PVCells
 		PVCell frontLeft = new PVCell();
 		frontLeft.setShipPosition(new Vect3(-5, 0, -2));
-		frontLeft.setShipRotation(new Vect3(90, 0, 0));
 		newShip.assign(frontLeft);
-
 		
-		/*
-		 * PVCell backLeft = new PVCell(); PVCell frontRight = new PVCell();
-		 * PVCell backRight = new PVCell();
-		 */
-
+		PVCell backLeft = new PVCell();
+		backLeft.setShipPosition(new Vect3(-5, -6, -2));
+		newShip.assign(backLeft);
+		
+		PVCell frontRight = new PVCell();
+		frontRight.setShipPosition(new Vect3(5, 0, -2));
+		newShip.assign(frontRight);
+		
+		PVCell backRight = new PVCell();
+		backRight.setShipPosition(new Vect3(5, -6, -2));
+		newShip.assign(backRight);
+		
+		
+		BigPropeller mainLeftPropeller = new BigPropeller();
+		mainLeftPropeller.setShipPosition(new Vect3(-10, 0, -2));
+		newShip.assign(mainLeftPropeller);
+		
+		BigPropeller mainRightPropeller = new BigPropeller();
+		mainRightPropeller.setShipPosition(new Vect3(10, 0, -2));
+		newShip.assign(mainRightPropeller);
+		
+		// Links
 		newShip.link(kernel, camera, new Vect3(0., -0.5, 0.));
 		newShip.link(kernel, factory, new Vect3(0, 0, -0.5));
 		newShip.link(factory, tank, new Vect3(0, 2, -2));
@@ -69,13 +85,15 @@ public class ShipFactory {
 		newShip.link(factory, rafinery, new Vect3(0, -2, -2));
 		newShip.link(rafinery, hangar, new Vect3(0, -6, -2));
 		newShip.link(factory, frontLeft, new Vect3(-2, 0, -2));
+		newShip.link(frontLeft, backLeft, new Vect3(-5, -3, -2));
+		newShip.link(factory, frontRight, new Vect3(2, 0, -2));
+		newShip.link(frontRight, backRight, new Vect3(5, -3, -2));
+		newShip.link(frontLeft, mainLeftPropeller, new Vect3(-8, 0, -2));
+		newShip.link(frontRight, mainRightPropeller, new Vect3(8, 0, -2));
 
 		/*
 		 * 
 		 * 
-		 * // Energy generator LightCaptor frontLeft = new LightCaptor();
-		 * LightCaptor backLeft = new LightCaptor(); LightCaptor frontRight =
-		 * new LightCaptor(); LightCaptor backRight = new LightCaptor();
 		 * 
 		 * // Engines LinearEngine mainLeftPropeller = new LinearEngine();
 		 * LinearEngine mainRightPropeller = new LinearEngine(); LinearEngine
