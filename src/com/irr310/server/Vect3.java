@@ -84,7 +84,7 @@ public class Vect3 {
 	}
 
 	public Vect3 divide(double i) {
-		return new Vect3(x/2.0, y/2.0, y/2.0);
+		return new Vect3(x/2.0, y/2.0, z/2.0);
 	}
 
 	
