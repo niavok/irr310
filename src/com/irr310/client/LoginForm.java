@@ -56,6 +56,7 @@ public class LoginForm extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("click on login");
 				GameClient.getInstance().login(email.getText(), password.getText());
 			}
 		});

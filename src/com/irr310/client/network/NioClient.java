@@ -9,12 +9,9 @@ import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.nio.channels.spi.SelectorProvider;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 
 public class NioClient implements Runnable {
@@ -29,36 +26,51 @@ public class NioClient implements Runnable {
 	private ByteBuffer readBuffer = ByteBuffer.allocate(8192);
 
 	// A list of PendingChange instances
-	private List pendingChanges = new LinkedList();
+	private List<ChangeRequest> pendingChanges = new LinkedList<ChangeRequest>();
 
 	// Maps a SocketChannel to a list of ByteBuffer instances
-	private Map pendingData = new HashMap();
-
+	//private Map pendingData = new HashMap();
+	private List<ByteBuffer> queue;
+	
+	
 	// Maps a SocketChannel to a RspHandler
-	private Map rspHandlers = Collections.synchronizedMap(new HashMap());
+	//private Map rspHandlers = Collections.synchronizedMap(new HashMap());
+	private RspHandler handler;
+	private SocketChannel socketChannel;
 
 	public NioClient(InetAddress hostAddress, int port) throws IOException {
 		this.hostAddress = hostAddress;
 		this.port = port;
 		this.selector = this.initSelector();
 	}
-
-	public void send(byte[] data, RspHandler handler) throws IOException {
+	
+	public void init(RspHandler handler)  throws IOException {
+		
 		// Start a new connection
-		SocketChannel socket = this.initiateConnection();
+		socketChannel = this.initiateConnection();
+		this.handler = handler;
+		this.queue = new ArrayList<ByteBuffer>();
+		//this.rspHandlers.put(socket, handler);
+	}
 
+	
+
+	public void send(byte[] data) {
+		
 		// Register the response handler
-		this.rspHandlers.put(socket, handler);
+		
 
 		// And queue the data we want written
-		synchronized (this.pendingData) {
+		/*synchronized (this.pendingData) {
 			List queue = (List) this.pendingData.get(socket);
 			if (queue == null) {
-				queue = new ArrayList();
-				this.pendingData.put(socket, queue);
-			}
+				queue = 
+				//this.pendingData.put(socket, queue);
+			}*/
 			queue.add(ByteBuffer.wrap(data));
-		}
+			this.pendingChanges.add(new ChangeRequest(socketChannel,
+					ChangeRequest.REGISTER, SelectionKey.OP_WRITE));
+		//}
 
 		// Finally, wake up our selecting thread so it can make the required
 		// changes
@@ -66,13 +78,16 @@ public class NioClient implements Runnable {
 	}
 
 	public void run() {
+		
+		
+		
 		while (true) {
 			try {
 				// Process any pending changes
 				synchronized (this.pendingChanges) {
-					Iterator changes = this.pendingChanges.iterator();
+					Iterator<ChangeRequest> changes = this.pendingChanges.iterator();
 					while (changes.hasNext()) {
-						ChangeRequest change = (ChangeRequest) changes
+						ChangeRequest change = changes
 								.next();
 						switch (change.type) {
 						case ChangeRequest.CHANGEOPS:
@@ -94,7 +109,7 @@ public class NioClient implements Runnable {
 
 				// Iterate over the set of keys for which events are
 				// available
-				Iterator selectedKeys = this.selector.selectedKeys()
+				Iterator<SelectionKey> selectedKeys = this.selector.selectedKeys()
 						.iterator();
 				while (selectedKeys.hasNext()) {
 					SelectionKey key = (SelectionKey) selectedKeys.next();
@@ -157,8 +172,8 @@ public class NioClient implements Runnable {
 		System.arraycopy(data, 0, rspData, 0, numRead);
 
 		// Look up the handler for this channel
-		RspHandler handler = (RspHandler) this.rspHandlers
-				.get(socketChannel);
+		//RspHandler handler = (RspHandler) this.rspHandlers
+				//.get(socketChannel);
 
 		// And pass the response to it
 		if (handler.handleResponse(rspData)) {
@@ -171,12 +186,12 @@ public class NioClient implements Runnable {
 	private void write(SelectionKey key) throws IOException {
 		SocketChannel socketChannel = (SocketChannel) key.channel();
 
-		synchronized (this.pendingData) {
-			List queue = (List) this.pendingData.get(socketChannel);
+		//synchronized (this.pendingData) {
+			//List queue = (List) this.pendingData.get(socketChannel);
 
 			// Write until there's not more data ...
 			while (!queue.isEmpty()) {
-				ByteBuffer buf = (ByteBuffer) queue.get(0);
+				ByteBuffer buf = queue.get(0);
 				socketChannel.write(buf);
 				if (buf.remaining() > 0) {
 					// ... or the socket's buffer fills up
@@ -191,7 +206,7 @@ public class NioClient implements Runnable {
 				// data.
 				key.interestOps(SelectionKey.OP_READ);
 			}
-		}
+		//}
 	}
 
 	private void finishConnection(SelectionKey key) throws IOException {
@@ -242,11 +257,13 @@ public class NioClient implements Runnable {
 	public static void main(String[] args) {
 		try {
 			NioClient client = new NioClient(InetAddress.getByName("www.google.com"), 80);
+			RspHandler handler = new RspHandler();
+			client.init(handler);
 			Thread t = new Thread(client);
 			t.setDaemon(true);
 			t.start();
-			RspHandler handler = new RspHandler();
-			client.send("GET / HTTP/1.0\r\n\r\n".getBytes(), handler);
+			
+			client.send("GET / HTTP/1.0\r\n\r\n".getBytes());
 			handler.waitForResponse();
 		} catch (Exception e) {
 			e.printStackTrace();

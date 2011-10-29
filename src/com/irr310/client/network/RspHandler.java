@@ -6,7 +6,8 @@ public class RspHandler {
 	public synchronized boolean handleResponse(byte[] rsp) {
 		this.rsp = rsp;
 		this.notify();
-		return true;
+		System.out.println(new String(this.rsp));
+		return false;
 	}
 
 	public synchronized void waitForResponse() {
@@ -16,7 +17,9 @@ public class RspHandler {
 			} catch (InterruptedException e) {
 			}
 		}
+		
+		this.rsp = null;
 
-		System.out.println(new String(this.rsp));
+		
 	}
 }

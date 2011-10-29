@@ -1,25 +1,32 @@
 package com.irr310.client.network;
 
-import java.io.IOException;
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.nio.ByteBuffer;
-import java.nio.channels.SelectionKey;
-import java.nio.channels.Selector;
-import java.nio.channels.spi.SelectorProvider;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 
 public class NetworkServer {
 
+	private NioClient client;
+	private RspHandler handler;
+
 	public NetworkServer(String hostname, int port) {
-		// TODO Auto-generated constructor stub
+		try {
+			client = new NioClient(InetAddress.getByName(hostname), port);
+			handler = new RspHandler();
+			client.init(handler);
+			Thread t = new Thread(client);
+			t.setDaemon(true);
+			t.start();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void send(NetworkRequest request) {
+		//client.send("GET / HTTP/1.0\r\n\r\n".getBytes());
+		//handler.waitForResponse();
+		client.send("I want to login !!!".getBytes());
+		
 	}
 
 	
