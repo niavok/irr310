@@ -1,5 +1,6 @@
 package com.irr310.common.network.protocol;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -66,9 +67,10 @@ public class NetworkMessage {
             Field[] allFields = messageClass.getFields();
             fields = new ArrayList<MessageFieldDescription>();
             for (Field field : allFields) {
+                
                 if (field.getAnnotation(NetworkParam.class) != null) {
                     
-                    if(field.getDeclaringClass().equals(String.class)) {
+                    if(field.getType().equals(String.class)) {
                         fields.add(new StringMessageFieldDescription(field));    
                     } else {
                         System.out.println("Field type not supported for network: "+ field.getDeclaringClass());
@@ -133,7 +135,10 @@ public class NetworkMessage {
         public int getSize(NetworkMessage networkMessage) {
             try {
                 String string = (String) field.get(networkMessage);
-                return string.getBytes().length;
+                // 4 bytes used to indicate the size
+                
+                //If you have a NullPointerException on the next line, this could be because you don't initialyse a message attribute
+                return string.getBytes().length+4;
             } catch (IllegalArgumentException e) {
                 System.err.println("IllegalArgumentException on network package creation");
             } catch (IllegalAccessException e) {
@@ -146,7 +151,8 @@ public class NetworkMessage {
         public int write(NetworkMessage networkMessage, byte[] buffer, int offset) {
             try {
                 byte[] string = ((String) field.get(networkMessage)).getBytes();
-                System.arraycopy(string, 0, buffer, offset, string.length);
+                TypeConversion.writeIntToByteArray(string.length, buffer, offset);
+                System.arraycopy(string, 0, buffer, offset+4, string.length);
                 return string.length;
                 
             } catch (IllegalArgumentException e) {
