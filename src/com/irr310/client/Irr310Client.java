@@ -1,13 +1,17 @@
-package com.irr310.client.graphics;
+package com.irr310.client;
 
 import javax.swing.UIManager;
 
-public class Client {
+public class Irr310Client {
 
 	private static LoginForm loginForm;
 
 	public static void main(String[] args) {
 
+		// Init static game client
+		new GameClient();
+		
+		
 		setLookAndFeel();
 
 		loginForm = new LoginForm();
@@ -29,4 +33,5 @@ public class Client {
 			}
 		}
 	}
+	
 }

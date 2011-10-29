@@ -1,6 +1,8 @@
-package com.irr310.client.graphics;
+package com.irr310.client;
 
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -11,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
+
 
 
 public class LoginForm extends JFrame {
@@ -48,6 +51,14 @@ public class LoginForm extends JFrame {
 		server = new JTextField();
 		loginButton = new JButton("Login");
 		signupButton = new JButton("Signup");
+		
+		loginButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				GameClient.getInstance().login(email.getText(), password.getText());
+			}
+		});
 	}
 
 	public JComponent buildPanel() {
