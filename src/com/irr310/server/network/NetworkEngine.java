@@ -1,5 +1,11 @@
-package com.irr310.server;
+package com.irr310.server.network;
 
+import java.io.IOException;
+import java.nio.channels.SocketChannel;
+
+import com.irr310.common.network.protocol.LoginRequestMessage;
+import com.irr310.common.network.protocol.NetworkMessage;
+import com.irr310.server.Engine;
 import com.irr310.server.event.DefaultEngineEventVisitor;
 import com.irr310.server.event.EngineEvent;
 import com.irr310.server.event.InitEngineEvent;
@@ -11,6 +17,15 @@ import com.irr310.server.event.StartEngineEvent;
 public class NetworkEngine extends Engine {
 
 	public NetworkEngine() {
+	    
+	    try {
+            NetworkWorker worker = new NetworkWorker(this);
+            new Thread(worker).start();
+            new Thread(new NioServer(null, 22310, worker)).start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+	    
 	}
 
 	@Override
@@ -71,5 +86,18 @@ public class NetworkEngine extends Engine {
 		// TODO Auto-generated method stub
 		
 	}
+
+    public void pushMessage(SocketChannel socketChannel, NetworkMessage message) {
+        System.out.println("Network engine receive a message");
+        
+        //TODO: make a asyncronus queue
+        
+        switch(message.getType()) {
+            case LOGIN_REQUEST:
+                LoginRequestMessage m = (LoginRequestMessage) message;
+                System.out.println("Login request: login="+m.login+", password="+m.password);
+                break;
+        }
+    }
 
 }

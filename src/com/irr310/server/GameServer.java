@@ -11,6 +11,7 @@ import com.irr310.server.event.QuitGameEvent;
 import com.irr310.server.event.StartEngineEvent;
 import com.irr310.server.game.Game;
 import com.irr310.server.game.world.World;
+import com.irr310.server.network.NetworkEngine;
 import com.irr310.server.ui.DebugGraphicEngine;
 
 

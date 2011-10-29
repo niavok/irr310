@@ -33,7 +33,7 @@ public class NioServer implements Runnable {
 	// The buffer into which we'll read data when it's available
 	private ByteBuffer readBuffer = ByteBuffer.allocate(8192);
 
-	private EchoWorker worker;
+	private NetworkWorker worker;
 
 	// A list of PendingChange instances
 	private List pendingChanges = new LinkedList();
@@ -41,7 +41,7 @@ public class NioServer implements Runnable {
 	// Maps a SocketChannel to a list of ByteBuffer instances
 	private Map pendingData = new HashMap();
 
-	public NioServer(InetAddress hostAddress, int port, EchoWorker worker) throws IOException {
+	public NioServer(InetAddress hostAddress, int port, NetworkWorker worker) throws IOException {
 		this.hostAddress = hostAddress;
 		this.port = port;
 		this.selector = this.initSelector();
@@ -125,7 +125,8 @@ public class NioServer implements Runnable {
 		// Register the new SocketChannel with our Selector, indicating
 		// we'd like to be notified when there's data waiting to be read
 		socketChannel.register(this.selector, SelectionKey.OP_READ);
-		System.out.println("socket accepted");
+		
+		worker.accept(this, socketChannel);
 	}
 
 	private void read(SelectionKey key) throws IOException {
@@ -151,6 +152,7 @@ public class NioServer implements Runnable {
 			// same from our end and cancel the channel.
 			key.channel().close();
 			key.cancel();
+			worker.close(socketChannel);
 			return;
 		}
 
@@ -201,16 +203,6 @@ public class NioServer implements Runnable {
 		serverChannel.register(socketSelector, SelectionKey.OP_ACCEPT);
 
 		return socketSelector;
-	}
-
-	public static void main(String[] args) {
-		try {
-			EchoWorker worker = new EchoWorker();
-			new Thread(worker).start();
-			new Thread(new NioServer(null, 22310, worker)).start();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 }
 

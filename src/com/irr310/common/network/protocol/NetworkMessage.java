@@ -12,24 +12,35 @@ import com.irr310.common.tools.TypeConversion;
 
 public class NetworkMessage {
 
+    public static final int HEADER_SIZE = 17;
+
     public byte MAJOR_PROTOCOL_VERSION_KEY = 42; 
     
     private long responseIndex;
-
-    public NetworkMessage() {
+    private final NetworkMessageType type; 
+    
+    
+    public NetworkMessage(NetworkMessageType type) {
+        this.type = type;
         responseIndex = 0;
     }
 
     public void setResponseIndex(long responseIndex) {
         this.responseIndex = responseIndex;
     }
+    
+    public NetworkMessageType getType() {
+        return type;
+    }
+    
 
     public byte[] getBytes() {
 
         // List fields to send (with @NetworkParam)
         MessageDataDescription description = MessageDataDescription.getMessageDataDescription((Class<NetworkMessage>) this.getClass());
 
-        byte[] buffer = new byte[17 + description.computeSize(this)];
+        int dataSize = description.computeSize(this);
+        byte[] buffer = new byte[HEADER_SIZE + dataSize];
         int offset = 0; 
                 
         // Major protocol version, 1 byte
@@ -37,7 +48,7 @@ public class NetworkMessage {
         offset++;
 
         // Type 4 bytes
-        TypeConversion.writeIntToByteArray(0, buffer, offset+=1);
+        TypeConversion.writeIntToByteArray(type.ordinal(), buffer, offset);
         offset+=4;
         
         // Response id 8 bytes
@@ -45,8 +56,7 @@ public class NetworkMessage {
         offset+=8;
         
         // Length in bytes, 4 bytes
-        int size = description.computeSize(this);
-        TypeConversion.writeIntToByteArray(size, buffer, offset);
+        TypeConversion.writeIntToByteArray(dataSize, buffer, offset);
         offset+=4;
         
         // Fields
@@ -96,7 +106,7 @@ public class NetworkMessage {
             int localOffset = offset;
             
             for(MessageFieldDescription field: fields) {
-                offset += field.write(networkMessage, buffer, localOffset);
+                localOffset += field.write(networkMessage, buffer, localOffset);
             }
             
         }
@@ -111,6 +121,16 @@ public class NetworkMessage {
             }
         }
 
+
+
+        public void loadFields(NetworkMessage networkMessage, byte[] buffer, int offset) {
+            int localOffset = offset;
+            
+            for(MessageFieldDescription field: fields) {
+                localOffset += field.load(networkMessage, buffer, localOffset);
+            }
+        }
+
     }
     
     private static abstract class MessageFieldDescription {
@@ -119,6 +139,8 @@ public class NetworkMessage {
         private MessageFieldDescription(Field field) {
             this.field = field;
         }
+
+        public abstract int load(NetworkMessage networkMessage, byte[] buffer, int localOffset);
 
         public abstract int getSize(NetworkMessage networkMessage);
         
@@ -153,18 +175,49 @@ public class NetworkMessage {
                 byte[] string = ((String) field.get(networkMessage)).getBytes();
                 TypeConversion.writeIntToByteArray(string.length, buffer, offset);
                 System.arraycopy(string, 0, buffer, offset+4, string.length);
-                return string.length;
+                return string.length+4;
                 
             } catch (IllegalArgumentException e) {
                 System.err.println("IllegalArgumentException on network package creation");
+                e.printStackTrace();
             } catch (IllegalAccessException e) {
                 System.err.println("IllegalAccessException on network package creation");
+                e.printStackTrace();
             }
             
             return 0;
             
         }
+
+        @Override
+        public int load(NetworkMessage networkMessage, byte[] buffer, int offset) {
+            int length = TypeConversion.intFromByteArray(buffer, offset);
+            String string = new String(buffer, offset+4, length);
+            
+            try {
+                field.set(networkMessage, string);
+            } catch (IllegalArgumentException e) {
+                System.err.println("IllegalArgumentException on network package load");
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                System.err.println("IllegalAccessException on network package load");
+                e.printStackTrace();
+            }
+            
+            return length+4;
+        }
         
     }
+
+    public void load(byte[] dataBuffer) {
+        // List fields to send (with @NetworkParam)
+        MessageDataDescription description = MessageDataDescription.getMessageDataDescription((Class<NetworkMessage>) this.getClass());
+
+        // Fields
+        description.loadFields(this, dataBuffer, 0);
+        
+        
+    }
+
     
 }
