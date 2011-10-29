@@ -25,12 +25,13 @@ public class GameClient {
 		network = new NetworkServer("127.0.0.10", 22310);
 	}
 
-	public void login(String text, String text2) {
+	public void login(String login, String password) {
 		if(isLogged()) {
 			logout();
 		}
 		
-		network.send(new LoginRequest());
+		LoginRequest loginRequest = new LoginRequest(login, password);
+		loginRequest.sendAndWait(network);
 		
 	}
 	

@@ -55,7 +55,7 @@ public class NioClient implements Runnable {
 
 	
 
-	public void send(byte[] data) {
+	void send(byte[] data) {
 		
 		// Register the response handler
 		
