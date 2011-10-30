@@ -15,6 +15,7 @@ public class Game {
 	
 	private List<Player> playerList = new ArrayList<Player>();
 	private Map<Integer, Player> playerMap = new HashMap<Integer, Player>();
+	private Map<String, Player> playerLoginMap = new HashMap<String, Player>();
 
 	public Game() {
 		world = new World();
@@ -24,11 +25,14 @@ public class Game {
 		return playerList;
 	}
 	
-	public Player createPlayer() {
-		Player newPlayer = new Player();
+	public Player createPlayer(String login, String password) {
+		Player newPlayer = new Player(login);
+		newPlayer.changePassword(password);
 		Ship playerShip = ShipFactory.createSimpleShip();
 		
 		world.addShip(playerShip, new Vect3(10.0,20.0,30.0));
+		
+		playerLoginMap.put(login, newPlayer);
 		
 		return newPlayer;
 	}
@@ -36,4 +40,12 @@ public class Game {
 	public World getWorld() {
 		return world;
 	}
+
+    public Player getPlayerByLogin(String login) {
+        return playerLoginMap.get(login);
+    }
+
+    public boolean isPlayerExist(String login) {
+        return playerLoginMap.containsKey(login);
+    }
 }

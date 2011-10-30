@@ -2,7 +2,7 @@ package com.irr310.client;
 
 import com.irr310.client.game.Player;
 import com.irr310.client.network.LoginRequest;
-import com.irr310.client.network.NetworkServer;
+import com.irr310.client.network.ClientNetworkEngine;
 
 
 public class GameClient {
@@ -11,7 +11,7 @@ public class GameClient {
 
 	public Player player;
 
-	private NetworkServer network;
+	private ClientNetworkEngine network;
 	
 	public static GameClient getInstance() {
 		return instance;
@@ -22,7 +22,7 @@ public class GameClient {
 		
 		// Start non logged
 		player = null;
-		network = new NetworkServer("127.0.0.10", 22310);
+		network = new ClientNetworkEngine("127.0.0.10", 22310);
 	}
 
 	public void login(String login, String password) {
@@ -38,7 +38,7 @@ public class GameClient {
 	private void logout() {
 	}
 
-	public NetworkServer getNetwork() {
+	public ClientNetworkEngine getNetwork() {
 		return network;
 	}
 	

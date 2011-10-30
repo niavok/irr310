@@ -7,6 +7,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.irr310.common.network.MessageParser;
+import com.irr310.common.network.NetworkMessage;
+import com.irr310.server.event.NetworkEvent;
+
 public class NetworkWorker implements Runnable {
 	private List queue = new LinkedList();
 	private Map<SocketChannel, MessageParser> messageParsers;
@@ -50,9 +54,19 @@ public class NetworkWorker implements Runnable {
             // dataEvent.server.send(dataEvent.socket, dataEvent.data);
 		}
 	}
-	
-    public void accept(NioServer server, SocketChannel socketChannel) {
-        messageParsers.put(socketChannel, new MessageParser(networkEngine,server, socketChannel));        
+	//
+	//
+    public void accept(final NioServer server, final SocketChannel socketChannel) {
+        messageParsers.put(socketChannel, new MessageParser() {
+
+            NetworkClient client = new NetworkClient(networkEngine, server, socketChannel);
+            
+            @Override
+            public void processMessage(NetworkMessage message) {
+                client.getEngine().pushEvent(new NetworkEvent(message, client));
+            }
+            
+        });        
     }
     public void close(SocketChannel socketChannel) {
         messageParsers.remove(socketChannel);

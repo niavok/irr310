@@ -1,33 +1,22 @@
-package com.irr310.server.network;
-
-import java.nio.channels.SocketChannel;
-
-import sun.io.Converters;
+package com.irr310.common.network;
 
 import com.irr310.common.network.protocol.HelloMessage;
 import com.irr310.common.network.protocol.LoginRequestMessage;
 import com.irr310.common.network.protocol.LoginResponseMessage;
-import com.irr310.common.network.protocol.NetworkMessage;
 import com.irr310.common.network.protocol.NetworkMessageType;
 import com.irr310.common.tools.TypeConversion;
 
-public class MessageParser {
+public abstract class MessageParser {
 
-    private final NioServer server;
-    private final SocketChannel socketChannel;
     private byte[] headerBuffer;
     private byte[] dataBuffer;
     private int dataSize;
     private int dataBufferOffset;
     private int headerBufferOffset;
     private int messageTypeId;
-    private final NetworkEngine networkEngine;
     private long messageResponseId;
 
-    public MessageParser(NetworkEngine networkEngine, NioServer server, SocketChannel socketChannel) {
-        this.networkEngine = networkEngine;
-        this.server = server;
-        this.socketChannel = socketChannel;
+    public MessageParser() {
         headerBuffer = new byte[NetworkMessage.HEADER_SIZE];
         headerBufferOffset = 0;
         dataBuffer = null;
@@ -113,10 +102,13 @@ public class MessageParser {
             message.setResponseIndex(messageResponseId);
             message.load(dataBuffer);
 
-            networkEngine.pushMessage(socketChannel, message);
+            processMessage(message);
+            
         }
 
     }
+
+    public abstract void processMessage(NetworkMessage message);
 
     
 }

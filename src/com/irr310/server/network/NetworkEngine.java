@@ -3,15 +3,19 @@ package com.irr310.server.network;
 import java.io.IOException;
 import java.nio.channels.SocketChannel;
 
+import com.irr310.common.network.NetworkMessage;
 import com.irr310.common.network.protocol.LoginRequestMessage;
-import com.irr310.common.network.protocol.NetworkMessage;
+import com.irr310.common.network.protocol.LoginResponseMessage;
 import com.irr310.server.Engine;
+import com.irr310.server.GameServer;
 import com.irr310.server.event.DefaultEngineEventVisitor;
 import com.irr310.server.event.EngineEvent;
 import com.irr310.server.event.InitEngineEvent;
+import com.irr310.server.event.NetworkEvent;
 import com.irr310.server.event.PauseEngineEvent;
 import com.irr310.server.event.QuitGameEvent;
 import com.irr310.server.event.StartEngineEvent;
+import com.irr310.server.game.Player;
 
 
 public class NetworkEngine extends Engine {
@@ -43,36 +47,48 @@ public class NetworkEngine extends Engine {
 		@Override
 		public void visit(QuitGameEvent event) {
 			System.out.println("stopping network engine");
-			stopAcceptor();
 			isRunning = false;
 			
 		}
 
 		@Override
-		public void visit(StartEngineEvent event) {
-			startAcceptor();
-			pause(false);
-			
+		public void visit(NetworkEvent event) {
+		    NetworkMessage message = event.getMessage();
+		    switch(message.getType()) {
+		        case LOGIN_REQUEST:
+		            
+		            if(event.getClient().isLogged()) {
+		                event.getClient().send(new LoginResponseMessage(message.getResponseIndex(), false, "already logged as "+event.getClient().getPlayer().getLogin()));
+                        break;
+		            }
+		            
+		            LoginRequestMessage m = (LoginRequestMessage) message;
+		            if(!GameServer.getInstance().getGame().isPlayerExist(m.login)) {
+		                event.getClient().send(new LoginResponseMessage(message.getResponseIndex(), false, "unknown user"));
+		                break;
+		            }
+		            
+		            Player player = GameServer.getInstance().getGame().getPlayerByLogin(m.login);
+		            
+		            if(!player.checkPassword(m.password)) {
+		                event.getClient().send(new LoginResponseMessage(message.getResponseIndex(), false, "bad password"));
+		                break;
+		            }
+		            
+		            // Ok, you can login.
+		            
+		            
+		            event.getClient().setPlayer(player);
+		            
+		            event.getClient().send(new LoginResponseMessage(message.getResponseIndex(), true, "success"));
+		            
+		            
+		            break;
+	            default:
+	                System.err.println("Unsupported network type");
+		    }
 		}
-
-		@Override
-		public void visit(InitEngineEvent event) {
-		}
-
-		@Override
-		public void visit(PauseEngineEvent event) {
-			pause(true);
-			stopAcceptor();
-		}
-	}
-
-	public void stopAcceptor() {
-		// TODO Auto-generated method stub
 		
-	}
-
-	public void startAcceptor() {
-		// TODO Auto-generated method stub
 	}
 
 	@Override

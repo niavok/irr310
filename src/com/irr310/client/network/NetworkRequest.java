@@ -1,6 +1,6 @@
 package com.irr310.client.network;
 
-import com.irr310.common.network.protocol.NetworkMessage;
+import com.irr310.common.network.NetworkMessage;
 
 public class NetworkRequest {
 
@@ -15,7 +15,7 @@ public class NetworkRequest {
 		hasResponse = false;
 	}
 	
-	public void sendAndWait(NetworkServer network) {
+	public void sendAndWait(ClientNetworkEngine network) {
 		network.sendRequest(requestMessage, responseMessage);
 	}
 

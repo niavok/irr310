@@ -25,7 +25,6 @@ public class TypeConversion {
             int o = (8 - 1 - i) * 8;
             b[i+offset] = (byte) ((value >>> o) & 0xFF);
         }
-        System.err.println("WARNING: writeLongToByteArray - verify the result !");
         return b;
     }
 
@@ -45,8 +44,6 @@ public class TypeConversion {
             long shift = (8 - 1 - i) * 8;
             value += (b[i + offset] & 0x000000FF) << shift;
         }
-        System.err.println("WARNING: writeLongToByteArray - verify the result !");
-        
         return value;
     }
 }

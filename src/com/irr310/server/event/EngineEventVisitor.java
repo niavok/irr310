@@ -20,4 +20,6 @@ public interface EngineEventVisitor {
 	public abstract void visit(AddShipEvent event);
 
 	public abstract void visit(WorldShipAddedEvent event);
+
+    public abstract void visit(NetworkEvent event);
 }
