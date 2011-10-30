@@ -1,8 +1,9 @@
 package com.irr310.client;
 
 import com.irr310.client.game.Player;
-import com.irr310.client.network.LoginRequest;
 import com.irr310.client.network.ClientNetworkEngine;
+import com.irr310.client.network.LoginRequest;
+import com.irr310.client.network.SignupRequest;
 
 
 public class GameClient {
@@ -35,6 +36,16 @@ public class GameClient {
 		
 	}
 	
+	public void signup(String login, String password) {
+	    if(isLogged()) {
+           return;
+        }
+        
+        SignupRequest signupRequest = new SignupRequest(login, password);
+        signupRequest.sendAndWait(network);
+    }
+	
+	
 	private void logout() {
 	}
 
@@ -45,5 +56,7 @@ public class GameClient {
 	public boolean isLogged() {
 		return player != null;
 	}
+
+    
 	
 }

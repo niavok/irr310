@@ -4,6 +4,8 @@ import com.irr310.common.network.protocol.HelloMessage;
 import com.irr310.common.network.protocol.LoginRequestMessage;
 import com.irr310.common.network.protocol.LoginResponseMessage;
 import com.irr310.common.network.protocol.NetworkMessageType;
+import com.irr310.common.network.protocol.SignupRequestMessage;
+import com.irr310.common.network.protocol.SignupResponseMessage;
 import com.irr310.common.tools.TypeConversion;
 
 public abstract class MessageParser {
@@ -28,7 +30,7 @@ public abstract class MessageParser {
     public void parseData(byte[] data) {
         parseData(data, 0);
     }
-    
+
     public void parseData(byte[] data, int offset) {
 
         if (data.length == offset) {
@@ -96,6 +98,12 @@ public abstract class MessageParser {
             case LOGIN_RESPONSE:
                 message = new LoginResponseMessage();
                 break;
+            case SIGNUP_REQUEST:
+                message = new SignupRequestMessage();
+                break;
+            case SIGNUP_RESPONSE:
+                message = new SignupResponseMessage();
+                break;
         }
 
         if (message != null) {
@@ -103,12 +111,11 @@ public abstract class MessageParser {
             message.load(dataBuffer);
 
             processMessage(message);
-            
+
         }
 
     }
 
     public abstract void processMessage(NetworkMessage message);
 
-    
 }

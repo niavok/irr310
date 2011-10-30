@@ -66,9 +66,9 @@ public class GameServer {
 		
 		
 		sendToAll(new StartEngineEvent());
-		AddShipEvent addShipEvent = new AddShipEvent();
+		/*AddShipEvent addShipEvent = new AddShipEvent();
 		addShipEvent.setType(AddShipEvent.Type.SIMPLE);
-		sendToAll(addShipEvent);
+		sendToAll(addShipEvent);*/
 		
 		
 		

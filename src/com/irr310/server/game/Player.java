@@ -18,7 +18,7 @@ public class Player extends GameEntity {
 	
 	public void changePassword(String newPassword) {
 	    this.passwordSalt = RandomStringUtils.randomAscii(PASSWORD_SALT_LENGTH);
-        this.password = Hash.calculateHash(password, this.passwordSalt);
+        this.password = Hash.calculateHash(newPassword, this.passwordSalt);
 	}
 
     public String getLogin() {
@@ -26,8 +26,7 @@ public class Player extends GameEntity {
     }
 
     public boolean checkPassword(String password) {
-        // TODO Auto-generated method stub
-        return false;
+        return Hash.calculateHash(password, this.passwordSalt).equals(this.password);
     }
 
 }

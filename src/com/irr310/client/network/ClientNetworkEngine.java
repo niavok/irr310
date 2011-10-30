@@ -5,27 +5,24 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.irr310.common.network.NetworkMessage;
-import com.irr310.common.network.protocol.LoginRequestMessage;
 import com.irr310.common.network.protocol.LoginResponseMessage;
-import com.irr310.server.GameServer;
-import com.irr310.server.game.Player;
+import com.irr310.common.network.protocol.SignupResponseMessage;
 
 public class ClientNetworkEngine {
 
     private NioClient client;
     private ClientNetworkWorker handler;
     private long responseIndex;
-    private Map<Long,NetworkMessage> exceptedResponses;
+    private Map<Long, NetworkMessage> exceptedResponses;
 
     public ClientNetworkEngine(String hostname, int port) {
         try {
             responseIndex = 1;
-            exceptedResponses= new HashMap<Long,NetworkMessage>();
-            
-            
+            exceptedResponses = new HashMap<Long, NetworkMessage>();
+
             client = new NioClient(InetAddress.getByName(hostname), port);
             handler = new ClientNetworkWorker(this);
-            
+
             client.init(handler);
             Thread t = new Thread(handler);
             Thread t2 = new Thread(client);
@@ -53,18 +50,28 @@ public class ClientNetworkEngine {
         exceptedResponses.put(responseIndex, responseMessage);
 
         send(requestMessage);
-        
+
     }
 
     public void pushMessage(NetworkMessage message) {
-        switch(message.getType()) {
-            case LOGIN_RESPONSE:
+        switch (message.getType()) {
+            case LOGIN_RESPONSE: {
                 LoginResponseMessage m = (LoginResponseMessage) message;
-                if(m.success) {
+                if (m.success) {
                     System.out.println("login successful");
                 } else {
-                    System.out.println("login failed: "+m.reason);
+                    System.out.println("login failed: " + m.reason);
                 }
+            }
+                break;
+            case SIGNUP_RESPONSE: {
+                SignupResponseMessage m = (SignupResponseMessage) message;
+                if (m.success) {
+                    System.out.println("signup successful");
+                } else {
+                    System.out.println("signup failed: " + m.reason);
+                }
+            }
                 break;
             default:
                 System.err.println("Unsupported network type");

@@ -60,6 +60,20 @@ public class LoginForm extends JFrame {
 				GameClient.getInstance().login(email.getText(), password.getText());
 			}
 		});
+		
+		signupButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("click on login");
+                String password1 = new String(signupFirstPassword.getPassword());
+                String password2 = new String(signupSecondPassword.getPassword());
+                if(password1.equals(password2)) {
+                    GameClient.getInstance().signup(signupEmail.getText(), password1);
+                }
+            }
+        });
+		
 	}
 
 	public JComponent buildPanel() {

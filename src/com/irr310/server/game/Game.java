@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.irr310.server.GameServer;
 import com.irr310.server.Vect3;
+import com.irr310.server.event.AddShipEvent;
 import com.irr310.server.game.world.Ship;
 import com.irr310.server.game.world.World;
 
@@ -28,11 +30,16 @@ public class Game {
 	public Player createPlayer(String login, String password) {
 		Player newPlayer = new Player(login);
 		newPlayer.changePassword(password);
-		Ship playerShip = ShipFactory.createSimpleShip();
-		
-		world.addShip(playerShip, new Vect3(10.0,20.0,30.0));
-		
 		playerLoginMap.put(login, newPlayer);
+		//Ship playerShip = ShipFactory.createSimpleShip();
+		
+		AddShipEvent addShipEvent = new AddShipEvent();
+        addShipEvent.setType(AddShipEvent.Type.SIMPLE);
+        GameServer.getInstance().sendToAll(addShipEvent);
+		
+		/*world.addShip(playerShip, new Vect3(10.0,20.0,30.0));*/
+		
+		
 		
 		return newPlayer;
 	}
