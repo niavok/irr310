@@ -1,14 +1,14 @@
 package com.irr310.common.network.protocol;
 
 import com.irr310.common.network.NetworkMessage;
-import com.irr310.common.network.NetworkParam;
+import com.irr310.common.network.NetworkField;
 
 public class LoginRequestMessage extends NetworkMessage {
 
-    @NetworkParam
+    @NetworkField
     public String login;
 
-    @NetworkParam
+    @NetworkField
     public String password;
 
     public LoginRequestMessage() {

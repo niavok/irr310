@@ -6,7 +6,9 @@ import java.util.Map;
 
 import com.irr310.common.network.NetworkMessage;
 import com.irr310.common.network.protocol.LoginResponseMessage;
+import com.irr310.common.network.protocol.ShipListMessage;
 import com.irr310.common.network.protocol.SignupResponseMessage;
+import com.irr310.common.world.ShipView;
 
 public class ClientNetworkEngine {
 
@@ -45,7 +47,7 @@ public class ClientNetworkEngine {
     }
 
     public void sendRequest(NetworkRequest<?> networkRequest) {
-    
+
         long responseIndex = pickResponseIndex();
         networkRequest.getRequestMessage().setResponseIndex(responseIndex);
         pendingRequests.put(responseIndex, networkRequest);
@@ -54,21 +56,34 @@ public class ClientNetworkEngine {
     }
 
     public void pushMessage(NetworkMessage message) {
-        
+
         long responseIndex = message.getResponseIndex();
-        if(responseIndex != 0) {
-            if(pendingRequests.containsKey(responseIndex)) {
+        if (responseIndex != 0) {
+            if (pendingRequests.containsKey(responseIndex)) {
                 NetworkRequest<?> request = pendingRequests.remove(responseIndex);
                 request.setResponse(message);
                 return;
             }
-            
-            
         }
-        
-        System.err.println("Unsupported network type");
+
+        switch (message.getType()) {
+            case SHIP_LIST:
+                shipListReceived(message);
+                break;
+            default:
+                System.err.println("Unsupported network type " + message.getType());
+        }
+
     }
 
-    
+    private void shipListReceived(NetworkMessage message) {
+        ShipListMessage m = (ShipListMessage) message;
+        System.out.println("Ship list received");
+        for (ShipView ship : m.shipsList) {
+            System.out.println("Ship received: " + ship.id);
+            ;
+        }
+
+    }
 
 }

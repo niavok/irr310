@@ -1,7 +1,7 @@
 package com.irr310.common.network.protocol;
 
 import com.irr310.common.network.NetworkMessage;
-import com.irr310.common.network.NetworkParam;
+import com.irr310.common.network.NetworkField;
 
 public class HelloMessage extends NetworkMessage {
 
@@ -9,9 +9,9 @@ public class HelloMessage extends NetworkMessage {
         super(NetworkMessageType.HELLO);
     }
 
-    @NetworkParam
+    @NetworkField
 	public String version;
 	
-	@NetworkParam
+	@NetworkField
 	public String userAgent;
 }

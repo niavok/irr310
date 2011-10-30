@@ -2,13 +2,14 @@ package com.irr310.common.network.protocol;
 
 import java.util.List;
 
+import com.irr310.common.network.NetworkListField;
 import com.irr310.common.network.NetworkMessage;
-import com.irr310.common.network.NetworkParam;
+import com.irr310.common.network.NetworkField;
 import com.irr310.common.world.ShipView;
 
 public class ShipListMessage extends NetworkMessage {
 
-    @NetworkParam
+    @NetworkListField(ShipView.class)
     public List<ShipView> shipsList;
 
     public ShipListMessage() {

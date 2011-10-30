@@ -1,9 +1,14 @@
 package com.irr310.common.world;
 
-public class ShipView extends GameEntityView {
+import com.irr310.common.network.NetworkClass;
+import com.irr310.common.network.NetworkField;
 
-    public ShipView(long id) {
-        super(id);
-    }
+@NetworkClass
+public class ShipView {
 
+    @NetworkField
+    public long id;
+
+
+    
 }

@@ -93,6 +93,8 @@ public class Ship extends GameEntity implements Container {
     }
 
     public ShipView toView() {
-        return new ShipView(getId());
+        ShipView shipView = new ShipView();
+        shipView.id = getId();
+        return shipView;
     }
 }
