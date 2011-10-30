@@ -301,7 +301,9 @@ public class CommandManager {
 
 	private String addShipCommand(String command) {
 
-		Pattern exprAddType = Pattern
+	    return "";
+	    
+		/*Pattern exprAddType = Pattern
 				.compile(".*((-t)|(--type)) ([A-Za-z_0-9]*).*");
 		Pattern exprAddPosition = Pattern
 				.compile(".*((-p)|(--position)) ([0-9\\.\\-]*) ([0-9\\.\\-]*) ([0-9\\.\\-]*).*");
@@ -403,7 +405,7 @@ public class CommandManager {
 
 		GameServer.getInstance().sendToAll(event);
 		return "Game : Ship object > " + type.toString();
-
+*/
 	}
 
 }

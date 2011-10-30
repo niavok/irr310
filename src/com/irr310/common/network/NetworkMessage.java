@@ -39,9 +39,10 @@ public class NetworkMessage {
         // List fields to send (with @NetworkParam)
         MessageDataDescription description = MessageDataDescription.getMessageDataDescription((Class<NetworkMessage>) this.getClass());
 
+        
         int dataSize = description.computeSize(this);
         byte[] buffer = new byte[HEADER_SIZE + dataSize];
-        int offset = 0; 
+        int offset = 0;
                 
         // Major protocol version, 1 byte
         buffer[offset] = MAJOR_PROTOCOL_VERSION_KEY;

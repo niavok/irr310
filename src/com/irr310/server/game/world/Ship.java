@@ -3,8 +3,10 @@ package com.irr310.server.game.world;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.irr310.common.world.ShipView;
 import com.irr310.server.Vect3;
 import com.irr310.server.game.GameEntity;
+import com.irr310.server.game.Player;
 import com.irr310.server.game.driver.Controller;
 
 public class Ship extends GameEntity implements Container {
@@ -14,7 +16,12 @@ public class Ship extends GameEntity implements Container {
 	List<Link> links = new ArrayList<Link>();
 	List<Component> components = new ArrayList<Component>();
 	Kernel kernel;
+    private Player owner;
 
+    public Ship() {
+        owner = null;
+    }
+    
 	@Override
 	public boolean assign(Component component) {
 		if(component.getContainer() != null) {
@@ -76,4 +83,16 @@ public class Ship extends GameEntity implements Container {
 	public Controller getController() {
 		return kernel;
 	}
+
+    public void setOwner(Player owner) {
+        if(this.owner != null) {
+            this.owner.removeShip(this);
+        }
+        this.owner = owner;
+        this.owner.giveShip(this);
+    }
+
+    public ShipView toView() {
+        return new ShipView(getId());
+    }
 }

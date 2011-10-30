@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.irr310.common.network.field.BooleanMessageFieldDescription;
+import com.irr310.common.network.field.ListMessageFieldDescription;
 import com.irr310.common.network.field.MessageFieldDescription;
 import com.irr310.common.network.field.StringMessageFieldDescription;
 
@@ -28,6 +29,9 @@ class MessageDataDescription {
                 }
                 else if(field.getType().equals(boolean.class)) {
                     fields.add(new BooleanMessageFieldDescription(field));    
+                }
+                else if(field.getType().isAssignableFrom(List.class)) {
+                    fields.add(new ListMessageFieldDescription(field));    
                 }
                 else {
                     System.out.println("Field type not supported for network: "+ field.getDeclaringClass());

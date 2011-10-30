@@ -33,7 +33,7 @@ public class Game {
 		playerLoginMap.put(login, newPlayer);
 		//Ship playerShip = ShipFactory.createSimpleShip();
 		
-		AddShipEvent addShipEvent = new AddShipEvent();
+		AddShipEvent addShipEvent = new AddShipEvent(newPlayer);
         addShipEvent.setType(AddShipEvent.Type.SIMPLE);
         GameServer.getInstance().sendToAll(addShipEvent);
 		

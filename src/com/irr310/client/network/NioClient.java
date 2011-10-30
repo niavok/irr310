@@ -61,6 +61,7 @@ public class NioClient implements Runnable {
          * this.pendingData.get(socket); if (queue == null) { queue =
          * //this.pendingData.put(socket, queue); }
          */
+        System.out.println("send "+data.length+" bytes");
         queue.add(ByteBuffer.wrap(data));
         this.pendingChanges.add(new ChangeRequest(socketChannel, ChangeRequest.REGISTER, SelectionKey.OP_WRITE));
         // }
@@ -147,6 +148,8 @@ public class NioClient implements Runnable {
             return;
         }
 
+        System.out.println("receive "+numRead+" bytes");
+        
         // Handle the response
         this.handleResponse(socketChannel, this.readBuffer.array(), numRead);
     }

@@ -4,6 +4,8 @@ import com.irr310.common.network.protocol.HelloMessage;
 import com.irr310.common.network.protocol.LoginRequestMessage;
 import com.irr310.common.network.protocol.LoginResponseMessage;
 import com.irr310.common.network.protocol.NetworkMessageType;
+import com.irr310.common.network.protocol.ShipListMessage;
+import com.irr310.common.network.protocol.ShipListRequestMessage;
 import com.irr310.common.network.protocol.SignupRequestMessage;
 import com.irr310.common.network.protocol.SignupResponseMessage;
 import com.irr310.common.tools.TypeConversion;
@@ -33,10 +35,12 @@ public abstract class MessageParser {
 
     public void parseData(byte[] data, int offset) {
 
-        if (data.length == offset) {
-            // No more data to parse
-
-        } else if (headerBufferOffset < NetworkMessage.HEADER_SIZE) {
+        if (headerBufferOffset < NetworkMessage.HEADER_SIZE) {
+            if (data.length == offset) {
+                // No more data to parse
+                return;
+            } 
+            
             // No complete header
 
             int missingInHeader = NetworkMessage.HEADER_SIZE - headerBufferOffset;
@@ -59,6 +63,12 @@ public abstract class MessageParser {
             }
 
             int missingInData = dataSize - dataBufferOffset;
+            
+            if (data.length == offset && missingInData > 0) {
+                // No more data to parse
+                return;
+            }
+            
             int availableInBuffer = data.length - offset;
 
             int sizeToConsume = Math.min(missingInData, availableInBuffer);
@@ -103,6 +113,12 @@ public abstract class MessageParser {
                 break;
             case SIGNUP_RESPONSE:
                 message = new SignupResponseMessage();
+                break;
+            case SHIP_LIST:
+                message = new ShipListMessage();
+                break;
+            case SHIP_LIST_REQUEST:
+                message = new ShipListRequestMessage();
                 break;
         }
 

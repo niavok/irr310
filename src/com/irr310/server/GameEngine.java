@@ -75,6 +75,7 @@ public class GameEngine extends EventEngine<ServerEngineEvent> {
 			switch (event.getType()) {
 			case SIMPLE:
 				ship = ShipFactory.createSimpleShip();
+				ship.setOwner(event.getOwner());
 				break;
 			}
 

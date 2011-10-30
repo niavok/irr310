@@ -2,19 +2,24 @@ package com.irr310.server.network;
 
 import java.io.IOException;
 import java.nio.channels.SocketChannel;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.irr310.common.engine.EventEngine;
 import com.irr310.common.network.NetworkMessage;
 import com.irr310.common.network.protocol.LoginRequestMessage;
 import com.irr310.common.network.protocol.LoginResponseMessage;
+import com.irr310.common.network.protocol.ShipListMessage;
 import com.irr310.common.network.protocol.SignupRequestMessage;
 import com.irr310.common.network.protocol.SignupResponseMessage;
+import com.irr310.common.world.ShipView;
 import com.irr310.server.GameServer;
 import com.irr310.server.event.DefaultServerEngineEventVisitor;
 import com.irr310.server.event.NetworkEvent;
 import com.irr310.server.event.QuitGameEvent;
 import com.irr310.server.event.ServerEngineEvent;
 import com.irr310.server.game.Player;
+import com.irr310.server.game.world.Ship;
 
 public class NetworkEngine extends EventEngine<ServerEngineEvent> {
 
@@ -96,6 +101,23 @@ public class NetworkEngine extends EventEngine<ServerEngineEvent> {
                     event.getClient().send(new SignupResponseMessage(message.getResponseIndex(), true, "success"));
                 }
                     break;
+                    
+                case SHIP_LIST_REQUEST: {
+                    if (!event.getClient().isLogged()) {
+                        break;
+                    }
+                    
+                    List<ShipView> shipList = new ArrayList<ShipView>();
+                    
+                    for(Ship ship : event.getClient().getPlayer().getShipList()) {
+                        shipList.add(ship.toView());
+                    }
+                    
+                    event.getClient().send(new ShipListMessage(message.getResponseIndex(), shipList));
+                    
+                    
+                }
+                    break;
                 default:
                     System.err.println("Unsupported network type");
             }
@@ -105,14 +127,10 @@ public class NetworkEngine extends EventEngine<ServerEngineEvent> {
 
     @Override
     protected void init() {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     protected void end() {
-        // TODO Auto-generated method stub
-
     }
 
     public void pushMessage(SocketChannel socketChannel, NetworkMessage message) {

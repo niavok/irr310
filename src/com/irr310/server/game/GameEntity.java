@@ -1,7 +1,7 @@
 package com.irr310.server.game;
 
 public class GameEntity {
-	long id;
+	private long id;
 	
 	private static long nextId = 0;
 	
@@ -13,4 +13,7 @@ public class GameEntity {
 		id = getNewId();
 	}
 	
+	public long getId() {
+        return id;
+    }
 }

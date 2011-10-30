@@ -1,6 +1,7 @@
 package com.irr310.server.event;
 
 import com.irr310.server.Vect3;
+import com.irr310.server.game.Player;
 
 public class AddShipEvent extends ServerEngineEvent {
 
@@ -9,6 +10,7 @@ public class AddShipEvent extends ServerEngineEvent {
 	private Vect3 rotationSpeed;
 	private Vect3 linearSpeed;
 	private Vect3 rotation;
+	private Player owner;
 
 	public enum Type {
 		SIMPLE,
@@ -17,6 +19,11 @@ public class AddShipEvent extends ServerEngineEvent {
 	@Override
 	public void accept(ServerEngineEventVisitor visitor) {
 		visitor.visit(this);
+	}
+	
+	public AddShipEvent(Player owner) {
+        this.owner = owner;
+	    
 	}
 
 	public void setType(Type type) {
@@ -58,5 +65,9 @@ public class AddShipEvent extends ServerEngineEvent {
 	public Vect3 getRotation() {
 		return rotation;
 	}
+
+    public Player getOwner() {
+        return owner;
+    }
 
 }
