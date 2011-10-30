@@ -5,12 +5,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
-import com.irr310.server.event.AddShipEvent;
-import com.irr310.server.event.EngineEvent;
+import com.irr310.common.engine.Engine;
 import com.irr310.server.event.QuitGameEvent;
+import com.irr310.server.event.ServerEngineEvent;
 import com.irr310.server.event.StartEngineEvent;
 import com.irr310.server.game.Game;
-import com.irr310.server.game.world.World;
 import com.irr310.server.network.NetworkEngine;
 import com.irr310.server.ui.DebugGraphicEngine;
 
@@ -122,7 +121,7 @@ public class GameServer {
 		return game;
 	}
 
-	public void sendToAll(EngineEvent e) {
+	public void sendToAll(ServerEngineEvent e) {
 		gameEngine.pushEvent(e);
 		physicEngine.pushEvent(e);
 		networkEngine.pushEvent(e);

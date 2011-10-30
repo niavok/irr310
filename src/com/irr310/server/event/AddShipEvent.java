@@ -2,7 +2,7 @@ package com.irr310.server.event;
 
 import com.irr310.server.Vect3;
 
-public class AddShipEvent extends EngineEvent {
+public class AddShipEvent extends ServerEngineEvent {
 
 	private Type type;
 	private Vect3 position;
@@ -15,7 +15,7 @@ public class AddShipEvent extends EngineEvent {
 	}
 
 	@Override
-	public void accept(EngineEventVisitor visitor) {
+	public void accept(ServerEngineEventVisitor visitor) {
 		visitor.visit(this);
 	}
 

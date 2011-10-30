@@ -31,8 +31,9 @@ import com.bulletphysics.linearmath.MatrixUtil;
 import com.bulletphysics.linearmath.MotionState;
 import com.bulletphysics.linearmath.Transform;
 import com.bulletphysics.util.ObjectArrayList;
-import com.irr310.server.event.DefaultEngineEventVisitor;
-import com.irr310.server.event.EngineEvent;
+import com.irr310.common.engine.FramerateEngine;
+import com.irr310.server.event.DefaultServerEngineEventVisitor;
+import com.irr310.server.event.ServerEngineEvent;
 import com.irr310.server.event.PauseEngineEvent;
 import com.irr310.server.event.QuitGameEvent;
 import com.irr310.server.event.StartEngineEvent;
@@ -45,7 +46,7 @@ import com.irr310.server.game.world.Ship;
 import com.irr310.server.game.world.Slot;
 import com.irr310.server.game.world.WorldObject;
 
-public class PhysicEngine extends Engine {
+public class PhysicEngine extends FramerateEngine<ServerEngineEvent> {
 
 	public static final float PI_2 = 1.57079632679489661923f;
 
@@ -311,16 +312,16 @@ public class PhysicEngine extends Engine {
 	 */
 
 	@Override
-	protected void processEvent(EngineEvent e) {
+	protected void processEvent(ServerEngineEvent e) {
 		e.accept(new PhysicEngineEventVisitor());
 	}
 
 	private final class PhysicEngineEventVisitor extends
-			DefaultEngineEventVisitor {
+			DefaultServerEngineEventVisitor {
 		@Override
 		public void visit(QuitGameEvent event) {
 			System.out.println("stopping physic engine");
-			isRunning = false;
+			setRunning(false);
 		}
 
 		@Override

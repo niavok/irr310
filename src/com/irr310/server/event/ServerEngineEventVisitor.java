@@ -1,7 +1,7 @@
 package com.irr310.server.event;
 
 
-public interface EngineEventVisitor {
+public interface ServerEngineEventVisitor {
 
 	public abstract void visit(QuitGameEvent event);
 

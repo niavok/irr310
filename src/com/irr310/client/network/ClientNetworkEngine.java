@@ -13,12 +13,12 @@ public class ClientNetworkEngine {
     private NioClient client;
     private ClientNetworkWorker handler;
     private long responseIndex;
-    private Map<Long, NetworkMessage> exceptedResponses;
+    private Map<Long, NetworkRequest<?>> pendingRequests;
 
     public ClientNetworkEngine(String hostname, int port) {
         try {
             responseIndex = 1;
-            exceptedResponses = new HashMap<Long, NetworkMessage>();
+            pendingRequests = new HashMap<Long, NetworkRequest<?>>();
 
             client = new NioClient(InetAddress.getByName(hostname), port);
             handler = new ClientNetworkWorker(this);
@@ -44,38 +44,31 @@ public class ClientNetworkEngine {
         client.send(message.getBytes());
     }
 
-    public void sendRequest(NetworkMessage requestMessage, NetworkMessage responseMessage) {
+    public void sendRequest(NetworkRequest<?> networkRequest) {
+    
         long responseIndex = pickResponseIndex();
-        requestMessage.setResponseIndex(responseIndex);
-        exceptedResponses.put(responseIndex, responseMessage);
-
-        send(requestMessage);
+        networkRequest.getRequestMessage().setResponseIndex(responseIndex);
+        pendingRequests.put(responseIndex, networkRequest);
+        send(networkRequest.getRequestMessage());
 
     }
 
     public void pushMessage(NetworkMessage message) {
-        switch (message.getType()) {
-            case LOGIN_RESPONSE: {
-                LoginResponseMessage m = (LoginResponseMessage) message;
-                if (m.success) {
-                    System.out.println("login successful");
-                } else {
-                    System.out.println("login failed: " + m.reason);
-                }
+        
+        long responseIndex = message.getResponseIndex();
+        if(responseIndex != 0) {
+            if(pendingRequests.containsKey(responseIndex)) {
+                NetworkRequest<?> request = pendingRequests.remove(responseIndex);
+                request.setResponse(message);
+                return;
             }
-                break;
-            case SIGNUP_RESPONSE: {
-                SignupResponseMessage m = (SignupResponseMessage) message;
-                if (m.success) {
-                    System.out.println("signup successful");
-                } else {
-                    System.out.println("signup failed: " + m.reason);
-                }
-            }
-                break;
-            default:
-                System.err.println("Unsupported network type");
+            
+            
         }
+        
+        System.err.println("Unsupported network type");
     }
+
+    
 
 }

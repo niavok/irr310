@@ -3,7 +3,7 @@ package com.irr310.server.event;
 import com.irr310.common.network.NetworkMessage;
 import com.irr310.server.network.NetworkClient;
 
-public class NetworkEvent extends EngineEvent {
+public class NetworkEvent extends ServerEngineEvent {
 
     private final NetworkMessage message;
     private final NetworkClient client;
@@ -14,7 +14,7 @@ public class NetworkEvent extends EngineEvent {
     }
 
     @Override
-    public void accept(EngineEventVisitor visitor) {
+    public void accept(ServerEngineEventVisitor visitor) {
         visitor.visit(this);
     }
 

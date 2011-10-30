@@ -4,7 +4,7 @@ import com.irr310.server.Vect3;
 import com.irr310.server.game.world.Ship;
 import com.irr310.server.game.world.WorldObject;
 
-public class WorldShipAddedEvent extends EngineEvent {
+public class WorldShipAddedEvent extends ServerEngineEvent {
 
 	final private Ship ship;
 	private final Vect3 position;
@@ -15,7 +15,7 @@ public class WorldShipAddedEvent extends EngineEvent {
 	}
 
 	@Override
-	public void accept(EngineEventVisitor visitor) {
+	public void accept(ServerEngineEventVisitor visitor) {
 		visitor.visit(this);
 	}
 

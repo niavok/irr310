@@ -3,23 +3,20 @@ package com.irr310.server.network;
 import java.io.IOException;
 import java.nio.channels.SocketChannel;
 
+import com.irr310.common.engine.EventEngine;
 import com.irr310.common.network.NetworkMessage;
 import com.irr310.common.network.protocol.LoginRequestMessage;
 import com.irr310.common.network.protocol.LoginResponseMessage;
 import com.irr310.common.network.protocol.SignupRequestMessage;
 import com.irr310.common.network.protocol.SignupResponseMessage;
-import com.irr310.server.Engine;
 import com.irr310.server.GameServer;
-import com.irr310.server.event.DefaultEngineEventVisitor;
-import com.irr310.server.event.EngineEvent;
-import com.irr310.server.event.InitEngineEvent;
+import com.irr310.server.event.DefaultServerEngineEventVisitor;
 import com.irr310.server.event.NetworkEvent;
-import com.irr310.server.event.PauseEngineEvent;
 import com.irr310.server.event.QuitGameEvent;
-import com.irr310.server.event.StartEngineEvent;
+import com.irr310.server.event.ServerEngineEvent;
 import com.irr310.server.game.Player;
 
-public class NetworkEngine extends Engine {
+public class NetworkEngine extends EventEngine<ServerEngineEvent> {
 
     public NetworkEngine() {
 
@@ -33,22 +30,17 @@ public class NetworkEngine extends Engine {
 
     }
 
-    @Override
-    protected void frame() {
-        // TODO Auto-generated method stub
-
-    }
 
     @Override
-    protected void processEvent(EngineEvent e) {
+    protected void processEvent(ServerEngineEvent e) {
         e.accept(new NetworkEngineEventVisitor());
     }
 
-    private final class NetworkEngineEventVisitor extends DefaultEngineEventVisitor {
+    private final class NetworkEngineEventVisitor extends DefaultServerEngineEventVisitor {
         @Override
         public void visit(QuitGameEvent event) {
             System.out.println("stopping network engine");
-            isRunning = false;
+            setRunning(false);
 
         }
 

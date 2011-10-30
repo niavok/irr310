@@ -4,7 +4,7 @@ import com.irr310.server.Vect3;
 import com.irr310.server.game.world.WorldObject;
 
 
-public class AddWorldObjectEvent extends EngineEvent {
+public class AddWorldObjectEvent extends ServerEngineEvent {
 
 	private Type type;
 	private String name;
@@ -20,7 +20,7 @@ public class AddWorldObjectEvent extends EngineEvent {
 	}
 
 	@Override
-	public void accept(EngineEventVisitor visitor) {
+	public void accept(ServerEngineEventVisitor visitor) {
 		visitor.visit(this);
 	}
 

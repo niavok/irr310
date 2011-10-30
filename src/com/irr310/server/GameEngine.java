@@ -1,9 +1,10 @@
 package com.irr310.server;
 
+import com.irr310.common.engine.EventEngine;
 import com.irr310.server.event.AddShipEvent;
 import com.irr310.server.event.AddWorldObjectEvent;
-import com.irr310.server.event.DefaultEngineEventVisitor;
-import com.irr310.server.event.EngineEvent;
+import com.irr310.server.event.DefaultServerEngineEventVisitor;
+import com.irr310.server.event.ServerEngineEvent;
 import com.irr310.server.event.InitEngineEvent;
 import com.irr310.server.event.PauseEngineEvent;
 import com.irr310.server.event.QuitGameEvent;
@@ -14,41 +15,21 @@ import com.irr310.server.game.world.Component;
 import com.irr310.server.game.world.LinearEngine;
 import com.irr310.server.game.world.Ship;
 
-public class GameEngine extends Engine {
+public class GameEngine extends EventEngine<ServerEngineEvent> {
 
 	public GameEngine() {
 	}
 
 	@Override
-	protected void frame() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void processEvent(EngineEvent e) {
+	protected void processEvent(ServerEngineEvent e) {
 		e.accept(new GameEngineEventVisitor());
 	}
 
-	private final class GameEngineEventVisitor extends DefaultEngineEventVisitor {
+	private final class GameEngineEventVisitor extends DefaultServerEngineEventVisitor {
 		@Override
 		public void visit(QuitGameEvent event) {
 			System.out.println("stopping game engine");
-			isRunning = false;
-		}
-
-		@Override
-		public void visit(StartEngineEvent event) {
-			pause(false);
-		}
-
-		@Override
-		public void visit(InitEngineEvent event) {
-		}
-
-		@Override
-		public void visit(PauseEngineEvent event) {
-			pause(true);
+			setRunning(false);
 		}
 
 		@Override
@@ -107,14 +88,10 @@ public class GameEngine extends Engine {
 
 	@Override
 	protected void init() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	protected void end() {
-		// TODO Auto-generated method stub
-
 	}
 
 }

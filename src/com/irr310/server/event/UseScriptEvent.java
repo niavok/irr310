@@ -4,7 +4,7 @@ import java.io.File;
 
 
 
-public class UseScriptEvent extends EngineEvent {
+public class UseScriptEvent extends ServerEngineEvent {
 
 	private final Type type;
 	private final File script;
@@ -20,7 +20,7 @@ public class UseScriptEvent extends EngineEvent {
 	}
 
 	@Override
-	public void accept(EngineEventVisitor visitor) {
+	public void accept(ServerEngineEventVisitor visitor) {
 		visitor.visit(this);
 	}
 

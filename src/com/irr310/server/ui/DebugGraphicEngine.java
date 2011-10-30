@@ -2,14 +2,14 @@ package com.irr310.server.ui;
 
 import org.lwjgl.opengl.Display;
 
+import com.irr310.common.engine.FramerateEngine;
 import com.irr310.server.Duration;
-import com.irr310.server.Engine;
 import com.irr310.server.TransformMatrix;
 import com.irr310.server.TransformMatrix.TransformMatrixChangeListener;
-import com.irr310.server.event.DefaultEngineEventVisitor;
-import com.irr310.server.event.EngineEvent;
+import com.irr310.server.event.DefaultServerEngineEventVisitor;
 import com.irr310.server.event.PauseEngineEvent;
 import com.irr310.server.event.QuitGameEvent;
+import com.irr310.server.event.ServerEngineEvent;
 import com.irr310.server.event.StartEngineEvent;
 import com.irr310.server.event.WorldObjectAddedEvent;
 import com.irr310.server.event.WorldShipAddedEvent;
@@ -33,7 +33,7 @@ import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DGroupElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DLine;
 
-public class DebugGraphicEngine extends Engine {
+public class DebugGraphicEngine extends FramerateEngine<ServerEngineEvent> {
 
 	final V3DContext context = new V3DContext();
 	V3DCameraBinding fullscreenBinding;
@@ -162,16 +162,16 @@ public class DebugGraphicEngine extends Engine {
 	}
 
 	@Override
-	protected void processEvent(EngineEvent e) {
+	protected void processEvent(ServerEngineEvent e) {
 		e.accept(new DebugGraphicEngineEventVisitor());
 	}
 
 	private final class DebugGraphicEngineEventVisitor extends
-			DefaultEngineEventVisitor {
+			DefaultServerEngineEventVisitor {
 		@Override
 		public void visit(QuitGameEvent event) {
 			System.out.println("stopping debug graphic engine");
-			isRunning = false;
+			setRunning(false);
 		}
 
 		@Override
