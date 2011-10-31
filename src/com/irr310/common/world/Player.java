@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import com.irr310.common.tools.Hash;
+import com.irr310.common.world.view.PlayerView;
 import com.irr310.common.world.view.ShipView;
 
 public class Player extends GameEntity {
@@ -45,6 +46,13 @@ public class Player extends GameEntity {
     
     public List<Ship> getShipList() {
         return shipList;
+    }
+
+    public PlayerView toView() {
+        PlayerView playerView = new PlayerView();
+        playerView.id = getId();
+        playerView.login = login;
+        return playerView;
     }
 
 }

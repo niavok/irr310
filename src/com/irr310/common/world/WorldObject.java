@@ -3,27 +3,40 @@ package com.irr310.common.world;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public abstract class WorldObject extends GameEntity {
 
-	private String name;
-	protected List<Part> parts;
-	
-	public WorldObject(long id) {
-	    super(id);
-		name = "unamed object";
-		parts = new ArrayList<Part>();
-	}
+    private String name;
+    protected List<Part> parts;
+    private Part firstPart;
 
-	public String getName() {
-		return getName();
-	}
+    public WorldObject(long id) {
+        super(id);
+        name = "unamed object";
+        firstPart = null;
+        parts = new ArrayList<Part>();
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public List<Part> getParts() {
-		return parts;
-	}
+    public String getName() {
+        return getName();
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Part> getParts() {
+        return parts;
+    }
+
+    public void addPart(Part part) {
+        parts.add(part);
+        if (firstPart == null) {
+            firstPart = part;
+        }
+    }
+
+    public Part getFirstPart() {
+        return firstPart;
+    }
+
 }

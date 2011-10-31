@@ -2,6 +2,7 @@ package com.irr310.common.world;
 
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vect3;
+import com.irr310.common.world.view.PartView;
 
 public class Part extends GameEntity {
 
@@ -50,5 +51,16 @@ public class Part extends GameEntity {
 	public void setShape(Vect3 shape) {
 		this.shape = shape;
 	}
+
+    public PartView toView() {
+        PartView partView = new PartView();
+        partView.id = getId();
+        partView.linearSpeed = linearSpeed;
+        partView.mass = mass;
+        partView.rotationSpeed = rotationSpeed;
+        partView.shape = shape;
+        partView.transform = transform;
+        return partView;
+    }
 
 }

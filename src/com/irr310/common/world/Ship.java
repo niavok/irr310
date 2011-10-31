@@ -95,6 +95,18 @@ public class Ship extends GameEntity implements Container {
     public ShipView toView() {
         ShipView shipView = new ShipView();
         shipView.id = getId();
+        shipView.owner = owner.toView();
+        
+        for(Link link: links) {
+            shipView.links.add(link.toView());    
+        }
+        
+        for(Component component: components) {
+            shipView.components.add(component.toView());
+        }
+         
         return shipView;
     }
+    
+    
 }

@@ -3,14 +3,13 @@ package com.irr310.server.game;
 import com.irr310.common.tools.Vect3;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.Part;
-import com.irr310.common.world.SimpleComponent;
 import com.irr310.server.GameServer;
 
 public class ComponentFactory {
 
-    public static SimpleComponent createBigPropeller() {
-        SimpleComponent component = createSimpleComponent();
-        Part part = component.getPart();
+    public static Component createBigPropeller() {
+        Component component = createSimpleComponent();
+        Part part = component.getFirstPart();
         part.setMass(48d);
 
         part.setShape(new Vect3(4, 2, 4));
@@ -20,9 +19,9 @@ public class ComponentFactory {
         return component;
     }
 
-    public static SimpleComponent createCamera() {
-        SimpleComponent component = createSimpleComponent();
-        Part part = component.getPart();
+    public static Component createCamera() {
+        Component component = createSimpleComponent();
+        Part part = component.getFirstPart();
         part.setMass(1d);
 
         part.setShape(new Vect3(1, 1, 1));
@@ -32,9 +31,9 @@ public class ComponentFactory {
         return component;
     }
 
-    public static SimpleComponent createFactory() {
-        SimpleComponent component = createSimpleComponent();
-        Part part = component.getPart();
+    public static Component createFactory() {
+        Component component = createSimpleComponent();
+        Part part = component.getFirstPart();
         part.setMass(48d);
 
         part.setShape(new Vect3(4, 4, 3));
@@ -44,9 +43,9 @@ public class ComponentFactory {
         return component;
     }
 
-    public static SimpleComponent createPVCell() {
-        SimpleComponent component = createSimpleComponent();
-        Part part = component.getPart();
+    public static Component createPVCell() {
+        Component component = createSimpleComponent();
+        Part part = component.getFirstPart();
         part.setMass(5d);
 
         part.setShape(new Vect3(6, 6, 1));
@@ -56,9 +55,9 @@ public class ComponentFactory {
         return component;
     }
 
-    public static SimpleComponent createHangar() {
-        SimpleComponent component = createSimpleComponent();
-        Part part = component.getPart();
+    public static Component createHangar() {
+        Component component = createSimpleComponent();
+        Part part = component.getFirstPart();
         part.setMass(48d);
 
         part.setShape(new Vect3(4, 4, 3));
@@ -68,9 +67,9 @@ public class ComponentFactory {
         return component;
     }
 
-    public static SimpleComponent createRefinery() {
-        SimpleComponent component = createSimpleComponent();
-        Part part = component.getPart();
+    public static Component createRefinery() {
+        Component component = createSimpleComponent();
+        Part part = component.getFirstPart();
         part.setMass(48d);
 
         part.setShape(new Vect3(4, 4, 3));
@@ -80,9 +79,9 @@ public class ComponentFactory {
         return component;
     }
 
-    public static SimpleComponent createTank() {
-        SimpleComponent component = createSimpleComponent();
-        Part part = component.getPart();
+    public static Component createTank() {
+        Component component = createSimpleComponent();
+        Part part = component.getFirstPart();
         part.setMass(20d);
 
         part.setShape(new Vect3(4, 7, 4));
@@ -92,9 +91,9 @@ public class ComponentFactory {
         return component;
     }
 
-    public static SimpleComponent createHarvester() {
-        SimpleComponent component = createSimpleComponent();
-        Part part = component.getPart();
+    public static Component createHarvester() {
+        Component component = createSimpleComponent();
+        Part part = component.getFirstPart();
         part.setMass(48d);
 
         part.setShape(new Vect3(4, 4, 3));
@@ -104,9 +103,9 @@ public class ComponentFactory {
         return component;
     }
 
-    public static SimpleComponent createKernel() {
-        SimpleComponent component = createSimpleComponent();
-        Part part = component.getPart();
+    public static Component createKernel() {
+        Component component = createSimpleComponent();
+        Part part = component.getFirstPart();
         part.setMass(1d);
 
         part.setShape(new Vect3(1, 1, 1));
@@ -116,30 +115,32 @@ public class ComponentFactory {
         return component;
     }
 
-    public static SimpleComponent createGate() {
-        SimpleComponent component = createSimpleComponent();
+    public static Component createGate() {
+        Component component = createSimpleComponent();
         return component;
     }
 
-    public static SimpleComponent createBeam() {
-        SimpleComponent component = createSimpleComponent();
+    public static Component createBeam() {
+        Component component = createSimpleComponent();
         return component;
     }
 
-    public static SimpleComponent createPiston() {
-        SimpleComponent component = createSimpleComponent();
+    public static Component createPiston() {
+        Component component = createSimpleComponent();
         return component;
     }
 
-    public static SimpleComponent createTorqueEngine() {
-        SimpleComponent component = createSimpleComponent();
+    public static Component createTorqueEngine() {
+        Component component = createSimpleComponent();
         return component;
     }
 
     // Tools
 
-    private static SimpleComponent createSimpleComponent() {
-        return new SimpleComponent(GameServer.pickNewId(), GameServer.pickNewId());
+    private static Component createSimpleComponent() {
+        Component component = new Component(GameServer.pickNewId());
+        component.addPart(new Part(GameServer.pickNewId()));
+        return component;
     }
 
     private static void generateBoxSlots(Component component, Part part) {

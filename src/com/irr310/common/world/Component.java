@@ -5,9 +5,10 @@ import java.util.List;
 
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vect3;
+import com.irr310.common.world.view.ComponentView;
 
 
-public abstract class  Component extends WorldObject {
+public final class  Component extends WorldObject {
 
 	
 	private double durabilityMax;
@@ -17,7 +18,7 @@ public abstract class  Component extends WorldObject {
 	private Container container;
 	private Vect3 shipPosition;
 	private Vect3 shipRotation;
-	List<Slot> slots;
+	private List<Slot> slots;
 	
 	public Component(long id) {
 	    super(id);
@@ -86,12 +87,27 @@ public abstract class  Component extends WorldObject {
 		return shipRotation;
 	}
 
-	public abstract void changeTranslation(Vect3 position);
 
-	public abstract void changeLinearSpeed(Vect3 linearSpeed) ;
+    public void changeTranslation(Vect3 position) {
+	    for(Part part: parts) {
+	        part.getTransform().setTranslation(position);    
+	    }
+        
+    }
 
-	public abstract void changeRotationSpeed(Vect3 rotationSpeed) ;
+    public void changeLinearSpeed(Vect3 linearSpeed) {
+        for(Part part: parts) {
+            part.getLinearSpeed().set(linearSpeed);
+        }
+    }
 
+    public void changeRotationSpeed(Vect3 rotationSpeed) {
+        for(Part part: parts) {
+            part.getRotationSpeed().set(rotationSpeed);
+        }
+    }
+	
+	
 	public Vect3 getLocalShipPosition(Vect3 absolutePosition) {
 
 		TransformMatrix tmp = TransformMatrix.identity();
@@ -120,9 +136,23 @@ public abstract class  Component extends WorldObject {
 		return tmp.getTranslation();
 	}
 
-	
-	
+    public ComponentView toView() {
+        ComponentView componentView = new ComponentView();
+        
+        componentView.id = getId();
+        componentView.shipPosition = shipPosition;
+        componentView.shipRotation = shipRotation;
+        for(Part part: parts) {
+            componentView.parts.add(part.toView());    
+        }
+        
+        for(Slot slot: slots) {
+            componentView.slots.add(slot.toView());    
+        }
+        
+        return componentView;
+    }
 
-	
+    
 	
 }

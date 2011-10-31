@@ -1,5 +1,7 @@
 package com.irr310.common.world;
 
+import com.irr310.common.world.view.LinkView;
+
 public class Link {
 
 	private final Slot slot1;
@@ -17,6 +19,13 @@ public class Link {
 	public Slot getSlot2() {
 		return slot2;
 	}
+
+    public LinkView toView() {
+        LinkView linkView = new LinkView();
+        linkView.slot1Id = slot1.getId();
+        linkView.slot2Id = slot2.getId();
+        return linkView;
+    }
 	
 	
 
