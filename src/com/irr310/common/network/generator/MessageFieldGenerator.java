@@ -1,15 +1,15 @@
 package com.irr310.common.network.generator;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.lang.reflect.Type;
-import java.util.List;
 
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.irr310.common.network.NetworkClass;
-import com.irr310.common.network.NetworkListField;
 import com.irr310.common.network.NetworkField;
+import com.irr310.common.network.NetworkListField;
+import com.irr310.common.network.NetworkOptionalField;
+import com.irr310.common.tools.TransformMatrix;
+import com.irr310.common.tools.Vect3;
 
 public abstract class MessageFieldGenerator<T> {
 
@@ -37,6 +37,12 @@ public abstract class MessageFieldGenerator<T> {
             return (MessageFieldGenerator<V>) new IntegerMessageFieldGenerator();
         } else if (type.equals(long.class)) {
             return (MessageFieldGenerator<V>) new LongMessageFieldGenerator();
+        } else if (type.equals(double.class)) {
+            return (MessageFieldGenerator<V>) new DoubleMessageFieldGenerator();
+        } else if (type.equals(Vect3.class)) {
+            return (MessageFieldGenerator<V>) new Vect3MessageFieldGenerator();
+        } else if (type.equals(TransformMatrix.class)) {
+            return (MessageFieldGenerator<V>) new TransformMatrixMessageFieldGenerator();
         } else {
             // Look for NetworkClass annotation
 
@@ -49,14 +55,6 @@ public abstract class MessageFieldGenerator<T> {
             }
 
         }
-
-        /*
-         * } else if (field.getAnnotation(NetworkListParam.class) != null) {
-         * NetworkListParam annotation =
-         * field.getAnnotation(NetworkListParam.class); Class<?> value =
-         * annotation.value(); fields.add(new ListMessageFieldDescription(field,
-         * value)); return null;
-         */
     }
 
     public static MessageFieldGenerator<?> getFromField(Field field) {
@@ -73,23 +71,12 @@ public abstract class MessageFieldGenerator<T> {
 
             return new ListMessageFieldGenerator(type);
         }
+        
+        if (field.getAnnotation(NetworkOptionalField.class) != null) {
+            return new OptionalMessageFieldGenerator(getFromType(field.getType()));
+        }
 
         return null;
-        /*
-         * if (field.getAnnotation(NetworkParam.class) != null) { Class<?> type
-         * = field.getType(); if(type.equals(String.class)) { fields.add(new
-         * StringMessageFieldDescription(field)); } else
-         * if(type.equals(boolean.class)) { fields.add(new
-         * BooleanMessageFieldDescription(field)); } else {
-         * System.out.println("Field type not supported for network: "+
-         * field.getDeclaringClass()); } } else if
-         * (field.getAnnotation(NetworkListParam.class) != null) {
-         * NetworkListParam annotation =
-         * field.getAnnotation(NetworkListParam.class); Class<?> value =
-         * annotation.value(); fields.add(new ListMessageFieldDescription(field,
-         * value)); return null;
-         */
-
     }
 
 }

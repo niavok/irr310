@@ -37,8 +37,11 @@ public abstract class FramerateEngine extends Engine {
                     // Pause
                     currentTime.durationTo(nextTime).sleep();
                 } else {
-                    System.err.println(this.getClass().getSimpleName() + " engine is late by " + nextTime.durationTo(currentTime).getDuration()
-                            + " ns ! No pause !");
+                    // TODO : check fps system
+                    // System.err.println(this.getClass().getSimpleName() +
+                    // " engine is late by " +
+                    // nextTime.durationTo(currentTime).getDuration()
+                    // + " ns ! No pause !");
                 }
 
             } else {
