@@ -92,6 +92,11 @@ public class GameClient extends Game {
 
         System.out.println("Irr310 - v0.1a");
 
+        LoginForm loginForm = new LoginForm();
+        loginForm.setLocationRelativeTo(loginForm.getParent());
+        loginForm.setVisible(true);
+        
+        
         Reader reader = new InputStreamReader(System.in);
         BufferedReader input = new BufferedReader(reader);
 

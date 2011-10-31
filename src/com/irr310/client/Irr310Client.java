@@ -9,18 +9,17 @@ public class Irr310Client {
 	private static LoginForm loginForm;
 
 	public static void main(String[] args) {
-
+	    setLookAndFeel();
+	    
 		// Init static game client
 	    ParameterAnalyser parameterAnalyser = new ParameterAnalyser(args);
 	    GameClient gameClient = new GameClient(parameterAnalyser);
 	    gameClient.run();
 		
 		
-		setLookAndFeel();
+		
 
-		loginForm = new LoginForm();
-		loginForm.setLocationRelativeTo(loginForm.getParent());
-		loginForm.setVisible(true);
+		
 	}
 
 	private static void setLookAndFeel() {
