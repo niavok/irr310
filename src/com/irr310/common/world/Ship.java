@@ -3,6 +3,7 @@ package com.irr310.common.world;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.irr310.common.Game;
 import com.irr310.common.tools.Vect3;
 import com.irr310.common.world.capacity.KernelCapacity;
 import com.irr310.common.world.view.ShipView;
@@ -106,6 +107,13 @@ public class Ship extends GameEntity implements Container {
         }
          
         return shipView;
+    }
+
+    public void fromView(ShipView shipView) {
+        World world = Game.getInstance().getWorld();
+        setOwner(world.loadPlayer(shipView.owner));
+        
+        TODO
     }
     
     

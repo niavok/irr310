@@ -20,7 +20,7 @@ public class AddWorldObjectEvent extends EngineEvent {
 	}
 
 	@Override
-	public void accept(ServerEngineEventVisitor visitor) {
+	public void accept(EngineEventVisitor visitor) {
 		visitor.visit(this);
 	}
 

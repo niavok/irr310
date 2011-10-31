@@ -1,7 +1,7 @@
 package com.irr310.common.event;
 
 
-public interface ServerEngineEventVisitor {
+public interface EngineEventVisitor {
 
 	public abstract void visit(QuitGameEvent event);
 
@@ -22,4 +22,6 @@ public interface ServerEngineEventVisitor {
 	public abstract void visit(WorldShipAddedEvent event);
 
     public abstract void visit(NetworkEvent event);
+
+    public abstract void visit(PlayerAddedEvent event);
 }

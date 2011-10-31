@@ -55,4 +55,7 @@ public class Player extends GameEntity {
         return playerView;
     }
 
+    public void fromView(PlayerView playerView) {
+    }
+
 }

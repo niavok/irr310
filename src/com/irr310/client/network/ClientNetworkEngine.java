@@ -4,6 +4,7 @@ import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.irr310.common.Game;
 import com.irr310.common.engine.EventEngine;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
@@ -11,6 +12,8 @@ import com.irr310.common.event.NetworkEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.network.NetworkMessage;
 import com.irr310.common.network.protocol.ShipListMessage;
+import com.irr310.common.world.Ship;
+import com.irr310.common.world.World;
 import com.irr310.common.world.view.ShipView;
 
 public class ClientNetworkEngine extends EventEngine {
@@ -105,9 +108,10 @@ public class ClientNetworkEngine extends EventEngine {
     private void shipListReceived(NetworkMessage message) {
         ShipListMessage m = (ShipListMessage) message;
         System.out.println("Ship list received");
-        for (ShipView ship : m.shipsList) {
-            System.out.println("Ship received: " + ship.id);
-            ;
+        for (ShipView shipView : m.shipsList) {
+            Ship ship = Game.getInstance().getWorld().getOrCreateShip(shipView);
+            ship.fromView(shipView);
+            System.out.println("Ship received: " + ship.getId());
         }
 
     }
