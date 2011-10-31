@@ -1,15 +1,14 @@
 package com.irr310.server.network;
 
-import java.nio.channels.SelectableChannel;
 import java.nio.channels.SocketChannel;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.irr310.common.event.NetworkEvent;
 import com.irr310.common.network.MessageParser;
 import com.irr310.common.network.NetworkMessage;
-import com.irr310.server.event.NetworkEvent;
 
 public class NetworkWorker implements Runnable {
 	private List queue = new LinkedList();

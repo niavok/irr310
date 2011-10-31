@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.irr310.common.engine.EventEngine;
+import com.irr310.common.event.DefaultEngineEventVisitor;
+import com.irr310.common.event.EngineEvent;
+import com.irr310.common.event.NetworkEvent;
+import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.network.NetworkMessage;
 import com.irr310.common.network.protocol.LoginRequestMessage;
 import com.irr310.common.network.protocol.LoginResponseMessage;
@@ -14,14 +18,10 @@ import com.irr310.common.network.protocol.SignupRequestMessage;
 import com.irr310.common.network.protocol.SignupResponseMessage;
 import com.irr310.common.world.ShipView;
 import com.irr310.server.GameServer;
-import com.irr310.server.event.DefaultServerEngineEventVisitor;
-import com.irr310.server.event.NetworkEvent;
-import com.irr310.server.event.QuitGameEvent;
-import com.irr310.server.event.ServerEngineEvent;
 import com.irr310.server.game.Player;
 import com.irr310.server.game.world.Ship;
 
-public class NetworkEngine extends EventEngine<ServerEngineEvent> {
+public class NetworkEngine extends EventEngine {
 
     public NetworkEngine() {
 
@@ -37,11 +37,11 @@ public class NetworkEngine extends EventEngine<ServerEngineEvent> {
 
 
     @Override
-    protected void processEvent(ServerEngineEvent e) {
+    protected void processEvent(EngineEvent e) {
         e.accept(new NetworkEngineEventVisitor());
     }
 
-    private final class NetworkEngineEventVisitor extends DefaultServerEngineEventVisitor {
+    private final class NetworkEngineEventVisitor extends DefaultEngineEventVisitor {
         @Override
         public void visit(QuitGameEvent event) {
             System.out.println("stopping network engine");

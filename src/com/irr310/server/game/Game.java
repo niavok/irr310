@@ -5,10 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.irr310.common.event.AddShipEvent;
 import com.irr310.server.GameServer;
-import com.irr310.server.Vect3;
-import com.irr310.server.event.AddShipEvent;
-import com.irr310.server.game.world.Ship;
 import com.irr310.server.game.world.World;
 
 public class Game {

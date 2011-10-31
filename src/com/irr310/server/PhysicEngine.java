@@ -1,13 +1,9 @@
 package com.irr310.server;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import javax.vecmath.Quat4f;
 import javax.vecmath.Vector3f;
-
-import org.lwjgl.Sys;
 
 import com.bulletphysics.collision.broadphase.BroadphaseInterface;
 import com.bulletphysics.collision.broadphase.BroadphaseProxy;
@@ -23,22 +19,20 @@ import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.dynamics.RigidBodyConstructionInfo;
 import com.bulletphysics.dynamics.constraintsolver.ConstraintSolver;
 import com.bulletphysics.dynamics.constraintsolver.Generic6DofConstraint;
-import com.bulletphysics.dynamics.constraintsolver.HingeConstraint;
 import com.bulletphysics.dynamics.constraintsolver.SequentialImpulseConstraintSolver;
 import com.bulletphysics.linearmath.Clock;
-import com.bulletphysics.linearmath.DefaultMotionState;
 import com.bulletphysics.linearmath.MatrixUtil;
 import com.bulletphysics.linearmath.MotionState;
 import com.bulletphysics.linearmath.Transform;
 import com.bulletphysics.util.ObjectArrayList;
 import com.irr310.common.engine.FramerateEngine;
-import com.irr310.server.event.DefaultServerEngineEventVisitor;
-import com.irr310.server.event.ServerEngineEvent;
-import com.irr310.server.event.PauseEngineEvent;
-import com.irr310.server.event.QuitGameEvent;
-import com.irr310.server.event.StartEngineEvent;
-import com.irr310.server.event.WorldObjectAddedEvent;
-import com.irr310.server.event.WorldShipAddedEvent;
+import com.irr310.common.event.DefaultEngineEventVisitor;
+import com.irr310.common.event.EngineEvent;
+import com.irr310.common.event.PauseEngineEvent;
+import com.irr310.common.event.QuitGameEvent;
+import com.irr310.common.event.StartEngineEvent;
+import com.irr310.common.event.WorldObjectAddedEvent;
+import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.server.game.world.Component;
 import com.irr310.server.game.world.Link;
 import com.irr310.server.game.world.Part;
@@ -46,7 +40,7 @@ import com.irr310.server.game.world.Ship;
 import com.irr310.server.game.world.Slot;
 import com.irr310.server.game.world.WorldObject;
 
-public class PhysicEngine extends FramerateEngine<ServerEngineEvent> {
+public class PhysicEngine extends FramerateEngine {
 
 	public static final float PI_2 = 1.57079632679489661923f;
 
@@ -312,12 +306,12 @@ public class PhysicEngine extends FramerateEngine<ServerEngineEvent> {
 	 */
 
 	@Override
-	protected void processEvent(ServerEngineEvent e) {
+	protected void processEvent(EngineEvent e) {
 		e.accept(new PhysicEngineEventVisitor());
 	}
 
 	private final class PhysicEngineEventVisitor extends
-			DefaultServerEngineEventVisitor {
+			DefaultEngineEventVisitor {
 		@Override
 		public void visit(QuitGameEvent event) {
 			System.out.println("stopping physic engine");

@@ -1,7 +1,7 @@
-package com.irr310.server.event;
+package com.irr310.common.event;
 
 
-public class StartEngineEvent extends ServerEngineEvent{
+public class StartEngineEvent extends EngineEvent{
 
 	@Override
 	public void accept(ServerEngineEventVisitor visitor) {

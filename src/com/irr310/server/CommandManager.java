@@ -4,14 +4,12 @@ import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.irr310.server.event.AddShipEvent;
-import com.irr310.server.event.AddWorldObjectEvent;
-import com.irr310.server.event.InitEngineEvent;
-import com.irr310.server.event.PauseEngineEvent;
-import com.irr310.server.event.StartEngineEvent;
-import com.irr310.server.event.UseScriptEvent;
-import com.irr310.server.event.UseScriptEvent.Type;
-import com.irr310.server.game.world.WorldObject;
+import com.irr310.common.event.AddWorldObjectEvent;
+import com.irr310.common.event.InitEngineEvent;
+import com.irr310.common.event.PauseEngineEvent;
+import com.irr310.common.event.StartEngineEvent;
+import com.irr310.common.event.UseScriptEvent;
+import com.irr310.common.event.UseScriptEvent.Type;
 
 public class CommandManager {
 

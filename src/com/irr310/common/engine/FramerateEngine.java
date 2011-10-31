@@ -3,7 +3,7 @@ package com.irr310.common.engine;
 import com.irr310.server.Duration;
 import com.irr310.server.Time;
 
-public abstract class FramerateEngine<T extends EngineEvent> extends Engine<T> {
+public abstract class FramerateEngine extends Engine {
 
     protected Duration framerate; // nsec
     private boolean isPaused;

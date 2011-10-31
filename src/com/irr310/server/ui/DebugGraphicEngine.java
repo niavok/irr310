@@ -3,16 +3,16 @@ package com.irr310.server.ui;
 import org.lwjgl.opengl.Display;
 
 import com.irr310.common.engine.FramerateEngine;
+import com.irr310.common.event.DefaultEngineEventVisitor;
+import com.irr310.common.event.EngineEvent;
+import com.irr310.common.event.PauseEngineEvent;
+import com.irr310.common.event.QuitGameEvent;
+import com.irr310.common.event.StartEngineEvent;
+import com.irr310.common.event.WorldObjectAddedEvent;
+import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.server.Duration;
 import com.irr310.server.TransformMatrix;
 import com.irr310.server.TransformMatrix.TransformMatrixChangeListener;
-import com.irr310.server.event.DefaultServerEngineEventVisitor;
-import com.irr310.server.event.PauseEngineEvent;
-import com.irr310.server.event.QuitGameEvent;
-import com.irr310.server.event.ServerEngineEvent;
-import com.irr310.server.event.StartEngineEvent;
-import com.irr310.server.event.WorldObjectAddedEvent;
-import com.irr310.server.event.WorldShipAddedEvent;
 import com.irr310.server.game.world.Component;
 import com.irr310.server.game.world.Part;
 import com.irr310.server.game.world.Ship;
@@ -33,7 +33,7 @@ import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DGroupElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DLine;
 
-public class DebugGraphicEngine extends FramerateEngine<ServerEngineEvent> {
+public class DebugGraphicEngine extends FramerateEngine {
 
 	final V3DContext context = new V3DContext();
 	V3DCameraBinding fullscreenBinding;
@@ -162,12 +162,12 @@ public class DebugGraphicEngine extends FramerateEngine<ServerEngineEvent> {
 	}
 
 	@Override
-	protected void processEvent(ServerEngineEvent e) {
+	protected void processEvent(EngineEvent e) {
 		e.accept(new DebugGraphicEngineEventVisitor());
 	}
 
 	private final class DebugGraphicEngineEventVisitor extends
-			DefaultServerEngineEventVisitor {
+			DefaultEngineEventVisitor {
 		@Override
 		public void visit(QuitGameEvent event) {
 			System.out.println("stopping debug graphic engine");

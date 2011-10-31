@@ -3,20 +3,20 @@ package com.irr310.common.engine;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import com.irr310.server.event.ServerEngineEvent;
+import com.irr310.common.event.EngineEvent;
 
-public abstract class Engine<T extends EngineEvent> extends Thread {
+public abstract class Engine extends Thread {
 
     private boolean isRunning;
-    protected Queue<T> eventsQueue;
+    protected Queue<EngineEvent> eventsQueue;
     // private Time nextTime;
     static int numRunningEngines = 0;
 
     public Engine() {
-        eventsQueue = new LinkedBlockingQueue<T>();
+        eventsQueue = new LinkedBlockingQueue<EngineEvent>();
     }
 
-    protected abstract void processEvent(T e);
+    protected abstract void processEvent(EngineEvent e);
 
     protected abstract void init();
 
@@ -26,7 +26,7 @@ public abstract class Engine<T extends EngineEvent> extends Thread {
         return numRunningEngines;
     }
 
-    public void pushEvent(T event) {
+    public void pushEvent(EngineEvent event) {
         synchronized (eventsQueue) {
             eventsQueue.add(event);
             eventsQueue.notify();
@@ -35,7 +35,7 @@ public abstract class Engine<T extends EngineEvent> extends Thread {
 
     protected void processQueue() {
         while (!eventsQueue.isEmpty()) {
-            T e = eventsQueue.poll();
+            EngineEvent e = eventsQueue.poll();
             processEvent(e);
         }
     }

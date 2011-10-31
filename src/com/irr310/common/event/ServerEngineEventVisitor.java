@@ -1,4 +1,4 @@
-package com.irr310.server.event;
+package com.irr310.common.event;
 
 
 public interface ServerEngineEventVisitor {

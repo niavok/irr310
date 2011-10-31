@@ -1,10 +1,10 @@
-package com.irr310.server.event;
+package com.irr310.common.event;
 
 import java.io.File;
 
 
 
-public class UseScriptEvent extends ServerEngineEvent {
+public class UseScriptEvent extends EngineEvent {
 
 	private final Type type;
 	private final File script;

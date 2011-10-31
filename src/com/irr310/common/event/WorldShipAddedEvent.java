@@ -1,10 +1,10 @@
-package com.irr310.server.event;
+package com.irr310.common.event;
 
 import com.irr310.server.Vect3;
 import com.irr310.server.game.world.Ship;
 import com.irr310.server.game.world.WorldObject;
 
-public class WorldShipAddedEvent extends ServerEngineEvent {
+public class WorldShipAddedEvent extends EngineEvent {
 
 	final private Ship ship;
 	private final Vect3 position;

@@ -1,37 +1,47 @@
-package com.irr310.server.event;
+package com.irr310.common.event;
 
 import com.irr310.server.Vect3;
-import com.irr310.server.game.Player;
+import com.irr310.server.game.world.WorldObject;
 
-public class AddShipEvent extends ServerEngineEvent {
+
+public class AddWorldObjectEvent extends EngineEvent {
 
 	private Type type;
+	private String name;
+	private WorldObject linkedObject;
 	private Vect3 position;
+	private Double mass;
 	private Vect3 rotationSpeed;
 	private Vect3 linearSpeed;
 	private Vect3 rotation;
-	private Player owner;
 
 	public enum Type {
-		SIMPLE,
+		LINEAR_ENGINE, CAMERA,
 	}
 
 	@Override
 	public void accept(ServerEngineEventVisitor visitor) {
 		visitor.visit(this);
 	}
-	
-	public AddShipEvent(Player owner) {
-        this.owner = owner;
-	    
-	}
 
 	public void setType(Type type) {
 		this.type = type;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setLinkedObject(WorldObject linkedObject) {
+		this.linkedObject = linkedObject;
+	}
+
 	public void setPosition(Vect3 position) {
 		this.position = position;
+	}
+
+	public void setMass(Double mass) {
+		this.mass = mass;
 	}
 
 	public void setRotationSpeed(Vect3 rotationSpeed) {
@@ -50,8 +60,20 @@ public class AddShipEvent extends ServerEngineEvent {
 		return type;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public WorldObject getLinkedObject() {
+		return linkedObject;
+	}
+
 	public Vect3 getPosition() {
 		return position;
+	}
+
+	public Double getMass() {
+		return mass;
 	}
 
 	public Vect3 getRotationSpeed() {
@@ -66,8 +88,5 @@ public class AddShipEvent extends ServerEngineEvent {
 		return rotation;
 	}
 
-    public Player getOwner() {
-        return owner;
-    }
-
+	
 }
