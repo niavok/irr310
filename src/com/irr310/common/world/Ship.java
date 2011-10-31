@@ -1,12 +1,11 @@
-package com.irr310.server.game.world;
+package com.irr310.common.world;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.irr310.common.world.ShipView;
-import com.irr310.server.Vect3;
-import com.irr310.server.game.GameEntity;
-import com.irr310.server.game.Player;
+import com.irr310.common.tools.Vect3;
+import com.irr310.common.world.capacity.KernelCapacity;
+import com.irr310.common.world.view.ShipView;
 import com.irr310.server.game.driver.Controller;
 
 public class Ship extends GameEntity implements Container {
@@ -15,10 +14,11 @@ public class Ship extends GameEntity implements Container {
 	private static final double MIN_LINK_DISTANCE = 0.1;
 	List<Link> links = new ArrayList<Link>();
 	List<Component> components = new ArrayList<Component>();
-	Kernel kernel;
+	KernelCapacity kernel;
     private Player owner;
 
-    public Ship() {
+    public Ship(long id) {
+        super(id);
         owner = null;
     }
     
@@ -76,11 +76,11 @@ public class Ship extends GameEntity implements Container {
 		return  links;
 	}
 
-	public void setKernel(Kernel kernel) {
+	public void setKernel(KernelCapacity kernel) {
 		this.kernel = kernel;
 	}
 	
-	public Controller getController() {
+	public KernelCapacity getController() {
 		return kernel;
 	}
 

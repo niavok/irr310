@@ -1,7 +1,6 @@
-package com.irr310.server.game.world;
+package com.irr310.common.world;
 
-import com.irr310.server.Vect3;
-import com.irr310.server.game.GameEntity;
+import com.irr310.common.tools.Vect3;
 
 public class Slot extends GameEntity {
 
@@ -9,7 +8,8 @@ public class Slot extends GameEntity {
 	private final Component parentComponent;
 	private final Part part;
 
-	public Slot(Component parentComponent, Part part,  Vect3 position) {
+	public Slot(long id, Component parentComponent, Part part,  Vect3 position) {
+	    super(id);
 		this.parentComponent = parentComponent;
 		this.part = part;
 		this.position = position;

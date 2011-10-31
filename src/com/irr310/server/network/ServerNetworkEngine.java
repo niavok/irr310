@@ -16,14 +16,14 @@ import com.irr310.common.network.protocol.LoginResponseMessage;
 import com.irr310.common.network.protocol.ShipListMessage;
 import com.irr310.common.network.protocol.SignupRequestMessage;
 import com.irr310.common.network.protocol.SignupResponseMessage;
-import com.irr310.common.world.ShipView;
+import com.irr310.common.world.Player;
+import com.irr310.common.world.Ship;
+import com.irr310.common.world.view.ShipView;
 import com.irr310.server.GameServer;
-import com.irr310.server.game.Player;
-import com.irr310.server.game.world.Ship;
 
-public class NetworkEngine extends EventEngine {
+public class ServerNetworkEngine extends EventEngine {
 
-    public NetworkEngine() {
+    public ServerNetworkEngine() {
 
         try {
             NetworkWorker worker = new NetworkWorker(this);
@@ -62,12 +62,12 @@ public class NetworkEngine extends EventEngine {
                     }
 
                     LoginRequestMessage m = (LoginRequestMessage) message;
-                    if (!GameServer.getInstance().getGame().isPlayerExist(m.login)) {
+                    if (!GameServer.getInstance().isPlayerExist(m.login)) {
                         event.getClient().send(new LoginResponseMessage(message.getResponseIndex(), false, "unknown user"));
                         break;
                     }
 
-                    Player player = GameServer.getInstance().getGame().getPlayerByLogin(m.login);
+                    Player player = GameServer.getInstance().getPlayerByLogin(m.login);
 
                     if (!player.checkPassword(m.password)) {
                         event.getClient().send(new LoginResponseMessage(message.getResponseIndex(), false, "bad password"));
@@ -90,14 +90,14 @@ public class NetworkEngine extends EventEngine {
                     }
 
                     SignupRequestMessage m = (SignupRequestMessage) message;
-                    if (GameServer.getInstance().getGame().isPlayerExist(m.login)) {
+                    if (GameServer.getInstance().isPlayerExist(m.login)) {
                         event.getClient().send(new SignupResponseMessage(message.getResponseIndex(), false, "username already used"));
                         break;
                     }
                     
                     // Ok, you can create the account
                     
-                    GameServer.getInstance().getGame().createPlayer(m.login, m.password);
+                    GameServer.getInstance().createPlayer(m.login, m.password);
                     event.getClient().send(new SignupResponseMessage(message.getResponseIndex(), true, "success"));
                 }
                     break;
@@ -131,19 +131,6 @@ public class NetworkEngine extends EventEngine {
 
     @Override
     protected void end() {
-    }
-
-    public void pushMessage(SocketChannel socketChannel, NetworkMessage message) {
-        System.out.println("Network engine receive a message");
-
-        // TODO: make a asyncronus queue
-
-        switch (message.getType()) {
-            case LOGIN_REQUEST:
-                LoginRequestMessage m = (LoginRequestMessage) message;
-                System.out.println("Login request: login=" + m.login + ", password=" + m.password);
-                break;
-        }
     }
 
 }

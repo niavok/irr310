@@ -2,6 +2,8 @@ package com.irr310.client;
 
 import javax.swing.UIManager;
 
+import com.irr310.server.ParameterAnalyser;
+
 public class Irr310Client {
 
 	private static LoginForm loginForm;
@@ -9,7 +11,9 @@ public class Irr310Client {
 	public static void main(String[] args) {
 
 		// Init static game client
-		new GameClient();
+	    ParameterAnalyser parameterAnalyser = new ParameterAnalyser(args);
+	    GameClient gameClient = new GameClient(parameterAnalyser);
+	    gameClient.run();
 		
 		
 		setLookAndFeel();

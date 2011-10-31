@@ -1,7 +1,7 @@
 package com.irr310.common.event;
 
-import com.irr310.server.Vect3;
-import com.irr310.server.game.Player;
+import com.irr310.common.tools.Vect3;
+import com.irr310.common.world.Player;
 
 public class AddShipEvent extends EngineEvent {
 

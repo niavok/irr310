@@ -4,13 +4,16 @@ import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.irr310.common.engine.EventEngine;
+import com.irr310.common.event.DefaultEngineEventVisitor;
+import com.irr310.common.event.EngineEvent;
+import com.irr310.common.event.NetworkEvent;
+import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.network.NetworkMessage;
-import com.irr310.common.network.protocol.LoginResponseMessage;
 import com.irr310.common.network.protocol.ShipListMessage;
-import com.irr310.common.network.protocol.SignupResponseMessage;
-import com.irr310.common.world.ShipView;
+import com.irr310.common.world.view.ShipView;
 
-public class ClientNetworkEngine {
+public class ClientNetworkEngine extends EventEngine {
 
     private NioClient client;
     private ClientNetworkWorker handler;
@@ -55,25 +58,48 @@ public class ClientNetworkEngine {
 
     }
 
-    public void pushMessage(NetworkMessage message) {
+    @Override
+    protected void processEvent(EngineEvent e) {
+        e.accept(new NetworkEngineEventVisitor());
+    }
 
-        long responseIndex = message.getResponseIndex();
-        if (responseIndex != 0) {
-            if (pendingRequests.containsKey(responseIndex)) {
-                NetworkRequest<?> request = pendingRequests.remove(responseIndex);
-                request.setResponse(message);
-                return;
+    private final class NetworkEngineEventVisitor extends DefaultEngineEventVisitor {
+        @Override
+        public void visit(QuitGameEvent event) {
+            System.out.println("stopping network engine");
+            setRunning(false);
+
+        }
+
+        @Override
+        public void visit(NetworkEvent event) {
+
+            long responseIndex = event.getMessage().getResponseIndex();
+            if (responseIndex != 0) {
+                if (pendingRequests.containsKey(responseIndex)) {
+                    NetworkRequest<?> request = pendingRequests.remove(responseIndex);
+                    request.setResponse(event.getMessage());
+                    return;
+                }
+            }
+
+            switch (event.getMessage().getType()) {
+                case SHIP_LIST:
+                    shipListReceived(event.getMessage());
+                    break;
+                default:
+                    System.err.println("Unsupported network type " + event.getMessage().getType());
             }
         }
 
-        switch (message.getType()) {
-            case SHIP_LIST:
-                shipListReceived(message);
-                break;
-            default:
-                System.err.println("Unsupported network type " + message.getType());
-        }
+    }
 
+    @Override
+    protected void init() {
+    }
+
+    @Override
+    protected void end() {
     }
 
     private void shipListReceived(NetworkMessage message) {
@@ -85,5 +111,4 @@ public class ClientNetworkEngine {
         }
 
     }
-
 }

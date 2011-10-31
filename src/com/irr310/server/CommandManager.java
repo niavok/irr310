@@ -10,6 +10,7 @@ import com.irr310.common.event.PauseEngineEvent;
 import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.event.UseScriptEvent;
 import com.irr310.common.event.UseScriptEvent.Type;
+import com.irr310.common.tools.Vect3;
 
 public class CommandManager {
 

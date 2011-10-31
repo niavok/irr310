@@ -1,14 +1,15 @@
-package com.irr310.server.game.world;
+package com.irr310.common.world;
 
-import com.irr310.server.Vect3;
+import com.irr310.common.tools.Vect3;
 
 
-public abstract  class SimpleComponent extends Component {
+public final  class SimpleComponent extends Component {
 
 	protected Part uniquePart;
 
-	public SimpleComponent() {
-		uniquePart = new Part();
+	public SimpleComponent(long id, long partId) {
+	    super(id);
+		uniquePart = new Part(partId);
 		parts.add(uniquePart);
 		
 	}
@@ -27,6 +28,10 @@ public abstract  class SimpleComponent extends Component {
 	public void changeRotationSpeed(Vect3 rotationSpeed) {
 		uniquePart.getRotationSpeed().set(rotationSpeed);
 	}
+
+    public Part getPart() {
+        return uniquePart;
+    }
 
 	
 

@@ -1,7 +1,7 @@
 package com.irr310.common.event;
 
+import com.irr310.common.network.NetworkClient;
 import com.irr310.common.network.NetworkMessage;
-import com.irr310.server.network.NetworkClient;
 
 public class NetworkEvent extends EngineEvent {
 

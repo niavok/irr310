@@ -1,8 +1,7 @@
-package com.irr310.server.game.world;
+package com.irr310.common.world;
 
-import com.irr310.server.TransformMatrix;
-import com.irr310.server.Vect3;
-import com.irr310.server.game.GameEntity;
+import com.irr310.common.tools.TransformMatrix;
+import com.irr310.common.tools.Vect3;
 
 public class Part extends GameEntity {
 
@@ -13,7 +12,8 @@ public class Part extends GameEntity {
 	private final TransformMatrix transform;
 	private Vect3 shape;
 
-	public Part() {
+	public Part(long id) {
+	    super(id);
 		// position = Vect3.origin();
 		rotationSpeed = Vect3.origin();
 		linearSpeed = Vect3.origin();

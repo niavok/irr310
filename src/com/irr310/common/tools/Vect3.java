@@ -1,4 +1,4 @@
-package com.irr310.server;
+package com.irr310.common.tools;
 
 import java.util.ArrayList;
 import java.util.List;

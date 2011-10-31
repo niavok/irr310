@@ -1,21 +1,20 @@
-package com.irr310.server.network;
+package com.irr310.common.network;
 
 import java.nio.channels.SocketChannel;
 
-import com.irr310.common.network.NetworkMessage;
-import com.irr310.common.network.protocol.LoginResponseMessage;
-import com.irr310.server.game.Player;
+import com.irr310.common.world.Player;
+import com.irr310.server.network.ServerNetworkEngine;
 
 public class NetworkClient {
     private SocketChannel socket;
-    private final NetworkEngine networkEngine;
-    private final NioServer server;
+    private final ServerNetworkEngine networkEngine;
+    private final NioPeer peer;
     private Player player;
 
     
-    public NetworkClient(NetworkEngine networkEngine, NioServer server, SocketChannel socket) {
+    public NetworkClient(ServerNetworkEngine networkEngine, NioPeer peer, SocketChannel socket) {
         this.networkEngine = networkEngine;
-        this.server = server;
+        this.peer = peer;
         this.socket = socket;
         this.player = null;
     }
@@ -24,7 +23,7 @@ public class NetworkClient {
         return socket;
     }
 
-    public NetworkEngine getEngine() {
+    public ServerNetworkEngine getEngine() {
         return networkEngine;
     }
 
@@ -41,6 +40,6 @@ public class NetworkClient {
     }
 
     public void send(NetworkMessage message) {
-        server.send(socket, message.getBytes());
+        peer.send(socket, message.getBytes());
     }
 }

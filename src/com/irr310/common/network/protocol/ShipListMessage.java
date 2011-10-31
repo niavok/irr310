@@ -5,7 +5,7 @@ import java.util.List;
 import com.irr310.common.network.NetworkListField;
 import com.irr310.common.network.NetworkMessage;
 import com.irr310.common.network.NetworkField;
-import com.irr310.common.world.ShipView;
+import com.irr310.common.world.view.ShipView;
 
 public class ShipListMessage extends NetworkMessage {
 

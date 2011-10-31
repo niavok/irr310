@@ -8,14 +8,15 @@ import java.util.Map;
 
 import com.irr310.common.event.NetworkEvent;
 import com.irr310.common.network.MessageParser;
+import com.irr310.common.network.NetworkClient;
 import com.irr310.common.network.NetworkMessage;
 
 public class NetworkWorker implements Runnable {
 	private List queue = new LinkedList();
 	private Map<SocketChannel, MessageParser> messageParsers;
-    private final NetworkEngine networkEngine;
+    private final ServerNetworkEngine networkEngine;
 	
-	public NetworkWorker(NetworkEngine networkEngine) {
+	public NetworkWorker(ServerNetworkEngine networkEngine) {
         this.networkEngine = networkEngine;
         messageParsers = new HashMap<SocketChannel, MessageParser>();
     }

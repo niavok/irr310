@@ -1,12 +1,12 @@
-package com.irr310.server.game.world;
+package com.irr310.common.world;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.irr310.common.event.WorldObjectAddedEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
+import com.irr310.common.tools.Vect3;
 import com.irr310.server.GameServer;
-import com.irr310.server.Vect3;
 
 public class World {
 

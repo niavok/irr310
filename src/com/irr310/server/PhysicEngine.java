@@ -33,12 +33,13 @@ import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.event.WorldObjectAddedEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
-import com.irr310.server.game.world.Component;
-import com.irr310.server.game.world.Link;
-import com.irr310.server.game.world.Part;
-import com.irr310.server.game.world.Ship;
-import com.irr310.server.game.world.Slot;
-import com.irr310.server.game.world.WorldObject;
+import com.irr310.common.tools.Vect3;
+import com.irr310.common.world.Component;
+import com.irr310.common.world.Link;
+import com.irr310.common.world.Part;
+import com.irr310.common.world.Ship;
+import com.irr310.common.world.Slot;
+import com.irr310.common.world.WorldObject;
 
 public class PhysicEngine extends FramerateEngine {
 

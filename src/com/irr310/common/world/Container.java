@@ -1,4 +1,4 @@
-package com.irr310.server.game.world;
+package com.irr310.common.world;
 
 public interface Container {
 

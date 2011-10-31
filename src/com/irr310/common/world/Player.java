@@ -1,4 +1,4 @@
-package com.irr310.server.game;
+package com.irr310.common.world;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,8 +6,7 @@ import java.util.List;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import com.irr310.common.tools.Hash;
-import com.irr310.common.world.ShipView;
-import com.irr310.server.game.world.Ship;
+import com.irr310.common.world.view.ShipView;
 
 public class Player extends GameEntity {
 
@@ -17,7 +16,8 @@ public class Player extends GameEntity {
     private String passwordSalt;
     private List<Ship> shipList;
     
-	public Player(String login) {
+	public Player(long id, String login) {
+	    super(id);
         this.login = login;
         shipList = new ArrayList<Ship>();
 	}

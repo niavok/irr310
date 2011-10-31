@@ -1,10 +1,10 @@
-package com.irr310.server.game.world;
+package com.irr310.common.world;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.irr310.server.TransformMatrix;
-import com.irr310.server.Vect3;
+import com.irr310.common.tools.TransformMatrix;
+import com.irr310.common.tools.Vect3;
 
 
 public abstract class  Component extends WorldObject {
@@ -19,7 +19,8 @@ public abstract class  Component extends WorldObject {
 	private Vect3 shipRotation;
 	List<Slot> slots;
 	
-	public Component() {
+	public Component(long id) {
+	    super(id);
 		slots = new ArrayList<Slot>();
 		shipRotation = Vect3.origin();
 		shipPosition = Vect3.origin();
@@ -38,8 +39,8 @@ public abstract class  Component extends WorldObject {
 		return minSlot;
 	}
 	
-	public Slot addSlot(Part part, Vect3 position) {
-		Slot slot = new Slot(this,part, position);
+	public Slot addSlot(long slotId, Part part, Vect3 position) {
+		Slot slot = new Slot(slotId, this,part, position);
 		slots.add(slot);
 		return slot;
 		

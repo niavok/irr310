@@ -1,16 +1,16 @@
-package com.irr310.server.game.world;
+package com.irr310.common.world;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.irr310.server.game.GameEntity;
 
 public abstract class WorldObject extends GameEntity {
 
 	private String name;
 	protected List<Part> parts;
 	
-	public WorldObject() {
+	public WorldObject(long id) {
+	    super(id);
 		name = "unamed object";
 		parts = new ArrayList<Part>();
 	}

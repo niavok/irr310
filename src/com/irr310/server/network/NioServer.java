@@ -18,8 +18,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.irr310.client.network.ChangeRequest;
+import com.irr310.common.network.NioPeer;
 
-public class NioServer implements Runnable {
+public class NioServer extends NioPeer implements Runnable {
 	// The host:port combination to listen on
 	private InetAddress hostAddress;
 	private int port;

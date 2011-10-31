@@ -4,144 +4,183 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import com.irr310.common.Game;
 import com.irr310.common.engine.Engine;
+import com.irr310.common.event.AddShipEvent;
 import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
-import com.irr310.server.game.Game;
-import com.irr310.server.network.NetworkEngine;
+import com.irr310.common.world.Player;
+import com.irr310.common.world.World;
+import com.irr310.server.network.ServerNetworkEngine;
 import com.irr310.server.ui.DebugGraphicEngine;
 
+public class GameServer extends Game {
+    private ServerGameEngine gameEngine;
+    private ServerNetworkEngine networkEngine;
+    private PhysicEngine physicEngine;
+    private ParameterAnalyser parameterAnalyser;
+    private boolean stillRunning;
+    private CommandManager commandManager;
+    private DebugGraphicEngine debugGraphicEngine;
+    private World world;
 
-public class GameServer {
-	private GameEngine gameEngine;
-	private NetworkEngine networkEngine;
-	private PhysicEngine physicEngine;
-	private ParameterAnalyser parameterAnalyser;
-	private boolean stillRunning;
-	private Game game;
-	private CommandManager commandManager;
-	private DebugGraphicEngine debugGraphicEngine;
+    private List<Player> playerList = new ArrayList<Player>();
+    private Map<Integer, Player> playerMap = new HashMap<Integer, Player>();
+    private Map<String, Player> playerLoginMap = new HashMap<String, Player>();
 
-	public static GameServer instance = null;
-	public static GameServer getInstance() {
-		return instance;
-	}
-	
-	public GameServer(ParameterAnalyser parameterAnalyser) {
-		this.parameterAnalyser = parameterAnalyser;
-		instance = this;
-		stillRunning = true;
+    public static GameServer instance = null;
 
-		game = new Game();
+    
+    private static long nextId = 0;
+    
+    public  static synchronized long pickNewId() {
+        return nextId++;
+    }
+    
+    
+    public static GameServer getInstance() {
+        return instance;
+    }
 
-		gameEngine = new GameEngine();
-		physicEngine = new PhysicEngine();
-		networkEngine = new NetworkEngine();
-		debugGraphicEngine = new DebugGraphicEngine();
+    public GameServer(ParameterAnalyser parameterAnalyser) {
+        this.parameterAnalyser = parameterAnalyser;
+        instance = this;
+        super.setInstance(this);
+        stillRunning = true;
 
-		commandManager = new CommandManager();
+        world = new World();
 
-	}
+        gameEngine = new ServerGameEngine();
+        physicEngine = new PhysicEngine();
+        networkEngine = new ServerNetworkEngine();
+        debugGraphicEngine = new DebugGraphicEngine();
 
-	public void run() {
-		// boolean currentStillRunning = stillRunning;
+        commandManager = new CommandManager();
 
-		gameEngine.start();
-		physicEngine.start();
-		networkEngine.start();
-		debugGraphicEngine.start();
+    }
 
-		// currentStillRunning = stillRunning;
-		// std::string i;
-		// std::string o;
+    public void run() {
+        // boolean currentStillRunning = stillRunning;
 
-		
-		//Wait engines started
-		while ((Engine.getRunningEngineCount()) < 4) {
-			new Duration(100000000).sleep();
-		}
-		
-		
-		sendToAll(new StartEngineEvent());
-		/*AddShipEvent addShipEvent = new AddShipEvent();
-		addShipEvent.setType(AddShipEvent.Type.SIMPLE);
-		sendToAll(addShipEvent);*/
-		
-		
-		
-		
-		System.out.println("Irr310 - v0.1a");
-		
-		Reader reader = new InputStreamReader(System.in);
-		BufferedReader input = new BufferedReader(reader);
+        gameEngine.start();
+        physicEngine.start();
+        networkEngine.start();
+        debugGraphicEngine.start();
 
-		try {
-			while (true) {
-				System.out.print("> ");
+        // currentStillRunning = stillRunning;
+        // std::string i;
+        // std::string o;
 
-				String command = input.readLine();
+        // Wait engines started
+        while ((Engine.getRunningEngineCount()) < 4) {
+            new Duration(100000000).sleep();
+        }
 
-				String output = commandManager.execute(command);
+        sendToAll(new StartEngineEvent());
+        /*
+         * AddShipEvent addShipEvent = new AddShipEvent();
+         * addShipEvent.setType(AddShipEvent.Type.SIMPLE);
+         * sendToAll(addShipEvent);
+         */
 
-				if (output != null) {
-					if(!output.isEmpty()) {
-						System.out.println(output);
-					}
-				} else {
-					System.out.println("Game : Exiting...");
-					break;
-				}
+        System.out.println("Irr310 - v0.1a");
 
-			}
+        Reader reader = new InputStreamReader(System.in);
+        BufferedReader input = new BufferedReader(reader);
 
-		} catch (IOException e) {
-			// Todo handle exception
-		}
+        try {
+            while (true) {
+                System.out.print("> ");
 
-		int count;
-		System.out.println("Game : Stopping");
-		sendToAll(new QuitGameEvent());
+                String command = input.readLine();
 
-		while ((count = Engine.getRunningEngineCount()) > 0) {
-			System.out.println("Game : Wait for engine stop, still " + count
-					+ " engines");
-			Duration.ONE_SECOND.sleep();
-		}
-		System.out.println("Game : Stopped");
+                String output = commandManager.execute(command);
 
-	}
+                if (output != null) {
+                    if (!output.isEmpty()) {
+                        System.out.println(output);
+                    }
+                } else {
+                    System.out.println("Game : Exiting...");
+                    break;
+                }
 
-	public void stop() {
+            }
 
-	}
+        } catch (IOException e) {
+            // Todo handle exception
+        }
 
-	public Game getGame() {
-		return game;
-	}
+        int count;
+        System.out.println("Game : Stopping");
+        sendToAll(new QuitGameEvent());
 
-	public void sendToAll(EngineEvent e) {
-		gameEngine.pushEvent(e);
-		physicEngine.pushEvent(e);
-		networkEngine.pushEvent(e);
-		debugGraphicEngine.pushEvent(e);
-	}
+        while ((count = Engine.getRunningEngineCount()) > 0) {
+            System.out.println("Game : Wait for engine stop, still " + count + " engines");
+            Duration.ONE_SECOND.sleep();
+        }
+        System.out.println("Game : Stopped");
 
-	public GameEngine getGameEngine() {
-		return gameEngine;
-	}
+    }
 
-	public PhysicEngine getPhysicEngine() {
-		return physicEngine;
-	}
+    public void stop() {
 
-	public NetworkEngine GetNetworkEngine() {
-		return networkEngine;
-	}
+    }
 
-	// static const int ENGINE_COUNT = 3;
+    public void sendToAll(EngineEvent e) {
+        gameEngine.pushEvent(e);
+        physicEngine.pushEvent(e);
+        networkEngine.pushEvent(e);
+        debugGraphicEngine.pushEvent(e);
+    }
 
-	// boost::mutex stillRunningMutex;
+    public ServerGameEngine getGameEngine() {
+        return gameEngine;
+    }
+
+    public PhysicEngine getPhysicEngine() {
+        return physicEngine;
+    }
+
+    public ServerNetworkEngine GetNetworkEngine() {
+        return networkEngine;
+    }
+
+    public List<Player> getPlayerList() {
+        return playerList;
+    }
+
+    public Player createPlayer(String login, String password) {
+        Player newPlayer = new Player(GameServer.pickNewId(), login);
+        newPlayer.changePassword(password);
+        playerLoginMap.put(login, newPlayer);
+        // Ship playerShip = ShipFactory.createSimpleShip();
+
+        AddShipEvent addShipEvent = new AddShipEvent(newPlayer);
+        addShipEvent.setType(AddShipEvent.Type.SIMPLE);
+        GameServer.getInstance().sendToAll(addShipEvent);
+
+        /* world.addShip(playerShip, new Vect3(10.0,20.0,30.0)); */
+
+        return newPlayer;
+    }
+
+    public World getWorld() {
+        return world;
+    }
+
+    public Player getPlayerByLogin(String login) {
+        return playerLoginMap.get(login);
+    }
+
+    public boolean isPlayerExist(String login) {
+        return playerLoginMap.containsKey(login);
+    }
 
 }
