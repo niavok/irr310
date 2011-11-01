@@ -52,7 +52,7 @@ public class DebugGraphicEngine extends FramerateEngine {
 		activeCamera = new V3DSimple3DCamera(context);
 		fullscreenBinding = V3DCameraBinding
 				.buildFullscreenCamera(activeCamera);
-		activeCamera.setBackgroundColor(V3DColor.white);
+		activeCamera.setBackgroundColor(V3DColor.lightgrey);
 
 		// Add zoom and pane camera controlleur
 		V3DSimple3DCameraController cameraController = new V3DSimple3DCameraController(

@@ -18,9 +18,9 @@ public class ComponentFactory {
 
         generateRectangeSlots(component, part);
 
-        LinearEngineCapacity engineCapacity = new LinearEngineCapacity(1,0.1);
+        LinearEngineCapacity engineCapacity = new LinearEngineCapacity(10,1);
         engineCapacity.currentThrust = 0;
-        engineCapacity.setTargetThrust(0.7);
+        engineCapacity.setTargetThrust(4);
         component.addCapacity(engineCapacity);
         
         return component;

@@ -64,12 +64,12 @@ public class TransformMatrix {
 		return transform;
 	}
 
-	public void setTranslation(Vect3 vect) {
-		setTranslation(vect.x.floatValue(), vect.y.floatValue(),
+	public void translate(Vect3 vect) {
+		translate(vect.x.floatValue(), vect.y.floatValue(),
 				vect.z.floatValue());
 	}
 
-	public void setTranslation(float x, float y, float z) {
+	public void translate(float x, float y, float z) {
 		TransformMatrix tmp = TransformMatrix.identity();
 
 		tmp.set(0, 3, x);
@@ -79,8 +79,14 @@ public class TransformMatrix {
 		preMultiply(tmp);
 
 	}
+	
+	public void setTranslation(float x, float y, float z) {
+        set(0, 3, x);
+        set(1, 3, y);
+        set(2, 3, z);
+    }
 
-	void preMultiply(TransformMatrix mat) { // mat × this
+	public void preMultiply(TransformMatrix mat) { // mat × this
 		TransformMatrix tmp = new TransformMatrix();
 		float f;
 

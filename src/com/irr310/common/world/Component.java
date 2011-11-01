@@ -103,7 +103,7 @@ public final class  Component extends WorldObject {
 
     public void changeTranslation(Vect3 position) {
 	    for(Part part: parts) {
-	        part.getTransform().setTranslation(position);    
+	        part.getTransform().translate(position);    
 	    }
         
     }
@@ -125,8 +125,8 @@ public final class  Component extends WorldObject {
 
 		TransformMatrix tmp = TransformMatrix.identity();
 		
-		tmp.setTranslation(shipPosition.negative());
-		tmp.setTranslation(absolutePosition);
+		tmp.translate(shipPosition.negative());
+		tmp.translate(absolutePosition);
 		
 		
 		tmp.rotateX(Math.toRadians(shipRotation.x));
@@ -143,8 +143,8 @@ public final class  Component extends WorldObject {
 		tmp.rotateY(Math.toRadians(shipRotation.y));
 		tmp.rotateZ(Math.toRadians(shipRotation.z));
 		
-		tmp.setTranslation(shipPosition);
-		tmp.setTranslation(position);
+		tmp.translate(shipPosition);
+		tmp.translate(position);
 		
 		return tmp.getTranslation();
 	}
