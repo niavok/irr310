@@ -34,7 +34,7 @@ public class GameClient extends Game {
     private boolean stillRunning;
     private CommandManager commandManager;
     private GraphicEngine graphicEngine;
-    private World world;
+    private final World world;
     public Player localPlayer;
 
     public static GameClient instance = null;
@@ -49,6 +49,8 @@ public class GameClient extends Game {
         super.setInstance(this);
         stillRunning = true;
 
+        world = new World();
+        
         // Start non logged
         localPlayer = null;
 

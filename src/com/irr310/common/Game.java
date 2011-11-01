@@ -1,13 +1,7 @@
 package com.irr310.common;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.irr310.common.event.AddShipEvent;
+import com.irr310.common.event.EngineEvent;
 import com.irr310.common.world.World;
-import com.irr310.server.GameServer;
 
 public abstract class Game {
 
@@ -22,5 +16,7 @@ public abstract class Game {
     public static void setInstance(Game instance) {
         Game.instance = instance;
     }
+
+    public abstract void sendToAll(EngineEvent event);
     
 }

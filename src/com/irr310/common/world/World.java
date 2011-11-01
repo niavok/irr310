@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.irr310.common.Game;
 import com.irr310.common.event.PlayerAddedEvent;
 import com.irr310.common.event.WorldObjectAddedEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
@@ -13,7 +14,6 @@ import com.irr310.common.world.view.ComponentView;
 import com.irr310.common.world.view.PartView;
 import com.irr310.common.world.view.PlayerView;
 import com.irr310.common.world.view.ShipView;
-import com.irr310.server.GameServer;
 
 public class World {
 
@@ -29,6 +29,7 @@ public class World {
     public World() {
         objects = new ArrayList<WorldObject>();
         ships = new ArrayList<Ship>();
+        players = new ArrayList<Player>();
         playersIdMap = new HashMap<Long, Player>();
         shipIdMap = new HashMap<Long, Ship>();
         slotIdMap = new HashMap<Long, Slot>();
@@ -38,7 +39,7 @@ public class World {
 
     public void addObject(WorldObject o) {
         objects.add(o);
-        GameServer.getInstance().sendToAll(new WorldObjectAddedEvent(o));
+        Game.getInstance().sendToAll(new WorldObjectAddedEvent(o));
     }
     
     public void addComponent(Component component) {
@@ -52,13 +53,13 @@ public class World {
     private void addPlayer(Player player) {
         players.add(player);
         playersIdMap.put(player.getId(), player);
-        GameServer.getInstance().sendToAll(new PlayerAddedEvent(player));
+        Game.getInstance().sendToAll(new PlayerAddedEvent(player));
     }
 
     public void addShip(Ship ship, Vect3 position) {
         ships.add(ship);
         shipIdMap.put(ship.getId(), ship);
-        GameServer.getInstance().sendToAll(new WorldShipAddedEvent(ship, position));
+        Game.getInstance().sendToAll(new WorldShipAddedEvent(ship, position));
     }
     
     public void addSlot(Slot slot) {

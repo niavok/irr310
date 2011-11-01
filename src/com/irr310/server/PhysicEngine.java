@@ -146,10 +146,12 @@ public class PhysicEngine extends FramerateEngine {
 		for (Component component : ship.getComponents()) {
 			for (final Part part : component.getParts()) {
 
-				part.getTransform().rotate(component.getShipRotation());
+			    if(position != null) {
+			        part.getTransform().rotate(component.getShipRotation());
 
-				part.getTransform().setTranslation(
+			        part.getTransform().setTranslation(
 						position.plus(component.getShipPosition()));
+			    }
 
 				RigidBody rigidBody = addPart(part);
 				partToBodyMap.put(part, rigidBody);
