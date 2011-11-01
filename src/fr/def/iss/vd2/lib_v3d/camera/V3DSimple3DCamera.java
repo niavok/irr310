@@ -28,6 +28,7 @@ import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.element.V3DBoundingBox;
 import fr.def.iss.vd2.lib_v3d.element.V3DElement;
+import fr.def.iss.vd2.lib_v3d.element.V3DGroupElement;
 
 /**
  *
@@ -332,13 +333,20 @@ public class V3DSimple3DCamera extends V3DCamera {
         
     }
 
+    public void fit(V3DBoundingBox boundingBox) {
+        V3DVect3 scenePosition = boundingBox.getPosition();
+        V3DVect3 sceneSize = boundingBox.getSize();
+        V3DVect3 center = new V3DVect3(scenePosition.x , scenePosition.y , scenePosition.z);
+        fit(center, sceneSize.multiply(1.2f));
+    }
+
+    
+    
+
     @Override
     public void fitAll() {
         V3DBoundingBox bbox = currentScene.getRootElement().getBoundingBox();
-        V3DVect3 scenePosition = bbox.getPosition();
-        V3DVect3 sceneSize = bbox.getSize();
-        V3DVect3 center = new V3DVect3(scenePosition.x , scenePosition.y , scenePosition.z);
-        fit(center, sceneSize.multiply(1.2f));
+        fit(bbox);
     }
 
     public boolean containsAll() {
@@ -397,6 +405,7 @@ public class V3DSimple3DCamera extends V3DCamera {
         public void rotationChanged();
     }
 
+   
 
 
 }

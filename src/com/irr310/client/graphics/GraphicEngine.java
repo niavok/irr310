@@ -1,5 +1,8 @@
 package com.irr310.client.graphics;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.lwjgl.opengl.Display;
 
 import com.irr310.common.engine.FramerateEngine;
@@ -40,6 +43,7 @@ public class GraphicEngine extends FramerateEngine {
 	V3DSimple3DCamera activeCamera;
 	V3DCanvas canvas;
 	private V3DScene scene;
+    private V3DGroupElement fitOrder;
 
 	public GraphicEngine() {
 		framerate = new Duration(16666666);
@@ -49,6 +53,8 @@ public class GraphicEngine extends FramerateEngine {
 	protected void init() {
 		canvas = new V3DCanvas(context, 1024, 768);
 
+		fitOrder = null;
+		
 		activeCamera = new V3DSimple3DCamera(context);
 		fullscreenBinding = V3DCameraBinding
 				.buildFullscreenCamera(activeCamera);
@@ -77,9 +83,9 @@ public class GraphicEngine extends FramerateEngine {
 
 		// activeCamera.setShowCenter(true);
 
-		// activeCamera.fitAll();
+		activeCamera.fitAll();
 
-		activeCamera.fit(new V3DVect3(0, 0, 0), new V3DVect3(5, 5, 5));
+		//activeCamera.fit(new V3DVect3(0, 0, 0), new V3DVect3(5, 5, 5));
 
 		canvas.addCamera(fullscreenBinding);
 
@@ -113,12 +119,19 @@ public class GraphicEngine extends FramerateEngine {
 	}
 
 	protected void addShip(final Ship ship) {
+	    
+	    V3DGroupElement shipElements = new V3DGroupElement(context);
 		for(Component component : ship.getComponents()) {
-			addObject(component, true);
+		    shipElements.add(addObject(component, true));
 		}
+		
+		fitOrder = shipElements;
+		
 	}
 	
-	protected void addObject(final WorldObject object, boolean inShip) {
+	protected V3DElement addObject(final WorldObject object, boolean inShip) {
+	    
+	    V3DGroupElement elements = new V3DGroupElement(context);
 		for(final Part part: object.getParts()) {
 		
 
@@ -129,18 +142,17 @@ public class GraphicEngine extends FramerateEngine {
 			box.setTransformMatrix(transform.toFloatBuffer());
 
 			box.setSize(part.getShape().toV3DVect3());
+			
+			V3DElement element;
+			
 			if(inShip) {
-				scene.add(new V3DColorElement(box, V3DColor.blue));
+			    element = new V3DColorElement(box, V3DColor.blue);
 			} else {
-				scene.add(new V3DColorElement(box, V3DColor.red));
+			    element = new V3DColorElement(box, V3DColor.red);
 			}
 
-			/*
-			 * position.addListener(new Vect3ChangeListener() {
-			 * 
-			 * @Override public void valueChanged() {
-			 * box.setPosition(object.getPosition().toV3DVect3()); } });
-			 */
+			
+			scene.add(element);
 
 			transform.addListener(new TransformMatrixChangeListener() {
 
@@ -150,13 +162,21 @@ public class GraphicEngine extends FramerateEngine {
 							.toFloatBuffer());
 				}
 			});
+			elements.add(element);
+			
 
 		}
+		
+		return elements;
 	}
 
 	@Override
 	protected void frame() {
-		activeCamera.fitAll();
+	    if(fitOrder == null) {
+	        activeCamera.fitAll();
+	    } else {
+	        activeCamera.fit(fitOrder.getBoundingBox());
+	    }
 		canvas.frame();
 
 	}
