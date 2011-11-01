@@ -166,8 +166,8 @@ public class ComponentFactory {
 
         component.addSlot(GameServer.pickNewId(), part, new Vect3(shape.x / 2, 0, 0));
         component.addSlot(GameServer.pickNewId(), part, new Vect3(-shape.x / 2, 0, 0));
-        component.addSlot(GameServer.pickNewId(), part, new Vect3(0, 0, shape.z / 2));
-        component.addSlot(GameServer.pickNewId(), part, new Vect3(0, 0, -shape.z / 2));
+        component.addSlot(GameServer.pickNewId(), part, new Vect3(0, shape.y / 2, 0));
+        component.addSlot(GameServer.pickNewId(), part, new Vect3(0, -shape.y / 2, 0));
 
     }
 }

@@ -78,6 +78,7 @@ public class ShipFactory {
         world.addComponent(backRight);
         newShip.assign(backRight);
 
+        // Engines
         Component mainLeftPropeller = ComponentFactory.createBigPropeller();
         mainLeftPropeller.setShipPosition(new Vect3(-10, 0, -2));
         world.addComponent(mainLeftPropeller);
