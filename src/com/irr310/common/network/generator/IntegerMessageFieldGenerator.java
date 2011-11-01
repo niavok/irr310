@@ -21,7 +21,7 @@ public class IntegerMessageFieldGenerator extends MessageFieldGenerator<Integer>
     @Override
     public Pair<Integer, Integer> load(byte[] buffer, int offset) {
         int value = TypeConversion.intFromByteArray(buffer, offset);
-        return new ImmutablePair<Integer, Integer>(8, value);
+        return new ImmutablePair<Integer, Integer>(4, value);
     }
 
 }

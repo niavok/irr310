@@ -3,6 +3,8 @@ package com.irr310.client.graphics;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.Display;
 
 import com.irr310.common.engine.FramerateEngine;
@@ -19,6 +21,8 @@ import com.irr310.common.world.Component;
 import com.irr310.common.world.Part;
 import com.irr310.common.world.Ship;
 import com.irr310.common.world.WorldObject;
+import com.irr310.common.world.capacity.Capacity;
+import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.server.Duration;
 
 import fr.def.iss.vd2.lib_v3d.V3DCanvas;
@@ -44,9 +48,12 @@ public class GraphicEngine extends FramerateEngine {
 	V3DCanvas canvas;
 	private V3DScene scene;
     private V3DGroupElement fitOrder;
-
+    private List<Pair<LinearEngineCapacity, V3DLine>> thrustLines;
+    
 	public GraphicEngine() {
 		framerate = new Duration(16666666);
+		thrustLines = new ArrayList<Pair<LinearEngineCapacity, V3DLine>>();
+
 	}
 
 	@Override
@@ -123,6 +130,32 @@ public class GraphicEngine extends FramerateEngine {
 	    V3DGroupElement shipElements = new V3DGroupElement(context);
 		for(Component component : ship.getComponents()) {
 		    shipElements.add(addObject(component, true));
+		    
+		    for (Capacity capacity : component.getCapacities()) {
+                if (capacity instanceof LinearEngineCapacity) {
+
+                    V3DLine thrustLine = new V3DLine(context);
+                    thrustLine.setThickness(3);
+                    thrustLine.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, 0, 0));
+
+                    final V3DColorElement group = new V3DColorElement(thrustLine, V3DColor.fushia);
+
+                    scene.add(group);
+
+                    final Part part = component.getFirstPart();
+                    part.getTransform().addListener(new TransformMatrixChangeListener() {
+
+                        @Override
+                        public void valueChanged() {
+                            group.setTransformMatrix(part.getTransform().toFloatBuffer());
+                        }
+                    });
+
+                    thrustLines.add(new ImmutablePair<LinearEngineCapacity, V3DLine>((LinearEngineCapacity) capacity, thrustLine));
+                }
+
+            }
+		    
 		}
 		
 		fitOrder = shipElements;
@@ -177,6 +210,15 @@ public class GraphicEngine extends FramerateEngine {
 	    } else {
 	        activeCamera.fit(fitOrder.getBoundingBox());
 	    }
+	    
+	    // Apply forces
+        for (Pair<LinearEngineCapacity, V3DLine> thrustLinePair : thrustLines) {
+            V3DLine thrustLine = thrustLinePair.getRight();
+            LinearEngineCapacity engine = thrustLinePair.getLeft();
+
+            thrustLine.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, - (float) engine.getCurrentThrust(), 0));
+        }
+	    
 		canvas.frame();
 
 	}

@@ -127,10 +127,12 @@ public class ServerGameEngine extends FramerateEngine {
             pause(true);
         }
 
-        private void addCapacityController(CapacityController controller) {
-            capacityControllers.add(controller);
-        }
+        
 
+    }
+    
+    private void addCapacityController(CapacityController controller) {
+        capacityControllers.add(controller);
     }
 
     @Override

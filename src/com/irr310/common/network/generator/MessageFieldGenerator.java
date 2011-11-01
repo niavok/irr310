@@ -39,6 +39,8 @@ public abstract class MessageFieldGenerator<T> {
             return (MessageFieldGenerator<V>) new LongMessageFieldGenerator();
         } else if (type.equals(double.class)) {
             return (MessageFieldGenerator<V>) new DoubleMessageFieldGenerator();
+        } else if (type.equals(Double.class)) {
+            return (MessageFieldGenerator<V>) new DoubleMessageFieldGenerator();
         } else if (type.equals(Vect3.class)) {
             return (MessageFieldGenerator<V>) new Vect3MessageFieldGenerator();
         } else if (type.equals(TransformMatrix.class)) {
@@ -71,7 +73,7 @@ public abstract class MessageFieldGenerator<T> {
 
             return new ListMessageFieldGenerator(type);
         }
-        
+
         if (field.getAnnotation(NetworkOptionalField.class) != null) {
             return new OptionalMessageFieldGenerator(getFromType(field.getType()));
         }

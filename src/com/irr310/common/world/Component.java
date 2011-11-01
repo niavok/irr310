@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.irr310.common.Game;
+import com.irr310.common.network.NetworkField;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vect3;
 import com.irr310.common.world.capacity.Capacity;
+import com.irr310.common.world.capacity.Capacity.CapacityType;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
+import com.irr310.common.world.view.CapacityView;
 import com.irr310.common.world.view.ComponentView;
 import com.irr310.common.world.view.LinkView;
 import com.irr310.common.world.view.PartView;
@@ -155,12 +158,21 @@ public final class  Component extends WorldObject {
         componentView.id = getId();
         componentView.shipPosition = shipPosition;
         componentView.shipRotation = shipRotation;
+        
+        componentView.durabilityMax = durabilityMax;
+        componentView.durability = durability;
+        componentView.quality = quality;
+        
         for(Part part: parts) {
             componentView.parts.add(part.toView());    
         }
         
         for(Slot slot: slots) {
             componentView.slots.add(slot.toView());    
+        }
+        
+        for(Capacity capacity: capacities) {
+            componentView.capacities.add(capacity.toView());    
         }
         
         return componentView;
@@ -170,7 +182,10 @@ public final class  Component extends WorldObject {
         World world = Game.getInstance().getWorld();
         shipPosition = componentView.shipPosition;
         shipRotation = componentView.shipRotation;
-        
+        durabilityMax = componentView.durabilityMax;
+        durability = componentView.durability;
+        quality = componentView.quality;
+        computeEfficiency();
         
         for(PartView part: componentView.parts) {
             addPart(world.loadPart(part));
@@ -178,6 +193,12 @@ public final class  Component extends WorldObject {
         
         for(SlotView slot: componentView.slots) {
             addSlot(slot.id, world.getPartById(slot.partId), slot.position);
+        }
+        
+        for(CapacityView capacityView: componentView.capacities) {
+            Capacity capacity = Capacity.createFromType(capacityView.id,  CapacityType.values()[capacityView.type]);
+            capacity.fromView(capacityView);
+            addCapacity(capacity);
         }
         
     }

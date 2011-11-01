@@ -26,11 +26,23 @@ public class ComponentView {
     @NetworkListField(SlotView.class)
     public List<SlotView> slots = new ArrayList<SlotView>();
     
+    @NetworkListField(CapacityView.class)
+    public List<CapacityView> capacities = new ArrayList<CapacityView>();
+    
     
     @NetworkField
     public Vect3 shipPosition;
     
     @NetworkField
     public Vect3 shipRotation;
+    
+    @NetworkField
+    public double durabilityMax;
+    
+    @NetworkField
+    public double durability;
+    
+    @NetworkField
+    public double quality;
     
 }
