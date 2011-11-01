@@ -10,6 +10,7 @@ import com.irr310.client.graphics.GraphicEngine;
 import com.irr310.client.network.ClientNetworkEngine;
 import com.irr310.client.network.request.LoginRequest;
 import com.irr310.client.network.request.SignupRequest;
+import com.irr310.client.script.ClientScriptEngine;
 import com.irr310.common.Game;
 import com.irr310.common.engine.Engine;
 import com.irr310.common.engine.PhysicEngine;
@@ -19,12 +20,10 @@ import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.network.protocol.LoginResponseMessage;
 import com.irr310.common.network.protocol.ShipListRequestMessage;
 import com.irr310.common.network.protocol.SignupResponseMessage;
-import com.irr310.common.script.ClientScriptEngine;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.World;
 import com.irr310.server.CommandManager;
 import com.irr310.server.Duration;
-import com.irr310.server.GameServer;
 import com.irr310.server.ParameterAnalyser;
 
 public class GameClient extends Game {
@@ -150,6 +149,7 @@ public class GameClient extends Game {
         physicEngine.pushEvent(e);
         clientNetworkEngine.pushEvent(e);
         graphicEngine.pushEvent(e);
+        scriptEngine.pushEvent(e);
     }
 
     /*

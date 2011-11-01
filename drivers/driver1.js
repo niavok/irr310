@@ -1,4 +1,4 @@
-importPackage(Packages.com.irr310.server.js.objects); // assuming the Java class my.game.Player exists
+importPackage(Packages.com.irr310.client.script.js.objects); // assuming the Java class my.game.Player exists
 
 var player = new Player("Jake");
 player.gender = "female"; // this is a Java method!
@@ -14,3 +14,8 @@ player.age += 2;
 
 /*var count = Player.PLAYER_COUNT;
 Player.PLAYER_COUNT += 2;*/
+
+
+function onKeyPressed(keyCode) {
+    player.age = keyCode;
+}

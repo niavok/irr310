@@ -11,7 +11,9 @@ import sun.org.mozilla.javascript.ContextFactory;
 import sun.org.mozilla.javascript.ImporterTopLevel;
 import sun.org.mozilla.javascript.Scriptable;
 
-import com.irr310.server.js.objects.Player;
+import com.irr310.client.script.js.SandboxContextFactory;
+import com.irr310.client.script.js.SandboxShutter;
+import com.irr310.client.script.js.objects.Player;
 
 public class Driver {
 
