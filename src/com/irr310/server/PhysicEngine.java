@@ -290,23 +290,21 @@ public class PhysicEngine extends FramerateEngine {
 		public void setWorldTransform(Transform worldTrans) {
 			Vector3f origin = worldTrans.origin;
 			part.getTransform().setTranslation(origin.x, origin.y, origin.z);
-			// Vector3f linearVelocity = body.getLinearVelocity(new Vector3f());
 			worldTrans.getOpenGLMatrix(part.getTransform().getData());
+			
+			
+			Vector3f lv = new Vector3f();
+			body.getLinearVelocity(lv);
+			part.getLinearSpeed().set(lv);
+			
+			Vector3f av = new Vector3f();
+            body.getAngularVelocity(av);
+            part.getRotationSpeed().set(av);
+			
+			
 			part.getTransform().fireChanged();
 		}
 	}
-
-	/*
-	 * class ShipFilterCallback : public btOverlapFilterCallback { // return
-	 * true when pairs need collision virtual bool
-	 * needBroadphaseCollision(btBroadphaseProxy* proxy0,btBroadphaseProxy*
-	 * proxy1) const { bool collides = (proxy0->m_collisionFilterGroup &
-	 * proxy1->m_collisionFilterMask) != 0; collides = collides &&
-	 * (proxy1->m_collisionFilterGroup & proxy0->m_collisionFilterMask);
-	 * 
-	 * //add some additional logic here that modified 'collides' return
-	 * collides; } };
-	 */
 
 	@Override
 	protected void processEvent(EngineEvent e) {

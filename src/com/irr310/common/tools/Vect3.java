@@ -59,6 +59,14 @@ public class Vect3 {
 		fireChanged();
 		
 	}
+	
+	public void set(Vector3f vect) {
+	    this.x = (double) vect.x;
+        this.y = (double) vect.y;
+        this.z = (double) vect.z;
+        fireChanged();
+    }
+	
 
 	public static Vect3 origin() {
 		return new Vect3(0, 0, 0);
@@ -112,6 +120,8 @@ public class Vect3 {
 	public Vect3 negative() {
 		return new Vect3(- x, - y, - z);
 	}
+
+    
 
 	
 
