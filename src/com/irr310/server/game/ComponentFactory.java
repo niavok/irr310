@@ -1,5 +1,6 @@
 package com.irr310.server.game;
 
+import com.irr310.common.Game;
 import com.irr310.common.tools.Vect3;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.Part;
@@ -139,7 +140,10 @@ public class ComponentFactory {
 
     private static Component createSimpleComponent() {
         Component component = new Component(GameServer.pickNewId());
-        component.addPart(new Part(GameServer.pickNewId()));
+        
+        Part part = new Part(GameServer.pickNewId());
+        component.addPart(part);
+        Game.getInstance().getWorld().addPart(part);
         return component;
     }
 

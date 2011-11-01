@@ -109,7 +109,7 @@ public class ClientNetworkEngine extends EventEngine {
         ShipListMessage m = (ShipListMessage) message;
         System.out.println("Ship list received");
         for (ShipView shipView : m.shipsList) {
-            Ship ship = Game.getInstance().getWorld().getOrCreateShip(shipView);
+            Ship ship = Game.getInstance().getWorld().loadShip(shipView);
             ship.fromView(shipView);
             System.out.println("Ship received: " + ship.getId());
         }

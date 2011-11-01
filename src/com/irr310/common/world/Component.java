@@ -3,9 +3,13 @@ package com.irr310.common.world;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.irr310.common.Game;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vect3;
 import com.irr310.common.world.view.ComponentView;
+import com.irr310.common.world.view.LinkView;
+import com.irr310.common.world.view.PartView;
+import com.irr310.common.world.view.SlotView;
 
 
 public final class  Component extends WorldObject {
@@ -42,6 +46,7 @@ public final class  Component extends WorldObject {
 	
 	public Slot addSlot(long slotId, Part part, Vect3 position) {
 		Slot slot = new Slot(slotId, this,part, position);
+		Game.getInstance().getWorld().addSlot(slot);
 		slots.add(slot);
 		return slot;
 		
@@ -151,6 +156,22 @@ public final class  Component extends WorldObject {
         }
         
         return componentView;
+    }
+
+    public void fromView(ComponentView componentView) {
+        World world = Game.getInstance().getWorld();
+        shipPosition = componentView.shipPosition;
+        shipRotation = componentView.shipRotation;
+        
+        
+        for(PartView part: componentView.parts) {
+            addPart(world.loadPart(part));
+        }
+        
+        for(SlotView slot: componentView.slots) {
+            addSlot(slot.id, world.getPartById(slot.partId), slot.position);
+        }
+        
     }
 
     
