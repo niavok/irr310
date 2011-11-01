@@ -4,6 +4,7 @@ import com.irr310.common.Game;
 import com.irr310.common.tools.Vect3;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.Part;
+import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.server.GameServer;
 
 public class ComponentFactory {
@@ -17,6 +18,11 @@ public class ComponentFactory {
 
         generateRectangeSlots(component, part);
 
+        LinearEngineCapacity engineCapacity = new LinearEngineCapacity(1,0.1);
+        engineCapacity.currentThrust = 0;
+        engineCapacity.setTargetThrust(0.7);
+        component.addCapacity(engineCapacity);
+        
         return component;
     }
 

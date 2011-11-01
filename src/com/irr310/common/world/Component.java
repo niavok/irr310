@@ -6,6 +6,8 @@ import java.util.List;
 import com.irr310.common.Game;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vect3;
+import com.irr310.common.world.capacity.Capacity;
+import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.common.world.view.ComponentView;
 import com.irr310.common.world.view.LinkView;
 import com.irr310.common.world.view.PartView;
@@ -23,12 +25,18 @@ public final class  Component extends WorldObject {
 	private Vect3 shipPosition;
 	private Vect3 shipRotation;
 	private List<Slot> slots;
+	private List<Capacity> capacities;
 	
 	public Component(long id) {
 	    super(id);
 		slots = new ArrayList<Slot>();
+		capacities = new ArrayList<Capacity>();
 		shipRotation = Vect3.origin();
 		shipPosition = Vect3.origin();
+		durability = 1;
+		durabilityMax = 1;
+		quality = 1;
+		computeEfficiency();
 	}
 	
 	public Slot getSlot(Vect3 position) {
@@ -172,6 +180,14 @@ public final class  Component extends WorldObject {
             addSlot(slot.id, world.getPartById(slot.partId), slot.position);
         }
         
+    }
+
+    public void addCapacity(Capacity capacity) {
+        capacities.add(capacity);
+    }
+
+    public List<Capacity> getCapacities() {
+        return capacities;
     }
 
     

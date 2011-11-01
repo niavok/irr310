@@ -12,6 +12,7 @@ import com.irr310.client.network.request.LoginRequest;
 import com.irr310.client.network.request.SignupRequest;
 import com.irr310.common.Game;
 import com.irr310.common.engine.Engine;
+import com.irr310.common.engine.PhysicEngine;
 import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
@@ -24,7 +25,6 @@ import com.irr310.server.CommandManager;
 import com.irr310.server.Duration;
 import com.irr310.server.GameServer;
 import com.irr310.server.ParameterAnalyser;
-import com.irr310.server.PhysicEngine;
 
 public class GameClient extends Game {
     private ClientGameEngine clientGameEngine;

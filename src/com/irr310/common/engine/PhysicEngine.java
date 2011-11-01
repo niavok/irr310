@@ -1,4 +1,4 @@
-package com.irr310.server;
+package com.irr310.common.engine;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +25,6 @@ import com.bulletphysics.linearmath.MatrixUtil;
 import com.bulletphysics.linearmath.MotionState;
 import com.bulletphysics.linearmath.Transform;
 import com.bulletphysics.util.ObjectArrayList;
-import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.PauseEngineEvent;
@@ -40,6 +39,7 @@ import com.irr310.common.world.Part;
 import com.irr310.common.world.Ship;
 import com.irr310.common.world.Slot;
 import com.irr310.common.world.WorldObject;
+import com.irr310.server.Duration;
 
 public class PhysicEngine extends FramerateEngine {
 
