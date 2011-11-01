@@ -24,4 +24,8 @@ public interface EngineEventVisitor {
     public abstract void visit(NetworkEvent event);
 
     public abstract void visit(PlayerAddedEvent event);
+
+    public abstract void visit(KeyPressedEvent event);
+    
+    public abstract void visit(KeyReleasedEvent event);
 }

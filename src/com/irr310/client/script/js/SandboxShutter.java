@@ -1,4 +1,4 @@
-package com.irr310.server.js;
+package com.irr310.client.script.js;
 
 public interface SandboxShutter {
 	public boolean allowClassAccess(Class<?> type);

@@ -1,10 +1,8 @@
-package com.irr310.server.game.driver;
+package com.irr310.client.script;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +11,6 @@ import sun.org.mozilla.javascript.ContextFactory;
 import sun.org.mozilla.javascript.ImporterTopLevel;
 import sun.org.mozilla.javascript.Scriptable;
 
-import com.irr310.server.js.SandboxContextFactory;
-import com.irr310.server.js.SandboxShutter;
 import com.irr310.server.js.objects.Player;
 
 public class Driver {

@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.irr310.common.Game;
+import com.irr310.common.script.Controller;
 import com.irr310.common.tools.Vect3;
 import com.irr310.common.world.capacity.KernelCapacity;
 import com.irr310.common.world.view.ComponentView;
 import com.irr310.common.world.view.LinkView;
 import com.irr310.common.world.view.ShipView;
-import com.irr310.server.game.driver.Controller;
 
 public class Ship extends GameEntity implements Container {
 

@@ -1,4 +1,4 @@
-package com.irr310.server.js.objects;
+package com.irr310.client.script.js.objects;
 
 public class Player {
 

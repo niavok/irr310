@@ -19,6 +19,7 @@ import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.network.protocol.LoginResponseMessage;
 import com.irr310.common.network.protocol.ShipListRequestMessage;
 import com.irr310.common.network.protocol.SignupResponseMessage;
+import com.irr310.common.script.ClientScriptEngine;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.World;
 import com.irr310.server.CommandManager;
@@ -30,6 +31,7 @@ public class GameClient extends Game {
     private ClientGameEngine clientGameEngine;
     private ClientNetworkEngine clientNetworkEngine;
     private PhysicEngine physicEngine;
+    private ClientScriptEngine scriptEngine;
     private ParameterAnalyser parameterAnalyser;
     private boolean stillRunning;
     private CommandManager commandManager;
@@ -58,6 +60,7 @@ public class GameClient extends Game {
         physicEngine = new PhysicEngine();
         clientNetworkEngine = new ClientNetworkEngine("127.0.0.10", 22310);
         graphicEngine = new GraphicEngine();
+        scriptEngine = new ClientScriptEngine();
 
         commandManager = new CommandManager();
 
@@ -75,13 +78,14 @@ public class GameClient extends Game {
         physicEngine.start();
         clientNetworkEngine.start();
         graphicEngine.start();
+        scriptEngine.start();
 
         // currentStillRunning = stillRunning;
         // std::string i;
         // std::string o;
 
         // Wait engines started
-        while ((Engine.getRunningEngineCount()) < 4) {
+        while ((Engine.getRunningEngineCount()) < 5) {
             new Duration(100000000).sleep();
         }
 

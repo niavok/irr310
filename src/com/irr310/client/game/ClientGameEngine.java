@@ -3,9 +3,13 @@ package com.irr310.client.game;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.input.Keyboard;
+
+import com.irr310.common.Game;
 import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
+import com.irr310.common.event.KeyPressedEvent;
 import com.irr310.common.event.PauseEngineEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
@@ -32,6 +36,18 @@ public class ClientGameEngine extends FramerateEngine {
         for (CapacityController controller : capacityControllers) {
             controller.update(framerate.getSeconds());
         }
+        
+        
+        while(Keyboard.next()) {
+            if (Keyboard.getEventKeyState()) {
+                Game.getInstance().sendToAll(new KeyPressedEvent(Keyboard.getEventKey()));
+                System.out.println("key pressed" + Keyboard.getEventKey());
+            } else {
+                System.out.println("key releaded" + Keyboard.getEventKey());
+            }
+        }
+        
+        
     }
 
     @Override

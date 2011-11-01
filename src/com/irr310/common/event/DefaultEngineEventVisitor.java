@@ -34,9 +34,17 @@ public abstract class DefaultEngineEventVisitor implements EngineEventVisitor {
     @Override
     public void visit(NetworkEvent event) {
     }
-    
+
     @Override
     public void visit(PlayerAddedEvent event) {
+    }
+
+    @Override
+    public void visit(KeyPressedEvent event) {
+    }
+
+    @Override
+    public void visit(KeyReleasedEvent event) {
     }
 
 }

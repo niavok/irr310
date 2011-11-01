@@ -95,6 +95,7 @@ public class GraphicEngine extends FramerateEngine {
 		//activeCamera.fit(new V3DVect3(0, 0, 0), new V3DVect3(5, 5, 5));
 
 		canvas.addCamera(fullscreenBinding);
+		
 
 		canvas.setEnabled(true);
 
