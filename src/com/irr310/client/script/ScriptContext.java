@@ -8,8 +8,6 @@ import java.util.List;
 
 import sun.org.mozilla.javascript.Context;
 import sun.org.mozilla.javascript.ContextFactory;
-import sun.org.mozilla.javascript.EcmaError;
-import sun.org.mozilla.javascript.EvaluatorException;
 import sun.org.mozilla.javascript.Function;
 import sun.org.mozilla.javascript.ImporterTopLevel;
 import sun.org.mozilla.javascript.RhinoException;
@@ -24,65 +22,14 @@ public class ScriptContext {
     private Scriptable scope;
     private Context cx;
 
+    private static boolean isInit = false;
+
     public ScriptContext() {
 
-        ContextFactory.initGlobal(new SandboxContextFactory(new SandboxShutter() {
-
-            List<Class<?>> allowedClasses;
-
-            {
-                allowedClasses = new ArrayList<Class<?>>();
-                allowedClasses.add(Core.class);
-
-            }
-
-            private boolean isAllowedClass(Class<?> type) {
-                return allowedClasses.contains(type);
-            }
-
-            @Override
-            public boolean allowClassAccess(Class<?> type) {
-                System.out.println("allowClassAccess");
-                System.out.println(type);
-
-                return isAllowedClass(type);
-            }
-
-            @Override
-            public boolean allowFieldAccess(Class<?> type, Object instance, String fieldName) {
-                System.out.println("allowFieldAccess");
-                System.out.println(type);
-                System.out.println(instance);
-                System.out.println(fieldName);
-                return isAllowedClass(type);
-            }
-
-            @Override
-            public boolean allowMethodAccess(Class<?> type, Object instance, String methodName) {
-                System.out.println("allowMethodAccess");
-                System.out.println(type);
-                System.out.println(instance);
-                System.out.println(methodName);
-
-                return isAllowedClass(type);
-            }
-
-            @Override
-            public boolean allowStaticFieldAccess(Class<?> type, String fieldName) {
-                System.out.println("allowStaticFieldAccess");
-                System.out.println(type);
-                System.out.println(fieldName);
-                return false;
-            }
-
-            @Override
-            public boolean allowStaticMethodAccess(Class<?> type, String methodName) {
-                // TODO Auto-generated method stub
-                return false;
-            }
-        }));
+        init();
 
         cx = Context.enter();
+
         Scriptable prototype = cx.initStandardObjects();
         Scriptable topLevel = new ImporterTopLevel(cx);
         prototype.setParentScope(topLevel);
@@ -161,4 +108,74 @@ public class ScriptContext {
 
         // TODO: add cache
     }
+
+    public void close() {
+        System.out.println("close");
+        Context.exit();
+    }
+
+    private void init() {
+        if (isInit) {
+            return;
+        }
+        isInit = true;
+        
+        ContextFactory.initGlobal(new SandboxContextFactory(new SandboxShutter() {
+
+            List<Class<?>> allowedClasses;
+
+            {
+                allowedClasses = new ArrayList<Class<?>>();
+                allowedClasses.add(Core.class);
+
+            }
+
+            private boolean isAllowedClass(Class<?> type) {
+                return allowedClasses.contains(type);
+            }
+
+            @Override
+            public boolean allowClassAccess(Class<?> type) {
+                System.out.println("allowClassAccess");
+                System.out.println(type);
+
+                return isAllowedClass(type);
+            }
+
+            @Override
+            public boolean allowFieldAccess(Class<?> type, Object instance, String fieldName) {
+                System.out.println("allowFieldAccess");
+                System.out.println(type);
+                System.out.println(instance);
+                System.out.println(fieldName);
+                return isAllowedClass(type);
+            }
+
+            @Override
+            public boolean allowMethodAccess(Class<?> type, Object instance, String methodName) {
+                System.out.println("allowMethodAccess");
+                System.out.println(type);
+                System.out.println(instance);
+                System.out.println(methodName);
+
+                return isAllowedClass(type);
+            }
+
+            @Override
+            public boolean allowStaticFieldAccess(Class<?> type, String fieldName) {
+                System.out.println("allowStaticFieldAccess");
+                System.out.println(type);
+                System.out.println(fieldName);
+                return false;
+            }
+
+            @Override
+            public boolean allowStaticMethodAccess(Class<?> type, String methodName) {
+                // TODO Auto-generated method stub
+                return false;
+            }
+        }));
+
+    }
+
 }

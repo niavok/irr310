@@ -14,6 +14,9 @@ core.onKeyPressed = function (keyCode, char) {
         case KEY_RIGHT:
             core.log("press right");
             break;
+        case KEY_SPACE:
+            core.log("press space");
+            break;
         default:
             core.log("pressed undefined key: '"+keyCode+"' / '"+char+"'");
     }   
@@ -32,6 +35,9 @@ core.onKeyReleased = function (keyCode, char) {
             break;
         case  KEY_RIGHT:
             core.log("released right");
+            break;
+        case KEY_SPACE:
+            core.log("released space");
             break;
         default:
             core.log("released undefined key: '"+keyCode+"' / '"+char+"'");

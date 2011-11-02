@@ -1,6 +1,8 @@
 package com.irr310.client.script;
 
 
+import org.lwjgl.input.Keyboard;
+
 import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
@@ -48,6 +50,11 @@ public class ClientScriptEngine extends FramerateEngine {
 
         @Override
         public void visit(KeyPressedEvent event) {
+            if(event.getKeyCode() == Keyboard.KEY_F12 && Keyboard.isKeyDown(Keyboard.KEY_RCONTROL)) {
+                System.out.println("Reload javascript");
+                init();
+                return;
+            }
             transmitKeyPressed(event.getKeyCode(), event.getCharacter());
         }
         
@@ -74,6 +81,9 @@ public class ClientScriptEngine extends FramerateEngine {
 
     @Override
     protected void init() {
+        if(scriptContext != null) {
+            scriptContext.close();
+        }
         scriptContext = new ScriptContext();
     }
 
