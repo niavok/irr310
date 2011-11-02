@@ -5,9 +5,11 @@ import java.io.File;
 public class KeyPressedEvent extends EngineEvent {
 
     private final int keyCode;
+    private final String character;
 
-    public KeyPressedEvent(int keyCode) {
+    public KeyPressedEvent(int keyCode, String character) {
         this.keyCode = keyCode;
+        this.character = character;
     }
 
     @Override
@@ -17,5 +19,9 @@ public class KeyPressedEvent extends EngineEvent {
 
     public int getKeyCode() {
         return keyCode;
+    }
+    
+    public String getCharacter() {
+        return character;
     }
 }

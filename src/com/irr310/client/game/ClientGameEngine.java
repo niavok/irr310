@@ -10,6 +10,7 @@ import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.KeyPressedEvent;
+import com.irr310.common.event.KeyReleasedEvent;
 import com.irr310.common.event.PauseEngineEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
@@ -40,10 +41,18 @@ public class ClientGameEngine extends FramerateEngine {
         
         while(Keyboard.next()) {
             if (Keyboard.getEventKeyState()) {
-                Game.getInstance().sendToAll(new KeyPressedEvent(Keyboard.getEventKey()));
-                System.out.println("key pressed" + Keyboard.getEventKey());
+                if(Keyboard.getEventCharacter() == 0) {
+                    Game.getInstance().sendToAll(new KeyPressedEvent(Keyboard.getEventKey(), ""));
+                } else {
+                    Game.getInstance().sendToAll(new KeyPressedEvent(Keyboard.getEventKey(), Character.toString(Keyboard.getEventCharacter())));    
+                }
+                
             } else {
-                System.out.println("key releaded" + Keyboard.getEventKey());
+                if(Keyboard.getEventCharacter() == 0) {
+                    Game.getInstance().sendToAll(new KeyReleasedEvent(Keyboard.getEventKey(), ""));
+                } else {
+                    Game.getInstance().sendToAll(new KeyReleasedEvent(Keyboard.getEventKey(), Character.toString(Keyboard.getEventCharacter())));    
+                }
             }
         }
         

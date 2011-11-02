@@ -1,13 +1,14 @@
 package com.irr310.common.event;
 
-import java.io.File;
 
 public class KeyReleasedEvent extends EngineEvent {
 
     private final int keyCode;
+    private final String character;
 
-    public KeyReleasedEvent(int keyCode) {
+    public KeyReleasedEvent(int keyCode, String character) {
         this.keyCode = keyCode;
+        this.character = character;
     }
 
     @Override
@@ -17,5 +18,9 @@ public class KeyReleasedEvent extends EngineEvent {
 
     public int getKeyCode() {
         return keyCode;
+    }
+    
+    public String getCharacter() {
+        return character;
     }
 }

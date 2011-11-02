@@ -8,13 +8,16 @@ import java.util.List;
 
 import sun.org.mozilla.javascript.Context;
 import sun.org.mozilla.javascript.ContextFactory;
+import sun.org.mozilla.javascript.EcmaError;
+import sun.org.mozilla.javascript.EvaluatorException;
 import sun.org.mozilla.javascript.Function;
 import sun.org.mozilla.javascript.ImporterTopLevel;
+import sun.org.mozilla.javascript.RhinoException;
 import sun.org.mozilla.javascript.Scriptable;
 
 import com.irr310.client.script.js.SandboxContextFactory;
 import com.irr310.client.script.js.SandboxShutter;
-import com.irr310.client.script.js.objects.Player;
+import com.irr310.client.script.js.objects.Core;
 
 public class ScriptContext {
 
@@ -29,7 +32,7 @@ public class ScriptContext {
 
             {
                 allowedClasses = new ArrayList<Class<?>>();
-                allowedClasses.add(Player.class);
+                allowedClasses.add(Core.class);
 
             }
 
@@ -86,17 +89,44 @@ public class ScriptContext {
         scope = cx.newObject(prototype);
         scope.setPrototype(prototype);
 
-        // your scripts
-        String script;
-        try {
-            script = readFileAsString("drivers/driver1.js");
+        // load scripts
+        loadScriptFile("drivers/constants.js");
+        loadScriptFile("drivers/imports.js");
+        loadScriptFile("drivers/init.js");
+        loadScriptFile("drivers/driver1.js");
 
+    }
+
+    private boolean loadScriptFile(String path) {
+        try {
+            String script = readFileAsString(path);
             // Load script
-            cx.evaluateString(scope, script, "<cmd>", 1, null);
+            cx.evaluateString(scope, script, path, 1, null);
         } catch (IOException e) {
+
             // TODO Auto-generated catch block
             e.printStackTrace();
+            return false;
+        } catch (RhinoException e) {
+            printError(e);
+            return false;
+
         }
+        return true;
+    }
+
+    private void printError(RhinoException e) {
+        System.err.println("JS error in file: " + e.sourceName());
+        System.err.println("line " + e.lineNumber() + ", colomn " + e.columnNumber() + ":");
+        System.err.println(e.lineSource());
+        String arrow = "^";
+        for (int i = 0; i < e.columnNumber(); i++) {
+            arrow = "-" + arrow;
+        }
+        System.err.println(arrow);
+        System.err.println("Error: " + e.details());
+        System.err.println("Stacktrace:");
+        System.err.println(e.getScriptStackTrace());
     }
 
     private static String readFileAsString(String filePath) throws java.io.IOException {
@@ -114,18 +144,21 @@ public class ScriptContext {
     }
 
     public void callFunction(String functionName, Object[] functionArgs) {
+        try {
+            Object fObj = scope.get(functionName, scope);
+            if (!(fObj instanceof Function)) {
+                System.out.println("f is undefined or not a function.");
+            } else {
+                Function f = (Function) fObj;
+                Object result = f.call(cx, scope, scope, functionArgs);
+                String report = functionName + "('my args') = " + Context.toString(result);
+            }
 
-        Object fObj = scope.get(functionName, scope);
-        if (!(fObj instanceof Function)) {
-            System.out.println("f is undefined or not a function.");
-        } else {
-            Function f = (Function) fObj;
-            Object result = f.call(cx, scope, scope, functionArgs);
-            String report = functionName +"('my args') = " + Context.toString(result);
-            System.out.println(report);
+        } catch (RhinoException e) {
+            printError(e);
+
         }
 
         // TODO: add cache
     }
-
 }
