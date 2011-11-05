@@ -6,7 +6,7 @@ function CoreProxy() {
     this.log = function(log) {
         this.coreProxy.log(log);
     }
-
+    
     this.onKeyPressed = function(keyCode, char) {
     
     }

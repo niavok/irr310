@@ -178,6 +178,8 @@ public class GameClient extends Game {
                 }
                 System.out.println("login successful");
 
+                localPlayer = world.loadPlayer(m.player);
+                
                 clientNetworkEngine.send(new ShipListRequestMessage());
 
                 /*

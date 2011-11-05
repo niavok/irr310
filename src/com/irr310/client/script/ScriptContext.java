@@ -13,9 +13,10 @@ import sun.org.mozilla.javascript.ImporterTopLevel;
 import sun.org.mozilla.javascript.RhinoException;
 import sun.org.mozilla.javascript.Scriptable;
 
+import com.irr310.client.GameClient;
 import com.irr310.client.script.js.SandboxContextFactory;
 import com.irr310.client.script.js.SandboxShutter;
-import com.irr310.client.script.js.objects.Core;
+import com.irr310.common.world.Player;
 
 public class ScriptContext {
 
@@ -36,14 +37,37 @@ public class ScriptContext {
         scope = cx.newObject(prototype);
         scope.setPrototype(prototype);
 
-        // load scripts
+        // load init scripts
         loadScriptFile("drivers/constants.js");
         loadScriptFile("drivers/imports.js");
         loadScriptFile("drivers/init.js");
-        loadScriptFile("drivers/driver1.js");
+        
+        // Init player
+        
+        Player localPlayer = GameClient.getInstance().localPlayer;
+        if(localPlayer != null) {
+            loadScriptString("core.me = new Player("+localPlayer.getId()+");");
+        }
 
+        
+        // Load player scripts
+        loadScriptFile("drivers/driver1.js");
+        
     }
 
+    
+    private boolean loadScriptString(String script) {
+        try {
+            // Exec script
+            cx.evaluateString(scope, script, "custom command", 1, null);
+        } catch (RhinoException e) {
+            printError(e);
+            return false;
+
+        }
+        return true;
+    }
+    
     private boolean loadScriptFile(String path) {
         try {
             String script = readFileAsString(path);
@@ -126,7 +150,8 @@ public class ScriptContext {
 
             {
                 allowedClasses = new ArrayList<Class<?>>();
-                allowedClasses.add(Core.class);
+                allowedClasses.add(com.irr310.client.script.js.objects.Core.class);
+                allowedClasses.add(com.irr310.client.script.js.objects.Player.class);
 
             }
 
@@ -148,7 +173,8 @@ public class ScriptContext {
                 System.out.println(type);
                 System.out.println(instance);
                 System.out.println(fieldName);
-                return isAllowedClass(type);
+                return false;
+                //return isAllowedClass(type);
             }
 
             @Override

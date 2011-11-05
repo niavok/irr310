@@ -28,4 +28,6 @@ public interface EngineEventVisitor {
     public abstract void visit(KeyPressedEvent event);
     
     public abstract void visit(KeyReleasedEvent event);
+
+    public abstract void visit(PlayerLoggedEvent event);
 }

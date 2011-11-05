@@ -47,4 +47,8 @@ public abstract class DefaultEngineEventVisitor implements EngineEventVisitor {
     public void visit(KeyReleasedEvent event) {
     }
 
+    @Override
+    public void visit(PlayerLoggedEvent event) {
+    }
+    
 }

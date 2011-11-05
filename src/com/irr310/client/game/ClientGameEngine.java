@@ -96,6 +96,8 @@ public class ClientGameEngine extends FramerateEngine {
             pause(true);
         }
 
+        
+        
     }
 
     private void addCapacityController(CapacityController controller) {

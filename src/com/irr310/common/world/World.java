@@ -96,6 +96,10 @@ public class World {
     public Part getPartById(long partId) {
         return partIdMap.get(partId);
     }
+    
+    public Player getPlayerById(long playerId) {
+        return playersIdMap.get(playerId);
+    }
 
     public Component loadComponent(ComponentView componentView) {
         if (componentIdMap.containsKey(componentView.id)) {
@@ -119,5 +123,7 @@ public class World {
         addPart(part);
         return part;
     }
+
+    
 
 }

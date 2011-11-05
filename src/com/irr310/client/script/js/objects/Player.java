@@ -1,28 +1,21 @@
 package com.irr310.client.script.js.objects;
 
+import com.irr310.common.Game;
+
 public class Player {
 
-	private final String name;
-	private int age;
-	private String gender;
-
+	private com.irr310.common.world.Player player;
 	
-	public Player(String name) {
-		this.name = name;
-		System.out.println("Create player name '"+name+"'");
+	public Player(long id) {
+		player = Game.getInstance().getWorld().getPlayerById(id);
 	}
 
-	public void setGender(String gender) {
-		this.gender = gender;
-		System.out.println("Set gender to '"+name+"' : "+gender);
-	}
+	public long getId() {
+        return player.getId();
+    }
 	
-	public void setAge(int age) {
-		this.age = age;
-		System.out.println("Set age to '"+name+"' : "+age);
-	}
-	
-	public  int getAge() {
-		return age; 
-	}
+	public String getLogin() {
+        return player.getLogin();
+    }
+
 }

@@ -57,20 +57,20 @@ public class ServerNetworkEngine extends EventEngine {
 
                     if (event.getClient().isLogged()) {
                         event.getClient().send(new LoginResponseMessage(message.getResponseIndex(), false, "already logged as "
-                                + event.getClient().getPlayer().getLogin()));
+                                + event.getClient().getPlayer().getLogin(), null));
                         break;
                     }
 
                     LoginRequestMessage m = (LoginRequestMessage) message;
                     if (!GameServer.getInstance().isPlayerExist(m.login)) {
-                        event.getClient().send(new LoginResponseMessage(message.getResponseIndex(), false, "unknown user"));
+                        event.getClient().send(new LoginResponseMessage(message.getResponseIndex(), false, "unknown user", null));
                         break;
                     }
 
                     Player player = GameServer.getInstance().getPlayerByLogin(m.login);
 
                     if (!player.checkPassword(m.password)) {
-                        event.getClient().send(new LoginResponseMessage(message.getResponseIndex(), false, "bad password"));
+                        event.getClient().send(new LoginResponseMessage(message.getResponseIndex(), false, "bad password", null));
                         break;
                     }
 
@@ -78,7 +78,7 @@ public class ServerNetworkEngine extends EventEngine {
 
                     event.getClient().setPlayer(player);
 
-                    event.getClient().send(new LoginResponseMessage(message.getResponseIndex(), true, "success"));
+                    event.getClient().send(new LoginResponseMessage(message.getResponseIndex(), true, "success", player.toView()));
                 }
                     break;
 
