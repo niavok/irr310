@@ -20,6 +20,7 @@ public class ComponentFactory {
 
         LinearEngineCapacity engineCapacity = new LinearEngineCapacity(GameServer.pickNewId());
         engineCapacity.theoricalMaxThrust = 10;
+        engineCapacity.theoricalMinThrust = -4;
         engineCapacity.theoricalVariationSpeed = 4;
         engineCapacity.currentThrust = 0;
         //engineCapacity.setTargetThrust(4);

@@ -23,6 +23,10 @@ function init() {
         core.log("rightEngine.maxThrust "+rightEngine.getMaxThrust());
         
         var maxThrust = Math.min(leftEngine.getMaxThrust(), rightEngine.getMaxThrust())
+        var minThrust = Math.min( -leftEngine.getMinThrust(), -rightEngine.getMinThrust())
+        
+        var maxRotationThrust = Math.min(minThrust, maxThrust)
+        
         core.log("maxThrust "+maxThrust);        
         // Add key handler
         core.onKeyPressed = function (keyCode, char) {
@@ -34,22 +38,24 @@ function init() {
                     break;
                 case KEY_DOWN:
                     core.log("press down");
-                    leftEngine.targetThrust = 0;
-                    rightEngine.targetThrust = 0;
+                    leftEngine.targetThrust = -minThrust;
+                    rightEngine.targetThrust = -minThrust;
                     break;
                 case KEY_LEFT:
                     core.log("press left");
-                    leftEngine.targetThrust = 0;
-                    rightEngine.targetThrust = maxThrust;
+                    leftEngine.targetThrust = -maxRotationThrust;
+                    rightEngine.targetThrust = maxRotationThrust;
                     break;
                 case KEY_RIGHT:
                     core.log("press right");
-                    leftEngine.targetThrust = maxThrust;
-                    rightEngine.targetThrust = 0;
+                    leftEngine.targetThrust = maxRotationThrust;
+                    rightEngine.targetThrust = -maxRotationThrust;
 
                     break;
                 case KEY_SPACE:
                     core.log("press space");
+                    leftEngine.targetThrust = 0;
+                    rightEngine.targetThrust = 0;
                     break;
                 default:
                     core.log("pressed undefined key: '"+keyCode+"' / '"+char+"'");

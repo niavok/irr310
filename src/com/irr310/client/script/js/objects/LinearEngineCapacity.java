@@ -18,4 +18,8 @@ public class LinearEngineCapacity extends Capacity {
 	    return capacity.getMaxThrust();
 	}
 	
+	public double getMinThrust() {
+        return capacity.getMinThrust();
+    }
+	
 }

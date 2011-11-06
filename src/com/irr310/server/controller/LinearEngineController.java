@@ -19,14 +19,22 @@ public class LinearEngineController extends CapacityController {
         capacity.targetThrust = capacity.targetThrustInput;
 
         capacity.maxThrust = component.getEfficiency() * capacity.theoricalMaxThrust;
+        capacity.minThrust = component.getEfficiency() * capacity.theoricalMinThrust;
         capacity.variationSpeed = component.getEfficiency() * capacity.theoricalVariationSpeed;
 
         double realTargetTrust = Math.min(capacity.targetThrust, capacity.maxThrust);
+        realTargetTrust = Math.max(realTargetTrust, capacity.minThrust);
 
         if (capacity.currentThrust > capacity.maxThrust) {
             // If the current thrust is too hight, slow down the engine
             capacity.currentThrust -= duration * capacity.theoricalVariationSpeed;
             if (capacity.currentThrust < realTargetTrust) {
+                capacity.currentThrust = realTargetTrust;
+            }
+        } else if (capacity.currentThrust < capacity.minThrust) {
+            // If the current thrust is too hight, slow down the engine
+            capacity.currentThrust += duration * capacity.theoricalVariationSpeed;
+            if (capacity.currentThrust > realTargetTrust) {
                 capacity.currentThrust = realTargetTrust;
             }
         } else if (capacity.currentThrust != capacity.targetThrust) {
