@@ -169,4 +169,19 @@ public class TransformMatrix {
 		rotateZ(Math.toRadians(rotation.z));
 	}
 
+    /*public void getLocalVectorToGlobalVector(Vect3 vect3) {
+        TransformMatrix force = TransformMatrix.identity();
+        force.translate(new Vect3(0, linearEngine.getLeft().getCurrentThrust(), 0));
+        
+        TransformMatrix rotation = new TransformMatrix();
+        t.getOpenGLMatrix(getData());
+        rotation.setTranslation(0, 0, 0);
+        force.preMultiply(rotation);
+
+        rotation.getLocalVectorToGlobalVector(new Vect3(0, linearEngine.getLeft().getCurrentThrust(), 0));
+        
+        body.applyCentralForce(force.getTranslation().toVector3f());
+        
+    }*/
+
 }

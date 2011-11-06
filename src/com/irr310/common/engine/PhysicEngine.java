@@ -87,6 +87,9 @@ public class PhysicEngine extends FramerateEngine {
             Transform t = new Transform();
             body.getWorldTransform(t);
             
+            
+            
+            
             TransformMatrix force = TransformMatrix.identity();
             force.translate(new Vect3(0, linearEngine.getLeft().getCurrentThrust(), 0));
             
@@ -95,6 +98,7 @@ public class PhysicEngine extends FramerateEngine {
             rotation.setTranslation(0, 0, 0);
             force.preMultiply(rotation);
 
+            
             body.applyCentralForce(force.getTranslation().toVector3f());
             body.setActivationState(RigidBody.ACTIVE_TAG);
         }

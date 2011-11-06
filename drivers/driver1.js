@@ -106,6 +106,12 @@ function init() {
         
         core.log("js frame: "+orderAccelerate);
         
+        var speedVector = kernel.getLinearSpeed();
+        var speed = speedVector.length();
+        
+        core.log("kernel speed vector: x="+speedVector.getX()+" y="+speedVector.getY()+" z="+speedVector.getZ());
+        core.log("kernel speed: "+speed);
+        
         if(orderAccelerate) {
             if(orderTurnLeft) {
                 leftEngine.targetThrust = 0;
