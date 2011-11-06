@@ -14,6 +14,10 @@ function CoreProxy() {
     this.onKeyReleased = function(keyCode, char) {
     
     }
+    
+    this.onFrame = function(time) {
+    
+    }
 
 }
 
@@ -26,4 +30,8 @@ function onKeyPressed(keyCode, char) {
 
 function onKeyReleased(keyCode, char) {
     core.onKeyReleased(keyCode, char);
+}
+
+function onFrame(time) {
+    core.onFrame(time);
 }

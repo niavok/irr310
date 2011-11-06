@@ -18,6 +18,7 @@ function init() {
 
         var leftEngine = ship.getComponentByName("mainLeftPropeller").getCapacityByName("linearEngine");
         var rightEngine = ship.getComponentByName("mainRightPropeller").getCapacityByName("linearEngine");
+        var kernel = ship.getComponentByName("kernel");
         
         core.log("leftEngine.maxThrust "+leftEngine.getMaxThrust());
         core.log("rightEngine.maxThrust "+rightEngine.getMaxThrust());
@@ -27,35 +28,42 @@ function init() {
         
         var maxRotationThrust = Math.min(minThrust, maxThrust)
         
+        var orderAccelerate = false;
+        var orderBreak = false;
+        var orderTurnLeft = false;
+        var orderTurnRight = false;
+        
         core.log("maxThrust "+maxThrust);        
         // Add key handler
         core.onKeyPressed = function (keyCode, char) {
             switch(keyCode) {
                 case KEY_UP:
                     core.log("press up");
-                    leftEngine.targetThrust = maxThrust;
-                    rightEngine.targetThrust = maxThrust;
+                    orderAccelerate = true;
                     break;
                 case KEY_DOWN:
+                    orderBreak = true;
                     core.log("press down");
-                    leftEngine.targetThrust = -minThrust;
-                    rightEngine.targetThrust = -minThrust;
+                    //leftEngine.targetThrust = -minThrust;
+                    //rightEngine.targetThrust = -minThrust;
                     break;
                 case KEY_LEFT:
+                    orderTurnLeft = true;
                     core.log("press left");
-                    leftEngine.targetThrust = -maxRotationThrust;
-                    rightEngine.targetThrust = maxRotationThrust;
+                    //leftEngine.targetThrust = -maxRotationThrust;
+                    //rightEngine.targetThrust = maxRotationThrust;
                     break;
                 case KEY_RIGHT:
+                    orderTurnRight = true;
                     core.log("press right");
-                    leftEngine.targetThrust = maxRotationThrust;
-                    rightEngine.targetThrust = -maxRotationThrust;
+                    //leftEngine.targetThrust = maxRotationThrust;
+                    //rightEngine.targetThrust = -maxRotationThrust;
 
                     break;
                 case KEY_SPACE:
                     core.log("press space");
-                    leftEngine.targetThrust = 0;
-                    rightEngine.targetThrust = 0;
+                    //leftEngine.targetThrust = 0;
+                    //rightEngine.targetThrust = 0;
                     break;
                 default:
                     core.log("pressed undefined key: '"+keyCode+"' / '"+char+"'");
@@ -66,14 +74,18 @@ function init() {
             switch(keyCode) {
                 case  KEY_UP:
                     core.log("released up");
+                    orderAccelerate = false;
                     break;
                 case  KEY_DOWN:
+                    orderBreak = false;
                     core.log("released down");
                     break;
                 case  KEY_LEFT:
+                    orderTurnLeft = false;
                     core.log("released left");
                     break;
                 case  KEY_RIGHT:
+                    orderTurnRight = false;
                     core.log("released right");
                     break;
                 case KEY_SPACE:
@@ -87,6 +99,38 @@ function init() {
 
     } else {
         core.log("no ships");
+    }
+    
+    
+    core.onFrame = function(time) {
+        
+        core.log("js frame: "+orderAccelerate);
+        
+        if(orderAccelerate) {
+            if(orderTurnLeft) {
+                leftEngine.targetThrust = 0;
+                rightEngine.targetThrust = maxThrust;
+            } else if(orderTurnRight) {
+                leftEngine.targetThrust = maxThrust;
+                rightEngine.targetThrust = 0;
+            } else {
+                leftEngine.targetThrust = maxThrust;
+                rightEngine.targetThrust = maxThrust;
+            }
+        } else if(orderBreak) {
+            leftEngine.targetThrust = -minThrust;
+            rightEngine.targetThrust = -minThrust;
+        } else if(orderTurnLeft) {
+            leftEngine.targetThrust = -maxRotationThrust;
+            rightEngine.targetThrust = maxRotationThrust;
+        } else if(orderTurnRight) {
+            leftEngine.targetThrust = maxRotationThrust;
+            rightEngine.targetThrust = -maxRotationThrust;
+        } else {
+            leftEngine.targetThrust = 0;
+            rightEngine.targetThrust = 0;
+        }
+        
     }
 }
 

@@ -249,7 +249,7 @@ public class PhysicEngine extends FramerateEngine {
 
         // Create Dynamic Objects
 
-        float mass = part.getMass().floatValue();
+        float mass = part.getMass().floatValue()/10;
 
         // rigidbody is dynamic if and only if mass is non zero, otherwise
         // static
@@ -271,7 +271,7 @@ public class PhysicEngine extends FramerateEngine {
         myMotionState.setBody(body);
 
         body.setActivationState(RigidBody.ISLAND_SLEEPING);
-        body.setDamping(0.001f, 0.5f);
+        body.setDamping(0.1f, 0.5f);
         body.setSleepingThresholds(0.001f, 0.001f);
         // body.setDeactivationTime(deactivationTime)
 

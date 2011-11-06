@@ -24,6 +24,9 @@ public class ClientScriptEngine extends FramerateEngine {
 
     @Override
     protected void frame() {
+        Object[] args = new Object[1];
+        args[0] = framerate;
+        scriptContext.callFunction("onFrame", args);
     }
 
     @Override
