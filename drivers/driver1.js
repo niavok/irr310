@@ -12,15 +12,18 @@ function init() {
     
     var ships = core.me.getShips();
 
-    if(ships.len() > 0) {
+    if(ships.size() > 0) {
         
-        var ship = ships[0];
+        var ship = ships.get(0);
 
         var leftEngine = ship.getComponentByName("mainLeftPropeller").getCapacityByName("linearEngine");
         var rightEngine = ship.getComponentByName("mainRightPropeller").getCapacityByName("linearEngine");
         
-        var maxThrust = Math.min(leftEngine.maxThrust, rightEngine.maxThrust)
+        core.log("leftEngine.maxThrust "+leftEngine.getMaxThrust());
+        core.log("rightEngine.maxThrust "+rightEngine.getMaxThrust());
         
+        var maxThrust = Math.min(leftEngine.getMaxThrust(), rightEngine.getMaxThrust())
+        core.log("maxThrust "+maxThrust);        
         // Add key handler
         core.onKeyPressed = function (keyCode, char) {
             switch(keyCode) {

@@ -1,18 +1,17 @@
 package com.irr310.common.world;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.irr310.common.Game;
-import com.irr310.common.network.NetworkField;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vect3;
 import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.capacity.Capacity.CapacityType;
-import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.common.world.view.CapacityView;
 import com.irr310.common.world.view.ComponentView;
-import com.irr310.common.world.view.LinkView;
 import com.irr310.common.world.view.PartView;
 import com.irr310.common.world.view.SlotView;
 
@@ -29,11 +28,13 @@ public final class  Component extends WorldObject {
 	private Vect3 shipRotation;
 	private List<Slot> slots;
 	private List<Capacity> capacities;
+	private Map<String, Capacity> capacityNameMap;
 	
-	public Component(long id) {
-	    super(id);
+	public Component(long id, String name) {
+	    super(id, name);
 		slots = new ArrayList<Slot>();
 		capacities = new ArrayList<Capacity>();
+		capacityNameMap = new HashMap<String, Capacity>();
 		shipRotation = Vect3.origin();
 		shipPosition = Vect3.origin();
 		durability = 1;
@@ -156,6 +157,7 @@ public final class  Component extends WorldObject {
         ComponentView componentView = new ComponentView();
         
         componentView.id = getId();
+        componentView.name = getName();
         componentView.shipPosition = shipPosition;
         componentView.shipRotation = shipRotation;
         
@@ -205,10 +207,15 @@ public final class  Component extends WorldObject {
 
     public void addCapacity(Capacity capacity) {
         capacities.add(capacity);
+        capacityNameMap.put(capacity.getName(), capacity);
     }
 
     public List<Capacity> getCapacities() {
         return capacities;
+    }
+
+    public com.irr310.common.world.capacity.Capacity getCapacitiesByName(String name) {
+        return capacityNameMap.get(name);
     }
 
     

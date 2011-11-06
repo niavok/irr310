@@ -9,8 +9,8 @@ import com.irr310.server.GameServer;
 
 public class ComponentFactory {
 
-    public static Component createBigPropeller() {
-        Component component = createSimpleComponent();
+    public static Component createBigPropeller(String name) {
+        Component component = createSimpleComponent(name);
         Part part = component.getFirstPart();
         part.setMass(48d);
 
@@ -20,16 +20,16 @@ public class ComponentFactory {
 
         LinearEngineCapacity engineCapacity = new LinearEngineCapacity(GameServer.pickNewId());
         engineCapacity.theoricalMaxThrust = 10;
-        engineCapacity.theoricalVariationSpeed = 1;
+        engineCapacity.theoricalVariationSpeed = 4;
         engineCapacity.currentThrust = 0;
-        engineCapacity.setTargetThrust(4);
+        //engineCapacity.setTargetThrust(4);
         component.addCapacity(engineCapacity);
         
         return component;
     }
 
-    public static Component createCamera() {
-        Component component = createSimpleComponent();
+    public static Component createCamera(String name) {
+        Component component = createSimpleComponent(name);
         Part part = component.getFirstPart();
         part.setMass(1d);
 
@@ -40,8 +40,8 @@ public class ComponentFactory {
         return component;
     }
 
-    public static Component createFactory() {
-        Component component = createSimpleComponent();
+    public static Component createFactory(String name) {
+        Component component = createSimpleComponent(name);
         Part part = component.getFirstPart();
         part.setMass(48d);
 
@@ -52,8 +52,8 @@ public class ComponentFactory {
         return component;
     }
 
-    public static Component createPVCell() {
-        Component component = createSimpleComponent();
+    public static Component createPVCell(String name) {
+        Component component = createSimpleComponent(name);
         Part part = component.getFirstPart();
         part.setMass(5d);
 
@@ -64,8 +64,8 @@ public class ComponentFactory {
         return component;
     }
 
-    public static Component createHangar() {
-        Component component = createSimpleComponent();
+    public static Component createHangar(String name) {
+        Component component = createSimpleComponent(name);
         Part part = component.getFirstPart();
         part.setMass(48d);
 
@@ -76,8 +76,8 @@ public class ComponentFactory {
         return component;
     }
 
-    public static Component createRefinery() {
-        Component component = createSimpleComponent();
+    public static Component createRefinery(String name) {
+        Component component = createSimpleComponent(name);
         Part part = component.getFirstPart();
         part.setMass(48d);
 
@@ -88,8 +88,8 @@ public class ComponentFactory {
         return component;
     }
 
-    public static Component createTank() {
-        Component component = createSimpleComponent();
+    public static Component createTank(String name) {
+        Component component = createSimpleComponent(name);
         Part part = component.getFirstPart();
         part.setMass(20d);
 
@@ -100,8 +100,8 @@ public class ComponentFactory {
         return component;
     }
 
-    public static Component createHarvester() {
-        Component component = createSimpleComponent();
+    public static Component createHarvester(String name) {
+        Component component = createSimpleComponent(name);
         Part part = component.getFirstPart();
         part.setMass(48d);
 
@@ -112,8 +112,8 @@ public class ComponentFactory {
         return component;
     }
 
-    public static Component createKernel() {
-        Component component = createSimpleComponent();
+    public static Component createKernel(String name) {
+        Component component = createSimpleComponent(name);
         Part part = component.getFirstPart();
         part.setMass(1d);
 
@@ -124,30 +124,30 @@ public class ComponentFactory {
         return component;
     }
 
-    public static Component createGate() {
-        Component component = createSimpleComponent();
+    public static Component createGate(String name) {
+        Component component = createSimpleComponent(name);
         return component;
     }
 
-    public static Component createBeam() {
-        Component component = createSimpleComponent();
+    public static Component createBeam(String name) {
+        Component component = createSimpleComponent(name);
         return component;
     }
 
-    public static Component createPiston() {
-        Component component = createSimpleComponent();
+    public static Component createPiston(String name) {
+        Component component = createSimpleComponent(name);
         return component;
     }
 
-    public static Component createTorqueEngine() {
-        Component component = createSimpleComponent();
+    public static Component createTorqueEngine(String name) {
+        Component component = createSimpleComponent(name);
         return component;
     }
 
     // Tools
 
-    private static Component createSimpleComponent() {
-        Component component = new Component(GameServer.pickNewId());
+    private static Component createSimpleComponent(String name) {
+        Component component = new Component(GameServer.pickNewId(), name);
         
         Part part = new Part(GameServer.pickNewId());
         component.addPart(part);

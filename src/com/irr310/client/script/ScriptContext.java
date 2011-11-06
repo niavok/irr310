@@ -41,21 +41,19 @@ public class ScriptContext {
         loadScriptFile("drivers/constants.js");
         loadScriptFile("drivers/imports.js");
         loadScriptFile("drivers/init.js");
-        
+
         // Init player
-        
+
         Player localPlayer = GameClient.getInstance().localPlayer;
-        if(localPlayer != null) {
-            loadScriptString("core.me = new Player("+localPlayer.getId()+");");
+        if (localPlayer != null) {
+            loadScriptString("core.me = new Player(" + localPlayer.getId() + ");");
         }
 
-        
         // Load player scripts
         loadScriptFile("drivers/driver1.js");
-        
+
     }
 
-    
     private boolean loadScriptString(String script) {
         try {
             // Exec script
@@ -67,7 +65,7 @@ public class ScriptContext {
         }
         return true;
     }
-    
+
     private boolean loadScriptFile(String path) {
         try {
             String script = readFileAsString(path);
@@ -143,7 +141,7 @@ public class ScriptContext {
             return;
         }
         isInit = true;
-        
+
         ContextFactory.initGlobal(new SandboxContextFactory(new SandboxShutter() {
 
             List<Class<?>> allowedClasses;
@@ -152,7 +150,12 @@ public class ScriptContext {
                 allowedClasses = new ArrayList<Class<?>>();
                 allowedClasses.add(com.irr310.client.script.js.objects.Core.class);
                 allowedClasses.add(com.irr310.client.script.js.objects.Player.class);
-
+                allowedClasses.add(com.irr310.client.script.js.objects.Ship.class);
+                allowedClasses.add(com.irr310.client.script.js.objects.Component.class);
+                allowedClasses.add(com.irr310.client.script.js.objects.Capacity.class);
+                allowedClasses.add(com.irr310.client.script.js.objects.LinearEngineCapacity.class);
+                allowedClasses.add(java.lang.String.class);
+                allowedClasses.add(java.util.ArrayList.class);
             }
 
             private boolean isAllowedClass(Class<?> type) {
@@ -174,7 +177,7 @@ public class ScriptContext {
                 System.out.println(instance);
                 System.out.println(fieldName);
                 return false;
-                //return isAllowedClass(type);
+                // return isAllowedClass(type);
             }
 
             @Override

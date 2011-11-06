@@ -1,7 +1,9 @@
 package com.irr310.common.world;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.irr310.common.Game;
 import com.irr310.common.tools.Vect3;
@@ -16,6 +18,7 @@ public class Ship extends GameEntity implements Container {
 	private static final double MIN_LINK_DISTANCE = 0.1;
 	List<Link> links = new ArrayList<Link>();
 	List<Component> components = new ArrayList<Component>();
+	Map<String,Component> componentNamesMap = new HashMap<String, Component>();
 	KernelCapacity kernel;
     private Player owner;
 
@@ -30,6 +33,7 @@ public class Ship extends GameEntity implements Container {
 			component.getContainer().remove(component);
 		}
 		components.add(component);
+		componentNamesMap.put(component.getName(), component);
 		component.setContainer(this);
 		return true;
 	}
@@ -122,6 +126,10 @@ public class Ship extends GameEntity implements Container {
             link(world.getSlotById(link.slot1Id), world.getSlotById(link.slot2Id));
         }
         
+    }
+
+    public Component getComponentByName(String name) {
+        return componentNamesMap.get(name);
     }
     
     

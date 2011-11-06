@@ -83,9 +83,9 @@ public class PhysicEngine extends FramerateEngine {
 
         // Apply forces
         for (Pair<LinearEngineCapacity, RigidBody> linearEngine : linearEngines) {
-            RigidBody right = linearEngine.getRight();
+            RigidBody body = linearEngine.getRight();
             Transform t = new Transform();
-            right.getWorldTransform(t);
+            body.getWorldTransform(t);
             
             TransformMatrix force = TransformMatrix.identity();
             force.translate(new Vect3(0, linearEngine.getLeft().getCurrentThrust(), 0));
@@ -95,7 +95,8 @@ public class PhysicEngine extends FramerateEngine {
             rotation.setTranslation(0, 0, 0);
             force.preMultiply(rotation);
 
-            right.applyCentralForce(force.getTranslation().toVector3f());
+            body.applyCentralForce(force.getTranslation().toVector3f());
+            body.setActivationState(RigidBody.ACTIVE_TAG);
         }
 
         // step the simulation
@@ -270,7 +271,7 @@ public class PhysicEngine extends FramerateEngine {
         myMotionState.setBody(body);
 
         body.setActivationState(RigidBody.ISLAND_SLEEPING);
-        body.setDamping(0.001f, 0.1f);
+        body.setDamping(0.001f, 0.5f);
         body.setSleepingThresholds(0.001f, 0.001f);
         // body.setDeactivationTime(deactivationTime)
 

@@ -16,75 +16,75 @@ public class ShipFactory {
         Ship newShip = new Ship(GameServer.pickNewId());
 
         // Kernel
-        Component kernel = ComponentFactory.createKernel();
+        Component kernel = ComponentFactory.createKernel("kernel");
         kernel.setShipPosition(new Vect3(0, 0, 0));
         world.addComponent(kernel);
         newShip.assign(kernel);
 
         // Camera
-        Component camera = ComponentFactory.createCamera();
+        Component camera = ComponentFactory.createCamera("camera");
         camera.setShipPosition(new Vect3(0, -1, 0));
         world.addComponent(camera);
         newShip.assign(camera);
 
         // Factory
-        Component factory = ComponentFactory.createFactory();
+        Component factory = ComponentFactory.createFactory("factory");
         factory.setShipPosition(new Vect3(0, 0, -2));
         world.addComponent(factory);
         newShip.assign(factory);
 
         // Tank
-        Component tank = ComponentFactory.createTank();
+        Component tank = ComponentFactory.createTank("tank");
         tank.setShipPosition(new Vect3(0, 5.5, -2));
         world.addComponent(tank);
         newShip.assign(tank);
 
         // Harvester
-        Component harvester = ComponentFactory.createHarvester();
+        Component harvester = ComponentFactory.createHarvester("harvester");
         harvester.setShipPosition(new Vect3(0, 11, -2));
         world.addComponent(harvester);
         newShip.assign(harvester);
 
         // Refinery
-        Component rafinery = ComponentFactory.createRefinery();
+        Component rafinery = ComponentFactory.createRefinery("rafinery");
         rafinery.setShipPosition(new Vect3(0, -4, -2));
         world.addComponent(rafinery);
         newShip.assign(rafinery);
 
         // Hangar
-        Component hangar = ComponentFactory.createHangar();
+        Component hangar = ComponentFactory.createHangar("hangar");
         hangar.setShipPosition(new Vect3(0, -8, -2));
         world.addComponent(hangar);
         newShip.assign(hangar);
 
         // PVCells
-        Component frontLeft = ComponentFactory.createPVCell();
+        Component frontLeft = ComponentFactory.createPVCell("frontLeftPVCell");
         frontLeft.setShipPosition(new Vect3(-5, 0, -2));
         world.addComponent(frontLeft);
         newShip.assign(frontLeft);
 
-        Component backLeft = ComponentFactory.createPVCell();
+        Component backLeft = ComponentFactory.createPVCell("backLeftPVCell");
         backLeft.setShipPosition(new Vect3(-5, -6, -2));
         world.addComponent(backLeft);
         newShip.assign(backLeft);
 
-        Component frontRight = ComponentFactory.createPVCell();
+        Component frontRight = ComponentFactory.createPVCell("frontRightPVCell");
         frontRight.setShipPosition(new Vect3(5, 0, -2));
         world.addComponent(frontRight);
         newShip.assign(frontRight);
 
-        Component backRight = ComponentFactory.createPVCell();
+        Component backRight = ComponentFactory.createPVCell("backRightPVCell");
         backRight.setShipPosition(new Vect3(5, -6, -2));
         world.addComponent(backRight);
         newShip.assign(backRight);
 
         // Engines
-        Component mainLeftPropeller = ComponentFactory.createBigPropeller();
+        Component mainLeftPropeller = ComponentFactory.createBigPropeller("mainLeftPropeller");
         mainLeftPropeller.setShipPosition(new Vect3(-10, 0, -2));
         world.addComponent(mainLeftPropeller);
         newShip.assign(mainLeftPropeller);
 
-        Component mainRightPropeller = ComponentFactory.createBigPropeller();
+        Component mainRightPropeller = ComponentFactory.createBigPropeller("mainRightPropeller");
         mainRightPropeller.setShipPosition(new Vect3(10, 0, -2));
         world.addComponent(mainRightPropeller);
         newShip.assign(mainRightPropeller);

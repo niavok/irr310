@@ -17,10 +17,15 @@ public class CapacityView {
     @NetworkField
     public int type;
     
+    @NetworkField
+    public String name;
+    
     @NetworkListField(Double.class)
     public List<Double> doubles = new ArrayList<Double>();
 
     private int popIndex = 0;
+
+    
 
     public void pushDouble(double d) {
         doubles.add(d);

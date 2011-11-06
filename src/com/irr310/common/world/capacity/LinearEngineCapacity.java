@@ -14,7 +14,7 @@ public class LinearEngineCapacity extends Capacity {
     public double targetThrustInput;
 
     public LinearEngineCapacity(long id) {
-        super(id);
+        super(id, "linearEngine");
     }
 
     public double getCurrentThrust() {
@@ -46,6 +46,7 @@ public class LinearEngineCapacity extends Capacity {
     public CapacityView toView() {
         CapacityView view = new CapacityView();
         view.id = getId();
+        view.name = getName();
         view.type = CapacityType.LINEAR_ENGINE.ordinal();
 
         view.pushDouble(currentThrust);

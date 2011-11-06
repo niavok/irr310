@@ -20,7 +20,7 @@ public class World {
     List<WorldObject> objects;
     List<Ship> ships;
     List<Player> players;
-    Map<Long, Player> playersIdMap;
+    Map<Long, Player> playerIdMap;
     Map<Long, Ship> shipIdMap;
     Map<Long, Component> componentIdMap;
     Map<Long, Slot> slotIdMap;
@@ -30,7 +30,7 @@ public class World {
         objects = new ArrayList<WorldObject>();
         ships = new ArrayList<Ship>();
         players = new ArrayList<Player>();
-        playersIdMap = new HashMap<Long, Player>();
+        playerIdMap = new HashMap<Long, Player>();
         shipIdMap = new HashMap<Long, Ship>();
         slotIdMap = new HashMap<Long, Slot>();
         componentIdMap = new HashMap<Long, Component>();
@@ -52,7 +52,7 @@ public class World {
 
     private void addPlayer(Player player) {
         players.add(player);
-        playersIdMap.put(player.getId(), player);
+        playerIdMap.put(player.getId(), player);
         Game.getInstance().sendToAll(new PlayerAddedEvent(player));
     }
 
@@ -67,8 +67,8 @@ public class World {
     }
 
     public Player loadPlayer(PlayerView playerView) {
-        if (playersIdMap.containsKey(playerView.id)) {
-            return playersIdMap.get(playerView.id);
+        if (playerIdMap.containsKey(playerView.id)) {
+            return playerIdMap.get(playerView.id);
         }
 
         Player player = new Player(playerView.id, playerView.login);
@@ -98,15 +98,27 @@ public class World {
     }
     
     public Player getPlayerById(long playerId) {
-        return playersIdMap.get(playerId);
+        return playerIdMap.get(playerId);
+    }
+    
+    public Ship getShipById(long shipId) {
+        return shipIdMap.get(shipId);
     }
 
+    public Component getComponentBy(long componentId) {
+        return componentIdMap.get(componentId);
+    }
+
+    
+
+    
+    
     public Component loadComponent(ComponentView componentView) {
         if (componentIdMap.containsKey(componentView.id)) {
             return componentIdMap.get(componentView.id);
         }
 
-        Component component = new Component(componentView.id);
+        Component component = new Component(componentView.id, componentView.name);
         component.fromView(componentView);
         addComponent(component);
         return component;

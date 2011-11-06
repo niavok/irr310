@@ -5,14 +5,16 @@ import com.irr310.common.world.view.CapacityView;
 
 public abstract class Capacity extends GameEntity{
 
-    public Capacity(long id) {
+    private final String name;
+
+    public Capacity(long id, String name) {
         super(id);
+        this.name = name;
     }
 
     public enum CapacityType {
         LINEAR_ENGINE
     }
-    
     
     public abstract CapacityView toView();
 
@@ -24,6 +26,10 @@ public abstract class Capacity extends GameEntity{
                 return new LinearEngineCapacity(id);
         }
         return null;
+    }
+
+    public String getName() {
+        return name;
     }
     
 }

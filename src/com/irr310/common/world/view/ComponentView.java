@@ -20,6 +20,9 @@ public class ComponentView {
     @NetworkField
     public long id;
     
+    @NetworkField
+    public String name;
+    
     @NetworkListField(PartView.class)
     public List<PartView> parts = new ArrayList<PartView>();
 

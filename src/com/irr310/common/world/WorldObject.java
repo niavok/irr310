@@ -9,15 +9,15 @@ public abstract class WorldObject extends GameEntity {
     protected List<Part> parts;
     private Part firstPart;
 
-    public WorldObject(long id) {
+    public WorldObject(long id, String name) {
         super(id);
-        name = "unamed object";
+        this.name = name;
         firstPart = null;
         parts = new ArrayList<Part>();
     }
 
     public String getName() {
-        return getName();
+        return name;
     }
 
     public void setName(String name) {
