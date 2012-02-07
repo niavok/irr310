@@ -10,7 +10,6 @@ public class LinearEngineCapacity extends Capacity {
     }
 
     public void setTargetThrust(double thrust) {
-        System.out.println("trust to " + thrust);
         if (capacity.getTargetThrust() != thrust) {
             capacity.setTargetThrust(thrust);
             sendUpdate();

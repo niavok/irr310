@@ -26,18 +26,24 @@ import com.irr310.server.GameServer;
 
 public class ServerNetworkEngine extends EventEngine {
 
+    private NetworkWorker worker;
+
     public ServerNetworkEngine() {
 
         try {
-            NetworkWorker worker = new NetworkWorker(this);
+            worker = new NetworkWorker(this);
             new Thread(worker).start();
             new Thread(new NioServer(null, 22310, worker)).start();
+            NetworkSyncronizer syncronizer = new NetworkSyncronizer(this);
+            new Thread(syncronizer).start();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
 
+    
+    
     @Override
     protected void processEvent(EngineEvent e) {
         e.accept(new NetworkEngineEventVisitor());
@@ -145,5 +151,9 @@ public class ServerNetworkEngine extends EventEngine {
     @Override
     protected void end() {
     }
+    
+    public NetworkWorker getWorker() {
+        return worker;
+    };
 
 }

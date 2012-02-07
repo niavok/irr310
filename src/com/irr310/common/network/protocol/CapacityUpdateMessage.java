@@ -8,6 +8,8 @@ public class CapacityUpdateMessage extends NetworkMessage {
 
     @NetworkField
     public CapacityView capacity;
+    
+    
 
     public CapacityUpdateMessage() {
         super(NetworkMessageType.CAPACITY_UPDATE);

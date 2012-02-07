@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class NioClient implements Runnable {
     // The host:port combination to connect to
@@ -25,7 +27,7 @@ public class NioClient implements Runnable {
     private ByteBuffer readBuffer = ByteBuffer.allocate(8192);
 
     // A list of PendingChange instances
-    private List<ChangeRequest> pendingChanges = new LinkedList<ChangeRequest>();
+    private Queue<ChangeRequest> pendingChanges = new ConcurrentLinkedQueue<ChangeRequest>();
 
     // Maps a SocketChannel to a list of ByteBuffer instances
     // private Map pendingData = new HashMap();

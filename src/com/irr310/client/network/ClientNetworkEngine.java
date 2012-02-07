@@ -4,6 +4,7 @@ import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.irr310.client.GameClient;
 import com.irr310.common.Game;
 import com.irr310.common.engine.EventEngine;
 import com.irr310.common.event.DefaultEngineEventVisitor;
@@ -11,9 +12,12 @@ import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.NetworkEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.network.NetworkMessage;
+import com.irr310.common.network.protocol.PartStateUpdateListMessage;
 import com.irr310.common.network.protocol.ShipListMessage;
+import com.irr310.common.world.Part;
 import com.irr310.common.world.Ship;
 import com.irr310.common.world.World;
+import com.irr310.common.world.view.PartStateView;
 import com.irr310.common.world.view.ShipView;
 
 public class ClientNetworkEngine extends EventEngine {
@@ -90,6 +94,9 @@ public class ClientNetworkEngine extends EventEngine {
                 case SHIP_LIST:
                     shipListReceived(event.getMessage());
                     break;
+                case PART_STATE_UPDATE_LIST:
+                    partStateUpdateReceived(event.getMessage());
+                    break;
                 default:
                     System.err.println("Unsupported network type " + event.getMessage().getType());
             }
@@ -113,5 +120,17 @@ public class ClientNetworkEngine extends EventEngine {
             System.out.println("Ship received: " + ship.getId());
         }
 
+    }
+    
+    private void partStateUpdateReceived(NetworkMessage message) {
+        PartStateUpdateListMessage m = (PartStateUpdateListMessage) message;
+        for (PartStateView partStateView : m.partStateList) {
+            Part part = Game.getInstance().getWorld().getPartById(partStateView.id);
+            if(part != null) {
+                System.out.println("update part");
+                part.fromStateView(partStateView);
+            }
+        }
+        GameClient.getInstance().getPhysicEngine().reloadStates();
     }
 }

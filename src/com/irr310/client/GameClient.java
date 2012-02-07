@@ -238,6 +238,9 @@ public class GameClient extends Game {
         clientNetworkEngine.send(new CapacityUpdateMessage(capacity.toView()));
     }
 
+    public PhysicEngine getPhysicEngine() {
+        return physicEngine;
+    }
     
 
 }

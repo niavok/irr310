@@ -21,6 +21,7 @@ public class World {
     private final List<WorldObject> objects;
     private final List<Ship> ships;
     private final List<Player> players;
+    private final List<Part> parts;
     private final Map<Long, Player> playerIdMap;
     private final Map<Long, Ship> shipIdMap;
     private final Map<Long, Capacity> capacityIdMap;
@@ -32,6 +33,7 @@ public class World {
         objects = new ArrayList<WorldObject>();
         ships = new ArrayList<Ship>();
         players = new ArrayList<Player>();
+        parts = new ArrayList<Part>();
         playerIdMap = new HashMap<Long, Player>();
         shipIdMap = new HashMap<Long, Ship>();
         capacityIdMap = new HashMap<Long, Capacity>();
@@ -55,6 +57,7 @@ public class World {
 
     public void addPart(Part part) {
         partIdMap.put(part.getId(), part);
+        parts.add(part);
     }
 
     private void addPlayer(Player player) {
@@ -139,6 +142,10 @@ public class World {
         part.fromView(partView);
         addPart(part);
         return part;
+    }
+
+    public List<Part> getParts() {
+        return parts;
     }
 
 }

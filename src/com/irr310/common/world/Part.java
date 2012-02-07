@@ -1,10 +1,9 @@
 package com.irr310.common.world;
 
-import com.irr310.common.Game;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vect3;
+import com.irr310.common.world.view.PartStateView;
 import com.irr310.common.world.view.PartView;
-import com.irr310.common.world.view.SlotView;
 
 public class Part extends GameEntity {
 
@@ -73,4 +72,25 @@ public class Part extends GameEntity {
         transform.set(partView.transform.getData());
     }
 
+    public PartStateView toStateView() {
+        PartStateView partStateView = new PartStateView();
+        partStateView.id = getId();
+        partStateView.linearSpeed = linearSpeed;
+        partStateView.rotationSpeed = rotationSpeed;
+        partStateView.transform = transform;
+        return partStateView;
+    }
+
+    public void fromStateView(PartStateView partStateView) {
+        /*if(!(linearSpeed.equals(partStateView.linearSpeed))) {
+            System.out.println("fix speed from: "+linearSpeed.toString()+" to "+partStateView.linearSpeed);
+        }*/
+        if(!(transform.getTranslation().equals(partStateView.transform.getTranslation()))) {
+            System.out.println("fix position from: "+transform.getTranslation().toString()+" to "+partStateView.transform.getTranslation().toString());
+        }
+        linearSpeed.set(partStateView.linearSpeed);
+        rotationSpeed.set(partStateView.rotationSpeed);
+        transform.set(partStateView.transform.getData());
+    }
+    
 }
