@@ -31,6 +31,7 @@ import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.V3DContext.FloatValuedElement;
 import fr.def.iss.vd2.lib_v3d.V3DContextElement;
+import fr.def.iss.vd2.lib_v3d.V3DInputEvent;
 import fr.def.iss.vd2.lib_v3d.V3DScene;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.element.V3DElement;
@@ -43,6 +44,7 @@ public abstract class V3DCamera extends V3DContextElement {
 
     protected V3DScene currentScene;
     protected V3DScene hudScene;
+    protected V3DScene backgroundScene;
     // 1000 object max
     //private IntBuffer buff = BufferUtils.newIntBuffer(4000);
     
@@ -50,8 +52,8 @@ public abstract class V3DCamera extends V3DContextElement {
     protected GLU glu = new GLU();
     
     private List<V3DCameraController> controllerList = new CopyOnWriteArrayList<V3DCameraController>();
-    protected float height;
-    protected float width;
+    protected float currentHeight;
+    protected float currentWidth;
     private boolean enabled;
     private boolean configured = false;
     private Runnable cameraInitialisation;
@@ -59,12 +61,24 @@ public abstract class V3DCamera extends V3DContextElement {
     public V3DCamera(V3DContext context) {
         super(context);
         hudScene = new V3DScene(context);
+        backgroundScene = new V3DScene(context);
     }
 
     public void display( float width, float height) {
 
-        this.width = width;
-        this.height = height;
+        this.currentWidth = width;
+        this.currentHeight = height;
+
+        
+        GL11.glMatrixMode(GL11.GL_PROJECTION);
+        GL11.glLoadIdentity();
+        GL11.glOrtho(0, width, 0, height, -2000.0, 2000.0);
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+        GL11.glLoadIdentity();
+        
+        
+        backgroundScene.display( this);
+        
 
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
@@ -240,7 +254,7 @@ public abstract class V3DCamera extends V3DContextElement {
 
     
 
-    public void onEvent(InputEvent e) {
+    public void onEvent(V3DInputEvent e) {
         for (V3DCameraController listener : controllerList) {
             listener.onEvent(e);
         }
@@ -264,8 +278,8 @@ public abstract class V3DCamera extends V3DContextElement {
     protected abstract void initPerspective();
 
     void setSize(int width, int height) {
-        this.width = width;
-        this.height = height;
+        this.currentWidth = width;
+        this.currentHeight = height;
     }
 
     abstract public void fitAll();
@@ -276,6 +290,14 @@ public abstract class V3DCamera extends V3DContextElement {
 
     public void setHudScene(V3DScene hudScene) {
         this.hudScene = hudScene;
+    }
+    
+    public V3DScene getBackgroundScene() {
+        return backgroundScene;
+    }
+    
+    public void setBackgroundScene(V3DScene backgroundScene) {
+        this.backgroundScene = backgroundScene;
     }
 
     abstract public void fitAllIfInvalid();
@@ -314,6 +336,13 @@ public abstract class V3DCamera extends V3DContextElement {
         public void enableChanged();
     }
 
+    
+    public float getCurrentHeight() {
+        return currentHeight;
+    }
+    public float getCurrentWidth() {
+        return currentWidth;
+    }
 
     
 

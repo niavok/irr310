@@ -17,6 +17,7 @@ import com.irr310.common.engine.PhysicEngine;
 import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
+import com.irr310.common.network.protocol.CapacityUpdateMessage;
 import com.irr310.common.network.protocol.LoginResponseMessage;
 import com.irr310.common.network.protocol.ShipListRequestMessage;
 import com.irr310.common.network.protocol.SignupResponseMessage;
@@ -25,6 +26,8 @@ import com.irr310.common.world.World;
 import com.irr310.server.CommandManager;
 import com.irr310.server.Duration;
 import com.irr310.server.ParameterAnalyser;
+
+import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 
 public class GameClient extends Game {
     private ClientGameEngine clientGameEngine;
@@ -233,6 +236,17 @@ public class GameClient extends Game {
         return localPlayer != null;
     }
 
+    public void updateCapacityTask(com.irr310.common.world.capacity.Capacity capacity) {
+        clientNetworkEngine.send(new CapacityUpdateMessage(capacity.toView()));
+    }
+
+    public PhysicEngine getPhysicEngine() {
+        return physicEngine;
+    }
+
+    public void onMouseEvent(V3DMouseEvent mouseEvent) {
+        graphicEngine.onMouseEvent(mouseEvent);
+    }
     
 
 }

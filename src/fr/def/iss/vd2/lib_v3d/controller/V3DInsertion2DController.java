@@ -17,10 +17,10 @@
 
 package fr.def.iss.vd2.lib_v3d.controller;
 
-import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 
+import fr.def.iss.vd2.lib_v3d.V3DInputEvent;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraController;
 import fr.def.iss.vd2.lib_v3d.camera.V3DSimple2DCamera;
 import fr.def.iss.vd2.lib_v3d.controller.listener.V3DInsertListener;
@@ -60,14 +60,14 @@ public class V3DInsertion2DController implements V3DCameraController {
     }
 
     @Override
-    public void onEvent(InputEvent e) {
+    public void onEvent(V3DInputEvent e) {
 
         if(e.isConsumed()) {
             return;
         }
 
-        if (e instanceof MouseEvent) {
-            MouseEvent em = (MouseEvent) e;
+        /*if (e instanceof V3DMouseEvent) {
+            V3DMouseEvent em = (V3DMouseEvent) e;
 
             if (em.getID() == MouseEvent.MOUSE_DRAGGED || em.getID() == MouseEvent.MOUSE_MOVED) {
                 mouseMoving(em);
@@ -86,7 +86,7 @@ public class V3DInsertion2DController implements V3DCameraController {
                 }
             }
 
-        }
+        }*/
 
     }
 

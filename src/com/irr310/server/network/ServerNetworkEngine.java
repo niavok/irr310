@@ -11,6 +11,7 @@ import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.NetworkEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.network.NetworkMessage;
+import com.irr310.common.network.protocol.CapacityUpdateMessage;
 import com.irr310.common.network.protocol.LoginRequestMessage;
 import com.irr310.common.network.protocol.LoginResponseMessage;
 import com.irr310.common.network.protocol.ShipListMessage;
@@ -18,24 +19,31 @@ import com.irr310.common.network.protocol.SignupRequestMessage;
 import com.irr310.common.network.protocol.SignupResponseMessage;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.Ship;
+import com.irr310.common.world.capacity.Capacity;
+import com.irr310.common.world.view.CapacityView;
 import com.irr310.common.world.view.ShipView;
 import com.irr310.server.GameServer;
 
 public class ServerNetworkEngine extends EventEngine {
 
+    private NetworkWorker worker;
+
     public ServerNetworkEngine() {
 
         try {
-            NetworkWorker worker = new NetworkWorker(this);
+            worker = new NetworkWorker(this);
             new Thread(worker).start();
             new Thread(new NioServer(null, 22310, worker)).start();
+            NetworkSyncronizer syncronizer = new NetworkSyncronizer(this);
+            new Thread(syncronizer).start();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
 
-
+    
+    
     @Override
     protected void processEvent(EngineEvent e) {
         e.accept(new NetworkEngineEventVisitor());
@@ -94,28 +102,39 @@ public class ServerNetworkEngine extends EventEngine {
                         event.getClient().send(new SignupResponseMessage(message.getResponseIndex(), false, "username already used"));
                         break;
                     }
-                    
+
                     // Ok, you can create the account
-                    
+
                     GameServer.getInstance().createPlayer(m.login, m.password);
                     event.getClient().send(new SignupResponseMessage(message.getResponseIndex(), true, "success"));
                 }
                     break;
-                    
+
                 case SHIP_LIST_REQUEST: {
                     if (!event.getClient().isLogged()) {
                         break;
                     }
-                    
+
                     List<ShipView> shipList = new ArrayList<ShipView>();
-                    
-                    for(Ship ship : event.getClient().getPlayer().getShipList()) {
+
+                    for (Ship ship : event.getClient().getPlayer().getShipList()) {
                         shipList.add(ship.toView());
                     }
-                    
+
                     event.getClient().send(new ShipListMessage(message.getResponseIndex(), shipList));
-                    
-                    
+
+                }
+                    break;
+
+                case CAPACITY_UPDATE: {
+                    if (!event.getClient().isLogged()) {
+                        break;
+                    }
+                    CapacityUpdateMessage m = (CapacityUpdateMessage) message;
+                    CapacityView capacityView = m.capacity;
+                    Capacity capacity = GameServer.getInstance().getWorld().getCapacityById(capacityView.id);
+
+                    capacity.fromView(capacityView);
                 }
                     break;
                 default:
@@ -132,5 +151,9 @@ public class ServerNetworkEngine extends EventEngine {
     @Override
     protected void end() {
     }
+    
+    public NetworkWorker getWorker() {
+        return worker;
+    };
 
 }

@@ -175,29 +175,29 @@ public class ScriptContext {
 
             @Override
             public boolean allowFieldAccess(Class<?> type, Object instance, String fieldName) {
-                System.out.println("allowFieldAccess");
-                System.out.println(type);
-                System.out.println(instance);
-                System.out.println(fieldName);
+                //System.out.println("allowFieldAccess");
+                //System.out.println(type);
+                //System.out.println(instance);
+                //System.out.println(fieldName);
                 return false;
                 // return isAllowedClass(type);
             }
 
             @Override
             public boolean allowMethodAccess(Class<?> type, Object instance, String methodName) {
-                System.out.println("allowMethodAccess");
-                System.out.println(type);
-                System.out.println(instance);
-                System.out.println(methodName);
+                //System.out.println("allowMethodAccess");
+                //System.out.println(type);
+                //System.out.println(instance);
+                //System.out.println(methodName);
 
                 return isAllowedClass(type);
             }
 
             @Override
             public boolean allowStaticFieldAccess(Class<?> type, String fieldName) {
-                System.out.println("allowStaticFieldAccess");
-                System.out.println(type);
-                System.out.println(fieldName);
+                //System.out.println("allowStaticFieldAccess");
+                //System.out.println(type);
+                //System.out.println(fieldName);
                 return false;
             }
 

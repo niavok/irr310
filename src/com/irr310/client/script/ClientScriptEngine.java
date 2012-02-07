@@ -83,7 +83,7 @@ public class ClientScriptEngine extends FramerateEngine {
     }
 
     @Override
-    protected void init() {
+    public void init() {
         if(scriptContext != null) {
             scriptContext.close();
         }

@@ -17,12 +17,12 @@
 
 package fr.def.iss.vd2.lib_v3d.controller;
 
-import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Float;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
+import fr.def.iss.vd2.lib_v3d.V3DInputEvent;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraController;
 import fr.def.iss.vd2.lib_v3d.camera.V3DSimple2DCamera;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
@@ -58,12 +58,12 @@ public class V3DFitZoomController implements V3DCameraController {
 
     
 
-    public void onEvent(InputEvent e) {
+    public void onEvent(V3DInputEvent e) {
         if(inputCamera == null || targetCamera == null) {
             return;
         }
 
-        if (e instanceof MouseEvent) {
+        /*if (e instanceof MouseEvent) {
             MouseEvent em = (MouseEvent) e;
             switch (em.getID()) {
                 case MouseEvent.MOUSE_DRAGGED:
@@ -87,7 +87,7 @@ public class V3DFitZoomController implements V3DCameraController {
                     }
                     break;
             }
-        }
+        }*/
       
       
     }

@@ -17,7 +17,7 @@
 
 package fr.def.iss.vd2.lib_v3d.camera;
 
-import java.awt.event.InputEvent;
+import fr.def.iss.vd2.lib_v3d.V3DInputEvent;
 
 /**
  *
@@ -25,7 +25,7 @@ import java.awt.event.InputEvent;
  */
 public interface V3DCameraController {
 
-    void onEvent(InputEvent e);
+    void onEvent(V3DInputEvent e);
 
     public void notifyRemove();
 

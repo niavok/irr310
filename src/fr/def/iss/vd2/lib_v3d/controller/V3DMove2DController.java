@@ -18,13 +18,13 @@
 package fr.def.iss.vd2.lib_v3d.controller;
 
 import java.awt.Point;
-import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import fr.def.iss.vd2.lib_v3d.V3DInputEvent;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraController;
 import fr.def.iss.vd2.lib_v3d.camera.V3DSimple2DCamera;
 import fr.def.iss.vd2.lib_v3d.controller.listener.V3DMoveListener;
@@ -73,12 +73,12 @@ public class V3DMove2DController implements V3DCameraController {
     }
 
     @Override
-    public void onEvent(InputEvent e) {
+    public void onEvent(V3DInputEvent e) {
         if (!enable || e.isConsumed()) {
             return;
         }
 
-        if (e instanceof MouseEvent) {
+        /*if (e instanceof MouseEvent) {
             MouseEvent em = (MouseEvent) e;
 
             if (em.getID() == MouseEvent.MOUSE_PRESSED) {
@@ -94,7 +94,7 @@ public class V3DMove2DController implements V3DCameraController {
                 beginMove(em);
             }
         }
-
+*/
     }
 
     private void beginMove(MouseEvent e) {

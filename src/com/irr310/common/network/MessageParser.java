@@ -1,9 +1,11 @@
 package com.irr310.common.network;
 
+import com.irr310.common.network.protocol.CapacityUpdateMessage;
 import com.irr310.common.network.protocol.HelloMessage;
 import com.irr310.common.network.protocol.LoginRequestMessage;
 import com.irr310.common.network.protocol.LoginResponseMessage;
 import com.irr310.common.network.protocol.NetworkMessageType;
+import com.irr310.common.network.protocol.PartStateUpdateListMessage;
 import com.irr310.common.network.protocol.ShipListMessage;
 import com.irr310.common.network.protocol.ShipListRequestMessage;
 import com.irr310.common.network.protocol.SignupRequestMessage;
@@ -39,8 +41,8 @@ public abstract class MessageParser {
             if (data.length == offset) {
                 // No more data to parse
                 return;
-            } 
-            
+            }
+
             // No complete header
 
             int missingInHeader = NetworkMessage.HEADER_SIZE - headerBufferOffset;
@@ -63,12 +65,12 @@ public abstract class MessageParser {
             }
 
             int missingInData = dataSize - dataBufferOffset;
-            
+
             if (data.length == offset && missingInData > 0) {
                 // No more data to parse
                 return;
             }
-            
+
             int availableInBuffer = data.length - offset;
 
             int sizeToConsume = Math.min(missingInData, availableInBuffer);
@@ -120,6 +122,14 @@ public abstract class MessageParser {
             case SHIP_LIST_REQUEST:
                 message = new ShipListRequestMessage();
                 break;
+            case CAPACITY_UPDATE:
+                message = new CapacityUpdateMessage();
+                break;
+            case PART_STATE_UPDATE_LIST:
+                message = new PartStateUpdateListMessage();
+                break;
+            default:
+                System.err.println("Not implemented message type: " + messageType.toString());
         }
 
         if (message != null) {

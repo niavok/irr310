@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.vecmath.Quat4f;
 import javax.vecmath.Tuple3f;
@@ -172,6 +173,13 @@ public class PhysicEngine extends FramerateEngine {
         }
     }
 
+    public void reloadStates() {
+        for(Entry<Part, RigidBody> partEntry : partToBodyMap.entrySet()) {
+            PartMotionState motionState = (PartMotionState) partEntry.getValue().getMotionState();
+            motionState.reload();
+        }
+    }
+    
     protected void addShip(Ship ship, Vect3 position) {
 
         for (Component component : ship.getComponents()) {
@@ -306,6 +314,15 @@ public class PhysicEngine extends FramerateEngine {
 
         }
 
+        public void reload() {
+            Transform transform = new Transform();
+            getWorldTransform(transform);
+            body.setWorldTransform(transform);
+            body.setLinearVelocity(part.getLinearSpeed().toVector3f());
+            body.setAngularVelocity(part.getRotationSpeed().toVector3f());
+            body.setActivationState(RigidBody.ACTIVE_TAG);
+        }
+
         public void setBody(RigidBody body) {
             this.body = body;
         }
@@ -318,6 +335,8 @@ public class PhysicEngine extends FramerateEngine {
             return out;
         }
 
+        
+        
         @Override
         public void setWorldTransform(Transform worldTrans) {
             Vector3f origin = worldTrans.origin;

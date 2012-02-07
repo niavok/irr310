@@ -47,11 +47,11 @@ public class V3DSimple2DCamera extends V3DCamera {
     @Override
     protected void configureView( GLU glu) {
 
-        if (lastWidth != width || lastHeight != height) {
+        if (lastWidth != currentWidth || lastHeight != currentHeight) {
             fireZoomChanged();
         }
-        lastWidth = width;
-        lastHeight = height;
+        lastWidth = currentWidth;
+        lastHeight = currentHeight;
 
 
         GL11.glRotatef(-90, 0, 0, 1.0f);
@@ -184,11 +184,11 @@ public class V3DSimple2DCamera extends V3DCamera {
         return h * zoom;*/
 
 
-        if (height <= 0) { // avoid a divide by zero error!
-            height = 1;
+        if (currentHeight <= 0) { // avoid a divide by zero error!
+            currentHeight = 1;
         }
 
-        float x = 2 * zoom / height;
+        float x = 2 * zoom / currentHeight;
 
         return x;
 
@@ -196,20 +196,20 @@ public class V3DSimple2DCamera extends V3DCamera {
     }
 
     public Point2D.Float getSize() {
-        if (height <= 0) { // avoid a divide by zero error!
-            height = 1;
+        if (currentHeight <= 0) { // avoid a divide by zero error!
+            currentHeight = 1;
         }
-        final float h = width / height;
+        final float h = currentWidth / currentHeight;
 
         return new Point2D.Float(2 * zoom * h, 2 * zoom);
     }
 
     @Override
     protected void initPerspective() {
-        if (height <= 0) { // avoid a divide by zero error!
-            height = 1;
+        if (currentHeight <= 0) { // avoid a divide by zero error!
+            currentHeight = 1;
         }
-        final float h = width / height;
+        final float h = currentWidth / currentHeight;
 
         GL11.glOrtho(-zoom * h, zoom * h, -zoom, zoom, -2000.0, 2000.0);
 
@@ -218,24 +218,24 @@ public class V3DSimple2DCamera extends V3DCamera {
 
     public Point2D.Float pick(int pickX, int pickY) {
 
-        final float h = width / height;
+        final float h = currentWidth / currentHeight;
 
-        pickY = (int) height - pickY;
+        pickY = (int) currentHeight - pickY;
 
-        float x = ((float) pickX) / ((float) width) * (2 * zoom * h) + (-zoom * h) + position.x;
-        float y = ((float) pickY) / ((float) height) * (2 * zoom) + (-zoom) + position.y;
+        float x = ((float) pickX) / ((float) currentWidth) * (2 * zoom * h) + (-zoom * h) + position.x;
+        float y = ((float) pickY) / ((float) currentHeight) * (2 * zoom) + (-zoom) + position.y;
 
         return new Point2D.Float(x, y);
     }
 
     public Point unPick(float x, float y) {
 
-        final float h = width / height;
+        final float h = currentWidth / currentHeight;
 
-        int pickX = (int) (((x - position.x + zoom * h) * width) / (2 * zoom * h));
-        int pickY = (int) (((y - position.y + zoom) * height) / (2 * zoom));
+        int pickX = (int) (((x - position.x + zoom * h) * currentWidth) / (2 * zoom * h));
+        int pickY = (int) (((y - position.y + zoom) * currentHeight) / (2 * zoom));
 
-        pickY = (int) height - pickY;
+        pickY = (int) currentHeight - pickY;
 
 
         return new Point(pickX, pickY);
@@ -243,30 +243,30 @@ public class V3DSimple2DCamera extends V3DCamera {
 
     public Point2D.Float dist(int distX, int distY) {
 
-        if (height <= 0) { // avoid a divide by zero error!
-            height = 1;
+        if (currentHeight <= 0) { // avoid a divide by zero error!
+            currentHeight = 1;
         }
 
-        if (width <= 0) { // avoid a divide by zero error!
-            width = 1;
+        if (currentWidth <= 0) { // avoid a divide by zero error!
+            currentWidth = 1;
         }
-        final float h = width / height;
+        final float h = currentWidth / currentHeight;
 
-        float x = ((float) distX) / ((float) width) * (2 * zoom * h);
-        float y = ((float) distY) / ((float) height) * (2 * zoom);
+        float x = ((float) distX) / ((float) currentWidth) * (2 * zoom * h);
+        float y = ((float) distY) / ((float) currentHeight) * (2 * zoom);
 
         return new Point2D.Float(x, y);
     }
 
     public Point distMouse(Point2D.Float dist) {
 
-        if (height <= 0) { // avoid a divide by zero error!
-            height = 1;
+        if (currentHeight <= 0) { // avoid a divide by zero error!
+            currentHeight = 1;
         }
-        final float h = width / height;
+        final float h = currentWidth / currentHeight;
 
-        int x = (int) (((float) width) * dist.x / (2 * zoom * h));
-        int y = (int) (((float) height) * dist.y / (2 * zoom));
+        int x = (int) (((float) currentWidth) * dist.x / (2 * zoom * h));
+        int y = (int) (((float) currentHeight) * dist.y / (2 * zoom));
 
         return new Point(x, y);
     }
@@ -279,10 +279,10 @@ public class V3DSimple2DCamera extends V3DCamera {
 
         float fitZoom = 0;
 
-        if (height <= 0) { // avoid a divide by zero error!
-            height = 1;
+        if (currentHeight <= 0) { // avoid a divide by zero error!
+            currentHeight = 1;
         }
-        final float h = width / height;
+        final float h = currentWidth / currentHeight;
 
         if (h > 0) {
             //Compute zoom

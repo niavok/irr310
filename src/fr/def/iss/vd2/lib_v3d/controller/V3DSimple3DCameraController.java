@@ -17,12 +17,12 @@
 
 package fr.def.iss.vd2.lib_v3d.controller;
 
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.geom.Point2D;
 
+import fr.def.iss.vd2.lib_v3d.V3DInputEvent;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraController;
 import fr.def.iss.vd2.lib_v3d.camera.V3DSimple3DCamera;
 
@@ -71,12 +71,12 @@ public class V3DSimple3DCameraController implements V3DCameraController {
     }
 
     @Override
-    public void onEvent(InputEvent e) {
+    public void onEvent(V3DInputEvent e) {
         if(e.isConsumed()) {
             return;
         }
 
-        if (e instanceof MouseEvent) {
+        /*if (e instanceof MouseEvent) {
             MouseEvent em = (MouseEvent) e;
             
             switch(em.getID()) {
@@ -114,7 +114,7 @@ public class V3DSimple3DCameraController implements V3DCameraController {
 
         if (e instanceof MouseWheelEvent) {
             mouseWheelMoved((MouseWheelEvent) e);
-        }
+        }*/
     }
 
     public void mouseDragged(MouseEvent e) {

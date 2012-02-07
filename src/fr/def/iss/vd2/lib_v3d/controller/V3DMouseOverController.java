@@ -17,11 +17,11 @@
 
 package fr.def.iss.vd2.lib_v3d.controller;
 
-import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
 import fr.def.iss.vd2.lib_v3d.V3DContext;
+import fr.def.iss.vd2.lib_v3d.V3DInputEvent;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraController;
 import fr.def.iss.vd2.lib_v3d.controller.listener.V3DSelectionListener;
 import fr.def.iss.vd2.lib_v3d.element.V3DElement;
@@ -53,8 +53,8 @@ public class V3DMouseOverController implements V3DCameraController {
     }
 
     @Override
-    public void onEvent(InputEvent e) {
-        if (e instanceof MouseEvent) {
+    public void onEvent(V3DInputEvent e) {
+        /*if (e instanceof MouseEvent) {
             MouseEvent em = (MouseEvent) e;
 
             if(em.getID() == mouseEventType) {
@@ -66,7 +66,7 @@ public class V3DMouseOverController implements V3DCameraController {
                     listener.select(overElement);
                 }
             }
-        }
+        }*/
       
       
     }

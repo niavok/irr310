@@ -211,10 +211,10 @@ public class V3DSimple3DCamera extends V3DCamera {
 
     @Override
     protected void initPerspective() {
-        if (height <= 0) { // avoid a divide by zero error!
-            height = 1;
+        if (currentHeight <= 0) { // avoid a divide by zero error!
+            currentHeight = 1;
         }
-        final float h = width / height;
+        final float h = currentWidth / currentHeight;
 
         
         GLU.gluPerspective(perspective, h, distance*0.1f, distance*100.0f);
@@ -223,15 +223,15 @@ public class V3DSimple3DCamera extends V3DCamera {
 
     public Point2D.Float pick(int pickX, int pickY, float pickH) {
 
-        final double ratio = width / height;
+        final double ratio = currentWidth / currentHeight;
 
         double y;
         double x;
 
          //apply rotation
 
-        double pickXT1 = 2*((pickX-width/2)/width)* ratio;
-        double pickYT1 = 2*((pickY-height/2)/height);
+        double pickXT1 = 2*((pickX-currentWidth/2)/currentWidth)* ratio;
+        double pickYT1 = 2*((pickY-currentHeight/2)/currentHeight);
 
       
         
@@ -287,10 +287,10 @@ public class V3DSimple3DCamera extends V3DCamera {
         float sizeX = (float) Math.abs(size.x*Math.sin(Math.toRadians(rotation.z))) + (float) Math.abs(size.y*Math.cos(Math.toRadians(rotation.z)));
         float sizeY = (float) Math.abs(size.z*Math.cos(Math.toRadians(rotation.x)) + Math.sin(Math.toRadians(rotation.x))*(Math.abs(size.y*Math.sin(Math.toRadians(rotation.z))) + Math.abs(size.x*Math.cos(Math.toRadians(rotation.z)))));
 
-        if (height <= 0) { // avoid a divide by zero error!
-            height = 1;
+        if (currentHeight <= 0) { // avoid a divide by zero error!
+            currentHeight = 1;
         }
-        final float h = width / height;
+        final float h = currentWidth / currentHeight;
 
         if (sizeY <= 0) { // avoid a divide by zero error!
             sizeY = 1;

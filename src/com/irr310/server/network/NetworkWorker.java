@@ -13,12 +13,14 @@ import com.irr310.common.network.NetworkMessage;
 
 public class NetworkWorker implements Runnable {
 	private List queue = new LinkedList();
-	private Map<SocketChannel, MessageParser> messageParsers;
+	private final Map<SocketChannel, MessageParser> messageParsers;
+	private final Map<SocketChannel, NetworkClient> clients;
     private final ServerNetworkEngine networkEngine;
 	
 	public NetworkWorker(ServerNetworkEngine networkEngine) {
         this.networkEngine = networkEngine;
         messageParsers = new HashMap<SocketChannel, MessageParser>();
+        clients = new HashMap<SocketChannel, NetworkClient>();
     }
 	public void processData(NioServer server, SocketChannel socket, byte[] data, int count) {
 		byte[] dataCopy = new byte[count];
@@ -57,18 +59,25 @@ public class NetworkWorker implements Runnable {
 	//
 	//
     public void accept(final NioServer server, final SocketChannel socketChannel) {
+        
+        final NetworkClient client = new NetworkClient(networkEngine, server, socketChannel);
         messageParsers.put(socketChannel, new MessageParser() {
-
-            NetworkClient client = new NetworkClient(networkEngine, server, socketChannel);
-            
+             
             @Override
             public void processMessage(NetworkMessage message) {
                 client.getEngine().pushEvent(new NetworkEvent(message, client));
             }
             
-        });        
+        }); 
+        
+        clients.put(socketChannel, client);
     }
     public void close(SocketChannel socketChannel) {
+        clients.remove(socketChannel);
         messageParsers.remove(socketChannel);
+    }
+    
+    public Map<SocketChannel, NetworkClient> getClients() {
+        return clients;
     }
 }
