@@ -19,15 +19,19 @@ package fr.def.iss.vd2.lib_v3d;
 
 /**
  * Vector of 3 float representing a distance, a point, ...
+ * 
  * @author fberto
  */
 public class V3DVect3 {
+    public static final V3DVect3 ONE = new V3DVect3(1, 1, 1);
+    public static final V3DVect3 ZERO = new V3DVect3(0, 0, 0);
     public float x;
     public float y;
     public float z;
 
     /**
      * Initialise from float
+     * 
      * @param x
      * @param y
      * @param z
@@ -40,6 +44,7 @@ public class V3DVect3 {
 
     /**
      * Copy another vector
+     * 
      * @param vector copied vector
      */
     public V3DVect3(V3DVect3 vector) {
@@ -50,48 +55,53 @@ public class V3DVect3 {
 
     /**
      * Display the vector values
+     * 
      * @return
      */
     @Override
     public String toString() {
-        return "["+x+", "+y+", "+z+"]";
+        return "[" + x + ", " + y + ", " + z + "]";
     }
 
     /**
      * Return a new vector with each value mutiplied by a factor
+     * 
      * @param factor multiplication factor
      * @return new multiplied vector
      */
     public V3DVect3 multiply(float factor) {
-        return new V3DVect3(x*factor, y*factor, z*factor);
+        return new V3DVect3(x * factor, y * factor, z * factor);
     }
 
     /**
      * Return a new vector with each value multiplied by the corresponding value
      * of the input factor vector
+     * 
      * @param factor input factor vector
      * @return new multiplied vector
      */
     public V3DVect3 multiply(V3DVect3 factor) {
 
-        return new V3DVect3(x*factor.x, y*factor.y, z*factor.z);
+        return new V3DVect3(x * factor.x, y * factor.y, z * factor.z);
     }
 
     /**
-     * Return a new vector with each value divided by the corresponding value
-     * of the input divider vector
+     * Return a new vector with each value divided by the corresponding value of
+     * the input divider vector
+     * 
      * @param divider input divider vector
      * @return new divided vector
      */
     public V3DVect3 divideBy(V3DVect3 divider) {
-        if(divider.z == 0 && z == 0) {
-            return new V3DVect3(x/divider.x, y/divider.y, 1);
+        if (divider.z == 0 && z == 0) {
+            return new V3DVect3(x / divider.x, y / divider.y, 1);
         }
-        return new V3DVect3(x/divider.x, y/divider.y, z/divider.z);
+        return new V3DVect3(x / divider.x, y / divider.y, z / divider.z);
     }
 
     /**
      * Replace the current values with the values of the source vector
+     * 
      * @param source source vector
      */
     public void copy(V3DVect3 source) {
@@ -103,34 +113,38 @@ public class V3DVect3 {
     /**
      * Return a new vector with each value substrated by the corresponding value
      * of the input subtract vector
+     * 
      * @param divider input substract vector
      * @return new substrated vector
      */
     public V3DVect3 substract(V3DVect3 substrater) {
-        return new V3DVect3(x-substrater.x, y-substrater.y, z-substrater.z);
+        return new V3DVect3(x - substrater.x, y - substrater.y, z - substrater.z);
     }
 
     /**
-     * Return a new vector with each value incremented by the corresponding value
-     * of the input increment vector
+     * Return a new vector with each value incremented by the corresponding
+     * value of the input increment vector
+     * 
      * @param divider input increment vector
      * @return new incremented vector
      */
     public V3DVect3 add(V3DVect3 incrementer) {
-        return new V3DVect3(x+incrementer.x, y+incrementer.y, z+incrementer.z);
+        return new V3DVect3(x + incrementer.x, y + incrementer.y, z + incrementer.z);
     }
 
     /**
      * Return a new vector with each value divided by a factor
+     * 
      * @param factor division factor
      * @return new divided vector
      */
     public V3DVect3 divideBy(float factor) {
-        return new V3DVect3(x/factor, y/factor, z/factor);
+        return new V3DVect3(x / factor, y / factor, z / factor);
     }
 
     /**
      * Return the values as a double array
+     * 
      * @return dump array, size is 3
      */
     public double[] toDoubleArray() {
@@ -146,6 +160,7 @@ public class V3DVect3 {
 
     /**
      * Return the values as a float array
+     * 
      * @return dump array, size is 3
      */
     public float[] toFloatArray() {
@@ -161,34 +176,39 @@ public class V3DVect3 {
     /**
      * Return the distance between the two point represented by the current
      * vector and the target vector
+     * 
      * @param target target vector
      * @return distance. Always positive
      */
     public float distanceTo(V3DVect3 target) {
-        V3DVect3 delta =  substract(target);
-        float factor = delta.x*delta.x + delta.y*delta.y + delta.z*delta.z;
+        V3DVect3 delta = substract(target);
+        float factor = delta.x * delta.x + delta.y * delta.y + delta.z * delta.z;
         return (float) Math.sqrt(factor);
     }
 
     /**
      * Return the norm of the vector
+     * 
      * @return norm
      */
     public float getNorm() {
-        float factor = x*x + y*y + z*z;
+        float factor = x * x + y * y + z * z;
         return (float) Math.sqrt(factor);
     }
 
     /**
      * Return a new vector oposite to the current vector
+     * 
      * @return new oposite vector
      */
     public V3DVect3 negatif() {
-        return new V3DVect3(-x,-y,-z);
+        return new V3DVect3(-x, -y, -z);
     }
 
     /**
-     * Return the angle in radian between the current vector in plan x,y and the vector (1,0,0)
+     * Return the angle in radian between the current vector in plan x,y and the
+     * vector (1,0,0)
+     * 
      * @return return angle
      */
     public float getAngle() {
@@ -198,11 +218,12 @@ public class V3DVect3 {
     /**
      * Returns true if the other vector has the same values as the others,
      * otherwise returns false
+     * 
      * @param other other vector
      * @return
      */
     public boolean isSame(V3DVect3 other) {
-        
+
         if (Float.floatToIntBits(this.x) != Float.floatToIntBits(other.x)) {
             return false;
         }
@@ -214,8 +235,5 @@ public class V3DVect3 {
         }
         return true;
     }
-
-
-
 
 }

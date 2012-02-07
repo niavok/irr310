@@ -17,10 +17,11 @@
 
 package fr.def.iss.vd2.lib_v3d.camera;
 
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+
+import fr.def.iss.vd2.lib_v3d.V3DInputEvent;
 
 /**
  *
@@ -64,8 +65,8 @@ public class V3DAuto3DCameraController implements V3DCameraController {
     }
 
     @Override
-    public void onEvent(InputEvent e) {
-        if (e instanceof MouseEvent) {
+    public void onEvent(V3DInputEvent e) {
+        /*if (e instanceof MouseEvent) {
             MouseEvent em = (MouseEvent) e;
             
             switch(em.getID()) {
@@ -103,7 +104,8 @@ public class V3DAuto3DCameraController implements V3DCameraController {
 
         if (e instanceof MouseWheelEvent) {
             mouseWheelMoved((MouseWheelEvent) e);
-        }
+        }*/ 
+        //TODO: repair
     }
 
     public void mouseDragged(MouseEvent e) {

@@ -338,6 +338,51 @@ public class V3DCanvas {
         }
         select = true;
     }
+	
+	public void onKeyEvent(KeyEvent e) {
+
+        /*for (V3DCameraBinding binding : cameraList) {
+            if (binding.isFocused()) {
+                binding.camera.onEvent(e);
+                return;
+            }
+        }
+        // If no camera has the focus, send the event to all camera
+        for (V3DCameraBinding binding : cameraList) {
+            binding.camera.onEvent(e);
+        }*/
+    }
+	
+	public void onMouseWheelMoved(MouseWheelEvent e) {
+        /*for (int i = cameraList.size() - 1; i >= 0; i--) {
+            V3DCameraBinding binding = cameraList.get(i);
+            if (binding.containsMouse(e.getX(), e.getY())) {
+                binding.camera.onEvent(e);
+                break;
+            }
+        }
+        select(e.getX(), e.getY());*/
+    }
+	
+	public void onMouseEvent(V3DMouseEvent e) {
+        for (V3DCameraBinding binding : cameraList) {
+            V3DMouseEvent localEvent = new V3DMouseEvent(
+                    e.getAction(),
+                    e.getX() - binding.mouseX,
+                    mouseY = (getHeight() - e.getY()) - binding.mouseY,
+                    e.getButton());
+
+            if (e.isConsumed()) {
+                localEvent.consume();
+            }
+            binding.setLastMousePosition(new Point(localEvent.getX(), localEvent.getY()));
+            binding.camera.onEvent(localEvent);
+
+            if (localEvent.isConsumed()) {
+                e.consume();
+            }
+        }
+    }
 
     /*private void initListeners() {
 

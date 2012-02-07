@@ -18,12 +18,12 @@
 package fr.def.iss.vd2.lib_v3d.controller;
 
 import java.awt.Point;
-import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.Map;
 
 import fr.def.iss.vd2.lib_v3d.V3DContext;
+import fr.def.iss.vd2.lib_v3d.V3DInputEvent;
 import fr.def.iss.vd2.lib_v3d.V3DMouseOverlapListener;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraController;
@@ -65,8 +65,8 @@ public class V3DTooltipController implements V3DCameraController {
     }
 
     @Override
-    public void onEvent(InputEvent e) {
-        if (e instanceof MouseEvent) {
+    public void onEvent(V3DInputEvent e) {
+        /*if (e instanceof MouseEvent) {
             MouseEvent em = (MouseEvent) e;
             mouseX = em.getX();
             mouseY = em.getY();
@@ -78,7 +78,7 @@ public class V3DTooltipController implements V3DCameraController {
             mouseY = em.getY();
         }
 
-        checkOnce();
+        checkOnce();*/
 
 
     }

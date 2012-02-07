@@ -17,10 +17,10 @@
 
 package fr.def.iss.vd2.lib_v3d.controller;
 
-import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 
+import fr.def.iss.vd2.lib_v3d.V3DInputEvent;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraController;
 import fr.def.iss.vd2.lib_v3d.camera.V3DSimple3DCamera;
 import fr.def.iss.vd2.lib_v3d.element.V3DRectangle;
@@ -41,12 +41,12 @@ public class V3D3DPickTestController implements V3DCameraController {
         this.inputCamera = inputCamera;
     }
 
-    public void onEvent(InputEvent e) {
+    public void onEvent(V3DInputEvent e) {
         if(inputCamera == null || targetCamera == null) {
             return;
         }
 
-        if (e instanceof MouseEvent) {
+        /*if (e instanceof MouseEvent) {
             MouseEvent em = (MouseEvent) e;
             switch (em.getID()) {
                 case MouseEvent.MOUSE_DRAGGED:
@@ -70,7 +70,7 @@ public class V3D3DPickTestController implements V3DCameraController {
                     }
                     break;
             }
-        }
+        }*/
 
 
     }

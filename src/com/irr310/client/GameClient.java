@@ -27,6 +27,8 @@ import com.irr310.server.CommandManager;
 import com.irr310.server.Duration;
 import com.irr310.server.ParameterAnalyser;
 
+import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
+
 public class GameClient extends Game {
     private ClientGameEngine clientGameEngine;
     private ClientNetworkEngine clientNetworkEngine;
@@ -240,6 +242,10 @@ public class GameClient extends Game {
 
     public PhysicEngine getPhysicEngine() {
         return physicEngine;
+    }
+
+    public void onMouseEvent(V3DMouseEvent mouseEvent) {
+        graphicEngine.onMouseEvent(mouseEvent);
     }
     
 

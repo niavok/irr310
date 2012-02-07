@@ -28,11 +28,13 @@ import com.irr310.server.Duration;
 import fr.def.iss.vd2.lib_v3d.V3DCanvas;
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DContext;
+import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 import fr.def.iss.vd2.lib_v3d.V3DScene;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
 import fr.def.iss.vd2.lib_v3d.camera.V3DSimple3DCamera;
 import fr.def.iss.vd2.lib_v3d.controller.V3DSimple3DCameraController;
+import fr.def.iss.vd2.lib_v3d.controller.V3DSimple3DRotateOnlyCameraController;
 import fr.def.iss.vd2.lib_v3d.element.V3DBox;
 import fr.def.iss.vd2.lib_v3d.element.V3DBox.RenderMode;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
@@ -60,9 +62,14 @@ public class GraphicEngine extends FramerateEngine {
 	protected void init() {
 		canvas = new V3DCanvas(context, 1024, 768);
 
+		
+		
 		fitOrder = null;
 		
 		activeCamera = new V3DSimple3DCamera(context);
+		
+		new V3DSimple3DRotateOnlyCameraController(activeCamera);
+		
 		fullscreenBinding = V3DCameraBinding
 				.buildFullscreenCamera(activeCamera);
 		activeCamera.setBackgroundColor(V3DColor.white);
@@ -75,6 +82,13 @@ public class GraphicEngine extends FramerateEngine {
 
 		scene = new V3DScene(context);
 		activeCamera.setScene(scene);
+		
+		V3DBox sky = new V3DBox(context);
+		sky.setSize(new V3DVect3(1024, 768, 1));
+		sky.setPosition(1024/2, 768/2, 0);
+		
+		//activeCamera.getBackgroundScene().add(new V3DColorElement(sky, V3DColor.pink));
+		activeCamera.getBackgroundScene().add(new V3DColorElement(new Sky(context), V3DColor.pink));
 
 		// Add reference
 		V3DElement ref0 = generateReference();
@@ -258,5 +272,9 @@ public class GraphicEngine extends FramerateEngine {
 		}
 
 	}
+
+    public void onMouseEvent(V3DMouseEvent mouseEvent) {
+        canvas.onMouseEvent(mouseEvent);
+    }
 
 }

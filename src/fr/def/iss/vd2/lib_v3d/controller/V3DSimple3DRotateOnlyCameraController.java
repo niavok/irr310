@@ -17,11 +17,12 @@
 
 package fr.def.iss.vd2.lib_v3d.controller;
 
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 
+import fr.def.iss.vd2.lib_v3d.V3DInputEvent;
+import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraController;
 import fr.def.iss.vd2.lib_v3d.camera.V3DSimple3DCamera;
 
@@ -59,40 +60,38 @@ public class V3DSimple3DRotateOnlyCameraController implements V3DCameraControlle
     }
 
     @Override
-    public void onEvent(InputEvent e) {
+    public void onEvent(V3DInputEvent e) {
         if(e.isConsumed()) {
             return;
         }
 
-        if (e instanceof MouseEvent) {
-            MouseEvent em = (MouseEvent) e;
+        
+        if (e instanceof V3DMouseEvent) {
+            V3DMouseEvent em = (V3DMouseEvent) e;
             
-            switch(em.getID()) {
-                case MouseEvent.MOUSE_DRAGGED:
+            System.out.println("event received" + em.getAction());
+            
+            System.out.println("rot button: "+ rotationButton);
+            System.out.println("cur button: "+ em.getButton());
+            
+            switch(em.getAction()) {
+                case MOUSE_DRAGGED:
                 {
                     mouseDragged(em);
                 }break;
-                case MouseEvent.MOUSE_MOVED:
+                case MOUSE_MOVED:
                 {
                     mouseMoved(em);
                 }break;
-                case MouseEvent.MOUSE_CLICKED:
+                case MOUSE_CLICKED:
                 {
-                    mouseDragged(em);
+                    mouseClicked(em);
                 }break;
-                case MouseEvent.MOUSE_ENTERED:
-                {
-                    mouseEntered(em);
-                }break;
-                case MouseEvent.MOUSE_EXITED:
-                {
-                    mouseExited(em);
-                }break;
-                case MouseEvent.MOUSE_PRESSED:
+                case MOUSE_PRESSED:
                 {
                     mousePressed(em);
                 }break;
-                case MouseEvent.MOUSE_RELEASED:
+                case MOUSE_RELEASED:
                 {
                     mouseReleased(em);
                 }break;
@@ -100,23 +99,23 @@ public class V3DSimple3DRotateOnlyCameraController implements V3DCameraControlle
             
         }
 
-        if (e instanceof MouseWheelEvent) {
+        /*if (e instanceof MouseWheelEvent) {
             //mouseWheelMoved((MouseWheelEvent) e);
-        }
+        }*/
     }
 
-    public void mouseDragged(MouseEvent e) {
+    public void mouseDragged(V3DMouseEvent e) {
         mouseMoving(e);
     }
 
-    public void mouseMoved(MouseEvent e) {
+    public void mouseMoved(V3DMouseEvent e) {
         mouseMoving(e);
     }
 
-    public void mouseClicked(MouseEvent e) {
+    public void mouseClicked(V3DMouseEvent e) {
     }
 
-    public void mousePressed(MouseEvent e) {
+    public void mousePressed(V3DMouseEvent e) {
 
         if (e.getButton() == rotationButton) {
             beginMove(MovementType.ROTATE, e);
@@ -124,7 +123,8 @@ public class V3DSimple3DRotateOnlyCameraController implements V3DCameraControlle
 
     }
 
-    private void beginMove(MovementType type, MouseEvent e) {
+    private void beginMove(MovementType type, V3DMouseEvent e) {
+        System.out.println("begin move");
         if (type == MovementType.ROTATE) {
             rotating = true;
         }
@@ -136,30 +136,19 @@ public class V3DSimple3DRotateOnlyCameraController implements V3DCameraControlle
         cameraPhiInitial = camera.getRotation().x;
     }
 
-    public void mouseReleased(MouseEvent e) {
+    public void mouseReleased(V3DMouseEvent e) {
         rotating = false;
     }
 
-    public void mouseEntered(MouseEvent e) {
-        /*if(e.)
 
-        translating = false;
-        rotating = false;*/
-    }
-
-    public void mouseExited(MouseEvent e) {
-        /*translating = false;
-        rotating = false;*/
-    }
-
-    private void mouseMoving(MouseEvent e) {
+    private void mouseMoving(V3DMouseEvent e) {
 
         if (rotating) {
             float theta = cameraThetaInitial + ((float) e.getX() - mouseXInitial) * ktheta;
 
             float phi = cameraPhiInitial + ((float) e.getY() - mouseYInitial) * kphi;
-            if (phi < 0) {
-                phi = 0;
+            if (phi < -90) {
+                phi = 90;
                 mouseYInitial = (float) e.getY();
                 cameraPhiInitial = 0;
             }
