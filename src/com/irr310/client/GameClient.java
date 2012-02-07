@@ -17,6 +17,7 @@ import com.irr310.common.engine.PhysicEngine;
 import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
+import com.irr310.common.network.protocol.CapacityUpdateMessage;
 import com.irr310.common.network.protocol.LoginResponseMessage;
 import com.irr310.common.network.protocol.ShipListRequestMessage;
 import com.irr310.common.network.protocol.SignupResponseMessage;
@@ -231,6 +232,10 @@ public class GameClient extends Game {
 
     public boolean isLogged() {
         return localPlayer != null;
+    }
+
+    public void updateCapacityTask(com.irr310.common.world.capacity.Capacity capacity) {
+        clientNetworkEngine.send(new CapacityUpdateMessage(capacity.toView()));
     }
 
     
