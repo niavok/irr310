@@ -103,8 +103,6 @@ public class Sky extends V3DElement {
             ARBShaderObjects.glUniform2fARB(resolution, camera.getCurrentWidth(), camera.getCurrentHeight());
             float time2 = ((float) ( new Date().getTime() -startTime))/10000.0f;
             ARBShaderObjects.glUniform1fARB(time, time2);
-            System.out.println("time "+time2);
-            
         }
         
         GL11.glBegin(GL11.GL_QUADS);
