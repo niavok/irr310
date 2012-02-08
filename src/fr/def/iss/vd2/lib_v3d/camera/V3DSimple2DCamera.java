@@ -76,8 +76,8 @@ public class V3DSimple2DCamera extends V3DCamera {
         firePositionChanged();
     }
 
-    public float getRotation() {
-        return rotation;
+    public V3DVect3 getRotation() {
+        return new V3DVect3(rotation, 0, 0);
     }
 
     public void setRotation(float rotation) {

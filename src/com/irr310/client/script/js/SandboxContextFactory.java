@@ -62,12 +62,12 @@ public class SandboxContextFactory extends ContextFactory {
             return super.wrapNewObject(cx, scope, obj);
         }
 
-        @Override
-        public Object wrap(Context cx, Scriptable scope, Object obj, Class<?> staticType) {
+        /*public Object wrap(Context cx, Scriptable scope, Object obj, Class<?> staticType) {
             this.ensureReplacedClass(scope, obj, staticType);
 
             return super.wrap(cx, scope, obj, staticType);
-        }
+        }*/
+        //TODO: fix or verify that!
 
         @Override
         public Scriptable wrapAsJavaObject(Context cx, Scriptable scope, Object javaObject, Class<?> staticType) {

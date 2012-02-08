@@ -344,6 +344,7 @@ public abstract class V3DCamera extends V3DContextElement {
         return currentWidth;
     }
 
+    public abstract V3DVect3 getRotation();
     
 
     

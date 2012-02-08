@@ -10,6 +10,7 @@ import org.lwjgl.opengl.ARBFragmentShader;
 import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.ARBVertexShader;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
 
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
@@ -32,6 +33,7 @@ public class Sky extends V3DElement {
      * default settings
      */
     private boolean useShader = true;
+    private int inputRotation;
     
     public Sky(V3DContext context) {
         super(context);
@@ -59,6 +61,7 @@ public class Sky extends V3DElement {
             ARBShaderObjects.glAttachObjectARB(shader, fragShader);
             ARBShaderObjects.glLinkProgramARB(shader);
             ARBShaderObjects.glValidateProgramARB(shader);
+            inputRotation = ARBShaderObjects.glGetUniformLocationARB(shader, "inputRotation");
             useShader = printLogInfo(shader, "attach");
         } else {
             useShader = false;
@@ -83,6 +86,11 @@ public class Sky extends V3DElement {
 
         if (useShader) {
             ARBShaderObjects.glUseProgramObjectARB(shader);
+
+            V3DVect3 rotation = camera.getRotation();
+            //System.out.println("rotation: "+rotation);
+            ARBShaderObjects.glUniform3fARB(inputRotation, rotation.x, rotation.y, rotation.z);
+            
         }
         
         GL11.glBegin(GL11.GL_QUADS);

@@ -225,7 +225,7 @@ public class V3DSimple2DCameraController implements V3DCameraController {
 
 
 
-            float theta = (float) Math.toRadians(camera.getRotation());
+            float theta = (float) Math.toRadians(camera.getRotation().x);
 
             float x = cameraXInitial + (float) Math.cos(theta) * dx + (float) Math.sin(theta) * dy;
             float y = cameraYInitial - (float) Math.sin(theta) * dx + (float) Math.cos(theta) * dy;

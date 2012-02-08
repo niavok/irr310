@@ -40,7 +40,7 @@ public class V3DSimple3DRotateOnlyCameraController implements V3DCameraControlle
     private float ktheta = 0.4f;
     private float kphi = 0.4f;
     private boolean rotating = false;
-    private int rotationButton = MouseEvent.BUTTON3;
+    private int rotationButton = 2;
 
     private enum MovementType {
 
@@ -69,10 +69,10 @@ public class V3DSimple3DRotateOnlyCameraController implements V3DCameraControlle
         if (e instanceof V3DMouseEvent) {
             V3DMouseEvent em = (V3DMouseEvent) e;
             
-            System.out.println("event received" + em.getAction());
-            
-            System.out.println("rot button: "+ rotationButton);
-            System.out.println("cur button: "+ em.getButton());
+            //System.out.println("event received" + em.getAction());
+            //
+            //System.out.println("rot button: "+ rotationButton);
+            //System.out.println("cur button: "+ em.getButton());
             
             switch(em.getAction()) {
                 case MOUSE_DRAGGED:
