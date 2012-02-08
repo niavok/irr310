@@ -26,8 +26,8 @@ vec3 genTex2( in vec2 p1 )
     vec3 c = vec3(1.0);
     
     c.x  = (sin(1.1*time + 20.5*a) * cos(1.5 * time + 19.7*b)) * 0.2 +1.0;
-    c.y  = (cos(1.2*time * 8.4*a) * sin(1.3 * time + 8.6*b)) * 0.3 +1.0;
-    c.z  = (sin(1.3*time *  6.45*a) * sin(1.45 * time + 5.64*b)) * 0.05 +0.85;
+    c.y  = (cos(1.2*time + 8.4*a) * sin(1.3 * time + 8.6*b)) * 0.3 +1.0;
+    c.z  = (sin(1.3*time +  6.45*a) * sin(1.45 * time + 5.64*b)) * 0.05 +0.85;
    
    
     vec3 c2 = vec3((c.x+c.y)/2.0, (c.x+c.y)/2.0, c.z);
