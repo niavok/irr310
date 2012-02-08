@@ -4,4 +4,6 @@ bin/
 hs_err_pid*.log
 .settings/
 *~
+*.blend1
+*.blend2
 drivers/*~
