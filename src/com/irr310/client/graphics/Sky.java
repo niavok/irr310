@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
+import java.util.Date;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.ARBFragmentShader;
@@ -11,6 +12,8 @@ import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.ARBVertexShader;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
+
+import com.irr310.server.Time;
 
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
@@ -34,9 +37,14 @@ public class Sky extends V3DElement {
      */
     private boolean useShader = true;
     private int inputRotation;
+    private int resolution;
+    private int time;
+    private long startTime;
     
     public Sky(V3DContext context) {
         super(context);
+        
+        startTime = new Date().getTime();
         
         /*
          * create the shader program. If OK, create vertex and fragment shaders
@@ -62,6 +70,8 @@ public class Sky extends V3DElement {
             ARBShaderObjects.glLinkProgramARB(shader);
             ARBShaderObjects.glValidateProgramARB(shader);
             inputRotation = ARBShaderObjects.glGetUniformLocationARB(shader, "inputRotation");
+            resolution = ARBShaderObjects.glGetUniformLocationARB(shader, "resolution");
+            time = ARBShaderObjects.glGetUniformLocationARB(shader, "time");
             useShader = printLogInfo(shader, "attach");
         } else {
             useShader = false;
@@ -90,6 +100,10 @@ public class Sky extends V3DElement {
             V3DVect3 rotation = camera.getRotation();
             //System.out.println("rotation: "+rotation);
             ARBShaderObjects.glUniform3fARB(inputRotation, rotation.x, rotation.y, rotation.z);
+            ARBShaderObjects.glUniform2fARB(resolution, camera.getCurrentWidth(), camera.getCurrentHeight());
+            float time2 = ((float) ( new Date().getTime() -startTime))/10000.0f;
+            ARBShaderObjects.glUniform1fARB(time, time2);
+            System.out.println("time "+time2);
             
         }
         
