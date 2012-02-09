@@ -56,6 +56,7 @@ public class ComponentFactory {
 
     public static Component createPVCell(String name) {
         Component component = createSimpleComponent(name);
+        component.setSkin("pvcell");
         Part part = component.getFirstPart();
         part.setMass(5d);
 

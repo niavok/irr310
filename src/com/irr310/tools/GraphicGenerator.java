@@ -15,15 +15,31 @@ public class GraphicGenerator {
 
     public static void main(String[] args) throws IOException {
 
-        List<String> objectsStator = new ArrayList<String>();
-        objectsStator.add("fairing");
-        objectsStator.add("support");
-        
-        generateObj("graphics/big_propeller.obj", "graphics/output/big_propeller_stator.v3draw", objectsStator);
+        // Propeller
+        {
+            List<String> objectsStator = new ArrayList<String>();
+            objectsStator.add("fairing");
+            objectsStator.add("support");
 
-        List<String> objectsRotor = new ArrayList<String>();
-        objectsRotor.add("propeller");
-        generateObj("graphics/big_propeller.obj", "graphics/output/big_propeller_rotor.v3draw", objectsRotor);
+            generateObj("graphics/big_propeller.obj", "graphics/output/big_propeller_stator.v3draw", objectsStator);
+
+            List<String> objectsRotor = new ArrayList<String>();
+            objectsRotor.add("propeller");
+            generateObj("graphics/big_propeller.obj", "graphics/output/big_propeller_rotor.v3draw", objectsRotor);
+        }
+
+        // Pv cell
+        {
+            List<String> objectsStructure = new ArrayList<String>();
+            objectsStructure.add("structure");
+
+            generateObj("graphics/pvcell.obj", "graphics/output/pvcell_structure.v3draw", objectsStructure);
+
+            List<String> objectsPanel = new ArrayList<String>();
+            objectsPanel.add("panel");
+            generateObj("graphics/pvcell.obj", "graphics/output/pvcell_panel.v3draw", objectsPanel);
+
+        }
 
     }
 
@@ -32,11 +48,9 @@ public class GraphicGenerator {
 
         V3DrawWriter writer = new DefaultV3DrawWriter(new File(destination));
 
-        writer.addMetadata("date: " + new Date().toString());
         writer.addMetadata("author: Frédéric Bertolus");
         writer.addMetadata("licence: CC-BY-SA");
         writer.addMetadata("url: https://github.com/fredb219/irr310");
-
 
         objConverter.setAcceptedObjects(objects);
         // objConverter.setConfig("graphics/big_propeller.v3dconf");

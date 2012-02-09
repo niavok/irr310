@@ -63,7 +63,7 @@ public class GraphicEngine extends FramerateEngine {
 
     @Override
     protected void init() {
-        canvas = new V3DCanvas(context, 1280, 1024);
+        canvas = new V3DCanvas(context, 1024, 768);
         
         fitOrder = null;
 
@@ -187,6 +187,9 @@ public class GraphicEngine extends FramerateEngine {
         } else {
             if(object.getSkin().equals("big_propeller")) {
                 skin = new PropellerSkin(context, (Component) object);
+            }
+            if(object.getSkin().equals("pvcell")) {
+                skin = new PvCellSkin(context, (Component) object);
             }
         }
         
