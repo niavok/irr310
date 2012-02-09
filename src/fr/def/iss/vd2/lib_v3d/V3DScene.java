@@ -17,6 +17,9 @@
 
 package fr.def.iss.vd2.lib_v3d;
 
+import java.nio.FloatBuffer;
+
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
 import fr.def.iss.vd2.lib_v3d.camera.V3DCamera;
@@ -54,10 +57,18 @@ public class V3DScene {
         float[] lightDiffuse1 = {0.75f, 0.75f, 0.75f, 1.0f};
         float[] lightPosition1 = {100.0f, 100.0f, -100.0f, 0.0f};
 
+        FloatBuffer lightPosition0= BufferUtils.createFloatBuffer(4);
+        lightPosition0.put(70.0f) ;
+        lightPosition0.put(50.0f) ;
+        lightPosition0.put(100.0f) ;
+        lightPosition0.put(0.0f) ;
+        lightPosition0.flip();
+        
         //GL11.GLLightf(GL11.GL_LIGHT1, GL11.GL_AMBIENT, lightAmbient1);   // Setup The Ambient Light
         //GL11.GLLightf(GL11.GL_LIGHT1, GL11.GL_DIFFUSE, lightDiffuse1);   // Setup The Diffuse Light
         //GL11.GLLightf(GL11.GL_LIGHT1, GL11.GL_POSITION, lightPosition1, 0); // Position The Light
-
+        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, lightPosition0);
+        
         GL11.glEnable(GL11.GL_LIGHT1);  // Enable Light One
 
         float[] lightAmbient2 = {0.0f, 0.0f, 0.0f, 1.0f};

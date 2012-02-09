@@ -1,17 +1,27 @@
-varying float intensity;
+uniform vec3 lightDir;
+varying vec3 normal;
+
+//vec3 baseColor = vec3(0.09,0.46,0.0);
+vec3 baseColor = vec3(0.53, 0.62, 0.66);
 
 void main()
 {
+	float intensity;
 	vec4 color;
-	if (intensity > 0.95)
+	vec3 n = normalize(normal);
+	vec3 p = normalize(vec3(gl_LightSource[0].position));
+	intensity = dot(p,n);
 
-		color = vec4(1.0,0.5,0.5,1.0);
+	if (intensity > 0.95)
+		color = vec4(baseColor,1.0);
 	else if (intensity > 0.5)
-		color = vec4(0.6,0.3,0.3,1.0);
+		color = vec4(baseColor/1.5,1.0);
 	else if (intensity > 0.25)
-		color = vec4(0.4,0.2,0.2,1.0);
+		color = vec4(baseColor/2.0,1.0);
 	else
-		color = vec4(0.2,0.1,0.1,1.0);
+		color = vec4(baseColor/3.0,1.0);
+
+    //color = vec4(intensity,0.1,0.1,1.0);
 	gl_FragColor = color;
 
 }
