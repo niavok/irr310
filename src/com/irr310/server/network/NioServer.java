@@ -157,7 +157,7 @@ public class NioServer extends NioPeer implements Runnable {
 			return;
 		}
 
-		System.out.println("receive "+numRead+" bytes");
+		//System.out.println("receive "+numRead+" bytes");
 		
 		// Hand the data off to our worker thread
 		this.worker.processData(this, socketChannel, this.readBuffer.array(), numRead);
@@ -172,7 +172,7 @@ public class NioServer extends NioPeer implements Runnable {
 			// Write until there's not more data ...
 			while (!queue.isEmpty()) {
 				ByteBuffer buf = (ByteBuffer) queue.get(0);
-				System.out.println("send "+buf.remaining()+" bytes");
+				//System.out.println("send "+buf.remaining()+" bytes");
 				socketChannel.write(buf);
 				if (buf.remaining() > 0) {
 					// ... or the socket's buffer fills up

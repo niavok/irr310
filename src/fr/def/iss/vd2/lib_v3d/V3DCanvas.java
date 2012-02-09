@@ -91,7 +91,7 @@ public class V3DCanvas {
         try{
             Display.setDisplayMode(new DisplayMode(width, height));
             Display.setVSyncEnabled(true);
-            Display.setTitle("Shader Setup");
+            Display.setTitle("Irr310");
             Display.create();
         }catch(Exception e){
             System.out.println("Error setting up display");

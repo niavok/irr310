@@ -8,12 +8,14 @@ public abstract class WorldObject extends GameEntity {
     private String name;
     protected List<Part> parts;
     private Part firstPart;
+    private String skin;
 
     public WorldObject(long id, String name) {
         super(id);
         this.name = name;
         firstPart = null;
         parts = new ArrayList<Part>();
+        skin = "";
     }
 
     public String getName() {
@@ -37,6 +39,14 @@ public abstract class WorldObject extends GameEntity {
 
     public Part getFirstPart() {
         return firstPart;
+    }
+    
+    public void setSkin(String skin) {
+        this.skin = skin;
+    }
+    
+    public String getSkin() {
+        return skin;
     }
 
 }

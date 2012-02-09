@@ -2,10 +2,11 @@ uniform vec3 lightDir;
 varying vec3 normal;
 
 //vec3 baseColor = vec3(0.09,0.46,0.0);
-vec3 baseColor = vec3(0.53, 0.62, 0.66);
+//vec3 baseColor = vec3(0.53, 0.62, 0.66);
 
 void main()
 {
+    vec3 baseColor = vec3(gl_Color);
 	float intensity;
 	vec4 color;
 	vec3 n = normalize(normal);

@@ -53,6 +53,7 @@ public class GraphicEngine extends FramerateEngine {
     private V3DScene scene;
     private V3DGroupElement fitOrder;
     private List<Pair<LinearEngineCapacity, V3DLine>> thrustLines;
+    private List<Skin> animatedSkins = new ArrayList<Skin>();
 
     public GraphicEngine() {
         framerate = new Duration(16666666);
@@ -62,8 +63,8 @@ public class GraphicEngine extends FramerateEngine {
 
     @Override
     protected void init() {
-        canvas = new V3DCanvas(context, 1024, 768);
-
+        canvas = new V3DCanvas(context, 1280, 1024);
+        
         fitOrder = null;
 
         activeCamera = new V3DSimple3DCamera(context);
@@ -178,72 +179,40 @@ public class GraphicEngine extends FramerateEngine {
 
     protected V3DElement addObject(final WorldObject object, boolean inShip) {
 
-        V3DGroupElement elements = new V3DGroupElement(context);
-        for (final Part part : object.getParts()) {
-
-            if (part.getSkin().isEmpty()) {
-
-                final V3DBox box = new V3DBox(context);
-                box.setRenderMode(RenderMode.SOLID);
-
-                TransformMatrix transform = part.getTransform();
-                box.setTransformMatrix(transform.toFloatBuffer());
-
-                box.setSize(part.getShape().toV3DVect3());
-
-                V3DElement element;
-
-                if (inShip) {
-                    element = new V3DColorElement(box, V3DColor.blue);
-                } else {
-                    element = new V3DColorElement(box, V3DColor.red);
-                }
-
-                transform.addListener(new TransformMatrixChangeListener() {
-
-                    @Override
-                    public void valueChanged() {
-                        box.setTransformMatrix(part.getTransform().toFloatBuffer());
-                    }
-                });
-                elements.add(element);
-
-            } else {
-                // 3d model
-                File v3drawFile = new File("graphics/output/" + part.getSkin() + ".v3draw");
-
-                final V3DrawElement v3DrawElement = V3DrawElement.LoadFromFile(v3drawFile, context);
-
-                TransformMatrix transform = part.getTransform();
-                v3DrawElement.setTransformMatrix(transform.toFloatBuffer());
-                v3DrawElement.setEnableLighting(true);
-                
-
-                
-                transform.addListener(new TransformMatrixChangeListener() {
-
-                    @Override
-                    public void valueChanged() {
-                        v3DrawElement.setTransformMatrix(part.getTransform().toFloatBuffer());
-                    }
-                });
-                elements.add(new V3DColorElement(v3DrawElement, V3DColor.red));
-                
+        
+        Skin skin = null;
+        
+        if(object.getSkin().isEmpty()) {
+            skin = new GenericSkin(context, object);
+        } else {
+            if(object.getSkin().equals("big_propeller")) {
+                skin = new PropellerSkin(context, (Component) object);
             }
-
         }
-
-        return elements;
+        
+        skin.bind(scene);
+        if(skin.isAnimated()) {
+            animatedSkins.add(skin);
+            skin.setFramerate(framerate);
+        }
+        
+        return skin.getElement();
     }
 
     @Override
     protected void frame() {
+
+        // amination
+        for(Skin skin : animatedSkins) {
+            skin.animate();
+        }
+        
         if (fitOrder == null) {
             activeCamera.fitAll();
         } else {
             activeCamera.fit(fitOrder.getBoundingBox());
         }
-
+        
         // Apply forces
         for (Pair<LinearEngineCapacity, V3DLine> thrustLinePair : thrustLines) {
             V3DLine thrustLine = thrustLinePair.getRight();

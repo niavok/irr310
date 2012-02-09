@@ -13,7 +13,7 @@ public class ComponentFactory {
         Component component = createSimpleComponent(name);
         Part part = component.getFirstPart();
         part.setMass(48d);
-        part.setSkin("big_propeller");
+        component.setSkin("big_propeller");
         
         part.setShape(new Vect3(4, 2, 4));
 
@@ -22,7 +22,7 @@ public class ComponentFactory {
         LinearEngineCapacity engineCapacity = new LinearEngineCapacity(GameServer.pickNewId());
         engineCapacity.theoricalMaxThrust = 10;
         engineCapacity.theoricalMinThrust = -4;
-        engineCapacity.theoricalVariationSpeed = 10;
+        engineCapacity.theoricalVariationSpeed = 5;
         engineCapacity.currentThrust = 0;
         //engineCapacity.setTargetThrust(4);
         component.addCapacity(engineCapacity);

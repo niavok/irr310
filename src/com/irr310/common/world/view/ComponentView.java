@@ -23,6 +23,9 @@ public class ComponentView {
     @NetworkField
     public String name;
     
+    @NetworkField
+    public String skin;
+    
     @NetworkListField(PartView.class)
     public List<PartView> parts = new ArrayList<PartView>();
 
@@ -31,7 +34,6 @@ public class ComponentView {
     
     @NetworkListField(CapacityView.class)
     public List<CapacityView> capacities = new ArrayList<CapacityView>();
-    
     
     @NetworkField
     public Vect3 shipPosition;

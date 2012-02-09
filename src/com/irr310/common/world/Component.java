@@ -160,7 +160,7 @@ public final class  Component extends WorldObject {
         componentView.name = getName();
         componentView.shipPosition = shipPosition;
         componentView.shipRotation = shipRotation;
-        
+        componentView.skin = getSkin();
         componentView.durabilityMax = durabilityMax;
         componentView.durability = durability;
         componentView.quality = quality;
@@ -187,6 +187,7 @@ public final class  Component extends WorldObject {
         durabilityMax = componentView.durabilityMax;
         durability = componentView.durability;
         quality = componentView.quality;
+        setSkin(componentView.skin);
         computeEfficiency();
         
         for(PartView part: componentView.parts) {
@@ -214,7 +215,8 @@ public final class  Component extends WorldObject {
         return capacities;
     }
 
-    public com.irr310.common.world.capacity.Capacity getCapacitiesByName(String name) {
+    
+    public Capacity getCapacitiesByName(String name) {
         return capacityNameMap.get(name);
     }
 

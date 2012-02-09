@@ -19,7 +19,6 @@ import fr.def.iss.vd2.lib_v3d.v3draw.V3DrawTriangle;
 import fr.def.iss.vd2.lib_v3d.v3draw.V3DrawVertex;
 
 /**
- *
  * @author fberto
  */
 public class ObjToV3Draw {
@@ -41,7 +40,9 @@ public class ObjToV3Draw {
     private V3DrawWriter writer;
     private String currentName = "";
     private List<String> textureMapName = new ArrayList<String>();
-    private List<byte[]> textureMapData = new ArrayList< byte[]>();
+    private List<byte[]> textureMapData = new ArrayList<byte[]>();
+    private List<String> acceptedObjects = null;
+    private boolean isIgnoring = false;
 
     public ObjToV3Draw(File polyFile) {
         this.objFile = polyFile;
@@ -57,10 +58,7 @@ public class ObjToV3Draw {
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
 
-
             parseLine(line);
-
-
 
         }
 
@@ -75,7 +73,6 @@ public class ObjToV3Draw {
 
     private void parseLine(String line) throws IOException {
 
-
         if (line.startsWith("#") || line.length() == 0) {
             // Comments
             return;
@@ -89,28 +86,34 @@ public class ObjToV3Draw {
             // Normal definition
             parseVextexNormalDefinition(line.substring(3).trim());
         } else if (line.startsWith("f ")) {
-            parseFace(line.substring(2).trim());
 
-        } else if (line.startsWith("g ")) {
-            //New object
+            if (!isIgnoring) {
+                parseFace(line.substring(2).trim());
+            }
+
+        } else if (line.startsWith("g ") || line.startsWith("o ")) {
+            // New group or new object
             flush();
+
+            String oName = line.substring(2).trim();
+            if (acceptedObjects != null && !acceptedObjects.contains(oName)) {
+                isIgnoring = true;
+            } else {
+                isIgnoring = false;
+            }
         }
-
-
-
 
     }
 
     private void parseVextexPositionDefinition(String line) {
         String[] coordList = line.split(" +");
 
-
         if (coordList.length == 3) {
             float x = Float.parseFloat(coordList[0]);
             float y = Float.parseFloat(coordList[1]);
             float z = Float.parseFloat(coordList[2]);
 
-            updateBounds(x,y,z);
+            updateBounds(x, y, z);
 
             vertexPositionList.add(new V3DVect3(x, y, z));
 
@@ -153,8 +156,6 @@ public class ObjToV3Draw {
 
     private void parseFace(String line) {
 
-
-
         String[] vertexStringList = line.split(" +");
         String vertexString;
 
@@ -167,7 +168,7 @@ public class ObjToV3Draw {
                 V3DrawVertex vertex = new V3DrawVertex();
 
                 String[] vertexPartsList = vertexString.split("/");
-                if(vertexPartsList.length == 1) {
+                if (vertexPartsList.length == 1) {
                     if (vertexPartsList[0].length() != 0) {
 
                         int positionIndex = Integer.parseInt(vertexPartsList[0]);
@@ -177,7 +178,6 @@ public class ObjToV3Draw {
                     triangle.add(vertex);
 
                 } else if (vertexPartsList.length == 2) {
-
 
                     if (vertexPartsList[1].length() != 0) {
                         int positionIndex = Integer.parseInt(vertexPartsList[1]);
@@ -191,10 +191,7 @@ public class ObjToV3Draw {
 
                     triangle.add(vertex);
 
-
-
                 } else if (vertexPartsList.length == 3) {
-
 
                     if (vertexPartsList[1].length() != 0) {
                         int positionIndex = Integer.parseInt(vertexPartsList[1]);
@@ -212,8 +209,6 @@ public class ObjToV3Draw {
                     }
 
                     triangle.add(vertex);
-
-
 
                 } else {
                     System.err.println("Warning: ObjToV3Draw - bad obj format. " + vertexString);
@@ -234,7 +229,7 @@ public class ObjToV3Draw {
 
                 String[] vertexPartsList = vertexString.split("/");
 
-                if(vertexPartsList.length == 1) {
+                if (vertexPartsList.length == 1) {
                     if (vertexPartsList[0].length() != 0) {
 
                         int positionIndex = Integer.parseInt(vertexPartsList[0]);
@@ -244,7 +239,6 @@ public class ObjToV3Draw {
                     quad.add(vertex);
 
                 } else if (vertexPartsList.length == 2) {
-
 
                     if (vertexPartsList[1].length() != 0) {
                         int positionIndex = Integer.parseInt(vertexPartsList[1]);
@@ -258,11 +252,7 @@ public class ObjToV3Draw {
 
                     quad.add(vertex);
 
-
-
-                } else if(vertexPartsList.length == 3) {
-
-
+                } else if (vertexPartsList.length == 3) {
 
                     if (vertexPartsList[1].length() != 0) {
                         int positionIndex = Integer.parseInt(vertexPartsList[1]);
@@ -281,8 +271,6 @@ public class ObjToV3Draw {
                     }
 
                     quad.add(vertex);
-
-
 
                 } else {
                     System.err.println("Warning: ObjToV3Draw - bad obj format. " + vertexString);
@@ -302,7 +290,7 @@ public class ObjToV3Draw {
                 V3DrawVertex vertex = new V3DrawVertex();
 
                 String[] vertexPartsList = vertexString.split("/");
-                if(vertexPartsList.length == 1) {
+                if (vertexPartsList.length == 1) {
                     if (vertexPartsList[0].length() != 0) {
 
                         int positionIndex = Integer.parseInt(vertexPartsList[0]);
@@ -312,7 +300,6 @@ public class ObjToV3Draw {
                     polygon.add(vertex);
 
                 } else if (vertexPartsList.length == 2) {
-
 
                     if (vertexPartsList[1].length() != 0) {
                         int positionIndex = Integer.parseInt(vertexPartsList[1]);
@@ -326,11 +313,7 @@ public class ObjToV3Draw {
 
                     polygon.add(vertex);
 
-
-
                 } else if (vertexPartsList.length == 3) {
-
-
 
                     if (vertexPartsList[1].length() != 0) {
                         int positionIndex = Integer.parseInt(vertexPartsList[1]);
@@ -350,8 +333,6 @@ public class ObjToV3Draw {
 
                     polygon.add(vertex);
 
-
-
                 } else {
                     System.err.println("Warning: ObjToV3Draw - bad obj format. " + vertexString);
                     return;
@@ -360,22 +341,19 @@ public class ObjToV3Draw {
 
             polygonList.add(polygon);
 
-
         } else {
             System.err.println("Warning: ObjToV3Draw - bad obj format. " + line);
             return;
         }
 
-
-
     }
 
     private void flush() throws IOException {
-        //vertexPositionList.clear();
-        //vertexTextureList.clear();
-        //vertexNormalList.clear();
+        // vertexPositionList.clear();
+        // vertexTextureList.clear();
+        // vertexNormalList.clear();
 
-        if(textureMapName.contains(currentName)) {
+        if (textureMapName.contains(currentName)) {
 
             writer.enableTexture(textureMapName.indexOf(currentName));
         }
@@ -388,14 +366,14 @@ public class ObjToV3Draw {
             writer.draw3dQuadList(quadList);
         }
 
-        for(V3DrawPolygon polygon: polygonList) {
+        for (V3DrawPolygon polygon : polygonList) {
             writer.drawRegistered3dConcavePolygon(writer.register3dConcavePolygon(polygon));
         }
 
-        if(textureMapName.contains(currentName)) {
+        if (textureMapName.contains(currentName)) {
             writer.disableTexture();
         }
-        
+
         triangleList.clear();
         quadList.clear();
         polygonList.clear();
@@ -411,34 +389,38 @@ public class ObjToV3Draw {
     }
 
     private void writeTextures() throws IOException {
-        for(byte[] image: textureMapData) {
+        for (byte[] image : textureMapData) {
             writer.registerTexture(image);
         }
     }
 
     private void updateBounds(float x, float y, float z) {
-        if(x < minX) {
+        if (x < minX) {
             minX = x;
         }
 
-        if(x > maxX) {
+        if (x > maxX) {
             maxX = x;
         }
 
-        if(y < minY) {
+        if (y < minY) {
             minY = y;
         }
 
-        if(y > maxY) {
+        if (y > maxY) {
             maxY = y;
         }
 
-        if(z < minZ) {
+        if (z < minZ) {
             minZ = z;
         }
 
-        if(z > maxZ) {
+        if (z > maxZ) {
             maxZ = z;
         }
+    }
+
+    public void setAcceptedObjects(List<String> acceptedObjects) {
+        this.acceptedObjects = acceptedObjects;
     }
 }

@@ -13,8 +13,7 @@ public class Part extends GameEntity {
     private final Vect3 linearSpeed;
     private final TransformMatrix transform;
     private Vect3 shape;
-    private String skin;
-
+    
     public Part(long id) {
         super(id);
         // position = Vect3.origin();
@@ -22,7 +21,6 @@ public class Part extends GameEntity {
         linearSpeed = Vect3.origin();
         transform = TransformMatrix.identity();
         mass = 0.;
-        skin = "";
         shape = Vect3.one();
     }
 
@@ -61,7 +59,6 @@ public class Part extends GameEntity {
         partView.mass = mass;
         partView.rotationSpeed = rotationSpeed;
         partView.shape = shape;
-        partView.skin = skin;
         partView.transform = transform;
         return partView;
     }
@@ -70,7 +67,6 @@ public class Part extends GameEntity {
         linearSpeed.set(partView.linearSpeed);
         rotationSpeed.set(partView.rotationSpeed);
         mass = partView.mass;
-        skin = partView.skin;
         shape = partView.shape;
         transform.set(partView.transform.getData());
     }
@@ -96,12 +92,6 @@ public class Part extends GameEntity {
         transform.set(partStateView.transform.getData());
     }
     
-    public void setSkin(String skin) {
-        this.skin = skin;
-    }
     
-    public String getSkin() {
-        return skin;
-    }
     
 }
