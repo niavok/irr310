@@ -24,15 +24,16 @@ import java.nio.channels.FileChannel;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
 
 import fr.def.iss.vd2.lib_v3d.V3DContext;
+import fr.def.iss.vd2.lib_v3d.V3DShader;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCamera;
 import fr.def.iss.vd2.lib_v3d.v3draw.V3DrawReader;
 import fr.def.iss.vd2.lib_v3d.v3draw.V3DrawReader.V3DrawBadFormatError;
 
 /**
- *
  * @author fberto
  */
 public class V3DrawElement extends V3DElement {
@@ -43,9 +44,25 @@ public class V3DrawElement extends V3DElement {
     private final float dy;
     private final float dz;
     private boolean enableLighting = false;
+    private V3DShader shader;
 
     public V3DrawElement(V3DContext context, ByteBuffer buffer) throws V3DrawBadFormatError {
         super(context);
+
+        shader = new V3DShader("propeller") {
+            private int lightDir;
+
+            @Override
+            protected void loadUniforms() {
+                lightDir = ARBShaderObjects.glGetUniformLocationARB(shader, "lightDir");
+            }
+
+            @Override
+            protected void setUniforms(V3DCamera camera) {
+                ARBShaderObjects.glUniform3fARB(lightDir, 1f, 0f, 0f);
+            }
+
+        };
 
         v3drawReader = new V3DrawReader(buffer);
 
@@ -75,14 +92,20 @@ public class V3DrawElement extends V3DElement {
         GL11.glPushMatrix();
         GL11.glTranslatef(dx, dy, dz);
 
-        if (enableLighting) {
-        	GL11.glEnable(GL11.GL_LIGHTING);
-        }
+        /*
+         * if (enableLighting) { GL11.glEnable(GL11.GL_LIGHTING); }
+         */
+        // TODO remove lighting
+
+        shader.begin(camera);
+
         v3drawReader.draw(camera);
 
-        if (enableLighting) {
-        	GL11.glDisable(GL11.GL_LIGHTING);
-        }
+        shader.end();
+
+        /*
+         * if (enableLighting) { GL11.glDisable(GL11.GL_LIGHTING); }
+         */
         GL11.glPopMatrix();
 
     }

@@ -1,5 +1,6 @@
 package com.irr310.client.graphics;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,112 +42,109 @@ import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DGroupElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DLine;
+import fr.def.iss.vd2.lib_v3d.element.V3DrawElement;
 
 public class GraphicEngine extends FramerateEngine {
 
-	final V3DContext context = new V3DContext();
-	V3DCameraBinding fullscreenBinding;
-	V3DSimple3DCamera activeCamera;
-	V3DCanvas canvas;
-	private V3DScene scene;
+    final V3DContext context = new V3DContext();
+    V3DCameraBinding fullscreenBinding;
+    V3DSimple3DCamera activeCamera;
+    V3DCanvas canvas;
+    private V3DScene scene;
     private V3DGroupElement fitOrder;
     private List<Pair<LinearEngineCapacity, V3DLine>> thrustLines;
-    
-	public GraphicEngine() {
-		framerate = new Duration(16666666);
-		thrustLines = new ArrayList<Pair<LinearEngineCapacity, V3DLine>>();
 
-	}
+    public GraphicEngine() {
+        framerate = new Duration(16666666);
+        thrustLines = new ArrayList<Pair<LinearEngineCapacity, V3DLine>>();
 
-	@Override
-	protected void init() {
-		canvas = new V3DCanvas(context, 1024, 768);
+    }
 
-		
-		
-		fitOrder = null;
-		
-		activeCamera = new V3DSimple3DCamera(context);
-		
-		new V3DSimple3DRotateOnlyCameraController(activeCamera);
-		
-		fullscreenBinding = V3DCameraBinding
-				.buildFullscreenCamera(activeCamera);
-		activeCamera.setBackgroundColor(V3DColor.white);
+    @Override
+    protected void init() {
+        canvas = new V3DCanvas(context, 1024, 768);
 
-		// Add zoom and pane camera controlleur
-		V3DSimple3DCameraController cameraController = new V3DSimple3DCameraController(
-				activeCamera);
-		activeCamera.addController(cameraController);
-		// cameraController.setLimitBound(false);
+        fitOrder = null;
 
-		scene = new V3DScene(context);
-		activeCamera.setScene(scene);
-		
-		V3DBox sky = new V3DBox(context);
-		sky.setSize(new V3DVect3(1024, 768, 1));
-		sky.setPosition(1024/2, 768/2, 0);
-		
-		//activeCamera.getBackgroundScene().add(new V3DColorElement(sky, V3DColor.pink));
-		activeCamera.getBackgroundScene().add(new V3DColorElement(new Sky(context), V3DColor.pink));
+        activeCamera = new V3DSimple3DCamera(context);
 
-		// Add reference
-		V3DElement ref0 = generateReference();
-		ref0.setPosition(0, 0, 0);
-		V3DElement ref1 = generateReference();
-		ref1.setPosition(1, 0, 0);
-		V3DElement ref2 = generateReference();
-		ref2.setPosition(2, 0, 0);
+        new V3DSimple3DRotateOnlyCameraController(activeCamera);
 
-		scene.add(ref0);
-		scene.add(ref1);
-		scene.add(ref2);
+        fullscreenBinding = V3DCameraBinding.buildFullscreenCamera(activeCamera);
+        activeCamera.setBackgroundColor(V3DColor.white);
 
-		// activeCamera.setShowCenter(true);
+        // Add zoom and pane camera controlleur
+        V3DSimple3DCameraController cameraController = new V3DSimple3DCameraController(activeCamera);
+        activeCamera.addController(cameraController);
+        // cameraController.setLimitBound(false);
 
-		activeCamera.fitAll();
+        scene = new V3DScene(context);
+        activeCamera.setScene(scene);
 
-		//activeCamera.fit(new V3DVect3(0, 0, 0), new V3DVect3(5, 5, 5));
+        V3DBox sky = new V3DBox(context);
+        sky.setSize(new V3DVect3(1024, 768, 1));
+        sky.setPosition(1024 / 2, 768 / 2, 0);
 
-		canvas.addCamera(fullscreenBinding);
-		
+        // activeCamera.getBackgroundScene().add(new V3DColorElement(sky,
+        // V3DColor.pink));
+        activeCamera.getBackgroundScene().add(new V3DColorElement(new Sky(context), V3DColor.pink));
 
-		canvas.setEnabled(true);
+        // Add reference
+        V3DElement ref0 = generateReference();
+        ref0.setPosition(0, 0, 0);
+        V3DElement ref1 = generateReference();
+        ref1.setPosition(1, 0, 0);
+        V3DElement ref2 = generateReference();
+        ref2.setPosition(2, 0, 0);
 
-		canvas.setShowFps(true);
+        scene.add(ref0);
+        scene.add(ref1);
+        scene.add(ref2);
 
-	}
+        // activeCamera.setShowCenter(true);
 
-	private V3DElement generateReference() {
-		V3DLine xAxis = new V3DLine(context);
-		xAxis.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(1, 0, 0));
+        activeCamera.fitAll();
 
-		V3DLine yAxis = new V3DLine(context);
-		yAxis.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, 1, 0));
+        // activeCamera.fit(new V3DVect3(0, 0, 0), new V3DVect3(5, 5, 5));
 
-		V3DLine zAxis = new V3DLine(context);
-		zAxis.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, 0, 1));
+        canvas.addCamera(fullscreenBinding);
 
-		V3DGroupElement group = new V3DGroupElement(context);
+        canvas.setEnabled(true);
 
-		group.add(new V3DColorElement(xAxis, V3DColor.red));
-		group.add(new V3DColorElement(yAxis, V3DColor.green));
-		group.add(new V3DColorElement(zAxis, V3DColor.blue));
-		return group;
-	}
+        canvas.setShowFps(true);
 
-	@Override
-	protected void end() {
-		Display.destroy();
-	}
+    }
 
-	protected void addShip(final Ship ship) {
-	    
-	    V3DGroupElement shipElements = new V3DGroupElement(context);
-		for(Component component : ship.getComponents()) {
-		    shipElements.add(addObject(component, true));
-		    
-		    for (Capacity capacity : component.getCapacities()) {
+    private V3DElement generateReference() {
+        V3DLine xAxis = new V3DLine(context);
+        xAxis.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(1, 0, 0));
+
+        V3DLine yAxis = new V3DLine(context);
+        yAxis.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, 1, 0));
+
+        V3DLine zAxis = new V3DLine(context);
+        zAxis.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, 0, 1));
+
+        V3DGroupElement group = new V3DGroupElement(context);
+
+        group.add(new V3DColorElement(xAxis, V3DColor.red));
+        group.add(new V3DColorElement(yAxis, V3DColor.green));
+        group.add(new V3DColorElement(zAxis, V3DColor.blue));
+        return group;
+    }
+
+    @Override
+    protected void end() {
+        Display.destroy();
+    }
+
+    protected void addShip(final Ship ship) {
+
+        V3DGroupElement shipElements = new V3DGroupElement(context);
+        for (Component component : ship.getComponents()) {
+            shipElements.add(addObject(component, true));
+
+            for (Capacity capacity : component.getCapacities()) {
                 if (capacity instanceof LinearEngineCapacity) {
 
                     V3DLine thrustLine = new V3DLine(context);
@@ -170,111 +168,132 @@ public class GraphicEngine extends FramerateEngine {
                 }
 
             }
-		    
-		}
-		
-		fitOrder = shipElements;
-		
-	}
-	
-	protected V3DElement addObject(final WorldObject object, boolean inShip) {
-	    
-	    V3DGroupElement elements = new V3DGroupElement(context);
-		for(final Part part: object.getParts()) {
-		
 
-			final V3DBox box = new V3DBox(context);
-			box.setRenderMode(RenderMode.SOLID);
+        }
 
-			TransformMatrix transform = part.getTransform();
-			box.setTransformMatrix(transform.toFloatBuffer());
+        fitOrder = shipElements;
+        scene.add(shipElements);
 
-			box.setSize(part.getShape().toV3DVect3());
-			
-			V3DElement element;
-			
-			if(inShip) {
-			    element = new V3DColorElement(box, V3DColor.blue);
-			} else {
-			    element = new V3DColorElement(box, V3DColor.red);
-			}
+    }
 
-			
-			scene.add(element);
+    protected V3DElement addObject(final WorldObject object, boolean inShip) {
 
-			transform.addListener(new TransformMatrixChangeListener() {
+        V3DGroupElement elements = new V3DGroupElement(context);
+        for (final Part part : object.getParts()) {
 
-				@Override
-				public void valueChanged() {
-					box.setTransformMatrix(part.getTransform()
-							.toFloatBuffer());
-				}
-			});
-			elements.add(element);
-			
+            if (part.getSkin().isEmpty()) {
 
-		}
-		
-		return elements;
-	}
+                final V3DBox box = new V3DBox(context);
+                box.setRenderMode(RenderMode.SOLID);
 
-	@Override
-	protected void frame() {
-	    if(fitOrder == null) {
-	        activeCamera.fitAll();
-	    } else {
-	        activeCamera.fit(fitOrder.getBoundingBox());
-	    }
-	    
-	    // Apply forces
+                TransformMatrix transform = part.getTransform();
+                box.setTransformMatrix(transform.toFloatBuffer());
+
+                box.setSize(part.getShape().toV3DVect3());
+
+                V3DElement element;
+
+                if (inShip) {
+                    element = new V3DColorElement(box, V3DColor.blue);
+                } else {
+                    element = new V3DColorElement(box, V3DColor.red);
+                }
+
+                transform.addListener(new TransformMatrixChangeListener() {
+
+                    @Override
+                    public void valueChanged() {
+                        box.setTransformMatrix(part.getTransform().toFloatBuffer());
+                    }
+                });
+                elements.add(element);
+
+            } else {
+                // 3d model
+                File v3drawFile = new File("graphics/output/" + part.getSkin() + ".v3draw");
+
+                final V3DrawElement v3DrawElement = V3DrawElement.LoadFromFile(v3drawFile, context);
+
+                TransformMatrix transform = part.getTransform();
+                v3DrawElement.setTransformMatrix(transform.toFloatBuffer());
+                v3DrawElement.setEnableLighting(true);
+                
+
+                
+                transform.addListener(new TransformMatrixChangeListener() {
+
+                    @Override
+                    public void valueChanged() {
+                        v3DrawElement.setTransformMatrix(part.getTransform().toFloatBuffer());
+                    }
+                });
+                elements.add(new V3DColorElement(v3DrawElement, V3DColor.red));
+                
+            }
+
+        }
+
+        return elements;
+    }
+
+    @Override
+    protected void frame() {
+        if (fitOrder == null) {
+            activeCamera.fitAll();
+        } else {
+            activeCamera.fit(fitOrder.getBoundingBox());
+        }
+
+        // Apply forces
         for (Pair<LinearEngineCapacity, V3DLine> thrustLinePair : thrustLines) {
             V3DLine thrustLine = thrustLinePair.getRight();
             LinearEngineCapacity engine = thrustLinePair.getLeft();
 
-            thrustLine.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, - (float) engine.getCurrentThrust(), 0));
+            thrustLine.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, -(float) engine.getCurrentThrust(), 0));
         }
-	    
-		canvas.frame();
 
-	}
+        canvas.frame();
 
-	@Override
-	protected void processEvent(EngineEvent e) {
-		e.accept(new DebugGraphicEngineEventVisitor());
-	}
+    }
 
-	private final class DebugGraphicEngineEventVisitor extends
-			DefaultEngineEventVisitor {
-		@Override
-		public void visit(QuitGameEvent event) {
-			System.out.println("stopping debug graphic engine");
-			setRunning(false);
-		}
+    @Override
+    protected void processEvent(EngineEvent e) {
+        e.accept(new DebugGraphicEngineEventVisitor());
+    }
 
-		@Override
-		public void visit(StartEngineEvent event) {
-			pause(false);
-		}
+    private final class DebugGraphicEngineEventVisitor extends DefaultEngineEventVisitor {
+        @Override
+        public void visit(QuitGameEvent event) {
+            System.out.println("stopping debug graphic engine");
+            setRunning(false);
+        }
 
-		@Override
-		public void visit(PauseEngineEvent event) {
-			pause(true);
-		}
+        @Override
+        public void visit(StartEngineEvent event) {
+            pause(false);
+        }
 
-		@Override
-		public void visit(WorldObjectAddedEvent event) {
-			addObject(event.getObject(), false);
-		}
-		
-		@Override
-		public void visit(WorldShipAddedEvent event) {
-			addShip(event.getShip());
-		}
+        @Override
+        public void visit(PauseEngineEvent event) {
+            pause(true);
+        }
 
-	}
+        @Override
+        public void visit(WorldObjectAddedEvent event) {
+            addObject(event.getObject(), false);
+        }
+
+        @Override
+        public void visit(WorldShipAddedEvent event) {
+            addShip(event.getShip());
+        }
+
+    }
 
     public void onMouseEvent(V3DMouseEvent mouseEvent) {
-        canvas.onMouseEvent(mouseEvent);
+        if (canvas != null) {
+            canvas.onMouseEvent(mouseEvent);
+        }
     }
 
 }

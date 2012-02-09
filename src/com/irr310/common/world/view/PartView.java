@@ -12,6 +12,9 @@ public class PartView {
     public long id;
     
     @NetworkField
+    public String skin;
+    
+    @NetworkField
     public double mass;
     
     @NetworkField

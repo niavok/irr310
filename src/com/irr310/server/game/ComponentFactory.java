@@ -13,7 +13,8 @@ public class ComponentFactory {
         Component component = createSimpleComponent(name);
         Part part = component.getFirstPart();
         part.setMass(48d);
-
+        part.setSkin("big_propeller");
+        
         part.setShape(new Vect3(4, 2, 4));
 
         generateRectangeSlots(component, part);

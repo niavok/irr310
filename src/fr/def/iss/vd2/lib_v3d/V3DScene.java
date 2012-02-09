@@ -17,6 +17,8 @@
 
 package fr.def.iss.vd2.lib_v3d;
 
+import org.lwjgl.opengl.GL11;
+
 import fr.def.iss.vd2.lib_v3d.camera.V3DCamera;
 import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DGroupElement;
@@ -52,11 +54,11 @@ public class V3DScene {
         float[] lightDiffuse1 = {0.75f, 0.75f, 0.75f, 1.0f};
         float[] lightPosition1 = {100.0f, 100.0f, -100.0f, 0.0f};
 
-        //GL11.GLLightfv(GL11.GL_LIGHT1, GL11.GL_AMBIENT, lightAmbient1, 0);   // Setup The Ambient Light
-        //GL11.GLLightfv(GL11.GL_LIGHT1, GL11.GL_DIFFUSE, lightDiffuse1, 0);   // Setup The Diffuse Light
-        //GL11.GLLightfv(GL11.GL_LIGHT1, GL11.GL_POSITION, lightPosition1, 0); // Position The Light
+        //GL11.GLLightf(GL11.GL_LIGHT1, GL11.GL_AMBIENT, lightAmbient1);   // Setup The Ambient Light
+        //GL11.GLLightf(GL11.GL_LIGHT1, GL11.GL_DIFFUSE, lightDiffuse1);   // Setup The Diffuse Light
+        //GL11.GLLightf(GL11.GL_LIGHT1, GL11.GL_POSITION, lightPosition1, 0); // Position The Light
 
-        //GL11.glEnable(GL11.GL_LIGHT1);  // Enable Light One
+        GL11.glEnable(GL11.GL_LIGHT1);  // Enable Light One
 
         float[] lightAmbient2 = {0.0f, 0.0f, 0.0f, 1.0f};
         float[] lightDiffuse2 = {0.3f, 0.3f, 0.3f, 1.0f};

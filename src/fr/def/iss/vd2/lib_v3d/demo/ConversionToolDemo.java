@@ -82,10 +82,10 @@ public class ConversionToolDemo extends JFrame {
     }
 
     private static void writeFromPoly() throws FileNotFoundException, IOException {
-        V3DrawWriter writer = new DefaultV3DrawWriter(new File("graphics/output/test_polys.v3draw"));
+        V3DrawWriter writer = new DefaultV3DrawWriter(new File("graphics/output/big_propeller.v3draw"));
 
         writer.addMetadata("date: " + new Date().toString());
-        writer.addMetadata("author: DEF ISS");
+        writer.addMetadata("author: Frédéric Bertolus");
         writer.addMetadata("licence: CC-BY-SA");
         writer.addMetadata("url: http://www.def-online.com");
 

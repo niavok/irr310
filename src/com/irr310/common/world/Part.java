@@ -13,6 +13,7 @@ public class Part extends GameEntity {
     private final Vect3 linearSpeed;
     private final TransformMatrix transform;
     private Vect3 shape;
+    private String skin;
 
     public Part(long id) {
         super(id);
@@ -21,7 +22,7 @@ public class Part extends GameEntity {
         linearSpeed = Vect3.origin();
         transform = TransformMatrix.identity();
         mass = 0.;
-
+        skin = "";
         shape = Vect3.one();
     }
 
@@ -60,6 +61,7 @@ public class Part extends GameEntity {
         partView.mass = mass;
         partView.rotationSpeed = rotationSpeed;
         partView.shape = shape;
+        partView.skin = skin;
         partView.transform = transform;
         return partView;
     }
@@ -68,6 +70,7 @@ public class Part extends GameEntity {
         linearSpeed.set(partView.linearSpeed);
         rotationSpeed.set(partView.rotationSpeed);
         mass = partView.mass;
+        skin = partView.skin;
         shape = partView.shape;
         transform.set(partView.transform.getData());
     }
@@ -85,12 +88,20 @@ public class Part extends GameEntity {
         /*if(!(linearSpeed.equals(partStateView.linearSpeed))) {
             System.out.println("fix speed from: "+linearSpeed.toString()+" to "+partStateView.linearSpeed);
         }*/
-        if(!(transform.getTranslation().equals(partStateView.transform.getTranslation()))) {
+        /*if(!(transform.getTranslation().equals(partStateView.transform.getTranslation()))) {
             System.out.println("fix position from: "+transform.getTranslation().toString()+" to "+partStateView.transform.getTranslation().toString());
-        }
+        }*/
         linearSpeed.set(partStateView.linearSpeed);
         rotationSpeed.set(partStateView.rotationSpeed);
         transform.set(partStateView.transform.getData());
+    }
+    
+    public void setSkin(String skin) {
+        this.skin = skin;
+    }
+    
+    public String getSkin() {
+        return skin;
     }
     
 }

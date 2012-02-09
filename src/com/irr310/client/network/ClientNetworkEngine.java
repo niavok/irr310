@@ -127,7 +127,7 @@ public class ClientNetworkEngine extends EventEngine {
         for (PartStateView partStateView : m.partStateList) {
             Part part = Game.getInstance().getWorld().getPartById(partStateView.id);
             if(part != null) {
-                System.out.println("update part");
+                //System.out.println("update part");
                 part.fromStateView(partStateView);
             }
         }
