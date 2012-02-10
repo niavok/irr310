@@ -51,6 +51,10 @@ public class LinearEngineCapacity extends Capacity {
     public void setTargetThrust(double targetThrustInput) {
         this.targetThrustInput = targetThrustInput;
     }
+    
+    public double getTargetThrustInput() {
+        return targetThrustInput;
+    }
 
     @Override
     public CapacityView toView() {

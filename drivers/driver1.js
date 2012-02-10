@@ -32,6 +32,7 @@ function init() {
         var orderBreak = false;
         var orderTurnLeft = false;
         var orderTurnRight = false;
+        var baseThrust = 0;
         
         core.log("maxThrust "+maxThrust);        
         // Add key handler
@@ -64,6 +65,18 @@ function init() {
                     core.log("press space");
                     //leftEngine.targetThrust = 0;
                     //rightEngine.targetThrust = 0;
+                    break;
+                case KEY_PLUS:
+                    baseThrust += 10;
+                    if(baseThrust > 100) {
+                        baseThrust = 100;
+                    }
+                    break;
+                case KEY_MINUS:
+                    baseThrust -= 10;
+                    if(baseThrust < -100) {
+                        baseThrust = -100;
+                    }
                     break;
                 default:
                     core.log("pressed undefined key: '"+keyCode+"' / '"+char+"'");
@@ -112,30 +125,45 @@ function init() {
         //core.log("kernel speed vector: x="+speedVector.getX()+" y="+speedVector.getY()+" z="+speedVector.getZ());
         //core.log("kernel speed: "+speed);
         
+        var leftThrustTarget = 0;
+        var rightThrustTarget = 0;
+        
         if(orderAccelerate) {
             if(orderTurnLeft) {
-                leftEngine.targetThrust = 0;
-                rightEngine.targetThrust = maxThrust;
+                leftThrustTarget = 0;
+                rightThrustTarget = maxThrust;
             } else if(orderTurnRight) {
-                leftEngine.targetThrust = maxThrust;
-                rightEngine.targetThrust = 0;
+                leftThrustTarget = maxThrust;
+                rightThrustTarget = 0;
             } else {
-                leftEngine.targetThrust = maxThrust;
-                rightEngine.targetThrust = maxThrust;
+                leftThrustTarget = maxThrust;
+                rightThrustTarget = maxThrust;
             }
         } else if(orderBreak) {
-            leftEngine.targetThrust = -minThrust;
-            rightEngine.targetThrust = -minThrust;
+            leftThrustTarget = -minThrust;
+            rightThrustTarget = -minThrust;
         } else if(orderTurnLeft) {
-            leftEngine.targetThrust = -maxRotationThrust;
-            rightEngine.targetThrust = maxRotationThrust;
+            leftThrustTarget = -maxRotationThrust;
+            rightThrustTarget = maxRotationThrust;
         } else if(orderTurnRight) {
-            leftEngine.targetThrust = maxRotationThrust;
-            rightEngine.targetThrust = -maxRotationThrust;
+            leftThrustTarget = maxRotationThrust;
+            rightThrustTarget = -maxRotationThrust;
         } else {
-            leftEngine.targetThrust = 0;
-            rightEngine.targetThrust = 0;
+            leftThrustTarget = 0;
+            rightThrustTarget = 0;
         }
+        
+        if(baseThrust > 0) {
+            leftThrustTarget += (baseThrust * maxThrust) / 100.0;
+            rightThrustTarget += (baseThrust * maxThrust) / 100.0;
+        } else {
+            leftThrustTarget += (baseThrust * minThrust) / 100.0;
+            rightThrustTarget += (baseThrust * minThrust) / 100.0;
+        }
+        
+        
+        leftEngine.targetThrust = leftThrustTarget;
+        rightEngine.targetThrust = rightThrustTarget;
         
     }
 }

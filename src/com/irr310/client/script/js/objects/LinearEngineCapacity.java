@@ -15,6 +15,14 @@ public class LinearEngineCapacity extends Capacity {
             sendUpdate();
         }
     }
+    
+    public double getTargetThrustInput() {
+        return capacity.getTargetThrustInput();
+    }
+    
+    public double getTargetThrust() {
+        return capacity.getTargetThrust();
+    }
 
     public double getMaxThrust() {
         return capacity.getMaxThrust();
