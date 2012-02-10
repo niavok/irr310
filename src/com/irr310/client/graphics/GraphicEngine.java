@@ -195,6 +195,17 @@ public class GraphicEngine extends FramerateEngine {
                 skin = new TankSkin(context, (Component) object);
             } else if(object.getSkin().equals("factory")) {
                 skin = new FactorySkin(context, (Component) object);
+            } else if(object.getSkin().equals("hangar")) {
+                skin = new FactorySkin(context, (Component) object);
+            } else if(object.getSkin().equals("harvester")) {
+                skin = new FactorySkin(context, (Component) object);
+            } else if(object.getSkin().equals("refinery")) {
+                skin = new FactorySkin(context, (Component) object);
+            } else if(object.getSkin().equals("kernel")) {
+                skin = new CameraSkin(context, (Component) object);
+            } else {
+                System.err.println("No skin found for: "+object.getSkin());
+                skin = new GenericSkin(context, object);
             }
         }
         

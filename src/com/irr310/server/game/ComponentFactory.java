@@ -71,6 +71,7 @@ public class ComponentFactory {
 
     public static Component createHangar(String name) {
         Component component = createSimpleComponent(name);
+        component.setSkin("hangar");
         Part part = component.getFirstPart();
         part.setMass(48d);
 
@@ -83,6 +84,7 @@ public class ComponentFactory {
 
     public static Component createRefinery(String name) {
         Component component = createSimpleComponent(name);
+        component.setSkin("refinery");
         Part part = component.getFirstPart();
         part.setMass(48d);
 
@@ -108,6 +110,7 @@ public class ComponentFactory {
 
     public static Component createHarvester(String name) {
         Component component = createSimpleComponent(name);
+        component.setSkin("harvester");
         Part part = component.getFirstPart();
         part.setMass(48d);
 
@@ -120,6 +123,7 @@ public class ComponentFactory {
 
     public static Component createKernel(String name) {
         Component component = createSimpleComponent(name);
+        component.setSkin("kernel");
         Part part = component.getFirstPart();
         part.setMass(1d);
 
