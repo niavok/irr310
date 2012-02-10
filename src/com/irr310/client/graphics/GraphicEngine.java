@@ -191,6 +191,8 @@ public class GraphicEngine extends FramerateEngine {
                 skin = new PvCellSkin(context, (Component) object);
             } else if(object.getSkin().equals("camera")) {
                 skin = new CameraSkin(context, (Component) object);
+            } else if(object.getSkin().equals("tank")) {
+                skin = new TankSkin(context, (Component) object);
             }
         }
         

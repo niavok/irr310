@@ -94,6 +94,7 @@ public class ComponentFactory {
 
     public static Component createTank(String name) {
         Component component = createSimpleComponent(name);
+        component.setSkin("tank");
         Part part = component.getFirstPart();
         part.setMass(20d);
 
