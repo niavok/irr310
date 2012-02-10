@@ -44,6 +44,9 @@ public class GraphicGenerator {
         //Camera
         generateObj("graphics/camera.obj", "graphics/output/camera.v3draw", null);
         
+        //Factory
+        generateObj("graphics/factory.obj", "graphics/output/factory.v3draw", null);
+        
        //Tank
         {
             List<String> objectsStructure = new ArrayList<String>();

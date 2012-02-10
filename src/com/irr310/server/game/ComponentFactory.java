@@ -45,6 +45,7 @@ public class ComponentFactory {
 
     public static Component createFactory(String name) {
         Component component = createSimpleComponent(name);
+        component.setSkin("factory");
         Part part = component.getFirstPart();
         part.setMass(48d);
 

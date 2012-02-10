@@ -55,7 +55,7 @@ public class PropellerSkin extends Skin {
         // Configure animation
         linearEngineCapacity = (LinearEngineCapacity) object.getCapacitiesByName("linearEngine");
         angle = 0;
-        speed = 100f;
+        speed = 50f;
     }
 
     @Override
