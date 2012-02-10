@@ -32,6 +32,7 @@ public class ComponentFactory {
 
     public static Component createCamera(String name) {
         Component component = createSimpleComponent(name);
+        component.setSkin("camera");
         Part part = component.getFirstPart();
         part.setMass(1d);
 

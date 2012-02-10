@@ -40,7 +40,9 @@ public class GraphicGenerator {
             generateObj("graphics/pvcell.obj", "graphics/output/pvcell_panel.v3draw", objectsPanel);
 
         }
-
+        
+        //Camera
+        generateObj("graphics/camera.obj", "graphics/output/camera.v3draw", null);
     }
 
     private static void generateObj(String source, String destination, List<String> objects) throws IOException {
