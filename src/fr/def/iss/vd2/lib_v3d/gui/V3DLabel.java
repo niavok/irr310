@@ -78,7 +78,7 @@ public class V3DLabel extends V3DGuiComponent {
     }
 
     @Override
-    void repack() {
+    public void repack() {
         
         if(parent != null) {
             xPos = 0;

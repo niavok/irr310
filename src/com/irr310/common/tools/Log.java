@@ -12,8 +12,8 @@ public class Log {
     
     public static void perfBegin(String log) {
         
-        if(!logBeginStack.isEmpty() && !logBeginStack.firstElement().isComposed()) {
-            logBeginStack.firstElement().setComposed(true);
+        if(!logBeginStack.isEmpty() && !logBeginStack.peek().isComposed()) {
+            logBeginStack.peek().setComposed(true);
             indent++;
             System.out.println();
         }

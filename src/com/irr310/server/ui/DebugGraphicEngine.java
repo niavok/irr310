@@ -53,7 +53,7 @@ public class DebugGraphicEngine extends FramerateEngine {
     private List<Pair<LinearEngineCapacity, V3DLine>> thrustLines;
 
     public DebugGraphicEngine() {
-        framerate = new Duration(16666666);
+        framerate = new Duration(166666666);
         thrustLines = new ArrayList<Pair<LinearEngineCapacity, V3DLine>>();
 
     }

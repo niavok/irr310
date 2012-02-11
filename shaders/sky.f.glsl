@@ -5,13 +5,13 @@ uniform float time;
 
 float PI = 3.14159265358979323846264;
 
-vec3 genTex( in vec2 p )
+/*vec3 genTex( in vec2 p )
 {
     float c1 = float(mod(floor(p.x / 20.0), 2.0));
     float c2 = float(mod(floor(p.y / 20.0), 2.0));
 
     return vec3(c1,0,c2);
-}
+}*/
 
 
 vec3 genTex2( in vec2 p1 )
@@ -19,9 +19,6 @@ vec3 genTex2( in vec2 p1 )
     vec2 p = mod(p1, PI * 2.0);
     float a = sin(p.x);
     float b = sin(p.y);
-    
-
-
     
     vec3 c = vec3(1.0);
     
@@ -42,7 +39,7 @@ vec3 genTex2( in vec2 p1 )
 
 }
 
-
+/*
 vec3 deform( in vec2 p )
 {
     vec3 uv;
@@ -62,7 +59,7 @@ vec3 deform( in vec2 p )
     //return vec3(uv.x, uv.y, uv.z);
     return genTex2(uv.xy);
 }
-
+*/
 
 void main()
 {
@@ -84,8 +81,6 @@ void main()
     }
     
     
-    
-    
     if(int(gl_FragCoord.y) > int(resolution.y / 2.0)) {
         alpha.y = -atan(tan(perspective) * (gl_FragCoord.y-resolution.y / 2.0)  / resolution.y);
     }
@@ -102,7 +97,7 @@ void main()
     
 
     vec2 p = alpha;
-    vec2 s = p;
+    /*vec2 s = p;
 
     vec3 total = vec3(0.0);
     vec2 d = (vec2(0.0,0.0)-p)/40.0;
@@ -117,9 +112,9 @@ void main()
     }
     total /= 40.0;
     float r = 1.5/(1.0+dot(p,p));
-    gl_FragColor = vec4( total*r,1.0);
+    gl_FragColor = vec4( total*r,1.0);*/
     //gl_FragColor = vec4( total*r,1.0) * 0.2 + vec4( genTex2(p+camera),1.0) * 0.8;
 
-    //gl_FragColor = vec4( genTex2(p+camera),1.0);
+    gl_FragColor = vec4( genTex2(p+camera),1.0);
 }
 

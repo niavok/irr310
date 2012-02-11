@@ -8,6 +8,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.Display;
 
+import com.irr310.client.graphics.gui.GuiFpsIndicator;
 import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
@@ -17,6 +18,7 @@ import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.event.WorldObjectAddedEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
+import com.irr310.common.tools.Log;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.TransformMatrix.TransformMatrixChangeListener;
 import com.irr310.common.world.Component;
@@ -44,6 +46,7 @@ import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DGroupElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DLine;
 import fr.def.iss.vd2.lib_v3d.element.V3DrawElement;
+import fr.def.iss.vd2.lib_v3d.gui.V3DLabel;
 
 public class GraphicEngine extends FramerateEngine {
 
@@ -54,10 +57,11 @@ public class GraphicEngine extends FramerateEngine {
     private V3DScene scene;
     private V3DGroupElement fitOrder;
     private List<Pair<LinearEngineCapacity, V3DLine>> thrustLines;
-    private List<Skin> animatedSkins = new ArrayList<Skin>();
+    private List<Animated> animatedList = new ArrayList<Animated>();
 
     public GraphicEngine() {
         framerate = new Duration(16666666);
+        //framerate = new Duration(1666666);
         thrustLines = new ArrayList<Pair<LinearEngineCapacity, V3DLine>>();
 
     }
@@ -113,8 +117,16 @@ public class GraphicEngine extends FramerateEngine {
 
         canvas.setEnabled(true);
 
-        canvas.setShowFps(true);
 
+        //GUI
+        
+        GuiFpsIndicator fpsIndicator = new GuiFpsIndicator(context);
+        fullscreenBinding.getGui().add(fpsIndicator);
+        fpsIndicator.setPosition(10, 10);
+        animatedList.add(fpsIndicator);
+        
+        
+        
     }
 
     private V3DElement generateReference() {
@@ -212,7 +224,7 @@ public class GraphicEngine extends FramerateEngine {
         
         skin.bind(scene);
         if(skin.isAnimated()) {
-            animatedSkins.add(skin);
+            animatedList.add(skin);
             skin.setFramerate(framerate);
         }
         
@@ -222,17 +234,27 @@ public class GraphicEngine extends FramerateEngine {
     @Override
     protected void frame() {
 
-        // amination
-        for(Skin skin : animatedSkins) {
-            skin.animate();
-        }
+        Log.perfBegin("Frame");
         
+        
+        Log.perfBegin("amination");
+        // amination
+        for(Animated animated : animatedList) {
+            animated.animate();
+        }
+        Log.perfEnd();
+        
+        
+        Log.perfBegin("fit");
         if (fitOrder == null) {
             activeCamera.fitAll();
         } else {
             activeCamera.fit(fitOrder.getBoundingBox());
         }
+        Log.perfEnd();
         
+        
+        Log.perfBegin("Apply forces");
         // Apply forces
         for (Pair<LinearEngineCapacity, V3DLine> thrustLinePair : thrustLines) {
             V3DLine thrustLine = thrustLinePair.getRight();
@@ -240,9 +262,13 @@ public class GraphicEngine extends FramerateEngine {
 
             thrustLine.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, -(float) engine.getCurrentThrust(), 0));
         }
+        Log.perfEnd();
 
+        Log.perfBegin("draw");
         canvas.frame();
-
+        Log.perfEnd();
+        
+        Log.perfEnd();
     }
 
     @Override

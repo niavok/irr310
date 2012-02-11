@@ -81,6 +81,6 @@ public abstract class V3DGuiComponent {
 
     abstract public boolean containsPoint(int i, int i0);
 
-    abstract void repack();
+    abstract public void repack();
 
 }

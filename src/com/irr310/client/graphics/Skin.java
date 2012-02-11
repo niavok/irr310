@@ -5,7 +5,7 @@ import com.irr310.server.Duration;
 import fr.def.iss.vd2.lib_v3d.V3DScene;
 import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 
-public abstract class Skin {
+public abstract class Skin implements Animated{
 
     protected Duration framerate;
 

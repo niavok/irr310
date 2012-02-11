@@ -61,7 +61,7 @@ public class V3DWindow extends V3DGuiComponent {
     }
 
     @Override
-    void repack() {
+    public void repack() {
         window.setWidth(width);
         window.setWidth(height);
         

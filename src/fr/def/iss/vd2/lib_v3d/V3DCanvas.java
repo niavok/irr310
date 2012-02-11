@@ -42,6 +42,8 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
+import com.irr310.common.tools.Log;
+
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
 import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 
@@ -189,12 +191,19 @@ public class V3DCanvas {
 	}
     
     public boolean frame() {
+        
+        Log.perfBegin("Display.isCloseRequested");
+        
     	if(Display.isCloseRequested()) {
     		return false;
     	}
-    	
+    	Log.perfEnd();
+    	Log.perfBegin("display");
     	display();
+    	Log.perfEnd();
+    	Log.perfBegin("update");
 		Display.update();
+		Log.perfEnd();
 		return true;
     }
     
