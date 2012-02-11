@@ -95,6 +95,13 @@ public class ServerGameEngine extends FramerateEngine {
                     ship = ShipFactory.createSimpleShip();
                     ship.setOwner(event.getOwner());
                     break;
+                case SIMPLE_FIGHTER:
+                    ship = ShipFactory.createSimpleFighter();
+                    ship.setOwner(event.getOwner());
+                    break;
+                    
+                    
+                    
             }
 
             // ship.getKernel().exec("leftProperller.setThrustTarget(1)");

@@ -17,6 +17,9 @@ public class LinearEngineCapacity extends Capacity {
 
     public LinearEngineCapacity(long id) {
         super(id, "linearEngine");
+        currentThrust = 0;
+        targetThrust = 0;
+        targetThrustInput =0 ;
     }
 
     public double getCurrentThrust() {

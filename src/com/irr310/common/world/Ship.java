@@ -51,7 +51,7 @@ public class Ship extends GameEntity implements Container {
 
         if (slot1.getAbsoluteShipPosition().distanceTo(slot2.getAbsoluteShipPosition()) > MIN_LINK_DISTANCE) {
             System.err.println("the distance between slot is " + slot1.getAbsoluteShipPosition().distanceTo(slot2.getAbsoluteShipPosition())
-                    + " but must be lesser than " + MIN_LINK_DISTANCE);
+                    + " but must be lesser than " + MIN_LINK_DISTANCE + "("+slot1.getComponent().getName()+" - "+slot2.getComponent().getName()+")");
             return null;
         }
 
@@ -70,9 +70,6 @@ public class Ship extends GameEntity implements Container {
     public Link link(Component component1, Component component2, Vect3 position) {
 
         return link(component1.getSlot(component1.getLocalShipPosition(position)), component2.getSlot(component2.getLocalShipPosition(position)));
-        // return
-        // link(component1.getSlot(component1.getShipPosition().diff(position)),
-        // component2.getSlot(component2.getShipPosition().diff(position)));
     }
 
     public List<Component> getComponents() {

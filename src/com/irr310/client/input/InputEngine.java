@@ -98,13 +98,13 @@ public class InputEngine extends FramerateEngine {
     private boolean interceptSpecialKeys() {
         if (Keyboard.getEventKeyState()) {
             if(Keyboard.getEventKey() == Keyboard.KEY_F4 && Keyboard.isKeyDown(Keyboard.KEY_LMENU)){
-                System.out.println("Alt + F4 pressed !");
                 Game.getInstance().sendToAll(new QuitGameEvent());
+                return true;
             }
             
             if(Keyboard.getEventKey() == Keyboard.KEY_TAB && Keyboard.isKeyDown(Keyboard.KEY_LMENU)){
-                System.out.println("Alt + F4 pressed !");
                 Game.getInstance().sendToAll(new MinimizeWindowEvent());
+                return true;
             }
             
         }

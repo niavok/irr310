@@ -16,6 +16,7 @@ public class Vect3 {
     public Double z;
 
     private List<Vect3ChangeListener> changeListeners;
+    private V3DVect3 v3dVect3;
 
     public Vect3(double x, double y, double z) {
         this.x = x;
@@ -128,6 +129,18 @@ public class Vect3 {
 
     public double getZ() {
         return z;
+    }
+
+    public Vect3 rotate(Vect3 rotation) {
+        TransformMatrix tmp = TransformMatrix.identity();
+        
+        tmp.translate(this);
+        
+        tmp.rotateX(Math.toRadians(rotation.x));
+        tmp.rotateY(Math.toRadians(rotation.y));
+        tmp.rotateZ(Math.toRadians(rotation.z));
+        
+        return tmp.getTranslation();
     }
 
 }

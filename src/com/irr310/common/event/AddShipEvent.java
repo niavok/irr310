@@ -13,7 +13,7 @@ public class AddShipEvent extends EngineEvent {
 	private Player owner;
 
 	public enum Type {
-		SIMPLE,
+		SIMPLE, SIMPLE_FIGHTER,
 	}
 
 	@Override

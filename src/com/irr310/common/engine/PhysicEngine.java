@@ -224,20 +224,23 @@ public class PhysicEngine extends FramerateEngine {
 
         Transform localA = new Transform(), localB = new Transform();
         localA.setIdentity();
-        localA.origin.set(slot1.getPosition().x.floatValue(), slot1.getPosition().y.floatValue(), slot1.getPosition().z.floatValue());
+        Vect3 position1 = slot1.getPosition();
+        
+        localA.origin.set(position1.x.floatValue(), position1.y.floatValue(), position1.z.floatValue());
 
         MatrixUtil.setEulerZYX(localA.basis,
-                               (float) -(Math.toRadians(shipRotation1.x)),
+                               (float) -Math.toRadians(shipRotation1.z),
                                (float) -Math.toRadians(shipRotation1.y),
-                               (float) -Math.toRadians(shipRotation1.z));
+                               (float) -Math.toRadians(shipRotation1.x));
 
         localB.setIdentity();
-        localB.origin.set(slot2.getPosition().x.floatValue(), slot2.getPosition().y.floatValue(), slot2.getPosition().z.floatValue());
+        Vect3 position2 = slot2.getPosition();
+        localB.origin.set(position2.x.floatValue(), position2.y.floatValue(), position2.z.floatValue());
 
         MatrixUtil.setEulerZYX(localB.basis,
-                               (float) -(Math.toRadians(shipRotation2.x)),
+                               (float) -Math.toRadians(shipRotation2.z),
                                (float) -Math.toRadians(shipRotation2.y),
-                               (float) -Math.toRadians(shipRotation2.z));
+                               (float) -Math.toRadians(shipRotation2.x));
 
         Generic6DofConstraint constraint = new Generic6DofConstraint(body1, body2, localA, localB, false);
         constraint.setLinearLowerLimit(new Vector3f());

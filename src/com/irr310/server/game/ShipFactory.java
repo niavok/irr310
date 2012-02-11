@@ -12,7 +12,7 @@ public class ShipFactory {
     public static Ship createSimpleShip() {
 
         World world = Game.getInstance().getWorld();
-        
+
         Ship newShip = new Ship(GameServer.pickNewId());
 
         // Kernel
@@ -103,36 +103,111 @@ public class ShipFactory {
         newShip.link(frontLeft, mainLeftPropeller, new Vect3(-8, 0, -2));
         newShip.link(frontRight, mainRightPropeller, new Vect3(8, 0, -2));
 
-        /*
-         * // Engines LinearEngine mainLeftPropeller = new LinearEngine();
-         * LinearEngine mainRightPropeller = new LinearEngine(); LinearEngine
-         * leftPropeller = new LinearEngine(); LinearEngine rightPropeller = new
-         * LinearEngine(); LinearEngine topPropeller = new LinearEngine();
-         * LinearEngine bottomPropeller = new LinearEngine();
-         * newShip.assign(camera); newShip.assign(harvester);
-         * newShip.assign(factory); newShip.assign(rafinery);
-         * newShip.assign(hangar); newShip.assign(frontLeft);
-         * newShip.assign(backLeft); newShip.assign(frontRight);
-         * newShip.assign(backRight); newShip.assign(mainLeftPropeller);
-         * newShip.assign(mainRightPropeller); newShip.assign(leftPropeller);
-         * newShip.assign(rightPropeller); newShip.assign(topPropeller);
-         * newShip.assign(bottomPropeller); camera.setShipPosition(new Vect3(0,
-         * 0, 0)); harvester.setShipPosition(new Vect3(0, 0, 0));
-         * factory.setShipPosition(new Vect3(0, 0, 0));
-         * rafinery.setShipPosition(new Vect3(0, 0, 0));
-         * frontLeft.setShipPosition(new Vect3(0, 0, 0));
-         * backLeft.setShipPosition(new Vect3(0, 0, 0));
-         * frontRight.setShipPosition(new Vect3(0, 0, 0));
-         * backRight.setShipPosition(new Vect3(0, 0, 0));
-         * mainLeftPropeller.setShipPosition(new Vect3(0, 0, 0));
-         * mainRightPropeller.setShipPosition(new Vect3(0, 0, 0));
-         * leftPropeller.setShipPosition(new Vect3(0, 0, 0));
-         * rightPropeller.setShipPosition(new Vect3(0, 0, 0));
-         * topPropeller.setShipPosition(new Vect3(0, 0, 0));
-         * bottomPropeller.setShipPosition(new Vect3(0, 0, 0));
-         */
+        return newShip;
+    }
 
-        // newShip.link(harvester.getSlot(1,1), harvester.getSlot(2, 1), 0);
+    public static Ship createSimpleFighter() {
+
+        World world = Game.getInstance().getWorld();
+
+        Ship newShip = new Ship(GameServer.pickNewId());
+
+        // Kernel
+        Component kernel = ComponentFactory.createKernel("kernel");
+        kernel.setShipPosition(new Vect3(-1, 0, 0));
+        world.addComponent(kernel);
+        newShip.assign(kernel);
+
+        // Camera
+        Component camera = ComponentFactory.createCamera("camera");
+        camera.setShipPosition(new Vect3(1, 0, 0));
+        world.addComponent(camera);
+        newShip.assign(camera);
+
+        // Gun
+        Component gun = ComponentFactory.createGun("gun");
+        gun.setShipPosition(new Vect3(0, 0.5, 0));
+        world.addComponent(gun);
+        newShip.assign(gun);
+
+        // CompactThrusterBlock Front
+        Component thrusterBlockFront = ComponentFactory.createThrusterBlock("trusterBlock1");
+        thrusterBlockFront.setShipPosition(new Vect3(0, -1, 0));
+        world.addComponent(thrusterBlockFront);
+        newShip.assign(thrusterBlockFront);
+
+        // LightHull
+        Component hull = ComponentFactory.createLightHull("hull");
+        hull.setShipPosition(new Vect3(0, -3, 0));
+        world.addComponent(hull);
+        newShip.assign(hull);
+
+        // CompactThrusterBlock Back
+        Component thrusterBlockBack = ComponentFactory.createThrusterBlock("trusterBlock2");
+        thrusterBlockBack.setShipPosition(new Vect3(0, -5, 0));
+        world.addComponent(thrusterBlockBack);
+        newShip.assign(thrusterBlockBack);
+
+        // Wings
+        Component wingTop = ComponentFactory.createWing("wingTop");
+        wingTop.setShipPosition(new Vect3(0, -3, 2.5));
+        wingTop.setShipRotation(new Vect3(0,90,0));
+        world.addComponent(wingTop);
+        newShip.assign(wingTop);
+
+        Component wingBottom = ComponentFactory.createWing("wingBottom");
+        wingBottom.setShipPosition(new Vect3(0, -3, -2.5));
+        wingBottom.setShipRotation(new Vect3(0,-90,0));
+        world.addComponent(wingBottom);
+        newShip.assign(wingBottom);
+
+        Component wingLeft = ComponentFactory.createWing("wingLeft");
+        wingLeft.setShipPosition(new Vect3(-2.5, -3, 0));
+        world.addComponent(wingLeft);
+        newShip.assign(wingLeft);
+
+        Component wingRight = ComponentFactory.createWing("wingRight");
+        wingRight.setShipPosition(new Vect3(2.5, -3, 0));
+        wingRight.setShipRotation(new Vect3(0,180,0));
+        world.addComponent(wingRight);
+        newShip.assign(wingRight);
+
+        // Engines
+        Component topReactor = ComponentFactory.createReactor("topReactor");
+        topReactor.setShipPosition(new Vect3(0, -3.5, 4.5));
+        world.addComponent(topReactor);
+        newShip.assign(topReactor);
+
+        Component bottomReactor = ComponentFactory.createReactor("bottomReactor");
+        bottomReactor.setShipPosition(new Vect3(0, -3.5, -4.5));
+        world.addComponent(bottomReactor);
+        newShip.assign(bottomReactor);
+
+        Component leftReactor = ComponentFactory.createReactor("leftReactor");
+        leftReactor.setShipPosition(new Vect3(-4.5, -3.5, 0));
+        world.addComponent(leftReactor);
+        newShip.assign(leftReactor);
+
+        Component rightReactor = ComponentFactory.createReactor("rightReactor");
+        rightReactor.setShipPosition(new Vect3(4.5, -3.5, 0));
+        world.addComponent(rightReactor);
+        newShip.assign(rightReactor);
+
+        // Links
+
+        newShip.link(gun, camera, new Vect3(0.5, 0, 0.));
+        newShip.link(gun, kernel, new Vect3(-0.5, 0, 0));
+        newShip.link(gun, thrusterBlockFront, new Vect3(0, -0.5, 0));
+        newShip.link(thrusterBlockFront, hull, new Vect3(0, -1.5, 0));
+        newShip.link(hull, thrusterBlockBack, new Vect3(0, -4.5, 0));
+        newShip.link(hull, wingRight, new Vect3(1, -3, 0));
+        newShip.link(hull, wingTop, new Vect3(0, -3,1));
+        newShip.link(hull, wingBottom, new Vect3(0, -3, -1));
+        newShip.link(hull, wingLeft, new Vect3(-1, -3, 0));
+        newShip.link(wingRight, rightReactor, new Vect3(4, -3.5, 0));
+        newShip.link(wingLeft, leftReactor, new Vect3(-4, -3.5, 0));
+        newShip.link(wingTop, topReactor, new Vect3(0, -3.5, 4));
+        newShip.link(wingBottom, bottomReactor, new Vect3(0, -3.5, -4));
 
         return newShip;
 

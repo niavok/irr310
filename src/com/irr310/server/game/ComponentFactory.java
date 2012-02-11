@@ -133,6 +133,117 @@ public class ComponentFactory {
 
         return component;
     }
+    
+    public static Component createGun(String name) {
+        Component component = createSimpleComponent(name);
+        component.setSkin("gun");
+        Part part = component.getFirstPart();
+        part.setMass(2d);
+        part.setShape(new Vect3(1, 2, 1));
+        Vect3 shape = part.getShape();
+        component.addSlot(GameServer.pickNewId(), part, new Vect3(0, -shape.y/2, 0));
+        component.addSlot(GameServer.pickNewId(), part, new Vect3(shape.x / 2,-shape.y/4, 0));
+        component.addSlot(GameServer.pickNewId(), part, new Vect3(-shape.x / 2, -shape.y/4, 0));
+        component.addSlot(GameServer.pickNewId(), part, new Vect3(0 , -shape.z/4, shape.z / 2));
+        component.addSlot(GameServer.pickNewId(), part, new Vect3(0 , -shape.z/4, -shape.z / 2));
+
+        return component;
+    }
+    
+    public static Component createThrusterBlock(String name) {
+        Component component = createSimpleComponent(name);
+        component.setSkin("thrusterBlock");
+        Part part = component.getFirstPart();
+        part.setMass(4d);
+
+        part.setShape(new Vect3(2, 1, 2));
+
+        Vect3 shape = part.getShape();
+        component.addSlot(GameServer.pickNewId(), part, new Vect3( 0,shape.y / 2,  0));
+        component.addSlot(GameServer.pickNewId(), part, new Vect3( 0,-shape.y / 2, 0));
+
+        
+        LinearEngineCapacity engineCapacityTop = new LinearEngineCapacity(GameServer.pickNewId());
+        engineCapacityTop.theoricalMaxThrust = 2;
+        engineCapacityTop.theoricalMinThrust = -2;
+        engineCapacityTop.theoricalVariationSpeed = 10;
+        engineCapacityTop.currentThrust = 0;
+        component.addCapacity(engineCapacityTop);
+        
+        LinearEngineCapacity engineCapacityBottom = new LinearEngineCapacity(GameServer.pickNewId());
+        engineCapacityBottom.theoricalMaxThrust = 2;
+        engineCapacityBottom.theoricalMinThrust = -2;
+        engineCapacityBottom.theoricalVariationSpeed = 10;
+        engineCapacityBottom.currentThrust = 0;
+        component.addCapacity(engineCapacityBottom);
+        
+        LinearEngineCapacity engineCapacityLeft = new LinearEngineCapacity(GameServer.pickNewId());
+        engineCapacityLeft.theoricalMaxThrust = 2;
+        engineCapacityLeft.theoricalMinThrust = -2;
+        engineCapacityLeft.theoricalVariationSpeed = 10;
+        engineCapacityLeft.currentThrust = 0;
+        component.addCapacity(engineCapacityLeft);
+        
+        LinearEngineCapacity engineCapacityRight = new LinearEngineCapacity(GameServer.pickNewId());
+        engineCapacityRight.theoricalMaxThrust = 2;
+        engineCapacityRight.theoricalMinThrust = -2;
+        engineCapacityRight.theoricalVariationSpeed = 10;
+        engineCapacityRight.currentThrust = 0;
+        component.addCapacity(engineCapacityRight);        
+        return component;
+    }
+
+    
+    public static Component createLightHull(String name) {
+        Component component = createSimpleComponent(name);
+        component.setSkin("hull");
+        Part part = component.getFirstPart();
+        part.setMass(12d);
+
+        part.setShape(new Vect3(2, 3, 2));
+
+        generateBoxSlots(component, part);
+
+        return component;
+    }
+    
+    public static Component createWing(String name) {
+        Component component = createSimpleComponent(name);
+        component.setSkin("wing");
+        Part part = component.getFirstPart();
+        part.setMass(5d);
+
+        part.setShape(new Vect3(3, 3, 1));
+
+        Vect3 shape = part.getShape();
+
+        component.addSlot(GameServer.pickNewId(), part, new Vect3( -shape.x / 2, -shape.y / 6, 0));
+        component.addSlot(GameServer.pickNewId(), part, new Vect3( shape.x / 2, 0, 0));
+
+        return component;
+    }
+    
+    
+    public static Component createReactor(String name) {
+        Component component = createSimpleComponent(name);
+        Part part = component.getFirstPart();
+        part.setMass(4d);
+        component.setSkin("reactor");
+        
+        part.setShape(new Vect3(1, 2, 1));
+
+        generateVerticalRectangeSlots(component, part);
+
+        LinearEngineCapacity engineCapacity = new LinearEngineCapacity(GameServer.pickNewId());
+        engineCapacity.theoricalMaxThrust = 10;
+        engineCapacity.theoricalMinThrust = -4;
+        engineCapacity.theoricalVariationSpeed = 8;
+        engineCapacity.currentThrust = 0;
+        component.addCapacity(engineCapacity);
+        
+        return component;
+    }
+    
 
     public static Component createGate(String name) {
         Component component = createSimpleComponent(name);
@@ -188,4 +299,24 @@ public class ComponentFactory {
         component.addSlot(GameServer.pickNewId(), part, new Vect3(0, -shape.y / 2, 0));
 
     }
+    
+    private static void generateVerticalRectangeSlots(Component component, Part part) {
+
+        Vect3 shape = part.getShape();
+
+        component.addSlot(GameServer.pickNewId(), part, new Vect3(shape.x / 2, 0, 0));
+        component.addSlot(GameServer.pickNewId(), part, new Vect3(-shape.x / 2, 0, 0));
+        component.addSlot(GameServer.pickNewId(), part, new Vect3(0, 0, shape.z / 2));
+        component.addSlot(GameServer.pickNewId(), part, new Vect3(0, 0, -shape.z / 2));
+
+    }
+
+    
+
+    
+
+    
+
+    
+    
 }

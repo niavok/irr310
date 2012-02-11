@@ -133,9 +133,9 @@ public final class  Component extends WorldObject {
 		tmp.translate(absolutePosition);
 		
 		
-		tmp.rotateX(Math.toRadians(shipRotation.x));
-		tmp.rotateY(Math.toRadians(shipRotation.y));
-		tmp.rotateZ(Math.toRadians(shipRotation.z));
+		tmp.rotateX(Math.toRadians(-shipRotation.x));
+		tmp.rotateY(Math.toRadians(-shipRotation.y));
+		tmp.rotateZ(Math.toRadians(-shipRotation.z));
 		
 		return tmp.getTranslation();
 	}
@@ -143,13 +143,14 @@ public final class  Component extends WorldObject {
 	public Vect3 getAbsoluteShipPosition(Vect3 position) {
 		TransformMatrix tmp = TransformMatrix.identity();
 		
-		tmp.rotateX(Math.toRadians(shipRotation.x));
-		tmp.rotateY(Math.toRadians(shipRotation.y));
-		tmp.rotateZ(Math.toRadians(shipRotation.z));
-		
-		tmp.translate(shipPosition);
 		tmp.translate(position);
 		
+		tmp.rotateX(Math.toRadians(shipRotation.x));
+        tmp.rotateY(Math.toRadians(shipRotation.y));
+        tmp.rotateZ(Math.toRadians(shipRotation.z));
+		
+		tmp.translate(shipPosition);
+        
 		return tmp.getTranslation();
 	}
 
