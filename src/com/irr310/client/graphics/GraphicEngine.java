@@ -9,6 +9,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.Display;
 
 import com.irr310.client.graphics.gui.GuiFpsIndicator;
+import com.irr310.client.graphics.gui.GuiSpeedIndicator;
 import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
@@ -119,7 +120,6 @@ public class GraphicEngine extends FramerateEngine {
 
 
         //GUI
-        
         GuiFpsIndicator fpsIndicator = new GuiFpsIndicator(context);
         fullscreenBinding.getGui().add(fpsIndicator);
         fpsIndicator.setPosition(10, 10);
@@ -184,10 +184,17 @@ public class GraphicEngine extends FramerateEngine {
             }
 
         }
+        
+        
 
         fitOrder = shipElements;
         scene.add(shipElements);
 
+        GuiSpeedIndicator speedIndicator = new GuiSpeedIndicator(context, ship.getComponentByName("kernel").getFirstPart());
+        fullscreenBinding.getGui().add(speedIndicator);
+        speedIndicator.setPosition(10, 30);
+        animatedList.add(speedIndicator);
+        
     }
 
     protected V3DElement addObject(final WorldObject object, boolean inShip) {
