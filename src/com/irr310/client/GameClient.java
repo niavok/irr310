@@ -7,6 +7,7 @@ import java.io.Reader;
 
 import com.irr310.client.game.ClientGameEngine;
 import com.irr310.client.graphics.GraphicEngine;
+import com.irr310.client.input.InputEngine;
 import com.irr310.client.network.ClientNetworkEngine;
 import com.irr310.client.network.request.LoginRequest;
 import com.irr310.client.network.request.SignupRequest;
@@ -21,6 +22,7 @@ import com.irr310.common.network.protocol.CapacityUpdateMessage;
 import com.irr310.common.network.protocol.LoginResponseMessage;
 import com.irr310.common.network.protocol.ShipListRequestMessage;
 import com.irr310.common.network.protocol.SignupResponseMessage;
+import com.irr310.common.tools.Log;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.World;
 import com.irr310.server.CommandManager;
@@ -31,6 +33,7 @@ import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 
 public class GameClient extends Game {
     private ClientGameEngine clientGameEngine;
+    private InputEngine inputEngine;
     private ClientNetworkEngine clientNetworkEngine;
     private PhysicEngine physicEngine;
     private ClientScriptEngine scriptEngine;
@@ -58,6 +61,7 @@ public class GameClient extends Game {
         // Start non logged
         localPlayer = null;
 
+        inputEngine = new InputEngine();
         clientGameEngine = new ClientGameEngine();
         physicEngine = new PhysicEngine();
         clientNetworkEngine = new ClientNetworkEngine("127.0.0.10", 22310);
@@ -74,41 +78,40 @@ public class GameClient extends Game {
     }
     
     public void run() {
-        // boolean currentStillRunning = stillRunning;
 
+        Log.perfBegin("Start");
+        Log.perfBegin("Start Engine");
+        inputEngine.start();
         clientGameEngine.start();
         physicEngine.start();
         clientNetworkEngine.start();
         graphicEngine.start();
         scriptEngine.start();
 
-        // currentStillRunning = stillRunning;
-        // std::string i;
-        // std::string o;
 
         // Wait engines started
-        while ((Engine.getRunningEngineCount()) < 5) {
-            new Duration(100000000).sleep();
+        while ((Engine.getRunningEngineCount()) < 6) {
+            new Duration(1000000).sleep();
         }
-
+        Log.perfEnd(); //Start Engine
+        Log.perfBegin("Finish Start");
         sendToAll(new StartEngineEvent());
-        /*
-         * AddShipEvent addShipEvent = new AddShipEvent();
-         * addShipEvent.setType(AddShipEvent.Type.SIMPLE);
-         * sendToAll(addShipEvent);
-         */
 
+        
+        
         System.out.println("Irr310 - v0.1a");
 
-        LoginForm loginForm = new LoginForm();
+        /*LoginForm loginForm = new LoginForm();
         loginForm.setLocationRelativeTo(loginForm.getParent());
         loginForm.setVisible(true);
-        
+        */
         
         Reader reader = new InputStreamReader(System.in);
         BufferedReader input = new BufferedReader(reader);
 
-        try {
+        Log.perfEnd(); //Finish Start
+        
+        /*try {
             while (true) {
                 System.out.print("> ");
 
@@ -129,14 +132,14 @@ public class GameClient extends Game {
 
         } catch (IOException e) {
             // Todo handle exception
-        }
+        }*/
 
         int count;
-        System.out.println("Game : Stopping");
-        sendToAll(new QuitGameEvent());
+        //System.out.println("Game : Stopping");
+        //sendToAll(new QuitGameEvent());
 
         while ((count = Engine.getRunningEngineCount()) > 0) {
-            System.out.println("Game : Wait for engine stop, still " + count + " engines");
+            //System.out.println("Game : Wait for engine stop, still " + count + " engines");
             Duration.ONE_SECOND.sleep();
         }
         System.out.println("Game : Stopped");
@@ -148,6 +151,7 @@ public class GameClient extends Game {
     }
 
     public void sendToAll(EngineEvent e) {
+        inputEngine.pushEvent(e);
         clientGameEngine.pushEvent(e);
         physicEngine.pushEvent(e);
         clientNetworkEngine.pushEvent(e);

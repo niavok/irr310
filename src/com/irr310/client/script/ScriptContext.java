@@ -167,8 +167,8 @@ public class ScriptContext {
 
             @Override
             public boolean allowClassAccess(Class<?> type) {
-                System.out.println("allowClassAccess");
-                System.out.println(type);
+                //System.out.println("allowClassAccess");
+                //System.out.println(type);
 
                 return isAllowedClass(type);
             }

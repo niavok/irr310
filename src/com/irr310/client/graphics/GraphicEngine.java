@@ -11,6 +11,7 @@ import org.lwjgl.opengl.Display;
 import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
+import com.irr310.common.event.MinimizeWindowEvent;
 import com.irr310.common.event.PauseEngineEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
@@ -63,7 +64,7 @@ public class GraphicEngine extends FramerateEngine {
 
     @Override
     protected void init() {
-        canvas = new V3DCanvas(context, 1024, 768);
+        canvas = new V3DCanvas(context, 1920, 1200);
         
         fitOrder = null;
 
@@ -252,7 +253,8 @@ public class GraphicEngine extends FramerateEngine {
     private final class DebugGraphicEngineEventVisitor extends DefaultEngineEventVisitor {
         @Override
         public void visit(QuitGameEvent event) {
-            System.out.println("stopping debug graphic engine");
+            System.out.println("stopping graphic engine");
+            canvas.destroy();
             setRunning(false);
         }
 
@@ -274,6 +276,12 @@ public class GraphicEngine extends FramerateEngine {
         @Override
         public void visit(WorldShipAddedEvent event) {
             addShip(event.getShip());
+        }
+        
+        
+        @Override
+        public void visit(MinimizeWindowEvent event) {
+            canvas.hide();
         }
 
     }

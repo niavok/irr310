@@ -37,6 +37,8 @@ public class V3DAnimator {
     private int frameMesureCount = 0;
     private boolean computeFps = false;
 
+    private boolean running = true;
+
     void addCanvas(V3DCanvas canvas) {
         if(!canvasList.contains(canvas)) {
             canvasList.add(canvas);
@@ -68,7 +70,7 @@ public class V3DAnimator {
             final long NANO_IN_MILLI = 1000000;
             long currentTime = System.nanoTime()/NANO_IN_MILLI;
             lastFpsMesureTime = currentTime;
-            while(true) {
+            while(running) {
                 draw();
                 currentTime = System.nanoTime()/NANO_IN_MILLI;
                 updateFpsCounter(currentTime);
@@ -111,6 +113,10 @@ public class V3DAnimator {
         animationThread.setName("OpenGL animation thread");
         animationThread.setDaemon(true);
         animationThread.start();
+    }
+
+    public void terminate() {
+        running = false;
     }
 
 

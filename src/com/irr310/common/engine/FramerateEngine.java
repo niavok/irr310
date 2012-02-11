@@ -26,6 +26,10 @@ public abstract class FramerateEngine extends Engine {
 
         while (isRunning()) {
             processQueue();
+            if(!isRunning()) {
+                break;
+            }
+            
             if (!isPaused) {
 
                 lastTime = new Time();
@@ -52,7 +56,6 @@ public abstract class FramerateEngine extends Engine {
         end();
 
         numRunningEngines--;
-
     }
 
     protected void pause(boolean pause) {

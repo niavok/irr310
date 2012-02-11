@@ -30,4 +30,6 @@ public interface EngineEventVisitor {
     public abstract void visit(KeyReleasedEvent event);
 
     public abstract void visit(PlayerLoggedEvent event);
+
+    public abstract void visit(MinimizeWindowEvent event);
 }

@@ -18,7 +18,7 @@ public abstract class EventEngine extends Engine {
                 processQueue();
                 if (eventsQueue.isEmpty()) {
                     try {
-                        eventsQueue.wait();
+                        eventsQueue.wait(500);
                     } catch (InterruptedException e) {
                     }
                 }

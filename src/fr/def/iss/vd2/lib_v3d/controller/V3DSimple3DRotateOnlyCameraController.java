@@ -124,7 +124,6 @@ public class V3DSimple3DRotateOnlyCameraController implements V3DCameraControlle
     }
 
     private void beginMove(MovementType type, V3DMouseEvent e) {
-        System.out.println("begin move");
         if (type == MovementType.ROTATE) {
             rotating = true;
         }

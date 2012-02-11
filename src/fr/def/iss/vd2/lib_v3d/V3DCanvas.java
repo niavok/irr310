@@ -16,6 +16,8 @@
 // along with V3dScene.  If not, see <http://www.gnu.org/licenses/>.
 package fr.def.iss.vd2.lib_v3d;
 
+import java.awt.Canvas;
+import java.awt.Frame;
 import java.awt.Point;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
@@ -26,11 +28,16 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowStateListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JFrame;
+
 import org.fenggui.binding.render.lwjgl.LWJGLBinding;
 import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
@@ -47,7 +54,7 @@ public class V3DCanvas {
     /** Serial version UID. */
     private static final long serialVersionUID = 1L;
     /** The OpenGL animator. */
-    private static V3DAnimator animator = new V3DAnimator();
+    //private static V3DAnimator animator = new V3DAnimator();
     private V3DContext context;
     private int mouseX = 0;
     private int mouseY = 0;
@@ -59,7 +66,6 @@ public class V3DCanvas {
     private boolean showFps = false;
     private boolean polygonOffset = false;
     private boolean done=false;
-    
     /**
      * A new mini starter.
      *
@@ -89,32 +95,28 @@ public class V3DCanvas {
     	System.out.println("Init OpenGl Canvas");
     
         try{
+            
+            frame = new JFrame("Irr310");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(width,height);
+            frame.setUndecorated(true);  //here
+            frame.setVisible(true);
+            frame.setLocation(0, 0);
+            Canvas canvas = new Canvas();
+            frame.add(canvas);
+            
+           
+            
             Display.setDisplayMode(new DisplayMode(width, height));
+            //Display.setFullscreen(true);
             Display.setVSyncEnabled(true);
             Display.setTitle("Irr310");
+            Display.setParent(canvas);
             Display.create();
         }catch(Exception e){
             System.out.println("Error setting up display");
             System.exit(0);
         }
-
-        /*GL11.glViewport(0,0,w,h);
-        GL11.glMatrixMode(GL11.GL_PROJECTION);
-        GL11.glLoadIdentity();
-        GLU.gluPerspective(45.0f, ((float)w/(float)h),0.1f,100.0f);
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        GL11.glLoadIdentity();
-        GL11.glShadeModel(GL11.GL_SMOOTH);
-        GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-        GL11.glClearDepth(1.0f);
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
-        GL11.glDepthFunc(GL11.GL_LEQUAL);
-        GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT,
-        GL11.GL_NICEST);
-        
-        box  = new Box();*/
-    	
-    	
 
         // Enable z- (depth) buffer for hidden surface removal.
         GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -151,6 +153,13 @@ public class V3DCanvas {
         new LWJGLBinding();
     }
 
+    public void destroy() {
+        //animator.terminate();
+        Display.destroy();
+        frame.dispose();
+    }
+    
+    
     private int frameMesureCount = 0;
     private float lastFps = 0;
     private long lastFpsMesureTime = 0;
@@ -187,6 +196,11 @@ public class V3DCanvas {
     	display();
 		Display.update();
 		return true;
+    }
+    
+    
+    public void hide() {
+        frame.setState(Frame.ICONIFIED);
     }
     
     private void updateFpsCounter(long currentTime) {
@@ -310,6 +324,7 @@ public class V3DCanvas {
         throw new UnsupportedOperationException("Changing display is not supported.");
     }
     List<V3DCameraBinding> cameraList = new ArrayList<V3DCameraBinding>();
+    private JFrame frame;
 
     public void addCamera(V3DCameraBinding camera) {
         cameraList.add(camera);
@@ -597,7 +612,7 @@ public class V3DCanvas {
 
     public void setShowFps(boolean showFps) {
         this.showFps = showFps;
-        animator.setComputeFps(showFps);
+        //animator.setComputeFps(showFps);
     }
 
     public boolean isPolygonOffset() {
@@ -613,4 +628,6 @@ public class V3DCanvas {
     public void setPolygonOffset(boolean polygonOffset) {
         this.polygonOffset = polygonOffset;
     }
+
+    
 }
