@@ -51,7 +51,7 @@ public class ScriptContext {
         }
 
         // Load player scripts
-        loadScriptFile("drivers/driver1.js");
+        loadScriptFile("drivers/driver_fighter.js");
 
     }
 

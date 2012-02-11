@@ -38,6 +38,7 @@ import fr.def.iss.vd2.lib_v3d.V3DScene;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
 import fr.def.iss.vd2.lib_v3d.camera.V3DSimple3DCamera;
+import fr.def.iss.vd2.lib_v3d.controller.V3DFollow3DCameraController;
 import fr.def.iss.vd2.lib_v3d.controller.V3DSimple3DCameraController;
 import fr.def.iss.vd2.lib_v3d.controller.V3DSimple3DRotateOnlyCameraController;
 import fr.def.iss.vd2.lib_v3d.element.V3DBox;
@@ -59,6 +60,7 @@ public class GraphicEngine extends FramerateEngine {
     private V3DGroupElement fitOrder;
     private List<Pair<LinearEngineCapacity, V3DLine>> thrustLines;
     private List<Animated> animatedList = new ArrayList<Animated>();
+    private V3DFollow3DCameraController cameraController;
 
     public GraphicEngine() {
         framerate = new Duration(16666666);
@@ -75,14 +77,14 @@ public class GraphicEngine extends FramerateEngine {
 
         activeCamera = new V3DSimple3DCamera(context);
 
-        new V3DSimple3DRotateOnlyCameraController(activeCamera);
-
+        cameraController = new V3DFollow3DCameraController(activeCamera);
+        animatedList.add(cameraController);
+        
+        
         fullscreenBinding = V3DCameraBinding.buildFullscreenCamera(activeCamera);
         activeCamera.setBackgroundColor(V3DColor.white);
 
         // Add zoom and pane camera controlleur
-        V3DSimple3DCameraController cameraController = new V3DSimple3DCameraController(activeCamera);
-        activeCamera.addController(cameraController);
         // cameraController.setLimitBound(false);
 
         scene = new V3DScene(context);
@@ -188,7 +190,9 @@ public class GraphicEngine extends FramerateEngine {
         
 
         fitOrder = shipElements;
+        cameraController.setFollowed(ship.getComponentByName("kernel").getFirstPart());
         scene.add(shipElements);
+        activeCamera.fitAll();
 
         GuiSpeedIndicator speedIndicator = new GuiSpeedIndicator(context, ship.getComponentByName("kernel").getFirstPart());
         fullscreenBinding.getGui().add(speedIndicator);
@@ -252,13 +256,13 @@ public class GraphicEngine extends FramerateEngine {
         Log.perfEnd();
         
         
-        Log.perfBegin("fit");
+        /*Log.perfBegin("fit");
         if (fitOrder == null) {
             activeCamera.fitAll();
         } else {
             activeCamera.fit(fitOrder.getBoundingBox());
         }
-        Log.perfEnd();
+        Log.perfEnd();*/
         
         
         Log.perfBegin("Apply forces");
