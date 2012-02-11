@@ -8,12 +8,15 @@ import com.irr310.common.event.EngineEvent;
 public abstract class Engine extends Thread {
 
     private boolean isRunning;
+    private boolean isStopped;
     protected Queue<EngineEvent> eventsQueue;
     // private Time nextTime;
-    static int numRunningEngines = 0;
 
+    
+    
     public Engine() {
         eventsQueue = new LinkedBlockingQueue<EngineEvent>();
+        isStopped = false;
     }
 
     protected abstract void processEvent(EngineEvent e);
@@ -21,10 +24,6 @@ public abstract class Engine extends Thread {
     protected abstract void init();
 
     protected abstract void end();
-
-    public static int getRunningEngineCount() {
-        return numRunningEngines;
-    }
 
     public void pushEvent(EngineEvent event) {
         synchronized (eventsQueue) {
@@ -46,6 +45,13 @@ public abstract class Engine extends Thread {
 
     public void setRunning(boolean isRunning) {
         this.isRunning = isRunning;
+    }
+    public boolean isStopped() {
+        return isStopped;
+    }
+    
+    public void setStopped(boolean isStopped) {
+        this.isStopped = isStopped;
     }
 
 }

@@ -17,12 +17,12 @@ public abstract class FramerateEngine extends Engine {
     @Override
     public void run() {
         System.out.println("Start engine " + this.getClass().getSimpleName());
-        setRunning(true);
+
         isPaused = true;
-        numRunningEngines++;
         Time lastTime = new Time();
 
         init();
+        setRunning(true);
 
         while (isRunning()) {
             processQueue();
@@ -54,8 +54,7 @@ public abstract class FramerateEngine extends Engine {
         }
 
         end();
-
-        numRunningEngines--;
+        setStopped(true);
     }
 
     protected void pause(boolean pause) {

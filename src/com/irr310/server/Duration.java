@@ -4,6 +4,7 @@ public class Duration {
 	private final long nanotime;
 	
 	public final static Duration ONE_SECOND = new Duration(1000000000);
+	public final static Duration HUNDRED_MILLISECONDE = new Duration(100000000);
 
 	
 	public Duration(long nanotime) {

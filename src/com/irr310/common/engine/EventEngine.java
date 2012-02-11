@@ -8,11 +8,9 @@ public abstract class EventEngine extends Engine {
     @Override
     public void run() {
         System.out.println("Start engine " + this.getClass().getSimpleName());
-        setRunning(true);
-        numRunningEngines++;
-
         init();
-
+        setRunning(true);
+        
         while (isRunning()) {
             synchronized (eventsQueue) {
                 processQueue();
@@ -26,8 +24,8 @@ public abstract class EventEngine extends Engine {
         }
 
         end();
-
-        numRunningEngines--;
+        setStopped(true);
 
     }
+   
 }

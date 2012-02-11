@@ -57,7 +57,7 @@ public class LoginForm extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("click on login");
-				GameClient.getInstance().loginTask(email.getText(), password.getText());
+				//GameClient.getInstance().loginTask(email.getText(), password.getText());
 			}
 		});
 		
@@ -69,7 +69,7 @@ public class LoginForm extends JFrame {
                 String password1 = new String(signupFirstPassword.getPassword());
                 String password2 = new String(signupSecondPassword.getPassword());
                 if(password1.equals(password2)) {
-                    GameClient.getInstance().signupTask(signupEmail.getText(), password1);
+                    //GameClient.getInstance().signupTask(signupEmail.getText(), password1);
                 }
             }
         });

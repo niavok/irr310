@@ -4,10 +4,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.irr310.client.game.ClientGameEngine;
 import com.irr310.client.graphics.GraphicEngine;
 import com.irr310.client.input.InputEngine;
+import com.irr310.client.navigation.LoginTask;
+import com.irr310.client.navigation.SignupTask;
 import com.irr310.client.network.ClientNetworkEngine;
 import com.irr310.client.network.request.LoginRequest;
 import com.irr310.client.network.request.SignupRequest;
@@ -28,21 +32,26 @@ import com.irr310.common.world.World;
 import com.irr310.server.CommandManager;
 import com.irr310.server.Duration;
 import com.irr310.server.ParameterAnalyser;
+import com.irr310.server.ServerGameEngine;
+import com.irr310.server.network.ServerNetworkEngine;
 
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 
 public class GameClient extends Game {
-    private ClientGameEngine clientGameEngine;
-    private InputEngine inputEngine;
+    
+    List<Engine> engineList = new ArrayList<Engine>();
+//    private ClientGameEngine clientGameEngine;
+//    private InputEngine inputEngine;
     private ClientNetworkEngine clientNetworkEngine;
     private PhysicEngine physicEngine;
-    private ClientScriptEngine scriptEngine;
+//    private ClientScriptEngine scriptEngine;
+    private GraphicEngine graphicEngine;
     private ParameterAnalyser parameterAnalyser;
     private boolean stillRunning;
     private CommandManager commandManager;
-    private GraphicEngine graphicEngine;
+    
     private final World world;
-    public Player localPlayer;
+    
 
     public static GameClient instance = null;
 
@@ -57,16 +66,23 @@ public class GameClient extends Game {
         stillRunning = true;
 
         world = new World();
-        
-        // Start non logged
-        localPlayer = null;
 
-        inputEngine = new InputEngine();
-        clientGameEngine = new ClientGameEngine();
-        physicEngine = new PhysicEngine();
+
         clientNetworkEngine = new ClientNetworkEngine("127.0.0.10", 22310);
+        physicEngine = new PhysicEngine();
         graphicEngine = new GraphicEngine();
-        scriptEngine = new ClientScriptEngine();
+
+        
+        engineList.add(new InputEngine());
+        engineList.add(new ClientGameEngine());
+        engineList.add(physicEngine);
+        engineList.add(clientNetworkEngine);
+        engineList.add(graphicEngine);
+        engineList.add(new ClientScriptEngine());
+        
+//        inputEngine = new InputEngine();
+//        clientGameEngine = new ClientGameEngine();
+//        scriptEngine = new ClientScriptEngine();
 
         commandManager = new CommandManager();
 
@@ -76,73 +92,81 @@ public class GameClient extends Game {
     public World getWorld() {
         return world;
     }
-    
+
     public void run() {
 
         Log.perfBegin("Start");
         Log.perfBegin("Start Engine");
-        inputEngine.start();
-        clientGameEngine.start();
-        physicEngine.start();
-        clientNetworkEngine.start();
-        graphicEngine.start();
-        scriptEngine.start();
-
+        for (Engine engine : engineList) {
+            engine.start();
+        }
+//        inputEngine.start();
+//        clientGameEngine.start();
+//        physicEngine.start();
+//        clientNetworkEngine.start();
+//        graphicEngine.start();
+//        scriptEngine.start();
 
         // Wait engines started
-        while ((Engine.getRunningEngineCount()) < 6) {
-            new Duration(1000000).sleep();
+        boolean waitStart = true;
+        while (waitStart) {
+            waitStart = false;
+            for (Engine engine : engineList) {
+                if (!engine.isRunning()) {
+                    waitStart = true;
+                    break;
+                }
+            }
+            Duration.HUNDRED_MILLISECONDE.sleep();
         }
-        Log.perfEnd(); //Start Engine
+        Log.perfEnd(); // Start Engine
         Log.perfBegin("Finish Start");
         sendToAll(new StartEngineEvent());
 
-        
-        
-        System.out.println("Irr310 - v0.1a");
+        System.out.println("Irr310 Client - v0.1a");
+              
+        autologin();
+        /*
+         * LoginForm loginForm = new LoginForm();
+         * loginForm.setLocationRelativeTo(loginForm.getParent());
+         * loginForm.setVisible(true);
+         */
 
-        /*LoginForm loginForm = new LoginForm();
-        loginForm.setLocationRelativeTo(loginForm.getParent());
-        loginForm.setVisible(true);
-        */
-        
         Reader reader = new InputStreamReader(System.in);
         BufferedReader input = new BufferedReader(reader);
 
-        Log.perfEnd(); //Finish Start
-        
-        /*try {
-            while (true) {
-                System.out.print("> ");
+        Log.perfEnd(); // Finish Start
 
-                String command = input.readLine();
+        /*
+         * try { while (true) { System.out.print("> "); String command =
+         * input.readLine(); String output = commandManager.execute(command); if
+         * (output != null) { if (!output.isEmpty()) {
+         * System.out.println(output); } } else {
+         * System.out.println("Game : Exiting..."); break; } } } catch
+         * (IOException e) { // Todo handle exception }
+         */
+        boolean waitStop = true;
 
-                String output = commandManager.execute(command);
-
-                if (output != null) {
-                    if (!output.isEmpty()) {
-                        System.out.println(output);
-                    }
-                } else {
-                    System.out.println("Game : Exiting...");
+        while (waitStop) {
+            waitStop = false;
+            for (Engine engine : engineList) {
+                if (!engine.isStopped()) {
+                    waitStop = true;
                     break;
                 }
-
             }
-
-        } catch (IOException e) {
-            // Todo handle exception
-        }*/
-
-        int count;
-        //System.out.println("Game : Stopping");
-        //sendToAll(new QuitGameEvent());
-
-        while ((count = Engine.getRunningEngineCount()) > 0) {
-            //System.out.println("Game : Wait for engine stop, still " + count + " engines");
-            Duration.ONE_SECOND.sleep();
+            Duration.HUNDRED_MILLISECONDE.sleep();
         }
-        System.out.println("Game : Stopped");
+        // int count;
+        // //System.out.println("Game : Stopping");
+        // //sendToAll(new QuitGameEvent());
+        //
+        // while ((count = Engine.getRunningEngineCount()) > 0) {
+        // //System.out.println("Game : Wait for engine stop, still " + count +
+        // " engines");
+        // Duration.ONE_SECOND.sleep();
+        // }
+        System.out.println("Game Client: Stopped");
 
     }
 
@@ -151,12 +175,15 @@ public class GameClient extends Game {
     }
 
     public void sendToAll(EngineEvent e) {
-        inputEngine.pushEvent(e);
-        clientGameEngine.pushEvent(e);
-        physicEngine.pushEvent(e);
-        clientNetworkEngine.pushEvent(e);
-        graphicEngine.pushEvent(e);
-        scriptEngine.pushEvent(e);
+        for (Engine engine : engineList) {
+            engine.pushEvent(e);
+        }
+//        inputEngine.pushEvent(e);
+//        clientGameEngine.pushEvent(e);
+//        physicEngine.pushEvent(e);
+//        clientNetworkEngine.pushEvent(e);
+//        graphicEngine.pushEvent(e);
+//        scriptEngine.pushEvent(e);
     }
 
     /*
@@ -165,40 +192,18 @@ public class GameClient extends Game {
      * ServerNetworkEngine GetNetworkEngine() { return networkEngine; }
      */
 
-
-    public void loginTask(final String login, final String password) {
-        new Thread() {
-
-            @Override
-            public void run() {
-                if (isLogged()) {
-                    logout();
-                }
-
-                LoginRequest loginRequest = new LoginRequest(login, password);
-                loginRequest.sendAndWait(clientNetworkEngine);
-
-                LoginResponseMessage m = loginRequest.getResponseMessage();
-                if (!m.success) {
-                    System.out.println("login failed: " + m.reason);
-                    return;
-                }
-                System.out.println("login successful");
-
-                localPlayer = world.loadPlayer(m.player);
-                
-                clientNetworkEngine.send(new ShipListRequestMessage());
-
-                /*
-                 * for (ShipView ship :
-                 * fetchShipListRequest.getResponseMessage().shipsList) {
-                 * sendToAll(new AddShipEvent(ship)); }
-                 */
-
-            }
-        }.start();
-
+    
+    private void autologin() {
+        SignupTask signupTask = new SignupTask("f", "");
+        signupTask.startAndWait();
+        
+        LoginTask loginTask = new LoginTask("f", "");
+        loginTask.startAndWait();
+        
+        
     }
+    
+   
 
     /*
      * public void loadShipTask(final ShipView ship) { new Thread() {
@@ -209,36 +214,12 @@ public class GameClient extends Game {
      * addSimpleCameraViewer(camera); } } } }.start(); }
      */
 
-    public void signupTask(final String login, final String password) {
-        new Thread() {
-
-            @Override
-            public void run() {
-
-                if (isLogged()) {
-                    return;
-                }
-
-                SignupRequest signupRequest = new SignupRequest(login, password);
-                signupRequest.sendAndWait(clientNetworkEngine);
-
-                SignupResponseMessage m = signupRequest.getResponseMessage();
-                if (m.success) {
-                    System.out.println("signup successful");
-                } else {
-                    System.out.println("signup failed: " + m.reason);
-                }
-
-            }
-        }.start();
-    }
+    
 
     private void logout() {
     }
 
-    public boolean isLogged() {
-        return localPlayer != null;
-    }
+    
 
     public void updateCapacityTask(com.irr310.common.world.capacity.Capacity capacity) {
         clientNetworkEngine.send(new CapacityUpdateMessage(capacity.toView()));
@@ -251,6 +232,9 @@ public class GameClient extends Game {
     public void onMouseEvent(V3DMouseEvent mouseEvent) {
         graphicEngine.onMouseEvent(mouseEvent);
     }
-    
+
+    public ClientNetworkEngine getNetWorkEngine() {
+        return clientNetworkEngine;
+    }
 
 }

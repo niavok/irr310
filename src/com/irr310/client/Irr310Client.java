@@ -3,6 +3,7 @@ package com.irr310.client;
 import javax.swing.UIManager;
 
 import com.irr310.common.tools.Log;
+import com.irr310.server.GameServer;
 import com.irr310.server.ParameterAnalyser;
 
 public class Irr310Client {
@@ -12,18 +13,19 @@ public class Irr310Client {
     public static void main(String[] args) {
         Log.perfBegin("Init");
 
-        Log.perfBegin("Set LookAndFeel");
-        setLookAndFeel();
-        Log.perfEnd(); // SetLookAndFeel
+//        Log.perfBegin("Set LookAndFeel");
+//        setLookAndFeel();
+//        Log.perfEnd(); // SetLookAndFeel
 
         // Init static game client
         Log.perfBegin("Init ParameterAnalyser");
         ParameterAnalyser parameterAnalyser = new ParameterAnalyser(args);
         Log.perfEnd(); // ParameterAnalyser
         
-        Log.perfBegin("Init ParameterAnalyser");
+        Log.perfBegin("Init GameClient");
         GameClient gameClient = new GameClient(parameterAnalyser);
         Log.perfEnd(); // GameClient
+        
         
         Log.perfEnd();
         gameClient.run();

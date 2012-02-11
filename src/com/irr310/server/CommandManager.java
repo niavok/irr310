@@ -142,8 +142,8 @@ public class CommandManager {
 					+ "'. Valid type are 'driver' or 'bind' ";
 		}
 
-		GameServer.getInstance().getGameEngine()
-				.processEvent(new UseScriptEvent(type, script));
+		//GameServer.getInstance().getGameEngine()
+		//		.processEvent(new UseScriptEvent(type, script));
 		return "";
 	}
 

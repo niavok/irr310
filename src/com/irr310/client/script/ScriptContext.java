@@ -14,6 +14,7 @@ import sun.org.mozilla.javascript.RhinoException;
 import sun.org.mozilla.javascript.Scriptable;
 
 import com.irr310.client.GameClient;
+import com.irr310.client.navigation.LoginManager;
 import com.irr310.client.script.js.SandboxContextFactory;
 import com.irr310.client.script.js.SandboxShutter;
 import com.irr310.common.world.Player;
@@ -44,7 +45,7 @@ public class ScriptContext {
 
         // Init player
 
-        Player localPlayer = GameClient.getInstance().localPlayer;
+        Player localPlayer = LoginManager.localPlayer;
         if (localPlayer != null) {
             loadScriptString("core.me = new Player(" + localPlayer.getId() + ");");
         }

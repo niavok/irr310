@@ -22,13 +22,17 @@ import com.irr310.server.network.ServerNetworkEngine;
 import com.irr310.server.ui.DebugGraphicEngine;
 
 public class GameServer extends Game {
-    private ServerGameEngine gameEngine;
-    private ServerNetworkEngine networkEngine;
-    private PhysicEngine physicEngine;
+    /*
+     * private ServerGameEngine gameEngine; private ServerNetworkEngine
+     * networkEngine; private PhysicEngine physicEngine;
+     */
     private ParameterAnalyser parameterAnalyser;
+
+    List<Engine> engineList = new ArrayList<Engine>();
+
     private boolean stillRunning;
     private CommandManager commandManager;
-    private DebugGraphicEngine debugGraphicEngine;
+    // private DebugGraphicEngine debugGraphicEngine;
     private World world;
 
     private List<Player> playerList = new ArrayList<Player>();
@@ -37,14 +41,12 @@ public class GameServer extends Game {
 
     public static GameServer instance = null;
 
-    
     private static long nextId = 0;
-    
-    public  static synchronized long pickNewId() {
+
+    public static synchronized long pickNewId() {
         return nextId++;
     }
-    
-    
+
     public static GameServer getInstance() {
         return instance;
     }
@@ -57,10 +59,16 @@ public class GameServer extends Game {
 
         world = new World();
 
-        gameEngine = new ServerGameEngine();
-        physicEngine = new PhysicEngine();
-        networkEngine = new ServerNetworkEngine();
-        debugGraphicEngine = new DebugGraphicEngine();
+        engineList.add(new ServerGameEngine());
+        engineList.add(new PhysicEngine());
+        engineList.add(new ServerNetworkEngine());
+        engineList.add(new DebugGraphicEngine());
+
+        /*
+         * gameEngine = new ServerGameEngine(); physicEngine = new
+         * PhysicEngine(); networkEngine = new ServerNetworkEngine();
+         */
+        // debugGraphicEngine = new DebugGraphicEngine();
 
         commandManager = new CommandManager();
 
@@ -69,19 +77,34 @@ public class GameServer extends Game {
     public void run() {
         // boolean currentStillRunning = stillRunning;
 
-        gameEngine.start();
-        physicEngine.start();
-        networkEngine.start();
-        debugGraphicEngine.start();
+        // gameEngine.start();
+        // physicEngine.start();
+        // networkEngine.start();
+        // debugGraphicEngine.start();
+        for (Engine engine : engineList) {
+            engine.start();
+        }
 
         // currentStillRunning = stillRunning;
         // std::string i;
         // std::string o;
 
         // Wait engines started
-        while ((Engine.getRunningEngineCount()) < 4) {
-            new Duration(100000000).sleep();
+        boolean waitStart = true;
+        while (waitStart) {
+            waitStart = false;
+            for (Engine engine : engineList) {
+                if (!engine.isRunning()) {
+                    waitStart = true;
+                    break;
+                }
+            }
+            Duration.HUNDRED_MILLISECONDE.sleep();
         }
+
+        // while ((Engine.getRunningEngineCount()) < 3) {
+        // new Duration(100000000).sleep();
+        // }
 
         sendToAll(new StartEngineEvent());
         /*
@@ -90,68 +113,54 @@ public class GameServer extends Game {
          * sendToAll(addShipEvent);
          */
 
-        System.out.println("Irr310 - v0.1a");
+        System.out.println("Irr310 Server - v0.1a");
 
-        Reader reader = new InputStreamReader(System.in);
-        BufferedReader input = new BufferedReader(reader);
+        /*
+         * Reader reader = new InputStreamReader(System.in); BufferedReader
+         * input = new BufferedReader(reader); try { while (true) {
+         * System.out.print("> "); String command = input.readLine(); String
+         * output = commandManager.execute(command); if (output != null) { if
+         * (!output.isEmpty()) { System.out.println(output); } } else {
+         * System.out.println("Game : Exiting..."); break; } } } catch
+         * (IOException e) { // Todo handle exception }
+         */
 
-        try {
-            while (true) {
-                System.out.print("> ");
+        boolean waitStop = true;
 
-                String command = input.readLine();
-
-                String output = commandManager.execute(command);
-
-                if (output != null) {
-                    if (!output.isEmpty()) {
-                        System.out.println(output);
-                    }
-                } else {
-                    System.out.println("Game : Exiting...");
+        while (waitStop) {
+            waitStop = false;
+            for (Engine engine : engineList) {
+                if (!engine.isStopped()) {
+                    waitStop = true;
                     break;
                 }
-
             }
-
-        } catch (IOException e) {
-            // Todo handle exception
+            Duration.HUNDRED_MILLISECONDE.sleep();
         }
-
-        int count;
-        System.out.println("Game : Stopping");
-        sendToAll(new QuitGameEvent());
-
-        while ((count = Engine.getRunningEngineCount()) > 0) {
-            System.out.println("Game : Wait for engine stop, still " + count + " engines");
-            Duration.ONE_SECOND.sleep();
-        }
-        System.out.println("Game : Stopped");
+        System.out.println("Game Server: Stopped");
 
     }
 
     public void stop() {
-
+        sendToAll(new QuitGameEvent());
     }
 
     public void sendToAll(EngineEvent e) {
-        gameEngine.pushEvent(e);
-        physicEngine.pushEvent(e);
-        networkEngine.pushEvent(e);
-        debugGraphicEngine.pushEvent(e);
+        for (Engine engine : engineList) {
+            engine.pushEvent(e);
+        }
+        /*
+         * gameEngine.pushEvent(e); physicEngine.pushEvent(e);
+         * networkEngine.pushEvent(e);
+         */
+        // debugGraphicEngine.pushEvent(e);
     }
 
-    public ServerGameEngine getGameEngine() {
-        return gameEngine;
-    }
-
-    public PhysicEngine getPhysicEngine() {
-        return physicEngine;
-    }
-
-    public ServerNetworkEngine GetNetworkEngine() {
-        return networkEngine;
-    }
+    /*
+     * public ServerGameEngine getGameEngine() { return gameEngine; } public
+     * PhysicEngine getPhysicEngine() { return physicEngine; } public
+     * ServerNetworkEngine GetNetworkEngine() { return networkEngine; }
+     */
 
     public List<Player> getPlayerList() {
         return playerList;
