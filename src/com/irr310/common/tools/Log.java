@@ -8,9 +8,12 @@ public class Log {
     private static Stack<LogBegin> logBeginStack = new Stack<Log.LogBegin>(); 
     private static long startTime = System.currentTimeMillis();
     private static int indent = 0;
-    
+    private static boolean enable = false; 
     
     public static void perfBegin(String log) {
+        if(!enable) {
+            return;
+        }
         
         if(!logBeginStack.isEmpty() && !logBeginStack.peek().isComposed()) {
             logBeginStack.peek().setComposed(true);
@@ -27,7 +30,9 @@ public class Log {
 
     public static void perfEnd() {
         
-        
+        if(!enable) {
+            return;
+        }
         
         
         long time = System.currentTimeMillis() - startTime;
