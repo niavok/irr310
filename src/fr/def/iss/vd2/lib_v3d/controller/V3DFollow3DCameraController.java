@@ -265,7 +265,7 @@ public class V3DFollow3DCameraController implements V3DCameraController, Animate
             camera.setPosition(transform.getTranslation().toV3DVect3());
             
             TransformMatrix eye = TransformMatrix.identity();
-            eye.translate(0,-10,0);
+            eye.translate(0,-20,0);
             eye.preMultiply(transform);
             V3DVect3 eyePosition = eye.getTranslation().toV3DVect3();
             System.err.println("eye position: "+eyePosition.toString());
