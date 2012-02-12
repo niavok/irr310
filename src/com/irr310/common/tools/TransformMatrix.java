@@ -170,6 +170,11 @@ public class TransformMatrix {
 		rotateZ(Math.toRadians(rotation.z));
 	}
 
+    public Vect3 getRotation() {
+        
+        return null;
+    }
+
     /*public void getLocalVectorToGlobalVector(Vect3 vect3) {
         TransformMatrix force = TransformMatrix.identity();
         force.translate(new Vect3(0, linearEngine.getLeft().getCurrentThrust(), 0));

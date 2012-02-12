@@ -23,12 +23,13 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.geom.Point2D;
 
 import com.irr310.client.graphics.Animated;
+import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.world.Part;
 
 import fr.def.iss.vd2.lib_v3d.V3DInputEvent;
+import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraController;
-import fr.def.iss.vd2.lib_v3d.camera.V3DSimple3DCamera;
-import fr.def.iss.vd2.lib_v3d.element.V3DElement;
+import fr.def.iss.vd2.lib_v3d.camera.V3DEye3DCamera;
 
 /**
  *
@@ -36,7 +37,7 @@ import fr.def.iss.vd2.lib_v3d.element.V3DElement;
  */
 public class V3DFollow3DCameraController implements V3DCameraController, Animated {
 
-    V3DSimple3DCamera camera;
+    V3DEye3DCamera camera;
     float cameraXInitial = 0;
     float cameraYInitial = 0;
     float cameraThetaInitial = 0;
@@ -60,7 +61,7 @@ public class V3DFollow3DCameraController implements V3DCameraController, Animate
         ROTATE,
     }
 
-    public V3DFollow3DCameraController(V3DSimple3DCamera camera) {
+    public V3DFollow3DCameraController(V3DEye3DCamera camera) {
         this.camera = camera;
 
         camera.addController(this);
@@ -183,7 +184,7 @@ public class V3DFollow3DCameraController implements V3DCameraController, Animate
     private void mouseMoving(MouseEvent e) {
 
 
-
+/*
         if (translating) {
 
             Point2D.Float mousePick = camera.pick(e.getX(), e.getY(), 0);
@@ -218,21 +219,21 @@ public class V3DFollow3DCameraController implements V3DCameraController, Animate
                 cameraPhiInitial = 90;
             }
             camera.setRotation(phi, 0, theta);
-        }
+        }*/
     }
 
     public void keyTyped(KeyEvent e) {
     }
 
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_ADD) {
+        /*if (e.getKeyCode() == KeyEvent.VK_ADD) {
             float distance = camera.getDistance();
             camera.setDistance(distance / 1.08f);
         }
         if (e.getKeyCode() == KeyEvent.VK_SUBTRACT) {
             float distance = camera.getDistance();
             camera.setDistance(distance * 1.08f);
-        }
+        }*/
     }
 
     public void keyReleased(KeyEvent e) {
@@ -243,11 +244,11 @@ public class V3DFollow3DCameraController implements V3DCameraController, Animate
 
         float distance = camera.getDistance();
 
-        if (e.getWheelRotation() == -1) {
+        /*if (e.getWheelRotation() == -1) {
             camera.setDistance(distance / 1.08f);
         } else {
             camera.setDistance(distance * 1.08f);
-        }
+        }*/
 
 
     }
@@ -259,7 +260,29 @@ public class V3DFollow3DCameraController implements V3DCameraController, Animate
     @Override
     public void animate() {
         if(element != null) {
-            //camera.setPosition(element.getTransform().getTranslation().toV3DVect3());
+            TransformMatrix transform = element.getTransform();
+            System.err.println("target position: "+transform.getTranslation().toString());
+            camera.setPosition(transform.getTranslation().toV3DVect3());
+            
+            TransformMatrix eye = TransformMatrix.identity();
+            eye.translate(0,-10,0);
+            eye.preMultiply(transform);
+            V3DVect3 eyePosition = eye.getTranslation().toV3DVect3();
+            System.err.println("eye position: "+eyePosition.toString());
+            camera.setEye(eyePosition);
+            
+            TransformMatrix top = TransformMatrix.identity();
+            
+            TransformMatrix rotation = transform.identity();
+            rotation.preMultiply(transform);
+            rotation.translate(transform.getTranslation().negative());
+            
+            top.translate(0,0,1);
+            
+            top.preMultiply(rotation);
+            V3DVect3 topPosition = top.getTranslation().toV3DVect3();
+            System.err.println("top position: "+topPosition.toString());
+            camera.setTop(topPosition);
         }
     }
 }

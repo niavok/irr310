@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.locks.ReentrantLock;
 
 import com.irr310.client.navigation.LoginManager;
 import com.irr310.common.Game;
@@ -31,6 +32,8 @@ public class World {
     private final Map<Long, Slot> slotIdMap;
     private final Map<Long, Part> partIdMap;
 
+    ReentrantLock mutex;
+    
     public World() {
         objects = new ArrayList<WorldObject>();
         ships = new ArrayList<Ship>();
@@ -43,6 +46,7 @@ public class World {
         slotIdMap = new HashMap<Long, Slot>();
         componentIdMap = new HashMap<Long, Component>();
         partIdMap = new HashMap<Long, Part>();
+        mutex = new ReentrantLock();
     }
 
     public void addObject(WorldObject o) {
@@ -158,4 +162,12 @@ public class World {
         return myParts;
     }
 
+    
+    public void lock() {
+        mutex.lock();
+    }
+    
+    public void unlock() {
+        mutex.unlock();
+    }
 }

@@ -10,6 +10,7 @@ import org.lwjgl.opengl.Display;
 
 import com.irr310.client.graphics.gui.GuiFpsIndicator;
 import com.irr310.client.graphics.gui.GuiSpeedIndicator;
+import com.irr310.common.Game;
 import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
@@ -37,6 +38,7 @@ import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 import fr.def.iss.vd2.lib_v3d.V3DScene;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
+import fr.def.iss.vd2.lib_v3d.camera.V3DEye3DCamera;
 import fr.def.iss.vd2.lib_v3d.camera.V3DSimple3DCamera;
 import fr.def.iss.vd2.lib_v3d.controller.V3DFollow3DCameraController;
 import fr.def.iss.vd2.lib_v3d.controller.V3DSimple3DCameraController;
@@ -54,7 +56,7 @@ public class GraphicEngine extends FramerateEngine {
 
     final V3DContext context = new V3DContext();
     V3DCameraBinding fullscreenBinding;
-    V3DSimple3DCamera activeCamera;
+    V3DEye3DCamera activeCamera;
     V3DCanvas canvas;
     private V3DScene scene;
     private V3DGroupElement fitOrder;
@@ -75,7 +77,7 @@ public class GraphicEngine extends FramerateEngine {
         
         fitOrder = null;
 
-        activeCamera = new V3DSimple3DCamera(context);
+        activeCamera = new V3DEye3DCamera(context);
 
         cameraController = new V3DFollow3DCameraController(activeCamera);
         animatedList.add(cameraController);
@@ -190,7 +192,7 @@ public class GraphicEngine extends FramerateEngine {
         
 
         fitOrder = shipElements;
-        cameraController.setFollowed(ship.getComponentByName("kernel").getFirstPart());
+        cameraController.setFollowed(ship.getComponentByName("hull").getFirstPart());
         scene.add(shipElements);
         activeCamera.fitAll();
 
@@ -246,7 +248,7 @@ public class GraphicEngine extends FramerateEngine {
     protected void frame() {
 
         Log.perfBegin("Frame");
-        
+        Game.getInstance().getWorld().lock();
         
         Log.perfBegin("amination");
         // amination
@@ -276,7 +278,10 @@ public class GraphicEngine extends FramerateEngine {
         Log.perfEnd();
 
         Log.perfBegin("draw");
+        
         canvas.frame();
+        Game.getInstance().getWorld().unlock();
+        
         Log.perfEnd();
         
         Log.perfEnd();

@@ -13,6 +13,8 @@ import javax.vecmath.Vector3f;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
+import sun.font.SunFontManager.FamilyDescription;
+
 import com.bulletphysics.collision.broadphase.BroadphaseInterface;
 import com.bulletphysics.collision.broadphase.BroadphaseProxy;
 import com.bulletphysics.collision.broadphase.DbvtBroadphase;
@@ -33,6 +35,7 @@ import com.bulletphysics.linearmath.MatrixUtil;
 import com.bulletphysics.linearmath.MotionState;
 import com.bulletphysics.linearmath.Transform;
 import com.bulletphysics.util.ObjectArrayList;
+import com.irr310.common.Game;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.PauseEngineEvent;
@@ -104,10 +107,15 @@ public class PhysicEngine extends FramerateEngine {
             body.setActivationState(RigidBody.ACTIVE_TAG);
         }
 
+        
+        Game.getInstance().getWorld().lock();
+        
         // step the simulation
         if (dynamicsWorld != null) {
             dynamicsWorld.stepSimulation(framerate.getSeconds());
         }
+        
+        Game.getInstance().getWorld().unlock();
 
     }
 
