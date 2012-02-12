@@ -92,14 +92,17 @@ public class GraphicEngine extends FramerateEngine {
         scene = new V3DScene(context);
         activeCamera.setScene(scene);
 
-        V3DBox sky = new V3DBox(context);
+        /*V3DBox sky = new V3DBox(context);
         sky.setSize(new V3DVect3(1024, 768, 1));
-        sky.setPosition(1024 / 2, 768 / 2, 0);
+        sky.setPosition(1024 / 2, 768 / 2, 0);*/
 
         // activeCamera.getBackgroundScene().add(new V3DColorElement(sky,
         // V3DColor.pink));
-        activeCamera.getBackgroundScene().add(new V3DColorElement(new Sky(context), V3DColor.pink));
+        //activeCamera.getBackgroundScene().add(new V3DColorElement(new Sky(context), V3DColor.pink));
 
+        createBubble();
+        
+        
         // Add reference
         V3DElement ref0 = generateReference();
         ref0.setPosition(0, 0, 0);
@@ -131,6 +134,14 @@ public class GraphicEngine extends FramerateEngine {
         
         
         
+    }
+
+    private void createBubble() {
+        
+        File v3drawFileStructure = new File("graphics/output/bubble.v3draw");
+        final V3DrawElement elementStructure = V3DrawElement.LoadFromFile(v3drawFileStructure, context);
+        elementStructure.setScale(1000);
+        scene.add(new V3DColorElement(elementStructure, new V3DColor(255, 255, 255)));
     }
 
     private V3DElement generateReference() {

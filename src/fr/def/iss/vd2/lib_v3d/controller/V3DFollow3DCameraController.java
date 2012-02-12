@@ -261,14 +261,12 @@ public class V3DFollow3DCameraController implements V3DCameraController, Animate
     public void animate() {
         if(element != null) {
             TransformMatrix transform = element.getTransform();
-            System.err.println("target position: "+transform.getTranslation().toString());
             camera.setPosition(transform.getTranslation().toV3DVect3());
             
             TransformMatrix eye = TransformMatrix.identity();
             eye.translate(0,-20,0);
             eye.preMultiply(transform);
             V3DVect3 eyePosition = eye.getTranslation().toV3DVect3();
-            System.err.println("eye position: "+eyePosition.toString());
             camera.setEye(eyePosition);
             
             TransformMatrix top = TransformMatrix.identity();
@@ -281,7 +279,6 @@ public class V3DFollow3DCameraController implements V3DCameraController, Animate
             
             top.preMultiply(rotation);
             V3DVect3 topPosition = top.getTranslation().toV3DVect3();
-            System.err.println("top position: "+topPosition.toString());
             camera.setTop(topPosition);
         }
     }

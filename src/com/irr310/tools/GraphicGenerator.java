@@ -15,6 +15,9 @@ public class GraphicGenerator {
 
     public static void main(String[] args) throws IOException {
 
+        // Bubble
+        generateObj("graphics/bubble.obj", "graphics/output/bubble.v3draw", null);
+        
         // Propeller
         {
             List<String> objectsStator = new ArrayList<String>();
