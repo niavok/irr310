@@ -93,6 +93,12 @@ public class Ship extends GameEntity implements Container {
             this.owner.removeShip(this);
         }
         this.owner = owner;
+        for (Component component : components) {
+            for(Part part: component.getParts()) {
+                part.setOwner(owner);
+            }
+        }
+        
         this.owner.giveShip(this);
     }
 

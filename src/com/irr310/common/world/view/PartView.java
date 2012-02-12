@@ -12,6 +12,9 @@ public class PartView {
     public long id;
     
     @NetworkField
+    public long ownerId;
+    
+    @NetworkField
     public double mass;
     
     @NetworkField

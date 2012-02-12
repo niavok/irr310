@@ -5,6 +5,7 @@ import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.irr310.client.GameClient;
 import com.irr310.common.engine.EventEngine;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
@@ -14,13 +15,16 @@ import com.irr310.common.network.NetworkMessage;
 import com.irr310.common.network.protocol.CapacityUpdateMessage;
 import com.irr310.common.network.protocol.LoginRequestMessage;
 import com.irr310.common.network.protocol.LoginResponseMessage;
+import com.irr310.common.network.protocol.PartStateUpdateListMessage;
 import com.irr310.common.network.protocol.ShipListMessage;
 import com.irr310.common.network.protocol.SignupRequestMessage;
 import com.irr310.common.network.protocol.SignupResponseMessage;
+import com.irr310.common.world.Part;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.Ship;
 import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.view.CapacityView;
+import com.irr310.common.world.view.PartStateView;
 import com.irr310.common.world.view.ShipView;
 import com.irr310.server.GameServer;
 
@@ -35,7 +39,8 @@ public class ServerNetworkEngine extends EventEngine {
             new Thread(worker).start();
             new Thread(new NioServer(null, 22310, worker)).start();
             NetworkSyncronizer syncronizer = new NetworkSyncronizer(this);
-            new Thread(syncronizer).start();
+            syncronizer.start();
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -137,8 +142,20 @@ public class ServerNetworkEngine extends EventEngine {
                     capacity.fromView(capacityView);
                 }
                     break;
+                case PART_STATE_UPDATE_LIST: { 
+                    PartStateUpdateListMessage m = (PartStateUpdateListMessage) message;
+                    for (PartStateView partStateView : m.partStateList) {
+                        Part part = GameServer.getInstance().getWorld().getPartById(partStateView.id);
+                        if (part != null) {
+                            //System.out.println("update part");
+                            part.fromStateView(partStateView);
+                        }
+                    }
+                    GameServer.getInstance().getPhysicEngine().reloadStates();
+                    break;
+                }
                 default:
-                    System.err.println("Unsupported network type");
+                    System.err.println("Unsupported network type " + event.getMessage().getType());
             }
         }
 

@@ -11,16 +11,19 @@ import com.irr310.common.world.Part;
 import com.irr310.common.world.view.PartStateView;
 import com.irr310.server.GameServer;
 
-public class NetworkSyncronizer implements Runnable {
+public class NetworkSyncronizer extends Thread {
 
     private final ServerNetworkEngine serverNetworkEngine;
 
     public NetworkSyncronizer(ServerNetworkEngine serverNetworkEngine) {
         this.serverNetworkEngine = serverNetworkEngine;
+        setDaemon(true);
     }
 
     @Override
     public void run() {
+        
+        
         while(true) {
             try {
                 Thread.sleep(5000);
@@ -36,8 +39,11 @@ public class NetworkSyncronizer implements Runnable {
             for(Part part :  GameServer.getInstance().getWorld().getParts()) {
                 partStateList.add(part.toStateView());
             }
-            for (NetworkClient client : clients.values()) {
-                client.send(new PartStateUpdateListMessage(partStateList));
+            
+            if(partStateList.size() > 0) {
+                for (NetworkClient client : clients.values()) {
+                    //client.send(new PartStateUpdateListMessage(partStateList));
+                }
             }
         }
     }

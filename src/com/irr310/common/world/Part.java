@@ -1,5 +1,6 @@
 package com.irr310.common.world;
 
+import com.irr310.common.Game;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vect3;
 import com.irr310.common.world.view.PartStateView;
@@ -13,6 +14,7 @@ public class Part extends GameEntity {
     private final Vect3 linearSpeed;
     private final TransformMatrix transform;
     private Vect3 shape;
+    private Player owner;
     
     public Part(long id) {
         super(id);
@@ -22,6 +24,7 @@ public class Part extends GameEntity {
         transform = TransformMatrix.identity();
         mass = 0.;
         shape = Vect3.one();
+        owner = null;
     }
 
     public void setMass(Double mass) {
@@ -60,6 +63,7 @@ public class Part extends GameEntity {
         partView.rotationSpeed = rotationSpeed;
         partView.shape = shape;
         partView.transform = transform;
+        partView.ownerId = (owner == null ? -1 : owner.getId());
         return partView;
     }
 
@@ -69,6 +73,7 @@ public class Part extends GameEntity {
         mass = partView.mass;
         shape = partView.shape;
         transform.set(partView.transform.getData());
+        owner = (partView.ownerId == -1 ? null : Game.getInstance().getWorld().getPlayerById(partView.ownerId));
     }
 
     public PartStateView toStateView() {
@@ -90,6 +95,14 @@ public class Part extends GameEntity {
         linearSpeed.set(partStateView.linearSpeed);
         rotationSpeed.set(partStateView.rotationSpeed);
         transform.set(partStateView.transform.getData());
+    }
+
+    public Player getOwner() {
+        return owner;
+    }
+    
+    public void setOwner(Player owner) {
+        this.owner = owner;
     }
     
     

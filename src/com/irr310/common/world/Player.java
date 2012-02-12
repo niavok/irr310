@@ -12,6 +12,7 @@ import com.irr310.common.world.view.ShipView;
 public class Player extends GameEntity {
 
     private static final int PASSWORD_SALT_LENGTH = 32;
+    
     private String login;
     private String password;
     private String passwordSalt;

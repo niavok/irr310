@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.irr310.client.GameClient;
-import com.irr310.common.Game;
 import com.irr310.common.engine.EventEngine;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
@@ -16,7 +15,6 @@ import com.irr310.common.network.protocol.PartStateUpdateListMessage;
 import com.irr310.common.network.protocol.ShipListMessage;
 import com.irr310.common.world.Part;
 import com.irr310.common.world.Ship;
-import com.irr310.common.world.World;
 import com.irr310.common.world.view.PartStateView;
 import com.irr310.common.world.view.ShipView;
 
@@ -34,7 +32,9 @@ public class ClientNetworkEngine extends EventEngine {
 
             client = new NioClient(InetAddress.getByName(hostname), port);
             handler = new ClientNetworkWorker(this);
-
+            ClientNetworkSyncronizer syncronizer = new ClientNetworkSyncronizer(this);
+            syncronizer.start();
+            
             client.init(handler);
             Thread t = new Thread(handler);
             Thread t2 = new Thread(client);
@@ -121,13 +121,13 @@ public class ClientNetworkEngine extends EventEngine {
         }
 
     }
-    
+
     private void partStateUpdateReceived(NetworkMessage message) {
         PartStateUpdateListMessage m = (PartStateUpdateListMessage) message;
         for (PartStateView partStateView : m.partStateList) {
             Part part = GameClient.getInstance().getWorld().getPartById(partStateView.id);
-            if(part != null) {
-                //System.out.println("update part");
+            if (part != null) {
+                // System.out.println("update part");
                 part.fromStateView(partStateView);
             }
         }

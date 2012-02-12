@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.irr310.client.navigation.LoginManager;
 import com.irr310.common.Game;
 import com.irr310.common.event.PlayerAddedEvent;
 import com.irr310.common.event.WorldObjectAddedEvent;
@@ -22,6 +23,7 @@ public class World {
     private final List<Ship> ships;
     private final List<Player> players;
     private final List<Part> parts;
+    private final List<Part> myParts;
     private final Map<Long, Player> playerIdMap;
     private final Map<Long, Ship> shipIdMap;
     private final Map<Long, Capacity> capacityIdMap;
@@ -34,6 +36,7 @@ public class World {
         ships = new ArrayList<Ship>();
         players = new ArrayList<Player>();
         parts = new ArrayList<Part>();
+        myParts = new ArrayList<Part>();
         playerIdMap = new HashMap<Long, Player>();
         shipIdMap = new HashMap<Long, Ship>();
         capacityIdMap = new HashMap<Long, Capacity>();
@@ -58,6 +61,9 @@ public class World {
     public void addPart(Part part) {
         partIdMap.put(part.getId(), part);
         parts.add(part);
+        if(part.getOwner() == LoginManager.localPlayer) {
+            myParts.add(part);
+        }
     }
 
     private void addPlayer(Player player) {
@@ -146,6 +152,10 @@ public class World {
 
     public List<Part> getParts() {
         return parts;
+    }
+
+    public List<Part> getMyParts() {
+        return myParts;
     }
 
 }

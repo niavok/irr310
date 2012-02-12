@@ -5,6 +5,7 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.vecmath.Tuple3d;
 import javax.vecmath.Vector3d;
@@ -21,7 +22,7 @@ public class TransformMatrix {
 	public TransformMatrix() {
 		transform = new float[16];
 
-		changeListeners = new ArrayList<TransformMatrix.TransformMatrixChangeListener>();
+		changeListeners = new CopyOnWriteArrayList<TransformMatrix.TransformMatrixChangeListener>();
 	}
 
 	public FloatBuffer toFloatBuffer() {

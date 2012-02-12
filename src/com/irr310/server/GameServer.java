@@ -43,6 +43,8 @@ public class GameServer extends Game {
 
     private static long nextId = 0;
 
+    private PhysicEngine physicEngine;
+
     public static synchronized long pickNewId() {
         return nextId++;
     }
@@ -60,7 +62,8 @@ public class GameServer extends Game {
         world = new World();
 
         engineList.add(new ServerGameEngine());
-        engineList.add(new PhysicEngine());
+        physicEngine = new PhysicEngine();
+        engineList.add(physicEngine);
         engineList.add(new ServerNetworkEngine());
         engineList.add(new DebugGraphicEngine());
 
@@ -194,4 +197,7 @@ public class GameServer extends Game {
         return playerLoginMap.containsKey(login);
     }
 
+    public PhysicEngine getPhysicEngine() {
+        return physicEngine;
+    }
 }
