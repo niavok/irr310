@@ -30,7 +30,6 @@ public class ClientNetworkSyncronizer extends Thread{
             List<PartStateView> partStateList = new ArrayList<PartStateView>();
             
             for(Part part :  Game.getInstance().getWorld().getMyParts()) {
-                System.err.println("find part to update");
                 partStateList.add(part.toStateView());
             }
             
