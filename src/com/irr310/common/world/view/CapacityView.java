@@ -6,6 +6,7 @@ import java.util.List;
 import com.irr310.common.network.NetworkClass;
 import com.irr310.common.network.NetworkField;
 import com.irr310.common.network.NetworkListField;
+import com.irr310.common.tools.Vect3;
 import com.irr310.common.world.capacity.Capacity.CapacityType;
 
 @NetworkClass
@@ -33,6 +34,16 @@ public class CapacityView {
 
     public double popDouble() {
         return doubles.get(popIndex ++);
+    }
+
+    public void pushVect3(Vect3 vect) {
+        pushDouble(vect.x);
+        pushDouble(vect.y);
+        pushDouble(vect.z);
+    }
+
+    public Vect3 popVect3() {
+        return new Vect3(popDouble(), popDouble(), popDouble());
     }
 
     

@@ -76,7 +76,8 @@ public class GraphicEngine extends FramerateEngine {
 
     @Override
     protected void init() {
-        canvas = new V3DCanvas(context, 1920, 1200);
+        //canvas = new V3DCanvas(context, 1920, 1200);
+        canvas = new V3DCanvas(context, 1280, 1024);
         
         fitOrder = null;
 

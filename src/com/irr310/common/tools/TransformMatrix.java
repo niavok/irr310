@@ -101,7 +101,7 @@ public class TransformMatrix {
 		set(tmp.getData());
 	}
 
-	private float get(int i, int j) {
+	public float get(int i, int j) {
 		return transform[j * 4 + i];
 	}
 

@@ -101,7 +101,7 @@ public class V3DCanvas {
             frame = new JFrame("Irr310");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(width,height);
-            frame.setUndecorated(true);  //here
+            //frame.setUndecorated(true);  //here
             frame.setVisible(true);
             //frame.setAlwaysOnTop(true);
             frame.setLocation(0, 0);

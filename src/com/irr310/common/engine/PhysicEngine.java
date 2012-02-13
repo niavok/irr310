@@ -53,6 +53,7 @@ import com.irr310.common.world.Slot;
 import com.irr310.common.world.WorldObject;
 import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
+import com.irr310.common.world.capacity.WingCapacity;
 import com.irr310.server.Duration;
 import com.irr310.server.controller.LinearEngineController;
 
@@ -73,11 +74,13 @@ public class PhysicEngine extends FramerateEngine {
     private Map<Part, RigidBody> partToBodyMap;
 
     private List<Pair<LinearEngineCapacity, RigidBody>> linearEngines;
+    private List<Pair<WingCapacity, RigidBody>> wings;
 
     public PhysicEngine() {
         framerate = new Duration(10000000); // 10 ms
 
         linearEngines = new ArrayList<Pair<LinearEngineCapacity, RigidBody>>();
+        wings = new ArrayList<Pair<WingCapacity, RigidBody>>();
 
         initPhysics();
     }
@@ -86,13 +89,12 @@ public class PhysicEngine extends FramerateEngine {
     protected void frame() {
 
         // Apply forces
+        
+        // Linear Engines
         for (Pair<LinearEngineCapacity, RigidBody> linearEngine : linearEngines) {
             RigidBody body = linearEngine.getRight();
             Transform t = new Transform();
             body.getWorldTransform(t);
-            
-            
-            
             
             TransformMatrix force = TransformMatrix.identity();
             force.translate(new Vect3(0, linearEngine.getLeft().getCurrentThrust(), 0));
@@ -106,6 +108,41 @@ public class PhysicEngine extends FramerateEngine {
             body.applyCentralForce(force.getTranslation().toVector3f());
             body.setActivationState(RigidBody.ACTIVE_TAG);
         }
+        
+        // wings
+        for (Pair<WingCapacity, RigidBody> wing : wings) {
+            RigidBody body = wing.getRight();
+            WingCapacity wingCapacity = wing.getLeft();
+            
+            
+            //Get Transform
+            Transform t = new Transform();
+            body.getWorldTransform(t);
+            TransformMatrix bodyTransform = TransformMatrix.identity();
+            t.getOpenGLMatrix(bodyTransform.getData());
+            
+            
+            Vect3 breakAxis = wingCapacity.getBreakAxis();
+            
+            Vect3 absoluteBreakAxis = breakAxis.transform(bodyTransform);
+            
+            
+            Vector3f lv = new Vector3f();
+            body.getLinearVelocity(lv);
+            Vect3 velocity = new Vect3(lv);
+
+            
+            double opposition = velocity.dot(absoluteBreakAxis);
+            
+            System.err.println("wing opposition: " + opposition);
+            
+            
+            body.applyCentralForce(absoluteBreakAxis.multiply(opposition * wingCapacity.getYield() * -1).toVector3f());
+            body.setActivationState(RigidBody.ACTIVE_TAG);
+            
+            
+        }
+        
 
         
         Game.getInstance().getWorld().lock();
@@ -209,6 +246,11 @@ public class PhysicEngine extends FramerateEngine {
             for (Capacity capacity : component.getCapacities()) {
                 if (capacity instanceof LinearEngineCapacity) {
                     linearEngines.add(new ImmutablePair<LinearEngineCapacity, RigidBody>((LinearEngineCapacity) capacity,
+                                                                                         partToBodyMap.get(component.getFirstPart())));
+                }
+                
+                if (capacity instanceof WingCapacity) {
+                    wings.add(new ImmutablePair<WingCapacity, RigidBody>((WingCapacity) capacity,
                                                                                          partToBodyMap.get(component.getFirstPart())));
                 }
 

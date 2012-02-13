@@ -5,6 +5,7 @@ import com.irr310.common.tools.Vect3;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.Part;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
+import com.irr310.common.world.capacity.WingCapacity;
 import com.irr310.server.GameServer;
 
 public class ComponentFactory {
@@ -220,6 +221,9 @@ public class ComponentFactory {
         component.addSlot(GameServer.pickNewId(), part, new Vect3( -shape.x / 2, -shape.y / 6, 0));
         component.addSlot(GameServer.pickNewId(), part, new Vect3( shape.x / 2, 0, 0));
 
+        WingCapacity wingCapacity = new WingCapacity(GameServer.pickNewId());
+        component.addCapacity(wingCapacity);
+        
         return component;
     }
     

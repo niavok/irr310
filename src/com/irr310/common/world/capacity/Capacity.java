@@ -13,7 +13,8 @@ public abstract class Capacity extends GameEntity{
     }
 
     public enum CapacityType {
-        LINEAR_ENGINE
+        LINEAR_ENGINE,
+        WING,
     }
     
     public abstract CapacityView toView();
@@ -24,6 +25,10 @@ public abstract class Capacity extends GameEntity{
         switch (type) {
             case LINEAR_ENGINE:
                 return new LinearEngineCapacity(id);
+            case WING:
+                return new WingCapacity(id);
+            default:
+                System.err.println("Not implemented capacity type: "+type.toString());
         }
         return null;
     }
