@@ -134,9 +134,6 @@ public class PhysicEngine extends FramerateEngine {
             
             double opposition = velocity.dot(absoluteBreakAxis);
             
-            System.err.println("wing opposition: " + opposition);
-            
-            
             body.applyCentralForce(absoluteBreakAxis.multiply(opposition * wingCapacity.getYield() * -1).toVector3f());
             body.setActivationState(RigidBody.ACTIVE_TAG);
             

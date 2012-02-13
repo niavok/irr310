@@ -36,6 +36,7 @@ function init() {
         var orderTurnRight = false;
         var orderTurnUp = false;
         var orderTurnDown = false;
+        var useMouseController = false;
 
         var baseThrust = 0;
         
@@ -67,6 +68,8 @@ function init() {
 
                     break;
                 case KEY_SPACE:
+                    useMouseController = true;
+                    mouseControlleurOrigin = core.mouse.getPosition();
                     core.log("press space");
                     //leftEngine.targetThrust = 0;
                     //rightEngine.targetThrust = 0;
@@ -107,6 +110,7 @@ function init() {
                     core.log("released right");
                     break;
                 case KEY_SPACE:
+                    useMouseController = false;
                     core.log("released space");
                     break;
                 default:
@@ -143,6 +147,39 @@ function init() {
             bottomThrustTarget = -maxRotationThrust;
         }
         
+        
+        
+        
+        if (useMouseController) {
+            core.log("useMouseController");
+            var deadZoneRadius = 5;
+            var controlRadius = 200.0;
+            var mousePosition = core.mouse.getPosition();
+
+            core.log("diff x "+ (mouseControlleurOrigin.getX() - mousePosition.getX()));
+
+            if(Math.abs(mouseControlleurOrigin.getX() - mousePosition.getX()) < deadZoneRadius) {
+                leftEngine.targetThrust = 0;
+                rightEngine.targetThrust = 0;
+            } else {
+                var move =  (mouseControlleurOrigin.getX() - mousePosition.getX()) / controlRadius;
+                
+                leftThrustTarget = - move * maxRotationThrust;
+                rightThrustTarget = move * maxRotationThrust;
+            }
+            
+            if(Math.abs(mouseControlleurOrigin.getY() - mousePosition.getY()) < deadZoneRadius) {
+                leftEngine.targetThrust = 0;
+                rightEngine.targetThrust = 0;
+            } else {
+                var move =  (mouseControlleurOrigin.getY() - mousePosition.getY()) / controlRadius;
+                
+                topThrustTarget = move * maxRotationThrust;
+                bottomThrustTarget = - move * maxRotationThrust;
+            }
+                
+        }
+        
         if(orderTurnLeft) {
             leftThrustTarget = -maxRotationThrust;
             rightThrustTarget = maxRotationThrust;
@@ -168,6 +205,7 @@ function init() {
         rightEngine.targetThrust = rightThrustTarget;
         topEngine.targetThrust = topThrustTarget;
         bottomEngine.targetThrust = bottomThrustTarget;
+
 
         
     }

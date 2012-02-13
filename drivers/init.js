@@ -18,6 +18,8 @@ function CoreProxy() {
     this.onFrame = function(time) {
     
     }
+    
+    this.mouse = new Mouse();
 
 }
 
