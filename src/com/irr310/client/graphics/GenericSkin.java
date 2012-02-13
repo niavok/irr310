@@ -14,6 +14,7 @@ import fr.def.iss.vd2.lib_v3d.element.V3DBox;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DGroupElement;
+import fr.def.iss.vd2.lib_v3d.element.V3DLine;
 import fr.def.iss.vd2.lib_v3d.element.V3DrawElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DBox.RenderMode;
 
@@ -49,12 +50,21 @@ public class GenericSkin extends Skin {
                 
                 element.add(new V3DColorElement(max, V3DColor.red));
                 
+                
+                final V3DLine speedLine = new V3DLine(context);
+                speedLine.setThickness(3);
+                speedLine.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, 0, 0));
+
+                
+                elements.add(new V3DColorElement(speedLine, V3DColor.emerald));
 
                 transform.addListener(new TransformMatrixChangeListener() {
 
                     @Override
                     public void valueChanged() {
                         element.setTransformMatrix(part.getTransform().toFloatBuffer());
+                        speedLine.setPosition(part.getTransform().getTranslation().toV3DVect3());
+                        speedLine.setLocation(new V3DVect3(0, 0, 0), part.getLinearSpeed().toV3DVect3());
                     }
                 });
                 elements.add(element);
