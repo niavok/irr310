@@ -271,7 +271,6 @@ public class V3DrawReader {
 
     private void draw3dQuadList() {
         int quadCount = buffer.getInt();
-
         GL11.glBegin(GL11.GL_QUADS);
 
         for (int quadIndex = 0; quadIndex < quadCount; quadIndex++) {

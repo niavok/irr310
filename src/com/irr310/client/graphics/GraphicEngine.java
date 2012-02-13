@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
 import com.irr310.client.graphics.gui.GuiFpsIndicator;
@@ -14,6 +15,7 @@ import com.irr310.common.Game;
 import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
+import com.irr310.common.event.KeyPressedEvent;
 import com.irr310.common.event.MinimizeWindowEvent;
 import com.irr310.common.event.PauseEngineEvent;
 import com.irr310.common.event.QuitGameEvent;
@@ -49,6 +51,7 @@ import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DGroupElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DLine;
+import fr.def.iss.vd2.lib_v3d.element.V3DShaderElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DrawElement;
 import fr.def.iss.vd2.lib_v3d.gui.V3DLabel;
 
@@ -122,26 +125,22 @@ public class GraphicEngine extends FramerateEngine {
         // activeCamera.fit(new V3DVect3(0, 0, 0), new V3DVect3(5, 5, 5));
 
         canvas.addCamera(fullscreenBinding);
-
         canvas.setEnabled(true);
-
 
         //GUI
         GuiFpsIndicator fpsIndicator = new GuiFpsIndicator(context);
         fullscreenBinding.getGui().add(fpsIndicator);
         fpsIndicator.setPosition(10, 10);
         animatedList.add(fpsIndicator);
-        
-        
-        
     }
 
     private void createBubble() {
         
         File v3drawFileStructure = new File("graphics/output/bubble.v3draw");
         final V3DrawElement elementStructure = V3DrawElement.LoadFromFile(v3drawFileStructure, context);
+        //elementStructure.setShader("bubble");
         elementStructure.setScale(1000);
-        scene.add(new V3DColorElement(elementStructure, new V3DColor(255, 255, 255)));
+        scene.add(new V3DColorElement(new V3DShaderElement(elementStructure, "bubble"), new V3DColor(255, 255, 255)));
     }
 
     private V3DElement generateReference() {
@@ -335,6 +334,15 @@ public class GraphicEngine extends FramerateEngine {
         @Override
         public void visit(MinimizeWindowEvent event) {
             canvas.hide();
+        }
+        
+        @Override
+        public void visit(KeyPressedEvent event) {
+            if(event.getKeyCode() == Keyboard.KEY_F11 && Keyboard.isKeyDown(Keyboard.KEY_RCONTROL)) {
+                System.out.println("Reload shaders");
+                context.reloadShader();
+                return;
+            }
         }
 
     }

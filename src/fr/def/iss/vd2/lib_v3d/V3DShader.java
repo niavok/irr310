@@ -8,14 +8,16 @@ import java.util.Date;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.ARBFragmentShader;
+import org.lwjgl.opengl.ARBGeometryShader4;
 import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.ARBVertexShader;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GLContext;
 
 import fr.def.iss.vd2.lib_v3d.camera.V3DCamera;
 
 public class V3DShader {
 
-    
     private final String name;
     /*
      * program shader, to which is attached a vertex and fragment shaders. They
@@ -24,58 +26,88 @@ public class V3DShader {
     protected int shader = 0;
     private int vertShader = 0;
     private int fragShader = 0;
-    private int skyFragShader = 0;
+    private int geoShader = 0;
     private boolean useShader = true;
-    
+    private boolean loaded = false;
+
     public V3DShader(String name) {
         this.name = name;
-        
+        load();
+    }
+
+    public void reload() {
+        if (loaded) {
+            destroy();
+        }
+        load();
+    }
+
+    private void load() {
+
+        loaded = false;
+        useShader = false;
         /*
          * create the shader program. If OK, create vertex and fragment shaders
          */
         shader = ARBShaderObjects.glCreateProgramObjectARB();
 
         if (shader != 0) {
-            vertShader = createVertShader("shaders/"+name+".v.glsl");
-            fragShader = createFragShader("shaders/"+name+".f.glsl");
-            // skyFragShader=createFragShader("shaders/sky-gl.f.glsl");
+            vertShader = createVertShader("shaders/" + name + ".v.glsl");
+            geoShader = createGeometryShader("shaders/" + name + ".g.glsl");
+            fragShader = createFragShader("shaders/" + name + ".f.glsl");
         } else {
-            useShader  = false;
-        } 
+            useShader = false;
+        }
 
         /*
          * if the vertex and fragment shaders setup sucessfully, attach them to
          * the shader program, link the sahder program (into the GL context I
          * suppose), and validate
          */
-        if (vertShader != 0 && fragShader != 0) {
+        if (vertShader != 0 && fragShader != 0 && geoShader != 0) {
             ARBShaderObjects.glAttachObjectARB(shader, vertShader);
+            ARBShaderObjects.glAttachObjectARB(shader, geoShader);
             ARBShaderObjects.glAttachObjectARB(shader, fragShader);
             ARBShaderObjects.glLinkProgramARB(shader);
             ARBShaderObjects.glValidateProgramARB(shader);
             loadUniforms();
 
             useShader = printLogInfo(shader, "attach");
+            loaded = useShader;
         } else {
             useShader = false;
         }
+
     }
-    
+
+    private void destroy() {
+        ARBShaderObjects.glDeleteObjectARB(shader);
+        ARBShaderObjects.glDeleteObjectARB(vertShader);
+        ARBShaderObjects.glDeleteObjectARB(fragShader);
+        ARBShaderObjects.glDeleteObjectARB(geoShader);
+        shader = 0;
+        vertShader = 0;
+        fragShader = 0;
+        geoShader = 0;
+
+        loaded = false;
+    }
+
     protected void loadUniforms() {
-        
+
     }
-    
+
     protected void setUniforms(V3DCamera camera) {
-        
+
     }
-    
+
     public void begin(V3DCamera camera) {
         if (useShader) {
             ARBShaderObjects.glUseProgramObjectARB(shader);
             setUniforms(camera);
         }
     }
-    
+
     public void end() {
         // release the shader
         ARBShaderObjects.glUseProgramObjectARB(0);
@@ -145,6 +177,49 @@ public class V3DShader {
 
         return fragShader;
     }
+    
+ // same as per the vertex shader except for method syntax
+    private int createGeometryShader(String filename) {
+
+        System.out.println(GLContext.getCapabilities().GL_EXT_geometry_shader4);
+        
+        geoShader = ARBShaderObjects.glCreateShaderObjectARB(ARBGeometryShader4.GL_GEOMETRY_SHADER_ARB);
+        if (geoShader == 0) {
+            return 0;
+        }
+        String fragCode = "";
+        String line;
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(filename));
+            while ((line = reader.readLine()) != null) {
+                fragCode += line + "\n";
+            }
+        } catch (Exception e) {
+            System.out.println("Fail reading geometry shading code" + filename);
+            return 0;
+        }
+        
+        
+        
+        
+        ARBShaderObjects.glShaderSourceARB(geoShader, fragCode);
+        ARBShaderObjects.glCompileShaderARB(geoShader);
+        
+        int maxVertices = GL11.glGetInteger(ARBGeometryShader4.GL_MAX_GEOMETRY_OUTPUT_VERTICES_ARB);
+        System.out.println("max vertice for geometry shader: "+maxVertices);
+        
+        ARBGeometryShader4.glProgramParameteriARB(shader, ARBGeometryShader4.GL_GEOMETRY_INPUT_TYPE_ARB, GL11.GL_TRIANGLES);
+        //ARBGeometryShader4.glProgramParameteriARB(shader, ARBGeometryShader4.GL_GEOMETRY_OUTPUT_TYPE_ARB, GL11.GL_TRIANGLES);
+        ARBGeometryShader4.glProgramParameteriARB(shader, ARBGeometryShader4.GL_GEOMETRY_VERTICES_OUT_ARB, 64);
+        
+        
+        
+        if (!printLogInfo(geoShader, filename)) {
+            geoShader = 0;
+        }
+
+        return geoShader;
+    }
 
     private static boolean printLogInfo(int obj, String filename) {
         IntBuffer iVal = BufferUtils.createIntBuffer(1);
@@ -164,4 +239,5 @@ public class V3DShader {
             return true;
         return false;
     }
+
 }

@@ -44,25 +44,10 @@ public class V3DrawElement extends V3DElement {
     private final float dy;
     private final float dz;
     private boolean enableLighting = false;
-    private V3DShader shader;
 
     public V3DrawElement(V3DContext context, ByteBuffer buffer) throws V3DrawBadFormatError {
         super(context);
 
-        shader = new V3DShader("propeller") {
-            private int lightDir;
-
-            @Override
-            protected void loadUniforms() {
-                lightDir = ARBShaderObjects.glGetUniformLocationARB(shader, "lightDir");
-            }
-
-            @Override
-            protected void setUniforms(V3DCamera camera) {
-                ARBShaderObjects.glUniform3fARB(lightDir, 1f, 0f, 0f);
-            }
-
-        };
 
         v3drawReader = new V3DrawReader(buffer);
 
@@ -97,11 +82,11 @@ public class V3DrawElement extends V3DElement {
          */
         // TODO remove lighting
 
-        shader.begin(camera);
+        
 
         v3drawReader.draw(camera);
 
-        shader.end();
+        
 
         /*
          * if (enableLighting) { GL11.glDisable(GL11.GL_LIGHTING); }

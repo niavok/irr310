@@ -1,3 +1,4 @@
+#version 120
 uniform vec3 lightDir;
 varying vec3 normal;
 
@@ -24,6 +25,7 @@ void main()
 
     //color = vec4(intensity,0.1,0.1,1.0);
 	gl_FragColor = color;
+	//gl_FragColor = vec4(baseColor, 1.0);
 
 }
 
