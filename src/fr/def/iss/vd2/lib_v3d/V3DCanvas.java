@@ -103,7 +103,7 @@ public class V3DCanvas {
             frame.setSize(width,height);
             frame.setUndecorated(true);  //here
             frame.setVisible(true);
-            frame.setAlwaysOnTop(true);
+            //frame.setAlwaysOnTop(true);
             frame.setLocation(0, 0);
             Canvas canvas = new Canvas();
             frame.add(canvas);
