@@ -18,6 +18,18 @@ public class GraphicGenerator {
         // Bubble
         generateObj("graphics/bubble.obj", "graphics/output/bubble.v3draw", null);
         
+        // Reactor
+        {
+            List<String> objectsStator = new ArrayList<String>();
+            objectsStator.add("stator");
+
+            generateObj("graphics/reactor.obj", "graphics/output/reactor_stator.v3draw", objectsStator);
+
+            List<String> objectsRotor = new ArrayList<String>();
+            objectsRotor.add("rotor");
+            generateObj("graphics/reactor.obj", "graphics/output/reactor_rotor.v3draw", objectsRotor);
+        }
+        
         // Propeller
         {
             List<String> objectsStator = new ArrayList<String>();
@@ -49,6 +61,9 @@ public class GraphicGenerator {
         
         //Factory
         generateObj("graphics/factory.obj", "graphics/output/factory.v3draw", null);
+        
+        //Wing
+        generateObj("graphics/wing.obj", "graphics/output/wing.v3draw", null);
         
        //Tank
         {

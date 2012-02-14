@@ -69,24 +69,23 @@ public class GraphicEngine extends FramerateEngine {
 
     public GraphicEngine() {
         framerate = new Duration(16666666);
-        //framerate = new Duration(1666666);
+        // framerate = new Duration(1666666);
         thrustLines = new ArrayList<Pair<LinearEngineCapacity, V3DLine>>();
 
     }
 
     @Override
     protected void init() {
-        //canvas = new V3DCanvas(context, 1920, 1200);
+        // canvas = new V3DCanvas(context, 1920, 1200);
         canvas = new V3DCanvas(context, 1280, 1024);
-        
+
         fitOrder = null;
 
         activeCamera = new V3DEye3DCamera(context);
 
         cameraController = new V3DFollow3DCameraController(activeCamera);
         animatedList.add(cameraController);
-        
-        
+
         fullscreenBinding = V3DCameraBinding.buildFullscreenCamera(activeCamera);
         activeCamera.setBackgroundColor(V3DColor.white);
 
@@ -96,17 +95,18 @@ public class GraphicEngine extends FramerateEngine {
         scene = new V3DScene(context);
         activeCamera.setScene(scene);
 
-        /*V3DBox sky = new V3DBox(context);
-        sky.setSize(new V3DVect3(1024, 768, 1));
-        sky.setPosition(1024 / 2, 768 / 2, 0);*/
+        /*
+         * V3DBox sky = new V3DBox(context); sky.setSize(new V3DVect3(1024, 768,
+         * 1)); sky.setPosition(1024 / 2, 768 / 2, 0);
+         */
 
         // activeCamera.getBackgroundScene().add(new V3DColorElement(sky,
         // V3DColor.pink));
-        //activeCamera.getBackgroundScene().add(new V3DColorElement(new Sky(context), V3DColor.pink));
+        // activeCamera.getBackgroundScene().add(new V3DColorElement(new
+        // Sky(context), V3DColor.pink));
 
         createBubble();
-        
-        
+
         // Add reference
         V3DElement ref0 = generateReference();
         ref0.setPosition(0, 0, 0);
@@ -128,7 +128,7 @@ public class GraphicEngine extends FramerateEngine {
         canvas.addCamera(fullscreenBinding);
         canvas.setEnabled(true);
 
-        //GUI
+        // GUI
         GuiFpsIndicator fpsIndicator = new GuiFpsIndicator(context);
         fullscreenBinding.getGui().add(fpsIndicator);
         fpsIndicator.setPosition(10, 10);
@@ -136,10 +136,10 @@ public class GraphicEngine extends FramerateEngine {
     }
 
     private void createBubble() {
-        
+
         File v3drawFileStructure = new File("graphics/output/bubble.v3draw");
         final V3DrawElement elementStructure = V3DrawElement.LoadFromFile(v3drawFileStructure, context);
-        //elementStructure.setShader("bubble");
+        // elementStructure.setShader("bubble");
         elementStructure.setScale(1000);
         scene.add(new V3DColorElement(new V3DShaderElement(elementStructure, "bubble"), new V3DColor(255, 255, 255)));
     }
@@ -199,8 +199,6 @@ public class GraphicEngine extends FramerateEngine {
             }
 
         }
-        
-        
 
         fitOrder = shipElements;
         cameraController.setFollowed(ship.getComponentByName("hull").getFirstPart());
@@ -211,47 +209,50 @@ public class GraphicEngine extends FramerateEngine {
         fullscreenBinding.getGui().add(speedIndicator);
         speedIndicator.setPosition(10, 30);
         animatedList.add(speedIndicator);
-        
+
     }
 
     protected V3DElement addObject(final WorldObject object, boolean inShip) {
 
-        
         Skin skin = null;
-        
-        if(object.getSkin().isEmpty()) {
+
+        if (object.getSkin().isEmpty()) {
             skin = new GenericSkin(context, object);
         } else {
-            if(object.getSkin().equals("big_propeller")) {
+            if (object.getSkin().equals("big_propeller")) {
                 skin = new PropellerSkin(context, (Component) object);
-            } else if(object.getSkin().equals("pvcell")) {
+            } else if (object.getSkin().equals("pvcell")) {
                 skin = new PvCellSkin(context, (Component) object);
-            } else if(object.getSkin().equals("camera")) {
+            } else if (object.getSkin().equals("camera")) {
                 skin = new CameraSkin(context, (Component) object);
-            } else if(object.getSkin().equals("tank")) {
+            } else if (object.getSkin().equals("reactor")) {
+                skin = new ReactorSkin(context, (Component) object);
+            } else if (object.getSkin().equals("tank")) {
                 skin = new TankSkin(context, (Component) object);
-            } else if(object.getSkin().equals("factory")) {
+            } else if (object.getSkin().equals("factory")) {
                 skin = new FactorySkin(context, (Component) object);
-            } else if(object.getSkin().equals("hangar")) {
+            } else if (object.getSkin().equals("hangar")) {
                 skin = new FactorySkin(context, (Component) object);
-            } else if(object.getSkin().equals("harvester")) {
+            } else if (object.getSkin().equals("harvester")) {
                 skin = new FactorySkin(context, (Component) object);
-            } else if(object.getSkin().equals("refinery")) {
+            } else if (object.getSkin().equals("refinery")) {
                 skin = new FactorySkin(context, (Component) object);
-            } else if(object.getSkin().equals("kernel")) {
+            } else if (object.getSkin().equals("kernel")) {
                 skin = new CameraSkin(context, (Component) object);
+            } else if (object.getSkin().equals("wing")) {
+                skin = new WingSkin(context, (Component) object);
             } else {
-                System.err.println("No skin found for: "+object.getSkin());
+                System.err.println("No skin found for: " + object.getSkin());
                 skin = new GenericSkin(context, object);
             }
         }
-        
+
         skin.bind(scene);
-        if(skin.isAnimated()) {
+        if (skin.isAnimated()) {
             animatedList.add(skin);
             skin.setFramerate(framerate);
         }
-        
+
         return skin.getElement();
     }
 
@@ -260,24 +261,20 @@ public class GraphicEngine extends FramerateEngine {
 
         Log.perfBegin("Frame");
         Game.getInstance().getWorld().lock();
-        
+
         Log.perfBegin("amination");
         // amination
-        for(Animated animated : animatedList) {
+        for (Animated animated : animatedList) {
             animated.animate();
         }
         Log.perfEnd();
-        
-        
-        /*Log.perfBegin("fit");
-        if (fitOrder == null) {
-            activeCamera.fitAll();
-        } else {
-            activeCamera.fit(fitOrder.getBoundingBox());
-        }
-        Log.perfEnd();*/
-        
-        
+
+        /*
+         * Log.perfBegin("fit"); if (fitOrder == null) { activeCamera.fitAll();
+         * } else { activeCamera.fit(fitOrder.getBoundingBox()); }
+         * Log.perfEnd();
+         */
+
         Log.perfBegin("Apply forces");
         // Apply forces
         for (Pair<LinearEngineCapacity, V3DLine> thrustLinePair : thrustLines) {
@@ -289,12 +286,12 @@ public class GraphicEngine extends FramerateEngine {
         Log.perfEnd();
 
         Log.perfBegin("draw");
-        
+
         canvas.frame();
         Game.getInstance().getWorld().unlock();
-        
+
         Log.perfEnd();
-        
+
         Log.perfEnd();
     }
 
@@ -330,16 +327,15 @@ public class GraphicEngine extends FramerateEngine {
         public void visit(WorldShipAddedEvent event) {
             addShip(event.getShip());
         }
-        
-        
+
         @Override
         public void visit(MinimizeWindowEvent event) {
             canvas.hide();
         }
-        
+
         @Override
         public void visit(KeyPressedEvent event) {
-            if(event.getKeyCode() == Keyboard.KEY_F11 && Keyboard.isKeyDown(Keyboard.KEY_RCONTROL)) {
+            if (event.getKeyCode() == Keyboard.KEY_F11 && Keyboard.isKeyDown(Keyboard.KEY_RCONTROL)) {
                 System.out.println("Reload shaders");
                 context.reloadShader();
                 return;

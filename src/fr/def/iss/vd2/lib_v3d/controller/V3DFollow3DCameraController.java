@@ -24,6 +24,7 @@ import java.awt.geom.Point2D;
 
 import com.irr310.client.graphics.Animated;
 import com.irr310.common.tools.TransformMatrix;
+import com.irr310.common.tools.Vect3;
 import com.irr310.common.world.Part;
 
 import fr.def.iss.vd2.lib_v3d.V3DInputEvent;
@@ -261,10 +262,18 @@ public class V3DFollow3DCameraController implements V3DCameraController, Animate
     public void animate() {
         if(element != null) {
             TransformMatrix transform = element.getTransform();
-            camera.setPosition(transform.getTranslation().toV3DVect3());
+            Vect3 translation = transform.getTranslation();
+
+            //Target
+            TransformMatrix target = TransformMatrix.identity();
+            target.translate(2,0,2);
+            target.preMultiply(transform);
+            V3DVect3 targetPosition = target.getTranslation().toV3DVect3();
+            camera.setPosition(targetPosition);
             
+            //Eye
             TransformMatrix eye = TransformMatrix.identity();
-            eye.translate(0,-20,0);
+            eye.translate(2,-20,2);
             eye.preMultiply(transform);
             V3DVect3 eyePosition = eye.getTranslation().toV3DVect3();
             camera.setEye(eyePosition);
@@ -275,7 +284,7 @@ public class V3DFollow3DCameraController implements V3DCameraController, Animate
             rotation.preMultiply(transform);
             rotation.translate(transform.getTranslation().negative());
             
-            top.translate(0,0,1);
+            top.translate(1,0,1);
             
             top.preMultiply(rotation);
             V3DVect3 topPosition = top.getTranslation().toV3DVect3();
