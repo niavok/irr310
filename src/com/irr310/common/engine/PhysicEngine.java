@@ -89,66 +89,69 @@ public class PhysicEngine extends FramerateEngine {
     protected void frame() {
 
         // Apply forces
-        
+
         // Linear Engines
         for (Pair<LinearEngineCapacity, RigidBody> linearEngine : linearEngines) {
             RigidBody body = linearEngine.getRight();
             Transform t = new Transform();
             body.getWorldTransform(t);
-            
+
             TransformMatrix force = TransformMatrix.identity();
             force.translate(new Vect3(0, linearEngine.getLeft().getCurrentThrust(), 0));
-            
+
             TransformMatrix rotation = new TransformMatrix();
             t.getOpenGLMatrix(rotation.getData());
             rotation.setTranslation(0, 0, 0);
             force.preMultiply(rotation);
 
-            
             body.applyCentralForce(force.getTranslation().toVector3f());
             body.setActivationState(RigidBody.ACTIVE_TAG);
         }
-        
+
         // wings
         for (Pair<WingCapacity, RigidBody> wing : wings) {
             RigidBody body = wing.getRight();
             WingCapacity wingCapacity = wing.getLeft();
-            
-            
-            //Get Transform
+
+            // Get Transform
             Transform t = new Transform();
             body.getWorldTransform(t);
             TransformMatrix bodyTransform = TransformMatrix.identity();
             t.getOpenGLMatrix(bodyTransform.getData());
-            
-            
+
             Vect3 breakAxis = wingCapacity.getBreakAxis();
-            
             Vect3 absoluteBreakAxis = breakAxis.transform(bodyTransform);
-            
-            
+
+            Vect3 thrustAxis = wingCapacity.getThrustAxis();
+            Vect3 absoluteThrustAxis = thrustAxis.transform(bodyTransform);
+
             Vector3f lv = new Vector3f();
             body.getLinearVelocity(lv);
             Vect3 velocity = new Vect3(lv);
 
-            
-            double opposition = velocity.dot(absoluteBreakAxis);
-            
-            body.applyCentralForce(absoluteBreakAxis.multiply(opposition * wingCapacity.getYield() * -1).toVector3f());
-            body.setActivationState(RigidBody.ACTIVE_TAG);
-            
-            
-        }
-        
+            if (velocity.length() > 0) {
 
-        
+                // Resistance
+                double opposition = velocity.dot(absoluteBreakAxis);
+                body.applyCentralForce(absoluteBreakAxis.multiply(opposition * wingCapacity.getFriction() * -1).toVector3f());
+
+                // Conversion
+                double conversion = velocity.dot(absoluteThrustAxis) / velocity.length();
+
+                body.applyCentralForce(absoluteThrustAxis.multiply(conversion * Math.abs(opposition) * wingCapacity.getFriction()
+                        * wingCapacity.getYield()).toVector3f());
+            }
+            body.setActivationState(RigidBody.ACTIVE_TAG);
+
+        }
+
         Game.getInstance().getWorld().lock();
-        
+
         // step the simulation
         if (dynamicsWorld != null) {
             dynamicsWorld.stepSimulation(framerate.getSeconds());
         }
-        
+
         Game.getInstance().getWorld().unlock();
 
     }
@@ -216,12 +219,12 @@ public class PhysicEngine extends FramerateEngine {
     }
 
     public void reloadStates() {
-        for(Entry<Part, RigidBody> partEntry : partToBodyMap.entrySet()) {
+        for (Entry<Part, RigidBody> partEntry : partToBodyMap.entrySet()) {
             PartMotionState motionState = (PartMotionState) partEntry.getValue().getMotionState();
             motionState.reload();
         }
     }
-    
+
     protected void addShip(Ship ship, Vect3 position) {
 
         for (Component component : ship.getComponents()) {
@@ -245,10 +248,9 @@ public class PhysicEngine extends FramerateEngine {
                     linearEngines.add(new ImmutablePair<LinearEngineCapacity, RigidBody>((LinearEngineCapacity) capacity,
                                                                                          partToBodyMap.get(component.getFirstPart())));
                 }
-                
+
                 if (capacity instanceof WingCapacity) {
-                    wings.add(new ImmutablePair<WingCapacity, RigidBody>((WingCapacity) capacity,
-                                                                                         partToBodyMap.get(component.getFirstPart())));
+                    wings.add(new ImmutablePair<WingCapacity, RigidBody>((WingCapacity) capacity, partToBodyMap.get(component.getFirstPart())));
                 }
 
             }
@@ -272,7 +274,7 @@ public class PhysicEngine extends FramerateEngine {
         Transform localA = new Transform(), localB = new Transform();
         localA.setIdentity();
         Vect3 position1 = slot1.getPosition();
-        
+
         localA.origin.set(position1.x.floatValue(), position1.y.floatValue(), position1.z.floatValue());
 
         MatrixUtil.setEulerZYX(localA.basis,
@@ -311,7 +313,7 @@ public class PhysicEngine extends FramerateEngine {
 
         // Create Dynamic Objects
 
-        float mass = part.getMass().floatValue()/10;
+        float mass = part.getMass().floatValue() / 10;
 
         // rigidbody is dynamic if and only if mass is non zero, otherwise
         // static
@@ -385,8 +387,6 @@ public class PhysicEngine extends FramerateEngine {
             return out;
         }
 
-        
-        
         @Override
         public void setWorldTransform(Transform worldTrans) {
             Vector3f origin = worldTrans.origin;
