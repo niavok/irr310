@@ -153,12 +153,20 @@ function init() {
         if (useMouseController) {
             core.log("useMouseController");
             var deadZoneRadius = 5;
-            var controlRadius = 200.0;
+            var controlRadius = 100.0;
             var mousePosition = core.mouse.getPosition();
 
 
             var diffX = (mouseControlleurOrigin.getX() - mousePosition.getX());
             var diffY = (mouseControlleurOrigin.getY() - mousePosition.getY());
+            
+            if(diffY > controlRadius) {
+                diffY = controlRadius;
+            }
+            if(diffX > controlRadius) {
+                diffX = controlRadius;
+            }
+            
 
             var diffVert = diffX * Math.cos(Math.PI / 4.0) + diffY * Math.sin(Math.PI / 4.0);
             var diffHoriz = -1 * diffX * Math.sin(Math.PI / 4.0) + diffY * Math.cos(Math.PI / 4.0);

@@ -321,7 +321,7 @@ public class PhysicEngine extends FramerateEngine {
 
         Vector3f localInertia = new Vector3f(0, 0, 0);
         if (isDynamic) {
-            colShape.calculateLocalInertia(mass, localInertia);
+            colShape.calculateLocalInertia(mass*25, localInertia);
         }
 
         // TODO rotation

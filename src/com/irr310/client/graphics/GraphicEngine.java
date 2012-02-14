@@ -241,7 +241,11 @@ public class GraphicEngine extends FramerateEngine {
                 skin = new CameraSkin(context, (Component) object);
             } else if (object.getSkin().equals("wing")) {
                 skin = new WingSkin(context, (Component) object);
-            } else {
+            } else if (object.getSkin().equals("hull")) {
+                skin = new HullSkin(context, (Component) object);
+            } else if (object.getSkin().equals("thrusterBlock")) {
+                skin = new ThrusterBlockSkin(context, (Component) object);
+            }  else {
                 System.err.println("No skin found for: " + object.getSkin());
                 skin = new GenericSkin(context, object);
             }

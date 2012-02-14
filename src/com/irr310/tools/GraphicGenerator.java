@@ -65,6 +65,12 @@ public class GraphicGenerator {
         //Wing
         generateObj("graphics/wing.obj", "graphics/output/wing.v3draw", null);
         
+        //Hull
+        generateObj("graphics/hull.obj", "graphics/output/hull.v3draw", null);
+        
+        //Thruster block
+        generateObj("graphics/thruster_block.obj", "graphics/output/thruster_block.v3draw", null);
+        
        //Tank
         {
             List<String> objectsStructure = new ArrayList<String>();
