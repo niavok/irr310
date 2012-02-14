@@ -156,23 +156,29 @@ function init() {
             var controlRadius = 200.0;
             var mousePosition = core.mouse.getPosition();
 
-            core.log("diff x "+ (mouseControlleurOrigin.getX() - mousePosition.getX()));
 
-            if(Math.abs(mouseControlleurOrigin.getX() - mousePosition.getX()) < deadZoneRadius) {
+            var diffX = (mouseControlleurOrigin.getX() - mousePosition.getX());
+            var diffY = (mouseControlleurOrigin.getY() - mousePosition.getY());
+
+            var diffVert = diffX * Math.cos(Math.PI / 4.0) + diffY * Math.sin(Math.PI / 4.0);
+            var diffHoriz = -1 * diffX * Math.sin(Math.PI / 4.0) + diffY * Math.cos(Math.PI / 4.0);
+
+
+            if(Math.abs(diffVert) < deadZoneRadius) {
                 leftEngine.targetThrust = 0;
                 rightEngine.targetThrust = 0;
             } else {
-                var move =  (mouseControlleurOrigin.getX() - mousePosition.getX()) / controlRadius;
+                var move =  (diffVert) / controlRadius;
                 
                 leftThrustTarget = - move * maxRotationThrust;
                 rightThrustTarget = move * maxRotationThrust;
             }
             
-            if(Math.abs(mouseControlleurOrigin.getY() - mousePosition.getY()) < deadZoneRadius) {
+            if(Math.abs(diffHoriz) < deadZoneRadius) {
                 leftEngine.targetThrust = 0;
                 rightEngine.targetThrust = 0;
             } else {
-                var move =  (mouseControlleurOrigin.getY() - mousePosition.getY()) / controlRadius;
+                var move =  (diffHoriz) / controlRadius;
                 
                 topThrustTarget = move * maxRotationThrust;
                 bottomThrustTarget = - move * maxRotationThrust;
