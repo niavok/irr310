@@ -68,6 +68,10 @@ public class GraphicGenerator {
         //Hull
         generateObj("graphics/hull.obj", "graphics/output/hull.v3draw", null);
         
+        //Gun
+        generateObj("graphics/gun.obj", "graphics/output/gun.v3draw", null);
+        
+        
         //Thruster block
         generateObj("graphics/thruster_block.obj", "graphics/output/thruster_block.v3draw", null);
         

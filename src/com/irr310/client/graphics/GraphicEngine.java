@@ -14,6 +14,8 @@ import com.irr310.client.graphics.gui.GuiSpeedIndicator;
 import com.irr310.client.graphics.skin.CameraSkin;
 import com.irr310.client.graphics.skin.FactorySkin;
 import com.irr310.client.graphics.skin.GenericSkin;
+import com.irr310.client.graphics.skin.GunSkin;
+import com.irr310.client.graphics.skin.HullSkin;
 import com.irr310.client.graphics.skin.PropellerSkin;
 import com.irr310.client.graphics.skin.PvCellSkin;
 import com.irr310.client.graphics.skin.ReactorSkin;
@@ -255,6 +257,8 @@ public class GraphicEngine extends FramerateEngine {
                 skin = new HullSkin(context, (Component) object);
             } else if (object.getSkin().equals("thrusterBlock")) {
                 skin = new ThrusterBlockSkin(context, (Component) object);
+            } else if (object.getSkin().equals("gun")) {
+                skin = new GunSkin(context, (Component) object);
             }  else {
                 System.err.println("No skin found for: " + object.getSkin());
                 skin = new GenericSkin(context, object);

@@ -38,6 +38,7 @@ import javax.swing.JFrame;
 import org.fenggui.binding.render.lwjgl.LWJGLBinding;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.ARBMultisample;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
@@ -108,8 +109,6 @@ public class V3DCanvas {
             Canvas canvas = new Canvas();
             frame.add(canvas);
             
-           
-            
             Display.setDisplayMode(new DisplayMode(width, height));
             //Display.setFullscreen(true);
             Display.setVSyncEnabled(true);
@@ -127,6 +126,7 @@ public class V3DCanvas {
 
         GL11.glEnable(GL11.GL_LINE_SMOOTH);
         GL11.glEnable(GL11.GL_POINT_SMOOTH);
+        
 
         if (polygonOffset) {
             GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
@@ -154,6 +154,7 @@ public class V3DCanvas {
         initied = true;
         
         new LWJGLBinding();
+        
     }
 
     public void destroy() {
