@@ -152,6 +152,13 @@ public class ScriptContext {
                 allowedClasses.add(com.irr310.client.script.js.objects.Core.class);
                 allowedClasses.add(com.irr310.client.script.js.objects.Mouse.class);
                 allowedClasses.add(com.irr310.client.script.js.objects.Vec2.class);
+                allowedClasses.add(com.irr310.client.script.js.objects.Color.class);
+                
+                //Gui
+                allowedClasses.add(com.irr310.client.script.js.objects.Gui.class);
+                allowedClasses.add(com.irr310.client.script.js.objects.GuiRectangle.class);
+                
+                //Objects
                 allowedClasses.add(com.irr310.client.script.js.objects.Player.class);
                 allowedClasses.add(com.irr310.client.script.js.objects.Ship.class);
                 allowedClasses.add(com.irr310.client.script.js.objects.Component.class);

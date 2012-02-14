@@ -40,6 +40,9 @@ function init() {
 
         var baseThrust = 0;
         
+        var deadZone = null;
+        var controlZone = null;
+        
         core.log("maxThrust "+maxThrust);        
         // Add key handler
         core.onKeyPressed = function (keyCode, char) {
@@ -70,6 +73,15 @@ function init() {
                 case KEY_SPACE:
                     useMouseController = true;
                     mouseControlleurOrigin = core.mouse.getPosition();
+                    deadZone = core.gui.createRectangle();
+                    deadZone.setPosition(mouseControlleurOrigin.minus(new Vec2(5,5)));
+                    deadZone.setSize(new Vec2(10,10));
+                    deadZone.setColor(new Color(50,0,0));
+                    controlZone = core.gui.createRectangle();
+                    controlZone.setPosition(mouseControlleurOrigin.minus(new Vec2(100,100)));
+                    controlZone.setSize(new Vec2(200,200));
+                    controlZone.setColor(new Color(50,0,0));
+                    
                     core.log("press space");
                     //leftEngine.targetThrust = 0;
                     //rightEngine.targetThrust = 0;
@@ -111,6 +123,8 @@ function init() {
                     break;
                 case KEY_SPACE:
                     useMouseController = false;
+                    core.gui.destroyRectangle(controlZone);
+                    core.gui.destroyRectangle(deadZone);
                     core.log("released space");
                     break;
                 default:

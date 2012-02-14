@@ -65,6 +65,7 @@ import fr.def.iss.vd2.lib_v3d.element.V3DGroupElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DLine;
 import fr.def.iss.vd2.lib_v3d.element.V3DShaderElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DrawElement;
+import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent;
 import fr.def.iss.vd2.lib_v3d.gui.V3DLabel;
 
 public class GraphicEngine extends FramerateEngine {
@@ -366,6 +367,14 @@ public class GraphicEngine extends FramerateEngine {
         if (canvas != null) {
             canvas.onMouseEvent(mouseEvent);
         }
+    }
+
+    public void addGuiComponent(V3DGuiComponent component) {
+        fullscreenBinding.getGui().add(component);        
+    }
+
+    public void removeGuiComponent(V3DGuiComponent component) {
+        fullscreenBinding.getGui().remove(component); 
     }
 
 }

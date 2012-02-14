@@ -237,4 +237,8 @@ public class GameClient extends Game {
         return clientNetworkEngine;
     }
 
+    public GraphicEngine getGraphicEngine() {
+        return graphicEngine;
+    }
+
 }

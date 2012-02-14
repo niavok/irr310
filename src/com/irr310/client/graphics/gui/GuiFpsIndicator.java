@@ -17,6 +17,7 @@
 
 package com.irr310.client.graphics.gui;
 
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -41,11 +42,14 @@ public class GuiFpsIndicator extends V3DLabel implements Animated{
     private float lastFps = 0;
     private long lastFpsMesureTime = 0;
     private int frameMesureCount = 0;
+
+    private DecimalFormat format;
     
     public GuiFpsIndicator(V3DContext context) {
         super(context, "-- fps");
         currentTime = System.nanoTime()/NANO_IN_MILLI;
-        setColor(V3DColor.green, V3DColor.transparent);
+        setColor(new V3DColor(0.6f,0.6f,0.6f), V3DColor.transparent);
+        format = new DecimalFormat("0.0");
     }
     
     @Override
@@ -58,7 +62,7 @@ public class GuiFpsIndicator extends V3DLabel implements Animated{
 
             frameMesureCount = 0;
             lastFpsMesureTime = currentTime;
-            setText(""+lastFps+" fps");
+            setText(""+format.format(lastFps)+" fps");
         }     
     }
 

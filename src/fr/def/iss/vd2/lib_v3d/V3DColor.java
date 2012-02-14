@@ -151,4 +151,8 @@ public class V3DColor {
     public boolean isSame(V3DColor sameColor) {
         return a == sameColor.a && r == sameColor.r && g == sameColor.g && b == sameColor.b;
     }
+
+    public org.fenggui.util.Color toColor() {
+        return new org.fenggui.util.Color(r, g, b, a);
+    }
 }

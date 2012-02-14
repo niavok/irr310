@@ -19,6 +19,7 @@ package fr.def.iss.vd2.lib_v3d.gui;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.fenggui.Container;
 import org.fenggui.Display;
@@ -37,7 +38,7 @@ import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
 public class V3DGui implements V3DLocalisable{
 
     private Display display = null;
-    List<V3DGuiComponent> guiComponentList = new ArrayList<V3DGuiComponent>();
+    List<V3DGuiComponent> guiComponentList = new CopyOnWriteArrayList<V3DGuiComponent>();
     boolean generated = false;
     private V3DCameraBinding parentBinding;
     Container rootContainer;

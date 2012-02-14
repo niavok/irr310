@@ -20,6 +20,8 @@ function CoreProxy() {
     }
     
     this.mouse = new Mouse();
+    
+    this.gui = new Gui();
 
 }
 
