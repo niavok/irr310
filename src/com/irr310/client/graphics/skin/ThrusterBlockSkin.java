@@ -1,4 +1,4 @@
-package com.irr310.client.graphics;
+package com.irr310.client.graphics.skin;
 
 import java.io.File;
 
@@ -13,25 +13,21 @@ import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DGroupElement;
+import fr.def.iss.vd2.lib_v3d.element.V3DShaderElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DrawElement;
 
-public class TankSkin extends Skin {
+public class ThrusterBlockSkin extends Skin {
 
     private V3DGroupElement elements;
     private V3DrawElement elementPanel;
 
-    public TankSkin(V3DContext context, final Component object) {
+    public ThrusterBlockSkin(V3DContext context, final Component object) {
         
         elements = new V3DGroupElement(context);
 
-        File v3drawFile = new File("graphics/output/tank_structure.v3draw");
-        final V3DrawElement element = V3DrawElement.LoadFromFile(v3drawFile, context);
-        elements.add(new V3DColorElement(element, new V3DColor(135, 158, 255)));
-        
-        
-        File v3drawFileTank = new File("graphics/output/tank_tank.v3draw");
-        final V3DrawElement elementTank = V3DrawElement.LoadFromFile(v3drawFileTank, context);
-        elements.add(new V3DColorElement(elementTank, new V3DColor(151, 32, 0)));
+        File v3drawFileStructure = new File("graphics/output/thruster_block.v3draw");
+        final V3DrawElement elementStructure = V3DrawElement.LoadFromFile(v3drawFileStructure, context);
+        elements.add(new V3DColorElement(new V3DShaderElement(elementStructure, "propeller"), new V3DColor(135, 158, 255)));
         
         TransformMatrix transform = object.getFirstPart().getTransform();
         elements.setTransformMatrix(transform.toFloatBuffer());

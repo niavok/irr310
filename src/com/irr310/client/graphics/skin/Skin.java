@@ -1,5 +1,6 @@
-package com.irr310.client.graphics;
+package com.irr310.client.graphics.skin;
 
+import com.irr310.client.graphics.Animated;
 import com.irr310.server.Duration;
 
 import fr.def.iss.vd2.lib_v3d.V3DScene;

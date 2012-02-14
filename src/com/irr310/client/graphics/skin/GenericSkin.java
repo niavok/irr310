@@ -1,4 +1,4 @@
-package com.irr310.client.graphics;
+package com.irr310.client.graphics.skin;
 
 import java.io.File;
 

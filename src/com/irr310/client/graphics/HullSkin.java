@@ -2,6 +2,7 @@ package com.irr310.client.graphics;
 
 import java.io.File;
 
+import com.irr310.client.graphics.skin.Skin;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.TransformMatrix.TransformMatrixChangeListener;
 import com.irr310.common.world.Component;

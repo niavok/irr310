@@ -11,6 +11,16 @@ import org.lwjgl.opengl.Display;
 
 import com.irr310.client.graphics.gui.GuiFpsIndicator;
 import com.irr310.client.graphics.gui.GuiSpeedIndicator;
+import com.irr310.client.graphics.skin.CameraSkin;
+import com.irr310.client.graphics.skin.FactorySkin;
+import com.irr310.client.graphics.skin.GenericSkin;
+import com.irr310.client.graphics.skin.PropellerSkin;
+import com.irr310.client.graphics.skin.PvCellSkin;
+import com.irr310.client.graphics.skin.ReactorSkin;
+import com.irr310.client.graphics.skin.Skin;
+import com.irr310.client.graphics.skin.TankSkin;
+import com.irr310.client.graphics.skin.ThrusterBlockSkin;
+import com.irr310.client.graphics.skin.WingSkin;
 import com.irr310.common.Game;
 import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.event.DefaultEngineEventVisitor;

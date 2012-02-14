@@ -1,4 +1,4 @@
-package com.irr310.client.graphics;
+package com.irr310.client.graphics.skin;
 
 import java.io.File;
 
@@ -13,21 +13,20 @@ import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DGroupElement;
-import fr.def.iss.vd2.lib_v3d.element.V3DShaderElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DrawElement;
 
-public class ThrusterBlockSkin extends Skin {
+public class FactorySkin extends Skin {
 
     private V3DGroupElement elements;
     private V3DrawElement elementPanel;
 
-    public ThrusterBlockSkin(V3DContext context, final Component object) {
+    public FactorySkin(V3DContext context, final Component object) {
         
         elements = new V3DGroupElement(context);
 
-        File v3drawFileStructure = new File("graphics/output/thruster_block.v3draw");
+        File v3drawFileStructure = new File("graphics/output/factory.v3draw");
         final V3DrawElement elementStructure = V3DrawElement.LoadFromFile(v3drawFileStructure, context);
-        elements.add(new V3DColorElement(new V3DShaderElement(elementStructure, "propeller"), new V3DColor(135, 158, 255)));
+        elements.add(new V3DColorElement(elementStructure, new V3DColor(135, 158, 255)));
         
         TransformMatrix transform = object.getFirstPart().getTransform();
         elements.setTransformMatrix(transform.toFloatBuffer());
