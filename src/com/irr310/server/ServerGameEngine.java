@@ -83,7 +83,7 @@ public class ServerGameEngine extends FramerateEngine {
 
             o.setName(event.getName());
 
-            Game.getInstance().getWorld().addObject(o);
+            //Game.getInstance().getWorld().addObject(o);
         }
 
         @Override

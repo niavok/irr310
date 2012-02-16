@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.irr310.client.GameClient;
+import com.irr310.common.Game;
 import com.irr310.common.engine.EventEngine;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
@@ -19,11 +20,16 @@ import com.irr310.common.network.protocol.PartStateUpdateListMessage;
 import com.irr310.common.network.protocol.ShipListMessage;
 import com.irr310.common.network.protocol.SignupRequestMessage;
 import com.irr310.common.network.protocol.SignupResponseMessage;
+import com.irr310.common.network.protocol.WorldObjectListMessage;
+import com.irr310.common.world.CelestialObject;
 import com.irr310.common.world.Part;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.Ship;
+import com.irr310.common.world.World;
+import com.irr310.common.world.WorldObject;
 import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.view.CapacityView;
+import com.irr310.common.world.view.CelestialObjectView;
 import com.irr310.common.world.view.PartStateView;
 import com.irr310.common.world.view.ShipView;
 import com.irr310.server.GameServer;
@@ -40,15 +46,13 @@ public class ServerNetworkEngine extends EventEngine {
             new Thread(new NioServer(null, 22310, worker)).start();
             NetworkSyncronizer syncronizer = new NetworkSyncronizer(this);
             syncronizer.start();
-            
+
         } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
 
-    
-    
     @Override
     protected void processEvent(EngineEvent e) {
         e.accept(new NetworkEngineEventVisitor());
@@ -131,6 +135,28 @@ public class ServerNetworkEngine extends EventEngine {
                 }
                     break;
 
+                case CAMERA_VIEW_OBJECT_LIST_REQUEST: {
+                    if (!event.getClient().isLogged()) {
+                        break;
+                    }
+                    World world = Game.getInstance().getWorld();
+
+                    List<CelestialObjectView> objectList = new ArrayList<CelestialObjectView>();
+
+                    for (CelestialObject object : world.getObjects()) {
+                        objectList.add(object.toView());
+                    }
+
+                    List<ShipView> shipList = new ArrayList<ShipView>();
+
+                    for (Ship ship : world.getShips()) {
+                        shipList.add(ship.toView());
+                    }
+                    
+                    event.getClient().send(new WorldObjectListMessage(message.getResponseIndex(), objectList, shipList));
+                }
+                    break;
+
                 case CAPACITY_UPDATE: {
                     if (!event.getClient().isLogged()) {
                         break;
@@ -142,12 +168,12 @@ public class ServerNetworkEngine extends EventEngine {
                     capacity.fromView(capacityView);
                 }
                     break;
-                case PART_STATE_UPDATE_LIST: { 
+                case PART_STATE_UPDATE_LIST: {
                     PartStateUpdateListMessage m = (PartStateUpdateListMessage) message;
                     for (PartStateView partStateView : m.partStateList) {
                         Part part = GameServer.getInstance().getWorld().getPartById(partStateView.id);
                         if (part != null) {
-                            //System.out.println("update part");
+                            // System.out.println("update part");
                             part.fromStateView(partStateView);
                         }
                     }
@@ -168,7 +194,7 @@ public class ServerNetworkEngine extends EventEngine {
     @Override
     protected void end() {
     }
-    
+
     public NetworkWorker getWorker() {
         return worker;
     };

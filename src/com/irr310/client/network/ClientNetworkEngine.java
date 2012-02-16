@@ -13,8 +13,11 @@ import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.network.NetworkMessage;
 import com.irr310.common.network.protocol.PartStateUpdateListMessage;
 import com.irr310.common.network.protocol.ShipListMessage;
+import com.irr310.common.network.protocol.WorldObjectListMessage;
+import com.irr310.common.world.CelestialObject;
 import com.irr310.common.world.Part;
 import com.irr310.common.world.Ship;
+import com.irr310.common.world.view.CelestialObjectView;
 import com.irr310.common.world.view.PartStateView;
 import com.irr310.common.world.view.ShipView;
 
@@ -94,6 +97,9 @@ public class ClientNetworkEngine extends EventEngine {
                 case SHIP_LIST:
                     shipListReceived(event.getMessage());
                     break;
+                case WORLD_OBJECT_LIST:
+                    worldObjectListReceived(event.getMessage());
+                    break;
                 case PART_STATE_UPDATE_LIST:
                     partStateUpdateReceived(event.getMessage());
                     break;
@@ -122,6 +128,22 @@ public class ClientNetworkEngine extends EventEngine {
 
     }
 
+    private void worldObjectListReceived(NetworkMessage message) {
+        WorldObjectListMessage m = (WorldObjectListMessage) message;
+        System.out.println("World object list received");
+        
+        for (CelestialObjectView celestialObjectView : m.celestialObjectList) {
+            CelestialObject object = GameClient.getInstance().getWorld().loadCelestialObject(celestialObjectView);
+            System.out.println("Celestial object received: " + object.getId());
+        }
+        
+        for (ShipView shipView : m.shipsList) {
+            Ship ship = GameClient.getInstance().getWorld().loadShip(shipView);
+            System.out.println("Ship received: " + ship.getId());
+        }
+
+    }
+    
     private void partStateUpdateReceived(NetworkMessage message) {
         PartStateUpdateListMessage m = (PartStateUpdateListMessage) message;
         for (PartStateView partStateView : m.partStateList) {

@@ -1,8 +1,10 @@
 package com.irr310.client.navigation;
 
 import com.irr310.client.GameClient;
+import com.irr310.client.network.request.FetchShipListRequest;
 import com.irr310.client.network.request.LoginRequest;
 import com.irr310.client.network.request.SignupRequest;
+import com.irr310.common.network.protocol.CameraViewObjectListRequestMessage;
 import com.irr310.common.network.protocol.LoginResponseMessage;
 import com.irr310.common.network.protocol.ShipListRequestMessage;
 import com.irr310.common.network.protocol.SignupResponseMessage;
@@ -39,7 +41,14 @@ public class LoginTask extends Task{
 
                 LoginManager.localPlayer = GameClient.getInstance().getWorld().loadPlayer(m.player);
 
-                GameClient.getInstance().getNetWorkEngine().send(new ShipListRequestMessage());
+                
+                
+                FetchShipListRequest fetchShipListRequest = new FetchShipListRequest();
+                fetchShipListRequest.sendAndWait(GameClient.getInstance().getNetWorkEngine());
+                
+                //TODO, find the right camera
+                GameClient.getInstance().getNetWorkEngine().send(new CameraViewObjectListRequestMessage());
+                
                 complete();
             }
 

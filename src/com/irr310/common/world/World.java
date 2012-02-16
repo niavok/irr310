@@ -8,11 +8,13 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import com.irr310.client.navigation.LoginManager;
 import com.irr310.common.Game;
+import com.irr310.common.event.AddWorldObjectEvent;
 import com.irr310.common.event.PlayerAddedEvent;
-import com.irr310.common.event.WorldObjectAddedEvent;
+import com.irr310.common.event.CelestialObjectAddedEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.common.tools.Vect3;
 import com.irr310.common.world.capacity.Capacity;
+import com.irr310.common.world.view.CelestialObjectView;
 import com.irr310.common.world.view.ComponentView;
 import com.irr310.common.world.view.PartView;
 import com.irr310.common.world.view.PlayerView;
@@ -20,13 +22,14 @@ import com.irr310.common.world.view.ShipView;
 
 public class World {
 
-    private final List<WorldObject> objects;
+    private final List<CelestialObject> celestialObjects;
     private final List<Ship> ships;
     private final List<Player> players;
     private final List<Part> parts;
     private final List<Part> myParts;
     private final Map<Long, Player> playerIdMap;
     private final Map<Long, Ship> shipIdMap;
+    private final Map<Long, CelestialObject> celestialObjectIdMap;
     private final Map<Long, Capacity> capacityIdMap;
     private final Map<Long, Component> componentIdMap;
     private final Map<Long, Slot> slotIdMap;
@@ -35,13 +38,14 @@ public class World {
     ReentrantLock mutex;
     
     public World() {
-        objects = new ArrayList<WorldObject>();
+        celestialObjects = new ArrayList<CelestialObject>();
         ships = new ArrayList<Ship>();
         players = new ArrayList<Player>();
         parts = new ArrayList<Part>();
         myParts = new ArrayList<Part>();
         playerIdMap = new HashMap<Long, Player>();
         shipIdMap = new HashMap<Long, Ship>();
+        celestialObjectIdMap = new HashMap<Long, CelestialObject>();
         capacityIdMap = new HashMap<Long, Capacity>();
         slotIdMap = new HashMap<Long, Slot>();
         componentIdMap = new HashMap<Long, Component>();
@@ -49,9 +53,10 @@ public class World {
         mutex = new ReentrantLock();
     }
 
-    public void addObject(WorldObject o) {
-        objects.add(o);
-        Game.getInstance().sendToAll(new WorldObjectAddedEvent(o));
+    public void addCelestialObject(CelestialObject o) {
+        celestialObjects.add(o);
+        celestialObjectIdMap.put(o.getId(), o);
+        Game.getInstance().sendToAll(new CelestialObjectAddedEvent(o));
     }
 
     public void addComponent(Component component) {
@@ -95,6 +100,17 @@ public class World {
         player.fromView(playerView);
         addPlayer(player);
         return player;
+    }
+    
+    public CelestialObject loadCelestialObject(CelestialObjectView celestialObjectView) {
+        if (celestialObjectIdMap.containsKey(celestialObjectView.id)) {
+            return celestialObjectIdMap.get(celestialObjectView.id);
+        }
+
+        CelestialObject celestialObject = new CelestialObject(celestialObjectView.id, celestialObjectView.name);
+        celestialObject.fromView(celestialObjectView);
+        addCelestialObject(celestialObject);
+        return celestialObject;
     }
 
     public Ship loadShip(ShipView shipView) {
@@ -142,7 +158,11 @@ public class World {
         addComponent(component);
         return component;
     }
-
+    
+    public List<CelestialObject> getObjects() {
+        return celestialObjects;
+    }
+    
     public Part loadPart(PartView partView) {
         if (partIdMap.containsKey(partView.id)) {
             return partIdMap.get(partView.id);
@@ -170,4 +190,10 @@ public class World {
     public void unlock() {
         mutex.unlock();
     }
+
+    public List<Ship> getShips() {
+        return ships;
+    }
+
+    
 }

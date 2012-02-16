@@ -20,7 +20,7 @@ public abstract class DefaultEngineEventVisitor implements EngineEventVisitor {
     public void visit(AddWorldObjectEvent event) {
     }
 
-    public void visit(WorldObjectAddedEvent event) {
+    public void visit(CelestialObjectAddedEvent event) {
     }
 
     @Override

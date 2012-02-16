@@ -10,7 +10,6 @@ import java.nio.channels.SocketChannel;
 import java.nio.channels.spi.SelectorProvider;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -184,7 +183,12 @@ public class NioClient implements Runnable {
         // Write until there's not more data ...
         while (!queue.isEmpty()) {
             ByteBuffer buf = queue.get(0);
+            try {
             socketChannel.write(buf);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+                System.exit(0);
+            }
             if (buf.remaining() > 0) {
                 // ... or the socket's buffer fills up
                 break;

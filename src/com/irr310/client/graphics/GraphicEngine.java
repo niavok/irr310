@@ -32,11 +32,12 @@ import com.irr310.common.event.MinimizeWindowEvent;
 import com.irr310.common.event.PauseEngineEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
-import com.irr310.common.event.WorldObjectAddedEvent;
+import com.irr310.common.event.CelestialObjectAddedEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.TransformMatrix.TransformMatrixChangeListener;
+import com.irr310.common.world.CelestialObject;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.Part;
 import com.irr310.common.world.Ship;
@@ -180,11 +181,15 @@ public class GraphicEngine extends FramerateEngine {
         Display.destroy();
     }
 
+    protected void addCelestialObject(final CelestialObject object) {
+        scene.add(addObject(object));
+    }
+    
     protected void addShip(final Ship ship) {
 
         V3DGroupElement shipElements = new V3DGroupElement(context);
         for (Component component : ship.getComponents()) {
-            shipElements.add(addObject(component, true));
+            shipElements.add(addObject(component));
 
             for (Capacity capacity : component.getCapacities()) {
                 if (capacity instanceof LinearEngineCapacity) {
@@ -225,11 +230,12 @@ public class GraphicEngine extends FramerateEngine {
 
     }
 
-    protected V3DElement addObject(final WorldObject object, boolean inShip) {
+    protected V3DElement addObject(final WorldObject object) {
 
         Skin skin = null;
 
         if (object.getSkin().isEmpty()) {
+            System.err.println("generic skin");
             skin = new GenericSkin(context, object);
         } else {
             if (object.getSkin().equals("big_propeller")) {
@@ -338,8 +344,9 @@ public class GraphicEngine extends FramerateEngine {
         }
 
         @Override
-        public void visit(WorldObjectAddedEvent event) {
-            addObject(event.getObject(), false);
+        public void visit(CelestialObjectAddedEvent event) {
+            System.err.println("CelestialObjectAddedEvent");
+            addCelestialObject(event.getObject());
         }
 
         @Override

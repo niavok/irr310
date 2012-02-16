@@ -15,7 +15,7 @@ import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.PauseEngineEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
-import com.irr310.common.event.WorldObjectAddedEvent;
+import com.irr310.common.event.CelestialObjectAddedEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vect3;
@@ -227,7 +227,7 @@ public class DebugGraphicEngine extends FramerateEngine {
         }
 
         @Override
-        public void visit(WorldObjectAddedEvent event) {
+        public void visit(CelestialObjectAddedEvent event) {
             addObject(event.getObject(), false);
         }
 

@@ -4,7 +4,7 @@ import com.irr310.common.Game;
 import com.irr310.common.tools.Vect3;
 import com.irr310.server.GameServer;
 
-public class Monolith extends WorldObject {
+public class Monolith extends CelestialObject {
 
     public Monolith(long id, String name) {
         super(id, name);

@@ -1,5 +1,6 @@
 package com.irr310.common.network;
 
+import com.irr310.common.network.protocol.CameraViewObjectListRequestMessage;
 import com.irr310.common.network.protocol.CapacityUpdateMessage;
 import com.irr310.common.network.protocol.HelloMessage;
 import com.irr310.common.network.protocol.LoginRequestMessage;
@@ -10,6 +11,7 @@ import com.irr310.common.network.protocol.ShipListMessage;
 import com.irr310.common.network.protocol.ShipListRequestMessage;
 import com.irr310.common.network.protocol.SignupRequestMessage;
 import com.irr310.common.network.protocol.SignupResponseMessage;
+import com.irr310.common.network.protocol.WorldObjectListMessage;
 import com.irr310.common.tools.TypeConversion;
 
 public abstract class MessageParser {
@@ -127,6 +129,12 @@ public abstract class MessageParser {
                 break;
             case PART_STATE_UPDATE_LIST:
                 message = new PartStateUpdateListMessage();
+                break;
+            case CAMERA_VIEW_OBJECT_LIST_REQUEST:
+                message = new CameraViewObjectListRequestMessage();
+                break;
+            case WORLD_OBJECT_LIST:
+                message = new WorldObjectListMessage();
                 break;
             default:
                 System.err.println("Not implemented message type: " + messageType.toString());

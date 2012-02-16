@@ -17,7 +17,7 @@ import com.irr310.common.event.AddWorldObjectEvent;
 import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
-import com.irr310.common.event.WorldObjectAddedEvent;
+import com.irr310.common.event.CelestialObjectAddedEvent;
 import com.irr310.common.tools.Vect3;
 import com.irr310.common.world.Monolith;
 import com.irr310.common.world.Player;
@@ -194,10 +194,7 @@ public class GameServer extends Game {
     
     public void initWorld() {
         Monolith monolith = new Monolith(GameServer.pickNewId(), "monolith");
-        
-        
-        WorldObjectAddedEvent monolithAddedEvent = new WorldObjectAddedEvent(monolith);
-        GameServer.getInstance().sendToAll(monolithAddedEvent);
+        world.addCelestialObject(monolith);
         
     }
     
