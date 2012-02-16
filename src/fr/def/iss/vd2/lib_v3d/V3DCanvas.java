@@ -126,7 +126,6 @@ public class V3DCanvas {
 
         GL11.glEnable(GL11.GL_LINE_SMOOTH);
         GL11.glEnable(GL11.GL_POINT_SMOOTH);
-        
 
         if (polygonOffset) {
             GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);

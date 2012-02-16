@@ -13,9 +13,13 @@ import com.irr310.common.Game;
 import com.irr310.common.engine.Engine;
 import com.irr310.common.engine.PhysicEngine;
 import com.irr310.common.event.AddShipEvent;
+import com.irr310.common.event.AddWorldObjectEvent;
 import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
+import com.irr310.common.event.WorldObjectAddedEvent;
+import com.irr310.common.tools.Vect3;
+import com.irr310.common.world.Monolith;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.World;
 import com.irr310.server.network.ServerNetworkEngine;
@@ -127,6 +131,8 @@ public class GameServer extends Game {
          * System.out.println("Game : Exiting..."); break; } } } catch
          * (IOException e) { // Todo handle exception }
          */
+        
+        initWorld();
 
         boolean waitStop = true;
 
@@ -178,12 +184,23 @@ public class GameServer extends Game {
         AddShipEvent addShipEvent = new AddShipEvent(newPlayer);
         //addShipEvent.setType(AddShipEvent.Type.SIMPLE);
         addShipEvent.setType(AddShipEvent.Type.SIMPLE_FIGHTER);
+        addShipEvent.setPosition(new Vect3(50, 0, 0));
         GameServer.getInstance().sendToAll(addShipEvent);
 
         /* world.addShip(playerShip, new Vect3(10.0,20.0,30.0)); */
 
         return newPlayer;
     }
+    
+    public void initWorld() {
+        Monolith monolith = new Monolith(GameServer.pickNewId(), "monolith");
+        
+        
+        WorldObjectAddedEvent monolithAddedEvent = new WorldObjectAddedEvent(monolith);
+        GameServer.getInstance().sendToAll(monolithAddedEvent);
+        
+    }
+    
 
     public World getWorld() {
         return world;

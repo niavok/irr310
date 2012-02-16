@@ -104,9 +104,7 @@ public class ServerGameEngine extends FramerateEngine {
                     
             }
 
-            // ship.getKernel().exec("leftProperller.setThrustTarget(1)");
-
-            GameServer.getInstance().getWorld().addShip(ship, new Vect3(0, 0, 0));
+            GameServer.getInstance().getWorld().addShip(ship, event.getPosition());
         }
 
         @Override
@@ -144,6 +142,7 @@ public class ServerGameEngine extends FramerateEngine {
 
     @Override
     protected void init() {
+        // Create the world
     }
 
     @Override
