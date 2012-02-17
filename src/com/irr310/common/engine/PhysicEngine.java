@@ -20,11 +20,15 @@ import com.bulletphysics.collision.broadphase.BroadphaseProxy;
 import com.bulletphysics.collision.broadphase.DbvtBroadphase;
 import com.bulletphysics.collision.broadphase.OverlapFilterCallback;
 import com.bulletphysics.collision.dispatch.CollisionDispatcher;
+import com.bulletphysics.collision.dispatch.CollisionObject;
 import com.bulletphysics.collision.dispatch.DefaultCollisionConfiguration;
+import com.bulletphysics.collision.narrowphase.ManifoldPoint;
+import com.bulletphysics.collision.narrowphase.PersistentManifold;
 import com.bulletphysics.collision.shapes.BoxShape;
 import com.bulletphysics.collision.shapes.CollisionShape;
 import com.bulletphysics.dynamics.DiscreteDynamicsWorld;
 import com.bulletphysics.dynamics.DynamicsWorld;
+import com.bulletphysics.dynamics.InternalTickCallback;
 import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.dynamics.RigidBodyConstructionInfo;
 import com.bulletphysics.dynamics.constraintsolver.ConstraintSolver;
@@ -187,6 +191,8 @@ public class PhysicEngine extends FramerateEngine {
 
         dynamicsWorld = new DiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
 
+        dynamicsWorld.setInternalTickCallback(new CollisionDetectionCallback(), null);
+        
         // No gravity
         dynamicsWorld.setGravity(new Vector3f(0f, 0f, 0f));
 
@@ -209,6 +215,8 @@ public class PhysicEngine extends FramerateEngine {
                 return true;
             }
         });
+        
+        
 
     }
 
@@ -321,7 +329,7 @@ public class PhysicEngine extends FramerateEngine {
 
         Vector3f localInertia = new Vector3f(0, 0, 0);
         if (isDynamic) {
-            colShape.calculateLocalInertia(mass*25, localInertia);
+            colShape.calculateLocalInertia(mass*10, localInertia);
         }
 
         // TODO rotation
@@ -335,7 +343,7 @@ public class PhysicEngine extends FramerateEngine {
         myMotionState.setBody(body);
 
         body.setActivationState(RigidBody.ISLAND_SLEEPING);
-        body.setDamping(0.1f, 0.5f);
+        body.setDamping(0.1f, 0.8f);
         body.setSleepingThresholds(0.001f, 0.001f);
         // body.setDeactivationTime(deactivationTime)
 
@@ -348,6 +356,54 @@ public class PhysicEngine extends FramerateEngine {
         body.setCcdSweptSphereRadius(0.2f);
         return body;
 
+    }
+
+    private final class CollisionDetectionCallback extends InternalTickCallback {
+        @Override
+        public void internalTick(DynamicsWorld world, float timeStep) {
+            int numManifolds = world.getDispatcher().getNumManifolds();
+            for (int i=0;i<numManifolds;i++)
+            {
+                PersistentManifold contactManifold =  world.getDispatcher().getManifoldByIndexInternal(i);
+                RigidBody obA = (RigidBody) contactManifold.getBody0();
+                RigidBody obB = (RigidBody) contactManifold.getBody1();
+            
+                int numContacts = contactManifold.getNumContacts();
+                for (int j=0;j<numContacts;j++)
+                {
+                    ManifoldPoint pt = contactManifold.getContactPoint(j);
+                    if (pt.getDistance()<0.f)
+                    {
+                        Vector3f ptA = new Vector3f();
+                        Vector3f ptB = new Vector3f();
+                        
+                        Vector3f vA = new Vector3f();
+                        Vector3f vB = new Vector3f();
+                        
+                        
+                        pt.getPositionWorldOnA(ptA);
+                        pt.getPositionWorldOnB(ptB);
+                        obA.getLinearVelocity(vA);
+                        obB.getLinearVelocity(vB);
+                        
+                        System.err.println("impluse: "+ pt.appliedImpulse);
+                        
+                        
+                        
+                        Vector3f normalOnB = pt.normalWorldOnB;
+                        System.err.println("Collision detected !!!");
+                        System.err.println("ptA: "+ new Vect3(ptA));
+                        System.err.println("A speed: "+ new Vect3(vA));
+                        
+                        System.err.println("ptB: "+ new Vect3(ptB));
+                        System.err.println("B speed: "+ new Vect3(vB));
+                        System.err.println("normalOnB: "+ new Vect3(normalOnB));
+                        
+                    }
+                }
+            }
+            
+        }
     }
 
     public class UserData {

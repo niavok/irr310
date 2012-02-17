@@ -63,7 +63,11 @@ public class NioClient implements Runnable {
          * //this.pendingData.put(socket, queue); }
          */
         //System.out.println("send "+data.length+" bytes");
-        queue.add(ByteBuffer.wrap(data));
+        ByteBuffer wrap = ByteBuffer.wrap(data);
+        if(wrap == null) {
+            System.err.println("null wrap");
+        }
+        queue.add(wrap);
         this.pendingChanges.add(new ChangeRequest(socketChannel, ChangeRequest.REGISTER, SelectionKey.OP_WRITE));
         // }
 

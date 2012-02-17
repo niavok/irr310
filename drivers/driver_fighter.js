@@ -82,7 +82,7 @@ function init() {
                     controlZone.setSize(new Vec2(200,200));
                     controlZone.setColor(new Color(50,0,0));
                     
-                    core.log("press space");
+                    //core.log("press space");
                     //leftEngine.targetThrust = 0;
                     //rightEngine.targetThrust = 0;
                     break;
@@ -125,7 +125,7 @@ function init() {
                     useMouseController = false;
                     core.gui.destroyRectangle(controlZone);
                     core.gui.destroyRectangle(deadZone);
-                    core.log("released space");
+                    //core.log("released space");
                     break;
                 default:
                     core.log("released undefined key: '"+keyCode+"' / '"+char+"'");
@@ -165,7 +165,7 @@ function init() {
         
         
         if (useMouseController) {
-            core.log("useMouseController");
+            //core.log("useMouseController");
             var deadZoneRadius = 5;
             var controlRadius = 100.0;
             var mousePosition = core.mouse.getPosition();
