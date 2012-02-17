@@ -10,6 +10,7 @@ import org.lwjgl.opengl.Display;
 import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.linearmath.Transform;
 import com.irr310.common.engine.FramerateEngine;
+import com.irr310.common.event.CollisionEvent;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.PauseEngineEvent;
@@ -38,6 +39,7 @@ import fr.def.iss.vd2.lib_v3d.camera.V3DSimple3DCamera;
 import fr.def.iss.vd2.lib_v3d.controller.V3DSimple3DCameraController;
 import fr.def.iss.vd2.lib_v3d.element.V3DBox;
 import fr.def.iss.vd2.lib_v3d.element.V3DBox.RenderMode;
+import fr.def.iss.vd2.lib_v3d.element.V3DCircle;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DGroupElement;
@@ -234,6 +236,14 @@ public class DebugGraphicEngine extends FramerateEngine {
         @Override
         public void visit(WorldShipAddedEvent event) {
             addShip(event.getShip());
+        }
+        
+        @Override
+        public void visit(CollisionEvent event) {
+            V3DCircle v3dCircle = new V3DCircle(context);
+            v3dCircle.setPosition(event.getCollisionDescriptor().getGlobalPosition().toV3DVect3());
+            v3dCircle.setSize(event.getCollisionDescriptor().getImpulse()/50.0f);
+            scene.add(new V3DColorElement(v3dCircle, V3DColor.yellow));
         }
 
     }

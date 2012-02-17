@@ -25,6 +25,7 @@ import com.irr310.client.graphics.skin.ThrusterBlockSkin;
 import com.irr310.client.graphics.skin.WingSkin;
 import com.irr310.common.Game;
 import com.irr310.common.engine.FramerateEngine;
+import com.irr310.common.event.CollisionEvent;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.KeyPressedEvent;
@@ -55,15 +56,18 @@ import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
 import fr.def.iss.vd2.lib_v3d.camera.V3DEye3DCamera;
 import fr.def.iss.vd2.lib_v3d.camera.V3DSimple3DCamera;
+import fr.def.iss.vd2.lib_v3d.controller.V3D3DPickTestController;
 import fr.def.iss.vd2.lib_v3d.controller.V3DFollow3DCameraController;
 import fr.def.iss.vd2.lib_v3d.controller.V3DSimple3DCameraController;
 import fr.def.iss.vd2.lib_v3d.controller.V3DSimple3DRotateOnlyCameraController;
 import fr.def.iss.vd2.lib_v3d.element.V3DBox;
 import fr.def.iss.vd2.lib_v3d.element.V3DBox.RenderMode;
+import fr.def.iss.vd2.lib_v3d.element.V3DCircle;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DGroupElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DLine;
+import fr.def.iss.vd2.lib_v3d.element.V3DPoint;
 import fr.def.iss.vd2.lib_v3d.element.V3DShaderElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DrawElement;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent;
@@ -322,10 +326,11 @@ public class GraphicEngine extends FramerateEngine {
 
     @Override
     protected void processEvent(EngineEvent e) {
-        e.accept(new DebugGraphicEngineEventVisitor());
+        e.accept(new GraphicEngineEventVisitor());
     }
 
-    private final class DebugGraphicEngineEventVisitor extends DefaultEngineEventVisitor {
+    private final class GraphicEngineEventVisitor extends DefaultEngineEventVisitor {
+
         @Override
         public void visit(QuitGameEvent event) {
             System.out.println("stopping graphic engine");
@@ -366,6 +371,15 @@ public class GraphicEngine extends FramerateEngine {
                 context.reloadShader();
                 return;
             }
+        }
+        
+        @Override
+        public void visit(CollisionEvent event) {
+            V3DPoint point = new V3DPoint(context);
+            point.setPosition(event.getCollisionDescriptor().getGlobalPosition().toV3DVect3());
+            point.setSize(5f);
+            System.err.println("imulse "+ event.getCollisionDescriptor().getImpulse());
+            scene.add(new V3DColorElement(point, new V3DColor((int)event.getCollisionDescriptor().getImpulse()*10,50,255-(int)event.getCollisionDescriptor().getImpulse()*10)));
         }
 
     }

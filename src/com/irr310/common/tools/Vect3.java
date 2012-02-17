@@ -170,6 +170,5 @@ public class Vect3 {
         return x * vect.x + y * vect.y + z * vect.z;
     }
 
-    
 
 }

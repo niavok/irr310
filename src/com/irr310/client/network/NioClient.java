@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class NioClient implements Runnable {
     // The host:port combination to connect to
@@ -30,7 +31,7 @@ public class NioClient implements Runnable {
 
     // Maps a SocketChannel to a list of ByteBuffer instances
     // private Map pendingData = new HashMap();
-    private List<ByteBuffer> queue;
+    private Queue<ByteBuffer> queue;
 
     // Maps a SocketChannel to a RspHandler
     // private Map rspHandlers = Collections.synchronizedMap(new HashMap());
@@ -48,7 +49,7 @@ public class NioClient implements Runnable {
         // Start a new connection
         socketChannel = this.initiateConnection();
         this.handler = handler;
-        this.queue = new ArrayList<ByteBuffer>();
+        this.queue = new LinkedBlockingQueue<ByteBuffer>();
         // this.rspHandlers.put(socket, handler);
     }
 
@@ -186,7 +187,11 @@ public class NioClient implements Runnable {
 
         // Write until there's not more data ...
         while (!queue.isEmpty()) {
-            ByteBuffer buf = queue.get(0);
+            ByteBuffer buf = queue.peek();
+            if(buf == null) {
+                System.err.println("null buff !");
+                System.err.println("empty? "+queue.isEmpty());
+            }
             try {
             socketChannel.write(buf);
             } catch (NullPointerException e) {
@@ -197,7 +202,7 @@ public class NioClient implements Runnable {
                 // ... or the socket's buffer fills up
                 break;
             }
-            queue.remove(0);
+            queue.poll();
         }
 
         if (queue.isEmpty()) {

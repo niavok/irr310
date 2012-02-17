@@ -40,6 +40,7 @@ import com.bulletphysics.linearmath.MotionState;
 import com.bulletphysics.linearmath.Transform;
 import com.bulletphysics.util.ObjectArrayList;
 import com.irr310.common.Game;
+import com.irr310.common.event.CollisionEvent;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.PauseEngineEvent;
@@ -91,7 +92,6 @@ public class PhysicEngine extends FramerateEngine {
 
     @Override
     protected void frame() {
-
         // Apply forces
 
         // Linear Engines
@@ -222,7 +222,7 @@ public class PhysicEngine extends FramerateEngine {
 
     protected void addObject(WorldObject object) {
         for (final Part part : object.getParts()) {
-            addPart(part);
+            addPart(part, new UserData());
         }
     }
 
@@ -244,10 +244,12 @@ public class PhysicEngine extends FramerateEngine {
                     part.getTransform().translate(position.plus(component.getShipPosition()));
                 }
 
-                RigidBody rigidBody = addPart(part);
-                partToBodyMap.put(part, rigidBody);
                 UserData userData = new UserData();
                 userData.ship = ship;
+                RigidBody rigidBody = addPart(part, userData);
+                partToBodyMap.put(part, rigidBody);
+                
+                
                 rigidBody.setUserPointer(userData);
             }
 
@@ -310,7 +312,7 @@ public class PhysicEngine extends FramerateEngine {
 
     }
 
-    protected RigidBody addPart(Part part) {
+    protected RigidBody addPart(Part part, UserData userData) {
         // create a few dynamic rigidbodies
         // Re-using the same collision is better for memory usage and
         // performance
@@ -339,7 +341,9 @@ public class PhysicEngine extends FramerateEngine {
         PartMotionState myMotionState = new PartMotionState(part);
         RigidBodyConstructionInfo rbInfo = new RigidBodyConstructionInfo(mass, myMotionState, colShape, localInertia);
         RigidBody body = new RigidBody(rbInfo);
-
+        userData.part  = part;
+        body.setUserPointer(userData);
+        
         myMotionState.setBody(body);
 
         body.setActivationState(RigidBody.ISLAND_SLEEPING);
@@ -377,6 +381,9 @@ public class PhysicEngine extends FramerateEngine {
                         Vector3f ptA = new Vector3f();
                         Vector3f ptB = new Vector3f();
                         
+                        
+                        
+                        
                         Vector3f vA = new Vector3f();
                         Vector3f vB = new Vector3f();
                         
@@ -386,18 +393,40 @@ public class PhysicEngine extends FramerateEngine {
                         obA.getLinearVelocity(vA);
                         obB.getLinearVelocity(vB);
                         
-                        System.err.println("impluse: "+ pt.appliedImpulse);
+                        
+                        CollisionDescriptor collisionDescriptor = new CollisionDescriptor();
+                        Part partA = ((UserData)obA.getUserPointer()).part;
+                        Part partB = ((UserData)obB.getUserPointer()).part;
+                        
+                        
+                        collisionDescriptor.setPartA(partA);
+                        collisionDescriptor.setPartB(partB);
+                        
+                        Vect3 localPositionA = new Vect3(pt.localPointA);
+                        Vect3 globalPositionA = new Vect3(ptA);
+                        Vect3 localPositionB = new Vect3(pt.localPointB);
+                        Vect3 globalPositionB =new Vect3(ptB);
                         
                         
                         
-                        Vector3f normalOnB = pt.normalWorldOnB;
-                        System.err.println("Collision detected !!!");
-                        System.err.println("ptA: "+ new Vect3(ptA));
-                        System.err.println("A speed: "+ new Vect3(vA));
                         
-                        System.err.println("ptB: "+ new Vect3(ptB));
-                        System.err.println("B speed: "+ new Vect3(vB));
-                        System.err.println("normalOnB: "+ new Vect3(normalOnB));
+                        Vect3 globalPosition = globalPositionA.plus(globalPositionB).divide(2);
+                        
+                        
+                        System.err.println("localPositionA "+localPositionA);
+                        System.err.println("globalPositionA "+globalPositionA);
+                        System.err.println("localPositionB "+localPositionB);
+                        System.err.println("globalPositionB "+globalPositionB);
+                        System.err.println("globalPosition "+globalPosition);
+                        
+                        collisionDescriptor.setLocalPositionOnA(localPositionA);
+                        collisionDescriptor.setLocalPositionOnB(localPositionB);
+                        collisionDescriptor.setGlobalPosition(globalPosition);
+                        
+                        collisionDescriptor.setImpulse(pt.appliedImpulse);
+                        
+                        Game.getInstance().sendToAll(new CollisionEvent(collisionDescriptor));
+                       
                         
                     }
                 }
@@ -408,6 +437,7 @@ public class PhysicEngine extends FramerateEngine {
 
     public class UserData {
 
+        public Part part = null;
         public Ship ship = null;
 
     }
