@@ -28,6 +28,7 @@ public class V3DShader {
     private int fragShader = 0;
     private int geoShader = 0;
     private boolean useShader = true;
+    private boolean useGeoShader = true;
     private boolean loaded = false;
 
     public V3DShader(String name) {
@@ -46,6 +47,7 @@ public class V3DShader {
 
         loaded = false;
         useShader = false;
+        useGeoShader = false;
         /*
          * create the shader program. If OK, create vertex and fragment shaders
          */
@@ -59,14 +61,20 @@ public class V3DShader {
             useShader = false;
         }
 
+        if(geoShader != 0) {
+        	useGeoShader = true;
+        }
+        
         /*
          * if the vertex and fragment shaders setup sucessfully, attach them to
          * the shader program, link the sahder program (into the GL context I
          * suppose), and validate
          */
-        if (vertShader != 0 && fragShader != 0 && geoShader != 0) {
+        if (vertShader != 0 && fragShader != 0 ) {
             ARBShaderObjects.glAttachObjectARB(shader, vertShader);
-            ARBShaderObjects.glAttachObjectARB(shader, geoShader);
+            if(useGeoShader) {
+            	ARBShaderObjects.glAttachObjectARB(shader, geoShader);
+            }
             ARBShaderObjects.glAttachObjectARB(shader, fragShader);
             ARBShaderObjects.glLinkProgramARB(shader);
             ARBShaderObjects.glValidateProgramARB(shader);
@@ -84,7 +92,9 @@ public class V3DShader {
         ARBShaderObjects.glDeleteObjectARB(shader);
         ARBShaderObjects.glDeleteObjectARB(vertShader);
         ARBShaderObjects.glDeleteObjectARB(fragShader);
-        ARBShaderObjects.glDeleteObjectARB(geoShader);
+        if(useGeoShader) {
+        	ARBShaderObjects.glDeleteObjectARB(geoShader);
+        }
         shader = 0;
         vertShader = 0;
         fragShader = 0;
@@ -181,7 +191,10 @@ public class V3DShader {
  // same as per the vertex shader except for method syntax
     private int createGeometryShader(String filename) {
 
-        System.out.println(GLContext.getCapabilities().GL_EXT_geometry_shader4);
+        if(!GLContext.getCapabilities().GL_EXT_geometry_shader4) {
+        	System.err.println("Geometry shader not available");
+        	return 0;
+        }
         
         geoShader = ARBShaderObjects.glCreateShaderObjectARB(ARBGeometryShader4.GL_GEOMETRY_SHADER_ARB);
         if (geoShader == 0) {
