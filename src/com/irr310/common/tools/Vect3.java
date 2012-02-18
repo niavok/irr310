@@ -158,12 +158,23 @@ public class Vect3 {
     public Vect3 transform(TransformMatrix transform) {
         Vect3 out = new Vect3();
 
+        out.x = x * transform.get(0, 0) + y * transform.get(0, 1) + z * transform.get(0, 2) + transform.get(0, 3);
+        out.y = x * transform.get(1, 0) + y * transform.get(1, 1) + z * transform.get(1, 2) + transform.get(1, 3);
+        out.z = x * transform.get(2, 0) + y * transform.get(2, 1) + z * transform.get(2, 2) + transform.get(2, 3);
+
+        return out;
+    }
+    
+    public Vect3 rotate(TransformMatrix transform) {
+        Vect3 out = new Vect3();
+
         out.x = x * transform.get(0, 0) + y * transform.get(0, 1) + z * transform.get(0, 2);
         out.y = x * transform.get(1, 0) + y * transform.get(1, 1) + z * transform.get(1, 2);
         out.z = x * transform.get(2, 0) + y * transform.get(2, 1) + z * transform.get(2, 2);
 
         return out;
     }
+    
 
     public double dot(Vect3 vect) {
         return x * vect.x + y * vect.y + z * vect.z;

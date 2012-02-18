@@ -28,7 +28,7 @@ public class GunController extends CapacityController {
             Vect3 to = new Vect3(0, capacity.range, 0).transform(part.getTransform());
             
             
-            Game.getInstance().sendToAll(new BulletFiredEvent(part, capacity.damage, capacity.range, capacity.damageType, part.getTransform().getTranslation(), to));
+            Game.getInstance().sendToAll(new BulletFiredEvent(part, component.getEfficiency() * capacity.damage, capacity.range, capacity.damageType, part.getTransform().getTranslation(), to));
             
         }
     }

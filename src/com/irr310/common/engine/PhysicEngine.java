@@ -124,10 +124,10 @@ public class PhysicEngine extends FramerateEngine {
             t.getOpenGLMatrix(bodyTransform.getData());
 
             Vect3 breakAxis = wingCapacity.getBreakAxis();
-            Vect3 absoluteBreakAxis = breakAxis.transform(bodyTransform);
+            Vect3 absoluteBreakAxis = breakAxis.rotate(bodyTransform);
 
             Vect3 thrustAxis = wingCapacity.getThrustAxis();
-            Vect3 absoluteThrustAxis = thrustAxis.transform(bodyTransform);
+            Vect3 absoluteThrustAxis = thrustAxis.rotate(bodyTransform);
 
             Vector3f lv = new Vector3f();
             body.getLinearVelocity(lv);
@@ -168,7 +168,7 @@ public class PhysicEngine extends FramerateEngine {
     
     public RayResultDescriptor rayTest(Vect3 from, Vect3 to) {
         
-        System.out.println("begin ray test");
+        System.out.println("begin ray test from "+from+" to "+ to);
         
         dynamicsWorld.rayTest(from.toVector3f(), to.toVector3f(), new RayResultCallback() {
             
@@ -176,6 +176,8 @@ public class PhysicEngine extends FramerateEngine {
             public float addSingleResult(LocalRayResult rayResult, boolean normalInWorldSpace) {
                 System.out.println("ray test result !");
                 
+                UserData data = (UserData) ((RigidBody) rayResult.collisionObject).getUserPointer();
+                System.out.println("hit on "+data.part.getParentObject().getName()+" at "+ rayResult.hitFraction);
                 return 0;
             }
         });
