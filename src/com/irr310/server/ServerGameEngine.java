@@ -20,9 +20,11 @@ import com.irr310.common.world.Part;
 import com.irr310.common.world.Ship;
 import com.irr310.common.world.WorldObject;
 import com.irr310.common.world.capacity.Capacity;
+import com.irr310.common.world.capacity.GunCapacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
-import com.irr310.server.controller.CapacityController;
-import com.irr310.server.controller.LinearEngineController;
+import com.irr310.common.world.capacity.controller.CapacityController;
+import com.irr310.common.world.capacity.controller.GunController;
+import com.irr310.common.world.capacity.controller.LinearEngineController;
 import com.irr310.server.game.ShipFactory;
 
 public class ServerGameEngine extends FramerateEngine {
@@ -116,7 +118,9 @@ public class ServerGameEngine extends FramerateEngine {
                     if (capacity instanceof LinearEngineCapacity) {
                         addCapacityController(new LinearEngineController(component, (LinearEngineCapacity) capacity));
                     }
-
+                    if (capacity instanceof GunCapacity) {
+                        addCapacityController(new GunController(component, (GunCapacity) capacity));
+                    }
                 }
             }
 

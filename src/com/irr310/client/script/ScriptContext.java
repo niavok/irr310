@@ -117,7 +117,7 @@ public class ScriptContext {
         try {
             Object fObj = scope.get(functionName, scope);
             if (!(fObj instanceof Function)) {
-                System.out.println("f is undefined or not a function.");
+                System.out.println(functionName+" is undefined or not a function.");
             } else {
                 Function f = (Function) fObj;
                 Object result = f.call(cx, scope, scope, functionArgs);
@@ -164,6 +164,8 @@ public class ScriptContext {
                 allowedClasses.add(com.irr310.client.script.js.objects.Component.class);
                 allowedClasses.add(com.irr310.client.script.js.objects.Capacity.class);
                 allowedClasses.add(com.irr310.client.script.js.objects.LinearEngineCapacity.class);
+                allowedClasses.add(com.irr310.client.script.js.objects.GunCapacity.class);
+                
                 allowedClasses.add(com.irr310.common.tools.Vect3.class);
                 allowedClasses.add(com.irr310.common.tools.TransformMatrix.class);
                 allowedClasses.add(java.lang.String.class);

@@ -36,4 +36,6 @@ public interface EngineEventVisitor {
     public abstract void visit(CollisionEvent event);
 
     public abstract void visit(DamageEvent event);
+
+    public abstract void visit(MouseEvent event);
 }

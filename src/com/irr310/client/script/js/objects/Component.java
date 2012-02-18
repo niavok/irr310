@@ -22,6 +22,10 @@ public class Component {
 	    if(capacity.getName().equals("linearEngine")) {
 	            return new LinearEngineCapacity((com.irr310.common.world.capacity.LinearEngineCapacity) capacity);
 	    }
+	    if(capacity.getName().equals("gun")) {
+            return new GunCapacity((com.irr310.common.world.capacity.GunCapacity) capacity);
+	    }
+	    System.err.println("unknown capacity name");
 	    return null;
     }
 	

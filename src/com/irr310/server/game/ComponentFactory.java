@@ -4,6 +4,7 @@ import com.irr310.common.Game;
 import com.irr310.common.tools.Vect3;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.Part;
+import com.irr310.common.world.capacity.GunCapacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.common.world.capacity.WingCapacity;
 import com.irr310.server.GameServer;
@@ -148,6 +149,10 @@ public class ComponentFactory {
         component.addSlot(GameServer.pickNewId(), part, new Vect3(0 , -shape.z/4, shape.z / 2));
         component.addSlot(GameServer.pickNewId(), part, new Vect3(0 , -shape.z/4, -shape.z / 2));
 
+        
+        GunCapacity gunCapacity = new GunCapacity(GameServer.pickNewId());
+        component.addCapacity(gunCapacity);
+        
         return component;
     }
     

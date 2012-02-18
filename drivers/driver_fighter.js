@@ -20,6 +20,7 @@ function init() {
         var rightEngine = ship.getComponentByName("rightReactor").getCapacityByName("linearEngine");
         var topEngine = ship.getComponentByName("topReactor").getCapacityByName("linearEngine");
         var bottomEngine = ship.getComponentByName("bottomReactor").getCapacityByName("linearEngine");
+        var gun = ship.getComponentByName("gun").getCapacityByName("gun");
         var kernel = ship.getComponentByName("kernel");
         
         core.log("leftEngine.maxThrust "+leftEngine.getMaxThrust());
@@ -130,6 +131,21 @@ function init() {
                 default:
                     core.log("released undefined key: '"+keyCode+"' / '"+char+"'");
             }   
+        }
+        
+        core.onMouseEvent = function(action, button, x, y) {
+            switch(action) {
+                case MOUSE_PRESSED:
+                    core.log("mouse pressed");
+                    if(useMouseController) {
+                        if(button == 1) {
+                            gun.fire(true);
+                        }
+                    }
+                    break;
+                    
+            }
+        
         }
 
 

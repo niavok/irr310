@@ -14,7 +14,7 @@ public class DamageNotificationMessage extends NetworkMessage {
     public long target;
     
     @NetworkField
-    public  DamageType damageType;
+    public  int damageType;
     
     public DamageNotificationMessage() {
         super(NetworkMessageType.DAMAGE_NOTIFICATION);
@@ -23,7 +23,7 @@ public class DamageNotificationMessage extends NetworkMessage {
     public DamageNotificationMessage(Part target, double damage, DamageType damageType) {
         super(NetworkMessageType.DAMAGE_NOTIFICATION);
         this.damage = damage;
-        this.damageType = damageType;
+        this.damageType = damageType.ordinal();
         this.target = target.getId();
     }
 

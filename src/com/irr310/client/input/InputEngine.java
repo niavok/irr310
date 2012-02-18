@@ -11,6 +11,7 @@ import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.KeyPressedEvent;
 import com.irr310.common.event.KeyReleasedEvent;
 import com.irr310.common.event.MinimizeWindowEvent;
+import com.irr310.common.event.MouseEvent;
 import com.irr310.common.event.PauseEngineEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
@@ -64,10 +65,12 @@ public class InputEngine extends FramerateEngine {
             if (Mouse.getEventButton() == -1) {
                 if (dragging) {
                     // Drag
-                    GameClient.getInstance().onMouseEvent(new V3DMouseEvent(Action.MOUSE_DRAGGED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1));
+                    V3DMouseEvent mouseEvent = new V3DMouseEvent(Action.MOUSE_DRAGGED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1);
+                    Game.getInstance().sendToAll(new MouseEvent(mouseEvent));
                 } else {
                     // Move
-                    GameClient.getInstance().onMouseEvent(new V3DMouseEvent(Action.MOUSE_MOVED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1));
+                    V3DMouseEvent mouseEvent = new V3DMouseEvent(Action.MOUSE_MOVED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1);
+                    Game.getInstance().sendToAll(new MouseEvent(mouseEvent));
                 }
 
             } else {
@@ -75,13 +78,16 @@ public class InputEngine extends FramerateEngine {
                     // Pressed
                     dragging = true;
                     pressTime[Mouse.getEventButton()] = Mouse.getEventNanoseconds();
-                    GameClient.getInstance().onMouseEvent(new V3DMouseEvent(Action.MOUSE_PRESSED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1));
+                    V3DMouseEvent mouseEvent = new V3DMouseEvent(Action.MOUSE_PRESSED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1);
+                    Game.getInstance().sendToAll(new MouseEvent(mouseEvent));
                 } else {
                     // Released
                     dragging = false;
-                    GameClient.getInstance().onMouseEvent(new V3DMouseEvent(Action.MOUSE_RELEASED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1));
+                    V3DMouseEvent mouseEvent = new V3DMouseEvent(Action.MOUSE_RELEASED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1);
+                    Game.getInstance().sendToAll(new MouseEvent(mouseEvent));
                     if( Mouse.getEventNanoseconds()  - pressTime[Mouse.getEventButton()] < 500000000 ) {
-                        GameClient.getInstance().onMouseEvent(new V3DMouseEvent(Action.MOUSE_CLICKED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1));
+                        mouseEvent = new V3DMouseEvent(Action.MOUSE_CLICKED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1);
+                        Game.getInstance().sendToAll(new MouseEvent(mouseEvent));
                     }
                 }
 

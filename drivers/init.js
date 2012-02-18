@@ -14,6 +14,10 @@ function CoreProxy() {
     this.onKeyReleased = function(keyCode, char) {
     
     }
+
+    this.onMouseEvent = function(action, button, x, y) {
+    
+    }
     
     this.onFrame = function(time) {
     
@@ -35,6 +39,11 @@ function onKeyPressed(keyCode, char) {
 function onKeyReleased(keyCode, char) {
     core.onKeyReleased(keyCode, char);
 }
+
+function onMouseEvent(action, button, x, y) {
+    core.onMouseEvent(action, button, x, y);
+}
+
 
 function onFrame(time) {
     core.onFrame(time);

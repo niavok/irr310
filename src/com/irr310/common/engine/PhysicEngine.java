@@ -6,14 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.vecmath.Quat4f;
-import javax.vecmath.Tuple3f;
 import javax.vecmath.Vector3f;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
-
-import sun.font.SunFontManager.FamilyDescription;
 
 import com.bulletphysics.collision.broadphase.BroadphaseInterface;
 import com.bulletphysics.collision.broadphase.BroadphasePair;
@@ -22,7 +18,6 @@ import com.bulletphysics.collision.broadphase.DbvtBroadphase;
 import com.bulletphysics.collision.broadphase.DispatcherInfo;
 import com.bulletphysics.collision.broadphase.OverlapFilterCallback;
 import com.bulletphysics.collision.dispatch.CollisionDispatcher;
-import com.bulletphysics.collision.dispatch.CollisionObject;
 import com.bulletphysics.collision.dispatch.DefaultCollisionConfiguration;
 import com.bulletphysics.collision.dispatch.DefaultNearCallback;
 import com.bulletphysics.collision.dispatch.NearCallback;
@@ -44,13 +39,13 @@ import com.bulletphysics.linearmath.MotionState;
 import com.bulletphysics.linearmath.Transform;
 import com.bulletphysics.util.ObjectArrayList;
 import com.irr310.common.Game;
+import com.irr310.common.event.CelestialObjectAddedEvent;
 import com.irr310.common.event.CollisionEvent;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.PauseEngineEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
-import com.irr310.common.event.CelestialObjectAddedEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vect3;
@@ -64,8 +59,6 @@ import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.common.world.capacity.WingCapacity;
 import com.irr310.server.Duration;
-import com.irr310.server.GameServer;
-import com.irr310.server.controller.LinearEngineController;
 
 public class PhysicEngine extends FramerateEngine {
 

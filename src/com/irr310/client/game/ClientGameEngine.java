@@ -1,19 +1,11 @@
 package com.irr310.client.game;
 
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-
-import com.irr310.client.GameClient;
-import com.irr310.common.Game;
 import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
-import com.irr310.common.event.KeyPressedEvent;
-import com.irr310.common.event.KeyReleasedEvent;
 import com.irr310.common.event.PauseEngineEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
@@ -21,13 +13,12 @@ import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.Ship;
 import com.irr310.common.world.capacity.Capacity;
+import com.irr310.common.world.capacity.GunCapacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
+import com.irr310.common.world.capacity.controller.CapacityController;
+import com.irr310.common.world.capacity.controller.GunController;
+import com.irr310.common.world.capacity.controller.LinearEngineController;
 import com.irr310.server.Duration;
-import com.irr310.server.controller.CapacityController;
-import com.irr310.server.controller.LinearEngineController;
-
-import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
-import fr.def.iss.vd2.lib_v3d.V3DMouseEvent.Action;
 
 public class ClientGameEngine extends FramerateEngine {
 
@@ -65,6 +56,9 @@ public class ClientGameEngine extends FramerateEngine {
                 for (Capacity capacity : component.getCapacities()) {
                     if (capacity instanceof LinearEngineCapacity) {
                         addCapacityController(new LinearEngineController(component, (LinearEngineCapacity) capacity));
+                    }
+                    if (capacity instanceof GunCapacity) {
+                        addCapacityController(new GunController(component, (GunCapacity) capacity));
                     }
 
                 }

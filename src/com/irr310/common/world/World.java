@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.ReentrantLock;
 
 import com.irr310.client.navigation.LoginManager;
 import com.irr310.common.Game;
-import com.irr310.common.event.AddWorldObjectEvent;
-import com.irr310.common.event.PlayerAddedEvent;
 import com.irr310.common.event.CelestialObjectAddedEvent;
+import com.irr310.common.event.PlayerAddedEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.common.tools.Vect3;
 import com.irr310.common.world.capacity.Capacity;
@@ -39,10 +39,10 @@ public class World {
     
     public World() {
         celestialObjects = new ArrayList<CelestialObject>();
-        ships = new ArrayList<Ship>();
-        players = new ArrayList<Player>();
-        parts = new ArrayList<Part>();
-        myParts = new ArrayList<Part>();
+        ships = new CopyOnWriteArrayList<Ship>();
+        players = new CopyOnWriteArrayList<Player>();
+        parts = new CopyOnWriteArrayList<Part>();
+        myParts = new CopyOnWriteArrayList<Part>();
         playerIdMap = new HashMap<Long, Player>();
         shipIdMap = new HashMap<Long, Ship>();
         celestialObjectIdMap = new HashMap<Long, CelestialObject>();

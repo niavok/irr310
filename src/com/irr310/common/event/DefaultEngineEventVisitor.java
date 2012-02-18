@@ -62,4 +62,8 @@ public abstract class DefaultEngineEventVisitor implements EngineEventVisitor {
     @Override
     public void visit(DamageEvent event) {
     }
+    
+    @Override
+    public void visit(MouseEvent event) {
+    }
 }
