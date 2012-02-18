@@ -18,7 +18,6 @@
 package fr.def.iss.vd2.lib_v3d.controller;
 
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 
 import fr.def.iss.vd2.lib_v3d.V3DInputEvent;

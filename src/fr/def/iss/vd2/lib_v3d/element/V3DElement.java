@@ -20,8 +20,6 @@ import java.nio.FloatBuffer;
 
 import org.lwjgl.opengl.GL11;
 
-import com.irr310.common.tools.Vect3;
-
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.V3DContextElement;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;

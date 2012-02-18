@@ -238,6 +238,7 @@ public class XMLTheme implements ITheme
   @SuppressWarnings("unchecked")
   private String findSupertype(IWidget w)
   {
+    @SuppressWarnings("rawtypes")
     Class clazz = w.getClass();
     String s = null;
     while (s == null && !clazz.equals(Object.class))

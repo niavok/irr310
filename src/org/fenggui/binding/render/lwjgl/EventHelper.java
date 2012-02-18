@@ -153,8 +153,8 @@ public class EventHelper
     case Keyboard.KEY_F4:
       keyClass = Key.F4;
       break;
-    case Keyboard.KEY_LWIN:
-    case Keyboard.KEY_RWIN:
+    case Keyboard.KEY_LMETA:
+    case Keyboard.KEY_RMETA:
       keyClass = Key.META;
       break;
     default:

@@ -5,8 +5,6 @@ import java.io.File;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.TransformMatrix.TransformMatrixChangeListener;
 import com.irr310.common.world.Component;
-import com.irr310.common.world.capacity.Capacity;
-import com.irr310.common.world.capacity.LinearEngineCapacity;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DContext;

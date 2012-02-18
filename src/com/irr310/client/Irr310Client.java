@@ -3,7 +3,6 @@ package com.irr310.client;
 import javax.swing.UIManager;
 
 import com.irr310.common.tools.Log;
-import com.irr310.server.GameServer;
 import com.irr310.server.ParameterAnalyser;
 
 public class Irr310Client {

@@ -3,11 +3,8 @@ package com.irr310.client.navigation;
 import com.irr310.client.GameClient;
 import com.irr310.client.network.request.FetchShipListRequest;
 import com.irr310.client.network.request.LoginRequest;
-import com.irr310.client.network.request.SignupRequest;
 import com.irr310.common.network.protocol.CameraViewObjectListRequestMessage;
 import com.irr310.common.network.protocol.LoginResponseMessage;
-import com.irr310.common.network.protocol.ShipListRequestMessage;
-import com.irr310.common.network.protocol.SignupResponseMessage;
 
 public class LoginTask extends Task{
 

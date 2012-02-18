@@ -1,10 +1,8 @@
 package com.irr310.tools;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import fr.def.iss.vd2.lib_v3d.v3draw.writers.DefaultV3DrawWriter;

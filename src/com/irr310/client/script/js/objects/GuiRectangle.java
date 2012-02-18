@@ -1,14 +1,11 @@
 package com.irr310.client.script.js.objects;
 
-import org.fenggui.Label;
 import org.fenggui.Widget;
 import org.fenggui.binding.render.Graphics;
 import org.fenggui.util.Dimension;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent;
-import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent.GuiXAlignment;
-import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent.GuiYAlignment;
 
 public class GuiRectangle {
 

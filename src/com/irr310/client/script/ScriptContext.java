@@ -13,7 +13,6 @@ import sun.org.mozilla.javascript.ImporterTopLevel;
 import sun.org.mozilla.javascript.RhinoException;
 import sun.org.mozilla.javascript.Scriptable;
 
-import com.irr310.client.GameClient;
 import com.irr310.client.navigation.LoginManager;
 import com.irr310.client.script.js.SandboxContextFactory;
 import com.irr310.client.script.js.SandboxShutter;

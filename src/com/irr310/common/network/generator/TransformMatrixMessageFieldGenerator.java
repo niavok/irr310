@@ -5,7 +5,6 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.TypeConversion;
-import com.irr310.common.tools.Vect3;
 
 public class TransformMatrixMessageFieldGenerator extends MessageFieldGenerator<TransformMatrix> {
 

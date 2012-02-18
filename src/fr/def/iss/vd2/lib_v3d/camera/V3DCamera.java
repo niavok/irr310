@@ -17,13 +17,11 @@
 
 package fr.def.iss.vd2.lib_v3d.camera;
 
-import java.awt.event.InputEvent;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 

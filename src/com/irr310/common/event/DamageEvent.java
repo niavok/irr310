@@ -1,7 +1,6 @@
 package com.irr310.common.event;
 
 import com.irr310.common.world.Part;
-import com.irr310.common.world.WorldObject;
 
 
 

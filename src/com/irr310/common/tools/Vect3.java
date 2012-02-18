@@ -3,7 +3,6 @@ package com.irr310.common.tools;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.vecmath.Tuple3d;
 import javax.vecmath.Vector3d;
 import javax.vecmath.Vector3f;
 

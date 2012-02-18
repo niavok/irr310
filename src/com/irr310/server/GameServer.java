@@ -1,9 +1,5 @@
 package com.irr310.server;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,11 +9,9 @@ import com.irr310.common.Game;
 import com.irr310.common.engine.Engine;
 import com.irr310.common.engine.PhysicEngine;
 import com.irr310.common.event.AddShipEvent;
-import com.irr310.common.event.AddWorldObjectEvent;
 import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
-import com.irr310.common.event.CelestialObjectAddedEvent;
 import com.irr310.common.tools.Vect3;
 import com.irr310.common.world.Monolith;
 import com.irr310.common.world.Player;

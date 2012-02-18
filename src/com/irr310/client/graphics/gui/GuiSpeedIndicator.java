@@ -18,17 +18,12 @@
 package com.irr310.client.graphics.gui;
 
 import java.text.DecimalFormat;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-
-import org.fenggui.Widget;
 
 import com.irr310.client.graphics.Animated;
 import com.irr310.common.world.Part;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DContext;
-import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent;
 import fr.def.iss.vd2.lib_v3d.gui.V3DLabel;
 
 /**

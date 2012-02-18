@@ -18,8 +18,6 @@
 package fr.def.iss.vd2.lib_v3d.controller;
 
 import java.awt.Point;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
 import java.util.Map;
 
 import fr.def.iss.vd2.lib_v3d.V3DContext;

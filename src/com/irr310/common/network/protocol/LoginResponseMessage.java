@@ -1,9 +1,8 @@
 package com.irr310.common.network.protocol;
 
-import com.irr310.common.network.NetworkMessage;
 import com.irr310.common.network.NetworkField;
+import com.irr310.common.network.NetworkMessage;
 import com.irr310.common.network.NetworkOptionalField;
-import com.irr310.common.world.Player;
 import com.irr310.common.world.view.PlayerView;
 
 public class LoginResponseMessage extends NetworkMessage {

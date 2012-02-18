@@ -1,8 +1,5 @@
 package com.irr310.common.network;
 
-import java.lang.annotation.Annotation;
-import java.util.Arrays;
-
 import com.irr310.common.network.protocol.NetworkMessageType;
 import com.irr310.common.tools.TypeConversion;
 

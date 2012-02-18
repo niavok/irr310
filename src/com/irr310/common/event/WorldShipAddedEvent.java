@@ -2,7 +2,6 @@ package com.irr310.common.event;
 
 import com.irr310.common.tools.Vect3;
 import com.irr310.common.world.Ship;
-import com.irr310.common.world.WorldObject;
 
 public class WorldShipAddedEvent extends EngineEvent {
 

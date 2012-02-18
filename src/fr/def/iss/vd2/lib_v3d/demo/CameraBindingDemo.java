@@ -16,11 +16,6 @@
 // along with V3dScene.  If not, see <http://www.gnu.org/licenses/>.
 package fr.def.iss.vd2.lib_v3d.demo;
 
-import java.awt.BorderLayout;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
 import org.lwjgl.LWJGLException;
 
 import fr.def.iss.vd2.lib_v3d.V3DCanvas;

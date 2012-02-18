@@ -2,7 +2,6 @@ package com.irr310.common.world.capacity.controller;
 
 import com.irr310.common.world.Component;
 import com.irr310.common.world.capacity.GunCapacity;
-import com.irr310.common.world.capacity.LinearEngineCapacity;
 
 public class GunController extends CapacityController {
 

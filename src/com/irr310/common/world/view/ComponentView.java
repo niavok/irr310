@@ -3,16 +3,10 @@ package com.irr310.common.world.view;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import com.irr310.common.network.NetworkClass;
 import com.irr310.common.network.NetworkField;
 import com.irr310.common.network.NetworkListField;
-import com.irr310.common.network.NetworkOptionalField;
 import com.irr310.common.tools.Vect3;
-import com.irr310.common.world.Container;
-import com.irr310.common.world.Part;
-import com.irr310.common.world.Slot;
-import com.irr310.common.world.capacity.KernelCapacity;
 
 @NetworkClass
 public class ComponentView {

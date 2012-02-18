@@ -7,7 +7,6 @@ import java.util.Map;
 
 import com.irr310.common.Game;
 import com.irr310.common.tools.Vect3;
-import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.capacity.KernelCapacity;
 import com.irr310.common.world.view.ComponentView;
 import com.irr310.common.world.view.LinkView;

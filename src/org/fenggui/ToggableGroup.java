@@ -201,9 +201,9 @@ public class ToggableGroup<E extends IToggable<?>>
    *          the type of the values
    * @return array
    */
-  @SuppressWarnings("unchecked")
-  public E[] getSelectedValues(Class returnType)
+  public E[] getSelectedValues(@SuppressWarnings("rawtypes") Class returnType)
   {
+    @SuppressWarnings("unchecked")
     E[] array = (E[]) Array.newInstance(returnType, selected.size());
 
     for (int i = 0; i < selected.size(); i++)

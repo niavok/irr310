@@ -17,7 +17,6 @@
 
 package fr.def.iss.vd2.lib_v3d.gui;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 

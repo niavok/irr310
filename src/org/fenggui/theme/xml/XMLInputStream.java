@@ -275,7 +275,7 @@ public class XMLInputStream extends InputOnlyStream
   }
 
   @SuppressWarnings("unchecked")
-  public <T extends IXMLStreamable> void processChildren(String childName, List children, Class<T> childClass)
+  public <T extends IXMLStreamable> void processChildren(String childName, @SuppressWarnings("rawtypes") List children, Class<T> childClass)
       throws IOException, IXMLStreamableException
   {
     for (Element e : activeElement.getChildren())

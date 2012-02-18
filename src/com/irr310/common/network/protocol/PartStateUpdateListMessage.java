@@ -2,12 +2,9 @@ package com.irr310.common.network.protocol;
 
 import java.util.List;
 
-import com.irr310.common.network.NetworkField;
 import com.irr310.common.network.NetworkListField;
 import com.irr310.common.network.NetworkMessage;
-import com.irr310.common.world.view.CapacityView;
 import com.irr310.common.world.view.PartStateView;
-import com.irr310.common.world.view.ShipView;
 
 public class PartStateUpdateListMessage extends NetworkMessage {
 

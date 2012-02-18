@@ -1,26 +1,15 @@
 package com.irr310.client.graphics;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
 import java.util.Date;
 
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.ARBFragmentShader;
 import org.lwjgl.opengl.ARBShaderObjects;
-import org.lwjgl.opengl.ARBVertexShader;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL20;
-
-import com.irr310.server.Time;
 
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.V3DShader;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCamera;
 import fr.def.iss.vd2.lib_v3d.element.V3DBoundingBox;
-import fr.def.iss.vd2.lib_v3d.element.V3DBox.RenderMode;
 import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 
 /**

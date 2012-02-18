@@ -7,7 +7,6 @@ import com.irr310.common.network.NetworkClass;
 import com.irr310.common.network.NetworkField;
 import com.irr310.common.network.NetworkListField;
 import com.irr310.common.network.NetworkOptionalField;
-import com.irr310.common.world.capacity.KernelCapacity;
 
 @NetworkClass
 public class ShipView {

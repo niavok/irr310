@@ -12,7 +12,7 @@ import com.irr310.common.network.NetworkClient;
 import com.irr310.common.network.NetworkMessage;
 
 public class NetworkWorker implements Runnable {
-	private List queue = new LinkedList();
+	private List<ServerDataEvent> queue = new LinkedList<ServerDataEvent>();
 	private final Map<SocketChannel, MessageParser> messageParsers;
 	private final Map<SocketChannel, NetworkClient> clients;
     private final ServerNetworkEngine networkEngine;

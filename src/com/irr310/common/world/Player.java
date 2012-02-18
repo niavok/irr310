@@ -7,7 +7,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 
 import com.irr310.common.tools.Hash;
 import com.irr310.common.world.view.PlayerView;
-import com.irr310.common.world.view.ShipView;
 
 public class Player extends GameEntity {
 

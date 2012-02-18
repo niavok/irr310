@@ -1,6 +1,5 @@
 package com.irr310.common.event;
 
-import java.io.File;
 
 public class KeyPressedEvent extends EngineEvent {
 

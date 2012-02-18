@@ -17,16 +17,11 @@
 
 package fr.def.iss.vd2.lib_v3d.element;
 
-import java.nio.ByteBuffer;
-
-import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
 
-import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.V3DShader;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCamera;
-import fr.def.iss.vd2.lib_v3d.v3draw.V3DrawReader.V3DrawBadFormatError;
 
 /**
  * @author fberto

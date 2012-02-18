@@ -471,8 +471,7 @@ public abstract class InputOutputStream
    * @throws IOException if an I/O exception is occured
    * @throws IXMLStreamableException if a processing exception is occured
    */
-  @SuppressWarnings("unchecked")
-  public abstract <T extends IXMLStreamable> void processChildren(String childName, List children, Class<T> childClass)
+  public abstract <T extends IXMLStreamable> void processChildren(String childName, @SuppressWarnings("rawtypes") List children, Class<T> childClass)
       throws IOException, IXMLStreamableException;
 
   public abstract <T extends IXMLStreamable> void processChildren(String childName, Map<String, T> children,

@@ -3,15 +3,8 @@ package com.irr310.common.tools;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import javax.vecmath.Tuple3d;
-import javax.vecmath.Vector3d;
-import javax.vecmath.Vector3f;
-
-import fr.def.iss.vd2.lib_v3d.V3DVect3;
 
 public class TransformMatrix {
 
