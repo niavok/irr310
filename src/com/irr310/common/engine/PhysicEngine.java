@@ -166,9 +166,9 @@ public class PhysicEngine extends FramerateEngine {
         return dt;
     }
     
-    public RayResultDescriptor rayTest(Vect3 from, Vect3 to) {
+    public RayResultDescriptor rayTest(final Vect3 from, final Vect3 to) {
         
-        System.out.println("begin ray test from "+from+" to "+ to);
+        final List<RayResultDescriptor> rayResultDescriptorList = new ArrayList<RayResultDescriptor>();
         
         dynamicsWorld.rayTest(from.toVector3f(), to.toVector3f(), new RayResultCallback() {
             
@@ -178,15 +178,34 @@ public class PhysicEngine extends FramerateEngine {
                 
                 UserData data = (UserData) ((RigidBody) rayResult.collisionObject).getUserPointer();
                 System.out.println("hit on "+data.part.getParentObject().getName()+" at "+ rayResult.hitFraction);
+                
+                
+                Vect3 globalPosition = from.plus(to.minus(from).multiply(rayResult.hitFraction));
+                
+                
+                Vect3 localPosition = globalPosition.transform(data.part.getTransform().inverse());
+                
+                RayResultDescriptor descriptor = new RayResultDescriptor();
+                descriptor.setHitFraction(rayResult.hitFraction);
+                descriptor.setGlobalPosition(globalPosition);
+                descriptor.setPart(data.part);
+                descriptor.setLocalPosition(localPosition);
+                
+                if(!rayResultDescriptorList.isEmpty()) {
+                    System.err.println("Unexpectind multiple result in ray test");
+                }
+                
+                rayResultDescriptorList.add(descriptor);
+                
                 return 0;
             }
         });
         
-        
-        System.out.println("end ray test");
-        
-        
-        return null;
+        if(rayResultDescriptorList.isEmpty()) {
+            return null;
+        } else {
+            return rayResultDescriptorList.get(0);
+        }
     }
 
     public void initPhysics() {

@@ -5,62 +5,36 @@ import com.irr310.common.world.Part;
 
 public class RayResultDescriptor {
 
-    private Part partB;
-    private Part partA;
-    private Vect3 localPositionOnA;
-    private Vect3 localPositionOnB;
+    private Part part;
+    private Vect3 localPosition;
     private Vect3 globalPosition;
-    private float impulse;
-
-    public void setPartA(Part partA) {
-        this.partA = partA;
-    }
-
-    public void setPartB(Part partB) {
-        this.partB = partB;
-        
-    }
-
-    public void setLocalPositionOnA(Vect3 position) {
-        this.localPositionOnA = position;
-    }
+    private float hitFraction;
     
-    public void setLocalPositionOnB(Vect3 position) {
-        this.localPositionOnB = position;
+    public Part getPart() {
+        return part;
     }
-
-    
-    public void setGlobalPosition(Vect3 position) {
-        this.globalPosition = position;
+    public void setPart(Part part) {
+        this.part = part;
     }
-
-    public void setImpulse(float impulse) {
-        this.impulse = impulse;
-        
+    public Vect3 getLocalPosition() {
+        return localPosition;
     }
-    
+    public void setLocalPosition(Vect3 localPosition) {
+        this.localPosition = localPosition;
+    }
     public Vect3 getGlobalPosition() {
         return globalPosition;
     }
-    
-    public float getImpulse() {
-        return impulse;
+    public void setGlobalPosition(Vect3 globalPosition) {
+        this.globalPosition = globalPosition;
     }
-    
-    public Vect3 getLocalPositionOnA() {
-        return localPositionOnA;
+    public float getHitFraction() {
+        return hitFraction;
     }
-    
-    public Vect3 getLocalPositionOnB() {
-        return localPositionOnB;
+    public void setHitFraction(float hitFraction) {
+        this.hitFraction = hitFraction;
     }
-    
-    public Part getPartA() {
-        return partA;
-    }
-    
-    public Part getPartB() {
-        return partB;
-    }
+
+  
 
 }

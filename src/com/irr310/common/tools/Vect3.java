@@ -114,12 +114,16 @@ public class Vect3 {
         return this.diff(vect).length();
     }
 
-    public Vect3 diff(Vect3 vect) {
-        return new Vect3(vect.x - x, vect.y - y, vect.z - z);
+    public Vect3 diff(Vect3 v) {
+        return new Vect3(v.x - x, v.y - y, v.z - z);
     }
 
-    public Vect3 plus(Vect3 vect) {
-        return new Vect3(vect.x + x, vect.y + y, vect.z + z);
+    public Vect3 minus(Vect3 v) {
+        return diff(v);
+    }
+    
+    public Vect3 plus(Vect3 v) {
+        return new Vect3(v.x + x, v.y + y, v.z + z);
     }
 
     @Override
@@ -179,6 +183,8 @@ public class Vect3 {
     public double dot(Vect3 vect) {
         return x * vect.x + y * vect.y + z * vect.z;
     }
+
+    
 
 
 }

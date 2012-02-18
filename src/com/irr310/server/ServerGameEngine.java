@@ -155,37 +155,40 @@ public class ServerGameEngine extends FramerateEngine {
             // damage = (1-rangePercent^3)
             
             RayResultDescriptor rayTest = GameServer.getInstance().getPhysicEngine().rayTest(event.getFrom(), event.getTo());
+            if(rayTest != null) {
+                double damage = event.getDamage()*(1- Math.pow(rayTest.getHitFraction(), 3));
+                applyDamage(rayTest.getPart(), damage, event.getDamageType());
+            }
             
             
         }
     }
     
     private void processCollision(Part part, float impulse) {
-        WorldObject parentObject = part.getParentObject();
+        applyDamage(part, impulse, DamageType.PHYSICAL);
+    }
+    
+    
+    private void applyDamage(Part target, double damage, DamageType damageType) {
+        WorldObject parentObject = target.getParentObject();
         
-        double damage = impulse * (1.0 - parentObject.getPhysicalResistance());
+        double effectiveDamage = damage * (1.0 - parentObject.getPhysicalResistance());
         
-        //System.out.println("Damage: "+parentObject.getName()+" take "+damage+" damage.");
-        
-        if(damage == 0) {
+        if(effectiveDamage == 0) {
             return;
         }
         
         double newDurablility = parentObject.getDurability();
-        newDurablility -= damage;
+        newDurablility -= effectiveDamage;
         if(newDurablility < 0) {
             newDurablility = 0;
         }
         
         parentObject.setDurability(newDurablility);
-
-        //System.out.println("new state: "+newDurablility+"/"+parentObject.getDurabilityMax());
-        
-        
-        GameServer.getInstance().sendToAll(new DamageEvent(part, damage, DamageType.PHYSICAL));
         
         //TODO: extras damage transmission 
-            
+        
+        GameServer.getInstance().sendToAll(new DamageEvent(target, effectiveDamage, damageType));
     }
     
     private void addCapacityController(CapacityController controller) {
