@@ -19,7 +19,6 @@ import fr.def.iss.vd2.lib_v3d.element.V3DrawElement;
 public class GunSkin extends Skin {
 
     private V3DGroupElement elements;
-    private V3DrawElement elementPanel;
 
     public GunSkin(V3DContext context, final Component object) {
         

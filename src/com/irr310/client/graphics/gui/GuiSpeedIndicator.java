@@ -34,11 +34,6 @@ public class GuiSpeedIndicator extends V3DLabel implements Animated{
     
     final long NANO_IN_MILLI = 1000000;
 
-    private long currentTime;
-    private float lastFps = 0;
-    private long lastFpsMesureTime = 0;
-    private int frameMesureCount = 0;
-
     private final Part part;
 
     private DecimalFormat format;
@@ -46,7 +41,6 @@ public class GuiSpeedIndicator extends V3DLabel implements Animated{
     public GuiSpeedIndicator(V3DContext context, Part part) {
         super(context, "-- m/s");
         this.part = part;
-        currentTime = System.nanoTime()/NANO_IN_MILLI;
         setColor(V3DColor.darkgrey, V3DColor.transparent);
         format = new DecimalFormat("0.0");
     }

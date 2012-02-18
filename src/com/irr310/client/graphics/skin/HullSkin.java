@@ -17,7 +17,6 @@ import fr.def.iss.vd2.lib_v3d.element.V3DrawElement;
 public class HullSkin extends Skin {
 
     private V3DGroupElement elements;
-    private V3DrawElement elementPanel;
 
     public HullSkin(V3DContext context, final Component object) {
         

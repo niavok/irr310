@@ -24,12 +24,12 @@ public class GameServer extends Game {
      * private ServerGameEngine gameEngine; private ServerNetworkEngine
      * networkEngine; private PhysicEngine physicEngine;
      */
-    private ParameterAnalyser parameterAnalyser;
+    //private ParameterAnalyser parameterAnalyser;
 
     List<Engine> engineList = new ArrayList<Engine>();
 
-    private boolean stillRunning;
-    private CommandManager commandManager;
+    //private boolean stillRunning;
+    //private CommandManager commandManager;
     // private DebugGraphicEngine debugGraphicEngine;
     private World world;
 
@@ -52,10 +52,10 @@ public class GameServer extends Game {
     }
 
     public GameServer(ParameterAnalyser parameterAnalyser) {
-        this.parameterAnalyser = parameterAnalyser;
+        //this.parameterAnalyser = parameterAnalyser;
         instance = this;
         super.setInstance(this);
-        stillRunning = true;
+        //stillRunning = true;
 
         world = new World();
 
@@ -71,7 +71,7 @@ public class GameServer extends Game {
          */
         // debugGraphicEngine = new DebugGraphicEngine();
 
-        commandManager = new CommandManager();
+        //commandManager = new CommandManager();
 
     }
 
@@ -207,5 +207,9 @@ public class GameServer extends Game {
 
     public PhysicEngine getPhysicEngine() {
         return physicEngine;
+    }
+    
+    public Map<Integer, Player> getPlayerMap() {
+        return playerMap;
     }
 }

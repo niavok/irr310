@@ -32,11 +32,10 @@ public class Tesselator {
 
     Tesselation tesselation = new Tesselation();
     private final GLUtessellator tessellator;
-    final GLU glu = new GLU();
 
     public Tesselator() {
 
-        tessellator = glu.gluNewTess();
+        tessellator = GLU.gluNewTess();
 
         GLUtessellatorCallback callback = new GLUtessellatorCallbackAdapter() {
 
