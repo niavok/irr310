@@ -1,15 +1,11 @@
 package com.irr310.common.event;
 
+import com.irr310.common.world.DamageType;
 import com.irr310.common.world.Part;
 
 
 
 public class DamageEvent extends EngineEvent {
-
-    public enum DamageType {
-        PHYSICAL,
-        HEAT
-    }
 
     private final double damage;
     private final Part target;

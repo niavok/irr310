@@ -74,8 +74,10 @@ public final class  Component extends WorldObject {
 	}
 	
 	private void computeEfficiency() {
+	    //efficiency =  1-((x -0.3 )/ 0.7 -1)^4
+	    
 		double durabilityFactor = (((getDurability()/ getDurabilityMax()) -0.3)/0.7) -1;
-		efficiency = quality*(1-durabilityFactor*durabilityFactor);
+		efficiency = quality*(1-Math.pow(durabilityFactor,4));
 		if(efficiency < 0) {
 		    efficiency = 0;
 		}

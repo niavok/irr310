@@ -1,8 +1,8 @@
 package com.irr310.common.network.protocol;
 
-import com.irr310.common.event.DamageEvent.DamageType;
 import com.irr310.common.network.NetworkField;
 import com.irr310.common.network.NetworkMessage;
+import com.irr310.common.world.DamageType;
 import com.irr310.common.world.Part;
 
 public class DamageNotificationMessage extends NetworkMessage {

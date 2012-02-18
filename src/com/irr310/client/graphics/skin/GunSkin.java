@@ -5,6 +5,8 @@ import java.io.File;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.TransformMatrix.TransformMatrixChangeListener;
 import com.irr310.common.world.Component;
+import com.irr310.common.world.capacity.Capacity;
+import com.irr310.common.world.capacity.GunCapacity;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DContext;
@@ -13,6 +15,7 @@ import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DGroupElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DLine;
+import fr.def.iss.vd2.lib_v3d.element.V3DPoint;
 import fr.def.iss.vd2.lib_v3d.element.V3DShaderElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DrawElement;
 
@@ -33,11 +36,19 @@ public class GunSkin extends Skin {
 
         
         
+        GunCapacity gunCapacity = (GunCapacity) object.getCapacitiesByName("gun");
+        
         
         final V3DLine line = new V3DLine(context);
         line.setThickness(1);
-        line.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, 1000, 0));
+        line.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, (float) gunCapacity.range, 0));
         elements.add(new V3DColorElement(line, new V3DColor(255, 158, 135, 0.5f)));
+
+        
+        final V3DPoint point100 = new V3DPoint(context);
+        point100.setSize(2);
+        point100.setPosition(new V3DVect3(0, (float) gunCapacity.range, 0));
+        elements.add(new V3DColorElement(point100, new V3DColor(255, 158, 135, 0.8f)));
         
         
         transform.addListener(new TransformMatrixChangeListener() {

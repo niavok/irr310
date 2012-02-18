@@ -3,10 +3,15 @@ package com.irr310.server;
 import java.util.ArrayList;
 import java.util.List;
 
+import sun.security.jca.GetInstance;
+
+import com.irr310.common.Game;
 import com.irr310.common.engine.CollisionDescriptor;
 import com.irr310.common.engine.FramerateEngine;
+import com.irr310.common.engine.RayResultDescriptor;
 import com.irr310.common.event.AddShipEvent;
 import com.irr310.common.event.AddWorldObjectEvent;
+import com.irr310.common.event.BulletFiredEvent;
 import com.irr310.common.event.CollisionEvent;
 import com.irr310.common.event.DamageEvent;
 import com.irr310.common.event.DefaultEngineEventVisitor;
@@ -16,6 +21,7 @@ import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.common.world.Component;
+import com.irr310.common.world.DamageType;
 import com.irr310.common.world.Part;
 import com.irr310.common.world.Ship;
 import com.irr310.common.world.WorldObject;
@@ -143,6 +149,15 @@ public class ServerGameEngine extends FramerateEngine {
             processCollision(collisionDescriptor.getPartA(), collisionDescriptor.getImpulse());
             processCollision(collisionDescriptor.getPartB(), collisionDescriptor.getImpulse());
         }
+        
+        @Override
+        public void visit(BulletFiredEvent event) {
+            // damage = (1-rangePercent^3)
+            
+            RayResultDescriptor rayTest = GameServer.getInstance().getPhysicEngine().rayTest(event.getFrom(), event.getTo());
+            
+            
+        }
     }
     
     private void processCollision(Part part, float impulse) {
@@ -167,7 +182,7 @@ public class ServerGameEngine extends FramerateEngine {
         //System.out.println("new state: "+newDurablility+"/"+parentObject.getDurabilityMax());
         
         
-        GameServer.getInstance().sendToAll(new DamageEvent(part, damage, DamageEvent.DamageType.PHYSICAL));
+        GameServer.getInstance().sendToAll(new DamageEvent(part, damage, DamageType.PHYSICAL));
         
         //TODO: extras damage transmission 
             

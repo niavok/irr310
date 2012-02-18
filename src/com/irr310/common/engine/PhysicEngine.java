@@ -18,9 +18,11 @@ import com.bulletphysics.collision.broadphase.DbvtBroadphase;
 import com.bulletphysics.collision.broadphase.DispatcherInfo;
 import com.bulletphysics.collision.broadphase.OverlapFilterCallback;
 import com.bulletphysics.collision.dispatch.CollisionDispatcher;
+import com.bulletphysics.collision.dispatch.CollisionWorld.RayResultCallback;
 import com.bulletphysics.collision.dispatch.DefaultCollisionConfiguration;
 import com.bulletphysics.collision.dispatch.DefaultNearCallback;
 import com.bulletphysics.collision.dispatch.NearCallback;
+import com.bulletphysics.collision.dispatch.CollisionWorld.LocalRayResult;
 import com.bulletphysics.collision.narrowphase.ManifoldPoint;
 import com.bulletphysics.collision.narrowphase.PersistentManifold;
 import com.bulletphysics.collision.shapes.BoxShape;
@@ -155,13 +157,34 @@ public class PhysicEngine extends FramerateEngine {
         }
 
         Game.getInstance().getWorld().unlock();
-
+        
     }
 
     public float getDeltaTimeMicroseconds() {
         float dt = clock.getTimeMicroseconds();
         clock.reset();
         return dt;
+    }
+    
+    public RayResultDescriptor rayTest(Vect3 from, Vect3 to) {
+        
+        System.out.println("begin ray test");
+        
+        dynamicsWorld.rayTest(from.toVector3f(), to.toVector3f(), new RayResultCallback() {
+            
+            @Override
+            public float addSingleResult(LocalRayResult rayResult, boolean normalInWorldSpace) {
+                System.out.println("ray test result !");
+                
+                return 0;
+            }
+        });
+        
+        
+        System.out.println("end ray test");
+        
+        
+        return null;
     }
 
     public void initPhysics() {
