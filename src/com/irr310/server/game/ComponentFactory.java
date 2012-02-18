@@ -274,7 +274,7 @@ public class ComponentFactory {
     private static Component createSimpleComponent(String name) {
         Component component = new Component(GameServer.pickNewId(), name);
         
-        Part part = new Part(GameServer.pickNewId());
+        Part part = new Part(GameServer.pickNewId(), component);
         component.addPart(part);
         Game.getInstance().getWorld().addPart(part);
         return component;

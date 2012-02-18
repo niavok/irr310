@@ -22,4 +22,20 @@ public class CelestialObjectView {
     @NetworkListField(PartView.class)
     public List<PartView> parts = new ArrayList<PartView>();
     
+    
+    @NetworkField
+    public double durabilityMax;
+    
+    @NetworkField
+    public double durability;
+    
+    @NetworkField
+    public double quality;
+
+    @NetworkField
+    public double physicalResistance;
+    
+    @NetworkField
+    public double heatResistance;
+    
 }

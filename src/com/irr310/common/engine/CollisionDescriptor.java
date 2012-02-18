@@ -54,5 +54,13 @@ public class CollisionDescriptor {
     public Vect3 getLocalPositionOnB() {
         return localPositionOnB;
     }
+    
+    public Part getPartA() {
+        return partA;
+    }
+    
+    public Part getPartB() {
+        return partB;
+    }
 
 }

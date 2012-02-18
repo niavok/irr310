@@ -2,6 +2,7 @@ package com.irr310.common.network;
 
 import com.irr310.common.network.protocol.CameraViewObjectListRequestMessage;
 import com.irr310.common.network.protocol.CapacityUpdateMessage;
+import com.irr310.common.network.protocol.DamageNotificationMessage;
 import com.irr310.common.network.protocol.HelloMessage;
 import com.irr310.common.network.protocol.LoginRequestMessage;
 import com.irr310.common.network.protocol.LoginResponseMessage;
@@ -135,6 +136,9 @@ public abstract class MessageParser {
                 break;
             case WORLD_OBJECT_LIST:
                 message = new WorldObjectListMessage();
+                break;
+            case DAMAGE_NOTIFICATION:
+                message = new DamageNotificationMessage();
                 break;
             default:
                 System.err.println("Not implemented message type: " + messageType.toString());

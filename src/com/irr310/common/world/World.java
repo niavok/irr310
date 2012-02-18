@@ -163,12 +163,12 @@ public class World {
         return celestialObjects;
     }
     
-    public Part loadPart(PartView partView) {
+    public Part loadPart(PartView partView, WorldObject parentObject) {
         if (partIdMap.containsKey(partView.id)) {
             return partIdMap.get(partView.id);
         }
 
-        Part part = new Part(partView.id);
+        Part part = new Part(partView.id, parentObject);
         part.fromView(partView);
         addPart(part);
         return part;

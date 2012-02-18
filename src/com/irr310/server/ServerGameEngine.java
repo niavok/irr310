@@ -3,19 +3,22 @@ package com.irr310.server;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.irr310.common.Game;
+import com.irr310.common.engine.CollisionDescriptor;
 import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.event.AddShipEvent;
 import com.irr310.common.event.AddWorldObjectEvent;
+import com.irr310.common.event.CollisionEvent;
+import com.irr310.common.event.DamageEvent;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.PauseEngineEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
-import com.irr310.common.tools.Vect3;
 import com.irr310.common.world.Component;
+import com.irr310.common.world.Part;
 import com.irr310.common.world.Ship;
+import com.irr310.common.world.WorldObject;
 import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.server.controller.CapacityController;
@@ -57,10 +60,10 @@ public class ServerGameEngine extends FramerateEngine {
 
             switch (event.getType()) {
                 case CAMERA:
-                    // o = new Camera(GameServer.pickNewId());
+                    o = new Component(GameServer.pickNewId(),"camera");
                     break;
                 case LINEAR_ENGINE:
-                    // o = new LinearEngine(GameServer.pickNewId());
+                    o = new Component(GameServer.pickNewId(), "camera");
                     break;
             }
 
@@ -99,9 +102,6 @@ public class ServerGameEngine extends FramerateEngine {
                     ship = ShipFactory.createSimpleFighter();
                     ship.setOwner(event.getOwner());
                     break;
-                    
-                    
-                    
             }
 
             GameServer.getInstance().getWorld().addShip(ship, event.getPosition());
@@ -133,7 +133,40 @@ public class ServerGameEngine extends FramerateEngine {
         }
 
         
+        @Override
+        public void visit(CollisionEvent event) {
+            CollisionDescriptor collisionDescriptor = event.getCollisionDescriptor();
+            processCollision(collisionDescriptor.getPartA(), collisionDescriptor.getImpulse());
+            processCollision(collisionDescriptor.getPartB(), collisionDescriptor.getImpulse());
+        }
+    }
+    
+    private void processCollision(Part part, float impulse) {
+        WorldObject parentObject = part.getParentObject();
+        
+        double damage = impulse * (1.0 - parentObject.getPhysicalResistance());
+        
+        //System.out.println("Damage: "+parentObject.getName()+" take "+damage+" damage.");
+        
+        if(damage == 0) {
+            return;
+        }
+        
+        double newDurablility = parentObject.getDurability();
+        newDurablility -= damage;
+        if(newDurablility < 0) {
+            newDurablility = 0;
+        }
+        
+        parentObject.setDurability(newDurablility);
 
+        //System.out.println("new state: "+newDurablility+"/"+parentObject.getDurabilityMax());
+        
+        
+        GameServer.getInstance().sendToAll(new DamageEvent(part, damage, DamageEvent.DamageType.PHYSICAL));
+        
+        //TODO: extras damage transmission 
+            
     }
     
     private void addCapacityController(CapacityController controller) {

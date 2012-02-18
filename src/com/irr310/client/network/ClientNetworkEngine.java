@@ -11,12 +11,14 @@ import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.NetworkEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.network.NetworkMessage;
+import com.irr310.common.network.protocol.DamageNotificationMessage;
 import com.irr310.common.network.protocol.PartStateUpdateListMessage;
 import com.irr310.common.network.protocol.ShipListMessage;
 import com.irr310.common.network.protocol.WorldObjectListMessage;
 import com.irr310.common.world.CelestialObject;
 import com.irr310.common.world.Part;
 import com.irr310.common.world.Ship;
+import com.irr310.common.world.WorldObject;
 import com.irr310.common.world.view.CelestialObjectView;
 import com.irr310.common.world.view.PartStateView;
 import com.irr310.common.world.view.ShipView;
@@ -103,10 +105,15 @@ public class ClientNetworkEngine extends EventEngine {
                 case PART_STATE_UPDATE_LIST:
                     partStateUpdateReceived(event.getMessage());
                     break;
+                case DAMAGE_NOTIFICATION:
+                    damageNotificationReceived((DamageNotificationMessage) event.getMessage());
+                    break;
                 default:
                     System.err.println("Unsupported network type " + event.getMessage().getType());
             }
         }
+
+        
 
     }
 
@@ -126,6 +133,22 @@ public class ClientNetworkEngine extends EventEngine {
             System.out.println("Ship received: " + ship.getId());
         }
 
+    }
+    
+    private void damageNotificationReceived(DamageNotificationMessage message) {
+        WorldObject target = GameClient.getInstance().getWorld().getPartById(message.target).getParentObject();
+        
+        System.out.println("Damage from server: "+target.getName()+" take "+message.damage+" damage.");
+        double newDurablility = target.getDurability();
+        newDurablility -= message.damage;
+        if(newDurablility < 0) {
+            newDurablility = 0;
+        }
+        
+        System.out.println("new state: "+newDurablility+"/"+target.getDurabilityMax());
+        
+        
+        target.setDurability(newDurablility);
     }
 
     private void worldObjectListReceived(NetworkMessage message) {

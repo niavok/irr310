@@ -50,13 +50,16 @@ public abstract class DefaultEngineEventVisitor implements EngineEventVisitor {
     @Override
     public void visit(PlayerLoggedEvent event) {
     }
-    
+
     @Override
     public void visit(MinimizeWindowEvent event) {
     }
-    
+
     @Override
     public void visit(CollisionEvent event) {
     }
-    
+
+    @Override
+    public void visit(DamageEvent event) {
+    }
 }

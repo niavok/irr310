@@ -1,19 +1,20 @@
 package com.irr310.server.network;
 
 import java.io.IOException;
-import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.irr310.client.GameClient;
 import com.irr310.common.Game;
 import com.irr310.common.engine.EventEngine;
+import com.irr310.common.event.DamageEvent;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.NetworkEvent;
 import com.irr310.common.event.QuitGameEvent;
+import com.irr310.common.network.NetworkClient;
 import com.irr310.common.network.NetworkMessage;
 import com.irr310.common.network.protocol.CapacityUpdateMessage;
+import com.irr310.common.network.protocol.DamageNotificationMessage;
 import com.irr310.common.network.protocol.LoginRequestMessage;
 import com.irr310.common.network.protocol.LoginResponseMessage;
 import com.irr310.common.network.protocol.PartStateUpdateListMessage;
@@ -26,7 +27,6 @@ import com.irr310.common.world.Part;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.Ship;
 import com.irr310.common.world.World;
-import com.irr310.common.world.WorldObject;
 import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.view.CapacityView;
 import com.irr310.common.world.view.CelestialObjectView;
@@ -64,6 +64,17 @@ public class ServerNetworkEngine extends EventEngine {
             System.out.println("stopping network engine");
             setRunning(false);
 
+        }
+        
+        
+        @Override
+        public void visit(DamageEvent event) {
+            
+            DamageNotificationMessage damageNotificationMessage = new DamageNotificationMessage(event.getTarget(), event.getDamage(), event.getDamageType());
+            
+            for(NetworkClient client: worker.getClients().values()) {
+                client.send(damageNotificationMessage);
+            }
         }
 
         @Override

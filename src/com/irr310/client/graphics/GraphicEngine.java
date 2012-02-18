@@ -378,7 +378,6 @@ public class GraphicEngine extends FramerateEngine {
             V3DPoint point = new V3DPoint(context);
             point.setPosition(event.getCollisionDescriptor().getGlobalPosition().toV3DVect3());
             point.setSize(5f);
-            System.err.println("imulse "+ event.getCollisionDescriptor().getImpulse());
             scene.add(new V3DColorElement(point, new V3DColor((int)event.getCollisionDescriptor().getImpulse()*10,50,255-(int)event.getCollisionDescriptor().getImpulse()*10)));
         }
 

@@ -14,25 +14,38 @@ public class  CelestialObject extends WorldObject {
 	}
 
     public CelestialObjectView toView() {
-        CelestialObjectView freeObjectView = new CelestialObjectView();
+        CelestialObjectView celestialObjectView = new CelestialObjectView();
         
-        freeObjectView.id = getId();
-        freeObjectView.name = getName();
-        freeObjectView.skin = getSkin();
+        celestialObjectView.id = getId();
+        celestialObjectView.name = getName();
         
+        // WorldObject properties    
+        celestialObjectView.skin = getSkin();
+        celestialObjectView.durabilityMax = getDurabilityMax();
+        celestialObjectView.durability = getDurability();
+        celestialObjectView.physicalResistance = getPhysicalResistance();
+        celestialObjectView.heatResistance = getHeatResistance();
+
         for(Part part: parts) {
-            freeObjectView.parts.add(part.toView());    
+            celestialObjectView.parts.add(part.toView());    
         }
         
-        return freeObjectView;
+        return celestialObjectView;
     }
 
-    public void fromView(CelestialObjectView CelestialObjectView) {
+    public void fromView(CelestialObjectView celestialObjectView) {
         World world = Game.getInstance().getWorld();
-        setSkin(CelestialObjectView.skin);
+
+        // World objectProperties
+        setSkin(celestialObjectView.skin);
+        setDurabilityMax(celestialObjectView.durabilityMax);
+        setDurability(celestialObjectView.durability);
+        setPhysicalResistance(celestialObjectView.physicalResistance);
+        setHeatResistance(celestialObjectView.heatResistance);
+
         
-        for(PartView part: CelestialObjectView.parts) {
-            addPart(world.loadPart(part));
+        for(PartView part: celestialObjectView.parts) {
+            addPart(world.loadPart(part, this));
         }
     }
 }

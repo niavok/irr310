@@ -9,6 +9,10 @@ public abstract class WorldObject extends GameEntity {
     protected List<Part> parts;
     private Part firstPart;
     private String skin;
+    private double durabilityMax;
+    private double durability;
+    private double physicalResistance;
+    private double heatResistance;
 
     public WorldObject(long id, String name) {
         super(id);
@@ -16,6 +20,10 @@ public abstract class WorldObject extends GameEntity {
         firstPart = null;
         parts = new ArrayList<Part>();
         skin = "";
+        durabilityMax = 100;
+        durability = durabilityMax;
+        physicalResistance = 0;
+        heatResistance = 0;
     }
 
     public String getName() {
@@ -48,5 +56,42 @@ public abstract class WorldObject extends GameEntity {
     public String getSkin() {
         return skin;
     }
+    
+    public double getDurability() {
+        return durability;
+    }
+    
+    public double getDurabilityMax() {
+        return durabilityMax;
+    }
+    
+    public double getHeatResistance() {
+        return heatResistance;
+    }
+    
+    public double getPhysicalResistance() {
+        return physicalResistance;
+    }
+    
+    public void setDurability(double durability) {
+        this.durability = durability;
+    }
+    
+    public void setDurabilityMax(double durabilityMax) {
+        this.durabilityMax = durabilityMax;
+    }
+    
+    public void setHeatResistance(double heatResistance) {
+        this.heatResistance = heatResistance;
+    }
+    
+    public void setPhysicalResistance(double physicalResistance) {
+        this.physicalResistance = physicalResistance;
+    }
+    
+    public boolean isBroken() {
+        return this.durability <= 0;
+    }
+    
 
 }

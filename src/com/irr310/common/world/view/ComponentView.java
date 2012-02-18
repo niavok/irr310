@@ -49,5 +49,11 @@ public class ComponentView {
     
     @NetworkField
     public double quality;
+
+    @NetworkField
+    public double physicalResistance;
+    
+    @NetworkField
+    public double heatResistance;
     
 }

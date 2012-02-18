@@ -16,12 +16,16 @@ import org.apache.commons.lang3.tuple.Pair;
 import sun.font.SunFontManager.FamilyDescription;
 
 import com.bulletphysics.collision.broadphase.BroadphaseInterface;
+import com.bulletphysics.collision.broadphase.BroadphasePair;
 import com.bulletphysics.collision.broadphase.BroadphaseProxy;
 import com.bulletphysics.collision.broadphase.DbvtBroadphase;
+import com.bulletphysics.collision.broadphase.DispatcherInfo;
 import com.bulletphysics.collision.broadphase.OverlapFilterCallback;
 import com.bulletphysics.collision.dispatch.CollisionDispatcher;
 import com.bulletphysics.collision.dispatch.CollisionObject;
 import com.bulletphysics.collision.dispatch.DefaultCollisionConfiguration;
+import com.bulletphysics.collision.dispatch.DefaultNearCallback;
+import com.bulletphysics.collision.dispatch.NearCallback;
 import com.bulletphysics.collision.narrowphase.ManifoldPoint;
 import com.bulletphysics.collision.narrowphase.PersistentManifold;
 import com.bulletphysics.collision.shapes.BoxShape;
@@ -60,6 +64,7 @@ import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.common.world.capacity.WingCapacity;
 import com.irr310.server.Duration;
+import com.irr310.server.GameServer;
 import com.irr310.server.controller.LinearEngineController;
 
 public class PhysicEngine extends FramerateEngine {
@@ -180,6 +185,8 @@ public class PhysicEngine extends FramerateEngine {
 
         broadphase = new DbvtBroadphase();
 
+        
+        
         // the default constraint solver. For parallel processing you can use a
         // different solver (see Extras/BulletMultiThreaded)
         SequentialImpulseConstraintSolver sol = new SequentialImpulseConstraintSolver();
@@ -198,24 +205,50 @@ public class PhysicEngine extends FramerateEngine {
 
         dynamicsWorld.getPairCache().setOverlapFilterCallback(new OverlapFilterCallback() {
 
+            
+            
             @Override
             public boolean needBroadphaseCollision(BroadphaseProxy proxy0, BroadphaseProxy proxy1) {
 
                 UserData data0 = (UserData) ((RigidBody) proxy0.clientObject).getUserPointer();
                 UserData data1 = (UserData) ((RigidBody) proxy1.clientObject).getUserPointer();
 
-                // System.out.println("test collision");
+                
 
-                if (data0 != null && data1 != null && data0.ship == data1.ship) {
-                    // System.out.println("cancel collision for "+data0.ship);
-                    return false;
+                if (data0 != null && data1 != null) {
+                    if(data0.ship != null && data0.ship == data1.ship) {
+                        return false;
+                    }
                 }
-
+                
+                
                 // System.out.println("valid collision");
                 return true;
             }
         });
         
+        
+        dispatcher.setNearCallback(new NearCallback() {
+            
+            DefaultNearCallback defaultNearCallback = new DefaultNearCallback();
+            
+            @Override
+            public void handleCollision(BroadphasePair collisionPair, CollisionDispatcher dispatcher, DispatcherInfo dispatchInfo) {
+                
+                UserData data0 = (UserData) ((RigidBody) collisionPair.pProxy0.clientObject).getUserPointer();
+                UserData data1 = (UserData) ((RigidBody) collisionPair.pProxy1.clientObject).getUserPointer();
+                
+                if(data0.part.getParentObject().isBroken()) {
+                    return;
+                }
+                
+                if(data1.part.getParentObject().isBroken()) {
+                    return;
+                }
+                
+                defaultNearCallback.handleCollision(collisionPair, dispatcher, dispatchInfo);
+            }
+        });
         
 
     }
@@ -407,17 +440,7 @@ public class PhysicEngine extends FramerateEngine {
                         Vect3 localPositionB = new Vect3(pt.localPointB);
                         Vect3 globalPositionB =new Vect3(ptB);
                         
-                        
-                        
-                        
                         Vect3 globalPosition = globalPositionA.plus(globalPositionB).divide(2);
-                        
-                        
-                        System.err.println("localPositionA "+localPositionA);
-                        System.err.println("globalPositionA "+globalPositionA);
-                        System.err.println("localPositionB "+localPositionB);
-                        System.err.println("globalPositionB "+globalPositionB);
-                        System.err.println("globalPosition "+globalPosition);
                         
                         collisionDescriptor.setLocalPositionOnA(localPositionA);
                         collisionDescriptor.setLocalPositionOnB(localPositionB);

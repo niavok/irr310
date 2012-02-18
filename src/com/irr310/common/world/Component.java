@@ -19,8 +19,7 @@ import com.irr310.common.world.view.SlotView;
 public final class  Component extends WorldObject {
 
 	
-	private double durabilityMax;
-	private double durability;
+	
 	private double quality;
 	private double efficiency;
 	private Container container;
@@ -37,8 +36,6 @@ public final class  Component extends WorldObject {
 		capacityNameMap = new HashMap<String, Capacity>();
 		shipRotation = Vect3.origin();
 		shipPosition = Vect3.origin();
-		durability = 1;
-		durabilityMax = 1;
 		quality = 1;
 		computeEfficiency();
 	}
@@ -64,11 +61,24 @@ public final class  Component extends WorldObject {
 		
 	}
 	
+	@Override
+	public void setDurability(double durability) {
+	    super.setDurability(durability);
+	    computeEfficiency();
+	}
 	
+	@Override
+	public void setDurabilityMax(double durabilityMax) {
+	    super.setDurabilityMax(durabilityMax);
+	    computeEfficiency();
+	}
 	
 	private void computeEfficiency() {
-		double durabilityFactor = (((durability/ durabilityMax) -0.3)/0.7) -1;
+		double durabilityFactor = (((getDurability()/ getDurabilityMax()) -0.3)/0.7) -1;
 		efficiency = quality*(1-durabilityFactor*durabilityFactor);
+		if(efficiency < 0) {
+		    efficiency = 0;
+		}
 	}
 	
 	public double getEfficiency() {
@@ -161,9 +171,14 @@ public final class  Component extends WorldObject {
         componentView.name = getName();
         componentView.shipPosition = shipPosition;
         componentView.shipRotation = shipRotation;
+        
+        // WorldObject properties    
         componentView.skin = getSkin();
-        componentView.durabilityMax = durabilityMax;
-        componentView.durability = durability;
+        componentView.durabilityMax = getDurabilityMax();
+        componentView.durability = getDurability();
+        componentView.physicalResistance = getPhysicalResistance();
+        componentView.heatResistance = getHeatResistance();
+        
         componentView.quality = quality;
         
         for(Part part: parts) {
@@ -185,14 +200,20 @@ public final class  Component extends WorldObject {
         World world = Game.getInstance().getWorld();
         shipPosition = componentView.shipPosition;
         shipRotation = componentView.shipRotation;
-        durabilityMax = componentView.durabilityMax;
-        durability = componentView.durability;
         quality = componentView.quality;
+
+        // WorldObject properties
         setSkin(componentView.skin);
+        setDurabilityMax(componentView.durabilityMax);
+        setDurability(componentView.durability);
+        setPhysicalResistance(componentView.physicalResistance);
+        setHeatResistance(componentView.heatResistance);
+        
+        
         computeEfficiency();
         
         for(PartView part: componentView.parts) {
-            addPart(world.loadPart(part));
+            addPart(world.loadPart(part, this));
         }
         
         for(SlotView slot: componentView.slots) {

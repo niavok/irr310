@@ -15,10 +15,11 @@ public class Part extends GameEntity {
     private final TransformMatrix transform;
     private Vect3 shape;
     private Player owner;
+    private final WorldObject parentObject;
     
-    public Part(long id) {
+    public Part(long id, WorldObject parentObject) {
         super(id);
-        // position = Vect3.origin();
+        this.parentObject = parentObject;
         rotationSpeed = Vect3.origin();
         linearSpeed = Vect3.origin();
         transform = TransformMatrix.identity();
@@ -103,6 +104,10 @@ public class Part extends GameEntity {
     
     public void setOwner(Player owner) {
         this.owner = owner;
+    }
+
+    public WorldObject getParentObject() {
+        return parentObject;
     }
     
     
