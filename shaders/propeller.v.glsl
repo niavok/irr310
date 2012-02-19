@@ -1,10 +1,10 @@
 #version 120
-varying vec3 normalV;
+varying vec3 normal;
 
 void main()
 {
     gl_FrontColor = gl_Color;
-	normalV = gl_NormalMatrix * gl_Normal;
+	normal = gl_NormalMatrix * gl_Normal;
 	gl_Position = ftransform();
 
 }
