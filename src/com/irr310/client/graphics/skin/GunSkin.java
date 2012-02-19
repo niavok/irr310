@@ -46,9 +46,9 @@ public class GunSkin extends Skin {
 
         
         final V3DPoint point100 = new V3DPoint(context);
-        point100.setSize(2);
+        point100.setSize(5);
         point100.setPosition(new V3DVect3(0, (float) gunCapacity.range, 0));
-        elements.add(new V3DColorElement(point100, new V3DColor(255, 158, 135, 0.8f)));
+        elements.add(new V3DColorElement(point100, new V3DColor(255, 58, 35, 0.8f)));
         
         
         transform.addListener(new TransformMatrixChangeListener() {

@@ -35,7 +35,7 @@ public class GenericSkin extends Skin {
 
                 final V3DGroupElement element = new V3DGroupElement(context);
                 //if (inShip) {
-                element.add(new V3DColorElement(box, V3DColor.blue));
+                element.add(new V3DColorElement(box, new V3DColor(0f, 0f, 1f )));
                 /*} else {
                     element = new V3DColorElement(box, V3DColor.red);
                 }*/

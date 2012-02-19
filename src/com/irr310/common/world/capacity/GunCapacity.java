@@ -13,7 +13,7 @@ public class GunCapacity extends Capacity {
     public GunCapacity(long id) {
         super(id, "gun");
         fire = false;
-        damage = 10;
+        damage = 50;
         range = 200;
         damageType = DamageType.PHYSICAL;
     }
