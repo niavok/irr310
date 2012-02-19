@@ -48,22 +48,23 @@ public class GuiRectangle {
                 public void paint(Graphics g) {
                     g.setColor(color.toColor());
                     g.setLineWidth(1);
-                    g.drawWireRectangle(0, 0, size.getWidth(), size.getHeight());
+                    g.drawWireRectangle(5, 5, size.getWidth(), size.getHeight());
+                    //g.drawWireRectangle(5, 5, size.getWidth()-10, size.getHeight()-10);
                 }
 
                 @Override
                 public int getX() {
-                    return xPos;
+                    return xPos-5;
                 }
 
                 @Override
                 public int getY() {
-                    return yPos;
+                    return yPos-5;
                 }
                 
                 @Override
                 public Dimension getSize() {
-                    return size;
+                    return new Dimension(size.getWidth()+10, size.getHeight()+10);
                 }
                 
             };

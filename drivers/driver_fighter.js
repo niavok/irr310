@@ -75,12 +75,12 @@ function init() {
                     useMouseController = true;
                     mouseControlleurOrigin = core.mouse.getPosition();
                     deadZone = core.gui.createRectangle();
-                    deadZone.setPosition(mouseControlleurOrigin.minus(new Vec2(5,5)));
-                    deadZone.setSize(new Vec2(10,10));
+                    deadZone.setPosition(mouseControlleurOrigin.minus(new Vec2(10,10)));
+                    deadZone.setSize(new Vec2(20,20));
                     deadZone.setColor(new Color(50,0,0));
                     controlZone = core.gui.createRectangle();
-                    controlZone.setPosition(mouseControlleurOrigin.minus(new Vec2(100,100)));
-                    controlZone.setSize(new Vec2(200,200));
+                    controlZone.setPosition(mouseControlleurOrigin.minus(new Vec2(150,150)));
+                    controlZone.setSize(new Vec2(300,300));
                     controlZone.setColor(new Color(50,0,0));
                     
                     //core.log("press space");
@@ -182,8 +182,8 @@ function init() {
         
         if (useMouseController) {
             //core.log("useMouseController");
-            var deadZoneRadius = 5;
-            var controlRadius = 100.0;
+            var deadZoneRadius = 10;
+            var controlRadius = 150.0;
             var mousePosition = core.mouse.getPosition();
 
 

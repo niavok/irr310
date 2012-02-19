@@ -10,6 +10,7 @@ import javax.vecmath.Vector3f;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.lwjgl.Sys;
 
 import com.bulletphysics.collision.broadphase.BroadphaseInterface;
 import com.bulletphysics.collision.broadphase.BroadphasePair;
@@ -40,6 +41,8 @@ import com.bulletphysics.linearmath.MatrixUtil;
 import com.bulletphysics.linearmath.MotionState;
 import com.bulletphysics.linearmath.Transform;
 import com.bulletphysics.util.ObjectArrayList;
+import com.irr310.client.GameClient;
+import com.irr310.client.network.ClientNetworkEngine;
 import com.irr310.common.Game;
 import com.irr310.common.event.CelestialObjectAddedEvent;
 import com.irr310.common.event.CollisionEvent;
@@ -167,6 +170,7 @@ public class PhysicEngine extends FramerateEngine {
     }
     
     public RayResultDescriptor rayTest(final Vect3 from, final Vect3 to) {
+        System.out.println("ray test");
         
         final List<RayResultDescriptor> rayResultDescriptorList = new ArrayList<RayResultDescriptor>();
         
@@ -297,8 +301,20 @@ public class PhysicEngine extends FramerateEngine {
     }
 
     public void reloadStates() {
+        if (Game.getInstance() instanceof GameClient) {
+            System.err.println("reload");
+        }
         for (Entry<Part, RigidBody> partEntry : partToBodyMap.entrySet()) {
-            PartMotionState motionState = (PartMotionState) partEntry.getValue().getMotionState();
+            RigidBody body = partEntry.getValue();
+            PartMotionState motionState = (PartMotionState) body.getMotionState();
+            /*Part part = partEntry.getKey();
+            PartMotionState partMotionState = new PartMotionState(part);
+            partMotionState.setBody(body);
+            body.setMotionState(partMotionState);
+            
+            body.setLinearVelocity(part.getLinearSpeed().toVector3f());
+            body.setAngularVelocity(part.getRotationSpeed().toVector3f());
+            body.activate(true);*/
             motionState.reload();
         }
     }
@@ -317,7 +333,7 @@ public class PhysicEngine extends FramerateEngine {
                 UserData userData = new UserData();
                 userData.ship = ship;
                 RigidBody rigidBody = addPart(part, userData);
-                partToBodyMap.put(part, rigidBody);
+                
                 
                 
                 rigidBody.setUserPointer(userData);
@@ -428,6 +444,9 @@ public class PhysicEngine extends FramerateEngine {
         body.setActivationState(RigidBody.ACTIVE_TAG);
         body.setCcdMotionThreshold(1f);
         body.setCcdSweptSphereRadius(0.2f);
+        
+        partToBodyMap.put(part, body);
+        
         return body;
 
     }
@@ -518,7 +537,7 @@ public class PhysicEngine extends FramerateEngine {
             body.setWorldTransform(transform);
             body.setLinearVelocity(part.getLinearSpeed().toVector3f());
             body.setAngularVelocity(part.getRotationSpeed().toVector3f());
-            body.setActivationState(RigidBody.ACTIVE_TAG);
+            body.activate(true);
         }
 
         public void setBody(RigidBody body) {

@@ -141,7 +141,6 @@ public class ServerGameEngine extends FramerateEngine {
         public void visit(PauseEngineEvent event) {
             pause(true);
         }
-
         
         @Override
         public void visit(CollisionEvent event) {
@@ -152,22 +151,19 @@ public class ServerGameEngine extends FramerateEngine {
         
         @Override
         public void visit(BulletFiredEvent event) {
-            // damage = (1-rangePercent^3)
-            
+
             RayResultDescriptor rayTest = GameServer.getInstance().getPhysicEngine().rayTest(event.getFrom(), event.getTo());
             if(rayTest != null) {
+                // damage = (1-rangePercent^3)
                 double damage = event.getDamage()*(1- Math.pow(rayTest.getHitFraction(), 3));
                 applyDamage(rayTest.getPart(), damage, event.getDamageType());
             }
-            
-            
         }
     }
     
     private void processCollision(Part part, float impulse) {
         applyDamage(part, impulse, DamageType.PHYSICAL);
     }
-    
     
     private void applyDamage(Part target, double damage, DamageType damageType) {
         WorldObject parentObject = target.getParentObject();

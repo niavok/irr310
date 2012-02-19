@@ -13,6 +13,7 @@ import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.tools.Vect3;
+import com.irr310.common.world.Asteroid;
 import com.irr310.common.world.Monolith;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.World;
@@ -189,6 +190,12 @@ public class GameServer extends Game {
     public void initWorld() {
         Monolith monolith = new Monolith(GameServer.pickNewId(), "monolith");
         world.addCelestialObject(monolith);
+        
+        Asteroid asteroid = new Asteroid(GameServer.pickNewId(), "asteroid");
+        asteroid.getFirstPart().getTransform().translate(25, 36, -8);
+        world.addCelestialObject(asteroid);
+        
+        
         
     }
     

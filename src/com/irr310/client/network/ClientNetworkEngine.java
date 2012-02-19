@@ -172,10 +172,17 @@ public class ClientNetworkEngine extends EventEngine {
         for (PartStateView partStateView : m.partStateList) {
             Part part = GameClient.getInstance().getWorld().getPartById(partStateView.id);
             if (part != null) {
-                // System.out.println("update part");
+//                System.out.println("update part: "+part.getParentObject().getName());
                 part.fromStateView(partStateView);
             }
         }
         GameClient.getInstance().getPhysicEngine().reloadStates();
+//        for (PartStateView partStateView : m.partStateList) {
+//            Part part = GameClient.getInstance().getWorld().getPartById(partStateView.id);
+//            if (part != null) {
+//                System.err.println("update report: "+part.getTransform().getTranslation()+" asked "+partStateView.transform.getTranslation());
+//            }
+//        }
+        
     }
 }
