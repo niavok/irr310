@@ -302,19 +302,10 @@ public class PhysicEngine extends FramerateEngine {
 
     public void reloadStates() {
         if (Game.getInstance() instanceof GameClient) {
-            System.err.println("reload");
         }
         for (Entry<Part, RigidBody> partEntry : partToBodyMap.entrySet()) {
             RigidBody body = partEntry.getValue();
             PartMotionState motionState = (PartMotionState) body.getMotionState();
-            /*Part part = partEntry.getKey();
-            PartMotionState partMotionState = new PartMotionState(part);
-            partMotionState.setBody(body);
-            body.setMotionState(partMotionState);
-            
-            body.setLinearVelocity(part.getLinearSpeed().toVector3f());
-            body.setAngularVelocity(part.getRotationSpeed().toVector3f());
-            body.activate(true);*/
             motionState.reload();
         }
     }

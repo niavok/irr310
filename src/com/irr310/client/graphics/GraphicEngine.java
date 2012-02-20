@@ -11,6 +11,7 @@ import org.lwjgl.opengl.Display;
 
 import com.irr310.client.graphics.gui.GuiFpsIndicator;
 import com.irr310.client.graphics.gui.GuiSpeedIndicator;
+import com.irr310.client.graphics.skin.AsteroidSkin;
 import com.irr310.client.graphics.skin.CameraSkin;
 import com.irr310.client.graphics.skin.FactorySkin;
 import com.irr310.client.graphics.skin.GenericSkin;
@@ -261,6 +262,8 @@ public class GraphicEngine extends FramerateEngine {
                 skin = new ThrusterBlockSkin(context, (Component) object);
             } else if (object.getSkin().equals("gun")) {
                 skin = new GunSkin(context, (Component) object);
+            } else if (object.getSkin().equals("asteroid")) {
+                skin = new AsteroidSkin(context, (CelestialObject) object);
             }  else {
                 System.err.println("No skin found for: " + object.getSkin());
                 skin = new GenericSkin(context, object);

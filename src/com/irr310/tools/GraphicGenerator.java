@@ -54,6 +54,19 @@ public class GraphicGenerator {
 
         }
         
+        //Tank
+        {
+            List<String> objectsStructure = new ArrayList<String>();
+            objectsStructure.add("structure");
+
+            generateObj("graphics/tank.obj", "graphics/output/tank_structure.v3draw", objectsStructure);
+
+            List<String> objectsTank = new ArrayList<String>();
+            objectsTank.add("tank");
+            generateObj("graphics/tank.obj", "graphics/output/tank_tank.v3draw", objectsTank);
+
+        }
+        
         //Camera
         generateObj("graphics/camera.obj", "graphics/output/camera.v3draw", null);
         
@@ -70,21 +83,14 @@ public class GraphicGenerator {
         generateObj("graphics/gun.obj", "graphics/output/gun.v3draw", null);
         
         
+      //Gun
+        generateObj("graphics/asteroid.obj", "graphics/output/asteroid.v3draw", null);
+        
+        
         //Thruster block
         generateObj("graphics/thruster_block.obj", "graphics/output/thruster_block.v3draw", null);
         
-       //Tank
-        {
-            List<String> objectsStructure = new ArrayList<String>();
-            objectsStructure.add("structure");
-
-            generateObj("graphics/tank.obj", "graphics/output/tank_structure.v3draw", objectsStructure);
-
-            List<String> objectsTank = new ArrayList<String>();
-            objectsTank.add("tank");
-            generateObj("graphics/tank.obj", "graphics/output/tank_tank.v3draw", objectsTank);
-
-        }
+       
     }
 
     private static void generateObj(String source, String destination, List<String> objects) throws IOException {
