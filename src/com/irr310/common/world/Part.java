@@ -4,6 +4,7 @@ import com.irr310.client.GameClient;
 import com.irr310.common.Game;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vect3;
+import com.irr310.common.world.Part.CollisionShape;
 import com.irr310.common.world.view.PartStateView;
 import com.irr310.common.world.view.PartView;
 
@@ -17,6 +18,11 @@ public class Part extends GameEntity {
     private Vect3 shape;
     private Player owner;
     private final WorldObject parentObject;
+    private CollisionShape collisionShape;
+
+    public enum CollisionShape {
+        BOX, SPHERE,
+    }
 
     public Part(long id, WorldObject parentObject) {
         super(id);
@@ -27,6 +33,7 @@ public class Part extends GameEntity {
         mass = 0.;
         shape = Vect3.one();
         owner = null;
+        collisionShape = CollisionShape.BOX;
     }
 
     public void setMass(Double mass) {
@@ -64,6 +71,7 @@ public class Part extends GameEntity {
         partView.mass = mass;
         partView.rotationSpeed = rotationSpeed;
         partView.shape = shape;
+        partView.collisionShape = collisionShape.ordinal();
         partView.transform = transform;
         partView.ownerId = (owner == null ? -1 : owner.getId());
         return partView;
@@ -74,6 +82,7 @@ public class Part extends GameEntity {
         rotationSpeed.set(partView.rotationSpeed);
         mass = partView.mass;
         shape = partView.shape;
+        collisionShape = CollisionShape.values()[partView.collisionShape];
         transform.set(partView.transform.getData());
         owner = (partView.ownerId == -1 ? null : Game.getInstance().getWorld().getPlayerById(partView.ownerId));
     }
@@ -89,27 +98,32 @@ public class Part extends GameEntity {
 
     public void fromStateView(PartStateView partStateView) {
 
-//        if (Game.getInstance() instanceof GameClient) {
-//
-//            if (linearSpeed.distanceTo(partStateView.linearSpeed) > 0) {
-//                System.err.println("fix speed from: " + linearSpeed.toString() + " to " + partStateView.linearSpeed);
-//            }
-//            if (transform.getTranslation().distanceTo(partStateView.transform.getTranslation()) > 0) {
-//                System.err.println("fix position from: " + transform.getTranslation().toString() + " to "
-//                        + partStateView.transform.getTranslation().toString());
-//            }
-//
-//        }
+        // if (Game.getInstance() instanceof GameClient) {
+        //
+        // if (linearSpeed.distanceTo(partStateView.linearSpeed) > 0) {
+        // System.err.println("fix speed from: " + linearSpeed.toString() +
+        // " to " + partStateView.linearSpeed);
+        // }
+        // if
+        // (transform.getTranslation().distanceTo(partStateView.transform.getTranslation())
+        // > 0) {
+        // System.err.println("fix position from: " +
+        // transform.getTranslation().toString() + " to "
+        // + partStateView.transform.getTranslation().toString());
+        // }
+        //
+        // }
         linearSpeed.set(partStateView.linearSpeed);
         rotationSpeed.set(partStateView.rotationSpeed);
         transform.set(partStateView.transform.getData());
-//        if (Game.getInstance() instanceof GameClient) {
-//
-//            
-//                System.err.println("new position : " + transform.getTranslation().toString() + " asked "
-//                        + partStateView.transform.getTranslation().toString());
-//        }
-        
+        // if (Game.getInstance() instanceof GameClient) {
+        //
+        //
+        // System.err.println("new position : " +
+        // transform.getTranslation().toString() + " asked "
+        // + partStateView.transform.getTranslation().toString());
+        // }
+
     }
 
     public Player getOwner() {
@@ -122,6 +136,14 @@ public class Part extends GameEntity {
 
     public WorldObject getParentObject() {
         return parentObject;
+    }
+
+    public CollisionShape getCollisionShape() {
+        return collisionShape;
+    }
+
+    public void setCollisionShape(CollisionShape collisionShape) {
+        this.collisionShape = collisionShape;
     }
 
 }

@@ -28,5 +28,8 @@ public class PartView {
     
     @NetworkField
     public Vect3 shape;
+
+    @NetworkField
+    public int collisionShape;
     
 }

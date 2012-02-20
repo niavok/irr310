@@ -28,6 +28,7 @@ import com.bulletphysics.collision.narrowphase.ManifoldPoint;
 import com.bulletphysics.collision.narrowphase.PersistentManifold;
 import com.bulletphysics.collision.shapes.BoxShape;
 import com.bulletphysics.collision.shapes.CollisionShape;
+import com.bulletphysics.collision.shapes.SphereShape;
 import com.bulletphysics.dynamics.DiscreteDynamicsWorld;
 import com.bulletphysics.dynamics.DynamicsWorld;
 import com.bulletphysics.dynamics.InternalTickCallback;
@@ -393,8 +394,28 @@ public class PhysicEngine extends FramerateEngine {
         // create a few dynamic rigidbodies
         // Re-using the same collision is better for memory usage and
         // performance
+        
+        
+        com.irr310.common.world.Part.CollisionShape collisionShape = part.getCollisionShape();
+        CollisionShape colShape = null;
+        
+        
+        switch (collisionShape) {
+            case BOX:
+                colShape = new BoxShape(part.getShape().divide(2).toVector3f());
+                break;
+            case SPHERE:
+                colShape = new SphereShape(part.getShape().x.floatValue()/2);
+                break;
+                
+            default:
+                colShape = new BoxShape(part.getShape().divide(2).toVector3f());
+                break;
+        }
+        
+        
 
-        CollisionShape colShape = new BoxShape(part.getShape().divide(2).toVector3f());
+        
         // CollisionShape colShape = new SphereShape(1f);
         collisionShapes.add(colShape);
 

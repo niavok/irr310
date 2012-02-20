@@ -25,7 +25,7 @@ public class GenericSkin extends Skin {
         for (final Part part : object.getParts()) {
 
                 final V3DBox box = new V3DBox(context);
-                box.setRenderMode(RenderMode.PLAIN);
+                box.setRenderMode(RenderMode.SOLID);
 
                 TransformMatrix transform = part.getTransform();
                 //box.setTransformMatrix(transform.toFloatBuffer());
