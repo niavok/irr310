@@ -67,6 +67,25 @@ public class GraphicGenerator {
 
         }
         
+        //Monolith
+        {
+            List<String> objectsArmature = new ArrayList<String>();
+            objectsArmature.add("armature");
+
+            generateObj("graphics/monolith.obj", "graphics/output/monolith_armature.v3draw", objectsArmature);
+
+            List<String> objectsMonolith = new ArrayList<String>();
+            objectsMonolith.add("monolith");
+            generateObj("graphics/monolith.obj", "graphics/output/monolith_monolith.v3draw", objectsMonolith);
+            
+            List<String> objectsPlasma= new ArrayList<String>();
+            objectsPlasma.add("plama");
+            generateObj("graphics/monolith.obj", "graphics/output/monolith_plasma.v3draw", objectsPlasma);
+
+        }
+
+        
+        
         //Camera
         generateObj("graphics/camera.obj", "graphics/output/camera.v3draw", null);
         

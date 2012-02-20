@@ -10,6 +10,7 @@ public class Monolith extends CelestialObject {
     public Monolith(long id, String name) {
         super(id, name);
         setPhysicalResistance(1.0);
+        setSkin("monolith");
         
         Part part = new Part(GameServer.pickNewId(), this);
         part.setCollisionShape(CollisionShape.SPHERE);
