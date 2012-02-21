@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import com.irr310.common.Game;
 import com.irr310.common.engine.Engine;
@@ -25,12 +26,12 @@ public class GameServer extends Game {
      * private ServerGameEngine gameEngine; private ServerNetworkEngine
      * networkEngine; private PhysicEngine physicEngine;
      */
-    //private ParameterAnalyser parameterAnalyser;
+    // private ParameterAnalyser parameterAnalyser;
 
     List<Engine> engineList = new ArrayList<Engine>();
 
-    //private boolean stillRunning;
-    //private CommandManager commandManager;
+    // private boolean stillRunning;
+    // private CommandManager commandManager;
     // private DebugGraphicEngine debugGraphicEngine;
     private World world;
 
@@ -53,10 +54,10 @@ public class GameServer extends Game {
     }
 
     public GameServer(ParameterAnalyser parameterAnalyser) {
-        //this.parameterAnalyser = parameterAnalyser;
+        // this.parameterAnalyser = parameterAnalyser;
         instance = this;
         super.setInstance(this);
-        //stillRunning = true;
+        // stillRunning = true;
 
         world = new World();
 
@@ -72,7 +73,7 @@ public class GameServer extends Game {
          */
         // debugGraphicEngine = new DebugGraphicEngine();
 
-        //commandManager = new CommandManager();
+        // commandManager = new CommandManager();
 
     }
 
@@ -126,7 +127,7 @@ public class GameServer extends Game {
          * System.out.println("Game : Exiting..."); break; } } } catch
          * (IOException e) { // Todo handle exception }
          */
-        
+
         initWorld();
 
         boolean waitStop = true;
@@ -177,7 +178,7 @@ public class GameServer extends Game {
         // Ship playerShip = ShipFactory.createSimpleShip();
 
         AddShipEvent addShipEvent = new AddShipEvent(newPlayer);
-        //addShipEvent.setType(AddShipEvent.Type.SIMPLE);
+        // addShipEvent.setType(AddShipEvent.Type.SIMPLE);
         addShipEvent.setType(AddShipEvent.Type.SIMPLE_FIGHTER);
         addShipEvent.setPosition(new Vect3(0, -50, 0));
         GameServer.getInstance().sendToAll(addShipEvent);
@@ -186,27 +187,26 @@ public class GameServer extends Game {
 
         return newPlayer;
     }
-    
+
     public void initWorld() {
         Monolith monolith = new Monolith(GameServer.pickNewId(), "monolith");
         world.addCelestialObject(monolith);
-        
-        for(int i  = 0; i < 50 ; i++ ) {
-            
+
+        for (int i = 0; i < 500; i++) {
+
+            Random random = new Random();
+
             Asteroid asteroid = new Asteroid(GameServer.pickNewId(), "asteroid");
-            asteroid.getFirstPart().getTransform().translate(i*10, -50, 0);
-            asteroid.getFirstPart().getLinearSpeed().set(0, 10, 0);
+            asteroid.getFirstPart()
+                    .getTransform()
+                    .translate(random.nextFloat() * 1000f - 500f, random.nextFloat() * 1000f - 500f, random.nextFloat() * 1000f - 500f);
+            asteroid.getFirstPart().getLinearSpeed().set(random.nextFloat() * 50 - 25, random.nextFloat() * 50 - 25, random.nextFloat() * 50 - 25);
+            asteroid.getFirstPart().getRotationSpeed().set(random.nextFloat() * 50 - 25, random.nextFloat() * 50 - 25, random.nextFloat() * 50 - 25);
             world.addCelestialObject(asteroid);
-            
-            
+
         }
-        
-        
-        
-        
-        
+
     }
-    
 
     public World getWorld() {
         return world;
@@ -223,7 +223,7 @@ public class GameServer extends Game {
     public PhysicEngine getPhysicEngine() {
         return physicEngine;
     }
-    
+
     public Map<Integer, Player> getPlayerMap() {
         return playerMap;
     }

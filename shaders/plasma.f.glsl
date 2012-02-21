@@ -15,7 +15,7 @@ void main()
 	intensity = dot(p,n);
 
 	if (intensity > 0.95)
-		color = vec4(baseColor,1.0);
+		color = vec4(baseColor,0.5);
 	else if (intensity > 0.5)
 		color = vec4(baseColor/1.5,0.5);
 	else if (intensity > 0.25)

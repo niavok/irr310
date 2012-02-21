@@ -15,7 +15,7 @@ public class GraphicGenerator {
 
         // Bubble
         generateObj("graphics/bubble.obj", "graphics/output/bubble.v3draw", null);
-        
+
         // Reactor
         {
             List<String> objectsStator = new ArrayList<String>();
@@ -27,7 +27,7 @@ public class GraphicGenerator {
             objectsRotor.add("rotor");
             generateObj("graphics/reactor.obj", "graphics/output/reactor_rotor.v3draw", objectsRotor);
         }
-        
+
         // Propeller
         {
             List<String> objectsStator = new ArrayList<String>();
@@ -51,10 +51,9 @@ public class GraphicGenerator {
             List<String> objectsPanel = new ArrayList<String>();
             objectsPanel.add("panel");
             generateObj("graphics/pvcell.obj", "graphics/output/pvcell_panel.v3draw", objectsPanel);
-
         }
-        
-        //Tank
+
+        // Tank
         {
             List<String> objectsStructure = new ArrayList<String>();
             objectsStructure.add("structure");
@@ -64,10 +63,9 @@ public class GraphicGenerator {
             List<String> objectsTank = new ArrayList<String>();
             objectsTank.add("tank");
             generateObj("graphics/tank.obj", "graphics/output/tank_tank.v3draw", objectsTank);
-
         }
-        
-        //Monolith
+
+        // Monolith
         {
             List<String> objectsArmature = new ArrayList<String>();
             objectsArmature.add("armature");
@@ -77,39 +75,32 @@ public class GraphicGenerator {
             List<String> objectsMonolith = new ArrayList<String>();
             objectsMonolith.add("monolith");
             generateObj("graphics/monolith.obj", "graphics/output/monolith_monolith.v3draw", objectsMonolith);
-            
-            List<String> objectsPlasma= new ArrayList<String>();
+
+            List<String> objectsPlasma = new ArrayList<String>();
             objectsPlasma.add("plasma");
             generateObj("graphics/monolith.obj", "graphics/output/monolith_plasma.v3draw", objectsPlasma);
-
         }
 
-        
-        
-        //Camera
+        // Camera
         generateObj("graphics/camera.obj", "graphics/output/camera.v3draw", null);
-        
-        //Factory
+
+        // Factory
         generateObj("graphics/factory.obj", "graphics/output/factory.v3draw", null);
-        
-        //Wing
+
+        // Wing
         generateObj("graphics/wing.obj", "graphics/output/wing.v3draw", null);
-        
-        //Hull
+
+        // Hull
         generateObj("graphics/hull.obj", "graphics/output/hull.v3draw", null);
-        
-        //Gun
+
+        // Gun
         generateObj("graphics/gun.obj", "graphics/output/gun.v3draw", null);
-        
-        
-      //Gun
-        generateObj("graphics/asteroid.obj", "graphics/output/asteroid.v3draw", null);
-        
-        
-        //Thruster block
+
+        // Gun
+        generateObj("graphics/asteroid_light.obj", "graphics/output/asteroid.v3draw", null);
+
+        // Thruster block
         generateObj("graphics/thruster_block.obj", "graphics/output/thruster_block.v3draw", null);
-        
-       
     }
 
     private static void generateObj(String source, String destination, List<String> objects) throws IOException {
