@@ -11,6 +11,7 @@ import com.irr310.common.event.MouseEvent;
 import com.irr310.common.event.PauseEngineEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
+import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.server.Duration;
 
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
@@ -73,9 +74,13 @@ public class ClientScriptEngine extends FramerateEngine {
             transmitMouseEvent(event.getMouseEvent());
         }
 
-        
+        @Override
+        public void visit(WorldShipAddedEvent event) {
+            init();
+        }
+
     }
-    
+
     private void transmitMouseEvent(V3DMouseEvent mouseEvent) {
         Object[] args = new Object[4];
         args[0] = mouseEvent.getAction().ordinal();
@@ -84,7 +89,6 @@ public class ClientScriptEngine extends FramerateEngine {
         args[3] = mouseEvent.getY();
         scriptContext.callFunction("onMouseEvent", args);
     }
-    
 
     private void transmitKeyPressed(int keyCode, String character) {
         Object[] args = new Object[2];

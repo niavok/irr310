@@ -198,9 +198,10 @@ function init() {
             }
             
 
-            var diffVert = diffX * Math.cos(Math.PI / 4.0) + diffY * Math.sin(Math.PI / 4.0);
-            var diffHoriz = -1 * diffX * Math.sin(Math.PI / 4.0) + diffY * Math.cos(Math.PI / 4.0);
-
+            //var diffVert = diffX * Math.cos(Math.PI / 4.0) + diffY * Math.sin(Math.PI / 4.0);
+            //var diffHoriz = -1 * diffX * Math.sin(Math.PI / 4.0) + diffY * Math.cos(Math.PI / 4.0);
+            var diffVert = diffX;
+            var diffHoriz = diffY;
 
             if(Math.abs(diffVert) < deadZoneRadius) {
                 leftEngine.targetThrust = 0;

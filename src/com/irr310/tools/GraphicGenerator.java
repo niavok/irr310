@@ -79,7 +79,7 @@ public class GraphicGenerator {
             generateObj("graphics/monolith.obj", "graphics/output/monolith_monolith.v3draw", objectsMonolith);
             
             List<String> objectsPlasma= new ArrayList<String>();
-            objectsPlasma.add("plama");
+            objectsPlasma.add("plasma");
             generateObj("graphics/monolith.obj", "graphics/output/monolith_plasma.v3draw", objectsPlasma);
 
         }

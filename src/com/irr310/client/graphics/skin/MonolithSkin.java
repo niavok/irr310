@@ -26,16 +26,18 @@ public class MonolithSkin extends Skin {
 
         File v3drawFileMonolith = new File("graphics/output/monolith_monolith.v3draw");
         final V3DrawElement element = V3DrawElement.LoadFromFile(v3drawFileMonolith, context);
+        element.setRotation(90, 0, 0);
         elements.add(new V3DColorElement(new V3DShaderElement(element, "propeller"), new V3DColor(20,20,20)));
         
         
         File v3drawFileArmature = new File("graphics/output/monolith_armature.v3draw");
         final V3DrawElement elementArmature = V3DrawElement.LoadFromFile(v3drawFileArmature, context);
+        elementArmature.setRotation(90, 0, 0);
         elements.add(new V3DColorElement(new V3DShaderElement(elementArmature, "propeller"), new V3DColor(135, 158, 169)));
         
         File v3drawFilePlasma = new File("graphics/output/monolith_plasma.v3draw");
         final V3DrawElement elementPlasma = V3DrawElement.LoadFromFile(v3drawFilePlasma, context);
-        elements.add(new V3DColorElement(new V3DShaderElement(elementPlasma, "propeller"), new V3DColor(151, 32, 153)));
+        elements.add(new V3DColorElement(new V3DShaderElement(elementPlasma, "plasma"), new V3DColor(151, 32, 153, 0.3f)));
         
         
         TransformMatrix transform = object.getFirstPart().getTransform();
