@@ -427,7 +427,7 @@ public class PhysicEngine extends FramerateEngine {
 
         Vector3f localInertia = new Vector3f(0, 0, 0);
         if (isDynamic) {
-            colShape.calculateLocalInertia(mass*10, localInertia);
+            colShape.calculateLocalInertia(mass * 2, localInertia);
         }
 
         // TODO rotation
@@ -443,7 +443,8 @@ public class PhysicEngine extends FramerateEngine {
         myMotionState.setBody(body);
 
         body.setActivationState(RigidBody.ISLAND_SLEEPING);
-        body.setDamping(0.1f, 0.8f);
+        body.setDamping(part.getLinearDamping().floatValue(), part.getAngularDamping().floatValue());
+        
         body.setSleepingThresholds(0.001f, 0.001f);
         // body.setDeactivationTime(deactivationTime)
 

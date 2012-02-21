@@ -18,6 +18,12 @@ public class PartView {
     public double mass;
     
     @NetworkField
+    public double angularDamping;
+    
+    @NetworkField
+    public double linearDamping;
+    
+    @NetworkField
     public Vect3 rotationSpeed;
     
     @NetworkField

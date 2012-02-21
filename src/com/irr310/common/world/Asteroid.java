@@ -16,6 +16,8 @@ public class Asteroid extends CelestialObject {
         
         Part part = new Part(GameServer.pickNewId(), this);
         part.setMass(170.);
+        part.setLinearDamping(0.01);
+        part.setAngularDamping(0.01);
         part.setCollisionShape(CollisionShape.SPHERE);
         this.addPart(part);
         Game.getInstance().getWorld().addPart(part);

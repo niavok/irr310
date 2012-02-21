@@ -10,6 +10,8 @@ public class Part extends GameEntity {
 
     // private final Vect3 position;
     private Double mass;
+    private Double linearDamping;
+    private Double angularDamping;
     private final Vect3 rotationSpeed;
     private final Vect3 linearSpeed;
     private final TransformMatrix transform;
@@ -32,6 +34,8 @@ public class Part extends GameEntity {
         shape = Vect3.one();
         owner = null;
         collisionShape = CollisionShape.BOX;
+        linearDamping = 0.1;
+        angularDamping = 0.9;
     }
 
     public void setMass(Double mass) {
@@ -48,6 +52,22 @@ public class Part extends GameEntity {
 
     public Vect3 getLinearSpeed() {
         return linearSpeed;
+    }
+    
+    public Double getAngularDamping() {
+        return angularDamping;
+    }
+    
+    public Double getLinearDamping() {
+        return linearDamping;
+    }
+    
+    public void setAngularDamping(double angularDamping) {
+        this.angularDamping = angularDamping;
+    }
+    
+    public void setLinearDamping(double linearDamping) {
+        this.linearDamping = linearDamping;
     }
 
     public TransformMatrix getTransform() {
@@ -67,6 +87,8 @@ public class Part extends GameEntity {
         partView.id = getId();
         partView.linearSpeed = linearSpeed;
         partView.mass = mass;
+        partView.linearDamping = linearDamping;
+        partView.angularDamping = angularDamping;
         partView.rotationSpeed = rotationSpeed;
         partView.shape = shape;
         partView.collisionShape = collisionShape.ordinal();
@@ -79,6 +101,8 @@ public class Part extends GameEntity {
         linearSpeed.set(partView.linearSpeed);
         rotationSpeed.set(partView.rotationSpeed);
         mass = partView.mass;
+        linearDamping = partView.linearDamping;
+        angularDamping = partView.angularDamping;
         shape = partView.shape;
         collisionShape = CollisionShape.values()[partView.collisionShape];
         transform.set(partView.transform.getData());
@@ -143,6 +167,6 @@ public class Part extends GameEntity {
     public void setCollisionShape(CollisionShape collisionShape) {
         this.collisionShape = collisionShape;
     }
-    
+
 
 }
