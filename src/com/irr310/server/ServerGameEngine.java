@@ -3,9 +3,6 @@ package com.irr310.server;
 import java.util.ArrayList;
 import java.util.List;
 
-import sun.security.jca.GetInstance;
-
-import com.irr310.common.Game;
 import com.irr310.common.engine.CollisionDescriptor;
 import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.engine.RayResultDescriptor;

@@ -38,7 +38,6 @@ import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.common.tools.Log;
-import com.irr310.common.tools.TransformMatrix.TransformMatrixChangeListener;
 import com.irr310.common.world.CelestialObject;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.Part;
@@ -73,24 +72,20 @@ public class GraphicEngine extends FramerateEngine {
     V3DEye3DCamera activeCamera;
     V3DCanvas canvas;
     private V3DScene scene;
-    private V3DGroupElement fitOrder;
     private List<Pair<LinearEngineCapacity, V3DLine>> thrustLines;
     private List<Animated> animatedList = new ArrayList<Animated>();
     private V3DFollow3DCameraController cameraController;
-
+    
     public GraphicEngine() {
         framerate = new Duration(16666666);
         // framerate = new Duration(1666666);
         thrustLines = new ArrayList<Pair<LinearEngineCapacity, V3DLine>>();
-
     }
 
     @Override
     protected void init() {
         // canvas = new V3DCanvas(context, 1920, 1200);
         canvas = new V3DCanvas(context, 1280, 1024);
-
-        fitOrder = null;
 
         activeCamera = new V3DEye3DCamera(context);
 
@@ -145,7 +140,7 @@ public class GraphicEngine extends FramerateEngine {
         fpsIndicator.setPosition(10, 10);
         animatedList.add(fpsIndicator);
     }
-
+    
     private void createBubble() {
 
         File v3drawFileStructure = new File("graphics/output/bubble.v3draw");
@@ -200,10 +195,11 @@ public class GraphicEngine extends FramerateEngine {
                     scene.add(group);
 
                     final Part part = component.getFirstPart();
-                    part.getTransform().addListener(new TransformMatrixChangeListener() {
-
+                    
+                    animatedList.add(new Animated() {
+                        
                         @Override
-                        public void valueChanged() {
+                        public void animate() {
                             group.setTransformMatrix(part.getTransform().toFloatBuffer());
                         }
                     });
@@ -215,7 +211,6 @@ public class GraphicEngine extends FramerateEngine {
 
         }
 
-        fitOrder = shipElements;
         cameraController.setFollowed(ship.getComponentByName("hull").getFirstPart());
         scene.add(shipElements);
         activeCamera.fitAll();
@@ -274,10 +269,8 @@ public class GraphicEngine extends FramerateEngine {
         }
 
         skin.bind(scene);
-        if (skin.isAnimated()) {
-            animatedList.add(skin);
-            skin.setFramerate(framerate);
-        }
+        animatedList.add(skin);
+        skin.setFramerate(framerate);
 
         return skin.getElement();
     }
@@ -286,9 +279,13 @@ public class GraphicEngine extends FramerateEngine {
     protected void frame() {
 
         Log.perfBegin("Frame");
-        //Game.getInstance().getWorld().lock();
-
+        
+        Game.getInstance().getWorld().lock();
+        
         Log.perfBegin("amination");
+        
+        
+        
         // amination
         for (Animated animated : animatedList) {
             animated.animate();
@@ -310,6 +307,8 @@ public class GraphicEngine extends FramerateEngine {
             thrustLine.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, -(float) engine.getCurrentThrust(), 0));
         }
         Log.perfEnd();
+        
+        Game.getInstance().getWorld().unlock();
 
         Log.perfBegin("draw");
 

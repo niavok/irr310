@@ -13,7 +13,7 @@ public abstract class Skin implements Animated{
     public void bind(V3DScene scene) {
     }
 
-    public abstract boolean isAnimated();
+    //public abstract boolean isAnimated();
 
     public abstract V3DElement getElement();
 
@@ -21,7 +21,7 @@ public abstract class Skin implements Animated{
         this.framerate = framerate;
     }
 
-    public void animate() {
-    }
+    /*public void animate() {
+    }*/
 
 }

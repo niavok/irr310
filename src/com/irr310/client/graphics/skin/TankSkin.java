@@ -3,7 +3,6 @@ package com.irr310.client.graphics.skin;
 import java.io.File;
 
 import com.irr310.common.tools.TransformMatrix;
-import com.irr310.common.tools.TransformMatrix.TransformMatrixChangeListener;
 import com.irr310.common.world.Component;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
@@ -16,7 +15,7 @@ import fr.def.iss.vd2.lib_v3d.element.V3DrawElement;
 public class TankSkin extends Skin {
 
     private V3DGroupElement elements;
-    private V3DrawElement elementPanel;
+    private TransformMatrix transform;
 
     public TankSkin(V3DContext context, final Component object) {
         
@@ -31,24 +30,14 @@ public class TankSkin extends Skin {
         final V3DrawElement elementTank = V3DrawElement.LoadFromFile(v3drawFileTank, context);
         elements.add(new V3DColorElement(elementTank, new V3DColor(151, 32, 0)));
         
-        TransformMatrix transform = object.getFirstPart().getTransform();
+        transform = object.getFirstPart().getTransform();
         elements.setTransformMatrix(transform.toFloatBuffer());
-
-        
-        transform.addListener(new TransformMatrixChangeListener() {
-
-            @Override
-            public void valueChanged() {
-                elements.setTransformMatrix(object.getFirstPart().getTransform().toFloatBuffer());
-            }
-        });
-        
         
     }
 
     @Override
-    public boolean isAnimated() {
-        return false;
+    public void animate() {
+        elements.setTransformMatrix(transform.toFloatBuffer());
     }
 
     @Override

@@ -7,6 +7,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.Display;
 
+import com.irr310.client.graphics.Animated;
 import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.event.CelestialObjectAddedEvent;
 import com.irr310.common.event.CollisionEvent;
@@ -49,6 +50,7 @@ public class DebugGraphicEngine extends FramerateEngine {
     V3DSimple3DCamera activeCamera;
     V3DCanvas canvas;
     private V3DScene scene;
+    private List<Animated> animatedList = new ArrayList<Animated>();
     private List<Pair<LinearEngineCapacity, V3DLine>> thrustLines;
 
     public DebugGraphicEngine() {
@@ -138,10 +140,10 @@ public class DebugGraphicEngine extends FramerateEngine {
                     scene.add(group);
 
                     final Part part = component.getFirstPart();
-                    part.getTransform().addListener(new TransformMatrixChangeListener() {
-
+                    animatedList.add(new Animated() {
+                        
                         @Override
-                        public void valueChanged() {
+                        public void animate() {
                             group.setTransformMatrix(part.getTransform().toFloatBuffer());
                         }
                     });
@@ -176,10 +178,10 @@ public class DebugGraphicEngine extends FramerateEngine {
              * box.setPosition(object.getPosition().toV3DVect3()); } });
              */
 
-            transform.addListener(new TransformMatrixChangeListener() {
-
+            animatedList.add(new Animated() {
+                
                 @Override
-                public void valueChanged() {
+                public void animate() {
                     box.setTransformMatrix(part.getTransform().toFloatBuffer());
                 }
             });
@@ -190,6 +192,10 @@ public class DebugGraphicEngine extends FramerateEngine {
     @Override
     protected void frame() {
 
+        for (Animated animated : animatedList) {
+            animated.animate();
+        }
+        
         // Apply forces
         for (Pair<LinearEngineCapacity, V3DLine> thrustLinePair : thrustLines) {
             V3DLine thrustLine = thrustLinePair.getRight();

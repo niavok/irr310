@@ -3,7 +3,6 @@ package com.irr310.client.graphics.skin;
 import java.io.File;
 
 import com.irr310.common.tools.TransformMatrix;
-import com.irr310.common.tools.TransformMatrix.TransformMatrixChangeListener;
 import com.irr310.common.world.Component;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
@@ -17,6 +16,7 @@ public class PvCellSkin extends Skin {
 
     private V3DGroupElement elements;
     private V3DrawElement elementPanel;
+    private TransformMatrix transform;
 
     public PvCellSkin(V3DContext context, final Component object) {
         
@@ -32,26 +32,16 @@ public class PvCellSkin extends Skin {
         elementPanel = V3DrawElement.LoadFromFile(v3drawFilePanel, context);
         elements.add(new V3DColorElement(elementPanel, new V3DColor(0,20,60)));
 
-        TransformMatrix transform = object.getFirstPart().getTransform();
+        transform = object.getFirstPart().getTransform();
         elements.setTransformMatrix(transform.toFloatBuffer());
 
         elementStructure.setRotation(90, 0, 0);
         elementPanel.setRotation(90, 0, 0);
-        
-        transform.addListener(new TransformMatrixChangeListener() {
-
-            @Override
-            public void valueChanged() {
-                elements.setTransformMatrix(object.getFirstPart().getTransform().toFloatBuffer());
-            }
-        });
-        
-        
     }
 
     @Override
-    public boolean isAnimated() {
-        return false;
+    public void animate() {
+        elements.setTransformMatrix(transform.toFloatBuffer());
     }
 
     @Override

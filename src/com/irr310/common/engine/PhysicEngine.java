@@ -10,7 +10,6 @@ import javax.vecmath.Vector3f;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
-import org.lwjgl.Sys;
 
 import com.bulletphysics.collision.broadphase.BroadphaseInterface;
 import com.bulletphysics.collision.broadphase.BroadphasePair;
@@ -19,11 +18,11 @@ import com.bulletphysics.collision.broadphase.DbvtBroadphase;
 import com.bulletphysics.collision.broadphase.DispatcherInfo;
 import com.bulletphysics.collision.broadphase.OverlapFilterCallback;
 import com.bulletphysics.collision.dispatch.CollisionDispatcher;
+import com.bulletphysics.collision.dispatch.CollisionWorld.LocalRayResult;
 import com.bulletphysics.collision.dispatch.CollisionWorld.RayResultCallback;
 import com.bulletphysics.collision.dispatch.DefaultCollisionConfiguration;
 import com.bulletphysics.collision.dispatch.DefaultNearCallback;
 import com.bulletphysics.collision.dispatch.NearCallback;
-import com.bulletphysics.collision.dispatch.CollisionWorld.LocalRayResult;
 import com.bulletphysics.collision.narrowphase.ManifoldPoint;
 import com.bulletphysics.collision.narrowphase.PersistentManifold;
 import com.bulletphysics.collision.shapes.BoxShape;
@@ -43,7 +42,6 @@ import com.bulletphysics.linearmath.MotionState;
 import com.bulletphysics.linearmath.Transform;
 import com.bulletphysics.util.ObjectArrayList;
 import com.irr310.client.GameClient;
-import com.irr310.client.network.ClientNetworkEngine;
 import com.irr310.common.Game;
 import com.irr310.common.event.CelestialObjectAddedEvent;
 import com.irr310.common.event.CollisionEvent;
@@ -577,8 +575,6 @@ public class PhysicEngine extends FramerateEngine {
             Vector3f av = new Vector3f();
             body.getAngularVelocity(av);
             part.getRotationSpeed().set(av);
-
-            part.getTransform().fireChanged();
         }
     }
 

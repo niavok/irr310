@@ -10,12 +10,8 @@ public class TransformMatrix {
 
     public float[] transform;
 
-    private List<TransformMatrixChangeListener> changeListeners;
-
     public TransformMatrix() {
         transform = new float[16];
-
-        changeListeners = new CopyOnWriteArrayList<TransformMatrix.TransformMatrixChangeListener>();
     }
 
     public FloatBuffer toFloatBuffer() {
@@ -35,18 +31,6 @@ public class TransformMatrix {
 
     private void set(int i, int j, float val) {
         transform[j * 4 + i] = val;
-        fireChanged();
-    }
-
-    public void addListener(TransformMatrixChangeListener listener) {
-        changeListeners.add(listener);
-    }
-
-    public void fireChanged() {
-
-        for (TransformMatrixChangeListener listener : changeListeners) {
-            listener.valueChanged();
-        }
     }
 
     public interface TransformMatrixChangeListener {
