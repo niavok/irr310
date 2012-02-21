@@ -18,6 +18,7 @@ import com.irr310.common.world.Asteroid;
 import com.irr310.common.world.Monolith;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.World;
+import com.irr310.server.game.CelestialObjectFactory;
 import com.irr310.server.network.ServerNetworkEngine;
 import com.irr310.server.ui.DebugGraphicEngine;
 
@@ -196,12 +197,15 @@ public class GameServer extends Game {
 
             Random random = new Random();
 
-            Asteroid asteroid = new Asteroid(GameServer.pickNewId(), "asteroid");
+            Asteroid asteroid = CelestialObjectFactory.createAsteroid(random.nextDouble()*50+1);
             asteroid.getFirstPart()
                     .getTransform()
                     .translate(random.nextFloat() * 1000f - 500f, random.nextFloat() * 1000f - 500f, random.nextFloat() * 1000f - 500f);
             asteroid.getFirstPart().getLinearSpeed().set(random.nextFloat() * 50 - 25, random.nextFloat() * 50 - 25, random.nextFloat() * 50 - 25);
-            asteroid.getFirstPart().getRotationSpeed().set(random.nextFloat() * 50 - 25, random.nextFloat() * 50 - 25, random.nextFloat() * 50 - 25);
+            
+            float angularSpeed = 1;
+            
+            asteroid.getFirstPart().getRotationSpeed().set(random.nextFloat() * angularSpeed - angularSpeed/2f, random.nextFloat() * angularSpeed - angularSpeed/2f, random.nextFloat() * angularSpeed - angularSpeed/2f);
             world.addCelestialObject(asteroid);
 
         }

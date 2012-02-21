@@ -267,7 +267,9 @@ public class V3DFollow3DCameraController implements V3DCameraController, Animate
             //Target
             TransformMatrix target = TransformMatrix.identity();
             //target.translate(2,0,2);
-            target.translate(0,0,2);
+            //target.translate(0,0,2);
+            target.translate(0,10,0);
+            
             target.preMultiply(transform);
             V3DVect3 targetPosition = target.getTranslation().toV3DVect3();
             camera.setPosition(targetPosition);
@@ -275,7 +277,8 @@ public class V3DFollow3DCameraController implements V3DCameraController, Animate
             //Eye
             TransformMatrix eye = TransformMatrix.identity();
             //eye.translate(2,-20,2);
-            eye.translate(0,-20,2);
+            //eye.translate(0,-20,2);
+            eye.translate(0,4,0);
             eye.preMultiply(transform);
             V3DVect3 eyePosition = eye.getTranslation().toV3DVect3();
             camera.setEye(eyePosition);
