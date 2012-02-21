@@ -286,7 +286,7 @@ public class GraphicEngine extends FramerateEngine {
     protected void frame() {
 
         Log.perfBegin("Frame");
-        Game.getInstance().getWorld().lock();
+        //Game.getInstance().getWorld().lock();
 
         Log.perfBegin("amination");
         // amination
@@ -314,7 +314,7 @@ public class GraphicEngine extends FramerateEngine {
         Log.perfBegin("draw");
 
         canvas.frame();
-        Game.getInstance().getWorld().unlock();
+        //Game.getInstance().getWorld().unlock();
 
         Log.perfEnd();
 

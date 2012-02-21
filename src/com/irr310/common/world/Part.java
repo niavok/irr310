@@ -145,5 +145,6 @@ public class Part extends GameEntity {
     public void setCollisionShape(CollisionShape collisionShape) {
         this.collisionShape = collisionShape;
     }
+    
 
 }

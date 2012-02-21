@@ -136,7 +136,11 @@ public class ClientNetworkEngine extends EventEngine {
     }
     
     private void damageNotificationReceived(DamageNotificationMessage message) {
-        WorldObject target = GameClient.getInstance().getWorld().getPartById(message.target).getParentObject();
+        Part partById = GameClient.getInstance().getWorld().getPartById(message.target);
+        if(partById == null) {
+            return;
+        }
+        WorldObject target = partById.getParentObject();
         
         System.out.println("Damage from server: "+target.getName()+" take "+message.damage+" damage.");
         double newDurablility = target.getDurability();

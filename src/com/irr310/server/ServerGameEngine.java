@@ -52,6 +52,11 @@ public class ServerGameEngine extends FramerateEngine {
         for (CapacityController controller : capacityControllers) {
             controller.update(framerate.getSeconds());
         }
+        
+        
+        
+        
+        
     }
 
     private final class GameEngineEventVisitor extends DefaultEngineEventVisitor {

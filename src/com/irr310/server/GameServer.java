@@ -191,9 +191,17 @@ public class GameServer extends Game {
         Monolith monolith = new Monolith(GameServer.pickNewId(), "monolith");
         world.addCelestialObject(monolith);
         
-        Asteroid asteroid = new Asteroid(GameServer.pickNewId(), "asteroid");
-        asteroid.getFirstPart().getTransform().translate(25, 36, -8);
-        world.addCelestialObject(asteroid);
+        for(int i  = 0; i < 50 ; i++ ) {
+            
+            Asteroid asteroid = new Asteroid(GameServer.pickNewId(), "asteroid");
+            asteroid.getFirstPart().getTransform().translate(i*10, -50, 0);
+            asteroid.getFirstPart().getLinearSpeed().set(0, 10, 0);
+            world.addCelestialObject(asteroid);
+            
+            
+        }
+        
+        
         
         
         
