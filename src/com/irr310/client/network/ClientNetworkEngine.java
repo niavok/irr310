@@ -5,17 +5,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.irr310.client.GameClient;
+import com.irr310.common.Game;
 import com.irr310.common.engine.EventEngine;
+import com.irr310.common.event.CelestialObjectRemovedEvent;
+import com.irr310.common.event.DamageEvent;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.NetworkEvent;
 import com.irr310.common.event.QuitGameEvent;
+import com.irr310.common.event.CelestialObjectRemovedEvent.Reason;
 import com.irr310.common.network.NetworkMessage;
+import com.irr310.common.network.protocol.CelestialObjectRemovedNotificationMessage;
 import com.irr310.common.network.protocol.DamageNotificationMessage;
 import com.irr310.common.network.protocol.PartStateUpdateListMessage;
 import com.irr310.common.network.protocol.ShipListMessage;
 import com.irr310.common.network.protocol.WorldObjectListMessage;
 import com.irr310.common.world.CelestialObject;
+import com.irr310.common.world.DamageType;
 import com.irr310.common.world.Part;
 import com.irr310.common.world.Ship;
 import com.irr310.common.world.WorldObject;
@@ -108,10 +114,15 @@ public class ClientNetworkEngine extends EventEngine {
                 case DAMAGE_NOTIFICATION:
                     damageNotificationReceived((DamageNotificationMessage) event.getMessage());
                     break;
+                case CELESTIAL_OBJECT_REMOVED_NOTIFICATION:
+                    celestialObjectRemovedNotificationReceived((CelestialObjectRemovedNotificationMessage) event.getMessage());
+                    break;
                 default:
                     System.err.println("Unsupported network type " + event.getMessage().getType());
             }
         }
+
+        
 
         
 
@@ -135,6 +146,15 @@ public class ClientNetworkEngine extends EventEngine {
 
     }
     
+    private void celestialObjectRemovedNotificationReceived(CelestialObjectRemovedNotificationMessage message) {
+        CelestialObject celestialObject = GameClient.getInstance().getWorld().getCelestialObjectById(message.target);
+        if(celestialObject == null) {
+            return;
+        }
+        
+        GameClient.getInstance().getWorld().removeCelestialObject(celestialObject, Reason.values()[message.reason]);
+    }
+    
     private void damageNotificationReceived(DamageNotificationMessage message) {
         Part partById = GameClient.getInstance().getWorld().getPartById(message.target);
         if(partById == null) {
@@ -151,8 +171,11 @@ public class ClientNetworkEngine extends EventEngine {
         
         System.out.println("new state: "+newDurablility+"/"+target.getDurabilityMax());
         
-        
         target.setDurability(newDurablility);
+        
+        Game.getInstance().sendToAll(new DamageEvent(partById, message.damage, DamageType.values()[message.damageType]));
+        
+        
     }
 
     private void worldObjectListReceived(NetworkMessage message) {

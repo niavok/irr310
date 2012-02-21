@@ -6,6 +6,8 @@ import java.util.List;
 
 import com.irr310.common.Game;
 import com.irr310.common.engine.EventEngine;
+import com.irr310.common.event.CelestialObjectAddedEvent;
+import com.irr310.common.event.CelestialObjectRemovedEvent;
 import com.irr310.common.event.DamageEvent;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
@@ -14,6 +16,7 @@ import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.network.NetworkClient;
 import com.irr310.common.network.NetworkMessage;
 import com.irr310.common.network.protocol.CapacityUpdateMessage;
+import com.irr310.common.network.protocol.CelestialObjectRemovedNotificationMessage;
 import com.irr310.common.network.protocol.DamageNotificationMessage;
 import com.irr310.common.network.protocol.LoginRequestMessage;
 import com.irr310.common.network.protocol.LoginResponseMessage;
@@ -74,6 +77,16 @@ public class ServerNetworkEngine extends EventEngine {
             
             for(NetworkClient client: worker.getClients().values()) {
                 client.send(damageNotificationMessage);
+            }
+        }
+        
+        @Override
+        public void visit(CelestialObjectRemovedEvent event) {
+            
+            CelestialObjectRemovedNotificationMessage notificationMessage = new CelestialObjectRemovedNotificationMessage(event.getObject(), event.getReason());
+            
+            for(NetworkClient client: worker.getClients().values()) {
+                client.send(notificationMessage);
             }
         }
 

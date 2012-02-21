@@ -1,7 +1,9 @@
 package com.irr310.server.ui;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -10,6 +12,7 @@ import org.lwjgl.opengl.Display;
 import com.irr310.client.graphics.Animated;
 import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.event.CelestialObjectAddedEvent;
+import com.irr310.common.event.CelestialObjectRemovedEvent;
 import com.irr310.common.event.CollisionEvent;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
@@ -19,6 +22,7 @@ import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.TransformMatrix.TransformMatrixChangeListener;
+import com.irr310.common.world.CelestialObject;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.Part;
 import com.irr310.common.world.Ship;
@@ -52,6 +56,7 @@ public class DebugGraphicEngine extends FramerateEngine {
     private V3DScene scene;
     private List<Animated> animatedList = new ArrayList<Animated>();
     private List<Pair<LinearEngineCapacity, V3DLine>> thrustLines;
+    private Map<WorldObject, V3DElement> worldObjectToV3DElementMap = new HashMap<WorldObject, V3DElement>();
 
     public DebugGraphicEngine() {
         framerate = new Duration(166666666);
@@ -169,7 +174,9 @@ public class DebugGraphicEngine extends FramerateEngine {
             if (inShip) {
                 scene.add(new V3DColorElement(box, V3DColor.blue));
             } else {
-                scene.add(new V3DColorElement(box, V3DColor.red));
+                V3DColorElement element = new V3DColorElement(box, V3DColor.red);
+                scene.add(element);
+                worldObjectToV3DElementMap.put(object, element);
             }
 
             /*
@@ -187,6 +194,11 @@ public class DebugGraphicEngine extends FramerateEngine {
             });
 
         }
+    }
+    
+    protected void removeObject(final CelestialObject object) {
+        V3DElement v3dElement = worldObjectToV3DElementMap.get(object);
+        scene.remove(v3dElement);
     }
 
     @Override
@@ -235,6 +247,11 @@ public class DebugGraphicEngine extends FramerateEngine {
         public void visit(CelestialObjectAddedEvent event) {
             addObject(event.getObject(), false);
         }
+        
+        @Override
+        public void visit(CelestialObjectRemovedEvent event) {
+            removeObject(event.getObject());
+        }
 
         @Override
         public void visit(WorldShipAddedEvent event) {
@@ -245,8 +262,8 @@ public class DebugGraphicEngine extends FramerateEngine {
         public void visit(CollisionEvent event) {
             V3DCircle v3dCircle = new V3DCircle(context);
             v3dCircle.setPosition(event.getCollisionDescriptor().getGlobalPosition().toV3DVect3());
-            v3dCircle.setSize(event.getCollisionDescriptor().getImpulse()/50.0f);
-            scene.add(new V3DColorElement(v3dCircle, V3DColor.yellow));
+            v3dCircle.setSize((float) Math.sqrt(event.getCollisionDescriptor().getImpulse()/50.0f));
+            //scene.add(new V3DColorElement(v3dCircle, V3DColor.yellow));
         }
 
     }

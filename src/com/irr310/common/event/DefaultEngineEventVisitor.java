@@ -69,4 +69,8 @@ public abstract class DefaultEngineEventVisitor implements EngineEventVisitor {
 
     public void visit(BulletFiredEvent event) {
     };
+    
+    @Override
+    public void visit(CelestialObjectRemovedEvent event) {
+    }
 }

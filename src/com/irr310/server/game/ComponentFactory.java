@@ -281,7 +281,6 @@ public class ComponentFactory {
         
         Part part = new Part(GameServer.pickNewId(), component);
         component.addPart(part);
-        Game.getInstance().getWorld().addPart(part);
         return component;
     }
 

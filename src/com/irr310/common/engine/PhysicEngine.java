@@ -44,6 +44,7 @@ import com.bulletphysics.util.ObjectArrayList;
 import com.irr310.client.GameClient;
 import com.irr310.common.Game;
 import com.irr310.common.event.CelestialObjectAddedEvent;
+import com.irr310.common.event.CelestialObjectRemovedEvent;
 import com.irr310.common.event.CollisionEvent;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
@@ -296,6 +297,13 @@ public class PhysicEngine extends FramerateEngine {
     protected void addObject(WorldObject object) {
         for (final Part part : object.getParts()) {
             addPart(part, new UserData());
+        }
+    }
+    
+    protected void removeObject(WorldObject object) {
+        for (final Part part : object.getParts()) {
+            RigidBody body = partToBodyMap.remove(part);
+            dynamicsWorld.removeCollisionObject(body);
         }
     }
 
@@ -605,6 +613,11 @@ public class PhysicEngine extends FramerateEngine {
         @Override
         public void visit(CelestialObjectAddedEvent event) {
             addObject(event.getObject());
+        }
+        
+        @Override
+        public void visit(CelestialObjectRemovedEvent event) {
+            removeObject(event.getObject());
         }
 
         @Override

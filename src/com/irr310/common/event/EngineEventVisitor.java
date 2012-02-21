@@ -40,4 +40,6 @@ public interface EngineEventVisitor {
     public abstract void visit(MouseEvent event);
 
     public abstract void visit(BulletFiredEvent event);
+
+    public abstract void visit(CelestialObjectRemovedEvent event);
 }

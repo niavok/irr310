@@ -15,7 +15,6 @@ public class Monolith extends CelestialObject {
         Part part = new Part(GameServer.pickNewId(), this);
         part.setCollisionShape(CollisionShape.SPHERE);
         this.addPart(part);
-        Game.getInstance().getWorld().addPart(part);
         
         part.setShape(new Vect3(10, 10, 10));
         

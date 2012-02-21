@@ -10,6 +10,8 @@ import java.util.concurrent.locks.ReentrantLock;
 import com.irr310.client.navigation.LoginManager;
 import com.irr310.common.Game;
 import com.irr310.common.event.CelestialObjectAddedEvent;
+import com.irr310.common.event.CelestialObjectRemovedEvent;
+import com.irr310.common.event.CelestialObjectRemovedEvent.Reason;
 import com.irr310.common.event.PlayerAddedEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.common.tools.Vect3;
@@ -54,20 +56,44 @@ public class World {
     }
 
     public void addCelestialObject(CelestialObject o) {
+        addParts(o.getParts());
         celestialObjects.add(o);
         celestialObjectIdMap.put(o.getId(), o);
         Game.getInstance().sendToAll(new CelestialObjectAddedEvent(o));
     }
+    
+    
+
+    public void removeCelestialObject(CelestialObject o, Reason reason) {
+        removeParts(o.getParts());
+        celestialObjects.remove(o);
+        celestialObjectIdMap.remove(o.getId());
+        Game.getInstance().sendToAll(new CelestialObjectRemovedEvent(o, reason));
+    }
+    
 
     public void addComponent(Component component) {
+        addParts(component.getParts());
         componentIdMap.put(component.getId(), component);
         List<Capacity> capacities = component.getCapacities();
         for (Capacity capacity : capacities) {
             capacityIdMap.put(capacity.getId(), capacity);
         }
     }
+    
+    private void addParts(List<Part> parts) {
+        for(Part part: parts) {
+            addPart(part);
+        }
+    }
+    
+    private void removeParts(List<Part> parts) {
+        for(Part part: parts) {
+            removePart(part);
+        }
+    }
 
-    public void addPart(Part part) {
+    private void addPart(Part part) {
         partIdMap.put(part.getId(), part);
         parts.add(part);
         if(part.getOwner() == LoginManager.localPlayer) {
@@ -75,6 +101,13 @@ public class World {
         }
     }
 
+    private void removePart(Part part) {
+        if(part.getOwner() == LoginManager.localPlayer) {
+            myParts.remove(part);
+        }
+        parts.remove(part);
+    }
+    
     private void addPlayer(Player player) {
         players.add(player);
         playerIdMap.put(player.getId(), player);
@@ -139,6 +172,10 @@ public class World {
     public Ship getShipById(long shipId) {
         return shipIdMap.get(shipId);
     }
+    
+    public CelestialObject getCelestialObjectById(long celestialObjectId) {
+        return celestialObjectIdMap.get(celestialObjectId);
+    }
 
     public Component getComponentBy(long componentId) {
         return componentIdMap.get(componentId);
@@ -194,6 +231,8 @@ public class World {
     public List<Ship> getShips() {
         return ships;
     }
+
+   
 
     
 }

@@ -3,12 +3,16 @@ package com.irr310.server;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.irr310.common.Game;
 import com.irr310.common.engine.CollisionDescriptor;
 import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.engine.RayResultDescriptor;
 import com.irr310.common.event.AddShipEvent;
 import com.irr310.common.event.AddWorldObjectEvent;
 import com.irr310.common.event.BulletFiredEvent;
+import com.irr310.common.event.CelestialObjectAddedEvent;
+import com.irr310.common.event.CelestialObjectRemovedEvent;
+import com.irr310.common.event.CelestialObjectRemovedEvent.Reason;
 import com.irr310.common.event.CollisionEvent;
 import com.irr310.common.event.DamageEvent;
 import com.irr310.common.event.DefaultEngineEventVisitor;
@@ -17,6 +21,7 @@ import com.irr310.common.event.PauseEngineEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
+import com.irr310.common.world.CelestialObject;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.DamageType;
 import com.irr310.common.world.Part;
@@ -32,6 +37,7 @@ import com.irr310.server.game.ShipFactory;
 
 public class ServerGameEngine extends FramerateEngine {
 
+    private static final double WORLD_SIZE = 1000;
     private List<CapacityController> capacityControllers;
 
     public ServerGameEngine() {
@@ -48,6 +54,21 @@ public class ServerGameEngine extends FramerateEngine {
     protected void frame() {
         for (CapacityController controller : capacityControllers) {
             controller.update(framerate.getSeconds());
+        }
+        
+        
+        // Check world leave
+        for(Part part : Game.getInstance().getWorld().getParts()) {
+            if(part.getTransform().getTranslation().length() > WORLD_SIZE) {
+                
+                
+                
+                if(part.getParentObject() instanceof CelestialObject) {
+                    CelestialObject object = (CelestialObject) part.getParentObject();
+                    Game.getInstance().getWorld().removeCelestialObject(object, Reason.LEAVE_OUT_WORLD);
+                    System.err.println(object.getName() + " leave the world");
+                }
+            }
         }
         
         

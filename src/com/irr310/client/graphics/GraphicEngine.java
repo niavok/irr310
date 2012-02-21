@@ -2,7 +2,9 @@ package com.irr310.client.graphics;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -28,6 +30,7 @@ import com.irr310.client.graphics.skin.WingSkin;
 import com.irr310.common.Game;
 import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.event.CelestialObjectAddedEvent;
+import com.irr310.common.event.CelestialObjectRemovedEvent;
 import com.irr310.common.event.CollisionEvent;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
@@ -75,6 +78,7 @@ public class GraphicEngine extends FramerateEngine {
     private List<Pair<LinearEngineCapacity, V3DLine>> thrustLines;
     private List<Animated> animatedList = new ArrayList<Animated>();
     private V3DFollow3DCameraController cameraController;
+    private Map<WorldObject, V3DElement> worldObjectToV3DElementMap = new HashMap<WorldObject, V3DElement>();
     
     public GraphicEngine() {
         framerate = new Duration(16666666);
@@ -174,7 +178,15 @@ public class GraphicEngine extends FramerateEngine {
     }
 
     protected void addCelestialObject(final CelestialObject object) {
-        scene.add(addObject(object));
+        
+        V3DElement v3dElement = addObject(object);
+        scene.add(v3dElement);
+        worldObjectToV3DElementMap.put(object, v3dElement);
+    }
+    
+    protected void removeCelestialObject(final CelestialObject object) {
+        V3DElement v3dElement = worldObjectToV3DElementMap.get(object);
+        scene.remove(v3dElement);
     }
     
     protected void addShip(final Ship ship) {
@@ -346,9 +358,15 @@ public class GraphicEngine extends FramerateEngine {
 
         @Override
         public void visit(CelestialObjectAddedEvent event) {
-            System.err.println("CelestialObjectAddedEvent");
+            
             addCelestialObject(event.getObject());
         }
+        
+        @Override
+        public void visit(CelestialObjectRemovedEvent event) {
+            removeCelestialObject(event.getObject());
+        }
+        
 
         @Override
         public void visit(WorldShipAddedEvent event) {

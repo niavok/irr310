@@ -1,7 +1,9 @@
 package com.irr310.common.network;
 
+import com.irr310.common.event.CelestialObjectRemovedEvent;
 import com.irr310.common.network.protocol.CameraViewObjectListRequestMessage;
 import com.irr310.common.network.protocol.CapacityUpdateMessage;
+import com.irr310.common.network.protocol.CelestialObjectRemovedNotificationMessage;
 import com.irr310.common.network.protocol.DamageNotificationMessage;
 import com.irr310.common.network.protocol.HelloMessage;
 import com.irr310.common.network.protocol.LoginRequestMessage;
@@ -139,6 +141,9 @@ public abstract class MessageParser {
                 break;
             case DAMAGE_NOTIFICATION:
                 message = new DamageNotificationMessage();
+                break;
+            case CELESTIAL_OBJECT_REMOVED_NOTIFICATION:
+                message = new CelestialObjectRemovedNotificationMessage();
                 break;
             default:
                 System.err.println("Not implemented message type: " + messageType.toString());
