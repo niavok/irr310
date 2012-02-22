@@ -193,17 +193,27 @@ public class GameServer extends Game {
         Monolith monolith = new Monolith(GameServer.pickNewId(), "monolith");
         world.addCelestialObject(monolith);
 
-        for (int i = 0; i < 500; i++) {
+        for (int i = 0; i < 100; i++) {
 
             Random random = new Random();
 
-            Asteroid asteroid = CelestialObjectFactory.createAsteroid(random.nextDouble()*50+1);
-            asteroid.getFirstPart()
-                    .getTransform()
-                    .translate(random.nextFloat() * 1000f - 500f, random.nextFloat() * 1000f - 500f, random.nextFloat() * 1000f - 500f);
-            asteroid.getFirstPart().getLinearSpeed().set(random.nextFloat() * 50 - 25, random.nextFloat() * 50 - 25, random.nextFloat() * 50 - 25);
+            double sizeBase = random.nextDouble();
+            double size = (sizeBase*sizeBase)*100+1;
+            System.err.println("size"  + size );
             
             float angularSpeed = 1;
+            float position = 1000;
+            float linearSpeed = 5;
+            
+            
+            
+            Asteroid asteroid = CelestialObjectFactory.createAsteroid(size);
+            asteroid.getFirstPart()
+                    .getTransform()
+                    .translate(random.nextFloat() * position - position/2, random.nextFloat() * position - position/2, random.nextFloat() * position - position/2);
+            asteroid.getFirstPart().getLinearSpeed().set(random.nextFloat() * linearSpeed - linearSpeed/2, random.nextFloat() * linearSpeed - linearSpeed/2, random.nextFloat() * linearSpeed - linearSpeed/2);
+            
+            
             
             asteroid.getFirstPart().getRotationSpeed().set(random.nextFloat() * angularSpeed - angularSpeed/2f, random.nextFloat() * angularSpeed - angularSpeed/2f, random.nextFloat() * angularSpeed - angularSpeed/2f);
             world.addCelestialObject(asteroid);

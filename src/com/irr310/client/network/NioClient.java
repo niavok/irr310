@@ -221,7 +221,8 @@ public class NioClient implements Runnable {
             socketChannel.finishConnect();
         } catch (IOException e) {
             // Cancel the channel's registration with our selector
-            System.out.println(e);
+            e.printStackTrace();
+            
             key.cancel();
             return;
         }
