@@ -119,7 +119,7 @@ public class Vect3 {
     }
 
     public Vect3 minus(Vect3 v) {
-        return diff(v);
+        return new Vect3(x - v.x, y - v.y, z - v.z);
     }
     
     public Vect3 plus(Vect3 v) {
@@ -182,6 +182,10 @@ public class Vect3 {
 
     public double dot(Vect3 vect) {
         return x * vect.x + y * vect.y + z * vect.z;
+    }
+
+    public Vect3 normalize() {
+        return this.divide(length());
     }
 
     

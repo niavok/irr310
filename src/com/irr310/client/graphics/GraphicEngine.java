@@ -11,6 +11,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
+import com.irr310.client.graphics.effects.BulletEffect;
 import com.irr310.client.graphics.gui.GuiFpsIndicator;
 import com.irr310.client.graphics.gui.GuiSpeedIndicator;
 import com.irr310.client.graphics.skin.AsteroidSkin;
@@ -29,6 +30,7 @@ import com.irr310.client.graphics.skin.ThrusterBlockSkin;
 import com.irr310.client.graphics.skin.WingSkin;
 import com.irr310.common.Game;
 import com.irr310.common.engine.FramerateEngine;
+import com.irr310.common.event.BulletFiredEvent;
 import com.irr310.common.event.CelestialObjectAddedEvent;
 import com.irr310.common.event.CelestialObjectRemovedEvent;
 import com.irr310.common.event.CollisionEvent;
@@ -41,6 +43,7 @@ import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.common.tools.Log;
+import com.irr310.common.tools.Vect3;
 import com.irr310.common.world.CelestialObject;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.Part;
@@ -394,6 +397,13 @@ public class GraphicEngine extends FramerateEngine {
             point.setSize(5f);
             scene.add(new V3DColorElement(point, new V3DColor((int)event.getCollisionDescriptor().getImpulse()*10,50,255-(int)event.getCollisionDescriptor().getImpulse()*10)));
         }
+        
+        @Override
+        public void visit(BulletFiredEvent event) {
+            addBullet(event.getFrom(), event.getTo());
+        }
+
+        
 
     }
 
@@ -411,4 +421,12 @@ public class GraphicEngine extends FramerateEngine {
         fullscreenBinding.getGui().remove(component); 
     }
 
+    
+    private void addBullet(Vect3 from, Vect3 to) {
+        BulletEffect bulletEffect = new BulletEffect(context, from, to);
+        bulletEffect.setFramerate(framerate);
+        animatedList.add(bulletEffect);
+        scene.add(bulletEffect.getElement());
+    }
+    
 }
