@@ -19,17 +19,18 @@ package com.irr310.client.graphics.gui;
 
 import java.text.DecimalFormat;
 
-import com.irr310.client.graphics.Animated;
+import com.irr310.client.graphics.GraphicEngine;
+import com.irr310.client.graphics.GraphicalElement;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
-import fr.def.iss.vd2.lib_v3d.V3DContext;
+import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 import fr.def.iss.vd2.lib_v3d.gui.V3DLabel;
 
 /**
  *
  * @author fberto
  */
-public class GuiFpsIndicator extends V3DLabel implements Animated{
+public class GuiFpsIndicator extends V3DLabel implements GraphicalElement{
     
     final long NANO_IN_MILLI = 1000000;
 
@@ -39,16 +40,19 @@ public class GuiFpsIndicator extends V3DLabel implements Animated{
     private int frameMesureCount = 0;
 
     private DecimalFormat format;
+
+    private final GraphicEngine engine;
     
-    public GuiFpsIndicator(V3DContext context) {
-        super(context, "-- fps");
+    public GuiFpsIndicator(GraphicEngine engine) {
+        super(engine.getV3DContext(), "-- fps");
+        this.engine = engine;
         currentTime = System.nanoTime()/NANO_IN_MILLI;
         setColor(new V3DColor(0.6f,0.6f,0.6f), V3DColor.transparent);
         format = new DecimalFormat("0.0");
     }
     
     @Override
-    public void animate() {
+    public void update() {
         currentTime = System.nanoTime()/NANO_IN_MILLI;
         frameMesureCount++;
         
@@ -59,6 +63,26 @@ public class GuiFpsIndicator extends V3DLabel implements Animated{
             lastFpsMesureTime = currentTime;
             setText(""+format.format(lastFps)+" fps");
         }     
+    }
+
+    @Override
+    public boolean isAnimated() {
+        return true;
+    }
+
+    @Override
+    public void destroy() {
+        engine.destroyElement(this);
+    }
+
+    @Override
+    public boolean isDisplayable() {
+        return false;
+    }
+
+    @Override
+    public V3DElement getV3DElement() {
+        return null;
     }
 
 }

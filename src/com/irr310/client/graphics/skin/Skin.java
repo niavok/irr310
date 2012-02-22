@@ -1,27 +1,12 @@
 package com.irr310.client.graphics.skin;
 
-import com.irr310.client.graphics.Animated;
-import com.irr310.server.Duration;
+import com.irr310.client.graphics.GenericGraphicalElement;
+import com.irr310.client.graphics.GraphicEngine;
 
-import fr.def.iss.vd2.lib_v3d.V3DScene;
-import fr.def.iss.vd2.lib_v3d.element.V3DElement;
+public abstract class Skin extends GenericGraphicalElement{
 
-public abstract class Skin implements Animated{
-
-    protected Duration framerate;
-
-    public void bind(V3DScene scene) {
+    public Skin(GraphicEngine engine) {
+        super(engine);
     }
-
-    //public abstract boolean isAnimated();
-
-    public abstract V3DElement getElement();
-
-    public void setFramerate(Duration framerate) {
-        this.framerate = framerate;
-    }
-
-    /*public void animate() {
-    }*/
 
 }

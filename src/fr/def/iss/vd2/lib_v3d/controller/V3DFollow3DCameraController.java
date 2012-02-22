@@ -22,7 +22,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.geom.Point2D;
 
-import com.irr310.client.graphics.Animated;
+import com.irr310.client.graphics.GraphicEngine;
+import com.irr310.client.graphics.GraphicalElement;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vect3;
 import com.irr310.common.world.Part;
@@ -31,12 +32,13 @@ import fr.def.iss.vd2.lib_v3d.V3DInputEvent;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraController;
 import fr.def.iss.vd2.lib_v3d.camera.V3DEye3DCamera;
+import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 
 /**
  *
  * @author fberto
  */
-public class V3DFollow3DCameraController implements V3DCameraController, Animated {
+public class V3DFollow3DCameraController implements V3DCameraController, GraphicalElement {
 
     V3DEye3DCamera camera;
     float cameraXInitial = 0;
@@ -55,6 +57,7 @@ public class V3DFollow3DCameraController implements V3DCameraController, Animate
     private int translationButton = MouseEvent.BUTTON1;
     private int rotationButton = MouseEvent.BUTTON3;
     private Part element;
+    private final GraphicEngine engine;
 
     private enum MovementType {
 
@@ -62,7 +65,8 @@ public class V3DFollow3DCameraController implements V3DCameraController, Animate
         ROTATE,
     }
 
-    public V3DFollow3DCameraController(V3DEye3DCamera camera) {
+    public V3DFollow3DCameraController(GraphicEngine engine, V3DEye3DCamera camera) {
+        this.engine = engine;
         this.camera = camera;
 
         camera.addController(this);
@@ -259,7 +263,7 @@ public class V3DFollow3DCameraController implements V3DCameraController, Animate
     }
 
     @Override
-    public void animate() {
+    public void update() {
         if(element != null) {
             TransformMatrix transform = element.getTransform();
             Vect3 translation = transform.getTranslation();
@@ -269,6 +273,7 @@ public class V3DFollow3DCameraController implements V3DCameraController, Animate
             //target.translate(2,0,2);
             //target.translate(0,0,2);
             target.translate(0,200,0);
+            //target.translate(0,0,0);
             
             target.preMultiply(transform);
             V3DVect3 targetPosition = target.getTranslation().toV3DVect3();
@@ -279,6 +284,7 @@ public class V3DFollow3DCameraController implements V3DCameraController, Animate
             //eye.translate(2,-20,2);
             //eye.translate(0,-20,2);
             eye.translate(0,4,2);
+            //eye.translate(4,10,5);
             eye.preMultiply(transform);
             V3DVect3 eyePosition = eye.getTranslation().toV3DVect3();
             camera.setEye(eyePosition);
@@ -297,4 +303,25 @@ public class V3DFollow3DCameraController implements V3DCameraController, Animate
             camera.setTop(topPosition);
         }
     }
+
+    @Override
+    public boolean isAnimated() {
+        return true;
+    }
+
+    @Override
+    public void destroy() {
+        engine.destroyElement(this);
+    }
+
+    @Override
+    public boolean isDisplayable() {
+        return false;
+    }
+
+    @Override
+    public V3DElement getV3DElement() {
+        return null;
+    }
+
 }

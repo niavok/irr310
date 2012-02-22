@@ -19,36 +19,60 @@ package com.irr310.client.graphics.gui;
 
 import java.text.DecimalFormat;
 
-import com.irr310.client.graphics.Animated;
+import com.irr310.client.graphics.GraphicEngine;
+import com.irr310.client.graphics.GraphicalElement;
 import com.irr310.common.world.Part;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
-import fr.def.iss.vd2.lib_v3d.V3DContext;
+import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 import fr.def.iss.vd2.lib_v3d.gui.V3DLabel;
 
 /**
  *
  * @author fberto
  */
-public class GuiSpeedIndicator extends V3DLabel implements Animated{
+public class GuiSpeedIndicator extends V3DLabel implements GraphicalElement{
     
     final long NANO_IN_MILLI = 1000000;
 
     private final Part part;
 
     private DecimalFormat format;
+
+    private final GraphicEngine engine;
     
-    public GuiSpeedIndicator(V3DContext context, Part part) {
-        super(context, "-- m/s");
+    public GuiSpeedIndicator(GraphicEngine engine, Part part) {
+        super(engine.getV3DContext(), "-- m/s");
+        this.engine = engine;
         this.part = part;
         setColor(V3DColor.darkgrey, V3DColor.transparent);
         format = new DecimalFormat("0.0");
     }
     
     @Override
-    public void animate() {
+    public void update() {
         
             setText(format.format(part.getLinearSpeed().length())+" m/s");
     }
 
+    
+    @Override
+    public boolean isAnimated() {
+        return true;
+    }
+
+    @Override
+    public void destroy() {
+        engine.destroyElement(this);
+    }
+
+    @Override
+    public boolean isDisplayable() {
+        return false;
+    }
+
+    @Override
+    public V3DElement getV3DElement() {
+        return null;
+    }
 }

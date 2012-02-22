@@ -12,6 +12,10 @@ public abstract class FramerateEngine extends Engine {
         framerate = new Duration(20000000); // 20ms or 50fps
     }
 
+    public Duration getFramerate() {
+        return framerate;
+    }
+    
     protected abstract void frame();
 
     @Override

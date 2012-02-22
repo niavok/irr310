@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.irr310.client.graphics.GraphicEngine;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.TransformMatrix.TransformMatrixChangeListener;
 import com.irr310.common.world.Part;
@@ -26,13 +27,14 @@ public class GenericSkin extends Skin {
     private final Map<Part, V3DLine> speedLineMap = new HashMap<Part, V3DLine>();
     private V3DGroupElement elements;
 
-    public GenericSkin(V3DContext context, WorldObject object) {
+    public GenericSkin(GraphicEngine engine, WorldObject object) {
+        super(engine);
         this.object = object;
-        elements = new V3DGroupElement(context);
+        elements = new V3DGroupElement(engine.getV3DContext());
         
         for (final Part part : object.getParts()) {
 
-                final V3DBox box = new V3DBox(context);
+                final V3DBox box = new V3DBox(engine.getV3DContext());
                 box.setRenderMode(RenderMode.SOLID);
 
                 TransformMatrix transform = part.getTransform();
@@ -41,14 +43,14 @@ public class GenericSkin extends Skin {
                 box.setSize(part.getShape().toV3DVect3());
 
 
-                V3DGroupElement element = new V3DGroupElement(context);
+                V3DGroupElement element = new V3DGroupElement(engine.getV3DContext());
                 //if (inShip) {
                 element.add(new V3DColorElement(box, new V3DColor(0f, 0f, 1f )));
                 /*} else {
                     element = new V3DColorElement(box, V3DColor.red);
                 }*/
                     
-                final V3DBox max = new V3DBox(context);
+                final V3DBox max = new V3DBox(engine.getV3DContext());
                 max.setRenderMode(RenderMode.PLAIN);
                 max.setPosition(part.getShape().toV3DVect3().divideBy(2));
                 max.setSize(new V3DVect3(0.1f, 0.1f, 0.1f));
@@ -56,7 +58,7 @@ public class GenericSkin extends Skin {
                 element.add(new V3DColorElement(max, V3DColor.red));
                 
                 
-                V3DLine speedLine = new V3DLine(context);
+                V3DLine speedLine = new V3DLine(engine.getV3DContext());
                 speedLine.setThickness(3);
                 speedLine.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, 0, 0));
 
@@ -70,7 +72,7 @@ public class GenericSkin extends Skin {
 
 
     @Override
-    public void animate() {
+    public void update() {
         for (Entry<Part, V3DElement> entry : elementsMap.entrySet()) {
             entry.getValue().setTransformMatrix(entry.getKey().getTransform().toFloatBuffer());
         }
@@ -82,8 +84,18 @@ public class GenericSkin extends Skin {
         
     }
     @Override
-    public V3DElement getElement() {
+    public V3DElement getV3DElement() {
         return elements;
+    }
+    
+    @Override
+    public boolean isDisplayable() {
+        return true;
+    }
+
+    @Override
+    public boolean isAnimated() {
+        return true;
     }
 
 }

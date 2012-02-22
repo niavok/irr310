@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -79,9 +80,11 @@ public class GraphicEngine extends FramerateEngine {
     V3DCanvas canvas;
     private V3DScene scene;
     private List<Pair<LinearEngineCapacity, V3DLine>> thrustLines;
-    private List<Animated> animatedList = new ArrayList<Animated>();
+    private List<GraphicalElement> animatedList = new CopyOnWriteArrayList<GraphicalElement>();
+    private List<GraphicalElement> elementList = new CopyOnWriteArrayList<GraphicalElement>();
+    
     private V3DFollow3DCameraController cameraController;
-    private Map<WorldObject, V3DElement> worldObjectToV3DElementMap = new HashMap<WorldObject, V3DElement>();
+    private Map<WorldObject, GraphicalElement> worldObjectToV3DElementMap = new HashMap<WorldObject, GraphicalElement>();
     
     public GraphicEngine() {
         framerate = new Duration(16666666);
@@ -96,7 +99,7 @@ public class GraphicEngine extends FramerateEngine {
 
         activeCamera = new V3DEye3DCamera(context);
 
-        cameraController = new V3DFollow3DCameraController(activeCamera);
+        cameraController = new V3DFollow3DCameraController(this, activeCamera);
         animatedList.add(cameraController);
 
         fullscreenBinding = V3DCameraBinding.buildFullscreenCamera(activeCamera);
@@ -142,7 +145,7 @@ public class GraphicEngine extends FramerateEngine {
         canvas.setEnabled(true);
 
         // GUI
-        GuiFpsIndicator fpsIndicator = new GuiFpsIndicator(context);
+        GuiFpsIndicator fpsIndicator = new GuiFpsIndicator(this);
         fullscreenBinding.getGui().add(fpsIndicator);
         fpsIndicator.setPosition(10, 10);
         animatedList.add(fpsIndicator);
@@ -182,21 +185,18 @@ public class GraphicEngine extends FramerateEngine {
 
     protected void addCelestialObject(final CelestialObject object) {
         
-        V3DElement v3dElement = addObject(object);
-        scene.add(v3dElement);
-        worldObjectToV3DElementMap.put(object, v3dElement);
+        GraphicalElement element = addObject(object);
+        worldObjectToV3DElementMap.put(object, element);
     }
     
     protected void removeCelestialObject(final CelestialObject object) {
-        V3DElement v3dElement = worldObjectToV3DElementMap.get(object);
-        scene.remove(v3dElement);
+        GraphicalElement element = worldObjectToV3DElementMap.get(object);
+        element.destroy();
     }
     
     protected void addShip(final Ship ship) {
 
-        V3DGroupElement shipElements = new V3DGroupElement(context);
         for (Component component : ship.getComponents()) {
-            shipElements.add(addObject(component));
 
             for (Capacity capacity : component.getCapacities()) {
                 if (capacity instanceof LinearEngineCapacity) {
@@ -207,17 +207,23 @@ public class GraphicEngine extends FramerateEngine {
 
                     final V3DColorElement group = new V3DColorElement(thrustLine, V3DColor.fushia);
 
-                    scene.add(group);
 
                     final Part part = component.getFirstPart();
                     
-                    animatedList.add(new Animated() {
-                        
+                    addElement(new AnimatedElement(this) {
+
                         @Override
-                        public void animate() {
+                        public void update() {
                             group.setTransformMatrix(part.getTransform().toFloatBuffer());
                         }
+
+                        @Override
+                        public V3DElement getV3DElement() {
+                            return group;
+                        }
+                        
                     });
+                    
 
                     thrustLines.add(new ImmutablePair<LinearEngineCapacity, V3DLine>((LinearEngineCapacity) capacity, thrustLine));
                 }
@@ -227,67 +233,63 @@ public class GraphicEngine extends FramerateEngine {
         }
 
         cameraController.setFollowed(ship.getComponentByName("hull").getFirstPart());
-        scene.add(shipElements);
         activeCamera.fitAll();
 
-        GuiSpeedIndicator speedIndicator = new GuiSpeedIndicator(context, ship.getComponentByName("kernel").getFirstPart());
+        GuiSpeedIndicator speedIndicator = new GuiSpeedIndicator(this, ship.getComponentByName("kernel").getFirstPart());
         fullscreenBinding.getGui().add(speedIndicator);
         speedIndicator.setPosition(10, 30);
-        animatedList.add(speedIndicator);
+        addElement(speedIndicator);
 
     }
 
-    protected V3DElement addObject(final WorldObject object) {
+    protected GraphicalElement addObject(final WorldObject object) {
 
         Skin skin = null;
 
         if (object.getSkin().isEmpty()) {
             System.err.println("generic skin");
-            skin = new GenericSkin(context, object);
+            skin = new GenericSkin(this, object);
         } else {
             if (object.getSkin().equals("big_propeller")) {
-                skin = new PropellerSkin(context, (Component) object);
+                skin = new PropellerSkin(this, (Component) object);
             } else if (object.getSkin().equals("pvcell")) {
-                skin = new PvCellSkin(context, (Component) object);
+                skin = new PvCellSkin(this, (Component) object);
             } else if (object.getSkin().equals("camera")) {
-                skin = new CameraSkin(context, (Component) object);
+                skin = new CameraSkin(this, (Component) object);
             } else if (object.getSkin().equals("reactor")) {
-                skin = new ReactorSkin(context, (Component) object);
+                skin = new ReactorSkin(this, (Component) object);
             } else if (object.getSkin().equals("tank")) {
-                skin = new TankSkin(context, (Component) object);
+                skin = new TankSkin(this, (Component) object);
             } else if (object.getSkin().equals("factory")) {
-                skin = new FactorySkin(context, (Component) object);
+                skin = new FactorySkin(this, (Component) object);
             } else if (object.getSkin().equals("hangar")) {
-                skin = new FactorySkin(context, (Component) object);
+                skin = new FactorySkin(this, (Component) object);
             } else if (object.getSkin().equals("harvester")) {
-                skin = new FactorySkin(context, (Component) object);
+                skin = new FactorySkin(this, (Component) object);
             } else if (object.getSkin().equals("refinery")) {
-                skin = new FactorySkin(context, (Component) object);
+                skin = new FactorySkin(this, (Component) object);
             } else if (object.getSkin().equals("kernel")) {
-                skin = new CameraSkin(context, (Component) object);
+                skin = new CameraSkin(this, (Component) object);
             } else if (object.getSkin().equals("wing")) {
-                skin = new WingSkin(context, (Component) object);
+                skin = new WingSkin(this, (Component) object);
             } else if (object.getSkin().equals("hull")) {
-                skin = new HullSkin(context, (Component) object);
+                skin = new HullSkin(this, (Component) object);
             } else if (object.getSkin().equals("thrusterBlock")) {
-                skin = new ThrusterBlockSkin(context, (Component) object);
+                skin = new ThrusterBlockSkin(this, (Component) object);
             } else if (object.getSkin().equals("gun")) {
-                skin = new GunSkin(context, (Component) object);
+                skin = new GunSkin(this, (Component) object);
             } else if (object.getSkin().equals("asteroid")) {
-                skin = new AsteroidSkin(context, (CelestialObject) object);
+                skin = new AsteroidSkin(this, (CelestialObject) object);
             } else if (object.getSkin().equals("monolith")) {
-                skin = new MonolithSkin(context, (CelestialObject) object);
+                skin = new MonolithSkin(this, (CelestialObject) object);
             }   else {
                 System.err.println("No skin found for: " + object.getSkin());
-                skin = new GenericSkin(context, object);
+                skin = new GenericSkin(this, object);
             }
         }
-
-        skin.bind(scene);
-        animatedList.add(skin);
-        skin.setFramerate(framerate);
-
-        return skin.getElement();
+        
+        addElement(skin);
+        return skin;
     }
 
     @Override
@@ -302,8 +304,8 @@ public class GraphicEngine extends FramerateEngine {
         
         
         // amination
-        for (Animated animated : animatedList) {
-            animated.animate();
+        for (GraphicalElement animated : animatedList) {
+            animated.update();
         }
         Log.perfEnd();
 
@@ -423,10 +425,35 @@ public class GraphicEngine extends FramerateEngine {
 
     
     private void addBullet(Vect3 from, Vect3 to) {
-        BulletEffect bulletEffect = new BulletEffect(context, from, to);
-        bulletEffect.setFramerate(framerate);
-        animatedList.add(bulletEffect);
-        scene.add(bulletEffect.getElement());
+        BulletEffect bulletEffect = new BulletEffect(this, from, to);
+        addElement(bulletEffect);
+    }
+
+    
+    
+    public void addElement(GraphicalElement graphicalElement) {
+        elementList.add(graphicalElement);
+        if(graphicalElement.isAnimated()) {
+            animatedList.add(graphicalElement);
+        }
+        if(graphicalElement.isDisplayable()) {
+            scene.add(graphicalElement.getV3DElement());
+        }
+    }
+
+    public void destroyElement(GraphicalElement graphicalElement) {
+        elementList.remove(graphicalElement);
+        if(graphicalElement.isAnimated()) {
+            animatedList.remove(graphicalElement);
+        }
+        if(graphicalElement.isDisplayable()) {
+            scene.remove(graphicalElement.getV3DElement());
+        }
+        
+    }
+    
+    public V3DContext getV3DContext() {
+        return context;
     }
     
 }

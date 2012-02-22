@@ -2,6 +2,7 @@ package com.irr310.client.graphics.skin;
 
 import java.io.File;
 
+import com.irr310.client.graphics.GraphicEngine;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.world.Component;
 
@@ -18,18 +19,18 @@ public class PvCellSkin extends Skin {
     private V3DrawElement elementPanel;
     private TransformMatrix transform;
 
-    public PvCellSkin(V3DContext context, final Component object) {
-        
-        elements = new V3DGroupElement(context);
+    public PvCellSkin(GraphicEngine engine, final Component object) {
+        super(engine);
+        elements = new V3DGroupElement(engine.getV3DContext());
 
         // structure
         File v3drawFileStructure = new File("graphics/output/pvcell_structure.v3draw");
-        final V3DrawElement elementStructure = V3DrawElement.LoadFromFile(v3drawFileStructure, context);
+        final V3DrawElement elementStructure = V3DrawElement.LoadFromFile(v3drawFileStructure, engine.getV3DContext());
         elements.add(new V3DColorElement(elementStructure, new V3DColor(135, 158, 255)));
 
         // panel
         File v3drawFilePanel = new File("graphics/output/pvcell_panel.v3draw");
-        elementPanel = V3DrawElement.LoadFromFile(v3drawFilePanel, context);
+        elementPanel = V3DrawElement.LoadFromFile(v3drawFilePanel, engine.getV3DContext());
         elements.add(new V3DColorElement(elementPanel, new V3DColor(0,20,60)));
 
         transform = object.getFirstPart().getTransform();
@@ -40,13 +41,23 @@ public class PvCellSkin extends Skin {
     }
 
     @Override
-    public void animate() {
+    public void update() {
         elements.setTransformMatrix(transform.toFloatBuffer());
     }
 
     @Override
-    public V3DElement getElement() {
+    public V3DElement getV3DElement() {
         return elements;
+    }
+    
+    @Override
+    public boolean isDisplayable() {
+        return true;
+    }
+
+    @Override
+    public boolean isAnimated() {
+        return true;
     }
 
 }
