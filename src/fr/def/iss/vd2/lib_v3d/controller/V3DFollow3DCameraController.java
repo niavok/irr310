@@ -285,7 +285,7 @@ public class V3DFollow3DCameraController implements V3DCameraController, Graphic
             //eye.translate(2,-20,2);
             //eye.translate(0,-20,2);
             eye.translate(0,4,2);
-            eye.translate(-6,-30,2);
+            eye.translate(-2,-30,2);
             //eye.translate(4,10,5);
             eye.preMultiply(transform);
             V3DVect3 eyePosition = eye.getTranslation().toV3DVect3();
