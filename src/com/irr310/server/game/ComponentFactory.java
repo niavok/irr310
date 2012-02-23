@@ -1,6 +1,5 @@
 package com.irr310.server.game;
 
-import com.irr310.common.Game;
 import com.irr310.common.tools.Vect3;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.Part;

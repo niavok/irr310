@@ -30,6 +30,7 @@ import com.irr310.common.world.Part;
 
 import fr.def.iss.vd2.lib_v3d.V3DInputEvent;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
+import fr.def.iss.vd2.lib_v3d.camera.V3DCamera;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraController;
 import fr.def.iss.vd2.lib_v3d.camera.V3DEye3DCamera;
 import fr.def.iss.vd2.lib_v3d.element.V3DElement;
@@ -322,6 +323,10 @@ public class V3DFollow3DCameraController implements V3DCameraController, Graphic
     @Override
     public V3DElement getV3DElement() {
         return null;
+    }
+
+    public V3DCamera getCamera() {
+        return camera;
     }
 
 }

@@ -4,8 +4,6 @@ import com.irr310.common.event.CelestialObjectRemovedEvent.Reason;
 import com.irr310.common.network.NetworkField;
 import com.irr310.common.network.NetworkMessage;
 import com.irr310.common.world.CelestialObject;
-import com.irr310.common.world.DamageType;
-import com.irr310.common.world.Part;
 
 public class CelestialObjectRemovedNotificationMessage extends NetworkMessage {
     

@@ -44,6 +44,12 @@ public class V3DShaderElement extends V3DElement {
 
     }
 
+    public V3DShaderElement(V3DrawElement element, V3DShader v3dShader) {
+        super(element.getContext());
+        childElement = element;
+        shader = getContext().createUniqueShader(v3dShader);
+    }
+
     public void setElement(V3DElement element) {
         childElement = element;
     }
@@ -56,7 +62,7 @@ public class V3DShaderElement extends V3DElement {
 
         GL11.glPushAttrib(GL11.GL_CURRENT_BIT);
 
-        shader.begin(camera);
+        shader.begin();
 
         childElement.display(camera);
 

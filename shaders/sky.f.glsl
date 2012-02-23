@@ -14,6 +14,7 @@ float PI = 3.14159265358979323846264;
 }*/
 
 
+
 vec3 genTex2( in vec2 p1 )
 {
     vec2 p = mod(p1, PI * 2.0);
@@ -61,7 +62,37 @@ vec3 deform( in vec2 p )
 }
 */
 
-void main()
+
+void main(void)
+{
+    vec2 p = -1.0 + 2.0 * gl_FragCoord.xy / resolution.xy;
+    vec2 uv;
+
+    float r = sqrt( dot(p,p) );
+    float a = atan(p.y,p.x) + 0.5*sin(0.5*r-0.5*time);
+
+    float s = 0.5 + 0.5*cos(7.0*a);
+    s = smoothstep(0.0,1.0,s);
+    s = smoothstep(0.0,1.0,s);
+    s = smoothstep(0.0,1.0,s);
+    s = smoothstep(0.0,1.0,s);
+
+    uv.x = time + 1.0/( r + .2*s);
+    uv.y = 3.0*a/3.1416;
+
+    float w = (0.5 + 0.5*s)*r*r;
+
+    vec3 col = genTex2(uv).xyz;
+
+    float ao = 0.5 + 0.5*cos(7.0*a);
+    ao = smoothstep(0.0,0.4,ao)-smoothstep(0.4,0.7,ao);
+    ao = 1.0-0.5*ao*r;
+
+    gl_FragColor = vec4(col*w*ao,1.0);
+}
+
+
+void main2()
 {
 
     float perspective = 45.0*PI/180.0;

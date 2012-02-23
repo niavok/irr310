@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.irr310.common.Game;
 import com.irr310.common.engine.EventEngine;
-import com.irr310.common.event.CelestialObjectAddedEvent;
 import com.irr310.common.event.CelestialObjectRemovedEvent;
 import com.irr310.common.event.DamageEvent;
 import com.irr310.common.event.DefaultEngineEventVisitor;

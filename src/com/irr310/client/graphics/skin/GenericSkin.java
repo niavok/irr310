@@ -6,12 +6,10 @@ import java.util.Map.Entry;
 
 import com.irr310.client.graphics.GraphicEngine;
 import com.irr310.common.tools.TransformMatrix;
-import com.irr310.common.tools.TransformMatrix.TransformMatrixChangeListener;
 import com.irr310.common.world.Part;
 import com.irr310.common.world.WorldObject;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
-import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.element.V3DBox;
 import fr.def.iss.vd2.lib_v3d.element.V3DBox.RenderMode;

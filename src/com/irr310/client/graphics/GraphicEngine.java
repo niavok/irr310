@@ -2,6 +2,7 @@ package com.irr310.client.graphics;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.Display;
 
 import com.irr310.client.graphics.effects.BulletEffect;
@@ -59,6 +61,7 @@ import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 import fr.def.iss.vd2.lib_v3d.V3DScene;
+import fr.def.iss.vd2.lib_v3d.V3DShader;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
 import fr.def.iss.vd2.lib_v3d.camera.V3DEye3DCamera;
@@ -118,8 +121,8 @@ public class GraphicEngine extends FramerateEngine {
 
         // activeCamera.getBackgroundScene().add(new V3DColorElement(sky,
         // V3DColor.pink));
-        // activeCamera.getBackgroundScene().add(new V3DColorElement(new
-        // Sky(context), V3DColor.pink));
+         //activeCamera.getBackgroundScene().add(new V3DColorElement(new
+        //Sky(context, cameraController), V3DColor.pink));
 
         createBubble();
 
@@ -157,7 +160,33 @@ public class GraphicEngine extends FramerateEngine {
         final V3DrawElement elementStructure = V3DrawElement.LoadFromFile(v3drawFileStructure, context);
         // elementStructure.setShader("bubble");
         elementStructure.setScale(1000);
-        scene.add(new V3DColorElement(new V3DShaderElement(elementStructure, "bubble"), new V3DColor(255, 255, 255)));
+        
+        V3DShader shader = new V3DShader("bubble") {
+            private int inputRotation;
+            private int resolution;
+            private int time;
+            private long startTime;
+            
+            protected void loadUniforms() {
+                inputRotation = ARBShaderObjects.glGetUniformLocationARB(shader, "inputRotation");
+                resolution = ARBShaderObjects.glGetUniformLocationARB(shader, "resolution");
+                time = ARBShaderObjects.glGetUniformLocationARB(shader, "time");
+                
+                startTime = new Date().getTime();
+            };
+            
+            protected void setUniforms() {
+                //V3DVect3 rotation = camera.getRotation();
+                //ARBShaderObjects.glUniform3fARB(inputRotation, rotation.x, rotation.y, rotation.z);
+                ARBShaderObjects.glUniform2fARB(resolution, cameraController.getCamera().getCurrentWidth(), cameraController.getCamera().getCurrentHeight());
+                float time2 = ((float) ( new Date().getTime() -startTime))/10000.0f;
+                ARBShaderObjects.glUniform1fARB(time, time2);
+                
+            }
+        };
+        
+        
+        scene.add(new V3DColorElement(new V3DShaderElement(elementStructure, shader), new V3DColor(255, 255, 255)));
     }
 
     private V3DElement generateReference() {

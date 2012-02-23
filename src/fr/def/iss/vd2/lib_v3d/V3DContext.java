@@ -260,6 +260,7 @@ public class V3DContext {
     private V3DCameraBinding mouseOverCameraBinding = null;
     private TextureManager textureManager = new TextureManager();
     private Map<String, V3DShader> shaderMap = new HashMap<String, V3DShader>();
+    private List<V3DShader> uniqueShaderList = new ArrayList<V3DShader>();
 
     /**
      * Internal public method Use by the V3DCanvas to notify a change of top
@@ -389,5 +390,14 @@ public class V3DContext {
         for(V3DShader shader : shaderMap.values()) {
             shader.reload();
         }
+        
+        for(V3DShader shader : uniqueShaderList) {
+            shader.reload();
+        }
+    }
+
+    public V3DShader createUniqueShader(V3DShader v3dShader) {
+        uniqueShaderList.add(v3dShader);
+        return v3dShader;
     }
 }

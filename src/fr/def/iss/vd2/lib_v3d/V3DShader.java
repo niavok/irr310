@@ -13,8 +13,6 @@ import org.lwjgl.opengl.ARBVertexShader;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 
-import fr.def.iss.vd2.lib_v3d.camera.V3DCamera;
-
 public class V3DShader {
 
     private final String name;
@@ -106,14 +104,14 @@ public class V3DShader {
 
     }
 
-    protected void setUniforms(V3DCamera camera) {
+    protected void setUniforms() {
 
     }
 
-    public void begin(V3DCamera camera) {
+    public void begin() {
         if (useShader) {
             ARBShaderObjects.glUseProgramObjectARB(shader);
-            setUniforms(camera);
+            setUniforms();
         }
     }
 

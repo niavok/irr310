@@ -10,8 +10,6 @@ import com.irr310.common.engine.RayResultDescriptor;
 import com.irr310.common.event.AddShipEvent;
 import com.irr310.common.event.AddWorldObjectEvent;
 import com.irr310.common.event.BulletFiredEvent;
-import com.irr310.common.event.CelestialObjectAddedEvent;
-import com.irr310.common.event.CelestialObjectRemovedEvent;
 import com.irr310.common.event.CelestialObjectRemovedEvent.Reason;
 import com.irr310.common.event.CollisionEvent;
 import com.irr310.common.event.DamageEvent;
@@ -66,7 +64,6 @@ public class ServerGameEngine extends FramerateEngine {
                 if(part.getParentObject() instanceof CelestialObject) {
                     CelestialObject object = (CelestialObject) part.getParentObject();
                     Game.getInstance().getWorld().removeCelestialObject(object, Reason.LEAVE_OUT_WORLD);
-                    System.err.println(object.getName() + " leave the world");
                 }
             }
         }

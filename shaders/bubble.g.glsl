@@ -5,6 +5,9 @@
 //vec2 WIN_SCALE = 1.77777778;
 vec2 WIN_SCALE = vec2(1920,1080);
 noperspective varying vec3 dist;
+varying out vec4 verpos;
+varying in vec4 verposIn[3];
+
 void main(void)
 {
     
@@ -19,14 +22,17 @@ void main(void)
   float area = abs(v1.x*v2.y - v1.y * v2.x);
 
   dist = vec3(area/length(v0),0,0);
+  verpos = verposIn[0];
   gl_Position = gl_PositionIn[0];
   EmitVertex();
 	
   dist = vec3(0,area/length(v1),0);
+  verpos = verposIn[1];
   gl_Position = gl_PositionIn[1];
   EmitVertex();
 
   dist = vec3(0,0,area/length(v2));
+  verpos = verposIn[2];
   gl_Position = gl_PositionIn[2];
   EmitVertex();
 

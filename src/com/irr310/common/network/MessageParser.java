@@ -1,6 +1,5 @@
 package com.irr310.common.network;
 
-import com.irr310.common.event.CelestialObjectRemovedEvent;
 import com.irr310.common.network.protocol.CameraViewObjectListRequestMessage;
 import com.irr310.common.network.protocol.CapacityUpdateMessage;
 import com.irr310.common.network.protocol.CelestialObjectRemovedNotificationMessage;

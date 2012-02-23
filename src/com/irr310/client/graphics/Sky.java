@@ -9,6 +9,7 @@ import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.V3DShader;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCamera;
+import fr.def.iss.vd2.lib_v3d.controller.V3DFollow3DCameraController;
 import fr.def.iss.vd2.lib_v3d.element.V3DBoundingBox;
 import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 
@@ -28,15 +29,17 @@ public class Sky extends V3DElement {
    
     
     private V3DShader shader;
+    private final V3DFollow3DCameraController cameraController;
 
-    public Sky(V3DContext context) {
+    public Sky(V3DContext context, final V3DFollow3DCameraController cameraController) {
         super(context);
+        this.cameraController = cameraController;
         
         
         
         
         
-        shader = new V3DShader("sky") {
+        shader = context.createUniqueShader(new V3DShader("sky") {
             private int inputRotation;
             private int resolution;
             private int time;
@@ -50,16 +53,16 @@ public class Sky extends V3DElement {
                 startTime = new Date().getTime();
             };
             
-            protected void setUniforms(V3DCamera camera) {
-                V3DVect3 rotation = camera.getRotation();
-                ARBShaderObjects.glUniform3fARB(inputRotation, rotation.x, rotation.y, rotation.z);
-                ARBShaderObjects.glUniform2fARB(resolution, camera.getCurrentWidth(), camera.getCurrentHeight());
+            protected void setUniforms() {
+                //V3DVect3 rotation = camera.getRotation();
+                //ARBShaderObjects.glUniform3fARB(inputRotation, rotation.x, rotation.y, rotation.z);
+                ARBShaderObjects.glUniform2fARB(resolution, cameraController.getCamera().getCurrentWidth(), cameraController.getCamera().getCurrentHeight());
                 float time2 = ((float) ( new Date().getTime() -startTime))/10000.0f;
                 ARBShaderObjects.glUniform1fARB(time, time2);
                 
-            };
+            }
             
-        };
+        });
         
     }
 
@@ -79,7 +82,8 @@ public class Sky extends V3DElement {
         float y1 = camera.getCurrentHeight();
         float z0 = -2000;
 
-        shader.begin(camera);
+        
+        shader.begin();
         
         GL11.glBegin(GL11.GL_QUADS);
         
