@@ -3,7 +3,7 @@
 
 noperspective varying vec3 dist;
 varying float meshSize;
-const vec4 WIRE_COL = vec4(0.7,0.7,0.8,0.8);
+const vec4 WIRE_COL = vec4(0.7,0.7,0.8,1.0);
 const vec4 FILL_COL = vec4(0.9,0.9,0.9,0.2);
 varying vec4 verpos;
 uniform float time;
@@ -30,7 +30,7 @@ vec3 genTex2( in vec3 p1 )
     
     //vec3 d2 = d;
     
-    d2 -=  vec3(cos(1.5*c - 3.04) * cos(3.0*a) * sin(5.0*b + 2.56) *0.5 +  sin(1.5*c) *  cos(2.5*a + 4.56) * sin(2.8*b) *0.5);
+    d2 -=  vec3(cos(1.5*c - 3.04) * cos(3.0*a) * sin(5.0*b + 2.56) *0.5 +  sin(1.5*c) *  cos(2.5*a + 4.56) * sin(2.8*b) *0.5) +0.2;
     
    
     //c = vec3(sin(3.0*a) * sin(5.0*b));
@@ -43,7 +43,7 @@ void main(void)
 {
 	float d = min(dist[0],min(dist[1],dist[2]));
 	float dMax = max(dist[0],max(dist[1],dist[2]));
- 	float I = exp2(-0.2*d*d);
+ 	float I = exp2(-0.3*d*d);
 
     vec4 fill = FILL_COL;
     fill.x = verpos.x;
@@ -52,7 +52,7 @@ void main(void)
     
     fill = vec4(genTex2(verpos.xyz), 1.0);
     
- 	gl_FragColor = I*WIRE_COL + (1.0 - I)*fill;
+ 	gl_FragColor = I*WIRE_COL + (0.2 + 0.8 * ( 1 - I) )*fill;
  	
  	if (gl_FrontFacing) {
         gl_FragColor = vec4(0.0,0.0,0.0,0.0);

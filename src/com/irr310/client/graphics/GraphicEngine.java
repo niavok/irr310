@@ -106,7 +106,7 @@ public class GraphicEngine extends FramerateEngine {
         animatedList.add(cameraController);
 
         fullscreenBinding = V3DCameraBinding.buildFullscreenCamera(activeCamera);
-        activeCamera.setBackgroundColor(V3DColor.white);
+        activeCamera.setBackgroundColor(V3DColor.black);
 
         // Add zoom and pane camera controlleur
         // cameraController.setLimitBound(false);
