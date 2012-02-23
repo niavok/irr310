@@ -53,6 +53,10 @@ Ship upgrade
 - turn help (thrusters)
 - shutgun
 - bomb
+- driver customization
+- damage control
+- reparation control
+- inline auto repair
 
 Gui upgrade
 -----------
