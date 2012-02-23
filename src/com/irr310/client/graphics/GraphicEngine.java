@@ -226,10 +226,11 @@ public class GraphicEngine extends FramerateEngine {
     protected void addShip(final Ship ship) {
 
         for (Component component : ship.getComponents()) {
+            addObject(component);
 
             for (Capacity capacity : component.getCapacities()) {
                 if (capacity instanceof LinearEngineCapacity) {
-
+                    
                     V3DLine thrustLine = new V3DLine(context);
                     thrustLine.setThickness(3);
                     thrustLine.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, 0, 0));

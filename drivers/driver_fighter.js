@@ -6,6 +6,29 @@ function init() {
         return;
     }
     
+    // GUI
+    var cursorCenter = core.gui.createRectangle();
+    cursorCenter.setPosition((new Vec2(640-1,512-1)));
+                    cursorCenter.setSize(new Vec2(2,2));
+                    cursorCenter.setColor(new Color(0,50,0));
+    
+    var cursorTop = core.gui.createRectangle();
+    cursorTop.setPosition((new Vec2(640,512+10)));
+                    cursorTop.setSize(new Vec2(0,30));
+                    cursorTop.setColor(new Color(0,50,0));
+    var cursorBottom = core.gui.createRectangle();
+    cursorBottom.setPosition((new Vec2(640,512-40)));
+                    cursorBottom.setSize(new Vec2(0,30));
+                    cursorBottom.setColor(new Color(0,50,0));
+    var cursorLeft = core.gui.createRectangle();
+    cursorLeft.setPosition((new Vec2(640-40,512)));
+                    cursorLeft.setSize(new Vec2(30,0));
+                    cursorLeft.setColor(new Color(0,50,0));
+    var cursorRight = core.gui.createRectangle();
+    cursorRight.setPosition((new Vec2(640+10,512)));
+                    cursorRight.setSize(new Vec2(30,0));
+                    cursorRight.setColor(new Color(0,50,0));
+    
     
     core.log("Logged as: "+core.me.login);
     
