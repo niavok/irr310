@@ -195,6 +195,7 @@ public class ClientNetworkEngine extends EventEngine {
     
     private void partStateUpdateReceived(NetworkMessage message) {
         PartStateUpdateListMessage m = (PartStateUpdateListMessage) message;
+        Game.getInstance().getWorld().lock();
         for (PartStateView partStateView : m.partStateList) {
             Part part = GameClient.getInstance().getWorld().getPartById(partStateView.id);
             if (part != null) {
@@ -202,6 +203,7 @@ public class ClientNetworkEngine extends EventEngine {
                 part.fromStateView(partStateView);
             }
         }
+        Game.getInstance().getWorld().unlock();
         GameClient.getInstance().getPhysicEngine().reloadStates();
 //        for (PartStateView partStateView : m.partStateList) {
 //            Part part = GameClient.getInstance().getWorld().getPartById(partStateView.id);
