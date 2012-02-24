@@ -89,6 +89,7 @@ public class GraphicEngine extends FramerateEngine {
     
     private V3DFollow3DCameraController cameraController;
     private Map<WorldObject, GraphicalElement> worldObjectToV3DElementMap = new HashMap<WorldObject, GraphicalElement>();
+    private GuiFpsIndicator fpsIndicator;
     
     public GraphicEngine() {
         framerate = new Duration(16666666);
@@ -148,11 +149,7 @@ public class GraphicEngine extends FramerateEngine {
         canvas.addCamera(fullscreenBinding);
         canvas.setEnabled(true);
 
-        // GUI
-        GuiFpsIndicator fpsIndicator = new GuiFpsIndicator(this);
-        fullscreenBinding.getGui().add(fpsIndicator);
-        fpsIndicator.setPosition(10, 10);
-        animatedList.add(fpsIndicator);
+        fpsIndicator = new GuiFpsIndicator(this);
     }
     
     private void createBubble() {
@@ -366,6 +363,8 @@ public class GraphicEngine extends FramerateEngine {
         Log.perfEnd();
 
         Log.perfEnd();
+        
+        fpsIndicator.update();
     }
 
     @Override
@@ -495,6 +494,9 @@ public class GraphicEngine extends FramerateEngine {
         return new Vect2(canvas.getWidth(), canvas.getHeight());
     }
 
+    public float getFps() {
+        return fpsIndicator.getLastFps();
+    }
     
     
 }

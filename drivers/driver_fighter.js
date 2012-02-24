@@ -287,44 +287,60 @@ function Gui() {
         var cursorCenter = core.gui.createRectangle();
         cursorCenter.setPosition((new Vec2(640-1,512-1)));
                         cursorCenter.setSize(new Vec2(2,2));
-                        cursorCenter.setBorderColor(new Color(0,50,0));
+                        cursorCenter.setBorderColor(new Color(0,0.8,0));
         
         var cursorTop = core.gui.createRectangle();
                         cursorTop.setPosition((new Vec2(640,512+10)));
                         cursorTop.setSize(new Vec2(0,30));
-                        cursorTop.setBorderColor(new Color(0,50,0));
+                        cursorTop.setBorderColor(new Color(0,0.8,0));
         var cursorBottom = core.gui.createRectangle();
                         cursorBottom.setPosition((new Vec2(640,512-40)));
                         cursorBottom.setSize(new Vec2(0,30));
-                        cursorBottom.setBorderColor(new Color(0,50,0));
+                        cursorBottom.setBorderColor(new Color(0,0.8,0));
         var cursorLeft = core.gui.createRectangle();
                         cursorLeft.setPosition((new Vec2(640-40,512)));
                         cursorLeft.setSize(new Vec2(30,0));
-                        cursorLeft.setBorderColor(new Color(0,50,0));
+                        cursorLeft.setBorderColor(new Color(0,0.8,0));
         var cursorRight = core.gui.createRectangle();
                         cursorRight.setPosition((new Vec2(640+10,512)));
                         cursorRight.setSize(new Vec2(30,0));
-                        cursorRight.setBorderColor(new Color(0,50,0));
+                        cursorRight.setBorderColor(new Color(0,0.8,0));
 
         // Indicators
         var indicatorBorder = core.gui.createRectangle();
         indicatorBorder.setPosition((new Vec2(120,10)));
-        indicatorBorder.setSize(new Vec2(100,30));
-        indicatorBorder.setFillColor(new Color(245,245,245, 0.5));
-        indicatorBorder.setBorderColor(new Color(0.3,0,0));
+        indicatorBorder.setSize(new Vec2(165,30));
+        indicatorBorder.setFillColor(new Color(0.9,0.9,0.9, 0.5));
+        indicatorBorder.setBorderColor(new Color(0.3,0.0,0.0));
         
         this.clockIndicator = core.gui.createLabel();
         this.clockIndicator.setText("Time: --");
         this.clockIndicator.setPosition(new Vec2(128,17));
+        this.clockIndicator.setColor(new Color(0.0,0.0,0.0));
         
         
+        this.fpsIndicator = core.gui.createLabel();
+        this.fpsIndicator.setText("-- fps");
+        this.fpsIndicator.setPosition(new Vec2(230,17));
+        this.fpsIndicator.setColor(new Color(0.0,0.0,0.0));
         
         
-        
+        this.lastTime = 0;
     }
     
     this.update = function(time) {
+        
+        
         this.clockIndicator.setText("Time: "+time.toFixed(0)+" s");
+        
+        if(time - this.lastTime > 1) {
+            
+            this.fpsIndicator.setText(""+core.gui.getFps().toFixed(0)+" fps");
+            
+            this.lastTime = time;
+        }
+        
+        
     }
     
     this.init();

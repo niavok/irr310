@@ -30,7 +30,7 @@ import fr.def.iss.vd2.lib_v3d.gui.V3DLabel;
  *
  * @author fberto
  */
-public class GuiFpsIndicator extends V3DLabel implements GraphicalElement{
+public class GuiFpsIndicator{
     
     final long NANO_IN_MILLI = 1000000;
 
@@ -39,19 +39,12 @@ public class GuiFpsIndicator extends V3DLabel implements GraphicalElement{
     private long lastFpsMesureTime = 0;
     private int frameMesureCount = 0;
 
-    private DecimalFormat format;
 
-    private final GraphicEngine engine;
     
     public GuiFpsIndicator(GraphicEngine engine) {
-        super("-- fps");
-        this.engine = engine;
         currentTime = System.nanoTime()/NANO_IN_MILLI;
-        setColor(new V3DColor(0.6f,0.6f,0.6f), V3DColor.transparent);
-        format = new DecimalFormat("0.0");
     }
     
-    @Override
     public void update() {
         currentTime = System.nanoTime()/NANO_IN_MILLI;
         frameMesureCount++;
@@ -61,28 +54,10 @@ public class GuiFpsIndicator extends V3DLabel implements GraphicalElement{
 
             frameMesureCount = 0;
             lastFpsMesureTime = currentTime;
-            setText(""+format.format(lastFps)+" fps");
         }     
     }
 
-    @Override
-    public boolean isAnimated() {
-        return true;
+    public float getLastFps() {
+        return lastFps;
     }
-
-    @Override
-    public void destroy() {
-        engine.destroyElement(this);
-    }
-
-    @Override
-    public boolean isDisplayable() {
-        return false;
-    }
-
-    @Override
-    public V3DElement getV3DElement() {
-        return null;
-    }
-
 }

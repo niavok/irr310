@@ -14,6 +14,10 @@ public class Gui {
 	    return new Vec2(GameClient.getInstance().getGraphicEngine().getViewportSize());
 	}
 	
+	public float getFps() {
+	    return GameClient.getInstance().getGraphicEngine().getFps();
+	}
+	
 	public GuiRectangle createRectangle() {
 	    GuiRectangle guiRectangle = new GuiRectangle(this);
 	    V3DGuiComponent component = guiRectangle.getComponent();
