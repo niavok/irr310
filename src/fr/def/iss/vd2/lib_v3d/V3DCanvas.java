@@ -331,11 +331,11 @@ public class V3DCanvas {
         select(mouseX, mouseY);
     }
 
-    private int getWidth() {
+    public int getWidth() {
 		return width;
 	}
 
-	private int getHeight() {
+	public int getHeight() {
 		return height;
 	}
 

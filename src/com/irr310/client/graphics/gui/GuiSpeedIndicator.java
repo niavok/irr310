@@ -42,7 +42,7 @@ public class GuiSpeedIndicator extends V3DLabel implements GraphicalElement{
     private final GraphicEngine engine;
     
     public GuiSpeedIndicator(GraphicEngine engine, Part part) {
-        super(engine.getV3DContext(), "-- m/s");
+        super("-- m/s");
         this.engine = engine;
         this.part = part;
         setColor(V3DColor.darkgrey, V3DColor.transparent);

@@ -112,17 +112,17 @@ public class ShipFactory {
 
         Ship newShip = new Ship(GameServer.pickNewId());
 
-        // Kernel
-        Component kernel = ComponentFactory.createKernel("kernel");
-        kernel.setShipPosition(new Vect3(-1, 0, 0));
-        world.addComponent(kernel);
-        newShip.assign(kernel);
-
-        // Camera
-        Component camera = ComponentFactory.createCamera("camera");
-        camera.setShipPosition(new Vect3(1, 0, 0));
-        world.addComponent(camera);
-        newShip.assign(camera);
+//        // Kernel
+//        Component kernel = ComponentFactory.createKernel("kernel");
+//        kernel.setShipPosition(new Vect3(-1, 0, 0));
+//        world.addComponent(kernel);
+//        newShip.assign(kernel);
+//
+//        // Camera
+//        Component camera = ComponentFactory.createCamera("camera");
+//        camera.setShipPosition(new Vect3(1, 0, 0));
+//        world.addComponent(camera);
+//        newShip.assign(camera);
 
         // Gun
         Component gun = ComponentFactory.createGun("gun");
@@ -137,7 +137,7 @@ public class ShipFactory {
         newShip.assign(thrusterBlockFront);
 
         // LightHull
-        Component hull = ComponentFactory.createLightHull("hull");
+        Component hull = ComponentFactory.createLightHull("kernel");
         hull.setShipPosition(new Vect3(0, -3, 0));
         world.addComponent(hull);
         newShip.assign(hull);
@@ -195,8 +195,8 @@ public class ShipFactory {
 
         // Links
 
-        newShip.link(gun, camera, new Vect3(0.5, 0, 0.));
-        newShip.link(gun, kernel, new Vect3(-0.5, 0, 0));
+//        newShip.link(gun, camera, new Vect3(0.5, 0, 0.));
+//        newShip.link(gun, kernel, new Vect3(-0.5, 0, 0));
         newShip.link(gun, thrusterBlockFront, new Vect3(0, -0.5, 0));
         newShip.link(thrusterBlockFront, hull, new Vect3(0, -1.5, 0));
         newShip.link(hull, thrusterBlockBack, new Vect3(0, -4.5, 0));

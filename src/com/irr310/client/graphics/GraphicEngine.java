@@ -46,6 +46,7 @@ import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.common.tools.Log;
+import com.irr310.common.tools.Vect2;
 import com.irr310.common.tools.Vect3;
 import com.irr310.common.world.CelestialObject;
 import com.irr310.common.world.Component;
@@ -262,7 +263,7 @@ public class GraphicEngine extends FramerateEngine {
 
         }
 
-        cameraController.setFollowed(ship.getComponentByName("hull").getFirstPart());
+        cameraController.setFollowed(ship.getComponentByName("kernel").getFirstPart());
         activeCamera.fitAll();
 
         GuiSpeedIndicator speedIndicator = new GuiSpeedIndicator(this, ship.getComponentByName("kernel").getFirstPart());
@@ -488,6 +489,10 @@ public class GraphicEngine extends FramerateEngine {
     
     public V3DContext getV3DContext() {
         return context;
+    }
+
+    public Vect2 getViewportSize() {
+        return new Vect2(canvas.getWidth(), canvas.getHeight());
     }
 
     

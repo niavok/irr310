@@ -45,7 +45,7 @@ public class V3DTooltipController implements V3DCameraController {
         this.context = context;
         this.labelMap = labelMap;
 
-        tooltip = new V3DLabel(context, "null");
+        tooltip = new V3DLabel("null");
 
         mouseOverlapListener = new V3DMouseOverlapListener() {
 

@@ -44,7 +44,7 @@ public class GuiFpsIndicator extends V3DLabel implements GraphicalElement{
     private final GraphicEngine engine;
     
     public GuiFpsIndicator(GraphicEngine engine) {
-        super(engine.getV3DContext(), "-- fps");
+        super("-- fps");
         this.engine = engine;
         currentTime = System.nanoTime()/NANO_IN_MILLI;
         setColor(new V3DColor(0.6f,0.6f,0.6f), V3DColor.transparent);

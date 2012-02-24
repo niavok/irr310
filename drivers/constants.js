@@ -15,4 +15,7 @@ var KEY_SPACE = 57;
 var KEY_PLUS = 78;
 var KEY_MINUS = 74;
 
+var KEY_K = 37;
+var KEY_S = 31;
+
 

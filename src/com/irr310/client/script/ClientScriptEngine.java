@@ -3,6 +3,7 @@ package com.irr310.client.script;
 import org.lwjgl.input.Keyboard;
 
 import com.irr310.client.GameClient;
+import com.irr310.common.GameTime;
 import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
@@ -29,7 +30,7 @@ public class ClientScriptEngine extends FramerateEngine {
     @Override
     protected void frame() {
         Object[] args = new Object[1];
-        args[0] = framerate;
+        args[0] = GameTime.getGameTime().getSeconds();
         scriptContext.callFunction("onFrame", args);
     }
 

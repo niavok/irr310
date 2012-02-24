@@ -7,7 +7,6 @@ import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.world.CelestialObject;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
-import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DGroupElement;

@@ -156,6 +156,7 @@ public class ScriptContext {
                 //Gui
                 allowedClasses.add(com.irr310.client.script.js.objects.Gui.class);
                 allowedClasses.add(com.irr310.client.script.js.objects.GuiRectangle.class);
+                allowedClasses.add(com.irr310.client.script.js.objects.GuiLabel.class);
                 
                 //Objects
                 allowedClasses.add(com.irr310.client.script.js.objects.Player.class);

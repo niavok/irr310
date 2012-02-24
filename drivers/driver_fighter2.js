@@ -1,6 +1,4 @@
 
-var gui
-
 function init() {
 
     if(!core.me) {
@@ -9,7 +7,27 @@ function init() {
     }
     
     // GUI
-    gui = new Gui();
+    var cursorCenter = core.gui.createRectangle();
+    cursorCenter.setPosition((new Vec2(640-1,512-1)));
+                    cursorCenter.setSize(new Vec2(2,2));
+                    cursorCenter.setColor(new Color(0,50,0));
+    
+    var cursorTop = core.gui.createRectangle();
+    cursorTop.setPosition((new Vec2(640,512+10)));
+                    cursorTop.setSize(new Vec2(0,30));
+                    cursorTop.setColor(new Color(0,50,0));
+    var cursorBottom = core.gui.createRectangle();
+    cursorBottom.setPosition((new Vec2(640,512-40)));
+                    cursorBottom.setSize(new Vec2(0,30));
+                    cursorBottom.setColor(new Color(0,50,0));
+    var cursorLeft = core.gui.createRectangle();
+    cursorLeft.setPosition((new Vec2(640-40,512)));
+                    cursorLeft.setSize(new Vec2(30,0));
+                    cursorLeft.setColor(new Color(0,50,0));
+    var cursorRight = core.gui.createRectangle();
+    cursorRight.setPosition((new Vec2(640+10,512)));
+                    cursorRight.setSize(new Vec2(30,0));
+                    cursorRight.setColor(new Color(0,50,0));
     
     
     core.log("Logged as: "+core.me.login);
@@ -83,15 +101,15 @@ function init() {
                     deadZone = core.gui.createRectangle();
                     deadZone.setPosition(mouseControlleurOrigin.minus(new Vec2(10,10)));
                     deadZone.setSize(new Vec2(20,20));
-                    deadZone.setBorderColor(new Color(0.0,0,0.3));
+                    deadZone.setColor(new Color(50,0,0));
                     controlZone = core.gui.createRectangle();
                     controlZone.setPosition(mouseControlleurOrigin.minus(new Vec2(150,150)));
                     controlZone.setSize(new Vec2(300,300));
-                    controlZone.setBorderColor(new Color(0.0,0,0.3));
+                    controlZone.setColor(new Color(50,0,0));
                     } else {
                         useMouseController = false;
-                        core.gui.destroyComponent(controlZone);
-                        core.gui.destroyComponent(deadZone);
+                        core.gui.destroyRectangle(controlZone);
+                        core.gui.destroyRectangle(deadZone);
                     }
                     
                     break;
@@ -159,8 +177,6 @@ function init() {
     
     
     core.onFrame = function(time) {
-        
-        gui.update(time);
         
         //core.log("js frame: "+orderAccelerate);
         
@@ -261,77 +277,5 @@ function init() {
         
     }
 }
-
-
-function Gui() {
-    
-    var clockIndicator;
-    
-    this.init = function() {
-
-        this.screenSize = core.gui.getViewportSize()
-        
-        //Logo
-        var logo1 = core.gui.createLabel();
-        logo1.setText("IRR");
-        logo1.setPosition(new Vec2(10,10));
-        logo1.setFontStyle("bold",24);
-        logo1.setColor(new Color(0.39,0,0));
-    
-        var logo2 = core.gui.createLabel();
-        logo2.setText("310");
-        logo2.setPosition(new Vec2(50,10));
-        logo2.setColor(new Color(0,0,0));
-        logo2.setFontStyle("bold",24);
-    
-        var cursorCenter = core.gui.createRectangle();
-        cursorCenter.setPosition((new Vec2(640-1,512-1)));
-                        cursorCenter.setSize(new Vec2(2,2));
-                        cursorCenter.setBorderColor(new Color(0,50,0));
-        
-        var cursorTop = core.gui.createRectangle();
-                        cursorTop.setPosition((new Vec2(640,512+10)));
-                        cursorTop.setSize(new Vec2(0,30));
-                        cursorTop.setBorderColor(new Color(0,50,0));
-        var cursorBottom = core.gui.createRectangle();
-                        cursorBottom.setPosition((new Vec2(640,512-40)));
-                        cursorBottom.setSize(new Vec2(0,30));
-                        cursorBottom.setBorderColor(new Color(0,50,0));
-        var cursorLeft = core.gui.createRectangle();
-                        cursorLeft.setPosition((new Vec2(640-40,512)));
-                        cursorLeft.setSize(new Vec2(30,0));
-                        cursorLeft.setBorderColor(new Color(0,50,0));
-        var cursorRight = core.gui.createRectangle();
-                        cursorRight.setPosition((new Vec2(640+10,512)));
-                        cursorRight.setSize(new Vec2(30,0));
-                        cursorRight.setBorderColor(new Color(0,50,0));
-
-        // Indicators
-        var indicatorBorder = core.gui.createRectangle();
-        indicatorBorder.setPosition((new Vec2(120,10)));
-        indicatorBorder.setSize(new Vec2(100,30));
-        indicatorBorder.setFillColor(new Color(245,245,245, 0.5));
-        indicatorBorder.setBorderColor(new Color(0.3,0,0));
-        
-        this.clockIndicator = core.gui.createLabel();
-        this.clockIndicator.setText("Time: --");
-        this.clockIndicator.setPosition(new Vec2(128,17));
-        
-        
-        
-        
-        
-    }
-    
-    this.update = function(time) {
-        this.clockIndicator.setText("Time: "+time.toFixed(0)+" s");
-    }
-    
-    this.init();
-
-}
-
-
-
 
 init();
