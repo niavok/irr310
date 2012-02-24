@@ -146,9 +146,11 @@ function init() {
                     core.log("released right");
                     break;
                 case KEY_SPACE:
-                    useMouseController = false;
-                    core.gui.destroyRectangle(controlZone);
-                    core.gui.destroyRectangle(deadZone);
+                    if(useMouseController) {
+                        useMouseController = false;
+                        core.gui.destroyRectangle(controlZone);
+                        core.gui.destroyRectangle(deadZone);
+                    }
                     //core.log("released space");
                     break;
                 default:

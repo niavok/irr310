@@ -162,6 +162,11 @@ public class V3DGui implements V3DLocalisable{
         }
     }
 
+    public void clear() {
+        guiComponentList.clear();
+        generate();
+    }
+
    
 }
 

@@ -2,6 +2,7 @@ package com.irr310.client.script;
 
 import org.lwjgl.input.Keyboard;
 
+import com.irr310.client.GameClient;
 import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
@@ -108,6 +109,7 @@ public class ClientScriptEngine extends FramerateEngine {
     public void init() {
         if (scriptContext != null) {
             scriptContext.close();
+            GameClient.getInstance().getGraphicEngine().clearGui();
         }
         scriptContext = new ScriptContext();
     }

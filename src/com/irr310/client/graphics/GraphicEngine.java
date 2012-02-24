@@ -98,7 +98,7 @@ public class GraphicEngine extends FramerateEngine {
     @Override
     protected void init() {
         // canvas = new V3DCanvas(context, 1920, 1200);
-        canvas = new V3DCanvas(context, 800, 600);
+        canvas = new V3DCanvas(context, 1280, 1024);
 
         activeCamera = new V3DEye3DCamera(context);
 
@@ -453,6 +453,10 @@ public class GraphicEngine extends FramerateEngine {
         fullscreenBinding.getGui().remove(component); 
     }
 
+    public void clearGui() {
+        fullscreenBinding.getGui().clear();        
+    }
+    
     
     private void addBullet(Vect3 from, Vect3 to) {
         BulletEffect bulletEffect = new BulletEffect(this, from, to);
@@ -485,5 +489,7 @@ public class GraphicEngine extends FramerateEngine {
     public V3DContext getV3DContext() {
         return context;
     }
+
+    
     
 }
