@@ -12,6 +12,7 @@ import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.ARBVertexShader;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
+import org.lwjgl.opengl.OpenGLException;
 
 public class V3DShader {
 
@@ -110,8 +111,13 @@ public class V3DShader {
 
     public void begin() {
         if (useShader) {
+            try {
             ARBShaderObjects.glUseProgramObjectARB(shader);
             setUniforms();
+            } catch (OpenGLException e) {
+                System.err.println("error using shader: "+e.getMessage());
+                e.printStackTrace();
+            }
         }
     }
 
