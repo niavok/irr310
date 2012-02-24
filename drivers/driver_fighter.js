@@ -260,10 +260,9 @@ function init() {
 
         
     }
-}
-
-
-function Gui() {
+    
+    
+    function Gui() {
     
     var clockIndicator;
     
@@ -321,13 +320,28 @@ function Gui() {
         
         this.fpsIndicator = core.gui.createLabel();
         this.fpsIndicator.setText("-- fps");
-        this.fpsIndicator.setPosition(new Vec2(230,17));
+        this.fpsIndicator.setPosition(new Vec2(235,17));
         this.fpsIndicator.setColor(new Color(0.0,0.0,0.0));
         
-        this.resolutionIndicator = core.gui.createLabel();
-        this.resolutionIndicator.setText(""+this.screenSize.getX()+"x"+this.screenSize.getY()+" px");
-        this.resolutionIndicator.setPosition(new Vec2(300,17));
-        this.resolutionIndicator.setColor(new Color(0.0,0.0,0.0));
+        var resolutionIndicator = core.gui.createLabel();
+        resolutionIndicator.setText(""+this.screenSize.getX()+"x"+this.screenSize.getY()+" px");
+        resolutionIndicator.setPosition(new Vec2(300,17));
+        resolutionIndicator.setColor(new Color(0.0,0.0,0.0));
+        
+        // Navigation indicators
+        
+        this.speedIndicator = core.gui.createLabel();
+        this.speedIndicator.setText("55");
+        this.speedIndicator.setPosition(new Vec2(this.screenSize.getX() - 300,200));
+        this.speedIndicator.setFontStyle("bold",55);
+        this.speedIndicator.setColor(new Color(0.0,0.0,0.0));
+        
+        this.speedIndicatorUnit = core.gui.createLabel();
+        this.speedIndicatorUnit.setText("km/h");
+        this.speedIndicatorUnit.setPosition(new Vec2(this.screenSize.getX() - 230,206));
+        this.speedIndicatorUnit.setFontStyle("bold",25);
+        this.speedIndicatorUnit.setColor(new Color(0.0,0.0,0.0));
+        
         
         
         
@@ -339,9 +353,20 @@ function Gui() {
         
         this.clockIndicator.setText("Time: "+time.toFixed(0)+" s");
         
-        if(time - this.lastTime > 1) {
+        if(time - this.lastTime > 0.25) {
             
             this.fpsIndicator.setText(""+core.gui.getFps().toFixed(0)+" fps");
+            
+            var speed = (kernel.getLinearSpeed().length() * 3.6).toFixed(0);
+            if(speed > 99) {
+              this.speedIndicator.setPosition(new Vec2(this.screenSize.getX() - 335,200));
+            } else if (speed > 9) {
+                this.speedIndicator.setPosition(new Vec2(this.screenSize.getX() - 304,200));
+            } else {
+                this.speedIndicator.setPosition(new Vec2(this.screenSize.getX() - 273,200));
+            }
+            
+            this.speedIndicator.setText(speed);
             
             this.lastTime = time;
         }
@@ -352,6 +377,11 @@ function Gui() {
     this.init();
 
 }
+    
+}
+
+
+
 
 
 
