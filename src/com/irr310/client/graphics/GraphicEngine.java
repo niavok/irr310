@@ -93,7 +93,6 @@ public class GraphicEngine extends FramerateEngine {
     
     public GraphicEngine() {
         framerate = new Duration(16666666);
-        // framerate = new Duration(1666666);
         thrustLines = new ArrayList<Pair<LinearEngineCapacity, V3DLine>>();
     }
 

@@ -100,7 +100,7 @@ public class V3DCanvas {
             
             Display.setDisplayMode(new DisplayMode(width, height));
             //Display.setFullscreen(true);
-            Display.setVSyncEnabled(true);
+            Display.setVSyncEnabled(false);
             Display.setTitle("Irr310");
             Display.setParent(canvas);
             Display.create();

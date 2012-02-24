@@ -66,7 +66,7 @@ public class GameServer extends Game {
         physicEngine = new PhysicEngine();
         engineList.add(physicEngine);
         engineList.add(new ServerNetworkEngine());
-        engineList.add(new DebugGraphicEngine());
+        //engineList.add(new DebugGraphicEngine());
 
         /*
          * gameEngine = new ServerGameEngine(); physicEngine = new

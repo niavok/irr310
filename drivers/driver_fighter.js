@@ -309,7 +309,7 @@ function Gui() {
         // Indicators
         var indicatorBorder = core.gui.createRectangle();
         indicatorBorder.setPosition((new Vec2(120,10)));
-        indicatorBorder.setSize(new Vec2(165,30));
+        indicatorBorder.setSize(new Vec2(300,30));
         indicatorBorder.setFillColor(new Color(0.9,0.9,0.9, 0.5));
         indicatorBorder.setBorderColor(new Color(0.3,0.0,0.0));
         
@@ -323,6 +323,12 @@ function Gui() {
         this.fpsIndicator.setText("-- fps");
         this.fpsIndicator.setPosition(new Vec2(230,17));
         this.fpsIndicator.setColor(new Color(0.0,0.0,0.0));
+        
+        this.resolutionIndicator = core.gui.createLabel();
+        this.resolutionIndicator.setText(""+this.screenSize.getX()+"x"+this.screenSize.getY()+" px");
+        this.resolutionIndicator.setPosition(new Vec2(300,17));
+        this.resolutionIndicator.setColor(new Color(0.0,0.0,0.0));
+        
         
         
         this.lastTime = 0;
