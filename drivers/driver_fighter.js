@@ -336,14 +336,70 @@ function init() {
         this.speedIndicator.setFontStyle("bold",55);
         this.speedIndicator.setColor(new Color(0.0,0.0,0.0));
         
-        this.speedIndicatorUnit = core.gui.createLabel();
-        this.speedIndicatorUnit.setText("km/h");
-        this.speedIndicatorUnit.setPosition(new Vec2(this.screenSize.getX() - 230,206));
-        this.speedIndicatorUnit.setFontStyle("bold",25);
-        this.speedIndicatorUnit.setColor(new Color(0.0,0.0,0.0));
+        var speedIndicatorUnit = core.gui.createLabel();
+        speedIndicatorUnit.setText("km/h");
+        speedIndicatorUnit.setPosition(new Vec2(this.screenSize.getX() - 230,206));
+        speedIndicatorUnit.setFontStyle("bold",25);
+        speedIndicatorUnit.setColor(new Color(0.0,0.0,0.0));
+        
+        this.xPositionIndicator = core.gui.createLabel();
+        this.xPositionIndicator.setText("x= -- m");
+        this.xPositionIndicator.setPosition(new Vec2(this.screenSize.getX() - 100,this.screenSize.getY() - 200 ));
+        this.xPositionIndicator.setFontStyle("",16);
+        this.xPositionIndicator.setColor(new Color(0.0,0.0,0.0));
+        
+        this.yPositionIndicator = core.gui.createLabel();
+        this.yPositionIndicator.setText("y= -- m");
+        this.yPositionIndicator.setPosition(new Vec2(this.screenSize.getX() - 100,this.screenSize.getY() - 220 ));
+        this.yPositionIndicator.setFontStyle("",16);
+        this.yPositionIndicator.setColor(new Color(0.0,0.0,0.0));
+        
+        this.zPositionIndicator = core.gui.createLabel();
+        this.zPositionIndicator.setText("z= -- m");
+        this.zPositionIndicator.setPosition(new Vec2(this.screenSize.getX() - 100,this.screenSize.getY() - 240 ));
+        this.zPositionIndicator.setFontStyle("",16);
+        this.zPositionIndicator.setColor(new Color(0.0,0.0,0.0));
         
         
+        this.xRotationSpeedIndicator = core.gui.createLabel();
+        this.xRotationSpeedIndicator.setText("wx= -- ?");
+        this.xRotationSpeedIndicator.setPosition(new Vec2(this.screenSize.getX() - 100,this.screenSize.getY() - 260 ));
+        this.xRotationSpeedIndicator.setFontStyle("",16);
+        this.xRotationSpeedIndicator.setColor(new Color(0.0,0.0,0.0));
         
+        this.yRotationSpeedIndicator = core.gui.createLabel();
+        this.yRotationSpeedIndicator.setText("wy= -- ?");
+        this.yRotationSpeedIndicator.setPosition(new Vec2(this.screenSize.getX() - 100,this.screenSize.getY() - 280 ));
+        this.yRotationSpeedIndicator.setFontStyle("",16);
+        this.yRotationSpeedIndicator.setColor(new Color(0.0,0.0,0.0));
+        
+        this.zRotationSpeedIndicator = core.gui.createLabel();
+        this.zRotationSpeedIndicator.setText("wz= -- ?");
+        this.zRotationSpeedIndicator.setPosition(new Vec2(this.screenSize.getX() - 100,this.screenSize.getY() - 300 ));
+        this.zRotationSpeedIndicator.setFontStyle("",16);
+        this.zRotationSpeedIndicator.setColor(new Color(0.0,0.0,0.0));
+
+        this.xLinearSpeedIndicator = core.gui.createLabel();
+        this.xLinearSpeedIndicator.setText("wz= -- ?");
+        this.xLinearSpeedIndicator.setPosition(new Vec2(this.screenSize.getX() - 100,this.screenSize.getY() - 320 ));
+        this.xLinearSpeedIndicator.setFontStyle("",16);
+        this.xLinearSpeedIndicator.setColor(new Color(0.0,0.0,0.0));
+        
+        this.yLinearSpeedIndicator = core.gui.createLabel();
+        this.yLinearSpeedIndicator.setText("wz= -- ?");
+        this.yLinearSpeedIndicator.setPosition(new Vec2(this.screenSize.getX() - 100,this.screenSize.getY() - 340 ));
+        this.yLinearSpeedIndicator.setFontStyle("",16);
+        this.yLinearSpeedIndicator.setColor(new Color(0.0,0.0,0.0));
+        
+
+        this.zLinearSpeedIndicator = core.gui.createLabel();
+        this.zLinearSpeedIndicator.setText("wz= -- ?");
+        this.zLinearSpeedIndicator.setPosition(new Vec2(this.screenSize.getX() - 100,this.screenSize.getY() - 360 ));
+        this.zLinearSpeedIndicator.setFontStyle("",16);
+        this.zLinearSpeedIndicator.setColor(new Color(0.0,0.0,0.0));
+        
+
+
         
         this.lastTime = 0;
     }
@@ -355,8 +411,10 @@ function init() {
         
         if(time - this.lastTime > 0.25) {
             
+            // Fps
             this.fpsIndicator.setText(""+core.gui.getFps().toFixed(0)+" fps");
             
+            // Speed            
             var speed = (kernel.getLinearSpeed().length() * 3.6).toFixed(0);
             if(speed > 99) {
               this.speedIndicator.setPosition(new Vec2(this.screenSize.getX() - 335,200));
@@ -365,8 +423,31 @@ function init() {
             } else {
                 this.speedIndicator.setPosition(new Vec2(this.screenSize.getX() - 273,200));
             }
-            
             this.speedIndicator.setText(speed);
+            
+            //Position
+            var x = kernel.getTransform().getTranslation().getX().toFixed(1);
+            this.xPositionIndicator.setText("x= "+x+" m");
+            var y = kernel.getTransform().getTranslation().getY().toFixed(1);
+            this.yPositionIndicator.setText("y= "+y+" m");
+            var z = kernel.getTransform().getTranslation().getZ().toFixed(1);
+            this.zPositionIndicator.setText("z= "+z+" m");
+            
+            //Rotation speed
+            var x = kernel.getRotationSpeed().getX().toFixed(1);
+            this.xRotationSpeedIndicator.setText("wx= "+x+" r/s");
+            var y = kernel.getRotationSpeed().getY().toFixed(1);
+            this.yRotationSpeedIndicator.setText("wy= "+y+" r/s");
+            var z = kernel.getRotationSpeed().getZ().toFixed(1);
+            this.zRotationSpeedIndicator.setText("wz= "+z+" r/s");
+            
+            //Translation speed
+            var x = kernel.getLinearSpeed().getX().toFixed(1);
+            this.xLinearSpeedIndicator.setText("vx= "+x+" m/s");
+            var y = kernel.getLinearSpeed().getY().toFixed(1);
+            this.yLinearSpeedIndicator.setText("vy= "+y+" m/s");
+            var z = kernel.getLinearSpeed().getZ().toFixed(1);
+            this.zLinearSpeedIndicator.setText("vz= "+z+" m/s");
             
             this.lastTime = time;
         }

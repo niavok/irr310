@@ -14,8 +14,8 @@ public class WingCapacity extends Capacity {
         super(id, "wing");
         this.breakAxis = new Vect3(0, 0, 1);
         this.thrustAxis = new Vect3(0, 1, 0);
-        yield = 0.2;
-        friction = 1.0;
+        yield = 0.4;
+        friction = 1.5;
     }
 
     public Vect3 getBreakAxis() {
