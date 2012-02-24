@@ -95,6 +95,7 @@ function init() {
 
                     break;
                 case KEY_SPACE:
+                    if(!useMouseController) {
                     useMouseController = true;
                     mouseControlleurOrigin = core.mouse.getPosition();
                     deadZone = core.gui.createRectangle();
@@ -105,10 +106,12 @@ function init() {
                     controlZone.setPosition(mouseControlleurOrigin.minus(new Vec2(150,150)));
                     controlZone.setSize(new Vec2(300,300));
                     controlZone.setColor(new Color(50,0,0));
+                    } else {
+                        useMouseController = false;
+                        core.gui.destroyRectangle(controlZone);
+                        core.gui.destroyRectangle(deadZone);
+                    }
                     
-                    //core.log("press space");
-                    //leftEngine.targetThrust = 0;
-                    //rightEngine.targetThrust = 0;
                     break;
                 case KEY_PLUS:
                     baseThrust += 10;
@@ -146,12 +149,6 @@ function init() {
                     core.log("released right");
                     break;
                 case KEY_SPACE:
-                    if(useMouseController) {
-                        useMouseController = false;
-                        core.gui.destroyRectangle(controlZone);
-                        core.gui.destroyRectangle(deadZone);
-                    }
-                    //core.log("released space");
                     break;
                 default:
                     core.log("released undefined key: '"+keyCode+"' / '"+char+"'");

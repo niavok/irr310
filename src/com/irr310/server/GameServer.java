@@ -198,7 +198,7 @@ public class GameServer extends Game {
             Random random = new Random();
 
             double sizeBase = random.nextDouble();
-            double size = (sizeBase*sizeBase)*100+1;
+            double size = (sizeBase*sizeBase)*50+1;
             
             float angularSpeed = 1;
             float position = 1000;

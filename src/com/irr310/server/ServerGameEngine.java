@@ -205,6 +205,13 @@ public class ServerGameEngine extends FramerateEngine {
         //TODO: extras damage transmission 
         
         GameServer.getInstance().sendToAll(new DamageEvent(target, effectiveDamage, damageType));
+
+        if(newDurablility == 0) {
+            if(parentObject instanceof CelestialObject) {
+                Game.getInstance().getWorld().removeCelestialObject((CelestialObject) parentObject, Reason.DESTROYED);
+            }
+        }
+        
     }
     
     private void addCapacityController(CapacityController controller) {

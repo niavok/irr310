@@ -12,8 +12,8 @@ public class CelestialObjectFactory {
         asteroid.getFirstPart().setShape(new Vect3(size, size, size));
         asteroid.getFirstPart().setMass(size*20);
         
-        asteroid.setDurabilityMax(30*size);
-        asteroid.setDurability(30*size);
+        asteroid.setDurabilityMax(5*size);
+        asteroid.setDurability(5*size);
         
         return asteroid;
     }
