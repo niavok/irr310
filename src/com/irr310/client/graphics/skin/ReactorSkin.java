@@ -45,7 +45,7 @@ public class ReactorSkin extends Skin {
         // Configure animation
         linearEngineCapacity = (LinearEngineCapacity) object.getCapacitiesByName("linearEngine");
         angle = 0;
-        speed = 50f;
+        speed = 100f;
     }
   
     @Override
@@ -57,7 +57,14 @@ public class ReactorSkin extends Skin {
     public void update() {
         elements.setTransformMatrix(transform.toFloatBuffer());
         
-        angle += getEngine().getFramerate().getSeconds()* speed * linearEngineCapacity.getCurrentThrust();
+        double t =  linearEngineCapacity.getCurrentThrust();
+        double s = 0;
+        if(t > 0) {
+            s = Math.sqrt(t);
+        } else {
+            s = - Math.sqrt(-t);
+        }
+        angle += getEngine().getFramerate().getSeconds() * speed * s;
         angle = angle % 360f;
         
         elementRotor.setRotation(0, angle, 0);

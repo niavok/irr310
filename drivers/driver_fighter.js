@@ -10,7 +10,7 @@ function driver() {
     }
     
     
-    var theoricalMaxSpeed = 64;
+    var theoricalMaxSpeed = 65.27;
     var speedTarget = 0;
     var maxRotationSpeed = 2;
     var rotationSpeedTarget = new Vec3(0,0,0.0);

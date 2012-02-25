@@ -45,7 +45,7 @@ public abstract class Game {
         AddShipEvent addShipEvent = new AddShipEvent(newPlayer);
         // addShipEvent.setType(AddShipEvent.Type.SIMPLE);
         addShipEvent.setType(AddShipEvent.Type.SIMPLE_FIGHTER);
-        addShipEvent.setPosition(new Vec3(50, -50, 0));
+        addShipEvent.setPosition(new Vec3(20, -50, 0));
         Game.getInstance().sendToAll(addShipEvent);
 
         /* world.addShip(playerShip, new Vect3(10.0,20.0,30.0)); */
@@ -65,7 +65,7 @@ public abstract class Game {
         Monolith monolith = new Monolith(GameServer.pickNewId(), "monolith");
         getWorld().addCelestialObject(monolith);
 
-        for (int i = 0; i < 100; i++) {
+        /*for (int i = 0; i < 100; i++) {
 
             Random random = new Random();
 
@@ -89,7 +89,7 @@ public abstract class Game {
             asteroid.getFirstPart().getRotationSpeed().set(random.nextFloat() * angularSpeed - angularSpeed/2f, random.nextFloat() * angularSpeed - angularSpeed/2f, random.nextFloat() * angularSpeed - angularSpeed/2f);
             getWorld().addCelestialObject(asteroid);
 
-        }
+        }*/
 
     }
 
