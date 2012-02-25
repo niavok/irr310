@@ -61,95 +61,15 @@ function driver() {
         core.log("maxThrust "+maxThrust);        
         // Add key handler
         core.onKeyPressed = function (keyCode, char) {
-            switch(keyCode) {
-                case KEY_UP:
-                    core.log("press up");
-                    orderTurnUp = true;
-                    break;
-                case KEY_DOWN:
-                    orderTurnDown = true;
-                    core.log("press down");
-                    //leftEngine.targetThrust = -minThrust;
-                    //rightEngine.targetThrust = -minThrust;
-                    break;
-                case KEY_LEFT:
-                    orderTurnLeft = true;
-                    core.log("press left");
-                    //leftEngine.targetThrust = -maxRotationThrust;
-                    //rightEngine.targetThrust = maxRotationThrust;
-                    break;
-                case KEY_RIGHT:
-                    orderTurnRight = true;
-                    core.log("press right");
-                    //leftEngine.targetThrust = maxRotationThrust;
-                    //rightEngine.targetThrust = -maxRotationThrust;
-
-                    break;
-                case KEY_SPACE:
-                    gui.toogleRotationController()
-                    break;
-                case KEY_PLUS:
-                    baseThrust += 10;
-                    if(baseThrust > 100) {
-                        baseThrust = 100;
-                    }
-                    break;
-                case KEY_Z:
-                    gui.enableThrustController();
-                    break;
-                    
-                case KEY_MINUS:
-                    baseThrust -= 10;
-                    if(baseThrust < -100) {
-                        baseThrust = -100;
-                    }
-                    break;
-                default:
-                    core.log("pressed undefined key: '"+keyCode+"' / '"+char+"'");
-            }   
+            gui.onKeyPressed(keyCode, char);
         }
 
         core.onKeyReleased = function (keyCode, char) {
-            switch(keyCode) {
-                case  KEY_UP:
-                    core.log("released up");
-                    orderTurnUp = false;
-                    break;
-                case  KEY_DOWN:
-                    orderTurnDown = false;
-                    core.log("released down");
-                    break;
-                case  KEY_LEFT:
-                    orderTurnLeft = false;
-                    core.log("released left");
-                    break;
-                case  KEY_RIGHT:
-                    orderTurnRight = false;
-                    core.log("released right");
-                    break;
-                case KEY_Z:
-                    gui.disableThrustController();
-                    break;
-                case KEY_SPACE:
-                    break;
-                default:
-                    core.log("released undefined key: '"+keyCode+"' / '"+char+"'");
-            }   
+            gui.onKeyReleased(keyCode, char);
         }
         
         core.onMouseEvent = function(action, button, x, y) {
-            switch(action) {
-                case MOUSE_PRESSED:
-                    core.log("mouse pressed");
-                    if(useMouseController) {
-                        if(button == 1) {
-                            gun.fire(true);
-                        }
-                    }
-                    break;
-                    
-            }
-        
+            gui.onMouseEvent(action, button, x, y);
         }
 
 
@@ -440,7 +360,8 @@ function driver() {
     
         this.clockIndicator;
         this.thrustControlleurEnabled = false;
-        
+        this.keyboardXTurn = 0;
+        this.keyboardZTurn = 0;
        
         
         
@@ -673,6 +594,24 @@ function driver() {
             this.speedCurrentBox.setSize(new Vec2(30,speedBarSize));
                 
             
+            
+            
+            if(this.keyboardXTurn != 0) {
+                core.log("keyboard rotation X ! ");
+                rotationSpeedTarget.x =  maxRotationSpeed * this.keyboardXTurn;
+            } else {
+                rotationSpeedTarget.x =  0;
+            }
+            
+            if(this.keyboardZTurn != 0) {
+                core.log("keyboard rotation Z ! ");
+                rotationSpeedTarget.z =  maxRotationSpeed * this.keyboardZTurn;
+            } else {
+                rotationSpeedTarget.z =  0;
+            }
+            
+            
+            
             if(this.thrustControlleurEnabled) {
                 var deltaMouse = this.initialYMousePosition - core.mouse.getPosition().getY();
                 speedTarget = this.initialSpeedTarget - deltaMouse;
@@ -689,10 +628,8 @@ function driver() {
                     speedTarget = 0;
                 }
                 
-                var deltaHeigth = this.speedBoxMaxSize * speedTarget / theoricalMaxSpeed;
-                this.targetLine.setPosition((new Vec2(this.screenSize.getX() - 125,200 + deltaHeigth)));
-                this.speedTargetIndicator.setPosition(new Vec2(this.screenSize.getX() - 80, 193 + deltaHeigth ));
-                this.speedTargetIndicator.setText((speedTarget * 3.6).toFixed(0)+" km/s");
+                this.targetSpeedUpdated();
+                
             } else if(this.rotationControlleurEnabled) {
             
                 var mousePosition = core.mouse.getPosition();
@@ -746,6 +683,16 @@ function driver() {
             
             
             
+                    
+            
+            
+        }
+
+        this.targetSpeedUpdated = function() {
+            var deltaHeigth = this.speedBoxMaxSize * speedTarget / theoricalMaxSpeed;
+            this.targetLine.setPosition((new Vec2(this.screenSize.getX() - 125,200 + deltaHeigth)));
+            this.speedTargetIndicator.setPosition(new Vec2(this.screenSize.getX() - 80, 193 + deltaHeigth ));
+            this.speedTargetIndicator.setText((speedTarget * 3.6).toFixed(0)+" km/s");
         }
 
         this.enableThrustController = function() {
@@ -800,6 +747,100 @@ function driver() {
             } else {
                 this.enableRotationController();
             }
+        }
+        
+        
+        this.onMouseEvent = function(action, button, x, y) {
+            switch(action) {
+                case MOUSE_PRESSED:
+                    core.log("mouse pressed");
+                    if(this.rotationControlleurEnabled) {
+                        if(button == 1) {
+                            gun.fire(true);
+                        }
+                    }
+                    break;
+                    
+            }
+        
+        }
+        
+        
+        this.onKeyPressed = function (keyCode, char) {
+            switch(keyCode) {
+                case KEY_UP:
+                    break;
+                case KEY_DOWN:
+                    break;
+                case KEY_LEFT:
+                    break;
+                case KEY_RIGHT:
+                    break;
+                case KEY_SPACE:
+                    gui.toogleRotationController()
+                    break;
+                case KEY_PLUS:
+                    speedTarget += 1/3.6;
+                    this.targetSpeedUpdated();
+                    break;
+                case KEY_A:
+                    gui.enableThrustController();
+                    break;
+                case  KEY_Z:
+                    this.keyboardXTurn = 1;
+                    break;
+                case  KEY_S:
+                    this.keyboardXTurn = -1;
+                    break;
+                case  KEY_Q:
+                    this.keyboardZTurn = 1;
+                    break;
+                case  KEY_D:
+                    this.keyboardZTurn = -1;
+                    break;
+                case KEY_E:
+                    gun.fire(true);
+                    break;
+                    
+                case KEY_MINUS:
+                    speedTarget -= 1/3.6;
+                    this.targetSpeedUpdated();
+                    break;
+                default:
+                    core.log("pressed undefined key: '"+keyCode+"' / '"+char+"'");
+            }   
+        }
+        
+        this.onKeyReleased = function (keyCode, char) {
+            switch(keyCode) {
+                case KEY_UP:
+                    break;
+                case  KEY_DOWN:
+                    break;
+                case  KEY_LEFT:
+                    break;
+                case  KEY_RIGHT:
+                    break;
+                case KEY_A:
+                    gui.disableThrustController();
+                    break;
+                case  KEY_Z:
+                    this.keyboardXTurn = 0;
+                    break;
+                case  KEY_S:
+                    this.keyboardXTurn = 0;
+                    break;
+                case  KEY_Q:
+                    this.keyboardZTurn = 0;
+                    break;
+                case  KEY_D:
+                    this.keyboardZTurn = 0;
+                    break;
+                case KEY_SPACE:
+                    break;
+                default:
+                    core.log("released undefined key: '"+keyCode+"' / '"+char+"'");
+            }   
         }
         
         this.init();
