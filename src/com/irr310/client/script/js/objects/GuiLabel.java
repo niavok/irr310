@@ -1,7 +1,5 @@
 package com.irr310.client.script.js.objects;
 
-import java.awt.Paint;
-
 import org.fenggui.appearance.TextAppearance;
 import org.fenggui.binding.render.IFont;
 import org.fenggui.binding.render.ImageFont;
@@ -9,12 +7,7 @@ import org.fenggui.binding.render.text.ITextRenderer;
 import org.fenggui.text.content.factory.simple.TextStyle;
 import org.fenggui.text.content.factory.simple.TextStyleEntry;
 import org.fenggui.util.Alphabet;
-import org.fenggui.util.fonttoolkit.AssemblyLine;
-import org.fenggui.util.fonttoolkit.BinaryDilation;
-import org.fenggui.util.fonttoolkit.Clear;
-import org.fenggui.util.fonttoolkit.DrawCharacter;
 import org.fenggui.util.fonttoolkit.FontFactory;
-import org.fenggui.util.fonttoolkit.PixelReplacer;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent;

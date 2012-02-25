@@ -3,6 +3,7 @@ package com.irr310.client.graphics.skin;
 import java.io.File;
 
 import com.irr310.client.graphics.GraphicEngine;
+import com.irr310.client.graphics.WorldRenderer;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.world.CelestialObject;
 
@@ -18,8 +19,9 @@ public class MonolithSkin extends Skin {
     private V3DGroupElement elements;
     private TransformMatrix transform;
 
-    public MonolithSkin(GraphicEngine engine, final CelestialObject object) {
-        super(engine);
+    public MonolithSkin(WorldRenderer renderer, final CelestialObject object) {
+        super(renderer);
+        GraphicEngine engine = renderer.getEngine();
         elements = new V3DGroupElement(engine.getV3DContext());
 
         File v3drawFileMonolith = new File("graphics/output/monolith_monolith.v3draw");

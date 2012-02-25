@@ -20,7 +20,6 @@ import com.irr310.common.world.Player;
 import com.irr310.common.world.World;
 import com.irr310.server.game.CelestialObjectFactory;
 import com.irr310.server.network.ServerNetworkEngine;
-import com.irr310.server.ui.DebugGraphicEngine;
 
 public class GameServer extends Game {
     /*

@@ -17,14 +17,7 @@
 
 package com.irr310.client.graphics.gui;
 
-import java.text.DecimalFormat;
-
 import com.irr310.client.graphics.GraphicEngine;
-import com.irr310.client.graphics.GraphicalElement;
-
-import fr.def.iss.vd2.lib_v3d.V3DColor;
-import fr.def.iss.vd2.lib_v3d.element.V3DElement;
-import fr.def.iss.vd2.lib_v3d.gui.V3DLabel;
 
 /**
  *

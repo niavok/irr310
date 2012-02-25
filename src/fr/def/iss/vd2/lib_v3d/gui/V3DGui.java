@@ -17,6 +17,7 @@
 
 package fr.def.iss.vd2.lib_v3d.gui;
 
+import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -24,17 +25,19 @@ import org.fenggui.Container;
 import org.fenggui.Display;
 import org.fenggui.FengGUI;
 import org.fenggui.binding.render.jogl.EventBinding;
+import org.fenggui.binding.render.jogl.EventHelper;
 import org.fenggui.decorator.border.PlainBorder;
+import org.fenggui.event.mouse.MouseButton;
 import org.fenggui.layout.StaticLayout;
 import org.fenggui.util.Color;
 
+import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
 
 /**
- *
  * @author fberto
  */
-public class V3DGui implements V3DLocalisable{
+public class V3DGui implements V3DLocalisable {
 
     private Display display = null;
     List<V3DGuiComponent> guiComponentList = new CopyOnWriteArrayList<V3DGuiComponent>();
@@ -46,7 +49,6 @@ public class V3DGui implements V3DLocalisable{
     private int x;
     private int width;
     private int height;
-    
 
     public V3DGui(V3DCameraBinding parent) {
         generated = false;
@@ -59,31 +61,30 @@ public class V3DGui implements V3DLocalisable{
 
     public void doGenerate() {
 
-            if(display == null) {
-                display = FengGUI.createWidget(Display.class);
-                // Repair
-                //eventBinding = new EventBinding(canvas, display);
-            }else {
-                display.removeAllWidgets();
-            }
-            
+        if (display == null) {
+            display = FengGUI.createWidget(Display.class);
+            // Repair
+            // eventBinding = new EventBinding(canvas, display);
+        } else {
+            display.removeAllWidgets();
+        }
 
-            rootContainer = FengGUI.createWidget(Container.class);
-          
-            for (V3DGuiComponent component : guiComponentList) {
-                rootContainer.addWidget(component.getFenGUIWidget());
-                component.setParent(this);
-            }
+        rootContainer = FengGUI.createWidget(Container.class);
 
-            PlainBorder border = new PlainBorder(new Color(150,150, 150),1);
-            rootContainer.getAppearance().add(border);
+        for (V3DGuiComponent component : guiComponentList) {
+            rootContainer.addWidget(component.getFenGUIWidget());
+            component.setParent(this);
+        }
 
-            display.addWidget(rootContainer);
-            rootContainer.pack();
-            rootContainer.setLayoutManager(new StaticLayout());
-            rootContainer.layout();
+        PlainBorder border = new PlainBorder(new Color(150, 150, 150), 1);
+        rootContainer.getAppearance().add(border);
 
-            generated = true;
+        display.addWidget(rootContainer);
+        rootContainer.pack();
+        rootContainer.setLayoutManager(new StaticLayout());
+        rootContainer.layout();
+
+        generated = true;
 
     }
 
@@ -93,7 +94,7 @@ public class V3DGui implements V3DLocalisable{
 
     public boolean containsPoint(int x, int y) {
         for (V3DGuiComponent component : guiComponentList) {
-            if(component.containsPoint(x - this.x, y - this.y)) {
+            if (component.containsPoint(x - this.x, y - this.y)) {
                 return true;
             }
         }
@@ -156,7 +157,7 @@ public class V3DGui implements V3DLocalisable{
     }
 
     public void remove(V3DGuiComponent component) {
-        if(guiComponentList.contains(component)) {
+        if (guiComponentList.contains(component)) {
             guiComponentList.remove(component);
             generate();
         }
@@ -167,7 +168,42 @@ public class V3DGui implements V3DLocalisable{
         generate();
     }
 
-   
-}
+    public void onEvent(V3DMouseEvent e) {
 
-    
+        if (display != null) {
+            
+            MouseButton mouseButton = null;
+            switch (e.getButton()) {
+                case 1:
+                    mouseButton = MouseButton.LEFT;
+                case 2:
+                    mouseButton = MouseButton.MIDDLE;
+                case 3:
+                    mouseButton = MouseButton.RIGHT;
+                default:
+                    mouseButton =  MouseButton.LEFT;
+            }
+            
+            switch (e.getAction()) {
+                case MOUSE_CLICKED:
+                    display.fireMouseClickEvent(e.getX(), e.getY(), mouseButton, 1);
+                    break;
+                case MOUSE_DRAGGED:
+                    display.fireMouseDraggedEvent(e.getX(), e.getY(), mouseButton, 0);
+                    break;
+                case MOUSE_MOVED:
+                    display.fireMouseMovedEvent(e.getX(), e.getY(), mouseButton, 0);
+                    break;
+                case MOUSE_PRESSED:
+                    display.fireMousePressedEvent(e.getX(), e.getY(), mouseButton, 1);
+                    break;
+                case MOUSE_RELEASED:
+                    display.fireMouseReleasedEvent(e.getX(), e.getY(), mouseButton, 1);
+                    break;
+                default:
+                    break;
+            }
+
+        }
+    }
+}

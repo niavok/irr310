@@ -379,7 +379,11 @@ public class V3DCanvas {
     }
 	
 	public void onMouseEvent(V3DMouseEvent e) {
+	    
         for (V3DCameraBinding binding : cameraList) {
+            
+            binding.getGui().onEvent(e);
+            
             V3DMouseEvent localEvent = new V3DMouseEvent(
                     e.getAction(),
                     e.getX() - binding.mouseX,

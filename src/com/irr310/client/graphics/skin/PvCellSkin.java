@@ -3,6 +3,7 @@ package com.irr310.client.graphics.skin;
 import java.io.File;
 
 import com.irr310.client.graphics.GraphicEngine;
+import com.irr310.client.graphics.WorldRenderer;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.world.Component;
 
@@ -18,8 +19,9 @@ public class PvCellSkin extends Skin {
     private V3DrawElement elementPanel;
     private TransformMatrix transform;
 
-    public PvCellSkin(GraphicEngine engine, final Component object) {
-        super(engine);
+    public PvCellSkin(WorldRenderer renderer, final Component object) {
+        super(renderer);
+        GraphicEngine engine = renderer.getEngine();
         elements = new V3DGroupElement(engine.getV3DContext());
 
         // structure

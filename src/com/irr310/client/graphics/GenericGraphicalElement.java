@@ -4,10 +4,10 @@ import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 
 public abstract class GenericGraphicalElement implements GraphicalElement {
 
-    private final GraphicEngine engine;
+    private final WorldRenderer renderer;
 
-    public GenericGraphicalElement(GraphicEngine engine) {
-        this.engine = engine;
+    public GenericGraphicalElement(WorldRenderer renderer) {
+        this.renderer = renderer;
     }
     
     public abstract boolean isAnimated();
@@ -17,11 +17,11 @@ public abstract class GenericGraphicalElement implements GraphicalElement {
     public abstract void update();
     
     public void destroy() {
-        engine.destroyElement(this);
+        renderer.destroyElement(this);
     }
     
     public GraphicEngine getEngine() {
-        return engine;
+        return renderer.getEngine();
     }
     
     

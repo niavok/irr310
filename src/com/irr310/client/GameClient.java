@@ -3,13 +3,11 @@ package com.irr310.client;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.irr310.client.game.ClientGameEngine;
 import com.irr310.client.graphics.GraphicEngine;
 import com.irr310.client.input.InputEngine;
 import com.irr310.client.navigation.LoginTask;
 import com.irr310.client.navigation.SignupTask;
 import com.irr310.client.network.ClientNetworkEngine;
-import com.irr310.client.script.ClientScriptEngine;
 import com.irr310.common.Game;
 import com.irr310.common.engine.Engine;
 import com.irr310.common.engine.PhysicEngine;
@@ -50,16 +48,16 @@ public class GameClient extends Game {
 
         world = new World();
 
-        clientNetworkEngine = new ClientNetworkEngine("127.0.0.10", 22310);
+        //clientNetworkEngine = new ClientNetworkEngine("127.0.0.10", 22310);
         physicEngine = new PhysicEngine();
         graphicEngine = new GraphicEngine();
 
         engineList.add(new InputEngine());
-        engineList.add(new ClientGameEngine());
-        engineList.add(physicEngine);
-        engineList.add(clientNetworkEngine);
+        //engineList.add(new ClientGameEngine());
+        //engineList.add(physicEngine);
+        //engineList.add(clientNetworkEngine);
         engineList.add(graphicEngine);
-        engineList.add(new ClientScriptEngine());
+        //engineList.add(new ClientScriptEngine());
 
         // inputEngine = new InputEngine();
         // clientGameEngine = new ClientGameEngine();
@@ -106,7 +104,7 @@ public class GameClient extends Game {
 
         System.out.println("Irr310 Client - v0.1a");
 
-        autologin();
+        //autologin();
         /*
          * LoginForm loginForm = new LoginForm();
          * loginForm.setLocationRelativeTo(loginForm.getParent());

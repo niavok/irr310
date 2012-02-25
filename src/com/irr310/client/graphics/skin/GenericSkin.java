@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.irr310.client.graphics.GraphicEngine;
+import com.irr310.client.graphics.WorldRenderer;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.world.Part;
 import com.irr310.common.world.WorldObject;
@@ -25,8 +26,9 @@ public class GenericSkin extends Skin {
     private final Map<Part, V3DLine> speedLineMap = new HashMap<Part, V3DLine>();
     private V3DGroupElement elements;
 
-    public GenericSkin(GraphicEngine engine, WorldObject object) {
-        super(engine);
+    public GenericSkin(WorldRenderer renderer, WorldObject object) {
+        super(renderer);
+        GraphicEngine engine = renderer.getEngine();
         this.object = object;
         elements = new V3DGroupElement(engine.getV3DContext());
         

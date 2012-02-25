@@ -2,6 +2,7 @@ package com.irr310.client.graphics.effects;
 
 import com.irr310.client.graphics.GenericGraphicalElement;
 import com.irr310.client.graphics.GraphicEngine;
+import com.irr310.client.graphics.WorldRenderer;
 import com.irr310.common.tools.Vec3;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
@@ -23,9 +24,9 @@ public class BulletEffect extends GenericGraphicalElement{
     private Vec3 bulletVector;
     private final GraphicEngine engine;
 
-    public BulletEffect(GraphicEngine engine, Vec3 from, Vec3 to) {
-        super(engine);
-        this.engine = engine;
+    public BulletEffect(WorldRenderer renderer, Vec3 from, Vec3 to) {
+        super(renderer);
+        this.engine = renderer.getEngine();
         this.from = from;
         this.to = to;
         distance = to.minus(from).length();

@@ -89,7 +89,7 @@ public abstract class StatefullWidget<T extends DecoratorAppearance> extends Obs
   {
     StatefullWidget.this.setHovered(true);
     Binding.getInstance().getCursorFactory().getCursor(defaultHoverCursorType).show();
-
+    //TODO: fix cursor jump
     super.mouseEntered(mouseEnteredEvent);
   }
 

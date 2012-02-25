@@ -1,5 +1,6 @@
 package com.irr310.client.input;
 
+import org.lwjgl.input.Cursor;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
@@ -28,11 +29,11 @@ public class InputEngine extends FramerateEngine {
         framerate = new Duration(15000000);
         dragging = false;
         pressTime = new long[10];
+        
     }
 
     @Override
     protected void frame() {
-
         
         try { 
         
@@ -57,6 +58,7 @@ public class InputEngine extends FramerateEngine {
                 }
             }
         }
+        
 
         while (Mouse.next()) {
           
@@ -142,6 +144,7 @@ public class InputEngine extends FramerateEngine {
 
     @Override
     protected void init() {
+        Mouse.setGrabbed(false);
     }
 
     @Override

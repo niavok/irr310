@@ -22,8 +22,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.geom.Point2D;
 
-import com.irr310.client.graphics.GraphicEngine;
 import com.irr310.client.graphics.GraphicalElement;
+import com.irr310.client.graphics.WorldRenderer;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Part;
@@ -58,7 +58,7 @@ public class V3DFollow3DCameraController implements V3DCameraController, Graphic
     private int translationButton = MouseEvent.BUTTON1;
     private int rotationButton = MouseEvent.BUTTON3;
     private Part element;
-    private final GraphicEngine engine;
+    private final WorldRenderer renderer;
 
     private enum MovementType {
 
@@ -66,8 +66,8 @@ public class V3DFollow3DCameraController implements V3DCameraController, Graphic
         ROTATE,
     }
 
-    public V3DFollow3DCameraController(GraphicEngine engine, V3DEye3DCamera camera) {
-        this.engine = engine;
+    public V3DFollow3DCameraController(WorldRenderer renderer, V3DEye3DCamera camera) {
+        this.renderer = renderer;
         this.camera = camera;
 
         camera.addController(this);
@@ -313,7 +313,7 @@ public class V3DFollow3DCameraController implements V3DCameraController, Graphic
 
     @Override
     public void destroy() {
-        engine.destroyElement(this);
+        renderer.destroyElement(this);
     }
 
     @Override

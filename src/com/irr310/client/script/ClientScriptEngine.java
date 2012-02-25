@@ -110,7 +110,7 @@ public class ClientScriptEngine extends FramerateEngine {
     public void init() {
         if (scriptContext != null) {
             scriptContext.close();
-            GameClient.getInstance().getGraphicEngine().clearGui();
+            GameClient.getInstance().getGraphicEngine().getRenderer().resetGui();
         }
         scriptContext = new ScriptContext();
     }

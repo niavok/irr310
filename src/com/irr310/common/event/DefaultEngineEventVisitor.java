@@ -1,6 +1,6 @@
 package com.irr310.common.event;
 
-public abstract class DefaultEngineEventVisitor implements EngineEventVisitor {
+public class DefaultEngineEventVisitor implements EngineEventVisitor {
 
     public void visit(QuitGameEvent event) {
     }
