@@ -285,6 +285,7 @@ function driver() {
         var bottomThrustTarget = 0;
         var lastSpeedTarget = 0;
         var lastSpeed = 0;
+        var initiaSpeed = 0;
         var lastDeltaSpeed = 0;
         var lastTime = 0;
         var allowPower = 1;
@@ -317,6 +318,7 @@ function driver() {
                     maxOptimalPower = 1;
                     minOptimalPower = -1;
                     optimalPower = speedTarget / theoricalMaxSpeed;
+                    initiaSpeed = currentSpeed;
                 }
 
                 if(phase == 0) {
@@ -325,11 +327,15 @@ function driver() {
                         rightThrustTarget = maxHorizontalThrust;
                         topThrustTarget = maxVerticalThrust;
                         bottomThrustTarget = maxVerticalThrust;
+                        lastTooSlow = true;
+                        lastTooFast = false;
                     } else if (speedTarget < currentSpeed){
                         leftThrustTarget = - minHorizontalThrust;
                         rightThrustTarget = - minHorizontalThrust;
                         topThrustTarget = - minVerticalThrust;
                         bottomThrustTarget = - minVerticalThrust;
+                        lastTooSlow = false;
+                        lastTooFast = true;
                     } else {
                         leftThrustTarget = 0;
                         rightThrustTarget = 0;
@@ -340,7 +346,7 @@ function driver() {
                     core.log("engine go to phase 1");
                 } else if(phase == 1) {
                     core.log("ds="+deltaSpeed);
-                    if (speedTarget > currentSpeed && deltaSpeed < -0.001) {
+                    if (speedTarget > currentSpeed && lastTooFast && deltaSpeed < -0.001) {
                         // Too slow
                         leftThrustTarget = maxHorizontalThrust * optimalPower;
                         rightThrustTarget = maxHorizontalThrust * optimalPower;
@@ -348,7 +354,7 @@ function driver() {
                         bottomThrustTarget = maxVerticalThrust * optimalPower;
                         phase = 2;
                         core.log("engine go to phase 2 too slow");
-                    } else if (speedTarget < currentSpeed && deltaSpeed > 0.001) {
+                    } else if (speedTarget < currentSpeed && lastTooSlow && deltaSpeed > 0.001) {
                         // Too fast
                         leftThrustTarget = maxHorizontalThrust * optimalPower;
                         rightThrustTarget = maxHorizontalThrust * optimalPower;
