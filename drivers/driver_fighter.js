@@ -12,6 +12,7 @@ function driver() {
     
     var theoricalMaxSpeed = 64;
     var speedTarget = 0;
+    var rotationSpeedTarget = new Vect3(0.1,0,0.05);
     
     
     // GUI
@@ -270,10 +271,14 @@ function driver() {
         //bottomEngine.targetThrust = 2000;
         
         
+        //leftEngine.targetThrust = leftThrustTarget;
+        //rightEngine.targetThrust = rightThrustTarget;
+        //topEngine.targetThrust = topThrustTarget;
+        //bottomEngine.targetThrust = bottomThrustTarget;
+
         
         
-        
-       engine.update(time);
+        engine.update(time);
         
     }
     
@@ -369,6 +374,62 @@ function driver() {
                 
             }
 
+            var worldRotationSpeed = kernel.getRotationSpeed();
+            var localRotationSpeed = worldRotationSpeed.rotate(kernel.getTransform().inverse());
+            
+            
+            if(Math.abs(localRotationSpeed.getX() - rotationSpeedTarget.getX()) > 0.01) {
+                //core.log("need rotation correction");
+                //if((localRotationSpeed.getX() - rotationSpeedTarget.getX() < 0)  && (topThrustTarget - bottomThrustTarget > -1.4)) {
+                if((localRotationSpeed.getX() - rotationSpeedTarget.getX() < 0)) {
+                    //Too slow
+                    topThrustTarget -= 0.01;
+                    bottomThrustTarget += 0.01;
+                    core.log("Too slow");
+                    core.log("localRotationSpeed.getX() "+localRotationSpeed.getX());
+                    core.log("rotationSpeedTarget.getX() "+rotationSpeedTarget.getX());
+                    core.log("deltaThrust "+(topThrustTarget - bottomThrustTarget));
+                }
+                
+                //if((localRotationSpeed.getX() - rotationSpeedTarget.getX() > 0)  && (topThrustTarget - bottomThrustTarget < 1.4)) {
+                if((localRotationSpeed.getX() - rotationSpeedTarget.getX() > 0)) {
+                    //Too fast
+                    topThrustTarget += 0.01;
+                    bottomThrustTarget -= 0.01;
+                    core.log("Too fast");
+                    core.log("localRotationSpeed.getX() "+localRotationSpeed.getX());
+                    core.log("rotationSpeedTarget.getX() "+rotationSpeedTarget.getX());
+                    core.log("deltaThrust "+(topThrustTarget - bottomThrustTarget));
+
+                }
+                
+            }
+            
+            if(Math.abs(localRotationSpeed.getZ() - rotationSpeedTarget.getZ()) > 0.01) {
+                if((localRotationSpeed.getZ() - rotationSpeedTarget.getZ() < 0)) {
+                    //Too slow
+                    leftThrustTarget -= 0.01;
+                    rightThrustTarget += 0.01;
+                    core.log("Too slow");
+                    core.log("localRotationSpeed.getZ() "+localRotationSpeed.getZ());
+                    core.log("rotationSpeedTarget.getZ() "+rotationSpeedTarget.getZ());
+                    core.log("deltaThrust "+(topThrustTarget - rightThrustTarget));
+                }
+                
+                if((localRotationSpeed.getZ() - rotationSpeedTarget.getZ() > 0)) {
+                    //Too fast
+                    leftThrustTarget += 0.01;
+                    rightThrustTarget -= 0.01;
+                    core.log("Too fast");
+                    core.log("localRotationSpeed.getZ() "+localRotationSpeed.getZ());
+                    core.log("rotationSpeedTarget.getZ() "+rotationSpeedTarget.getZ());
+                    core.log("deltaThrust "+(leftThrustTarget - rightThrustTarget));
+
+                }
+                
+            }
+
+
 
             leftEngine.targetThrust = leftThrustTarget;
             rightEngine.targetThrust = rightThrustTarget;
@@ -387,6 +448,7 @@ function driver() {
     
         var clockIndicator;
         var thrustControlleurEnabled = false;
+        var rotationControlleurEnabled = false;
         
         this.init = function() {
 
@@ -587,11 +649,13 @@ function driver() {
                 this.zPositionIndicator.setText("z= "+z+" m");
                 
                 //Rotation speed
-                var x = kernel.getRotationSpeed().getX().toFixed(1);
+                var worldRotationSpeed = kernel.getRotationSpeed();
+                var localRotationSpeed = worldRotationSpeed.rotate(kernel.getTransform().inverse());
+                var x = localRotationSpeed.getX().toFixed(2);
                 this.xRotationSpeedIndicator.setText("wx= "+x+" r/s");
-                var y = kernel.getRotationSpeed().getY().toFixed(1);
+                var y = localRotationSpeed.getY().toFixed(2);
                 this.yRotationSpeedIndicator.setText("wy= "+y+" r/s");
-                var z = kernel.getRotationSpeed().getZ().toFixed(1);
+                var z = localRotationSpeed.getZ().toFixed(2);
                 this.zRotationSpeedIndicator.setText("wz= "+z+" r/s");
                 
                 //Translation speed

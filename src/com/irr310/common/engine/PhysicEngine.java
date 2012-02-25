@@ -311,6 +311,7 @@ public class PhysicEngine extends FramerateEngine {
         if (Game.getInstance() instanceof GameClient) {
         }
         for (Entry<Part, RigidBody> partEntry : partToBodyMap.entrySet()) {
+            //TODO: fix concurrent modification on the map 
             RigidBody body = partEntry.getValue();
             PartMotionState motionState = (PartMotionState) body.getMotionState();
             motionState.reload();

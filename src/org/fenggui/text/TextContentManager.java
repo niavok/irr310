@@ -267,8 +267,12 @@ public class TextContentManager implements ITextContentManager, IXMLStreamable
     {
       this.height = y;
     }
-
-    updateText(getRenderer(appearance));
+    ITextRenderer renderer = getRenderer(appearance);
+    if(renderer != null) {
+        updateText(renderer);
+    } else {
+        System.err.println("Renderer is null !!");
+    }
   }
 
   private ITextRenderer getRenderer(TextAppearance appearance)
