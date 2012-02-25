@@ -21,7 +21,7 @@ function driver() {
     engine = new Engine();
     
     
-    core.log("Logged as: "+core.me.login);
+    core.log("Logged as: "+core.me.getLogin());
     
     
     var ships = core.me.getShips();

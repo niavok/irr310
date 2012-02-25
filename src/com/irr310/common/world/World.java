@@ -108,7 +108,7 @@ public class World {
         parts.remove(part);
     }
     
-    private void addPlayer(Player player) {
+    public void addPlayer(Player player) {
         players.add(player);
         playerIdMap.put(player.getId(), player);
         Game.getInstance().sendToAll(new PlayerAddedEvent(player));
@@ -196,7 +196,7 @@ public class World {
         return component;
     }
     
-    public List<CelestialObject> getObjects() {
+    public List<CelestialObject> getCelestialsObjects() {
         return celestialObjects;
     }
     

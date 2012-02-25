@@ -6,6 +6,7 @@ import java.util.List;
 import com.irr310.client.game.ClientGameEngine;
 import com.irr310.client.graphics.GraphicEngine;
 import com.irr310.client.input.InputEngine;
+import com.irr310.client.navigation.LoginManager;
 import com.irr310.client.navigation.LoginTask;
 import com.irr310.client.navigation.SignupTask;
 import com.irr310.client.network.ClientNetworkEngine;
@@ -19,6 +20,7 @@ import com.irr310.common.event.LoadingGameEvent;
 import com.irr310.common.event.WorldReadyEvent;
 import com.irr310.common.network.protocol.CapacityUpdateMessage;
 import com.irr310.common.tools.Log;
+import com.irr310.common.world.Player;
 import com.irr310.common.world.World;
 import com.irr310.server.Duration;
 import com.irr310.server.ParameterAnalyser;
@@ -147,7 +149,9 @@ public class GameClient extends Game {
     }
 
     public void updateCapacityTask(com.irr310.common.world.capacity.Capacity capacity) {
-        clientNetworkEngine.send(new CapacityUpdateMessage(capacity.toView()));
+        if(clientNetworkEngine != null) {
+            clientNetworkEngine.send(new CapacityUpdateMessage(capacity.toView()));
+        }
     }
 
     public PhysicEngine getPhysicEngine() {
@@ -177,7 +181,9 @@ public class GameClient extends Game {
         
         sendToAll(new StartEngineEvent());
         
-        createPlayer("player", "");
+        initWorld();
+        Player player = createPlayer("player", "");
+        LoginManager.localPlayer = player;
         
         sendToAll(new WorldReadyEvent());
 

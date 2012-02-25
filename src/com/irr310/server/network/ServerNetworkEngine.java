@@ -166,7 +166,7 @@ public class ServerNetworkEngine extends EventEngine {
 
                     List<CelestialObjectView> objectList = new ArrayList<CelestialObjectView>();
 
-                    for (CelestialObject object : world.getObjects()) {
+                    for (CelestialObject object : world.getCelestialsObjects()) {
                         objectList.add(object.toView());
                     }
 

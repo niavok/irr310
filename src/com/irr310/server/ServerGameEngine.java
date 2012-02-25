@@ -172,7 +172,7 @@ public class ServerGameEngine extends FramerateEngine {
         @Override
         public void visit(BulletFiredEvent event) {
 
-            RayResultDescriptor rayTest = GameServer.getInstance().getPhysicEngine().rayTest(event.getFrom(), event.getTo());
+            RayResultDescriptor rayTest = Game.getInstance().getPhysicEngine().rayTest(event.getFrom(), event.getTo());
             if(rayTest != null) {
                 // damage = (1-rangePercent^3)
                 double damage = event.getDamage()*(1- Math.pow(rayTest.getHitFraction(), 3));
@@ -204,7 +204,7 @@ public class ServerGameEngine extends FramerateEngine {
         
         //TODO: extras damage transmission 
         
-        GameServer.getInstance().sendToAll(new DamageEvent(target, effectiveDamage, damageType));
+        Game.getInstance().sendToAll(new DamageEvent(target, effectiveDamage, damageType));
 
         if(newDurablility == 0) {
             if(parentObject instanceof CelestialObject) {

@@ -41,6 +41,7 @@ import com.irr310.common.world.CelestialObject;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.Part;
 import com.irr310.common.world.Ship;
+import com.irr310.common.world.World;
 import com.irr310.common.world.WorldObject;
 import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
@@ -119,12 +120,22 @@ public class WorldRenderer implements GraphicRenderer {
         scene.add(ref1);
         scene.add(ref2);
 
+        loadCurrentWorld();
+
         // activeCamera.setShowCenter(true);
 
         activeCamera.fitAll();
 
         // activeCamera.fit(new V3DVect3(0, 0, 0), new V3DVect3(5, 5, 5));
 
+    }
+
+    private void loadCurrentWorld() {
+        System.err.println("add current world");
+        World world = Game.getInstance().getWorld();
+        for (CelestialObject celestialObject : world.getCelestialsObjects()) {
+            addCelestialObject(celestialObject);
+        }
     }
 
     public void frame() {
@@ -220,7 +231,9 @@ public class WorldRenderer implements GraphicRenderer {
 
     protected void removeCelestialObject(final CelestialObject object) {
         GraphicalElement element = worldObjectToV3DElementMap.get(object);
-        element.destroy();
+        if (element != null) {
+            element.destroy();
+        }
     }
 
     protected void addShip(final Ship ship) {
@@ -354,7 +367,6 @@ public class WorldRenderer implements GraphicRenderer {
 
     private final class WorldRendererEventVisitor extends DefaultEngineEventVisitor {
 
-        
         @Override
         public void visit(CelestialObjectAddedEvent event) {
 
@@ -370,7 +382,6 @@ public class WorldRenderer implements GraphicRenderer {
         public void visit(WorldShipAddedEvent event) {
             addShip(event.getShip());
         }
-      
 
         @Override
         public void visit(CollisionEvent event) {
