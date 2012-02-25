@@ -37,7 +37,7 @@ public class GameServer extends Game {
 
     private List<Player> playerList = new ArrayList<Player>();
     private Map<Integer, Player> playerMap = new HashMap<Integer, Player>();
-    private Map<String, Player> playerLoginMap = new HashMap<String, Player>();
+    
 
     public static GameServer instance = null;
 
@@ -171,22 +171,7 @@ public class GameServer extends Game {
         return playerList;
     }
 
-    public Player createPlayer(String login, String password) {
-        Player newPlayer = new Player(GameServer.pickNewId(), login);
-        newPlayer.changePassword(password);
-        playerLoginMap.put(login, newPlayer);
-        // Ship playerShip = ShipFactory.createSimpleShip();
-
-        AddShipEvent addShipEvent = new AddShipEvent(newPlayer);
-        // addShipEvent.setType(AddShipEvent.Type.SIMPLE);
-        addShipEvent.setType(AddShipEvent.Type.SIMPLE_FIGHTER);
-        addShipEvent.setPosition(new Vec3(50, -50, 0));
-        GameServer.getInstance().sendToAll(addShipEvent);
-
-        /* world.addShip(playerShip, new Vect3(10.0,20.0,30.0)); */
-
-        return newPlayer;
-    }
+    
 
     public void initWorld() {
         Monolith monolith = new Monolith(GameServer.pickNewId(), "monolith");
@@ -224,14 +209,7 @@ public class GameServer extends Game {
         return world;
     }
 
-    public Player getPlayerByLogin(String login) {
-        return playerLoginMap.get(login);
-    }
-
-    public boolean isPlayerExist(String login) {
-        return playerLoginMap.containsKey(login);
-    }
-
+    
     public PhysicEngine getPhysicEngine() {
         return physicEngine;
     }

@@ -87,7 +87,7 @@ public class WorldRenderer implements GraphicRenderer {
         animatedList.add(cameraController);
 
         fullscreenBinding = V3DCameraBinding.buildFullscreenCamera(activeCamera);
-        activeCamera.setBackgroundColor(V3DColor.grey);
+        activeCamera.setBackgroundColor(V3DColor.white);
 
         // Add zoom and pane camera controlleur
         // cameraController.setLimitBound(false);

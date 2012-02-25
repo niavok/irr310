@@ -19,6 +19,7 @@ import com.irr310.common.event.MouseEvent;
 import com.irr310.common.event.PauseEngineEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
+import com.irr310.common.event.WorldReadyEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.common.tools.Vect2;
 import com.irr310.server.Duration;
@@ -49,13 +50,11 @@ public class GraphicEngine extends FramerateEngine {
         // canvas = new V3DCanvas(context, 1920, 1200);
         eventVisitor = new GraphicEngineEventVisitor();
         canvas = new V3DCanvas(context, 1280, 1024);
+        canvas.setEnabled(true);
+        fpsIndicator = new GuiFpsIndicator(this);
         changeRenderer(new BlankGraphicRenderer(this));
         
-        canvas.setEnabled(true);
-        
-        
-        fpsIndicator = new GuiFpsIndicator(this);
-        canvas.frame();
+        frame();
     }
 
     @Override
@@ -72,7 +71,7 @@ public class GraphicEngine extends FramerateEngine {
 
     @Override
     protected void processEvent(EngineEvent e) {
-        e.accept(eventVisitor);
+        e.accept(eventVisitor); 
     }
 
     private final class GraphicEngineEventVisitor extends DefaultEngineEventVisitor {
@@ -103,6 +102,11 @@ public class GraphicEngine extends FramerateEngine {
             loadingRenderer.setMessage(event.getMessage());
         }
 
+        @Override
+        public void visit(WorldReadyEvent event) {
+            changeRenderer(new WorldRenderer(GraphicEngine.this));
+        }
+        
         @Override
         public void visit(MouseEvent event) {
             canvas.onMouseEvent(event.getMouseEvent());
@@ -181,6 +185,7 @@ public class GraphicEngine extends FramerateEngine {
         canvas.removeCamera(cameraBinding);
         }
         cameraBinding = renderer.getCameraBinding();
+        
         
         
     }

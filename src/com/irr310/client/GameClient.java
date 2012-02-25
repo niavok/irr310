@@ -3,22 +3,26 @@ package com.irr310.client;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.irr310.client.game.ClientGameEngine;
 import com.irr310.client.graphics.GraphicEngine;
 import com.irr310.client.input.InputEngine;
 import com.irr310.client.navigation.LoginTask;
 import com.irr310.client.navigation.SignupTask;
 import com.irr310.client.network.ClientNetworkEngine;
+import com.irr310.client.script.ClientScriptEngine;
 import com.irr310.common.Game;
 import com.irr310.common.engine.Engine;
 import com.irr310.common.engine.PhysicEngine;
 import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.event.LoadingGameEvent;
+import com.irr310.common.event.WorldReadyEvent;
 import com.irr310.common.network.protocol.CapacityUpdateMessage;
 import com.irr310.common.tools.Log;
 import com.irr310.common.world.World;
 import com.irr310.server.Duration;
 import com.irr310.server.ParameterAnalyser;
+import com.irr310.server.ServerGameEngine;
 
 public class GameClient extends Game {
 
@@ -50,7 +54,7 @@ public class GameClient extends Game {
         world = new World();
 
         //clientNetworkEngine = new ClientNetworkEngine("127.0.0.10", 22310);
-        physicEngine = new PhysicEngine();
+        //physicEngine = new PhysicEngine();
         graphicEngine = new GraphicEngine();
 
         engineList.add(new InputEngine());
@@ -77,28 +81,9 @@ public class GameClient extends Game {
 
         Log.perfBegin("Start");
         Log.perfBegin("Start Engine");
-        for (Engine engine : engineList) {
-            engine.start();
-        }
-        // inputEngine.start();
-        // clientGameEngine.start();
-        // physicEngine.start();
-        // clientNetworkEngine.start();
-        // graphicEngine.start();
-        // scriptEngine.start();
-
-        // Wait engines started
-        boolean waitStart = true;
-        while (waitStart) {
-            waitStart = false;
-            for (Engine engine : engineList) {
-                if (!engine.isRunning()) {
-                    waitStart = true;
-                    break;
-                }
-            }
-            Duration.HUNDRED_MILLISECONDE.sleep();
-        }
+        
+        startAndWaitAllEngines();
+        
         Log.perfEnd(); // Start Engine
         Log.perfBegin("Finish Start");
         sendToAll(new StartEngineEvent());
@@ -153,10 +138,10 @@ public class GameClient extends Game {
     }
 
     private void autologin() {
-        SignupTask signupTask = new SignupTask("f", "");
+        SignupTask signupTask = new SignupTask("default", "");
         signupTask.startAndWait();
 
-        LoginTask loginTask = new LoginTask("f", "");
+        LoginTask loginTask = new LoginTask("default", "");
         loginTask.startAndWait();
 
     }
@@ -179,6 +164,45 @@ public class GameClient extends Game {
 
     public void playSoloGame() {
         sendToAll(new LoadingGameEvent("Create new game ..."));
+        
+        physicEngine = new PhysicEngine();
+        
+        engineList.add(new ClientGameEngine());
+        engineList.add(physicEngine);
+        //engineList.add(clientNetworkEngine);
+        engineList.add(new ClientScriptEngine());
+        engineList.add(new ServerGameEngine());
+        
+        startAndWaitAllEngines();
+        
+        sendToAll(new StartEngineEvent());
+        
+        createPlayer("player", "");
+        
+        sendToAll(new WorldReadyEvent());
+
+        System.out.println("Game begin");
+    }
+
+    private void startAndWaitAllEngines() {
+        for (Engine engine : engineList) {
+            if(!engine.isAlive()){
+                engine.start();
+            }
+        }
+        
+        // Wait engines started
+        boolean waitStart = true;
+        while (waitStart) {
+            waitStart = false;
+            for (Engine engine : engineList) {
+                if (!engine.isRunning()) {
+                    waitStart = true;
+                    break;
+                }
+            }
+            Duration.TEN_MILLISECONDE.sleep();
+        }
     }
 
 }

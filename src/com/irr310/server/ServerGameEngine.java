@@ -132,7 +132,7 @@ public class ServerGameEngine extends FramerateEngine {
                     break;
             }
 
-            GameServer.getInstance().getWorld().addShip(ship, event.getPosition());
+            Game.getInstance().getWorld().addShip(ship, event.getPosition());
         }
 
         @Override

@@ -44,4 +44,6 @@ public interface EngineEventVisitor {
     public abstract void visit(CelestialObjectRemovedEvent event);
 
     public abstract void visit(LoadingGameEvent event);
+
+    public abstract void visit(WorldReadyEvent event);
 }
