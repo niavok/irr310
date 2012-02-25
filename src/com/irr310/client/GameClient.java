@@ -13,6 +13,7 @@ import com.irr310.common.engine.Engine;
 import com.irr310.common.engine.PhysicEngine;
 import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.StartEngineEvent;
+import com.irr310.common.event.LoadingGameEvent;
 import com.irr310.common.network.protocol.CapacityUpdateMessage;
 import com.irr310.common.tools.Log;
 import com.irr310.common.world.World;
@@ -174,6 +175,10 @@ public class GameClient extends Game {
 
     public GraphicEngine getGraphicEngine() {
         return graphicEngine;
+    }
+
+    public void playSoloGame() {
+        sendToAll(new LoadingGameEvent("Create new game ..."));
     }
 
 }

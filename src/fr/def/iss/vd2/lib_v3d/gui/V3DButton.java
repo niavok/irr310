@@ -50,10 +50,10 @@ public class V3DButton extends V3DGuiComponent {
     private int xPos;
     private int yPos;
     private V3DColor backgroundColor;
-    private int topPadding;
-    private int leftPadding;
-    private int rightPadding;
-    private int bottomPadding;
+    private int topPadding = 0;
+    private int leftPadding = 0;
+    private int rightPadding = 0;
+    private int bottomPadding = 0;
 
     public V3DButton(String text) {
         button = new Button(text);
@@ -66,8 +66,9 @@ public class V3DButton extends V3DGuiComponent {
     public void setColor(V3DColor foregroundColor, V3DColor backgroundColor) {
         this.backgroundColor = backgroundColor;
         updateBackground();
-        //button.getAppearance().add(new PlainBackground(new Color(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a)));
-        
+        // button.getAppearance().add(new PlainBackground(new
+        // Color(backgroundColor.r, backgroundColor.g, backgroundColor.b,
+        // backgroundColor.a)));
 
         TextStyle style = button.getAppearance().getStyle(TextStyle.DEFAULTSTYLEKEY);
         TextStyleEntry textEntryStyle = new TextStyleEntry();
@@ -75,22 +76,25 @@ public class V3DButton extends V3DGuiComponent {
         style.addStyle(TextStyleEntry.DEFAULTSTYLESTATEKEY, textEntryStyle);
 
     }
-    
-    public void setPadding(int topPadding, int leftPadding, int rightPadding, int bottomPadding ) {
+
+    public void setPadding(int topPadding, int leftPadding, int rightPadding, int bottomPadding) {
         this.topPadding = topPadding;
         this.leftPadding = leftPadding;
         this.rightPadding = rightPadding;
         this.bottomPadding = bottomPadding;
         updateBackground();
     }
-    
+
     private void updateBackground() {
         button.getAppearance().removeAll();
         button.getAppearance().add(new PlainBackground(new Color(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a)));
-        PaddingBorder border = new PaddingBorder(topPadding,leftPadding,rightPadding,bottomPadding);
-        border.setColor(new Color(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a));
-        border.setSpan(Span.PADDING);
-        button.getAppearance().add(border);
+        if (leftPadding != 0 || rightPadding != 0 || topPadding != 0 || bottomPadding != 0) {
+            PaddingBorder border = new PaddingBorder(topPadding, leftPadding, rightPadding, bottomPadding);
+            border.setColor(new Color(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a));
+            border.setSpan(Span.PADDING);
+            button.getAppearance().add(border);
+        }
+
     }
 
     @Override
@@ -113,7 +117,7 @@ public class V3DButton extends V3DGuiComponent {
 
     @Override
     public void repack() {
-
+        button.updateMinSize();
         if (parent != null) {
             xPos = 0;
             yPos = 0;
@@ -126,12 +130,12 @@ public class V3DButton extends V3DGuiComponent {
             if (yAlignment == GuiYAlignment.BOTTOM) {
                 yPos = y;
             } else {
-                yPos = parent.getHeight() - button.getHeight() - y;
+                yPos = parent.getHeight() - button.getMinHeight() - y;
             }
 
             button.setXY(xPos, yPos);
         }
-        button.updateMinSize();
+        
         button.setSizeToMinSize();
         button.layout();
     }
@@ -189,13 +193,15 @@ public class V3DButton extends V3DGuiComponent {
     }
 
     private ImageFont createFont(LabelStyle labelstyle) {
-        
+
         int style = 0;
-        if(labelstyle.getStyle() == "bold") {
+        if (labelstyle.getStyle() == "bold") {
             style = java.awt.Font.BOLD;
         }
-        
-        return FontFactory.renderStandardFont(new java.awt.Font(labelstyle.getFont(), style, labelstyle.getSize()), true, Alphabet.getDefaultAlphabet());
+
+        return FontFactory.renderStandardFont(new java.awt.Font(labelstyle.getFont(), style, labelstyle.getSize()),
+                                              true,
+                                              Alphabet.getDefaultAlphabet());
     }
 
     private static class LabelStyle {

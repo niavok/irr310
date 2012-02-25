@@ -13,6 +13,7 @@ import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.EngineEventVisitor;
 import com.irr310.common.event.KeyPressedEvent;
+import com.irr310.common.event.LoadingGameEvent;
 import com.irr310.common.event.MinimizeWindowEvent;
 import com.irr310.common.event.MouseEvent;
 import com.irr310.common.event.PauseEngineEvent;
@@ -93,7 +94,13 @@ public class GraphicEngine extends FramerateEngine {
         public void visit(StartEngineEvent event) {
             pause(false);
             changeRenderer(new MenuGraphicRenderer(GraphicEngine.this));
-            
+        }
+        
+        @Override
+        public void visit(LoadingGameEvent event) {
+            LoadingGraphicRenderer loadingRenderer = new LoadingGraphicRenderer(GraphicEngine.this);
+            changeRenderer(loadingRenderer);
+            loadingRenderer.setMessage(event.getMessage());
         }
 
         @Override

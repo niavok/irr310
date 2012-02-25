@@ -1,7 +1,13 @@
 package com.irr310.client.graphics;
 
+import org.fenggui.event.ActivationEvent;
 import org.fenggui.event.ButtonPressedEvent;
+import org.fenggui.event.FocusEvent;
+import org.fenggui.event.IActivationListener;
 import org.fenggui.event.IButtonPressedListener;
+import org.fenggui.event.IFocusListener;
+import org.fenggui.event.mouse.IMouseEnteredListener;
+import org.fenggui.event.mouse.MouseEnteredEvent;
 
 import com.irr310.client.GameClient;
 import com.irr310.common.Game;
@@ -18,7 +24,7 @@ import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent.GuiXAlignment;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent.GuiYAlignment;
 import fr.def.iss.vd2.lib_v3d.gui.V3DLabel;
 
-public class MenuGraphicRenderer implements GraphicRenderer {
+public class LoadingGraphicRenderer implements GraphicRenderer {
 
     private static final V3DColor irrRed = new V3DColor(108, 0, 0);
     private static final V3DColor irrRedHover = new V3DColor(118, 10, 10);
@@ -27,8 +33,9 @@ public class MenuGraphicRenderer implements GraphicRenderer {
     private V3DCameraBinding cameraBinding;
     private V3DLabel logoIRR;
     private V3DLabel logo310;
+    private V3DLabel loadingMessage;
 
-    public MenuGraphicRenderer(GraphicEngine engine) {
+    public LoadingGraphicRenderer(GraphicEngine engine) {
         this.engine = engine;
     }
 
@@ -52,57 +59,17 @@ public class MenuGraphicRenderer implements GraphicRenderer {
         logo310.setPosition(238, 150);
         addGuiComponent(logo310);
         
+        V3DLabel loadingText = new V3DLabel("Loading");
+        loadingText.setFontStyle("Ubuntu", "bold", 45);
+        loadingText.setColor(irrRed, V3DColor.transparent);
+        loadingText.setPosition(300, 400);
+        addGuiComponent(loadingText);
         
-        
-        final V3DButton exitButton = new V3DButton("Exit");
-        exitButton.setFontStyle("Ubuntu", "bold", 16);
-        exitButton.setColor(V3DColor.white, irrRed);
-        exitButton.setxAlignment(GuiXAlignment.RIGHT);
-        exitButton.setyAlignment(GuiYAlignment.BOTTOM);
-        exitButton.setPadding(5,40,40,5);
-        exitButton.setPosition( 20,20);
-        exitButton.getFenGUIWidget().addButtonPressedListener(new IButtonPressedListener() {
-            
-            @Override
-            public void buttonPressed(ButtonPressedEvent e) {
-                Game.getInstance().sendToAll(new QuitGameEvent());
-            }
-        });
-        addGuiComponent(exitButton);
-
-        
-        V3DButton playButton = new V3DButton("Play");
-        playButton.setFontStyle("Ubuntu", "", 24);
-        playButton.setColor(V3DColor.white, irrRed);
-        playButton.setxAlignment(GuiXAlignment.LEFT);
-        playButton.setyAlignment(GuiYAlignment.TOP);
-        playButton.setPadding(5,40,40,5);
-        playButton.setPosition( 150,300);
-        playButton.getFenGUIWidget().addButtonPressedListener(new IButtonPressedListener() {
-            
-            @Override
-            public void buttonPressed(ButtonPressedEvent e) {
-                System.err.println("play button clicked");
-                GameClient.getInstance().playSoloGame();
-            }
-        });
-        addGuiComponent(playButton);
-        
-        
-        V3DButton settingsButton = new V3DButton("Settings");
-        settingsButton.setFontStyle("Ubuntu", "bold", 16);
-        settingsButton.setColor(irrRed, V3DColor.transparent);
-        settingsButton.setxAlignment(GuiXAlignment.RIGHT);
-        settingsButton.setyAlignment(GuiYAlignment.TOP);
-        settingsButton.setPosition( 20,10);
-        settingsButton.getFenGUIWidget().addButtonPressedListener(new IButtonPressedListener() {
-            
-            @Override
-            public void buttonPressed(ButtonPressedEvent e) {
-                System.err.println("settings");
-            }
-        });
-        addGuiComponent(settingsButton);
+        loadingMessage = new V3DLabel("");
+        loadingMessage.setFontStyle("Ubuntu", "bold", 25);
+        loadingMessage.setColor(V3DColor.darkgrey, V3DColor.transparent);
+        loadingMessage.setPosition(300, 450);
+        addGuiComponent(loadingMessage);
         
 
     }
@@ -134,6 +101,10 @@ public class MenuGraphicRenderer implements GraphicRenderer {
     @Override
     public void resetGui() {
         cameraBinding.getGui().clear();
+    }
+
+    public void setMessage(String message) {
+        loadingMessage.setText(message);
     }
 
 }

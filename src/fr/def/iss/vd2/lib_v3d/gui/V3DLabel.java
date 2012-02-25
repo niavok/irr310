@@ -85,7 +85,7 @@ public class V3DLabel extends V3DGuiComponent {
 
     @Override
     public void repack() {
-
+        label.updateMinSize();
         if (parent != null) {
             xPos = 0;
             yPos = 0;
@@ -103,7 +103,7 @@ public class V3DLabel extends V3DGuiComponent {
 
             label.setXY(xPos, yPos);
         }
-        label.updateMinSize();
+        
         label.setSizeToMinSize();
         label.layout();
     }
@@ -135,17 +135,15 @@ public class V3DLabel extends V3DGuiComponent {
         setFontStyle(new LabelStyle(font, style, size));
     }
 
-    Map<LabelStyle, ImageFont> fontMap = new HashMap<V3DLabel.LabelStyle, ImageFont>();
+    
 
-    private void setFontStyle(LabelStyle labelStyle) {
-        ImageFont font = null;
+    
+    
+    
+   private void setFontStyle(LabelStyle labelStyle) {
+        ImageFont font = V3DGui.getFont(labelStyle);
 
-        if (fontMap.containsKey(labelStyle)) {
-            font = fontMap.get(labelStyle);
-        } else {
-            font = createFont(labelStyle);
-            fontMap.put(labelStyle, font);
-        }
+        
 
         setFontToDefaultStyle(label.getAppearance(), font, org.fenggui.util.Color.BLACK);
 
@@ -160,74 +158,6 @@ public class V3DLabel extends V3DGuiComponent {
         appearance.addRenderer(ITextRenderer.DEFAULTTEXTRENDERERKEY, renderer);
     }
 
-    private ImageFont createFont(LabelStyle labelstyle) {
-        
-        int style = 0;
-        if(labelstyle.getStyle() == "bold") {
-            style = java.awt.Font.BOLD;
-        }
-        
-        return FontFactory.renderStandardFont(new java.awt.Font(labelstyle.getFont(), style, labelstyle.getSize()), true, Alphabet.getDefaultAlphabet());
-    }
-
-    private static class LabelStyle {
-
-        private final String font;
-        private final String style;
-        private final int size;
-
-        public LabelStyle(String font, String style, int size) {
-            this.font = font;
-            this.style = style;
-            this.size = size;
-        }
-
-        @Override
-        public int hashCode() {
-            final int prime = 31;
-            int result = 1;
-            result = prime * result + ((font == null) ? 0 : font.hashCode());
-            result = prime * result + size;
-            result = prime * result + ((style == null) ? 0 : style.hashCode());
-            return result;
-        }
-
-        public String getFont() {
-            return font;
-        }
-
-        public int getSize() {
-            return size;
-        }
-
-        public String getStyle() {
-            return style;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null)
-                return false;
-            if (getClass() != obj.getClass())
-                return false;
-            LabelStyle other = (LabelStyle) obj;
-            if (font == null) {
-                if (other.font != null)
-                    return false;
-            } else if (!font.equals(other.font))
-                return false;
-            if (size != other.size)
-                return false;
-            if (style == null) {
-                if (other.style != null)
-                    return false;
-            } else if (!style.equals(other.style))
-                return false;
-            return true;
-        }
-
-    }
+    
 
 }

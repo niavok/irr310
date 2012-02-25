@@ -18,18 +18,23 @@
 package fr.def.iss.vd2.lib_v3d.gui;
 
 import java.awt.event.MouseEvent;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.fenggui.Container;
 import org.fenggui.Display;
 import org.fenggui.FengGUI;
+import org.fenggui.binding.render.ImageFont;
 import org.fenggui.binding.render.jogl.EventBinding;
 import org.fenggui.binding.render.jogl.EventHelper;
 import org.fenggui.decorator.border.PlainBorder;
 import org.fenggui.event.mouse.MouseButton;
 import org.fenggui.layout.StaticLayout;
+import org.fenggui.util.Alphabet;
 import org.fenggui.util.Color;
+import org.fenggui.util.fonttoolkit.FontFactory;
 
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
@@ -39,6 +44,8 @@ import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
  */
 public class V3DGui implements V3DLocalisable {
 
+    
+    private static Map<LabelStyle, ImageFont> fontMap = new HashMap<LabelStyle, ImageFont>();
     private Display display = null;
     List<V3DGuiComponent> guiComponentList = new CopyOnWriteArrayList<V3DGuiComponent>();
     boolean generated = false;
@@ -206,4 +213,25 @@ public class V3DGui implements V3DLocalisable {
 
         }
     }
+
+    public static ImageFont getFont(LabelStyle labelStyle) {
+        ImageFont font;
+        if (fontMap.containsKey(labelStyle)) {
+            font = fontMap.get(labelStyle);
+        } else {
+            font = createFont(labelStyle);
+            fontMap.put(labelStyle, font);
+        }
+        return font;
+    }
+    private static ImageFont createFont(LabelStyle labelstyle) {
+        
+        int style = 0;
+        if(labelstyle.getStyle() == "bold") {
+            style = java.awt.Font.BOLD;
+        }
+        
+        return FontFactory.renderStandardFont(new java.awt.Font(labelstyle.getFont(), style, labelstyle.getSize()), true, Alphabet.getDefaultAlphabet());
+    }
+        
 }
