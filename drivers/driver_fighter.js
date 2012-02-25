@@ -335,7 +335,6 @@ function driver() {
                     this.phase = 1;
                     core.log("engine go to phase 1");
                 } else if(this.phase == 1) {
-                    core.log("ds="+deltaSpeed);
                     if (speedTarget > currentSpeed && this.lastTooFast && deltaSpeed < -0.001) {
                         // Too slow
                         this.leftThrustTarget = maxHorizontalThrust * this.optimalPower;
