@@ -12,7 +12,8 @@ function driver() {
     
     var theoricalMaxSpeed = 64;
     var speedTarget = 0;
-    var rotationSpeedTarget = new Vect3(0.1,0,0.05);
+    var maxRotationSpeed = 2;
+    var rotationSpeedTarget = new Vect3(0,0,0.0);
     
     
     // GUI
@@ -85,23 +86,7 @@ function driver() {
 
                     break;
                 case KEY_SPACE:
-                    if(!useMouseController) {
-                    useMouseController = true;
-                    mouseControlleurOrigin = core.mouse.getPosition();
-                    deadZone = core.gui.createRectangle();
-                    deadZone.setPosition(mouseControlleurOrigin.minus(new Vec2(10,10)));
-                    deadZone.setSize(new Vec2(20,20));
-                    deadZone.setBorderColor(new Color(0.0,0,0.3));
-                    controlZone = core.gui.createRectangle();
-                    controlZone.setPosition(mouseControlleurOrigin.minus(new Vec2(150,150)));
-                    controlZone.setSize(new Vec2(300,300));
-                    controlZone.setBorderColor(new Color(0.0,0,0.3));
-                    } else {
-                        useMouseController = false;
-                        core.gui.destroyComponent(controlZone);
-                        core.gui.destroyComponent(deadZone);
-                    }
-                    
+                    gui.toogleRotationController()
                     break;
                 case KEY_PLUS:
                     baseThrust += 10;
@@ -284,27 +269,27 @@ function driver() {
     
     function Engine() {
     
-        var leftThrustTarget = 0;
-        var rightThrustTarget = 0;
-        var topThrustTarget = 0;
-        var bottomThrustTarget = 0;
-        var lastSpeedTarget = 0;
-        var lastSpeed = 0;
-        var initiaSpeed = 0;
-        var lastDeltaSpeed = 0;
-        var lastTime = 0;
-        var allowPower = 1;
-        var maxOptimalPower = 0;
-        var optimalPower = 0;
-        var minOptimalPower = 0;
-        var phase = 0;
+        this.leftThrustTarget = 0;
+        this.rightThrustTarget = 0;
+        this.topThrustTarget = 0;
+        this.bottomThrustTarget = 0;
+        this.lastSpeedTarget = 0;
+        this.lastSpeed = 0;
+        this.initiaSpeed = 0;
+        this.lastDeltaSpeed = 0;
+        this.lastTime = 0;
+        this.allowPower = 1;
+        this.maxOptimalPower = 0;
+        this.optimalPower = 0;
+        this.minOptimalPower = 0;
+        this.phase = 0;
         
         this.update = function(time) {
 
             var currentSpeed = kernel.getLinearSpeed().dot( new Vect3(0,1,0).rotate(kernel.getTransform()));        
-            var deltaTime = time - lastTime;
-            var deltaSpeed = (currentSpeed - lastSpeed);
-            var deltaAcc = (deltaSpeed - lastDeltaSpeed);
+            var deltaTime = time - this.lastTime;
+            var deltaSpeed = (currentSpeed - this.lastSpeed);
+            var deltaAcc = (deltaSpeed - this.lastDeltaSpeed);
             
             if(Math.abs(speedTarget - currentSpeed) > 0.1) {
                 
@@ -314,116 +299,124 @@ function driver() {
                 var maxVerticalThrust = Math.min(topEngine.getMaxThrust(), bottomEngine.getMaxThrust())
                 var minVerticalThrust = Math.min( -topEngine.getMinThrust(), -bottomEngine.getMinThrust())
 
-                if(lastSpeedTarget != speedTarget) {
+                if(this.lastSpeedTarget != speedTarget) {
                     //Thrust target changed, full power allowed
-                    allowPower = 1;
-                    phase = 0;
+                    this.allowPower = 1;
+                    this.phase = 0;
                     core.log("engine go to phase 0");
                     
-                    maxOptimalPower = 1;
-                    minOptimalPower = -1;
-                    optimalPower = speedTarget / theoricalMaxSpeed;
-                    initiaSpeed = currentSpeed;
+                    this.maxOptimalPower = 1;
+                    this.minOptimalPower = -1;
+                    this.optimalPower = speedTarget / theoricalMaxSpeed;
+                    this.initiaSpeed = currentSpeed;
                 }
 
-                if(phase == 0) {
+                if(this.phase == 0) {
                     if (speedTarget > currentSpeed) {
-                        leftThrustTarget = maxHorizontalThrust;
-                        rightThrustTarget = maxHorizontalThrust;
-                        topThrustTarget = maxVerticalThrust;
-                        bottomThrustTarget = maxVerticalThrust;
-                        lastTooSlow = true;
-                        lastTooFast = false;
+                        this.leftThrustTarget = maxHorizontalThrust;
+                        this.rightThrustTarget = maxHorizontalThrust;
+                        this.topThrustTarget = maxVerticalThrust;
+                        this.bottomThrustTarget = maxVerticalThrust;
+                        this.lastTooSlow = true;
+                        this.lastTooFast = false;
                     } else if (speedTarget < currentSpeed){
-                        leftThrustTarget = - minHorizontalThrust;
-                        rightThrustTarget = - minHorizontalThrust;
-                        topThrustTarget = - minVerticalThrust;
-                        bottomThrustTarget = - minVerticalThrust;
-                        lastTooSlow = false;
-                        lastTooFast = true;
+                        this.leftThrustTarget = - minHorizontalThrust;
+                        this.rightThrustTarget = - minHorizontalThrust;
+                        this.topThrustTarget = - minVerticalThrust;
+                        this.bottomThrustTarget = - minVerticalThrust;
+                        this.lastTooSlow = false;
+                        this.lastTooFast = true;
                     } else {
-                        leftThrustTarget = 0;
-                        rightThrustTarget = 0;
-                        topThrustTarget = 0;
-                        bottomThrustTarget = 0;
+                        this.leftThrustTarget = 0;
+                        this.rightThrustTarget = 0;
+                        this.topThrustTarget = 0;
+                        this.bottomThrustTarget = 0;
                     }
-                    phase = 1;
+                    this.phase = 1;
                     core.log("engine go to phase 1");
-                } else if(phase == 1) {
+                } else if(this.phase == 1) {
                     core.log("ds="+deltaSpeed);
-                    if (speedTarget > currentSpeed && lastTooFast && deltaSpeed < -0.001) {
+                    if (speedTarget > currentSpeed && this.lastTooFast && deltaSpeed < -0.001) {
                         // Too slow
-                        leftThrustTarget = maxHorizontalThrust * optimalPower;
-                        rightThrustTarget = maxHorizontalThrust * optimalPower;
-                        topThrustTarget = maxVerticalThrust * optimalPower;
-                        bottomThrustTarget = maxVerticalThrust * optimalPower;
-                        phase = 2;
+                        this.leftThrustTarget = maxHorizontalThrust * this.optimalPower;
+                        this.rightThrustTarget = maxHorizontalThrust * this.optimalPower;
+                        this.topThrustTarget = maxVerticalThrust * this.optimalPower;
+                        this.bottomThrustTarget = maxVerticalThrust * this.optimalPower;
+                        this.phase = 2;
                         core.log("engine go to phase 2 too slow");
-                    } else if (speedTarget < currentSpeed && lastTooSlow && deltaSpeed > 0.001) {
+                    } else if (speedTarget < currentSpeed && this.lastTooSlow && deltaSpeed > 0.001) {
                         // Too fast
-                        leftThrustTarget = maxHorizontalThrust * optimalPower;
-                        rightThrustTarget = maxHorizontalThrust * optimalPower;
-                        topThrustTarget = maxVerticalThrust * optimalPower;
-                        bottomThrustTarget = maxVerticalThrust * optimalPower;
-                        phase = 2;
-                        core.log("engine go to phase 2 too fast");
+                        this.leftThrustTarget = maxHorizontalThrust * this.optimalPower;
+                        this.rightThrustTarget = maxHorizontalThrust * this.optimalPower;
+                        this.topThrustTarget = maxVerticalThrust * this.optimalPower;
+                        this.bottomThrustTarget = maxVerticalThrust * this.optimalPower;
+                        this.phase = 2;
+                        core.log("engine g o to phase 2 too fast");
                     }
-                } else if(phase == 2) {
+                } else if(this.phase == 2) {
+                    if(Math.abs(speedTarget - currentSpeed) > theoricalMaxSpeed/6) {
+                        this.phase = 0;
+                    }
                 }
-                
-                
             }
 
             var worldRotationSpeed = kernel.getRotationSpeed();
             var localRotationSpeed = worldRotationSpeed.rotate(kernel.getTransform().inverse());
             
-            
-            if(Math.abs(localRotationSpeed.getX() - rotationSpeedTarget.getX()) > 0.01) {
-                //core.log("need rotation correction");
-                //if((localRotationSpeed.getX() - rotationSpeedTarget.getX() < 0)  && (topThrustTarget - bottomThrustTarget > -1.4)) {
+            var topRotThrust = 0;
+            var bottomRotThrust = 0;
+            var leftRotThrust = 0;
+            var rightRotThrust = 0;
+
+            if(Math.abs(localRotationSpeed.getX() - rotationSpeedTarget.getX()) > 0.001) {
+                var deltaThrust = this.topThrustTarget - this.bottomThrustTarget;
+                var deltaRot = localRotationSpeed.getX() - rotationSpeedTarget.getX();
+                //var thrustRatio = Math.min(Math.pow((Math.abs(deltaRot) / maxRotationSpeed)+0.3,3),1);
+                var deltaRotRatio = Math.abs(deltaRot) / maxRotationSpeed
+                var thrustRatio = 0;
+                if(deltaRotRatio > 0.1) {
+                    thrustRatio = 1;
+                } else {
+                    thrustRatio = 10 * deltaRotRatio //Math.pow(5*deltaRotRatio,2);
+                }
+                var thrustMax = 4;
                 if((localRotationSpeed.getX() - rotationSpeedTarget.getX() < 0)) {
                     //Too slow
-                    topThrustTarget -= 0.01;
-                    bottomThrustTarget += 0.01;
-                    core.log("Too slow");
-                    core.log("localRotationSpeed.getX() "+localRotationSpeed.getX());
-                    core.log("rotationSpeedTarget.getX() "+rotationSpeedTarget.getX());
-                    core.log("deltaThrust "+(topThrustTarget - bottomThrustTarget));
+                    topRotThrust -= thrustMax * thrustRatio;
+                    bottomRotThrust += thrustMax * thrustRatio;
                 }
                 
-                //if((localRotationSpeed.getX() - rotationSpeedTarget.getX() > 0)  && (topThrustTarget - bottomThrustTarget < 1.4)) {
                 if((localRotationSpeed.getX() - rotationSpeedTarget.getX() > 0)) {
                     //Too fast
-                    topThrustTarget += 0.01;
-                    bottomThrustTarget -= 0.01;
-                    core.log("Too fast");
-                    core.log("localRotationSpeed.getX() "+localRotationSpeed.getX());
-                    core.log("rotationSpeedTarget.getX() "+rotationSpeedTarget.getX());
-                    core.log("deltaThrust "+(topThrustTarget - bottomThrustTarget));
+                    topRotThrust += thrustMax * thrustRatio;
+                    bottomRotThrust -= thrustMax * thrustRatio;
 
                 }
                 
             }
             
-            if(Math.abs(localRotationSpeed.getZ() - rotationSpeedTarget.getZ()) > 0.01) {
+            if(Math.abs(localRotationSpeed.getZ() - rotationSpeedTarget.getZ()) > 0.001) {
+                var deltaThrust = this.topThrustTarget - this.bottomThrustTarget;
+                var deltaRot = localRotationSpeed.getZ() - rotationSpeedTarget.getZ();
+                //var thrustRatio = Math.min(Math.pow((Math.abs(deltaRot) / maxRotationSpeed)+0.3,3),1);
+                var deltaRotRatio = Math.abs(deltaRot) / maxRotationSpeed
+                var thrustRatio = 0;
+                if(deltaRotRatio > 0.1) {
+                    thrustRatio = 1;
+                } else {
+                    thrustRatio = 10 * deltaRotRatio //Math.pow(5*deltaRotRatio,2);
+                }
+                var thrustMax = 4;
                 if((localRotationSpeed.getZ() - rotationSpeedTarget.getZ() < 0)) {
                     //Too slow
-                    leftThrustTarget -= 0.01;
-                    rightThrustTarget += 0.01;
-                    core.log("Too slow");
-                    core.log("localRotationSpeed.getZ() "+localRotationSpeed.getZ());
-                    core.log("rotationSpeedTarget.getZ() "+rotationSpeedTarget.getZ());
-                    core.log("deltaThrust "+(topThrustTarget - rightThrustTarget));
+                    leftRotThrust -= thrustMax * thrustRatio;
+                    rightRotThrust += thrustMax * thrustRatio;
                 }
                 
                 if((localRotationSpeed.getZ() - rotationSpeedTarget.getZ() > 0)) {
                     //Too fast
-                    leftThrustTarget += 0.01;
-                    rightThrustTarget -= 0.01;
-                    core.log("Too fast");
-                    core.log("localRotationSpeed.getZ() "+localRotationSpeed.getZ());
-                    core.log("rotationSpeedTarget.getZ() "+rotationSpeedTarget.getZ());
-                    core.log("deltaThrust "+(leftThrustTarget - rightThrustTarget));
+                    leftRotThrust += thrustMax * thrustRatio;
+                    rightRotThrust -= thrustMax * thrustRatio;
 
                 }
                 
@@ -431,24 +424,26 @@ function driver() {
 
 
 
-            leftEngine.targetThrust = leftThrustTarget;
-            rightEngine.targetThrust = rightThrustTarget;
-            topEngine.targetThrust = topThrustTarget;
-            bottomEngine.targetThrust = bottomThrustTarget;
+            leftEngine.targetThrust = this.leftThrustTarget + leftRotThrust;
+            rightEngine.targetThrust = this.rightThrustTarget + rightRotThrust;
+            topEngine.targetThrust = this.topThrustTarget + topRotThrust;
+            bottomEngine.targetThrust = this.bottomThrustTarget + bottomRotThrust;
 
-            lastSpeed = currentSpeed;
-            lastSpeedTarget = speedTarget;
-            lastTime = time;
-            lastDeltaSpeed = deltaSpeed;
+            this.lastSpeed = currentSpeed;
+            this.lastSpeedTarget = speedTarget;
+            this.lastTime = time;
+            this.lastDeltaSpeed = deltaSpeed;
         }
     }
     
     
     function Gui() {
     
-        var clockIndicator;
-        var thrustControlleurEnabled = false;
-        var rotationControlleurEnabled = false;
+        this.clockIndicator;
+        this.thrustControlleurEnabled = false;
+        
+       
+        
         
         this.init = function() {
 
@@ -470,7 +465,7 @@ function driver() {
             var cursorCenter = core.gui.createRectangle();
             cursorCenter.setPosition((new Vec2(640-1,512-1)));
                             cursorCenter.setSize(new Vec2(2,2));
-                            cursorCenter.setBorderColor(new Color(0,0.8,0));
+                            cursorCenter.setBorderColor(new Color(0.8,0.0,0));
             
             var cursorTop = core.gui.createRectangle();
                             cursorTop.setPosition((new Vec2(640,512+10)));
@@ -651,11 +646,11 @@ function driver() {
                 //Rotation speed
                 var worldRotationSpeed = kernel.getRotationSpeed();
                 var localRotationSpeed = worldRotationSpeed.rotate(kernel.getTransform().inverse());
-                var x = localRotationSpeed.getX().toFixed(2);
+                var x = localRotationSpeed.getX().toFixed(3);
                 this.xRotationSpeedIndicator.setText("wx= "+x+" r/s");
-                var y = localRotationSpeed.getY().toFixed(2);
+                var y = localRotationSpeed.getY().toFixed(3);
                 this.yRotationSpeedIndicator.setText("wy= "+y+" r/s");
-                var z = localRotationSpeed.getZ().toFixed(2);
+                var z = localRotationSpeed.getZ().toFixed(3);
                 this.zRotationSpeedIndicator.setText("wz= "+z+" r/s");
                 
                 //Translation speed
@@ -699,6 +694,55 @@ function driver() {
                 this.targetLine.setPosition((new Vec2(this.screenSize.getX() - 125,200 + deltaHeigth)));
                 this.speedTargetIndicator.setPosition(new Vec2(this.screenSize.getX() - 80, 193 + deltaHeigth ));
                 this.speedTargetIndicator.setText((speedTarget * 3.6).toFixed(0)+" km/s");
+            } else if(this.rotationControlleurEnabled) {
+            
+                var mousePosition = core.mouse.getPosition();
+
+
+                var diffX = (this.rotationControlleurMouseOrigin.getX() - mousePosition.getX());
+                var diffY = (this.rotationControlleurMouseOrigin.getY() - mousePosition.getY());
+
+                
+                if(diffY > this.rotationControlleurControlRadius) {
+                    diffY = this.rotationControlleurControlRadius;
+                }
+                if(diffX > this.rotationControlleurControlRadius) {
+                    diffX = this.rotationControlleurControlRadius;
+                }
+                if(diffY < -this.rotationControlleurControlRadius) {
+                    diffY = -this.rotationControlleurControlRadius;
+                }
+                if(diffX < -this.rotationControlleurControlRadius) {
+                    diffX = -this.rotationControlleurControlRadius;
+                }
+                
+                if(Math.abs(diffX) < this.rotationControlleurDeadZoneRadius) {
+                    diffX = 0;
+                } else if(diffX > 0) {
+                    diffX -= this.rotationControlleurDeadZoneRadius;
+                } else if(diffX < 0) {
+                    diffX += this.rotationControlleurDeadZoneRadius;
+                }
+                
+                if(Math.abs(diffY) < this.rotationControlleurDeadZoneRadius) {
+                    diffY = 0;
+                } else if(diffY > 0) {
+                    diffY -= this.rotationControlleurDeadZoneRadius;
+                } else if(diffY < 0) {
+                    diffY += this.rotationControlleurDeadZoneRadius;
+                }
+                
+                
+                //var diffVert = diffX * Math.cos(Math.PI / 4.0) + diffY * Math.sin(Math.PI / 4.0);
+                //var diffHoriz = -1 * diffX * Math.sin(Math.PI / 4.0) + diffY * Math.cos(Math.PI / 4.0);
+                var diffVert = diffX;
+                var diffHoriz = diffY;
+        
+                var percentX = diffVert / (this.rotationControlleurControlRadius - this.rotationControlleurDeadZoneRadius);
+                var percentY = diffHoriz / (this.rotationControlleurControlRadius - this.rotationControlleurDeadZoneRadius);
+                
+                rotationSpeedTarget.z = maxRotationSpeed *  (percentX > 0 ? 1: -1) * Math.pow(percentX,2);
+                rotationSpeedTarget.x = - maxRotationSpeed * (percentY > 0 ? 1: -1) * Math.pow(percentY,2);
             }
             
             
@@ -713,6 +757,50 @@ function driver() {
         
         this.disableThrustController = function() {
             this.thrustControlleurEnabled = false;
+        }
+        
+        
+        // Rotation controlleur
+        this.rotationControlleurEnabled = false;
+        this.rotationControlleurDeadZoneRadius = 5.0;
+        this.rotationControlleurControlRadius = 150.0;
+        this.rotationControlleurDeadZone = null;
+        this.rotationControlleurControlZone = null;
+        this.rotationControlleurMouseOrigin = null;
+        
+        this.enableRotationController = function() {
+        
+            this.rotationControlleurMouseOrigin = core.mouse.getPosition();
+            this.rotationControlleurEnabled = true;
+
+            this.rotationControlleurDeadZone = core.gui.createRectangle();
+            this.rotationControlleurDeadZone.setPosition(this.rotationControlleurMouseOrigin.minus(new Vec2(this.rotationControlleurDeadZoneRadius,this.rotationControlleurDeadZoneRadius)));
+            this.rotationControlleurDeadZone.setSize(new Vec2(this.rotationControlleurDeadZoneRadius * 2,this.rotationControlleurDeadZoneRadius*2));
+            this.rotationControlleurDeadZone.setBorderColor(new Color(0.0,0,0.3));
+            
+            this.rotationControlleurControlZone = core.gui.createRectangle();
+            this.rotationControlleurControlZone.setPosition(this.rotationControlleurMouseOrigin.minus(new Vec2(150,150)));
+            this.rotationControlleurControlZone.setSize(new Vec2(300,300));
+            this.rotationControlleurControlZone.setBorderColor(new Color(0.0,0,0.3));
+        }        
+        
+        this.disableRotationController = function() {
+            this.rotationControlleurEnabled = false;
+            
+            core.gui.destroyComponent(this.rotationControlleurControlZone);
+            core.gui.destroyComponent(this.rotationControlleurDeadZone);
+            
+            rotationSpeedTarget.z = 0;
+            rotationSpeedTarget.x = 0;
+            
+        }
+        
+        this.toogleRotationController = function() {
+            if(this.rotationControlleurEnabled) {
+                 this.disableRotationController();
+            } else {
+                this.enableRotationController();
+            }
         }
         
         this.init();
