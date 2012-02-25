@@ -53,7 +53,7 @@ import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.common.tools.TransformMatrix;
-import com.irr310.common.tools.Vect3;
+import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.Link;
 import com.irr310.common.world.Part;
@@ -104,7 +104,7 @@ public class PhysicEngine extends FramerateEngine {
             body.getWorldTransform(t);
 
             TransformMatrix force = TransformMatrix.identity();
-            force.translate(new Vect3(0, linearEngine.getLeft().getCurrentThrust(), 0));
+            force.translate(new Vec3(0, linearEngine.getLeft().getCurrentThrust(), 0));
 
             TransformMatrix rotation = new TransformMatrix();
             t.getOpenGLMatrix(rotation.getData());
@@ -126,15 +126,15 @@ public class PhysicEngine extends FramerateEngine {
             TransformMatrix bodyTransform = TransformMatrix.identity();
             t.getOpenGLMatrix(bodyTransform.getData());
 
-            Vect3 breakAxis = wingCapacity.getBreakAxis();
-            Vect3 absoluteBreakAxis = breakAxis.rotate(bodyTransform);
+            Vec3 breakAxis = wingCapacity.getBreakAxis();
+            Vec3 absoluteBreakAxis = breakAxis.rotate(bodyTransform);
 
-            Vect3 thrustAxis = wingCapacity.getThrustAxis();
-            Vect3 absoluteThrustAxis = thrustAxis.rotate(bodyTransform);
+            Vec3 thrustAxis = wingCapacity.getThrustAxis();
+            Vec3 absoluteThrustAxis = thrustAxis.rotate(bodyTransform);
 
             Vector3f lv = new Vector3f();
             body.getLinearVelocity(lv);
-            Vect3 velocity = new Vect3(lv);
+            Vec3 velocity = new Vec3(lv);
 
             if (velocity.length() > 0) {
 
@@ -169,7 +169,7 @@ public class PhysicEngine extends FramerateEngine {
         return dt;
     }
     
-    public RayResultDescriptor rayTest(final Vect3 from, final Vect3 to) {
+    public RayResultDescriptor rayTest(final Vec3 from, final Vec3 to) {
         System.out.println("ray test");
         
         final List<RayResultDescriptor> rayResultDescriptorList = new ArrayList<RayResultDescriptor>();
@@ -184,10 +184,10 @@ public class PhysicEngine extends FramerateEngine {
                 System.out.println("hit on "+data.part.getParentObject().getName()+" at "+ rayResult.hitFraction);
                 
                 
-                Vect3 globalPosition = from.plus(to.minus(from).multiply(rayResult.hitFraction));
+                Vec3 globalPosition = from.plus(to.minus(from).multiply(rayResult.hitFraction));
                 
                 
-                Vect3 localPosition = globalPosition.transform(data.part.getTransform().inverse());
+                Vec3 localPosition = globalPosition.transform(data.part.getTransform().inverse());
                 
                 RayResultDescriptor descriptor = new RayResultDescriptor();
                 descriptor.setHitFraction(rayResult.hitFraction);
@@ -318,7 +318,7 @@ public class PhysicEngine extends FramerateEngine {
         }
     }
 
-    protected void addShip(Ship ship, Vect3 position) {
+    protected void addShip(Ship ship, Vec3 position) {
 
         for (Component component : ship.getComponents()) {
             for (final Part part : component.getParts()) {
@@ -363,12 +363,12 @@ public class PhysicEngine extends FramerateEngine {
         RigidBody body1 = partToBodyMap.get(slot1.getPart());
         RigidBody body2 = partToBodyMap.get(slot2.getPart());
 
-        Vect3 shipRotation1 = slot1.getComponent().getShipRotation();
-        Vect3 shipRotation2 = slot2.getComponent().getShipRotation();
+        Vec3 shipRotation1 = slot1.getComponent().getShipRotation();
+        Vec3 shipRotation2 = slot2.getComponent().getShipRotation();
 
         Transform localA = new Transform(), localB = new Transform();
         localA.setIdentity();
-        Vect3 position1 = slot1.getPosition();
+        Vec3 position1 = slot1.getPosition();
 
         localA.origin.set(position1.x.floatValue(), position1.y.floatValue(), position1.z.floatValue());
 
@@ -378,7 +378,7 @@ public class PhysicEngine extends FramerateEngine {
                                (float) -Math.toRadians(shipRotation1.x));
 
         localB.setIdentity();
-        Vect3 position2 = slot2.getPosition();
+        Vec3 position2 = slot2.getPosition();
         localB.origin.set(position2.x.floatValue(), position2.y.floatValue(), position2.z.floatValue());
 
         MatrixUtil.setEulerZYX(localB.basis,
@@ -511,12 +511,12 @@ public class PhysicEngine extends FramerateEngine {
                         collisionDescriptor.setPartA(partA);
                         collisionDescriptor.setPartB(partB);
                         
-                        Vect3 localPositionA = new Vect3(pt.localPointA);
-                        Vect3 globalPositionA = new Vect3(ptA);
-                        Vect3 localPositionB = new Vect3(pt.localPointB);
-                        Vect3 globalPositionB =new Vect3(ptB);
+                        Vec3 localPositionA = new Vec3(pt.localPointA);
+                        Vec3 globalPositionA = new Vec3(ptA);
+                        Vec3 localPositionB = new Vec3(pt.localPointB);
+                        Vec3 globalPositionB =new Vec3(ptB);
                         
-                        Vect3 globalPosition = globalPositionA.plus(globalPositionB).divide(2);
+                        Vec3 globalPosition = globalPositionA.plus(globalPositionB).divide(2);
                         
                         collisionDescriptor.setLocalPositionOnA(localPositionA);
                         collisionDescriptor.setLocalPositionOnB(localPositionB);

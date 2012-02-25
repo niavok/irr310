@@ -2,7 +2,7 @@ package com.irr310.common.world.capacity.controller;
 
 import com.irr310.common.Game;
 import com.irr310.common.event.BulletFiredEvent;
-import com.irr310.common.tools.Vect3;
+import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.Part;
 import com.irr310.common.world.capacity.GunCapacity;
@@ -51,8 +51,8 @@ public class GunController extends CapacityController {
                     break;
             }
             
-            Vect3 from = new Vect3(xoffset, 0, yoffset).transform(part.getTransform());
-            Vect3 to = new Vect3(xoffset, capacity.range, yoffset).transform(part.getTransform());
+            Vec3 from = new Vec3(xoffset, 0, yoffset).transform(part.getTransform());
+            Vec3 to = new Vec3(xoffset, capacity.range, yoffset).transform(part.getTransform());
             
             
             

@@ -14,7 +14,7 @@ import com.irr310.common.event.CelestialObjectRemovedEvent;
 import com.irr310.common.event.CelestialObjectRemovedEvent.Reason;
 import com.irr310.common.event.PlayerAddedEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
-import com.irr310.common.tools.Vect3;
+import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.view.CelestialObjectView;
 import com.irr310.common.world.view.ComponentView;
@@ -114,7 +114,7 @@ public class World {
         Game.getInstance().sendToAll(new PlayerAddedEvent(player));
     }
 
-    public void addShip(Ship ship, Vect3 position) {
+    public void addShip(Ship ship, Vec3 position) {
         ships.add(ship);
         shipIdMap.put(ship.getId(), ship);
         Game.getInstance().sendToAll(new WorldShipAddedEvent(ship, position));

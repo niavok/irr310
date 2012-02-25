@@ -1,6 +1,6 @@
 package com.irr310.common.world;
 
-import com.irr310.common.tools.Vect3;
+import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Part.CollisionShape;
 import com.irr310.server.GameServer;
 
@@ -15,7 +15,7 @@ public class Monolith extends CelestialObject {
         part.setCollisionShape(CollisionShape.SPHERE);
         this.addPart(part);
         
-        part.setShape(new Vect3(10, 10, 10));
+        part.setShape(new Vec3(10, 10, 10));
         
     }
 

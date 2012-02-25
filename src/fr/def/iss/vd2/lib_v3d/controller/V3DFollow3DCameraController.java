@@ -25,7 +25,7 @@ import java.awt.geom.Point2D;
 import com.irr310.client.graphics.GraphicEngine;
 import com.irr310.client.graphics.GraphicalElement;
 import com.irr310.common.tools.TransformMatrix;
-import com.irr310.common.tools.Vect3;
+import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Part;
 
 import fr.def.iss.vd2.lib_v3d.V3DInputEvent;
@@ -267,7 +267,7 @@ public class V3DFollow3DCameraController implements V3DCameraController, Graphic
     public void update() {
         if(element != null) {
             TransformMatrix transform = element.getTransform();
-            Vect3 translation = transform.getTranslation();
+            Vec3 translation = transform.getTranslation();
 
             //Target
             TransformMatrix target = TransformMatrix.identity();

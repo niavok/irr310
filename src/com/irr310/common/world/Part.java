@@ -2,7 +2,7 @@ package com.irr310.common.world;
 
 import com.irr310.common.Game;
 import com.irr310.common.tools.TransformMatrix;
-import com.irr310.common.tools.Vect3;
+import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.view.PartStateView;
 import com.irr310.common.world.view.PartView;
 
@@ -12,10 +12,10 @@ public class Part extends GameEntity {
     private Double mass;
     private Double linearDamping;
     private Double angularDamping;
-    private final Vect3 rotationSpeed;
-    private final Vect3 linearSpeed;
+    private final Vec3 rotationSpeed;
+    private final Vec3 linearSpeed;
     private final TransformMatrix transform;
-    private Vect3 shape;
+    private Vec3 shape;
     private Player owner;
     private final WorldObject parentObject;
     private CollisionShape collisionShape;
@@ -27,11 +27,11 @@ public class Part extends GameEntity {
     public Part(long id, WorldObject parentObject) {
         super(id);
         this.parentObject = parentObject;
-        rotationSpeed = Vect3.origin();
-        linearSpeed = Vect3.origin();
+        rotationSpeed = Vec3.origin();
+        linearSpeed = Vec3.origin();
         transform = TransformMatrix.identity();
         mass = 0.;
-        shape = Vect3.one();
+        shape = Vec3.one();
         owner = null;
         collisionShape = CollisionShape.BOX;
         linearDamping = 0.1;
@@ -46,11 +46,11 @@ public class Part extends GameEntity {
         return mass;
     }
 
-    public Vect3 getRotationSpeed() {
+    public Vec3 getRotationSpeed() {
         return rotationSpeed;
     }
 
-    public Vect3 getLinearSpeed() {
+    public Vec3 getLinearSpeed() {
         return linearSpeed;
     }
     
@@ -74,11 +74,11 @@ public class Part extends GameEntity {
         return transform;
     }
 
-    public Vect3 getShape() {
+    public Vec3 getShape() {
         return shape;
     }
 
-    public void setShape(Vect3 shape) {
+    public void setShape(Vec3 shape) {
         this.shape = shape;
     }
 

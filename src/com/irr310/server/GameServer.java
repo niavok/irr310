@@ -13,7 +13,7 @@ import com.irr310.common.event.AddShipEvent;
 import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
-import com.irr310.common.tools.Vect3;
+import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Asteroid;
 import com.irr310.common.world.Monolith;
 import com.irr310.common.world.Player;
@@ -181,7 +181,7 @@ public class GameServer extends Game {
         AddShipEvent addShipEvent = new AddShipEvent(newPlayer);
         // addShipEvent.setType(AddShipEvent.Type.SIMPLE);
         addShipEvent.setType(AddShipEvent.Type.SIMPLE_FIGHTER);
-        addShipEvent.setPosition(new Vect3(50, -50, 0));
+        addShipEvent.setPosition(new Vec3(50, -50, 0));
         GameServer.getInstance().sendToAll(addShipEvent);
 
         /* world.addShip(playerShip, new Vect3(10.0,20.0,30.0)); */

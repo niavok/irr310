@@ -1,24 +1,24 @@
 package com.irr310.common.world.capacity;
 
-import com.irr310.common.tools.Vect3;
+import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.view.CapacityView;
 
 public class WingCapacity extends Capacity {
 
-    public Vect3 breakAxis;
-    public Vect3 thrustAxis;
+    public Vec3 breakAxis;
+    public Vec3 thrustAxis;
     public double yield;
     public double friction;
 
     public WingCapacity(long id) {
         super(id, "wing");
-        this.breakAxis = new Vect3(0, 0, 1);
-        this.thrustAxis = new Vect3(0, 1, 0);
+        this.breakAxis = new Vec3(0, 0, 1);
+        this.thrustAxis = new Vec3(0, 1, 0);
         yield = 0.1;
         friction = 1.5;
     }
 
-    public Vect3 getBreakAxis() {
+    public Vec3 getBreakAxis() {
         return breakAxis;
     }
     
@@ -26,7 +26,7 @@ public class WingCapacity extends Capacity {
         return friction;
     }
     
-    public Vect3 getThrustAxis() {
+    public Vec3 getThrustAxis() {
         return thrustAxis;
     }
     

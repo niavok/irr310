@@ -10,7 +10,7 @@ import com.irr310.common.event.PauseEngineEvent;
 import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.event.UseScriptEvent;
 import com.irr310.common.event.UseScriptEvent.Type;
-import com.irr310.common.tools.Vect3;
+import com.irr310.common.tools.Vec3;
 
 public class CommandManager {
 
@@ -219,7 +219,7 @@ public class CommandManager {
 				Double x = Double.valueOf(xStr);
 				Double y = Double.valueOf(yStr);
 				Double z = Double.valueOf(zStr);
-				event.setPosition(new Vect3(x, y, z));
+				event.setPosition(new Vec3(x, y, z));
 			} catch (NumberFormatException e) {
 				return "Bad number format for position in '" + xStr + "', '"
 						+ yStr + "' or '" + zStr + "'";
@@ -237,7 +237,7 @@ public class CommandManager {
 				Double x = Double.valueOf(xStr);
 				Double y = Double.valueOf(yStr);
 				Double z = Double.valueOf(zStr);
-				event.setRotation(new Vect3(x, y, z));
+				event.setRotation(new Vec3(x, y, z));
 			} catch (NumberFormatException e) {
 				return "Bad number format for rotation in '" + xStr + "', '"
 						+ yStr + "' or '" + zStr + "'";
@@ -255,7 +255,7 @@ public class CommandManager {
 				Double x = Double.valueOf(xStr);
 				Double y = Double.valueOf(yStr);
 				Double z = Double.valueOf(zStr);
-				event.setLinearSpeed(new Vect3(x, y, z));
+				event.setLinearSpeed(new Vec3(x, y, z));
 			} catch (NumberFormatException e) {
 				return "Bad number format for linear speed in '" + xStr
 						+ "', '" + yStr + "' or '" + zStr + "'";
@@ -273,7 +273,7 @@ public class CommandManager {
 				Double x = Double.valueOf(xStr);
 				Double y = Double.valueOf(yStr);
 				Double z = Double.valueOf(zStr);
-				event.setRotationSpeed(new Vect3(x, y, z));
+				event.setRotationSpeed(new Vec3(x, y, z));
 			} catch (NumberFormatException e) {
 				return "Bad number format for rotation speed in '" + xStr
 						+ "', '" + yStr + "' or '" + zStr + "'";

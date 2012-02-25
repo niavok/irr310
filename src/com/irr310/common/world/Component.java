@@ -7,7 +7,7 @@ import java.util.Map;
 
 import com.irr310.common.Game;
 import com.irr310.common.tools.TransformMatrix;
-import com.irr310.common.tools.Vect3;
+import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.capacity.Capacity.CapacityType;
 import com.irr310.common.world.view.CapacityView;
@@ -23,8 +23,8 @@ public final class  Component extends WorldObject {
 	private double quality;
 	private double efficiency;
 	private Container container;
-	private Vect3 shipPosition;
-	private Vect3 shipRotation;
+	private Vec3 shipPosition;
+	private Vec3 shipRotation;
 	private List<Slot> slots;
 	private List<Capacity> capacities;
 	private Map<String, Capacity> capacityNameMap;
@@ -34,13 +34,13 @@ public final class  Component extends WorldObject {
 		slots = new ArrayList<Slot>();
 		capacities = new ArrayList<Capacity>();
 		capacityNameMap = new HashMap<String, Capacity>();
-		shipRotation = Vect3.origin();
-		shipPosition = Vect3.origin();
+		shipRotation = Vec3.origin();
+		shipPosition = Vec3.origin();
 		quality = 1;
 		computeEfficiency();
 	}
 	
-	public Slot getSlot(Vect3 position) {
+	public Slot getSlot(Vec3 position) {
 		Slot minSlot = null;
 		double minLenght = Double.MAX_VALUE;
 		for(Slot slot: slots) {
@@ -53,7 +53,7 @@ public final class  Component extends WorldObject {
 		return minSlot;
 	}
 	
-	public Slot addSlot(long slotId, Part part, Vect3 position) {
+	public Slot addSlot(long slotId, Part part, Vec3 position) {
 		Slot slot = new Slot(slotId, this,part, position);
 		Game.getInstance().getWorld().addSlot(slot);
 		slots.add(slot);
@@ -100,44 +100,44 @@ public final class  Component extends WorldObject {
 		this.container = container;
 	}
 
-	public void setShipPosition(Vect3 shipPosition) {
+	public void setShipPosition(Vec3 shipPosition) {
 		this.shipPosition = shipPosition;
 	}
 
-	public void setShipRotation(Vect3 shipRotation) {
+	public void setShipRotation(Vec3 shipRotation) {
 		this.shipRotation = shipRotation;
 	}
 
-	public Vect3 getShipPosition() {
+	public Vec3 getShipPosition() {
 		return shipPosition;
 	}
 
-	public Vect3 getShipRotation() {
+	public Vec3 getShipRotation() {
 		return shipRotation;
 	}
 
 
-    public void changeTranslation(Vect3 position) {
+    public void changeTranslation(Vec3 position) {
 	    for(Part part: parts) {
 	        part.getTransform().translate(position);    
 	    }
         
     }
 
-    public void changeLinearSpeed(Vect3 linearSpeed) {
+    public void changeLinearSpeed(Vec3 linearSpeed) {
         for(Part part: parts) {
             part.getLinearSpeed().set(linearSpeed);
         }
     }
 
-    public void changeRotationSpeed(Vect3 rotationSpeed) {
+    public void changeRotationSpeed(Vec3 rotationSpeed) {
         for(Part part: parts) {
             part.getRotationSpeed().set(rotationSpeed);
         }
     }
 	
 	
-	public Vect3 getLocalShipPosition(Vect3 absolutePosition) {
+	public Vec3 getLocalShipPosition(Vec3 absolutePosition) {
 
 		TransformMatrix tmp = TransformMatrix.identity();
 		
@@ -152,7 +152,7 @@ public final class  Component extends WorldObject {
 		return tmp.getTranslation();
 	}
 
-	public Vect3 getAbsoluteShipPosition(Vect3 position) {
+	public Vec3 getAbsoluteShipPosition(Vec3 position) {
 		TransformMatrix tmp = TransformMatrix.identity();
 		
 		tmp.translate(position);

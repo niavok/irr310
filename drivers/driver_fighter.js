@@ -13,7 +13,7 @@ function driver() {
     var theoricalMaxSpeed = 64;
     var speedTarget = 0;
     var maxRotationSpeed = 2;
-    var rotationSpeedTarget = new Vect3(0,0,0.0);
+    var rotationSpeedTarget = new Vec3(0,0,0.0);
     
     
     // GUI
@@ -286,7 +286,7 @@ function driver() {
         
         this.update = function(time) {
 
-            var currentSpeed = kernel.getLinearSpeed().dot( new Vect3(0,1,0).rotate(kernel.getTransform()));        
+            var currentSpeed = kernel.getLinearSpeed().dot( new Vec3(0,1,0).rotate(kernel.getTransform()));        
             var deltaTime = time - this.lastTime;
             var deltaSpeed = (currentSpeed - this.lastSpeed);
             var deltaAcc = (deltaSpeed - this.lastDeltaSpeed);
@@ -617,7 +617,7 @@ function driver() {
                 
                 
                 // Speed
-                var speed = (kernel.getLinearSpeed().dot(new Vect3(0,1,0).rotate(kernel.getTransform())) * 3.6).toFixed(0);
+                var speed = (kernel.getLinearSpeed().dot(new Vec3(0,1,0).rotate(kernel.getTransform())) * 3.6).toFixed(0);
 
                 if(speed == -0) {
                  speed = 0;
@@ -665,7 +665,7 @@ function driver() {
             
             
             //Fast refresh 
-            var speed = kernel.getLinearSpeed().dot(new Vect3(0,1,0).rotate(kernel.getTransform()));
+            var speed = kernel.getLinearSpeed().dot(new Vec3(0,1,0).rotate(kernel.getTransform()));
             if(speed < 0) {
                 speed = 0;
             }

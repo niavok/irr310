@@ -6,7 +6,7 @@ import java.util.List;
 import com.irr310.common.network.NetworkClass;
 import com.irr310.common.network.NetworkField;
 import com.irr310.common.network.NetworkListField;
-import com.irr310.common.tools.Vect3;
+import com.irr310.common.tools.Vec3;
 
 @NetworkClass
 public class CapacityView {
@@ -41,14 +41,14 @@ public class CapacityView {
         return doubles.get(popDoubleIndex++);
     }
 
-    public void pushVect3(Vect3 vect) {
+    public void pushVect3(Vec3 vect) {
         pushDouble(vect.x);
         pushDouble(vect.y);
         pushDouble(vect.z);
     }
 
-    public Vect3 popVect3() {
-        return new Vect3(popDouble(), popDouble(), popDouble());
+    public Vec3 popVect3() {
+        return new Vec3(popDouble(), popDouble(), popDouble());
     }
 
     public void pushInteger(int i) {

@@ -8,7 +8,7 @@ import javax.vecmath.Vector3f;
 
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 
-public class Vect3 {
+public class Vec3 {
 
     public Double x;
     public Double y;
@@ -17,26 +17,26 @@ public class Vect3 {
     private List<Vect3ChangeListener> changeListeners;
     private V3DVect3 v3dVect3;
 
-    public Vect3() {
+    public Vec3() {
         this(0, 0, 0);
     }
 
-    public Vect3(double x, double y, double z) {
+    public Vec3(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;
-        changeListeners = new ArrayList<Vect3.Vect3ChangeListener>();
+        changeListeners = new ArrayList<Vec3.Vect3ChangeListener>();
     }
 
-    public Vect3(int x, int y, int z) {
+    public Vec3(int x, int y, int z) {
         this((double) x, (double) y, (double) z);
     }
 
-    public Vect3(float x, float y, float z) {
+    public Vec3(float x, float y, float z) {
         this((double) x, (double) y, (double) z);
     }
 
-    public Vect3(Vector3f vect) {
+    public Vec3(Vector3f vect) {
         this(vect.x, vect.y, vect.z);
     }
 
@@ -59,7 +59,7 @@ public class Vect3 {
         fireChanged();
     }
 
-    public void set(Vect3 vect) {
+    public void set(Vec3 vect) {
         this.x = vect.x;
         this.y = vect.y;
         this.z = vect.z;
@@ -74,12 +74,12 @@ public class Vect3 {
         fireChanged();
     }
 
-    public static Vect3 origin() {
-        return new Vect3(0, 0, 0);
+    public static Vec3 origin() {
+        return new Vec3(0, 0, 0);
     }
 
-    public static Vect3 one() {
-        return new Vect3(1, 1, 1);
+    public static Vec3 one() {
+        return new Vec3(1, 1, 1);
     }
 
     public void addListener(Vect3ChangeListener listener) {
@@ -97,12 +97,12 @@ public class Vect3 {
         public void valueChanged();
     }
 
-    public Vect3 divide(double i) {
-        return new Vect3(x / i, y / i, z / i);
+    public Vec3 divide(double i) {
+        return new Vec3(x / i, y / i, z / i);
     }
     
-    public Vect3 multiply(double i) {
-        return new Vect3(x * i, y * i, z * i);
+    public Vec3 multiply(double i) {
+        return new Vec3(x * i, y * i, z * i);
     }
     
 
@@ -110,20 +110,20 @@ public class Vect3 {
         return Math.sqrt(x * x + y * y + z * z);
     }
 
-    public double distanceTo(Vect3 vect) {
+    public double distanceTo(Vec3 vect) {
         return this.diff(vect).length();
     }
 
-    public Vect3 diff(Vect3 v) {
-        return new Vect3(v.x - x, v.y - y, v.z - z);
+    public Vec3 diff(Vec3 v) {
+        return new Vec3(v.x - x, v.y - y, v.z - z);
     }
 
-    public Vect3 minus(Vect3 v) {
-        return new Vect3(x - v.x, y - v.y, z - v.z);
+    public Vec3 minus(Vec3 v) {
+        return new Vec3(x - v.x, y - v.y, z - v.z);
     }
     
-    public Vect3 plus(Vect3 v) {
-        return new Vect3(v.x + x, v.y + y, v.z + z);
+    public Vec3 plus(Vec3 v) {
+        return new Vec3(v.x + x, v.y + y, v.z + z);
     }
 
     @Override
@@ -131,8 +131,8 @@ public class Vect3 {
         return "[x=" + x + ", y=" + y + ", z=" + z + "]";
     }
 
-    public Vect3 negative() {
-        return new Vect3(-x, -y, -z);
+    public Vec3 negative() {
+        return new Vec3(-x, -y, -z);
     }
 
     public double getX() {
@@ -147,7 +147,7 @@ public class Vect3 {
         return z;
     }
 
-    public Vect3 rotate(Vect3 rotation) {
+    public Vec3 rotate(Vec3 rotation) {
         TransformMatrix tmp = TransformMatrix.identity();
 
         tmp.translate(this);
@@ -159,8 +159,8 @@ public class Vect3 {
         return tmp.getTranslation();
     }
 
-    public Vect3 transform(TransformMatrix transform) {
-        Vect3 out = new Vect3();
+    public Vec3 transform(TransformMatrix transform) {
+        Vec3 out = new Vec3();
 
         out.x = x * transform.get(0, 0) + y * transform.get(0, 1) + z * transform.get(0, 2) + transform.get(0, 3);
         out.y = x * transform.get(1, 0) + y * transform.get(1, 1) + z * transform.get(1, 2) + transform.get(1, 3);
@@ -169,8 +169,8 @@ public class Vect3 {
         return out;
     }
     
-    public Vect3 rotate(TransformMatrix transform) {
-        Vect3 out = new Vect3();
+    public Vec3 rotate(TransformMatrix transform) {
+        Vec3 out = new Vec3();
 
         out.x = x * transform.get(0, 0) + y * transform.get(0, 1) + z * transform.get(0, 2);
         out.y = x * transform.get(1, 0) + y * transform.get(1, 1) + z * transform.get(1, 2);
@@ -180,11 +180,11 @@ public class Vect3 {
     }
     
 
-    public double dot(Vect3 vect) {
+    public double dot(Vec3 vect) {
         return x * vect.x + y * vect.y + z * vect.z;
     }
 
-    public Vect3 normalize() {
+    public Vec3 normalize() {
         return this.divide(length());
     }
 

@@ -6,7 +6,7 @@ import java.util.List;
 import com.irr310.common.network.NetworkClass;
 import com.irr310.common.network.NetworkField;
 import com.irr310.common.network.NetworkListField;
-import com.irr310.common.tools.Vect3;
+import com.irr310.common.tools.Vec3;
 
 @NetworkClass
 public class ComponentView {
@@ -30,10 +30,10 @@ public class ComponentView {
     public List<CapacityView> capacities = new ArrayList<CapacityView>();
     
     @NetworkField
-    public Vect3 shipPosition;
+    public Vec3 shipPosition;
     
     @NetworkField
-    public Vect3 shipRotation;
+    public Vec3 shipRotation;
     
     @NetworkField
     public double durabilityMax;

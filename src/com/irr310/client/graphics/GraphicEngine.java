@@ -47,7 +47,7 @@ import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.Vect2;
-import com.irr310.common.tools.Vect3;
+import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.CelestialObject;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.Part;
@@ -457,7 +457,7 @@ public class GraphicEngine extends FramerateEngine {
     }
     
     
-    private void addBullet(Vect3 from, Vect3 to) {
+    private void addBullet(Vec3 from, Vec3 to) {
         BulletEffect bulletEffect = new BulletEffect(this, from, to);
         addElement(bulletEffect);
     }

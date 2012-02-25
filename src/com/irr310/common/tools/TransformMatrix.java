@@ -40,7 +40,7 @@ public class TransformMatrix {
         return transform;
     }
 
-    public void translate(Vect3 vect) {
+    public void translate(Vec3 vect) {
         translate(vect.x.floatValue(), vect.y.floatValue(), vect.z.floatValue());
     }
 
@@ -61,7 +61,7 @@ public class TransformMatrix {
         set(2, 3, z);
     }
     
-    public void setTranslation(Vect3 vect) {
+    public void setTranslation(Vec3 vect) {
         set(0, 3, vect.x.floatValue());
         set(1, 3, vect.y.floatValue());
         set(2, 3, vect.z.floatValue());
@@ -86,8 +86,8 @@ public class TransformMatrix {
         return transform[j * 4 + i];
     }
 
-    public Vect3 getTranslation() {
-        return new Vect3(get(0, 3), get(1, 3), get(2, 3));
+    public Vec3 getTranslation() {
+        return new Vec3(get(0, 3), get(1, 3), get(2, 3));
     }
 
     public static TransformMatrix identity() {
@@ -145,13 +145,13 @@ public class TransformMatrix {
         preMultiply(tmp);
     }
 
-    public void rotate(Vect3 rotation) {
+    public void rotate(Vec3 rotation) {
         rotateX(Math.toRadians(rotation.x));
         rotateY(Math.toRadians(rotation.y));
         rotateZ(Math.toRadians(rotation.z));
     }
 
-    public Vect3 getRotation() {
+    public Vec3 getRotation() {
 
         return null;
     }
@@ -165,8 +165,8 @@ public class TransformMatrix {
             }
         }
 
-        Vect3 translation = getTranslation().negative();
-        Vect3 rotatedTranslation = translation.rotate(tmp);
+        Vec3 translation = getTranslation().negative();
+        Vec3 rotatedTranslation = translation.rotate(tmp);
         tmp.setTranslation(rotatedTranslation);
 
         

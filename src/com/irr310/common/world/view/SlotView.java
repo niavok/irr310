@@ -2,7 +2,7 @@ package com.irr310.common.world.view;
 
 import com.irr310.common.network.NetworkClass;
 import com.irr310.common.network.NetworkField;
-import com.irr310.common.tools.Vect3;
+import com.irr310.common.tools.Vec3;
 
 @NetworkClass
 public class SlotView {
@@ -11,7 +11,7 @@ public class SlotView {
     public long id;
     
     @NetworkField
-    public Vect3 position;
+    public Vec3 position;
     
     @NetworkField
     public long componentId;

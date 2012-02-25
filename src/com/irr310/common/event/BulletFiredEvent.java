@@ -1,6 +1,6 @@
 package com.irr310.common.event;
 
-import com.irr310.common.tools.Vect3;
+import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.DamageType;
 import com.irr310.common.world.Part;
 
@@ -11,12 +11,12 @@ public class BulletFiredEvent extends EngineEvent {
     private final double damage;
     private final DamageType damageType;
     private final Part source;
-    private final Vect3 from;
-    private final Vect3 to;
+    private final Vec3 from;
+    private final Vec3 to;
     private final double range;
     
 
-    public BulletFiredEvent(Part source, double damage, double range, DamageType damageType, Vect3 from, Vect3 to) {
+    public BulletFiredEvent(Part source, double damage, double range, DamageType damageType, Vec3 from, Vec3 to) {
         this.source = source;
         this.range = range;
         this.damage = damage;
@@ -38,7 +38,7 @@ public class BulletFiredEvent extends EngineEvent {
         return damageType;
     }
 
-    public Vect3 getTo() {
+    public Vec3 getTo() {
         return to;
     }
     
@@ -46,7 +46,7 @@ public class BulletFiredEvent extends EngineEvent {
         return range;
     }
     
-    public Vect3 getFrom() {
+    public Vec3 getFrom() {
         return from;
     }
     

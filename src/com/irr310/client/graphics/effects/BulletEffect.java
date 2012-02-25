@@ -2,7 +2,7 @@ package com.irr310.client.graphics.effects;
 
 import com.irr310.client.graphics.GenericGraphicalElement;
 import com.irr310.client.graphics.GraphicEngine;
-import com.irr310.common.tools.Vect3;
+import com.irr310.common.tools.Vec3;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
@@ -16,14 +16,14 @@ public class BulletEffect extends GenericGraphicalElement{
     private float speed = 500;
     private float currentLocation = 0;
 
-    private final Vect3 to;
-    private final Vect3 from;
+    private final Vec3 to;
+    private final Vec3 from;
     private double distance;
     private V3DLine bullet;
-    private Vect3 bulletVector;
+    private Vec3 bulletVector;
     private final GraphicEngine engine;
 
-    public BulletEffect(GraphicEngine engine, Vect3 from, Vect3 to) {
+    public BulletEffect(GraphicEngine engine, Vec3 from, Vec3 to) {
         super(engine);
         this.engine = engine;
         this.from = from;
@@ -46,7 +46,7 @@ public class BulletEffect extends GenericGraphicalElement{
     @Override
     public void update() {
 
-        Vect3 start = from.plus(bulletVector.multiply(currentLocation));
+        Vec3 start = from.plus(bulletVector.multiply(currentLocation));
         bullet.setLocation(start.toV3DVect3(), start.plus(bulletVector.multiply(speed/20)).toV3DVect3());
 
         currentLocation += speed *  engine.getFramerate().getSeconds();

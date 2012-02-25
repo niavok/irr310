@@ -1,6 +1,6 @@
 package com.irr310.common.event;
 
-import com.irr310.common.tools.Vect3;
+import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.WorldObject;
 
 
@@ -9,11 +9,11 @@ public class AddWorldObjectEvent extends EngineEvent {
 	private Type type;
 	private String name;
 	private WorldObject linkedObject;
-	private Vect3 position;
+	private Vec3 position;
 	private Double mass;
-	private Vect3 rotationSpeed;
-	private Vect3 linearSpeed;
-	private Vect3 rotation;
+	private Vec3 rotationSpeed;
+	private Vec3 linearSpeed;
+	private Vec3 rotation;
 
 	public enum Type {
 		LINEAR_ENGINE, CAMERA,
@@ -36,7 +36,7 @@ public class AddWorldObjectEvent extends EngineEvent {
 		this.linkedObject = linkedObject;
 	}
 
-	public void setPosition(Vect3 position) {
+	public void setPosition(Vec3 position) {
 		this.position = position;
 	}
 
@@ -44,15 +44,15 @@ public class AddWorldObjectEvent extends EngineEvent {
 		this.mass = mass;
 	}
 
-	public void setRotationSpeed(Vect3 rotationSpeed) {
+	public void setRotationSpeed(Vec3 rotationSpeed) {
 		this.rotationSpeed = rotationSpeed;
 	}
 
-	public void setLinearSpeed(Vect3 linearSpeed) {
+	public void setLinearSpeed(Vec3 linearSpeed) {
 		this.linearSpeed = linearSpeed;
 	}
 
-	public void setRotation(Vect3 rotation) {
+	public void setRotation(Vec3 rotation) {
 		this.rotation = rotation;
 	}
 
@@ -68,7 +68,7 @@ public class AddWorldObjectEvent extends EngineEvent {
 		return linkedObject;
 	}
 
-	public Vect3 getPosition() {
+	public Vec3 getPosition() {
 		return position;
 	}
 
@@ -76,15 +76,15 @@ public class AddWorldObjectEvent extends EngineEvent {
 		return mass;
 	}
 
-	public Vect3 getRotationSpeed() {
+	public Vec3 getRotationSpeed() {
 		return rotationSpeed;
 	}
 
-	public Vect3 getLinearSpeed() {
+	public Vec3 getLinearSpeed() {
 		return linearSpeed;
 	}
 
-	public Vect3 getRotation() {
+	public Vec3 getRotation() {
 		return rotation;
 	}
 

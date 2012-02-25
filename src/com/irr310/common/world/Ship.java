@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.irr310.common.Game;
-import com.irr310.common.tools.Vect3;
+import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.capacity.KernelCapacity;
 import com.irr310.common.world.view.ComponentView;
 import com.irr310.common.world.view.LinkView;
@@ -66,7 +66,7 @@ public class Ship extends GameEntity implements Container {
         component.setContainer(null);
     }
 
-    public Link link(Component component1, Component component2, Vect3 position) {
+    public Link link(Component component1, Component component2, Vec3 position) {
 
         return link(component1.getSlot(component1.getLocalShipPosition(position)), component2.getSlot(component2.getLocalShipPosition(position)));
     }

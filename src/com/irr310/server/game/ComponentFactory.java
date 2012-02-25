@@ -1,6 +1,6 @@
 package com.irr310.server.game;
 
-import com.irr310.common.tools.Vect3;
+import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.Part;
 import com.irr310.common.world.capacity.GunCapacity;
@@ -16,7 +16,7 @@ public class ComponentFactory {
         part.setMass(48d);
         component.setSkin("big_propeller");
         
-        part.setShape(new Vect3(4, 2, 4));
+        part.setShape(new Vec3(4, 2, 4));
 
         generateRectangeSlots(component, part);
 
@@ -37,7 +37,7 @@ public class ComponentFactory {
         Part part = component.getFirstPart();
         part.setMass(1d);
 
-        part.setShape(new Vect3(1, 1, 1));
+        part.setShape(new Vec3(1, 1, 1));
 
         generateBoxSlots(component, part);
 
@@ -50,7 +50,7 @@ public class ComponentFactory {
         Part part = component.getFirstPart();
         part.setMass(48d);
 
-        part.setShape(new Vect3(4, 4, 3));
+        part.setShape(new Vec3(4, 4, 3));
 
         generateBoxSlots(component, part);
 
@@ -63,7 +63,7 @@ public class ComponentFactory {
         Part part = component.getFirstPart();
         part.setMass(5d);
 
-        part.setShape(new Vect3(6, 6, 1));
+        part.setShape(new Vec3(6, 6, 1));
 
         generateRectangeSlots(component, part);
 
@@ -76,7 +76,7 @@ public class ComponentFactory {
         Part part = component.getFirstPart();
         part.setMass(48d);
 
-        part.setShape(new Vect3(4, 4, 3));
+        part.setShape(new Vec3(4, 4, 3));
 
         generateBoxSlots(component, part);
 
@@ -89,7 +89,7 @@ public class ComponentFactory {
         Part part = component.getFirstPart();
         part.setMass(48d);
 
-        part.setShape(new Vect3(4, 4, 3));
+        part.setShape(new Vec3(4, 4, 3));
 
         generateBoxSlots(component, part);
 
@@ -102,7 +102,7 @@ public class ComponentFactory {
         Part part = component.getFirstPart();
         part.setMass(20d);
 
-        part.setShape(new Vect3(4, 7, 4));
+        part.setShape(new Vec3(4, 7, 4));
 
         generateBoxSlots(component, part);
 
@@ -115,7 +115,7 @@ public class ComponentFactory {
         Part part = component.getFirstPart();
         part.setMass(48d);
 
-        part.setShape(new Vect3(4, 4, 3));
+        part.setShape(new Vec3(4, 4, 3));
 
         generateBoxSlots(component, part);
 
@@ -128,7 +128,7 @@ public class ComponentFactory {
         Part part = component.getFirstPart();
         part.setMass(1d);
 
-        part.setShape(new Vect3(1, 1, 1));
+        part.setShape(new Vec3(1, 1, 1));
 
         generateBoxSlots(component, part);
 
@@ -140,13 +140,13 @@ public class ComponentFactory {
         component.setSkin("gun");
         Part part = component.getFirstPart();
         part.setMass(2d);
-        part.setShape(new Vect3(1, 2, 1));
-        Vect3 shape = part.getShape();
-        component.addSlot(GameServer.pickNewId(), part, new Vect3(0, -shape.y/2, 0));
-        component.addSlot(GameServer.pickNewId(), part, new Vect3(shape.x / 2,-shape.y/4, 0));
-        component.addSlot(GameServer.pickNewId(), part, new Vect3(-shape.x / 2, -shape.y/4, 0));
-        component.addSlot(GameServer.pickNewId(), part, new Vect3(0 , -shape.z/4, shape.z / 2));
-        component.addSlot(GameServer.pickNewId(), part, new Vect3(0 , -shape.z/4, -shape.z / 2));
+        part.setShape(new Vec3(1, 2, 1));
+        Vec3 shape = part.getShape();
+        component.addSlot(GameServer.pickNewId(), part, new Vec3(0, -shape.y/2, 0));
+        component.addSlot(GameServer.pickNewId(), part, new Vec3(shape.x / 2,-shape.y/4, 0));
+        component.addSlot(GameServer.pickNewId(), part, new Vec3(-shape.x / 2, -shape.y/4, 0));
+        component.addSlot(GameServer.pickNewId(), part, new Vec3(0 , -shape.z/4, shape.z / 2));
+        component.addSlot(GameServer.pickNewId(), part, new Vec3(0 , -shape.z/4, -shape.z / 2));
 
         
         GunCapacity gunCapacity = new GunCapacity(GameServer.pickNewId());
@@ -161,11 +161,11 @@ public class ComponentFactory {
         Part part = component.getFirstPart();
         part.setMass(4d);
 
-        part.setShape(new Vect3(2, 1, 2));
+        part.setShape(new Vec3(2, 1, 2));
 
-        Vect3 shape = part.getShape();
-        component.addSlot(GameServer.pickNewId(), part, new Vect3( 0,shape.y / 2,  0));
-        component.addSlot(GameServer.pickNewId(), part, new Vect3( 0,-shape.y / 2, 0));
+        Vec3 shape = part.getShape();
+        component.addSlot(GameServer.pickNewId(), part, new Vec3( 0,shape.y / 2,  0));
+        component.addSlot(GameServer.pickNewId(), part, new Vec3( 0,-shape.y / 2, 0));
 
         
         LinearEngineCapacity engineCapacityTop = new LinearEngineCapacity(GameServer.pickNewId());
@@ -205,7 +205,7 @@ public class ComponentFactory {
         Part part = component.getFirstPart();
         part.setMass(12d);
 
-        part.setShape(new Vect3(2, 3, 2));
+        part.setShape(new Vec3(2, 3, 2));
 
         generateBoxSlots(component, part);
 
@@ -218,12 +218,12 @@ public class ComponentFactory {
         Part part = component.getFirstPart();
         part.setMass(5d);
 
-        part.setShape(new Vect3(3, 3, 1));
+        part.setShape(new Vec3(3, 3, 1));
 
-        Vect3 shape = part.getShape();
+        Vec3 shape = part.getShape();
 
-        component.addSlot(GameServer.pickNewId(), part, new Vect3( -shape.x / 2, -shape.y / 6, 0));
-        component.addSlot(GameServer.pickNewId(), part, new Vect3( shape.x / 2, 0, 0));
+        component.addSlot(GameServer.pickNewId(), part, new Vec3( -shape.x / 2, -shape.y / 6, 0));
+        component.addSlot(GameServer.pickNewId(), part, new Vec3( shape.x / 2, 0, 0));
 
         WingCapacity wingCapacity = new WingCapacity(GameServer.pickNewId());
         component.addCapacity(wingCapacity);
@@ -238,7 +238,7 @@ public class ComponentFactory {
         part.setMass(4d);
         component.setSkin("reactor");
         
-        part.setShape(new Vect3(1, 2, 1));
+        part.setShape(new Vec3(1, 2, 1));
 
         generateVerticalRectangeSlots(component, part);
 
@@ -285,36 +285,36 @@ public class ComponentFactory {
 
     private static void generateBoxSlots(Component component, Part part) {
 
-        Vect3 shape = part.getShape();
+        Vec3 shape = part.getShape();
 
-        component.addSlot(GameServer.pickNewId(), part, new Vect3(shape.x / 2, 0, 0));
-        component.addSlot(GameServer.pickNewId(), part, new Vect3(-shape.x / 2, 0, 0));
-        component.addSlot(GameServer.pickNewId(), part, new Vect3(0, shape.y / 2, 0));
-        component.addSlot(GameServer.pickNewId(), part, new Vect3(0, -shape.y / 2, 0));
-        component.addSlot(GameServer.pickNewId(), part, new Vect3(0, 0, shape.z / 2));
-        component.addSlot(GameServer.pickNewId(), part, new Vect3(0, 0, -shape.z / 2));
+        component.addSlot(GameServer.pickNewId(), part, new Vec3(shape.x / 2, 0, 0));
+        component.addSlot(GameServer.pickNewId(), part, new Vec3(-shape.x / 2, 0, 0));
+        component.addSlot(GameServer.pickNewId(), part, new Vec3(0, shape.y / 2, 0));
+        component.addSlot(GameServer.pickNewId(), part, new Vec3(0, -shape.y / 2, 0));
+        component.addSlot(GameServer.pickNewId(), part, new Vec3(0, 0, shape.z / 2));
+        component.addSlot(GameServer.pickNewId(), part, new Vec3(0, 0, -shape.z / 2));
 
     }
 
     private static void generateRectangeSlots(Component component, Part part) {
 
-        Vect3 shape = part.getShape();
+        Vec3 shape = part.getShape();
 
-        component.addSlot(GameServer.pickNewId(), part, new Vect3(shape.x / 2, 0, 0));
-        component.addSlot(GameServer.pickNewId(), part, new Vect3(-shape.x / 2, 0, 0));
-        component.addSlot(GameServer.pickNewId(), part, new Vect3(0, shape.y / 2, 0));
-        component.addSlot(GameServer.pickNewId(), part, new Vect3(0, -shape.y / 2, 0));
+        component.addSlot(GameServer.pickNewId(), part, new Vec3(shape.x / 2, 0, 0));
+        component.addSlot(GameServer.pickNewId(), part, new Vec3(-shape.x / 2, 0, 0));
+        component.addSlot(GameServer.pickNewId(), part, new Vec3(0, shape.y / 2, 0));
+        component.addSlot(GameServer.pickNewId(), part, new Vec3(0, -shape.y / 2, 0));
 
     }
     
     private static void generateVerticalRectangeSlots(Component component, Part part) {
 
-        Vect3 shape = part.getShape();
+        Vec3 shape = part.getShape();
 
-        component.addSlot(GameServer.pickNewId(), part, new Vect3(shape.x / 2, 0, 0));
-        component.addSlot(GameServer.pickNewId(), part, new Vect3(-shape.x / 2, 0, 0));
-        component.addSlot(GameServer.pickNewId(), part, new Vect3(0, 0, shape.z / 2));
-        component.addSlot(GameServer.pickNewId(), part, new Vect3(0, 0, -shape.z / 2));
+        component.addSlot(GameServer.pickNewId(), part, new Vec3(shape.x / 2, 0, 0));
+        component.addSlot(GameServer.pickNewId(), part, new Vec3(-shape.x / 2, 0, 0));
+        component.addSlot(GameServer.pickNewId(), part, new Vec3(0, 0, shape.z / 2));
+        component.addSlot(GameServer.pickNewId(), part, new Vec3(0, 0, -shape.z / 2));
 
     }
 

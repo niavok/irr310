@@ -9,7 +9,7 @@ import com.irr310.common.network.NetworkField;
 import com.irr310.common.network.NetworkListField;
 import com.irr310.common.network.NetworkOptionalField;
 import com.irr310.common.tools.TransformMatrix;
-import com.irr310.common.tools.Vect3;
+import com.irr310.common.tools.Vec3;
 
 @SuppressWarnings("unchecked")
 public abstract class MessageFieldGenerator<T> {
@@ -49,7 +49,7 @@ public abstract class MessageFieldGenerator<T> {
             return (MessageFieldGenerator<V>) new IntegerMessageFieldGenerator();
         } else if (type.equals(Boolean.class)) {
             return (MessageFieldGenerator<V>) new BooleanMessageFieldGenerator();
-        } else if (type.equals(Vect3.class)) {
+        } else if (type.equals(Vec3.class)) {
             return (MessageFieldGenerator<V>) new Vect3MessageFieldGenerator();
         } else if (type.equals(TransformMatrix.class)) {
             return (MessageFieldGenerator<V>) new TransformMatrixMessageFieldGenerator();

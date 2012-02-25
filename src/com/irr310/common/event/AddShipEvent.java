@@ -1,15 +1,15 @@
 package com.irr310.common.event;
 
-import com.irr310.common.tools.Vect3;
+import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Player;
 
 public class AddShipEvent extends EngineEvent {
 
 	private Type type;
-	private Vect3 position;
-	private Vect3 rotationSpeed;
-	private Vect3 linearSpeed;
-	private Vect3 rotation;
+	private Vec3 position;
+	private Vec3 rotationSpeed;
+	private Vec3 linearSpeed;
+	private Vec3 rotation;
 	private Player owner;
 
 	public enum Type {
@@ -30,19 +30,19 @@ public class AddShipEvent extends EngineEvent {
 		this.type = type;
 	}
 
-	public void setPosition(Vect3 position) {
+	public void setPosition(Vec3 position) {
 		this.position = position;
 	}
 
-	public void setRotationSpeed(Vect3 rotationSpeed) {
+	public void setRotationSpeed(Vec3 rotationSpeed) {
 		this.rotationSpeed = rotationSpeed;
 	}
 
-	public void setLinearSpeed(Vect3 linearSpeed) {
+	public void setLinearSpeed(Vec3 linearSpeed) {
 		this.linearSpeed = linearSpeed;
 	}
 
-	public void setRotation(Vect3 rotation) {
+	public void setRotation(Vec3 rotation) {
 		this.rotation = rotation;
 	}
 
@@ -50,19 +50,19 @@ public class AddShipEvent extends EngineEvent {
 		return type;
 	}
 
-	public Vect3 getPosition() {
+	public Vec3 getPosition() {
 		return position;
 	}
 
-	public Vect3 getRotationSpeed() {
+	public Vec3 getRotationSpeed() {
 		return rotationSpeed;
 	}
 
-	public Vect3 getLinearSpeed() {
+	public Vec3 getLinearSpeed() {
 		return linearSpeed;
 	}
 
-	public Vect3 getRotation() {
+	public Vec3 getRotation() {
 		return rotation;
 	}
 

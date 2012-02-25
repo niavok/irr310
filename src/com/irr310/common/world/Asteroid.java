@@ -1,6 +1,6 @@
 package com.irr310.common.world;
 
-import com.irr310.common.tools.Vect3;
+import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Part.CollisionShape;
 import com.irr310.server.GameServer;
 
@@ -21,7 +21,7 @@ public class Asteroid extends CelestialObject {
         this.addPart(part);
         
         
-        part.setShape(new Vect3(3, 3, 3));
+        part.setShape(new Vec3(3, 3, 3));
         
     }
 

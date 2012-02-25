@@ -1,22 +1,22 @@
 package com.irr310.common.world;
 
-import com.irr310.common.tools.Vect3;
+import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.view.SlotView;
 
 public class Slot extends GameEntity {
 
-	private final Vect3 position;
+	private final Vec3 position;
 	private final Component parentComponent;
 	private final Part part;
 
-	public Slot(long id, Component parentComponent, Part part,  Vect3 position) {
+	public Slot(long id, Component parentComponent, Part part,  Vec3 position) {
 	    super(id);
 		this.parentComponent = parentComponent;
 		this.part = part;
 		this.position = position;
 	}
 
-	public Vect3 getPosition() {
+	public Vec3 getPosition() {
 		return position;
 	}
 
@@ -28,7 +28,7 @@ public class Slot extends GameEntity {
 		return part;
 	}
 
-	public Vect3 getAbsoluteShipPosition() {
+	public Vec3 getAbsoluteShipPosition() {
 		return parentComponent.getAbsoluteShipPosition(position);
 	}
 

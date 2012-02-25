@@ -3,7 +3,7 @@ package com.irr310.common.world.view;
 import com.irr310.common.network.NetworkClass;
 import com.irr310.common.network.NetworkField;
 import com.irr310.common.tools.TransformMatrix;
-import com.irr310.common.tools.Vect3;
+import com.irr310.common.tools.Vec3;
 
 @NetworkClass
 public class PartView {
@@ -24,16 +24,16 @@ public class PartView {
     public double linearDamping;
     
     @NetworkField
-    public Vect3 rotationSpeed;
+    public Vec3 rotationSpeed;
     
     @NetworkField
-    public Vect3 linearSpeed;
+    public Vec3 linearSpeed;
     
     @NetworkField
     public TransformMatrix transform;
     
     @NetworkField
-    public Vect3 shape;
+    public Vec3 shape;
 
     @NetworkField
     public int collisionShape;

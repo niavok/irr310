@@ -2,7 +2,7 @@ package com.irr310.client.script.js.objects;
 
 import com.irr310.common.Game;
 import com.irr310.common.tools.TransformMatrix;
-import com.irr310.common.tools.Vect3;
+import com.irr310.common.tools.Vec3;
 
 public class Component {
 
@@ -29,11 +29,11 @@ public class Component {
 	    return null;
     }
 	
-	public Vect3 getLinearSpeed() {
+	public Vec3 getLinearSpeed() {
 	    return component.getFirstPart().getLinearSpeed();
 	}
 	
-	public Vect3 getPosition() {
+	public Vec3 getPosition() {
 	    return component.getFirstPart().getTransform().getTranslation();
 	}
 	
@@ -41,7 +41,7 @@ public class Component {
         return component.getFirstPart().getTransform();
     }
 	
-	public Vect3 getRotationSpeed() {
+	public Vec3 getRotationSpeed() {
         return component.getFirstPart().getRotationSpeed();
     }
 }

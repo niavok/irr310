@@ -1,15 +1,15 @@
 package com.irr310.common.engine;
 
-import com.irr310.common.tools.Vect3;
+import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Part;
 
 public class CollisionDescriptor {
 
     private Part partB;
     private Part partA;
-    private Vect3 localPositionOnA;
-    private Vect3 localPositionOnB;
-    private Vect3 globalPosition;
+    private Vec3 localPositionOnA;
+    private Vec3 localPositionOnB;
+    private Vec3 globalPosition;
     private float impulse;
 
     public void setPartA(Part partA) {
@@ -21,16 +21,16 @@ public class CollisionDescriptor {
         
     }
 
-    public void setLocalPositionOnA(Vect3 position) {
+    public void setLocalPositionOnA(Vec3 position) {
         this.localPositionOnA = position;
     }
     
-    public void setLocalPositionOnB(Vect3 position) {
+    public void setLocalPositionOnB(Vec3 position) {
         this.localPositionOnB = position;
     }
 
     
-    public void setGlobalPosition(Vect3 position) {
+    public void setGlobalPosition(Vec3 position) {
         this.globalPosition = position;
     }
 
@@ -39,7 +39,7 @@ public class CollisionDescriptor {
         
     }
     
-    public Vect3 getGlobalPosition() {
+    public Vec3 getGlobalPosition() {
         return globalPosition;
     }
     
@@ -47,11 +47,11 @@ public class CollisionDescriptor {
         return impulse;
     }
     
-    public Vect3 getLocalPositionOnA() {
+    public Vec3 getLocalPositionOnA() {
         return localPositionOnA;
     }
     
-    public Vect3 getLocalPositionOnB() {
+    public Vec3 getLocalPositionOnB() {
         return localPositionOnB;
     }
     
