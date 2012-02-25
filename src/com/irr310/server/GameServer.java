@@ -181,7 +181,7 @@ public class GameServer extends Game {
         AddShipEvent addShipEvent = new AddShipEvent(newPlayer);
         // addShipEvent.setType(AddShipEvent.Type.SIMPLE);
         addShipEvent.setType(AddShipEvent.Type.SIMPLE_FIGHTER);
-        addShipEvent.setPosition(new Vect3(0, -50, 0));
+        addShipEvent.setPosition(new Vect3(50, -50, 0));
         GameServer.getInstance().sendToAll(addShipEvent);
 
         /* world.addShip(playerShip, new Vect3(10.0,20.0,30.0)); */

@@ -97,12 +97,14 @@ public class DirectTextRenderer implements ITextRenderer
         {
           ITexture tex = pixmap.getTexture();
 
-          if (tex.hasAlpha())
-          {
-            gl.setTexEnvModeModulate();
+          if(tex != null) {
+              if (tex.hasAlpha())
+              {
+                gl.setTexEnvModeModulate();
+              }
+    
+              tex.bind();
           }
-
-          tex.bind();
           gl.startQuads();
           init = false;
         }

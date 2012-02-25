@@ -17,5 +17,6 @@ var KEY_MINUS = 74;
 
 var KEY_K = 37;
 var KEY_S = 31;
+var KEY_Z = 44;
 
 

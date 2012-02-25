@@ -10,11 +10,11 @@ import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent;
 public class GuiRectangle implements GuiComponent {
 
     private final Gui gui;
-    private V3DGuiRectange component;
+    private V3DGuiRectangle component;
 
     public GuiRectangle(Gui gui) {
         this.gui = gui;
-        component = new V3DGuiRectange();
+        component = new V3DGuiRectangle();
     }
     public V3DGuiComponent getComponent() {
         return component;
@@ -36,7 +36,7 @@ public class GuiRectangle implements GuiComponent {
         component.setFillColor(new V3DColor(color.r, color.g, color.b, color.a));
     }
     
-    private class V3DGuiRectange extends V3DGuiComponent {
+    private class V3DGuiRectangle extends V3DGuiComponent {
 
         private Widget widget;
         Dimension size = new Dimension(0, 0);
@@ -45,7 +45,7 @@ public class GuiRectangle implements GuiComponent {
         private int xPos = 0;
         private int yPos = 0;
 
-        public V3DGuiRectange() {
+        public V3DGuiRectangle() {
             yAlignment = GuiYAlignment.BOTTOM;
             widget = new Widget() {
                 @Override

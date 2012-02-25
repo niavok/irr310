@@ -25,6 +25,13 @@ public class Gui {
         return guiRectangle;
 	}
 	
+	public GuiLine createLine() {
+	    GuiLine guiLine = new GuiLine(this);
+        V3DGuiComponent component = guiLine.getComponent();
+        GameClient.getInstance().getGraphicEngine().addGuiComponent(component);
+        return guiLine;
+    }
+	
 	public GuiLabel createLabel() {
         GuiLabel guiLabel = new GuiLabel(this);
         V3DGuiComponent component = guiLabel.getComponent();
