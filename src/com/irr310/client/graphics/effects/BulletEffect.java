@@ -14,7 +14,7 @@ import fr.def.iss.vd2.lib_v3d.element.V3DLine;
 public class BulletEffect extends GenericGraphicalElement{
 
     private V3DGroupElement elements;
-    private float speed = 500;
+    private float speed = 2000;
     private float currentLocation = 0;
 
     private final Vec3 to;
@@ -41,7 +41,7 @@ public class BulletEffect extends GenericGraphicalElement{
         bullet.setLocation(from.toV3DVect3(), from.plus(bulletVector).toV3DVect3());
         //bullet.setLocation(from.toV3DVect3(), to.toV3DVect3());
 
-        elements.add(new V3DColorElement(bullet, new V3DColor(255, 183, 8)));
+        elements.add(new V3DColorElement(bullet, new V3DColor(255, 180, 160)));
     }
 
     @Override
