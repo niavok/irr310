@@ -12,7 +12,11 @@ public class Duration {
 		this.nanotime = nanotime;
 	}
 
-	public long getDuration() {
+	public Duration(float f) {
+	    this((long)(f*1000000000f));
+    }
+
+    public long getDuration() {
 		return nanotime;
 	}
 	
@@ -37,4 +41,8 @@ public class Duration {
 	public float getSeconds() {
 		return (float) ((double) nanotime / (double) 1000000000);
 	}
+
+    public Duration add(Duration duration) {
+        return new Duration(nanotime+duration.getDuration());
+    }
 }

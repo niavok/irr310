@@ -93,4 +93,8 @@ public class DefaultEngineEventVisitor implements EngineEventVisitor {
     @Override
     public void visit(RemoveGuiComponentEvent event) {
     }
+    
+    @Override
+    public void visit(NextWaveEvent event) {
+    }
 }

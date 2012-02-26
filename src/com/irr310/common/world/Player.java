@@ -16,11 +16,13 @@ public class Player extends GameEntity {
     private String password;
     private String passwordSalt;
     private List<Ship> shipList;
+    private int  money;
     
 	public Player(long id, String login) {
 	    super(id);
         this.login = login;
         shipList = new ArrayList<Ship>();
+        money = 0;
 	}
 	
 	public void changePassword(String newPassword) {
@@ -52,10 +54,21 @@ public class Player extends GameEntity {
         PlayerView playerView = new PlayerView();
         playerView.id = getId();
         playerView.login = login;
+        playerView.money = money;
         return playerView;
     }
 
     public void fromView(PlayerView playerView) {
+        login = playerView.login;
+        money = playerView.money;
     }
 
+    
+    public int getMoney() {
+        return money;
+    }
+    
+    public void setMoney(int money) {
+        this.money = money;
+    }
 }

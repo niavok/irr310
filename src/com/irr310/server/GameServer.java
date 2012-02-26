@@ -122,8 +122,6 @@ public class GameServer extends Game {
          * (IOException e) { // Todo handle exception }
          */
 
-        initWorld();
-
         boolean waitStop = true;
 
         while (waitStop) {

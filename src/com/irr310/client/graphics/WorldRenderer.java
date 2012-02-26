@@ -37,6 +37,7 @@ import com.irr310.common.event.CelestialObjectRemovedEvent;
 import com.irr310.common.event.CollisionEvent;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEventVisitor;
+import com.irr310.common.event.NextWaveEvent;
 import com.irr310.common.event.RemoveGuiComponentEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.common.tools.Log;
@@ -95,6 +96,10 @@ public class WorldRenderer implements GraphicRenderer {
     private static final V3DColor irrBlue = new V3DColor(0,82, 108);
     private static final V3DColor irrFill = new V3DColor(0.9f, 0.9f, 0.9f,0.5f);
     
+    // Game
+    private V3DLabel waveCountText;
+    private NextWaveEvent lastWaveEvent = null;
+    
     public WorldRenderer(GraphicEngine engine) {
         this.engine = engine;
         thrustLines = new ArrayList<Pair<LinearEngineCapacity, V3DLine>>();
@@ -146,7 +151,6 @@ public class WorldRenderer implements GraphicRenderer {
 
         activeCamera.fitAll();
         
-
         // activeCamera.fit(new V3DVect3(0, 0, 0), new V3DVect3(5, 5, 5));
 
     }
@@ -342,7 +346,7 @@ public class WorldRenderer implements GraphicRenderer {
         container.add(upgradeBase);
         
         
-        final V3DLabel waveCountText = new V3DLabel("Wave 1");
+        waveCountText = new V3DLabel("Wave "+(lastWaveEvent == null ? "--":lastWaveEvent.getWaveId()));
         waveCountText.setyAlignment(GuiYAlignment.BOTTOM);
         waveCountText.setPosition(25,32);
         waveCountText.setFontStyle("Ubuntu", "bold", 45);
@@ -595,6 +599,9 @@ public class WorldRenderer implements GraphicRenderer {
 
     private final class WorldRendererEventVisitor extends DefaultEngineEventVisitor {
 
+        
+
+
         @Override
         public void visit(CelestialObjectAddedEvent event) {
 
@@ -636,6 +643,15 @@ public class WorldRenderer implements GraphicRenderer {
             hudLayer.remove(event.getComponent());
         }
 
+        
+        @Override
+        public void visit(NextWaveEvent event) {
+            lastWaveEvent  = event;
+            if(waveCountText != null) {
+                waveCountText.setText("Wave "+event.getWaveId());
+            }
+        }
+        
     }
 
     @Override

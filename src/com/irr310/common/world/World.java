@@ -36,6 +36,8 @@ public class World {
     private final Map<Long, Component> componentIdMap;
     private final Map<Long, Slot> slotIdMap;
     private final Map<Long, Part> partIdMap;
+    
+    
 
     ReentrantLock mutex;
 

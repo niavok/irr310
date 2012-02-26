@@ -2,24 +2,29 @@ package com.irr310.server;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import com.irr310.common.Game;
+import com.irr310.common.GameTime;
 import com.irr310.common.engine.CollisionDescriptor;
 import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.engine.RayResultDescriptor;
 import com.irr310.common.event.AddShipEvent;
 import com.irr310.common.event.AddWorldObjectEvent;
 import com.irr310.common.event.BulletFiredEvent;
-import com.irr310.common.event.CelestialObjectRemovedEvent.Reason;
 import com.irr310.common.event.CelestialObjectRemovedEvent;
+import com.irr310.common.event.CelestialObjectRemovedEvent.Reason;
 import com.irr310.common.event.CollisionEvent;
 import com.irr310.common.event.DamageEvent;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.GameOverEvent;
+import com.irr310.common.event.NextWaveEvent;
 import com.irr310.common.event.PauseEngineEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
+import com.irr310.common.event.WorldReadyEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.common.world.CelestialObject;
 import com.irr310.common.world.Component;
@@ -41,9 +46,18 @@ public class ServerGameEngine extends FramerateEngine {
     private static final double WORLD_SIZE = 1000;
     private List<CapacityController> capacityControllers;
 
+
+    private int reputation;
+    private Wave currentWave;
+    private Queue<Wave> waveQueue = new LinkedBlockingQueue<Wave>();
+    private Duration nextWaveTime;
+    boolean stillPlaying = true;
+    
     public ServerGameEngine() {
         capacityControllers = new ArrayList<CapacityController>();
         framerate = new Duration(15000000);
+        reputation  = 0;
+        currentWave = null;
     }
 
     @Override
@@ -72,7 +86,15 @@ public class ServerGameEngine extends FramerateEngine {
         }
         
         
+        if(stillPlaying) {
         
+            //Next Wave
+            if(GameTime.getGameTime().longer(nextWaveTime)) {
+                nextWave();
+            }
+            
+        
+        }
         
         
     }
@@ -190,6 +212,11 @@ public class ServerGameEngine extends FramerateEngine {
                 Game.getInstance().sendToAll(new GameOverEvent("The monolith is destroyed"));
             }
         }
+        
+        @Override
+        public void visit(WorldReadyEvent event) {
+            createWaves();
+        }
     }
     
     private void processCollision(Part part, float impulse) {
@@ -231,9 +258,78 @@ public class ServerGameEngine extends FramerateEngine {
 
     @Override
     protected void init() {
-        // Create the world
+        // World
+        initWorld();
+        
+        
+        
+        
+    }
+    
+    void createWaves(){
+     // Create waves
+        Wave wave1 = new Wave(1);
+        wave1.setDuration(new Duration(10f));
+        wave1.setActiveDuration(new Duration(5f));
+        waveQueue.add(wave1);
+        
+        
+        Wave wave2 = new Wave(2);
+        wave2.setDuration(new Duration(12f));
+        wave2.setActiveDuration(new Duration(4f));
+        waveQueue.add(wave2);
+        
+        Wave wave3 = new Wave(3);
+        wave3.setDuration(new Duration(26f));
+        wave3.setActiveDuration(new Duration(10f));
+        waveQueue.add(wave3);
+        
+        nextWave();
     }
 
+    private void nextWave() {
+        currentWave = waveQueue.poll();
+        if(currentWave == null) {
+            stillPlaying = false;
+            Game.getInstance().sendToAll(new GameOverEvent("You win !"));
+            return;
+        }
+        Game.getInstance().sendToAll(new NextWaveEvent(currentWave.getId(), currentWave.getDuration(), currentWave.getActiveDuration()));
+        nextWaveTime = GameTime.getGameTime().add(currentWave.getDuration());
+    }
+
+    private void initWorld() {
+        Monolith monolith = new Monolith(GameServer.pickNewId(), "monolith");
+        Game.getInstance().getWorld().addCelestialObject(monolith);
+
+        /*for (int i = 0; i < 100; i++) {
+
+            Random random = new Random();
+
+            double sizeBase = random.nextDouble();
+            double size = (sizeBase*sizeBase)*50+1;
+            
+            float angularSpeed = 1;
+            float position = 1000;
+            float linearSpeed = 5;
+            
+            
+            
+            Asteroid asteroid = CelestialObjectFactory.createAsteroid(size);
+            asteroid.getFirstPart()
+                    .getTransform()
+                    .translate(random.nextFloat() * position - position/2, random.nextFloat() * position - position/2, random.nextFloat() * position - position/2);
+            asteroid.getFirstPart().getLinearSpeed().set(random.nextFloat() * linearSpeed - linearSpeed/2, random.nextFloat() * linearSpeed - linearSpeed/2, random.nextFloat() * linearSpeed - linearSpeed/2);
+            
+            
+            
+            asteroid.getFirstPart().getRotationSpeed().set(random.nextFloat() * angularSpeed - angularSpeed/2f, random.nextFloat() * angularSpeed - angularSpeed/2f, random.nextFloat() * angularSpeed - angularSpeed/2f);
+            getWorld().addCelestialObject(asteroid);
+
+        }*/
+
+    }
+    
     @Override
     protected void end() {
     }

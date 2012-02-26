@@ -43,7 +43,7 @@ public class GameClient extends Game {
     // private boolean stillRunning;
     // private CommandManager commandManager;
 
-    private final World world;
+    private World world;
 
     public static GameClient instance = null;
 
@@ -57,7 +57,6 @@ public class GameClient extends Game {
         super.setInstance(this);
         // stillRunning = true;
 
-        world = new World();
 
         // clientNetworkEngine = new ClientNetworkEngine("127.0.0.10", 22310);
         // physicEngine = new PhysicEngine();
@@ -173,6 +172,9 @@ public class GameClient extends Game {
     public void playSoloGame() {
         sendToAll(new LoadingGameEvent("Create new game ..."));
 
+
+        world = new World();
+        
         // Physic
         physicEngine = new PhysicEngine();
         engineList.add(physicEngine);
@@ -197,7 +199,6 @@ public class GameClient extends Game {
 
         sendToAll(new StartEngineEvent());
 
-        initWorld();
         Player player = createPlayer("player", "");
         LoginManager.localPlayer = player;
 

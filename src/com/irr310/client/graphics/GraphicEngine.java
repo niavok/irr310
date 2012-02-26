@@ -18,6 +18,7 @@ import com.irr310.common.event.KeyPressedEvent;
 import com.irr310.common.event.LoadingGameEvent;
 import com.irr310.common.event.MinimizeWindowEvent;
 import com.irr310.common.event.MouseEvent;
+import com.irr310.common.event.NextWaveEvent;
 import com.irr310.common.event.PauseEngineEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.RemoveGuiComponentEvent;
@@ -74,6 +75,7 @@ public class GraphicEngine extends FramerateEngine {
 
     @Override
     protected void processEvent(EngineEvent e) {
+        System.err.println("Process event "+e.getClass());
         e.accept(eventVisitor); 
     }
 
@@ -172,6 +174,11 @@ public class GraphicEngine extends FramerateEngine {
         
         @Override
         public void visit(RemoveGuiComponentEvent event) {
+            rendererVisitor.visit(event);
+        }
+        
+        @Override
+        public void visit(NextWaveEvent event) {
             rendererVisitor.visit(event);
         }
     }

@@ -12,4 +12,7 @@ public class PlayerView {
     @NetworkField
     public String login;
 
+    @NetworkField
+    public int money;
+
 }
