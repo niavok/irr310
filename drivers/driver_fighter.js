@@ -368,20 +368,7 @@ function driver() {
         this.init = function() {
 
             this.screenSize = core.gui.getViewportSize()
-            
-            //Logo
-            var logo1 = core.gui.createLabel();
-            logo1.setText("IRR");
-            logo1.setPosition(new Vec2(10,10));
-            logo1.setFontStyle("bold",24);
-            logo1.setColor(new Color(0.39,0,0));
-        
-            var logo2 = core.gui.createLabel();
-            logo2.setText("310");
-            logo2.setPosition(new Vec2(50,10));
-            logo2.setColor(new Color(0,0,0));
-            logo2.setFontStyle("bold",24);
-        
+                    
             var cursorCenter = core.gui.createRectangle();
             cursorCenter.setPosition((new Vec2(640-1,512-1)));
                             cursorCenter.setSize(new Vec2(2,2));
@@ -404,29 +391,7 @@ function driver() {
                             cursorRight.setSize(new Vec2(30,0));
                             cursorRight.setBorderColor(new Color(0.8,0.0,0));
 
-            // Indicators
-            var indicatorBorder = core.gui.createRectangle();
-            indicatorBorder.setPosition((new Vec2(120,10)));
-            indicatorBorder.setSize(new Vec2(300,30));
-            indicatorBorder.setFillColor(new Color(0.9,0.9,0.9, 0.5));
-            indicatorBorder.setBorderColor(new Color(0.3,0.0,0.0));
-            
-            this.clockIndicator = core.gui.createLabel();
-            this.clockIndicator.setText("Time: --");
-            this.clockIndicator.setPosition(new Vec2(128,17));
-            this.clockIndicator.setColor(new Color(0.0,0.0,0.0));
-            
-            
-            this.fpsIndicator = core.gui.createLabel();
-            this.fpsIndicator.setText("-- fps");
-            this.fpsIndicator.setPosition(new Vec2(235,17));
-            this.fpsIndicator.setColor(new Color(0.0,0.0,0.0));
-            
-            var resolutionIndicator = core.gui.createLabel();
-            resolutionIndicator.setText(""+this.screenSize.getX()+"x"+this.screenSize.getY()+" px");
-            resolutionIndicator.setPosition(new Vec2(300,17));
-            resolutionIndicator.setColor(new Color(0.0,0.0,0.0));
-            
+          
             // Navigation indicators
             
             this.speedIndicator = core.gui.createLabel();
@@ -529,12 +494,12 @@ function driver() {
         
         this.update = function(time) {
             
-            this.clockIndicator.setText("Time: "+time.toFixed(0)+" s");
+            //this.clockIndicator.setText("Time: "+time.toFixed(0)+" s");
             
             if(time - this.lastTime > 0.25) {
                 
                 // Fps
-                this.fpsIndicator.setText(""+core.gui.getFps().toFixed(0)+" fps");
+                //this.fpsIndicator.setText(""+core.gui.getFps().toFixed(0)+" fps");
                 
                 
                 // Speed

@@ -75,6 +75,8 @@ By default, some responsability are enabled, others are disabled. Some responsab
 
 The player has a reputation bar. Each wave, he can change his responsability. If the responsability is high, it gain a lot of reputation. If low, il lose some reputation.
 
+the reputation increase the interest rate
+
 
 Charity (+)
 -------
@@ -115,6 +117,11 @@ The monolith burn too much power. Reduce the consumtion to avoid the global warm
 * no regeneration
 * no ship regeneration
 
+
+Fast waves
+----------
+
+The wave last less
 
 Waves
 =====

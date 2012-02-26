@@ -121,13 +121,11 @@ public class MenuGraphicRenderer implements GraphicRenderer {
         return new DefaultEngineEventVisitor();
     }
 
-    @Override
-    public void addGuiComponent(V3DGuiComponent component) {
+    private void addGuiComponent(V3DGuiComponent component) {
         cameraBinding.getGui().add(component);
     }
 
-    @Override
-    public void removeGuiComponent(V3DGuiComponent component) {
+    private void removeGuiComponent(V3DGuiComponent component) {
         cameraBinding.getGui().remove(component);
     }
 

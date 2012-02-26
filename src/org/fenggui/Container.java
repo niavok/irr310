@@ -217,8 +217,10 @@ public class Container extends StandardWidget implements IContainer, Cloneable
    * @param c widget
    * @return true if valid
    */
-  final boolean clipWidget(Graphics g, IWidget c)
+  final boolean clipWidget(Graphics g, IWidget c1)
   {
+    IWidget c = c1.getParent();
+      
     int startX = c.getX() < 0 ? 0 : c.getX();
     int startY = c.getY() < 0 ? 0 : c.getY();
 

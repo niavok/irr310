@@ -17,7 +17,6 @@
 
 package fr.def.iss.vd2.lib_v3d.gui;
 
-import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +27,7 @@ import org.fenggui.Display;
 import org.fenggui.FengGUI;
 import org.fenggui.binding.render.ImageFont;
 import org.fenggui.binding.render.jogl.EventBinding;
-import org.fenggui.binding.render.jogl.EventHelper;
+import org.fenggui.decorator.background.PlainBackground;
 import org.fenggui.decorator.border.PlainBorder;
 import org.fenggui.event.mouse.MouseButton;
 import org.fenggui.layout.StaticLayout;
@@ -83,9 +82,6 @@ public class V3DGui implements V3DLocalisable {
             component.setParent(this);
         }
 
-        PlainBorder border = new PlainBorder(new Color(150, 150, 150), 1);
-        rootContainer.getAppearance().add(border);
-
         display.addWidget(rootContainer);
         rootContainer.pack();
         rootContainer.setLayoutManager(new StaticLayout());
@@ -134,6 +130,8 @@ public class V3DGui implements V3DLocalisable {
         this.height = parentBinding.height;
 
         if (rootContainer != null) {
+            
+            
             rootContainer.setXY(parentBinding.x, parentBinding.y);
             rootContainer.setSize(parentBinding.width, parentBinding.height);
             for (V3DGuiComponent component : guiComponentList) {

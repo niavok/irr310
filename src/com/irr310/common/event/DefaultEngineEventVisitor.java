@@ -85,4 +85,12 @@ public class DefaultEngineEventVisitor implements EngineEventVisitor {
     @Override
     public void visit(GameOverEvent event) {
     }
+    
+    @Override
+    public void visit(AddGuiComponentEvent event) {
+    }
+    
+    @Override
+    public void visit(RemoveGuiComponentEvent event) {
+    }
 }

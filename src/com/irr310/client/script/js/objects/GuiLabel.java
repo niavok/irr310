@@ -23,13 +23,12 @@ public class GuiLabel implements GuiComponent {
         this.gui = gui;
         component = new V3DLabel("");
         component.setyAlignment(GuiYAlignment.BOTTOM);
+        component.setFontStyle("Ubuntu", "bold", 16);
         this.setColor(new Color(0, 0, 0));
         
         
         
-        ImageFont createCoolAWTHelveticalFont = createCoolAWTHelveticalFont();
         
-        setFontToDefaultStyle(component.getFenGUIWidget().getAppearance(), createCoolAWTHelveticalFont, org.fenggui.util.Color.BLACK);
 
     }
     
@@ -45,10 +44,6 @@ public class GuiLabel implements GuiComponent {
         ITextRenderer renderer = appearance.getRenderer(ITextRenderer.DEFAULTTEXTRENDERERKEY).copy();
         renderer.setFont(font);
         appearance.addRenderer(ITextRenderer.DEFAULTTEXTRENDERERKEY, renderer);
-    }
-
-    private ImageFont createCoolAWTHelveticalFont() {
-        return FontFactory.renderStandardFont(new java.awt.Font("Ubuntu", java.awt.Font.BOLD, 16), true, Alphabet.getDefaultAlphabet());
     }
 
     public V3DGuiComponent getComponent() {

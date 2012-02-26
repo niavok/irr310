@@ -13,7 +13,7 @@ import com.irr310.common.event.MouseEvent;
 import com.irr310.common.event.PauseEngineEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
-import com.irr310.common.event.WorldShipAddedEvent;
+import com.irr310.common.event.WorldReadyEvent;
 import com.irr310.server.Duration;
 
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
@@ -77,7 +77,7 @@ public class ClientScriptEngine extends FramerateEngine {
         }
 
         @Override
-        public void visit(WorldShipAddedEvent event) {
+        public void visit(WorldReadyEvent event) {
             init();
         }
 

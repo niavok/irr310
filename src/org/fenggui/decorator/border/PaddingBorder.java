@@ -25,10 +25,8 @@ import org.fenggui.binding.render.Graphics;
 import org.fenggui.binding.render.IOpenGL;
 import org.fenggui.decorator.IDecorator;
 import org.fenggui.theme.xml.IXMLStreamableException;
-import org.fenggui.theme.xml.InputOnlyStream;
 import org.fenggui.theme.xml.InputOutputStream;
 import org.fenggui.util.Color;
-import org.fenggui.util.Spacing;
 import org.fenggui.util.Span;
 
 /**

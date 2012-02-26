@@ -48,4 +48,8 @@ public interface EngineEventVisitor {
     public abstract void visit(WorldReadyEvent event);
 
     public abstract void visit(GameOverEvent event);
+
+    public abstract void visit(AddGuiComponentEvent event);
+
+    public abstract void visit(RemoveGuiComponentEvent event);
 }

@@ -94,6 +94,9 @@ public class ScriptContext {
         }
         System.err.println(arrow);
         System.err.println("Error: " + e.details());
+        if(e.getCause() != null) {
+            e.getCause().printStackTrace();
+        }
         System.err.println("Stacktrace:");
         System.err.println(e.getScriptStackTrace());
     }

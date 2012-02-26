@@ -109,9 +109,11 @@ public class V3DLabel extends V3DGuiComponent {
     }
 
     public void setText(String text) {
-        label.setText(text);
-        if (parent != null) {
-            parent.repack();
+        if(label.getText() != text) {
+            label.setText(text);
+            if (parent != null) {
+                parent.repack();
+            }
         }
     }
 

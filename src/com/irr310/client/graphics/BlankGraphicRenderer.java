@@ -40,14 +40,6 @@ public class BlankGraphicRenderer implements GraphicRenderer {
     }
 
     @Override
-    public void addGuiComponent(V3DGuiComponent component) {
-    }
-
-    @Override
-    public void removeGuiComponent(V3DGuiComponent component) {
-    }
-
-    @Override
     public void resetGui() {
     }
 

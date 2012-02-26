@@ -5,6 +5,7 @@ import org.lwjgl.opengl.Display;
 
 import com.irr310.client.graphics.gui.GuiFpsIndicator;
 import com.irr310.common.engine.FramerateEngine;
+import com.irr310.common.event.AddGuiComponentEvent;
 import com.irr310.common.event.BulletFiredEvent;
 import com.irr310.common.event.CelestialObjectAddedEvent;
 import com.irr310.common.event.CelestialObjectRemovedEvent;
@@ -19,6 +20,7 @@ import com.irr310.common.event.MinimizeWindowEvent;
 import com.irr310.common.event.MouseEvent;
 import com.irr310.common.event.PauseEngineEvent;
 import com.irr310.common.event.QuitGameEvent;
+import com.irr310.common.event.RemoveGuiComponentEvent;
 import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.event.WorldReadyEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
@@ -161,6 +163,16 @@ public class GraphicEngine extends FramerateEngine {
         @Override
         public void visit(GameOverEvent event) {
             changeRenderer(new MenuGraphicRenderer(GraphicEngine.this));
+        }
+        
+        @Override
+        public void visit(AddGuiComponentEvent event) {
+            rendererVisitor.visit(event);
+        }
+        
+        @Override
+        public void visit(RemoveGuiComponentEvent event) {
+            rendererVisitor.visit(event);
         }
     }
 

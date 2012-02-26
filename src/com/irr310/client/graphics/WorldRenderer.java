@@ -1,6 +1,7 @@
 package com.irr310.client.graphics;
 
 import java.io.File;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -28,12 +29,15 @@ import com.irr310.client.graphics.skin.TankSkin;
 import com.irr310.client.graphics.skin.ThrusterBlockSkin;
 import com.irr310.client.graphics.skin.WingSkin;
 import com.irr310.common.Game;
+import com.irr310.common.GameTime;
+import com.irr310.common.event.AddGuiComponentEvent;
 import com.irr310.common.event.BulletFiredEvent;
 import com.irr310.common.event.CelestialObjectAddedEvent;
 import com.irr310.common.event.CelestialObjectRemovedEvent;
 import com.irr310.common.event.CollisionEvent;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEventVisitor;
+import com.irr310.common.event.RemoveGuiComponentEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.Vec3;
@@ -45,6 +49,7 @@ import com.irr310.common.world.World;
 import com.irr310.common.world.WorldObject;
 import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
+import com.irr310.server.Time;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DScene;
@@ -60,13 +65,19 @@ import fr.def.iss.vd2.lib_v3d.element.V3DLine;
 import fr.def.iss.vd2.lib_v3d.element.V3DPoint;
 import fr.def.iss.vd2.lib_v3d.element.V3DShaderElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DrawElement;
+import fr.def.iss.vd2.lib_v3d.gui.V3DGui;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent;
+import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent.GuiYAlignment;
+import fr.def.iss.vd2.lib_v3d.gui.V3DGuiLayer;
+import fr.def.iss.vd2.lib_v3d.gui.V3DGuiRectangle;
+import fr.def.iss.vd2.lib_v3d.gui.V3DLabel;
 
 public class WorldRenderer implements GraphicRenderer {
     V3DCameraBinding fullscreenBinding;
     private V3DScene scene;
     private List<Pair<LinearEngineCapacity, V3DLine>> thrustLines;
     private List<GraphicalElement> animatedList = new CopyOnWriteArrayList<GraphicalElement>();
+    private List<GraphicalElement> guiAnimatedList = new CopyOnWriteArrayList<GraphicalElement>();
     private List<GraphicalElement> elementList = new CopyOnWriteArrayList<GraphicalElement>();
 
     private V3DFollow3DCameraController cameraController;
@@ -74,7 +85,12 @@ public class WorldRenderer implements GraphicRenderer {
 
     V3DEye3DCamera activeCamera;
     private final GraphicEngine engine;
+    private V3DGuiLayer interfaceLayer;
+    private V3DGuiLayer hudLayer;
 
+    private static final V3DColor irrRed = new V3DColor(108, 0, 0);
+    private static final V3DColor irrFill = new V3DColor(0.9f, 0.9f, 0.9f,0.5f);
+    
     public WorldRenderer(GraphicEngine engine) {
         this.engine = engine;
         thrustLines = new ArrayList<Pair<LinearEngineCapacity, V3DLine>>();
@@ -125,9 +141,94 @@ public class WorldRenderer implements GraphicRenderer {
         // activeCamera.setShowCenter(true);
 
         activeCamera.fitAll();
+        
 
         // activeCamera.fit(new V3DVect3(0, 0, 0), new V3DVect3(5, 5, 5));
 
+    }
+
+    private void generateGuiStructure() {
+        V3DGui gui = fullscreenBinding.getGui();
+        
+        hudLayer = new V3DGuiLayer(gui);
+        interfaceLayer = new V3DGuiLayer(gui);
+        V3DGuiLayer menuLayer = new V3DGuiLayer(gui);
+        V3DGuiLayer pauseLayer = new V3DGuiLayer(gui);
+        //pauseLayer.setColor(new V3DColor(0,0,0,0.5f));
+        V3DGuiLayer mainMenuLayer = new V3DGuiLayer(gui);
+        V3DGuiLayer popUpLayer = new V3DGuiLayer(gui);
+        
+        gui.add(hudLayer);
+        gui.add(interfaceLayer);
+        gui.add(menuLayer);
+        gui.add(pauseLayer);
+        gui.add(mainMenuLayer);
+        gui.add(popUpLayer);
+        
+        
+        //Generate logo
+        V3DLabel logoIRR = new V3DLabel("IRR");
+        logoIRR.setFontStyle("Ubuntu", "bold", 24);
+        logoIRR.setColor(irrRed, V3DColor.transparent);
+        logoIRR.setPosition(10, 10);
+        mainMenuLayer.add(logoIRR);
+        
+        
+        V3DLabel logo310 = new V3DLabel("310");
+        logo310.setFontStyle("Ubuntu", "bold", 24);
+        logo310.setColor(V3DColor.black, V3DColor.transparent);
+        logo310.setPosition(50, 10);
+        mainMenuLayer.add(logo310);
+        
+        // Generate stats box
+        V3DGuiRectangle indicatorBorder = new V3DGuiRectangle();
+        indicatorBorder.setyAlignment(GuiYAlignment.TOP);
+        indicatorBorder.setPosition(120, 10);
+        indicatorBorder.setSize(300, 30);
+        indicatorBorder.setFillColor(irrFill);
+        indicatorBorder.setBorderColor(irrRed);
+        mainMenuLayer.add(indicatorBorder);
+        
+        final V3DLabel clockIndicator = new V3DLabel("Time: --");
+        clockIndicator.setPosition(128,17);
+        clockIndicator.setFontStyle("Ubuntu", "bold", 16);
+        clockIndicator.setColor(V3DColor.black, V3DColor.transparent);
+        GuiAnimatedElement graphicalElement = new GuiAnimatedElement(this) {
+            DecimalFormat format = new DecimalFormat("0");
+            @Override
+            public void update() {
+                clockIndicator.setText("Time: "+format.format(GameTime.getGameTime().getSeconds())+" s");
+                
+            }
+        };
+        addElement(graphicalElement);
+        guiAnimatedList.add(graphicalElement);
+        mainMenuLayer.add(clockIndicator);
+        
+        
+        final V3DLabel fpsIndicator = new V3DLabel("-- fps");
+        fpsIndicator.setPosition(235,17);
+        fpsIndicator.setFontStyle("Ubuntu", "bold", 16);
+        fpsIndicator.setColor(V3DColor.black, V3DColor.transparent);
+        GuiAnimatedElement fpsIndicatorAnimator = new GuiAnimatedElement(this) {
+            DecimalFormat format = new DecimalFormat("0");
+            @Override
+            public void update() {
+                fpsIndicator.setText(""+format.format(engine.getFps())+" fps");
+                
+            }
+        };
+        addElement(fpsIndicatorAnimator);
+        guiAnimatedList.add(fpsIndicatorAnimator);
+        mainMenuLayer.add(fpsIndicator);
+        
+        final V3DLabel resolutionIndicator = new V3DLabel(""+engine.getViewportSize().x.intValue()+"x"+engine.getViewportSize().y.intValue()+" px");
+        resolutionIndicator.setPosition(300,17);
+        resolutionIndicator.setFontStyle("Ubuntu", "bold", 16);
+        resolutionIndicator.setColor(V3DColor.black, V3DColor.transparent);
+        mainMenuLayer.add(resolutionIndicator);
+        
+        
     }
 
     private void loadCurrentWorld() {
@@ -354,7 +455,7 @@ public class WorldRenderer implements GraphicRenderer {
     }
 
     public void addGuiComponent(V3DGuiComponent component) {
-        fullscreenBinding.getGui().add(component);
+        interfaceLayer.add(component);
     }
 
     public void removeGuiComponent(V3DGuiComponent component) {
@@ -362,7 +463,14 @@ public class WorldRenderer implements GraphicRenderer {
     }
 
     public void resetGui() {
+        System.err.println("reset GUI");
         fullscreenBinding.getGui().clear();
+        
+        for(GraphicalElement element : guiAnimatedList) {
+            element.destroy();
+        }
+        
+        generateGuiStructure();
     }
 
     private final class WorldRendererEventVisitor extends DefaultEngineEventVisitor {
@@ -396,6 +504,16 @@ public class WorldRenderer implements GraphicRenderer {
         @Override
         public void visit(BulletFiredEvent event) {
             addBullet(event.getFrom(), event.getTo());
+        }
+        
+        @Override
+        public void visit(AddGuiComponentEvent event) {
+            hudLayer.add(event.getComponent());
+        }
+        
+        @Override
+        public void visit(RemoveGuiComponentEvent event) {
+            hudLayer.remove(event.getComponent());
         }
 
     }
