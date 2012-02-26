@@ -28,6 +28,7 @@ import com.irr310.client.graphics.skin.Skin;
 import com.irr310.client.graphics.skin.TankSkin;
 import com.irr310.client.graphics.skin.ThrusterBlockSkin;
 import com.irr310.client.graphics.skin.WingSkin;
+import com.irr310.client.navigation.LoginManager;
 import com.irr310.common.Game;
 import com.irr310.common.GameTime;
 import com.irr310.common.event.AddGuiComponentEvent;
@@ -275,7 +276,7 @@ public class WorldRenderer implements GraphicRenderer {
         upgradeText.setColor(V3DColor.white, V3DColor.transparent);
         container.add(upgradeText);
         
-        final V3DLabel moneyText = new V3DLabel("5630 $");
+        final V3DLabel moneyText = new V3DLabel(LoginManager.localPlayer.getMoney() + " $");
         moneyText.setyAlignment(GuiYAlignment.BOTTOM);
         moneyText.setPosition(30,15);
         moneyText.setFontStyle("Ubuntu", "bold", 45);
@@ -318,7 +319,7 @@ public class WorldRenderer implements GraphicRenderer {
         upgradeText.setColor(V3DColor.white, V3DColor.transparent);
         container.add(upgradeText);
         
-        final V3DLabel moneyText = new V3DLabel("+24");
+        final V3DLabel moneyText = new V3DLabel("0");
         moneyText.setyAlignment(GuiYAlignment.BOTTOM);
         moneyText.setPosition(30,15);
         moneyText.setFontStyle("Ubuntu", "bold", 45);
