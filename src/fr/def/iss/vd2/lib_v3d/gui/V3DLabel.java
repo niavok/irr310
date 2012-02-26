@@ -92,13 +92,13 @@ public class V3DLabel extends V3DGuiComponent {
             if (xAlignment == GuiXAlignment.LEFT) {
                 xPos = x;
             } else {
-                xPos = parent.getWidth() - label.getWidth() - x;
+                xPos = parent.getWidth() - label.getWidth() - x ;
             }
 
             if (yAlignment == GuiYAlignment.BOTTOM) {
-                yPos = y;
+                yPos = y ;
             } else {
-                yPos = parent.getHeight() - label.getHeight() - y;
+                yPos = parent.getHeight() - label.getHeight() - y ;
             }
 
             label.setXY(xPos, yPos);

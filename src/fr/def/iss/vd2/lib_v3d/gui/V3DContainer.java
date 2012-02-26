@@ -61,7 +61,7 @@ public class V3DContainer extends V3DGuiComponent implements V3DLocalisable {
         
     }
 
-    protected void setSize(int width, int height) {
+    public void setSize(int width, int height) {
         if (width != this.width || height != this.height) {
             this.width = width;
             this.height = height;
@@ -78,6 +78,7 @@ public class V3DContainer extends V3DGuiComponent implements V3DLocalisable {
         guiComponentList.add(component);
         container.addWidget(component.getFenGUIWidget());
         component.setParent(this);
+        component.repack();
     }
 
     @Override
@@ -101,10 +102,10 @@ public class V3DContainer extends V3DGuiComponent implements V3DLocalisable {
     @Override
     public void repack() {
 
-        
+        container.setSize(width, height);
         
         //container.updateMinSize();
-        /*if (parent != null) {
+        if (parent != null) {
             xPos = 0;
             yPos = 0;
             if (xAlignment == GuiXAlignment.LEFT) {
@@ -120,12 +121,20 @@ public class V3DContainer extends V3DGuiComponent implements V3DLocalisable {
             }
 
             container.setXY(xPos, yPos);
-        }*/
+        }
+        
+        
         
         //container.setSizeToMinSize();
+        if(width < 1000) {
+        System.err.println("width"+width);
+        System.err.println("height"+height);
+        System.err.println("xPos"+xPos);
+        System.err.println("yPos"+yPos);
         
-        container.setSize(1280, 1024);
-        container.setXY(0, 0);
+        }
+        
+        //container.setXY(0, 0);
 
         for (V3DGuiComponent component : guiComponentList) {
             component.repack();
@@ -175,6 +184,16 @@ public class V3DContainer extends V3DGuiComponent implements V3DLocalisable {
             guiComponentList.remove(component);
             container.removeWidget(component.getFenGUIWidget());
         }
+    }
+
+    @Override
+    public int getAbsoluteX() {
+        return xPos;
+    }
+
+    @Override
+    public int getAbsoluteY() {
+        return yPos;
     }
 
 }

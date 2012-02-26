@@ -67,7 +67,9 @@ import fr.def.iss.vd2.lib_v3d.element.V3DShaderElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DrawElement;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGui;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent;
+import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent.GuiXAlignment;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent.GuiYAlignment;
+import fr.def.iss.vd2.lib_v3d.gui.V3DContainer;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiLayer;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiRectangle;
 import fr.def.iss.vd2.lib_v3d.gui.V3DLabel;
@@ -89,6 +91,8 @@ public class WorldRenderer implements GraphicRenderer {
     private V3DGuiLayer hudLayer;
 
     private static final V3DColor irrRed = new V3DColor(108, 0, 0);
+    private static final V3DColor irrGreen = new V3DColor(0,108, 0);
+    private static final V3DColor irrBlue = new V3DColor(0,82, 108);
     private static final V3DColor irrFill = new V3DColor(0.9f, 0.9f, 0.9f,0.5f);
     
     public WorldRenderer(GraphicEngine engine) {
@@ -228,9 +232,125 @@ public class WorldRenderer implements GraphicRenderer {
         resolutionIndicator.setColor(V3DColor.black, V3DColor.transparent);
         mainMenuLayer.add(resolutionIndicator);
         
+        generateUpgradeBox();
+        generateReputationBox();
+        generateWaveBox();
+    }
+
+    private void generateUpgradeBox() {
+        
+        V3DContainer container = new V3DContainer();
+        container.setPosition(10, 10);
+        container.setSize(200,140);
+        container.setyAlignment(GuiYAlignment.BOTTOM);
+        interfaceLayer.add(container);
+        
+        V3DGuiRectangle upgradeBase = new V3DGuiRectangle();
+        upgradeBase.setyAlignment(GuiYAlignment.BOTTOM);
+        upgradeBase.setPosition(0, 0);
+        upgradeBase.setSize(200, 80);
+        upgradeBase.setBorderWidth(4);
+        upgradeBase.setFillColor(irrFill);
+        upgradeBase.setBorderColor(irrGreen);
+        container.add(upgradeBase);
+        
+        
+        V3DGuiRectangle upgradeTop = new V3DGuiRectangle();
+        upgradeTop.setyAlignment(GuiYAlignment.BOTTOM);
+        upgradeTop.setPosition(0, 80);
+        upgradeTop.setBorderWidth(4);
+        upgradeTop.setSize(200, 30);
+        upgradeTop.setFillColor(irrGreen);
+        upgradeTop.setBorderColor(irrGreen);
+        container.add(upgradeTop);
+        
+        final V3DLabel upgradeText = new V3DLabel("Upgrades");
+        upgradeText.setyAlignment(GuiYAlignment.BOTTOM);
+        upgradeText.setPosition(40,80);
+        upgradeText.setFontStyle("Ubuntu", "bold", 24);
+        upgradeText.setColor(V3DColor.white, V3DColor.transparent);
+        container.add(upgradeText);
+        
+        final V3DLabel moneyText = new V3DLabel("5630 $");
+        moneyText.setyAlignment(GuiYAlignment.BOTTOM);
+        moneyText.setPosition(30,15);
+        moneyText.setFontStyle("Ubuntu", "bold", 45);
+        moneyText.setColor(irrGreen, V3DColor.transparent);
+        container.add(moneyText);
         
     }
 
+    private void generateReputationBox() {
+        
+        V3DContainer container = new V3DContainer();
+        container.setPosition(250, 10);
+        container.setSize(200,130);
+        container.setyAlignment(GuiYAlignment.BOTTOM);
+        interfaceLayer.add(container);
+        
+        V3DGuiRectangle upgradeBase = new V3DGuiRectangle();
+        upgradeBase.setyAlignment(GuiYAlignment.BOTTOM);
+        upgradeBase.setPosition(0, 0);
+        upgradeBase.setSize(200, 80);
+        upgradeBase.setBorderWidth(4);
+        upgradeBase.setFillColor(irrFill);
+        upgradeBase.setBorderColor(irrBlue);
+        container.add(upgradeBase);
+        
+        
+        V3DGuiRectangle upgradeTop = new V3DGuiRectangle();
+        upgradeTop.setyAlignment(GuiYAlignment.BOTTOM);
+        upgradeTop.setPosition(0, 80);
+        upgradeTop.setBorderWidth(4);
+        upgradeTop.setSize(200, 30);
+        upgradeTop.setFillColor(irrBlue);
+        upgradeTop.setBorderColor(irrBlue);
+        container.add(upgradeTop);
+        
+        final V3DLabel upgradeText = new V3DLabel("Reputation");
+        upgradeText.setyAlignment(GuiYAlignment.BOTTOM);
+        upgradeText.setPosition(40,80);
+        upgradeText.setFontStyle("Ubuntu", "bold", 24);
+        upgradeText.setColor(V3DColor.white, V3DColor.transparent);
+        container.add(upgradeText);
+        
+        final V3DLabel moneyText = new V3DLabel("+24");
+        moneyText.setyAlignment(GuiYAlignment.BOTTOM);
+        moneyText.setPosition(30,15);
+        moneyText.setFontStyle("Ubuntu", "bold", 45);
+        moneyText.setColor(irrBlue , V3DColor.transparent);
+        container.add(moneyText);
+        
+    }
+    
+    private void generateWaveBox() {
+        
+        V3DContainer container = new V3DContainer();
+        container.setxAlignment(GuiXAlignment.RIGHT);
+        container.setSize(200,130);
+        container.setPosition(10, 10);
+        container.setyAlignment(GuiYAlignment.BOTTOM);
+        interfaceLayer.add(container);
+        
+        V3DGuiRectangle upgradeBase = new V3DGuiRectangle();
+        upgradeBase.setyAlignment(GuiYAlignment.BOTTOM);
+        upgradeBase.setPosition(0, 0);
+        upgradeBase.setSize(200, 110);
+        upgradeBase.setBorderWidth(4);
+        upgradeBase.setFillColor(irrFill);
+        upgradeBase.setBorderColor(irrRed);
+        container.add(upgradeBase);
+        
+        
+        final V3DLabel waveCountText = new V3DLabel("Wave 1");
+        waveCountText.setyAlignment(GuiYAlignment.BOTTOM);
+        waveCountText.setPosition(25,32);
+        waveCountText.setFontStyle("Ubuntu", "bold", 45);
+        waveCountText.setColor(irrRed, V3DColor.transparent);
+        container.add(waveCountText);
+        
+    }
+    
     private void loadCurrentWorld() {
         System.err.println("add current world");
         World world = Game.getInstance().getWorld();

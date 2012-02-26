@@ -217,10 +217,9 @@ public class Container extends StandardWidget implements IContainer, Cloneable
    * @param c widget
    * @return true if valid
    */
-  final boolean clipWidget(Graphics g, IWidget c1)
+  final boolean clipWidget(Graphics g, IWidget c)
   {
-    IWidget c = c1.getParent();
-      
+    
     int startX = c.getX() < 0 ? 0 : c.getX();
     int startY = c.getY() < 0 ? 0 : c.getY();
 
@@ -237,7 +236,7 @@ public class Container extends StandardWidget implements IContainer, Cloneable
       int cHeight = c.getSize().getHeight();
 
       g.addClipSpace(startX, startY, c.getX() + cWidth > getWidth() ? getWidth() - startX : cWidth,
-        c.getY() + cHeight > getHeight() ? getHeight() - startY : cHeight);
+                  c.getY() + cHeight > getHeight() ? getHeight() - startY : cHeight);
 
       if (g.getClipSpace() != null)
         return true;

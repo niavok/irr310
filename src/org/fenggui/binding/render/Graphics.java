@@ -125,7 +125,7 @@ public class Graphics
     clipSpaces.addClip(x, y, width, height);
 
     Rectangle rect = clipSpaces.getClipSpace();
-    gl.setScissor(rect.getX(), rect.getWidth(), rect.getY(), rect.getHeight());
+    //gl.setScissor(rect.getX(), rect.getWidth(), rect.getY(), rect.getHeight());
   }
 
   public void addClipSpace(int x, int y, int width, int height)
@@ -135,10 +135,11 @@ public class Graphics
 
     //System.out.println("adding clip : " + x + ", " + y + "," + width + "*" + height);
     clipSpaces.addClip(x, y, width, height);
+    
     Rectangle rect = clipSpaces.getClipSpace();
 
-    if (rect != null)
-      gl.setScissor(rect.getX(), rect.getWidth(), rect.getY(), rect.getHeight());
+    //if (rect != null)
+    //  gl.setScissor(rect.getX(), rect.getWidth(), rect.getY(), rect.getHeight());
   }
 
   public void removeLastClipSpace()
@@ -146,8 +147,8 @@ public class Graphics
     clipSpaces.removeLastClip();
     Rectangle rect = clipSpaces.getClipSpace();
 
-    if (rect != null)
-      gl.setScissor(rect.getX(), rect.getWidth(), rect.getY(), rect.getHeight());
+    //if (rect != null)
+    //  gl.setScissor(rect.getX(), rect.getWidth(), rect.getY(), rect.getHeight());
 
   }
 
@@ -155,8 +156,8 @@ public class Graphics
   {
     clipSpaces.clear();
     Rectangle rect = clipSpaces.getClipSpace();
-    if (rect != null)
-      gl.setScissor(rect.getX(), rect.getWidth(), rect.getY(), rect.getHeight());
+    //if (rect != null)
+    //  gl.setScissor(rect.getX(), rect.getWidth(), rect.getY(), rect.getHeight());
   }
 
   /**

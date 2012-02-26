@@ -67,11 +67,11 @@ Gui upgrade
 - follow
 
 
-Responsabilities
+Reputation
 =================
 
-Responsability are a mean to increase or reduce the game difficulity dynamicaly.
-By default, some responsability are enabled, others are disabled. Some responsabilities increase the difficulty, others decrease it.
+Reputation are a mean to increase or reduce the game difficulity dynamicaly.
+By default, some Chooses are enabled, others are disabled. Some chooses increase the difficulty, others decrease it.
 
 The player has a reputation bar. Each wave, he can change his responsability. If the responsability is high, it gain a lot of reputation. If low, il lose some reputation.
 

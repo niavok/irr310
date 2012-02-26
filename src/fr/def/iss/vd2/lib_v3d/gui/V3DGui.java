@@ -152,6 +152,16 @@ public class V3DGui implements V3DLocalisable {
     }
 
     @Override
+    public int getAbsoluteX() {
+        return x;
+    }
+
+    @Override
+    public int getAbsoluteY() {
+        return y;
+    }
+    
+    @Override
     public int getWidth() {
         return width;
     }

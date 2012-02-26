@@ -14,6 +14,7 @@ public class V3DGuiRectangle extends V3DGuiComponent {
     V3DColor fillColor = null;
     private int xPos = 0;
     private int yPos = 0;
+    private float borderWidth = 2;
 
     public V3DGuiRectangle() {
         
@@ -22,7 +23,7 @@ public class V3DGuiRectangle extends V3DGuiComponent {
             public void paint(Graphics g) {
                 if(fillColor != null) {
                     g.setColor(fillColor.toColor());
-                    g.setLineWidth(2f);
+                    g.setLineWidth(borderWidth);
                     
                     g.drawFilledRectangle(0, 0, size.getWidth(), size.getHeight());
                 }
@@ -101,6 +102,10 @@ public class V3DGuiRectangle extends V3DGuiComponent {
         widget.updateMinSize();
         widget.setSizeToMinSize();
         widget.layout();
+    }
+
+    public void setBorderWidth(float borderWidth) {
+        this.borderWidth = borderWidth;
     }
     
 }

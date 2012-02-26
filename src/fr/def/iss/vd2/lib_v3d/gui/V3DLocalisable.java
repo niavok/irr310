@@ -27,4 +27,6 @@ public interface V3DLocalisable {
     public int getWidth();
     public int getHeight();
     public void repack();
+    public int getAbsoluteX();
+    public int getAbsoluteY();
 }

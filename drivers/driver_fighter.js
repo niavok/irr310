@@ -376,19 +376,19 @@ function driver() {
             
             var cursorTop = core.gui.createRectangle();
                             cursorTop.setPosition((new Vec2(640,512+10)));
-                            cursorTop.setSize(new Vec2(0,30));
+                            cursorTop.setSize(new Vec2(1,30));
                             cursorTop.setBorderColor(new Color(0.8,0.0,0));
             var cursorBottom = core.gui.createRectangle();
                             cursorBottom.setPosition((new Vec2(640,512-40)));
-                            cursorBottom.setSize(new Vec2(0,30));
+                            cursorBottom.setSize(new Vec2(1,30));
                             cursorBottom.setBorderColor(new Color(0.8,0.0,0));
             var cursorLeft = core.gui.createRectangle();
                             cursorLeft.setPosition((new Vec2(640-40,512)));
-                            cursorLeft.setSize(new Vec2(30,0));
+                            cursorLeft.setSize(new Vec2(30,1));
                             cursorLeft.setBorderColor(new Color(0.8,0.0,0));
             var cursorRight = core.gui.createRectangle();
                             cursorRight.setPosition((new Vec2(640+10,512)));
-                            cursorRight.setSize(new Vec2(30,0));
+                            cursorRight.setSize(new Vec2(30,1));
                             cursorRight.setBorderColor(new Color(0.8,0.0,0));
 
           
