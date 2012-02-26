@@ -75,7 +75,6 @@ public class GraphicEngine extends FramerateEngine {
 
     @Override
     protected void processEvent(EngineEvent e) {
-        System.err.println("Process event "+e.getClass());
         e.accept(eventVisitor); 
     }
 
@@ -164,7 +163,7 @@ public class GraphicEngine extends FramerateEngine {
         
         @Override
         public void visit(GameOverEvent event) {
-            changeRenderer(new MenuGraphicRenderer(GraphicEngine.this));
+            changeRenderer(new MenuGraphicRenderer(GraphicEngine.this, event.getReason()));
         }
         
         @Override

@@ -27,9 +27,16 @@ public class MenuGraphicRenderer implements GraphicRenderer {
     private V3DCameraBinding cameraBinding;
     private V3DLabel logoIRR;
     private V3DLabel logo310;
+    private final String gameOverReason;
 
     public MenuGraphicRenderer(GraphicEngine engine) {
         this.engine = engine;
+        this.gameOverReason = null;
+    }
+    
+    public MenuGraphicRenderer(GraphicEngine engine, String gameOverReason) {
+        this.engine = engine;
+        this.gameOverReason = gameOverReason;
     }
 
     @Override
@@ -52,6 +59,14 @@ public class MenuGraphicRenderer implements GraphicRenderer {
         logo310.setPosition(238, 150);
         addGuiComponent(logo310);
         
+        
+        if(gameOverReason != null) {
+            logoIRR = new V3DLabel(gameOverReason);
+            logoIRR.setFontStyle("Ubuntu", "bold", 45);
+            logoIRR.setColor(irrRed, V3DColor.transparent);
+            logoIRR.setPosition(350, 50);
+            addGuiComponent(logoIRR);
+        }
         
         
         final V3DButton exitButton = new V3DButton("Exit");
