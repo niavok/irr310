@@ -38,7 +38,7 @@ public class World {
     private final Map<Long, Part> partIdMap;
 
     ReentrantLock mutex;
-    
+
     public World() {
         celestialObjects = new ArrayList<CelestialObject>();
         ships = new CopyOnWriteArrayList<Ship>();
@@ -61,16 +61,15 @@ public class World {
         celestialObjectIdMap.put(o.getId(), o);
         Game.getInstance().sendToAll(new CelestialObjectAddedEvent(o));
     }
-    
-    
 
     public void removeCelestialObject(CelestialObject o, Reason reason) {
-        removeParts(o.getParts());
-        celestialObjects.remove(o);
-        celestialObjectIdMap.remove(o.getId());
-        Game.getInstance().sendToAll(new CelestialObjectRemovedEvent(o, reason));
+        if (celestialObjects.contains(o)) {
+            removeParts(o.getParts());
+            celestialObjects.remove(o);
+            celestialObjectIdMap.remove(o.getId());
+            Game.getInstance().sendToAll(new CelestialObjectRemovedEvent(o, reason));
+        }
     }
-    
 
     public void addComponent(Component component) {
         addParts(component.getParts());
@@ -80,15 +79,15 @@ public class World {
             capacityIdMap.put(capacity.getId(), capacity);
         }
     }
-    
+
     private void addParts(List<Part> parts) {
-        for(Part part: parts) {
+        for (Part part : parts) {
             addPart(part);
         }
     }
-    
+
     private void removeParts(List<Part> parts) {
-        for(Part part: parts) {
+        for (Part part : parts) {
             removePart(part);
         }
     }
@@ -96,18 +95,18 @@ public class World {
     private void addPart(Part part) {
         partIdMap.put(part.getId(), part);
         parts.add(part);
-        if(part.getOwner() == LoginManager.localPlayer) {
+        if (part.getOwner() == LoginManager.localPlayer) {
             myParts.add(part);
         }
     }
 
     private void removePart(Part part) {
-        if(part.getOwner() == LoginManager.localPlayer) {
+        if (part.getOwner() == LoginManager.localPlayer) {
             myParts.remove(part);
         }
         parts.remove(part);
     }
-    
+
     public void addPlayer(Player player) {
         players.add(player);
         playerIdMap.put(player.getId(), player);
@@ -134,7 +133,7 @@ public class World {
         addPlayer(player);
         return player;
     }
-    
+
     public CelestialObject loadCelestialObject(CelestialObjectView celestialObjectView) {
         if (celestialObjectIdMap.containsKey(celestialObjectView.id)) {
             return celestialObjectIdMap.get(celestialObjectView.id);
@@ -172,7 +171,7 @@ public class World {
     public Ship getShipById(long shipId) {
         return shipIdMap.get(shipId);
     }
-    
+
     public CelestialObject getCelestialObjectById(long celestialObjectId) {
         return celestialObjectIdMap.get(celestialObjectId);
     }
@@ -195,11 +194,11 @@ public class World {
         addComponent(component);
         return component;
     }
-    
+
     public List<CelestialObject> getCelestialsObjects() {
         return celestialObjects;
     }
-    
+
     public Part loadPart(PartView partView, WorldObject parentObject) {
         if (partIdMap.containsKey(partView.id)) {
             return partIdMap.get(partView.id);
@@ -219,11 +218,10 @@ public class World {
         return myParts;
     }
 
-    
     public void lock() {
         mutex.lock();
     }
-    
+
     public void unlock() {
         mutex.unlock();
     }
@@ -232,7 +230,4 @@ public class World {
         return ships;
     }
 
-   
-
-    
 }

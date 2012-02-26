@@ -81,4 +81,8 @@ public class DefaultEngineEventVisitor implements EngineEventVisitor {
     @Override
     public void visit(WorldReadyEvent event) {
     }
+    
+    @Override
+    public void visit(GameOverEvent event) {
+    }
 }

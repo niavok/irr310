@@ -15,6 +15,7 @@ import com.irr310.common.Game;
 import com.irr310.common.engine.Engine;
 import com.irr310.common.engine.PhysicEngine;
 import com.irr310.common.event.EngineEvent;
+import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.event.LoadingGameEvent;
 import com.irr310.common.event.WorldReadyEvent;
@@ -29,15 +30,18 @@ import com.irr310.server.ServerGameEngine;
 public class GameClient extends Game {
 
     List<Engine> engineList = new ArrayList<Engine>();
+
+    List<Engine> worldEngineList = new ArrayList<Engine>();
+
     // private ClientGameEngine clientGameEngine;
     // private InputEngine inputEngine;
     private ClientNetworkEngine clientNetworkEngine;
     private PhysicEngine physicEngine;
     // private ClientScriptEngine scriptEngine;
     private GraphicEngine graphicEngine;
-    //private ParameterAnalyser parameterAnalyser;
-    //private boolean stillRunning;
-    //private CommandManager commandManager;
+    // private ParameterAnalyser parameterAnalyser;
+    // private boolean stillRunning;
+    // private CommandManager commandManager;
 
     private final World world;
 
@@ -48,29 +52,29 @@ public class GameClient extends Game {
     }
 
     public GameClient(ParameterAnalyser parameterAnalyser) {
-        //this.parameterAnalyser = parameterAnalyser;
+        // this.parameterAnalyser = parameterAnalyser;
         instance = this;
         super.setInstance(this);
-        //stillRunning = true;
+        // stillRunning = true;
 
         world = new World();
 
-        //clientNetworkEngine = new ClientNetworkEngine("127.0.0.10", 22310);
-        //physicEngine = new PhysicEngine();
+        // clientNetworkEngine = new ClientNetworkEngine("127.0.0.10", 22310);
+        // physicEngine = new PhysicEngine();
         graphicEngine = new GraphicEngine();
 
         engineList.add(new InputEngine());
-        //engineList.add(new ClientGameEngine());
-        //engineList.add(physicEngine);
-        //engineList.add(clientNetworkEngine);
+        // engineList.add(new ClientGameEngine());
+        // engineList.add(physicEngine);
+        // engineList.add(clientNetworkEngine);
         engineList.add(graphicEngine);
-        //engineList.add(new ClientScriptEngine());
+        // engineList.add(new ClientScriptEngine());
 
         // inputEngine = new InputEngine();
         // clientGameEngine = new ClientGameEngine();
         // scriptEngine = new ClientScriptEngine();
 
-        //commandManager = new CommandManager();
+        // commandManager = new CommandManager();
 
     }
 
@@ -83,24 +87,24 @@ public class GameClient extends Game {
 
         Log.perfBegin("Start");
         Log.perfBegin("Start Engine");
-        
+
         startAndWaitAllEngines();
-        
+
         Log.perfEnd(); // Start Engine
         Log.perfBegin("Finish Start");
         sendToAll(new StartEngineEvent());
 
         System.out.println("Irr310 Client - v0.1a");
 
-        //autologin();
+        // autologin();
         /*
          * LoginForm loginForm = new LoginForm();
          * loginForm.setLocationRelativeTo(loginForm.getParent());
          * loginForm.setVisible(true);
          */
 
-        //Reader reader = new InputStreamReader(System.in);
-        //BufferedReader input = new BufferedReader(reader);
+        // Reader reader = new InputStreamReader(System.in);
+        // BufferedReader input = new BufferedReader(reader);
 
         Log.perfEnd(); // Finish Start
 
@@ -124,7 +128,7 @@ public class GameClient extends Game {
             }
             Duration.HUNDRED_MILLISECONDE.sleep();
         }
-      
+
         System.out.println("Game Client: Stopped");
 
     }
@@ -149,7 +153,7 @@ public class GameClient extends Game {
     }
 
     public void updateCapacityTask(com.irr310.common.world.capacity.Capacity capacity) {
-        if(clientNetworkEngine != null) {
+        if (clientNetworkEngine != null) {
             clientNetworkEngine.send(new CapacityUpdateMessage(capacity.toView()));
         }
     }
@@ -168,23 +172,35 @@ public class GameClient extends Game {
 
     public void playSoloGame() {
         sendToAll(new LoadingGameEvent("Create new game ..."));
-        
+
+        // Physic
         physicEngine = new PhysicEngine();
-        
-        engineList.add(new ClientGameEngine());
         engineList.add(physicEngine);
-        //engineList.add(clientNetworkEngine);
-        engineList.add(new ClientScriptEngine());
-        engineList.add(new ServerGameEngine());
+        worldEngineList.add(physicEngine);
+
+        // ClientGame
+        ClientGameEngine clientGameEngine = new ClientGameEngine();
+        engineList.add(clientGameEngine);
+        worldEngineList.add(clientGameEngine);
+
+        // ClientScriptEngine
+        ClientScriptEngine clientScriptEngine = new ClientScriptEngine();
+        engineList.add(clientScriptEngine);
+        worldEngineList.add(clientScriptEngine);
         
+        // ServerGameEngine
+        ServerGameEngine serverGameEngine = new ServerGameEngine();
+        engineList.add(serverGameEngine);
+        worldEngineList.add(serverGameEngine);
+
         startAndWaitAllEngines();
-        
+
         sendToAll(new StartEngineEvent());
-        
+
         initWorld();
         Player player = createPlayer("player", "");
         LoginManager.localPlayer = player;
-        
+
         sendToAll(new WorldReadyEvent());
 
         System.out.println("Game begin");
@@ -192,11 +208,11 @@ public class GameClient extends Game {
 
     private void startAndWaitAllEngines() {
         for (Engine engine : engineList) {
-            if(!engine.isAlive()){
+            if (!engine.isAlive()) {
                 engine.start();
             }
         }
-        
+
         // Wait engines started
         boolean waitStart = true;
         while (waitStart) {
@@ -209,6 +225,17 @@ public class GameClient extends Game {
             }
             Duration.TEN_MILLISECONDE.sleep();
         }
+    }
+
+    public void gameOver() {
+        System.err.println("Game over");
+        
+        for(Engine engine : worldEngineList) {
+            engine.pushEvent(new QuitGameEvent());
+            engineList.remove(engine);
+        }
+        worldEngineList.clear();
+        physicEngine = null;
     }
 
 }

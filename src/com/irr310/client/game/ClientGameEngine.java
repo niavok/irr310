@@ -3,9 +3,11 @@ package com.irr310.client.game;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.irr310.client.GameClient;
 import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
+import com.irr310.common.event.GameOverEvent;
 import com.irr310.common.event.PauseEngineEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
@@ -74,6 +76,11 @@ public class ClientGameEngine extends FramerateEngine {
         @Override
         public void visit(PauseEngineEvent event) {
             pause(true);
+        }
+        
+        @Override
+        public void visit(GameOverEvent event) {
+            GameClient.getInstance().gameOver();
         }
 
     }

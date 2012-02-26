@@ -46,4 +46,6 @@ public interface EngineEventVisitor {
     public abstract void visit(LoadingGameEvent event);
 
     public abstract void visit(WorldReadyEvent event);
+
+    public abstract void visit(GameOverEvent event);
 }

@@ -8,7 +8,9 @@ public class Monolith extends CelestialObject {
 
     public Monolith(long id, String name) {
         super(id, name);
-        setPhysicalResistance(1.0);
+        setPhysicalResistance(0.5);
+        setDurabilityMax(1000);
+        setDurability(1000);
         setSkin("monolith");
         
         Part part = new Part(GameServer.pickNewId(), this);

@@ -11,10 +11,12 @@ import com.irr310.common.event.AddShipEvent;
 import com.irr310.common.event.AddWorldObjectEvent;
 import com.irr310.common.event.BulletFiredEvent;
 import com.irr310.common.event.CelestialObjectRemovedEvent.Reason;
+import com.irr310.common.event.CelestialObjectRemovedEvent;
 import com.irr310.common.event.CollisionEvent;
 import com.irr310.common.event.DamageEvent;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
+import com.irr310.common.event.GameOverEvent;
 import com.irr310.common.event.PauseEngineEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
@@ -22,6 +24,7 @@ import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.common.world.CelestialObject;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.DamageType;
+import com.irr310.common.world.Monolith;
 import com.irr310.common.world.Part;
 import com.irr310.common.world.Ship;
 import com.irr310.common.world.WorldObject;
@@ -177,6 +180,14 @@ public class ServerGameEngine extends FramerateEngine {
                 // damage = (1-rangePercent^3)
                 double damage = event.getDamage()*(1- Math.pow(rayTest.getHitFraction(), 3));
                 applyDamage(rayTest.getPart(), damage, event.getDamageType());
+            }
+        }
+
+        
+        @Override
+        public void visit(CelestialObjectRemovedEvent event) {
+            if(event.getObject() instanceof Monolith) {
+                Game.getInstance().sendToAll(new GameOverEvent("The monolith is destroyed"));
             }
         }
     }

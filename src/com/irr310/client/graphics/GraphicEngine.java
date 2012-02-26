@@ -12,6 +12,7 @@ import com.irr310.common.event.CollisionEvent;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.EngineEventVisitor;
+import com.irr310.common.event.GameOverEvent;
 import com.irr310.common.event.KeyPressedEvent;
 import com.irr310.common.event.LoadingGameEvent;
 import com.irr310.common.event.MinimizeWindowEvent;
@@ -155,6 +156,11 @@ public class GraphicEngine extends FramerateEngine {
         @Override
         public void visit(BulletFiredEvent event) {
             rendererVisitor.visit(event);
+        }
+        
+        @Override
+        public void visit(GameOverEvent event) {
+            changeRenderer(new MenuGraphicRenderer(GraphicEngine.this));
         }
     }
 
