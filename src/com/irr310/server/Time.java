@@ -10,10 +10,18 @@ public class Time {
 	public Time(long nanotime) {
 		this.nanotime = nanotime;
 	}
+	
+	public Time(float f) {
+        this((long)(f*1000000000f));
+    }
 
 	public long getTime() {
 		return nanotime;
 	}
+	
+	public float getSeconds() {
+        return (float) ((double) nanotime / (double) 1000000000);
+    }
 	
 	public boolean after(Time otherTime) {
 		return nanotime > otherTime.getTime();

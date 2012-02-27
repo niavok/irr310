@@ -45,4 +45,5 @@ public class Duration {
     public Duration add(Duration duration) {
         return new Duration(nanotime+duration.getDuration());
     }
+
 }

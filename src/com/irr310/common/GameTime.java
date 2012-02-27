@@ -1,13 +1,13 @@
 package com.irr310.common;
 
-import com.irr310.server.Duration;
+import com.irr310.server.Time;
 
 public class GameTime {
 
     private static long initialTime = System.nanoTime();
     
-    public static Duration getGameTime() {
-        return new Duration(System.nanoTime() - initialTime);
+    public static Time getGameTime() {
+        return new Time(System.nanoTime() - initialTime);
     }
     
 }
