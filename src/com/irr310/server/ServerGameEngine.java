@@ -27,6 +27,7 @@ import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.event.WorldReadyEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
+import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Asteroid;
 import com.irr310.common.world.CelestialObject;
@@ -282,7 +283,13 @@ public class ServerGameEngine extends FramerateEngine {
                     Vec3 position = new Vec3(1000, 0, 0);
                     Vec3 linearSpeed = new Vec3(-50, 0, 0);
                     
-                    
+                    TransformMatrix rotation = TransformMatrix.identity();
+                    rotation.rotateX(random.nextDouble() * 360);
+                    rotation.rotateY(random.nextDouble() * 360);
+                    rotation.rotateZ(random.nextDouble() * 360);
+
+                    position = position.rotate(rotation);
+                    linearSpeed = linearSpeed.rotate(rotation);
 
                     Asteroid asteroid = CelestialObjectFactory.createAsteroid(size);
                     asteroid.getFirstPart().getTransform().translate(position);
