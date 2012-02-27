@@ -93,6 +93,7 @@ public class WorldRenderer implements GraphicRenderer {
     private final GraphicEngine engine;
     private V3DGuiLayer interfaceLayer;
     private V3DGuiLayer hudLayer;
+    private V3DGuiLayer mainMenuLayer;
 
     private static final V3DColor irrRed = new V3DColor(108, 0, 0);
     private static final V3DColor irrGreen = new V3DColor(0, 108, 0);
@@ -105,6 +106,7 @@ public class WorldRenderer implements GraphicRenderer {
     private Monolith monolith;
     private V3DGuiRectangle monolithStatus;
     private V3DLabel monolithStatusText;
+    
 
     public WorldRenderer(GraphicEngine engine) {
         this.engine = engine;
@@ -151,8 +153,12 @@ public class WorldRenderer implements GraphicRenderer {
         scene.add(ref1);
         scene.add(ref2);
 
+        generateGuiStructure();
+        
         loadCurrentWorld();
 
+        
+        
         // activeCamera.setShowCenter(true);
 
         activeCamera.fitAll();
@@ -161,24 +167,8 @@ public class WorldRenderer implements GraphicRenderer {
 
     }
 
-    private void generateGuiStructure() {
-        V3DGui gui = fullscreenBinding.getGui();
-
-        hudLayer = new V3DGuiLayer(gui);
-        interfaceLayer = new V3DGuiLayer(gui);
-        V3DGuiLayer menuLayer = new V3DGuiLayer(gui);
-        V3DGuiLayer pauseLayer = new V3DGuiLayer(gui);
-        // pauseLayer.setColor(new V3DColor(0,0,0,0.5f));
-        V3DGuiLayer mainMenuLayer = new V3DGuiLayer(gui);
-        V3DGuiLayer popUpLayer = new V3DGuiLayer(gui);
-
-        gui.add(hudLayer);
-        gui.add(interfaceLayer);
-        gui.add(menuLayer);
-        gui.add(pauseLayer);
-        gui.add(mainMenuLayer);
-        gui.add(popUpLayer);
-
+    private void reloadGui() {
+        
         // Generate logo
         V3DLabel logoIRR = new V3DLabel("IRR");
         logoIRR.setFontStyle("Ubuntu", "bold", 24);
@@ -246,6 +236,36 @@ public class WorldRenderer implements GraphicRenderer {
         generateReputationBox();
         generateWaveBox();
         generateDamageBox();
+        
+        
+        
+        GuiTrackingArrow guiTrackingArrow = new GuiTrackingArrow(this, cameraController , monolith.getFirstPart());
+        addElement(guiTrackingArrow);
+        hudLayer.add(guiTrackingArrow.getGuiElement());
+        
+    }
+    
+    private void generateGuiStructure() {
+        V3DGui gui = fullscreenBinding.getGui();
+
+        hudLayer = new V3DGuiLayer(gui);
+        interfaceLayer = new V3DGuiLayer(gui);
+        mainMenuLayer = new V3DGuiLayer(gui);
+
+        V3DGuiLayer menuLayer = new V3DGuiLayer(gui);
+        V3DGuiLayer pauseLayer = new V3DGuiLayer(gui);
+        // pauseLayer.setColor(new V3DColor(0,0,0,0.5f));
+        V3DGuiLayer popUpLayer = new V3DGuiLayer(gui);
+        
+        gui.add(hudLayer);
+        gui.add(interfaceLayer);
+        gui.add(menuLayer);
+        gui.add(pauseLayer);
+        gui.add(mainMenuLayer);
+        gui.add(popUpLayer);
+        
+        
+       
     }
 
     private void generateUpgradeBox() {
@@ -559,6 +579,9 @@ public class WorldRenderer implements GraphicRenderer {
         }
 
         cameraController.setFollowed(ship.getComponentByName("kernel").getFirstPart());
+        
+        
+        
         activeCamera.fitAll();
     }
 
@@ -648,13 +671,15 @@ public class WorldRenderer implements GraphicRenderer {
 
     public void resetGui() {
         System.err.println("reset GUI");
-        fullscreenBinding.getGui().clear();
+        interfaceLayer.removeAll();
+        hudLayer.removeAll();
+        mainMenuLayer.removeAll();
 
         for (GraphicalElement element : guiAnimatedList) {
             element.destroy();
         }
 
-        generateGuiStructure();
+        reloadGui();
     }
 
     private final class WorldRendererEventVisitor extends DefaultEngineEventVisitor {

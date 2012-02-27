@@ -59,6 +59,9 @@ public class V3DFollow3DCameraController implements V3DCameraController, Graphic
     private int rotationButton = MouseEvent.BUTTON3;
     private Part element;
     private final WorldRenderer renderer;
+    private TransformMatrix eye;
+    private TransformMatrix target;
+    private TransformMatrix top;
 
     private enum MovementType {
 
@@ -270,7 +273,7 @@ public class V3DFollow3DCameraController implements V3DCameraController, Graphic
             Vec3 translation = transform.getTranslation();
 
             //Target
-            TransformMatrix target = TransformMatrix.identity();
+            target = TransformMatrix.identity();
             //target.translate(2,0,2);
             //target.translate(0,0,2);
             target.translate(0,500,0);
@@ -281,7 +284,7 @@ public class V3DFollow3DCameraController implements V3DCameraController, Graphic
             camera.setPosition(targetPosition);
             
             //Eye
-            TransformMatrix eye = TransformMatrix.identity();
+            eye = TransformMatrix.identity();
             //eye.translate(2,-20,2);
             //eye.translate(0,-20,2);
             eye.translate(0,4,2);
@@ -291,7 +294,7 @@ public class V3DFollow3DCameraController implements V3DCameraController, Graphic
             V3DVect3 eyePosition = eye.getTranslation().toV3DVect3();
             camera.setEye(eyePosition);
             
-            TransformMatrix top = TransformMatrix.identity();
+            top = TransformMatrix.identity();
             
             TransformMatrix rotation = transform.identity();
             rotation.preMultiply(transform);
@@ -330,4 +333,19 @@ public class V3DFollow3DCameraController implements V3DCameraController, Graphic
         return camera;
     }
 
+    public Part getFollowed() {
+        return element;
+    }
+
+    public Vec3 getEye() {
+        return eye.getTranslation();
+    }
+
+    public Vec3 getTarget() {
+        return target.getTranslation();
+    }
+    
+    public Vec3 getTop() {
+        return top.getTranslation();
+    }
 }

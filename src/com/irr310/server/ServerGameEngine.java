@@ -301,19 +301,6 @@ public class ServerGameEngine extends FramerateEngine {
                          random.nextFloat() * angularSpeed - angularSpeed / 2f);
                     
                     Game.getInstance().getWorld().addCelestialObject(asteroid);
-                    /*asteroid.getFirstPart()
-                            .getTransform()
-                            .translate(random.nextFloat() * position - position / 2,
-                                       random.nextFloat() * position - position / 2,
-                                       random.nextFloat() * position - position / 2);
-                    asteroid.getFirstPart()
-                            .getLinearSpeed()
-                            .set(random.nextFloat() * linearSpeed - linearSpeed / 2,
-                                 random.nextFloat() * linearSpeed - linearSpeed / 2,
-                                 random.nextFloat() * linearSpeed - linearSpeed / 2);
-
-                    */
-                    
             }
 
         });

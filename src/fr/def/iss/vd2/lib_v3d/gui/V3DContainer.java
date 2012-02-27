@@ -195,5 +195,11 @@ public class V3DContainer extends V3DGuiComponent implements V3DLocalisable {
     public int getAbsoluteY() {
         return yPos;
     }
+    
+    public void removeAll() {
+        for (V3DGuiComponent component : guiComponentList) {
+            remove(component);
+        }
+    }
 
 }
