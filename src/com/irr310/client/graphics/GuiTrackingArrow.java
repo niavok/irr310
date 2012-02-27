@@ -9,12 +9,13 @@ import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.controller.V3DFollow3DCameraController;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiRectangle;
+import fr.def.iss.vd2.lib_v3d.gui.V3DGuiTriangle;
 
 public class GuiTrackingArrow extends GuiAnimatedElement {
 
     private final V3DFollow3DCameraController camera;
     private final Part followed;
-    private V3DGuiRectangle v3dGuiRectangle;
+    private V3DGuiTriangle v3dGuiTriangle;
     private final WorldRenderer renderer;
     private V3DColor color;
 
@@ -23,7 +24,7 @@ public class GuiTrackingArrow extends GuiAnimatedElement {
         this.renderer = renderer;
         this.camera = cameraController;
         this.followed = followed;
-        v3dGuiRectangle = new V3DGuiRectangle();
+        v3dGuiTriangle = new V3DGuiTriangle();
         color = V3DColor.black;
     }
     
@@ -54,29 +55,46 @@ public class GuiTrackingArrow extends GuiAnimatedElement {
         int minViewportSize = (int) Math.min(viewportSize.x, viewportSize.y); 
         
         Vec2 pos = new Vec2(-left.dot(relPos)*viewportSize.x, -top.dot(relPos)*viewportSize.y);
-        System.err.println("pos1 "+ pos);
-        pos = pos.normalize().multiply(minViewportSize*0.45).add(viewportSize.divide(2));
-        System.err.println("pos2 "+ pos);
+        System.err.println("pos "+ pos);
+        Vec2 pxPos = pos.normalize().multiply(minViewportSize*0.45).add(viewportSize.divide(2));
+        System.err.println("pxPos "+ pxPos);
         
         
-        v3dGuiRectangle.setPosition((int)pos.x,(int) pos.y);
+        v3dGuiTriangle.setPosition((int)pxPos.x,(int) pxPos.y);
+
+        double deltaAngle = front.dot(relPos);
         
-        
-        if(front.dot(relPos) < 0.9) {
-            v3dGuiRectangle.setFillColor(color);
+        if(deltaAngle < 0.88) {
+            v3dGuiTriangle.setFillColor(color);
+        } else if(deltaAngle < 0.92) {
+            V3DColor copy = color.copy();
+            copy.a = (float) (copy.a * (0.92- deltaAngle)/0.04);
+            v3dGuiTriangle.setFillColor(copy);
         } else {
-            v3dGuiRectangle.setFillColor(V3DColor.transparent);
+            v3dGuiTriangle.setFillColor(V3DColor.transparent);
         }
         
-        double size = (1000 - distance.length())/20;
+        double size = 5+(1000f - distance.length())/50f;
+        
+        
         System.err.println("size "+ size);
-        v3dGuiRectangle.setSize((int) size,(int) size);
+        
+        double angle =  - pos.getAngle() - Math.PI/2;
+        
+        System.err.println("angle "+ angle);
+        
+        
+        Vec2 topPoint = new Vec2(0, size).rotate(angle);
+        Vec2 leftPoint = new Vec2(size/3 * (1.5+deltaAngle), -size).rotate(angle);
+        Vec2 rightPoint = new Vec2(-size/3 * (1.5+deltaAngle), -size).rotate(angle);
+        
+        v3dGuiTriangle.setPoint((int)topPoint.x, (int)topPoint.y,(int)leftPoint.x,(int)leftPoint.y,(int)rightPoint.x,(int)rightPoint.y);
         
     }
 
     @Override
     public V3DGuiComponent getGuiElement() {
-        return v3dGuiRectangle;
+        return v3dGuiTriangle;
     }
     
     @Override

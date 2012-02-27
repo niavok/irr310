@@ -56,4 +56,18 @@ public class Vec2 {
     public String toString() {
         return "[x=" + x + ", y=" + y + "]";
     }
+
+    public double getAngle() {
+        double nX = x / length();
+        
+        if(y > 0) {
+            return Math.acos(nX);
+        } else {
+            return -Math.acos(nX);
+        }
+    }
+
+    public Vec2 rotate(double angle) {
+        return new Vec2(x* Math.cos(angle) - y * Math.sin(angle), x* Math.sin(angle) + y * Math.cos(angle));
+    }
 }
