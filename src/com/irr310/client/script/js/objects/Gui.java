@@ -4,6 +4,7 @@ import com.irr310.client.GameClient;
 import com.irr310.common.Game;
 import com.irr310.common.event.AddGuiComponentEvent;
 import com.irr310.common.event.RemoveGuiComponentEvent;
+import com.irr310.common.tools.Vec2;
 
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent;
 

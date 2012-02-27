@@ -1,5 +1,7 @@
 package com.irr310.client.script.js.objects;
 
+import com.irr310.common.tools.Vec2;
+
 public class Mouse {
 	
 	public Mouse() {

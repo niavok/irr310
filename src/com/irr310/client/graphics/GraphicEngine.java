@@ -26,12 +26,11 @@ import com.irr310.common.event.RemoveGuiComponentEvent;
 import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.event.WorldReadyEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
-import com.irr310.common.tools.Vect2;
+import com.irr310.common.tools.Vec2;
 import com.irr310.server.Duration;
 
 import fr.def.iss.vd2.lib_v3d.V3DCanvas;
 import fr.def.iss.vd2.lib_v3d.V3DContext;
-import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
 
 public class GraphicEngine extends FramerateEngine {
@@ -192,8 +191,8 @@ public class GraphicEngine extends FramerateEngine {
         return context;
     }
 
-    public Vect2 getViewportSize() {
-        return new Vect2(canvas.getWidth(), canvas.getHeight());
+    public Vec2 getViewportSize() {
+        return new Vec2(canvas.getWidth(), canvas.getHeight());
     }
 
     public float getFps() {

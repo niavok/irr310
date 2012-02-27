@@ -4,6 +4,8 @@ import org.fenggui.Widget;
 import org.fenggui.binding.render.Graphics;
 import org.fenggui.util.Dimension;
 
+import com.irr310.common.tools.Vec2;
+
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent;
 

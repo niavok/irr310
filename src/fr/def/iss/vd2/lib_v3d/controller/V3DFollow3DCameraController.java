@@ -74,7 +74,9 @@ public class V3DFollow3DCameraController implements V3DCameraController, Graphic
         this.camera = camera;
 
         camera.addController(this);
-
+        eye = TransformMatrix.identity();
+        target = TransformMatrix.identity();
+        top = TransformMatrix.identity();
     }
     
     public void setFollowed(Part element) {

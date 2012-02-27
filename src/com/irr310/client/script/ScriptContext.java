@@ -153,7 +153,7 @@ public class ScriptContext {
                 allowedClasses = new ArrayList<Class<?>>();
                 allowedClasses.add(com.irr310.client.script.js.objects.Core.class);
                 allowedClasses.add(com.irr310.client.script.js.objects.Mouse.class);
-                allowedClasses.add(com.irr310.client.script.js.objects.Vec2.class);
+                allowedClasses.add(com.irr310.common.tools.Vec2.class);
                 allowedClasses.add(com.irr310.client.script.js.objects.Color.class);
                 
                 //Gui

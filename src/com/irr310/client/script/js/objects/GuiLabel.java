@@ -9,6 +9,8 @@ import org.fenggui.text.content.factory.simple.TextStyleEntry;
 import org.fenggui.util.Alphabet;
 import org.fenggui.util.fonttoolkit.FontFactory;
 
+import com.irr310.common.tools.Vec2;
+
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent.GuiYAlignment;

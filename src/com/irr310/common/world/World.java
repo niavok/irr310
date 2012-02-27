@@ -42,7 +42,7 @@ public class World {
     ReentrantLock mutex;
 
     public World() {
-        celestialObjects = new ArrayList<CelestialObject>();
+        celestialObjects = new CopyOnWriteArrayList<CelestialObject>();
         ships = new CopyOnWriteArrayList<Ship>();
         players = new CopyOnWriteArrayList<Player>();
         parts = new CopyOnWriteArrayList<Part>();

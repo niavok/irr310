@@ -14,6 +14,7 @@ public class Vec3 {
     public Double y;
     public Double z;
 
+    //TODO: try to remove
     private List<Vect3ChangeListener> changeListeners;
     private V3DVect3 v3dVect3;
 
@@ -186,6 +187,10 @@ public class Vec3 {
 
     public Vec3 normalize() {
         return this.divide(length());
+    }
+
+    public Vec3 cross(Vec3 v) {
+        return new Vec3(y*v.z - z*v.y, z*v.x - x*v.z, x*y - y*v.x);
     }
 
     

@@ -1,6 +1,8 @@
 package com.irr310.client.script.js.objects;
 
 
+import com.irr310.common.tools.Vec2;
+
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiRectangle;

@@ -53,7 +53,6 @@ import com.irr310.common.world.World;
 import com.irr310.common.world.WorldObject;
 import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
-import com.irr310.server.Time;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DScene;
@@ -69,11 +68,11 @@ import fr.def.iss.vd2.lib_v3d.element.V3DLine;
 import fr.def.iss.vd2.lib_v3d.element.V3DPoint;
 import fr.def.iss.vd2.lib_v3d.element.V3DShaderElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DrawElement;
+import fr.def.iss.vd2.lib_v3d.gui.V3DContainer;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGui;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent.GuiXAlignment;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent.GuiYAlignment;
-import fr.def.iss.vd2.lib_v3d.gui.V3DContainer;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiLayer;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiRectangle;
 import fr.def.iss.vd2.lib_v3d.gui.V3DLabel;
@@ -85,15 +84,20 @@ public class WorldRenderer implements GraphicRenderer {
     private List<GraphicalElement> animatedList = new CopyOnWriteArrayList<GraphicalElement>();
     private List<GraphicalElement> guiAnimatedList = new CopyOnWriteArrayList<GraphicalElement>();
     private List<GraphicalElement> elementList = new CopyOnWriteArrayList<GraphicalElement>();
+    private List<GuiAnimatedElement> persistantGuiElementList = new CopyOnWriteArrayList<GuiAnimatedElement>();
 
     private V3DFollow3DCameraController cameraController;
-    private Map<WorldObject, GraphicalElement> worldObjectToV3DElementMap = new HashMap<WorldObject, GraphicalElement>();
+    private Map<WorldObject, List<GraphicalElement>> worldObjectToV3DElementMap = new HashMap<WorldObject, List<GraphicalElement>>();
 
     V3DEye3DCamera activeCamera;
     private final GraphicEngine engine;
     private V3DGuiLayer interfaceLayer;
     private V3DGuiLayer hudLayer;
     private V3DGuiLayer mainMenuLayer;
+
+    public enum GuiLayer {
+        INTEFACE, HUD, MAIN_MENU,
+    }
 
     private static final V3DColor irrRed = new V3DColor(108, 0, 0);
     private static final V3DColor irrGreen = new V3DColor(0, 108, 0);
@@ -106,7 +110,6 @@ public class WorldRenderer implements GraphicRenderer {
     private Monolith monolith;
     private V3DGuiRectangle monolithStatus;
     private V3DLabel monolithStatusText;
-    
 
     public WorldRenderer(GraphicEngine engine) {
         this.engine = engine;
@@ -154,11 +157,9 @@ public class WorldRenderer implements GraphicRenderer {
         scene.add(ref2);
 
         generateGuiStructure();
-        
+
         loadCurrentWorld();
 
-        
-        
         // activeCamera.setShowCenter(true);
 
         activeCamera.fitAll();
@@ -168,7 +169,7 @@ public class WorldRenderer implements GraphicRenderer {
     }
 
     private void reloadGui() {
-        
+
         // Generate logo
         V3DLabel logoIRR = new V3DLabel("IRR");
         logoIRR.setFontStyle("Ubuntu", "bold", 24);
@@ -191,42 +192,7 @@ public class WorldRenderer implements GraphicRenderer {
         indicatorBorder.setBorderColor(irrRed);
         mainMenuLayer.add(indicatorBorder);
 
-        final V3DLabel clockIndicator = new V3DLabel("Time: --");
-        clockIndicator.setPosition(128, 17);
-        clockIndicator.setFontStyle("Ubuntu", "bold", 16);
-        clockIndicator.setColor(V3DColor.black, V3DColor.transparent);
-        GuiAnimatedElement graphicalElement = new GuiAnimatedElement(this) {
-            DecimalFormat format = new DecimalFormat("0");
-
-            @Override
-            public void update() {
-                clockIndicator.setText("Time: " + format.format(GameTime.getGameTime().getSeconds()) + " s");
-
-            }
-        };
-        addElement(graphicalElement);
-        guiAnimatedList.add(graphicalElement);
-        mainMenuLayer.add(clockIndicator);
-
-        final V3DLabel fpsIndicator = new V3DLabel("-- fps");
-        fpsIndicator.setPosition(235, 17);
-        fpsIndicator.setFontStyle("Ubuntu", "bold", 16);
-        fpsIndicator.setColor(V3DColor.black, V3DColor.transparent);
-        GuiAnimatedElement fpsIndicatorAnimator = new GuiAnimatedElement(this) {
-            DecimalFormat format = new DecimalFormat("0");
-
-            @Override
-            public void update() {
-                fpsIndicator.setText("" + format.format(engine.getFps()) + " fps");
-
-            }
-        };
-        addElement(fpsIndicatorAnimator);
-        guiAnimatedList.add(fpsIndicatorAnimator);
-        mainMenuLayer.add(fpsIndicator);
-
-        final V3DLabel resolutionIndicator = new V3DLabel("" + engine.getViewportSize().x.intValue() + "x" + engine.getViewportSize().y.intValue()
-                + " px");
+        final V3DLabel resolutionIndicator = new V3DLabel("" + (int) engine.getViewportSize().x + "x" + (int) engine.getViewportSize().y + " px");
         resolutionIndicator.setPosition(300, 17);
         resolutionIndicator.setFontStyle("Ubuntu", "bold", 16);
         resolutionIndicator.setColor(V3DColor.black, V3DColor.transparent);
@@ -236,15 +202,12 @@ public class WorldRenderer implements GraphicRenderer {
         generateReputationBox();
         generateWaveBox();
         generateDamageBox();
-        
-        
-        
-        GuiTrackingArrow guiTrackingArrow = new GuiTrackingArrow(this, cameraController , monolith.getFirstPart());
-        addElement(guiTrackingArrow);
-        hudLayer.add(guiTrackingArrow.getGuiElement());
-        
+
+        for (GuiAnimatedElement element : persistantGuiElementList) {
+            addGuiComponent(element.getGuiElement(), element.getLayer());
+        }
     }
-    
+
     private void generateGuiStructure() {
         V3DGui gui = fullscreenBinding.getGui();
 
@@ -256,16 +219,69 @@ public class WorldRenderer implements GraphicRenderer {
         V3DGuiLayer pauseLayer = new V3DGuiLayer(gui);
         // pauseLayer.setColor(new V3DColor(0,0,0,0.5f));
         V3DGuiLayer popUpLayer = new V3DGuiLayer(gui);
-        
+
         gui.add(hudLayer);
         gui.add(interfaceLayer);
         gui.add(menuLayer);
         gui.add(pauseLayer);
         gui.add(mainMenuLayer);
         gui.add(popUpLayer);
-        
-        
-       
+
+        addPersistantGuiElement(new GuiAnimatedElement(this) {
+            final V3DLabel clockIndicator = new V3DLabel("Time: --");
+            DecimalFormat format = new DecimalFormat("0");
+            {
+                clockIndicator.setPosition(128, 17);
+                clockIndicator.setFontStyle("Ubuntu", "bold", 16);
+                clockIndicator.setColor(V3DColor.black, V3DColor.transparent);
+            }
+
+            @Override
+            public void update() {
+                clockIndicator.setText("Time: " + format.format(GameTime.getGameTime().getSeconds()) + " s");
+
+            }
+
+            @Override
+            public V3DGuiComponent getGuiElement() {
+                return clockIndicator;
+            }
+
+            @Override
+            public GuiLayer getLayer() {
+                return GuiLayer.MAIN_MENU;
+            }
+
+        });
+
+        addPersistantGuiElement(new GuiAnimatedElement(this) {
+            DecimalFormat format = new DecimalFormat("0");
+            final V3DLabel fpsIndicator = new V3DLabel("-- fps");
+
+            {
+                fpsIndicator.setPosition(235, 17);
+                fpsIndicator.setFontStyle("Ubuntu", "bold", 16);
+                fpsIndicator.setColor(V3DColor.black, V3DColor.transparent);
+            }
+
+            @Override
+            public void update() {
+                fpsIndicator.setText("" + format.format(engine.getFps()) + " fps");
+
+            }
+
+            @Override
+            public V3DGuiComponent getGuiElement() {
+                return fpsIndicator;
+            }
+
+            @Override
+            public GuiLayer getLayer() {
+                return GuiLayer.MAIN_MENU;
+            }
+
+        });
+
     }
 
     private void generateUpgradeBox() {
@@ -369,8 +385,8 @@ public class WorldRenderer implements GraphicRenderer {
         upgradeBase.setFillColor(irrFill);
         upgradeBase.setBorderColor(irrRed);
         container.add(upgradeBase);
-        
-        waveCountText = new V3DLabel("Wave "+(lastWaveEvent == null ? "--":lastWaveEvent.getWaveId()));
+
+        waveCountText = new V3DLabel("Wave " + (lastWaveEvent == null ? "--" : lastWaveEvent.getWaveId()));
         waveCountText.setyAlignment(GuiYAlignment.BOTTOM);
         waveCountText.setPosition(25, 32);
         waveCountText.setFontStyle("Ubuntu", "bold", 45);
@@ -379,7 +395,6 @@ public class WorldRenderer implements GraphicRenderer {
 
     }
 
-  
     private void generateDamageBox() {
 
         V3DContainer container = new V3DContainer();
@@ -389,7 +404,6 @@ public class WorldRenderer implements GraphicRenderer {
         container.setyAlignment(GuiYAlignment.TOP);
         interfaceLayer.add(container);
 
-        
         V3DGuiRectangle upgradeBase = new V3DGuiRectangle();
         upgradeBase.setyAlignment(GuiYAlignment.BOTTOM);
         upgradeBase.setPosition(0, 0);
@@ -398,8 +412,7 @@ public class WorldRenderer implements GraphicRenderer {
         upgradeBase.setFillColor(irrFill);
         upgradeBase.setBorderColor(irrRed);
         container.add(upgradeBase);
-        
-        
+
         monolithStatus = new V3DGuiRectangle();
         monolithStatus.setyAlignment(GuiYAlignment.TOP);
         monolithStatus.setPosition(10, 30);
@@ -418,17 +431,16 @@ public class WorldRenderer implements GraphicRenderer {
         updateMonolithStatus();
 
     }
-    
+
     private void updateMonolithStatus() {
         if (monolithStatusText != null && monolith != null) {
-            int color = (int)(150 * monolith.getDurability() / monolith.getDurabilityMax());
-            
-            monolithStatus.setFillColor(new V3DColor(150-color, color, 0, 0.5f));
-            monolithStatus.setBorderColor(new V3DColor(150-color, color, 0));
-            monolithStatusText.setText(""+(int) monolith.getDurability()+"/"+ (int)monolith.getDurabilityMax());
+            int color = (int) (150 * monolith.getDurability() / monolith.getDurabilityMax());
+
+            monolithStatus.setFillColor(new V3DColor(150 - color, color, 0, 0.5f));
+            monolithStatus.setBorderColor(new V3DColor(150 - color, color, 0));
+            monolithStatusText.setText("" + (int) monolith.getDurability() + "/" + (int) monolith.getDurabilityMax());
         }
     }
-
 
     private void loadCurrentWorld() {
         System.err.println("add current world");
@@ -525,20 +537,25 @@ public class WorldRenderer implements GraphicRenderer {
 
     protected void addCelestialObject(final CelestialObject object) {
 
+        worldObjectToV3DElementMap.put(object, new ArrayList<GraphicalElement>());
+
         GraphicalElement element = addObject(object);
-        worldObjectToV3DElementMap.put(object, element);
-        
-        if(object instanceof Monolith) {
+        worldObjectToV3DElementMap.get(object).add(element);
+
+        if (object instanceof Monolith) {
             monolith = (Monolith) object;
             updateMonolithStatus();
         }
     }
 
     protected void removeCelestialObject(final CelestialObject object) {
-        GraphicalElement element = worldObjectToV3DElementMap.get(object);
-        if (element != null) {
-            element.destroy();
+        List<GraphicalElement> elements = worldObjectToV3DElementMap.get(object);
+        for (GraphicalElement element : elements) {
+            if (element != null) {
+                element.destroy();
+            }
         }
+
     }
 
     protected void addShip(final Ship ship) {
@@ -579,9 +596,7 @@ public class WorldRenderer implements GraphicRenderer {
         }
 
         cameraController.setFollowed(ship.getComponentByName("kernel").getFirstPart());
-        
-        
-        
+
         activeCamera.fitAll();
     }
 
@@ -623,8 +638,19 @@ public class WorldRenderer implements GraphicRenderer {
                 skin = new GunSkin(this, (Component) object);
             } else if (object.getSkin().equals("asteroid")) {
                 skin = new AsteroidSkin(this, (CelestialObject) object);
+
+                GuiTrackingArrow guiTrackingArrow = new GuiTrackingArrow(this, cameraController, object.getFirstPart());
+                guiTrackingArrow.setColor(new V3DColor(255, 0, 0, 0.8f));
+                addPersistantGuiElement(guiTrackingArrow);
+                worldObjectToV3DElementMap.get(object).add(guiTrackingArrow);
+
             } else if (object.getSkin().equals("monolith")) {
                 skin = new MonolithSkin(this, (CelestialObject) object);
+
+                GuiTrackingArrow guiTrackingArrow = new GuiTrackingArrow(this, cameraController, object.getFirstPart());
+                guiTrackingArrow.setColor(new V3DColor(32, 200, 32, 0.8f));
+                addPersistantGuiElement(guiTrackingArrow);
+                worldObjectToV3DElementMap.get(object).add(guiTrackingArrow);
             } else {
                 System.err.println("No skin found for: " + object.getSkin());
                 skin = new GenericSkin(this, object);
@@ -658,15 +684,60 @@ public class WorldRenderer implements GraphicRenderer {
         if (graphicalElement.isDisplayable()) {
             scene.remove(graphicalElement.getV3DElement());
         }
+        if (graphicalElement instanceof GuiAnimatedElement) {
+            GuiAnimatedElement guiElement = (GuiAnimatedElement) graphicalElement;
+            persistantGuiElementList.remove(guiElement);
+            removeGuiComponent(guiElement.getGuiElement(), guiElement.getLayer());
+        }
 
+    }
+
+    public void addPersistantGuiElement(GuiAnimatedElement graphicalElement) {
+        elementList.add(graphicalElement);
+        animatedList.add(graphicalElement);
+        persistantGuiElementList.add(graphicalElement);
+        addGuiComponent(graphicalElement.getGuiElement(), graphicalElement.getLayer());
     }
 
     public void addGuiComponent(V3DGuiComponent component) {
         interfaceLayer.add(component);
     }
 
+    public void addGuiComponent(V3DGuiComponent component, GuiLayer layer) {
+        switch (layer) {
+            case HUD:
+                hudLayer.add(component);
+                break;
+            case INTEFACE:
+                interfaceLayer.add(component);
+                break;
+            case MAIN_MENU:
+                mainMenuLayer.add(component);
+                break;
+            default:
+                break;
+        }
+
+    }
+
     public void removeGuiComponent(V3DGuiComponent component) {
-        fullscreenBinding.getGui().remove(component);
+        interfaceLayer.remove(component);
+    }
+
+    public void removeGuiComponent(V3DGuiComponent component, GuiLayer layer) {
+        switch (layer) {
+            case HUD:
+                hudLayer.remove(component);
+                break;
+            case INTEFACE:
+                interfaceLayer.remove(component);
+                break;
+            case MAIN_MENU:
+                mainMenuLayer.remove(component);
+                break;
+            default:
+                break;
+        }
     }
 
     public void resetGui() {
@@ -732,14 +803,14 @@ public class WorldRenderer implements GraphicRenderer {
                 waveCountText.setText("Wave " + event.getWaveId());
             }
         }
-        
+
         @Override
         public void visit(DamageEvent event) {
-            
-            if(event.getTarget().getParentObject() instanceof Monolith) {
+
+            if (event.getTarget().getParentObject() instanceof Monolith) {
                 updateMonolithStatus();
             }
-            
+
         }
 
     }
