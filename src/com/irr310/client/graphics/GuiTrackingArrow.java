@@ -19,7 +19,7 @@ public class GuiTrackingArrow extends GuiAnimatedElement {
     private final WorldRenderer renderer;
     private V3DColor color;
 
-    public GuiTrackingArrow( WorldRenderer renderer,V3DFollow3DCameraController cameraController, Part followed) {
+    public GuiTrackingArrow(WorldRenderer renderer, V3DFollow3DCameraController cameraController, Part followed) {
         super(renderer);
         this.renderer = renderer;
         this.camera = cameraController;
@@ -27,81 +27,63 @@ public class GuiTrackingArrow extends GuiAnimatedElement {
         v3dGuiTriangle = new V3DGuiTriangle();
         color = V3DColor.black;
     }
-    
+
     public void setColor(V3DColor color) {
         this.color = color;
     }
 
     @Override
     public void update() {
-        
-        
+
         Vec3 eye = camera.getEye();
         Vec3 target = camera.getTarget();
-        
+
         Vec3 top = camera.getTop().normalize();
         Vec3 front = target.minus(eye).normalize();
         Vec3 left = top.cross(front);
-        
+
         Vec3 distance = followed.getTransform().getTranslation().minus(eye);
         Vec3 relPos = distance.normalize();
-        
-        System.err.println("dot top "+ top.dot(relPos));
-        System.err.println("dot left "+ left.dot(relPos));
-        System.err.println("dot front "+ front.dot(relPos));
-        
-        
+
         Vec2 viewportSize = renderer.getEngine().getViewportSize();
-        int minViewportSize = (int) Math.min(viewportSize.x, viewportSize.y); 
-        
-        Vec2 pos = new Vec2(-left.dot(relPos)*viewportSize.x, -top.dot(relPos)*viewportSize.y);
-        System.err.println("pos "+ pos);
-        Vec2 pxPos = pos.normalize().multiply(minViewportSize*0.45).add(viewportSize.divide(2));
-        System.err.println("pxPos "+ pxPos);
-        
-        
-        v3dGuiTriangle.setPosition((int)pxPos.x,(int) pxPos.y);
+        int minViewportSize = (int) Math.min(viewportSize.x, viewportSize.y);
+
+        Vec2 pos = new Vec2(-left.dot(relPos) * viewportSize.x, -top.dot(relPos) * viewportSize.y);
+        Vec2 pxPos = pos.normalize().multiply(minViewportSize * 0.45).add(viewportSize.divide(2));
+
+        v3dGuiTriangle.setPosition((int) pxPos.x, (int) pxPos.y);
 
         double deltaAngle = front.dot(relPos);
-        
-        if(deltaAngle < 0.88) {
+
+        if (deltaAngle < 0.88) {
             v3dGuiTriangle.setFillColor(color);
-        } else if(deltaAngle < 0.92) {
+        } else if (deltaAngle < 0.92) {
             V3DColor copy = color.copy();
-            copy.a = (float) (copy.a * (0.92- deltaAngle)/0.04);
+            copy.a = (float) (copy.a * (0.92 - deltaAngle) / 0.04);
             v3dGuiTriangle.setFillColor(copy);
         } else {
             v3dGuiTriangle.setFillColor(V3DColor.transparent);
         }
-        
-        double size = 5+(1000f - distance.length())/50f;
-        
-        
-        System.err.println("size "+ size);
-        
-        double angle =  - pos.getAngle() - Math.PI/2;
-        
-        System.err.println("angle "+ angle);
-        
-        
+
+        double size = 5 + (Math.min(1000f - distance.length(), 0)) / 50f;
+
+        double angle = -pos.getAngle() - Math.PI / 2;
+
         Vec2 topPoint = new Vec2(0, size).rotate(angle);
-        Vec2 leftPoint = new Vec2(size/3 * (1.5+deltaAngle), -size).rotate(angle);
-        Vec2 rightPoint = new Vec2(-size/3 * (1.5+deltaAngle), -size).rotate(angle);
-        
-        v3dGuiTriangle.setPoint((int)topPoint.x, (int)topPoint.y,(int)leftPoint.x,(int)leftPoint.y,(int)rightPoint.x,(int)rightPoint.y);
-        
+        Vec2 leftPoint = new Vec2(size / 3 * (1.5 + deltaAngle), -size).rotate(angle);
+        Vec2 rightPoint = new Vec2(-size / 3 * (1.5 + deltaAngle), -size).rotate(angle);
+
+        v3dGuiTriangle.setPoint((int) topPoint.x, (int) topPoint.y, (int) leftPoint.x, (int) leftPoint.y, (int) rightPoint.x, (int) rightPoint.y);
     }
 
     @Override
     public V3DGuiComponent getGuiElement() {
         return v3dGuiTriangle;
     }
-    
+
     @Override
     public GuiLayer getLayer() {
         return GuiLayer.HUD;
     }
-    
-    
 
 }
