@@ -190,7 +190,7 @@ public class Vec3 {
     }
 
     public Vec3 cross(Vec3 v) {
-        return new Vec3(y*v.z - z*v.y, z*v.x - x*v.z, x*y - y*v.x);
+        return new Vec3(y*v.z - z*v.y, z*v.x - x*v.z, x*v.y - y*v.x);
     }
 
     

@@ -40,7 +40,7 @@ public class GuiTrackingArrow extends GuiAnimatedElement {
 
         Vec3 top = camera.getTop().normalize();
         Vec3 front = target.minus(eye).normalize();
-        Vec3 left = top.cross(front);
+        Vec3 left = top.cross(front).normalize();
 
         Vec3 distance = followed.getTransform().getTranslation().minus(eye);
         Vec3 relPos = distance.normalize();
@@ -55,6 +55,20 @@ public class GuiTrackingArrow extends GuiAnimatedElement {
 
         double deltaAngle = front.dot(relPos);
 
+        // System.err.println("eye: "+eye);
+        // System.err.println("target: "+target);
+        // System.err.println("distance: "+distance);
+        //
+        //
+        // System.err.println("relPos: "+relPos);
+        // System.err.println("front: "+front);
+        // System.err.println("top: "+top);
+        // System.err.println("left: "+left);
+        //
+        // System.err.println("front cross relPos: "+deltaAngle);
+        // System.err.println("left cross relPos: "+left.dot(relPos));
+        // System.err.println("top cross relPos: "+top.dot(relPos));
+
         if (deltaAngle < 0.88) {
             v3dGuiTriangle.setFillColor(color);
         } else if (deltaAngle < 0.92) {
@@ -65,7 +79,11 @@ public class GuiTrackingArrow extends GuiAnimatedElement {
             v3dGuiTriangle.setFillColor(V3DColor.transparent);
         }
 
-        double size = 5 + (Math.min(1000f - distance.length(), 0)) / 50f;
+        // System.err.println("distance.length(): "+distance.length());
+
+        double size = 10 + (Math.max(1000f - distance.length(), 0)) / 100f;
+
+        // System.err.println("size: "+size);
 
         double angle = -pos.getAngle() - Math.PI / 2;
 
