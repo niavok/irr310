@@ -568,7 +568,6 @@ public class PhysicEngine extends FramerateEngine {
             body.setLinearVelocity(part.getLinearSpeed().toVector3f());
             body.setAngularVelocity(part.getRotationSpeed().toVector3f());
             body.activate(true);
-            System.err.println("vel: "+part.getLinearSpeed());
         }
 
         public void setBody(RigidBody body) {

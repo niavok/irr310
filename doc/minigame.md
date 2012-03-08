@@ -28,12 +28,13 @@ Upgrades
 
 Monolith upgrade
 ----------------
-- Increase capitalization rate
+- Increase capitalization rate - >Reput
 - Increase monolith repair rate
 - Increase ship repair rate
 - Increase interact zone
 - Buy a harvester / Increase harvester speed/capacity/resistance/ autorepair speed
 - ...
+- Turret
 
 - defence wall (destroyable ?)
 
@@ -44,16 +45,24 @@ Ship upgrade
 - Increase engine reactivity
 - Increase wings efficiency
 - Increase each component armor
+- sheld
+- teleport   ( distance , speed, angle)
+- turn help (thrusters)
+
+
+Weapon upgrade
+--------------
+
+-Slot count
 - Increase gun power
 - ...
-- sheld
-- missile
-- rear gun
-- teleport
-- turn help (thrusters)
 - shutgun
+- missile (ammo limit)
+- rear gun
 - bomb
-- driver customization
+- mines
+
+
 - damage control
 - reparation control
 - inline auto repair
@@ -66,6 +75,8 @@ Gui upgrade
 - ...
 - follow
 
+...
+- driver customization
 
 Reputation
 =================

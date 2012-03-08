@@ -11,6 +11,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.fenggui.event.ButtonPressedEvent;
+import org.fenggui.event.IButtonPressedListener;
 import org.lwjgl.opengl.ARBShaderObjects;
 
 import com.irr310.client.graphics.effects.BulletEffect;
@@ -70,6 +72,7 @@ import fr.def.iss.vd2.lib_v3d.element.V3DLine;
 import fr.def.iss.vd2.lib_v3d.element.V3DPoint;
 import fr.def.iss.vd2.lib_v3d.element.V3DShaderElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DrawElement;
+import fr.def.iss.vd2.lib_v3d.gui.V3DButton;
 import fr.def.iss.vd2.lib_v3d.gui.V3DContainer;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGui;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent;
@@ -114,6 +117,7 @@ public class WorldRenderer implements GraphicRenderer {
     private V3DLabel monolithStatusText;
     private V3DLabel moneyText;
     private V3DLabel embeddedMoneyText;
+    private V3DContainer upgradeMenu;
 
     public WorldRenderer(GraphicEngine engine) {
         this.engine = engine;
@@ -216,13 +220,19 @@ public class WorldRenderer implements GraphicRenderer {
         V3DGui gui = fullscreenBinding.getGui();
 
         hudLayer = new V3DGuiLayer(gui);
+        hudLayer.getFenGUIWidget().setBlockClick(false);
         interfaceLayer = new V3DGuiLayer(gui);
+        interfaceLayer.getFenGUIWidget().setBlockClick(false);
         mainMenuLayer = new V3DGuiLayer(gui);
+        mainMenuLayer.getFenGUIWidget().setBlockClick(false);
 
         V3DGuiLayer menuLayer = new V3DGuiLayer(gui);
+        menuLayer.getFenGUIWidget().setBlockClick(false);
         V3DGuiLayer pauseLayer = new V3DGuiLayer(gui);
+        pauseLayer.getFenGUIWidget().setBlockClick(false);
         // pauseLayer.setColor(new V3DColor(0,0,0,0.5f));
         V3DGuiLayer popUpLayer = new V3DGuiLayer(gui);
+        popUpLayer.getFenGUIWidget().setBlockClick(false);
 
         gui.add(hudLayer);
         gui.add(interfaceLayer);
@@ -292,7 +302,7 @@ public class WorldRenderer implements GraphicRenderer {
 
         V3DContainer container = new V3DContainer();
         container.setPosition(10, 10);
-        container.setSize(200, 140);
+        container.setSize(200, 110);
         container.setyAlignment(GuiYAlignment.BOTTOM);
         interfaceLayer.add(container);
 
@@ -336,14 +346,28 @@ public class WorldRenderer implements GraphicRenderer {
         embeddedMoneyText.setFontStyle("Ubuntu", "bold", 25);
         embeddedMoneyText.setColor(irrGreen, V3DColor.transparent);
         container.add(embeddedMoneyText);
+        
+        
+        V3DButton button  = new V3DButton("");
+        button.setPosition(0, 0);
+        button.setPadding(140,200,0,0);
+        button.getFenGUIWidget().addButtonPressedListener(new IButtonPressedListener() {
+            
+            @Override
+            public void buttonPressed(ButtonPressedEvent e) {
+                toogleUpgradeMenu();
+            }
 
+            
+        });
+        container.add(button);
     }
 
     private void generateReputationBox() {
 
         V3DContainer container = new V3DContainer();
         container.setPosition(250, 10);
-        container.setSize(200, 130);
+        container.setSize(200, 110);
         container.setyAlignment(GuiYAlignment.BOTTOM);
         interfaceLayer.add(container);
 
@@ -443,6 +467,39 @@ public class WorldRenderer implements GraphicRenderer {
         container.add(monolithStatusText);
         updateMonolithStatus();
 
+    }
+    
+    private void toogleUpgradeMenu() {
+        if(upgradeMenu == null) {
+        upgradeMenu = new V3DContainer();
+        upgradeMenu.setPosition(-2, 123);
+        upgradeMenu.setSize(500, 600);
+        upgradeMenu.setyAlignment(GuiYAlignment.BOTTOM);
+        interfaceLayer.add(upgradeMenu);
+
+        V3DGuiRectangle upgradeBase = new V3DGuiRectangle();
+        upgradeBase.setyAlignment(GuiYAlignment.BOTTOM);
+        upgradeBase.setPosition(0, 0);
+        upgradeBase.setSize(500, 600);
+        upgradeBase.setBorderWidth(4);
+        upgradeBase.setFillColor(irrFill);
+        upgradeBase.setBorderColor(irrGreen);
+        upgradeMenu.add(upgradeBase);
+
+        V3DGuiRectangle upgradeTop = new V3DGuiRectangle();
+        upgradeTop.setyAlignment(GuiYAlignment.BOTTOM);
+        upgradeTop.setPosition(0, 0);
+        upgradeTop.setBorderWidth(4);
+        upgradeTop.setSize(500, 30);
+        upgradeTop.setFillColor(irrGreen);
+        upgradeTop.setBorderColor(irrGreen);
+        upgradeMenu.add(upgradeTop);
+        
+        } else {
+            interfaceLayer.remove(upgradeMenu);
+            upgradeMenu = null;
+        }
+        
     }
 
     private void updateMonolithStatus() {

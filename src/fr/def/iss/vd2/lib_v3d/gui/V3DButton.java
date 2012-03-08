@@ -61,6 +61,7 @@ public class V3DButton extends V3DGuiComponent {
         button.setExpandable(true);
         button.getAppearance().add(new PlainBackground(new Color(1.0f, 1.0f, 1.0f, 0.8f)));
         button.setShrinkable(true);
+        this.backgroundColor = V3DColor.transparent;
     }
 
     public void setColor(V3DColor foregroundColor, V3DColor backgroundColor) {
@@ -147,6 +148,7 @@ public class V3DButton extends V3DGuiComponent {
         }
     }
 
+    
     public Point getSize() {
         Dimension dim = button.getSize();
 

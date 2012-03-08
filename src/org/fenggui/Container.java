@@ -533,7 +533,7 @@ public class Container extends StandardWidget implements IContainer, Cloneable
     }
 
     IWidget ret = null;
-    IWidget hit = this;
+    IWidget hit = (isBlockClick() ? this : null);
     x -= getAppearance().getLeftMargins();
     y -= getAppearance().getBottomMargins();
 
@@ -544,8 +544,8 @@ public class Container extends StandardWidget implements IContainer, Cloneable
       {
         IWidget w = notifyList.get(i);
         ret = w.getWidget(x - w.getX(), y - w.getY());
-
-        if (ret != null)
+        
+        if (ret != null && ret.isBlockClick())
         {
           hit = ret;
           break;

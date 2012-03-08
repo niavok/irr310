@@ -375,6 +375,9 @@ public interface IWidget extends IXMLStreamable
    */
   public boolean isTraversable();
 
+  
+  public boolean isBlockClick();
+  
   /**
    * This is called if the widget is removed from the widget Tree. 
    */

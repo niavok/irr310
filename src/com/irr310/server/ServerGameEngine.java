@@ -135,9 +135,6 @@ public class ServerGameEngine extends FramerateEngine {
                                                  .minus(object.getFirstPart().getTransform().getTranslation())
                                                  .normalize()
                                                  .multiply(1);
-                        System.err.println("Loot speed:" + lootSpeed+" "+lootSpeed.length());
-                        System.err.println("Loot pos:" + object.getFirstPart().getTransform().getTranslation());
-                        System.err.println("Player count:" + Game.getInstance().getWorld().getPlayers().size());
                         
                         object.getFirstPart().getLinearSpeed().set(lootSpeed);
                         Game.getInstance().getPhysicEngine().reloadStates(object.getFirstPart());

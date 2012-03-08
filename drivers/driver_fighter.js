@@ -725,7 +725,7 @@ function driver() {
         this.onMouseEvent = function(action, button, x, y) {
             switch(action) {
                 case MOUSE_PRESSED:
-                    core.log("mouse pressed");
+                    //core.log("mouse pressed");
                     if(this.rotationControlleurEnabled) {
                         if(button == 1) {
                             gun.fire(true);
