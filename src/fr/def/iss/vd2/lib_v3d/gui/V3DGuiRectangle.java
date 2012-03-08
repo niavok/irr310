@@ -3,6 +3,7 @@ package fr.def.iss.vd2.lib_v3d.gui;
 import org.fenggui.Widget;
 import org.fenggui.binding.render.Graphics;
 import org.fenggui.util.Dimension;
+import org.lwjgl.opengl.GL11;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 
@@ -23,14 +24,12 @@ public class V3DGuiRectangle extends V3DGuiComponent {
             public void paint(Graphics g) {
                 if(fillColor != null) {
                     g.setColor(fillColor.toColor());
-                    g.setLineWidth(borderWidth);
-                    
                     g.drawFilledRectangle(0, 0, size.getWidth(), size.getHeight());
                 }
                 
                 if(borderColor != null) {
                     g.setColor(borderColor.toColor());
-                    g.drawWireRectangle(0,0, size.getWidth(), size.getHeight());
+                    g.drawWireRectangle2(0,0, size.getWidth(), size.getHeight(),borderWidth);
                 }
                 
                 
