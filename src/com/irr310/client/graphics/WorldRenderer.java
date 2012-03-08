@@ -115,6 +115,7 @@ public class WorldRenderer implements GraphicRenderer {
     private V3DLabel monolithStatusText;
     private V3DLabel moneyText;
     private V3DContainer upgradeMenu;
+    boolean upgradeMenuEnabled = false;
 
     public WorldRenderer(GraphicEngine engine) {
         this.engine = engine;
@@ -175,6 +176,9 @@ public class WorldRenderer implements GraphicRenderer {
 
     private void reloadGui() {
 
+        upgradeMenu = null;
+        upgradeMenuEnabled = false;
+        
         // Generate logo
         V3DLabel logoIRR = new V3DLabel("IRR");
         logoIRR.setFontStyle("Ubuntu", "bold", 24);
@@ -461,11 +465,14 @@ public class WorldRenderer implements GraphicRenderer {
     private void toogleUpgradeMenu() {
         if(upgradeMenu == null) {
             upgradeMenu = new UpgradeMenu();
-            interfaceLayer.add(upgradeMenu);
+        }
         
+        if(!upgradeMenuEnabled) {
+            interfaceLayer.add(upgradeMenu);
+            upgradeMenuEnabled = true;
         } else {
             interfaceLayer.remove(upgradeMenu);
-            upgradeMenu = null;
+            upgradeMenuEnabled = false;
         }
         
     }

@@ -17,6 +17,7 @@
 package fr.def.iss.vd2.lib_v3d;
 
 import java.awt.Canvas;
+import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
@@ -90,13 +91,16 @@ public class V3DCanvas {
             
             frame = new JFrame("Irr310");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(width,height);
-            frame.setUndecorated(true);  //here
+            //frame.setSize(width,height);
+            //frame.setUndecorated(true);  //here
             frame.setVisible(true);
             //frame.setAlwaysOnTop(true);
             frame.setLocation(0, 0);
             Canvas canvas = new Canvas();
+            canvas.setMinimumSize(new Dimension(width, height));
+            canvas.setPreferredSize(new Dimension(width, height));
             frame.add(canvas);
+            frame.pack();
             
             Display.setDisplayMode(new DisplayMode(width, height));
             //Display.setFullscreen(true);

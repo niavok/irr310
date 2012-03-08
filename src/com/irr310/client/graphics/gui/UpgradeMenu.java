@@ -1,6 +1,13 @@
 package com.irr310.client.graphics.gui;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.fenggui.event.ButtonPressedEvent;
+import org.fenggui.event.IButtonPressedListener;
+
 import fr.def.iss.vd2.lib_v3d.V3DColor;
+import fr.def.iss.vd2.lib_v3d.gui.V3DButton;
 import fr.def.iss.vd2.lib_v3d.gui.V3DContainer;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiRectangle;
 import fr.def.iss.vd2.lib_v3d.gui.V3DLabel;
@@ -9,6 +16,7 @@ import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent.GuiYAlignment;
 public class UpgradeMenu extends V3DContainer{
 
     int tabOffset = 40;
+    List<GuiTab> tabs = new ArrayList<GuiTab>();
     
     public UpgradeMenu() {
         setPosition(-2, 123);
@@ -34,14 +42,18 @@ public class UpgradeMenu extends V3DContainer{
         
         
         //Tabs
-        
-        
-        addTab("Weapon");
-        addTab("Defenses");
-        addTab("Ship");
-        addTab("Monolith");
-        addTab("Tools");
-        
+        addTab(new UpgradeWeaponTab());
+        addTab(new UpgradeWeaponTab());
+        addTab(new UpgradeWeaponTab());
+        addTab(new UpgradeWeaponTab());
+        addTab(new UpgradeWeaponTab());
+        addTab(new UpgradeWeaponTab());
+//        addTab("Weapon", new UpgradeWeaponTab());
+//        addTab("Defenses", new UpgradeWeaponTab());
+//        addTab("Ship", new UpgradeWeaponTab());
+//        addTab("Monolith", new UpgradeWeaponTab());
+//        addTab("Tools", new UpgradeWeaponTab());
+//        
         //Tab content
         V3DGuiRectangle tabContent= new V3DGuiRectangle();
         tabContent.setyAlignment(GuiYAlignment.TOP);
@@ -54,34 +66,43 @@ public class UpgradeMenu extends V3DContainer{
         
         
         add(upgradeTop);
+        
+        setActive(tabs.get(0));
     }
 
-    private void addTab(String string) {
-        V3DGuiRectangle weaponTabBox = new V3DGuiRectangle();
-        weaponTabBox.setyAlignment(GuiYAlignment.TOP);
-        weaponTabBox.setPosition(10, tabOffset+2);
-        weaponTabBox.setSize(130, 40);
-        weaponTabBox.setBorderWidth(2);
-        weaponTabBox.setFillColor(GuiConstants.irrFill);
-        weaponTabBox.setBorderColor(GuiConstants.irrGreen);
-        add(weaponTabBox);
+    private void addTab(final GuiTab tabComponent) {
         
-        V3DLabel weaponTabText = new V3DLabel(string);
-        weaponTabText.setyAlignment(GuiYAlignment.TOP);
-        weaponTabText.setPosition(25, tabOffset+12);
-        weaponTabText.setFontStyle("Ubuntu", "bold", 18);
-        weaponTabText.setColor(GuiConstants.irrGreen, V3DColor.transparent);
-        add(weaponTabText);
+        tabs.add(tabComponent);
+        V3DContainer labelPane = tabComponent.getLabelPane();
         
-        V3DLabel tabTextCount = new V3DLabel("12");
-        tabTextCount.setyAlignment(GuiYAlignment.TOP);
-        tabTextCount.setxAlignment(GuiXAlignment.LEFT);
-        tabTextCount.setPosition(120, tabOffset+22);
-        tabTextCount.setFontStyle("Ubuntu", "", 10);
-        tabTextCount.setColor(V3DColor.darkgrey, V3DColor.transparent);
-        add(tabTextCount);
+        labelPane.setPosition(10, tabOffset);
         
-        tabOffset+= 50;
+        add(labelPane);
+        
+        
+        
+        V3DButton button = new V3DButton("");
+        button.setPadding(labelPane.getHeight(), labelPane.getWidth(), 0,0);
+        button.setPosition(10, tabOffset);
+        button.getFenGUIWidget().addButtonPressedListener(new IButtonPressedListener() {
+            
+            @Override
+            public void buttonPressed(ButtonPressedEvent e) {
+                setActive(tabComponent);
+            }
+        });
+        add(button);
+
+        tabOffset  += labelPane.getHeight();
+
+        
+        
+    }
+
+    protected void setActive(GuiTab tabComponent) {
+        for(GuiTab tab : tabs) {
+            tab.setActive(tab == tabComponent);
+        }
     }
     
     
