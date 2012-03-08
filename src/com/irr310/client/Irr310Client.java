@@ -1,5 +1,7 @@
 package com.irr310.client;
 
+import java.lang.reflect.Field;
+
 import javax.swing.UIManager;
 
 import com.irr310.common.tools.Log;
@@ -12,6 +14,34 @@ public class Irr310Client {
     public static void main(String[] args) {
         Log.perfBegin("Init");
 
+        if(System.getProperty("os.name").equals("Linux")) {
+            System.setProperty( "java.library.path", "lib/lwjgl/native/linux");
+        } else if(System.getProperty("os.name").startsWith("Windows")) {
+            System.setProperty( "java.library.path", "lib/lwjgl/native/windows");
+        } else if(System.getProperty("os.name").startsWith("Mac")) {
+            System.setProperty( "java.library.path", "lib/lwjgl/native/macosx");
+        } else {
+            System.err.println("Unknown system type: "+System.getProperty("os.name"));
+        }
+        
+        Field fieldSysPath;
+        try {
+            fieldSysPath = ClassLoader.class.getDeclaredField( "sys_paths" );
+        
+        fieldSysPath.setAccessible( true );
+        fieldSysPath.set( null, null );
+        
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        
+        
 //        Log.perfBegin("Set LookAndFeel");
 //        setLookAndFeel();
 //        Log.perfEnd(); // SetLookAndFeel
