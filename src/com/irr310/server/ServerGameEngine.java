@@ -36,6 +36,7 @@ import com.irr310.common.world.DamageType;
 import com.irr310.common.world.Loot;
 import com.irr310.common.world.Monolith;
 import com.irr310.common.world.Part;
+import com.irr310.common.world.Player;
 import com.irr310.common.world.Ship;
 import com.irr310.common.world.WorldObject;
 import com.irr310.common.world.capacity.Capacity;
@@ -98,7 +99,7 @@ public class ServerGameEngine extends FramerateEngine {
                             .getFirstPart()
                             .getTransform()
                             .getTranslation()
-                            .distanceTo(object.getFirstPart().getTransform().getTranslation()) < 20) {
+                            .distanceTo(object.getFirstPart().getTransform().getTranslation()) < 25) {
                         Loot loot = (Loot) object;
 
                         Game.getInstance().getWorld().removeCelestialObject(object, Reason.LOOTED);
@@ -109,12 +110,46 @@ public class ServerGameEngine extends FramerateEngine {
                 }
             }
         }
+        
+        // Check player distance to monolith
+        Monolith monolith = null;
+        for (CelestialObject object : Game.getInstance().getWorld().getCelestialsObjects()) {
+            if (object instanceof Monolith) {
+                monolith = (Monolith) object;
+                break;
+            }
+        }
+        
+        for (Ship ship : Game.getInstance().getWorld().getShips()) {
+            if (ship.getComponentByName("kernel")
+                    .getFirstPart()
+                    .getTransform()
+                    .getTranslation()
+                    .distanceTo(monolith.getFirstPart().getTransform().getTranslation()) < 80) {
+                
+                     int embeddedMoney = ship.getOwner().getEmbeddedMoney();
+                    if(embeddedMoney > 0) {
+                        ship.getOwner().retireMoney(embeddedMoney, true);
+                        ship.getOwner().giveMoney(embeddedMoney, false); 
+                     }
+                
+                
+                }
+                
+            }
+        
 
         if (stillPlaying) {
             // Next Wave
             if (currentTime.after(nextWaveTime)) {
                 nextWave();
                 beginWaveTime = currentTime;
+                
+                // Interrest (10%);
+                for (Player player: Game.getInstance().getWorld().getPlayers()) {
+                    player.giveMoney((int) (player.getMoney() *0.1), false);
+                }
+                
             }
         }
 
