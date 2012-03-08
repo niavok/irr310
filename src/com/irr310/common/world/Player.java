@@ -19,7 +19,6 @@ public class Player extends GameEntity {
     private String passwordSalt;
     private List<Ship> shipList;
     private int  money;
-    private int  embeddedMoney;
     
 	public Player(long id, String login) {
 	    super(id);
@@ -75,28 +74,12 @@ public class Player extends GameEntity {
         this.money = money;
     }
     
-    public int getEmbeddedMoney() {
-        return embeddedMoney;
+    public void giveMoney(int amount) {
+        money += amount;
+        Game.getInstance().sendToAll(new MoneyChangedEvent(amount, this, true));
     }
     
-    public void setEmbeddedMoney(int embeddedMoney) {
-        this.embeddedMoney = embeddedMoney;
-    }
-
-    public void giveMoney(int amount, boolean embedded) {
-        if(embedded) {
-            embeddedMoney += amount;
-        } else {
-            money += amount;
-        }
-        Game.getInstance().sendToAll(new MoneyChangedEvent(amount, this, embedded, true));
-    }
-    
-    public void retireMoney(int amount, boolean embedded) {
-        if(embedded) {
-            embeddedMoney -= amount;
-        } else {
-            money -= amount;
-        }
+    public void retireMoney(int amount) {
+        money -= amount;
     }
 }

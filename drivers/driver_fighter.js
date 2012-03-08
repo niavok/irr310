@@ -406,7 +406,7 @@ function driver() {
             speedIndicatorUnit.setFontStyle("bold",25);
             speedIndicatorUnit.setColor(new Color(0.0,0.0,0.0));
             
-            this.xPositionIndicator = core.gui.createLabel();
+            /*this.xPositionIndicator = core.gui.createLabel();
             this.xPositionIndicator.setText("x= -- m");
             this.xPositionIndicator.setPosition(new Vec2(this.screenSize.getX() - 100,this.screenSize.getY() - 200 ));
             this.xPositionIndicator.setFontStyle("",16);
@@ -461,7 +461,7 @@ function driver() {
             this.zLinearSpeedIndicator.setPosition(new Vec2(this.screenSize.getX() - 100,this.screenSize.getY() - 360 ));
             this.zLinearSpeedIndicator.setFontStyle("",16);
             this.zLinearSpeedIndicator.setColor(new Color(0.0,0.0,0.0));
-            
+            */
 
             //Speed box
             this.speedBoxMaxSize = 200;
@@ -519,7 +519,7 @@ function driver() {
                 
                 
                
-                
+                /*
                 //Position
                 var x = kernel.getTransform().getTranslation().getX().toFixed(1);
                 this.xPositionIndicator.setText("x= "+x+" m");
@@ -545,7 +545,7 @@ function driver() {
                 this.yLinearSpeedIndicator.setText("vy= "+y+" m/s");
                 var z = kernel.getLinearSpeed().getZ().toFixed(1);
                 this.zLinearSpeedIndicator.setText("vz= "+z+" m/s");
-                
+                */
                 this.lastTime = time;
             }
             

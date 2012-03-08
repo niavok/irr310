@@ -6,13 +6,11 @@ public class MoneyChangedEvent extends EngineEvent {
 
     private final int amount;
     private final Player player;
-    private final boolean embedded;
     private final boolean positive;
 
-    public MoneyChangedEvent(int amount, Player player, boolean embedded, boolean positive) {
+    public MoneyChangedEvent(int amount, Player player, boolean positive) {
         this.amount = amount;
         this.player = player;
-        this.embedded = embedded;
         this.positive = positive;
     }
 
@@ -27,10 +25,6 @@ public class MoneyChangedEvent extends EngineEvent {
 
     public Player getPlayer() {
         return player;
-    }
-
-    public boolean isEmbedded() {
-        return embedded;
     }
 
     public boolean isPositive() {

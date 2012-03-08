@@ -45,7 +45,7 @@ public class UpgradeMenu extends V3DContainer{
         //Tab content
         V3DGuiRectangle tabContent= new V3DGuiRectangle();
         tabContent.setyAlignment(GuiYAlignment.TOP);
-        tabContent.setPosition(139, 20);
+        tabContent.setPosition(140, 20);
         tabContent.setSize(340, 530);
         tabContent.setBorderWidth(2);
         tabContent.setFillColor(GuiConstants.irrFill);

@@ -114,7 +114,6 @@ public class WorldRenderer implements GraphicRenderer {
     private V3DGuiRectangle monolithStatus;
     private V3DLabel monolithStatusText;
     private V3DLabel moneyText;
-    private V3DLabel embeddedMoneyText;
     private V3DContainer upgradeMenu;
 
     public WorldRenderer(GraphicEngine engine) {
@@ -332,19 +331,10 @@ public class WorldRenderer implements GraphicRenderer {
         moneyText = new V3DLabel(LoginManager.localPlayer.getMoney() + " $");
         moneyText.setyAlignment(GuiYAlignment.BOTTOM);
         moneyText.setxAlignment(GuiXAlignment.RIGHT);
-        moneyText.setPosition(15, 28);
+        moneyText.setPosition(20, 15);
         moneyText.setFontStyle("Ubuntu", "bold", 45);
         moneyText.setColor(GuiConstants.irrGreen, V3DColor.transparent);
         container.add(moneyText);
-        
-        embeddedMoneyText = new V3DLabel("+ "+ LoginManager.localPlayer.getEmbeddedMoney() + " $");
-        embeddedMoneyText.setyAlignment(GuiYAlignment.BOTTOM);
-        embeddedMoneyText.setPosition(35, 5);
-        embeddedMoneyText.setxAlignment(GuiXAlignment.RIGHT);
-        embeddedMoneyText.setFontStyle("Ubuntu", "bold", 25);
-        embeddedMoneyText.setColor(GuiConstants.irrGreen, V3DColor.transparent);
-        container.add(embeddedMoneyText);
-        
         
         V3DButton button  = new V3DButton("");
         button.setPosition(0, 0);
@@ -395,8 +385,9 @@ public class WorldRenderer implements GraphicRenderer {
         container.add(upgradeText);
 
         final V3DLabel moneyText = new V3DLabel("0");
+        moneyText.setxAlignment(GuiXAlignment.RIGHT);
         moneyText.setyAlignment(GuiYAlignment.BOTTOM);
-        moneyText.setPosition(30, 15);
+        moneyText.setPosition(40, 15);
         moneyText.setFontStyle("Ubuntu", "bold", 45);
         moneyText.setColor(GuiConstants.irrBlue, V3DColor.transparent);
         container.add(moneyText);
@@ -870,7 +861,6 @@ public class WorldRenderer implements GraphicRenderer {
         @Override
         public void visit(MoneyChangedEvent event) {
             moneyText.setText(LoginManager.localPlayer.getMoney()+" $");
-            embeddedMoneyText.setText("+ "+ LoginManager.localPlayer.getEmbeddedMoney()+" $");
         }
 
     }

@@ -102,8 +102,8 @@ public class ServerGameEngine extends FramerateEngine {
                             .distanceTo(object.getFirstPart().getTransform().getTranslation()) < 25) {
                         Loot loot = (Loot) object;
 
-                        loot(loot, ship.getOwner());
-
+                        Game.getInstance().getWorld().removeCelestialObject(loot, Reason.LOOTED);
+                        distachRevenue(loot.getValue());
                     }
                 }
             }
@@ -149,12 +149,7 @@ public class ServerGameEngine extends FramerateEngine {
                         .getTranslation()
                         .distanceTo(monolith.getFirstPart().getTransform().getTranslation()) < 80) {
 
-                    int embeddedMoney = ship.getOwner().getEmbeddedMoney();
-
-                    if (embeddedMoney > 0) {
-                        ship.getOwner().retireMoney(distachRevenue(embeddedMoney), true);
-                    }
-
+                        // Can build
                 }
 
             }
@@ -168,7 +163,7 @@ public class ServerGameEngine extends FramerateEngine {
 
                 // Interrest (10%);
                 for (Player player : Game.getInstance().getWorld().getPlayers()) {
-                    player.giveMoney((int) (player.getMoney() * 0.1), false);
+                    player.giveMoney((int) (player.getMoney() * 0.1));
                 }
 
             }
@@ -185,16 +180,12 @@ public class ServerGameEngine extends FramerateEngine {
 
         int amountPerPlayer = amount / players.size();
         for (Player player : players) {
-            player.giveMoney(amountPerPlayer, false);
+            player.giveMoney(amountPerPlayer);
 
         }
         return amountPerPlayer * players.size();
     }
 
-    private void loot(Loot loot, Player player) {
-        Game.getInstance().getWorld().removeCelestialObject(loot, Reason.LOOTED);
-        player.giveMoney(loot.getValue(), true);
-    }
 
     private final class GameEngineEventVisitor extends DefaultEngineEventVisitor {
 
