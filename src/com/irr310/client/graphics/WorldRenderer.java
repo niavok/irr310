@@ -20,6 +20,7 @@ import com.irr310.client.graphics.skin.FactorySkin;
 import com.irr310.client.graphics.skin.GenericSkin;
 import com.irr310.client.graphics.skin.GunSkin;
 import com.irr310.client.graphics.skin.HullSkin;
+import com.irr310.client.graphics.skin.LootSkin;
 import com.irr310.client.graphics.skin.MonolithSkin;
 import com.irr310.client.graphics.skin.PropellerSkin;
 import com.irr310.client.graphics.skin.PvCellSkin;
@@ -660,10 +661,17 @@ public class WorldRenderer implements GraphicRenderer {
                 skin = new MonolithSkin(this, (CelestialObject) object);
 
                 GuiTrackingArrow guiTrackingArrow = new GuiTrackingArrow(this, cameraController, object.getFirstPart());
+                guiTrackingArrow.setColor(new V3DColor(88, 9, 168, 0.8f));
+                addPersistantGuiElement(guiTrackingArrow);
+                worldObjectToV3DElementMap.get(object).add(guiTrackingArrow);
+            } else if (object.getSkin().equals("loot")) {
+                skin = new LootSkin(this, (CelestialObject) object);
+
+                GuiTrackingArrow guiTrackingArrow = new GuiTrackingArrow(this, cameraController, object.getFirstPart());
                 guiTrackingArrow.setColor(new V3DColor(32, 200, 32, 0.8f));
                 addPersistantGuiElement(guiTrackingArrow);
                 worldObjectToV3DElementMap.get(object).add(guiTrackingArrow);
-            } else {
+            }else {
                 System.err.println("No skin found for: " + object.getSkin());
                 skin = new GenericSkin(this, object);
             }
