@@ -60,12 +60,12 @@ function driver() {
         
         core.log("maxThrust "+maxThrust);        
         // Add key handler
-        core.onKeyPressed = function (keyCode, char) {
-            gui.onKeyPressed(keyCode, char);
+        core.onKeyPressed = function (keyCode, character) {
+            gui.onKeyPressed(keyCode, character);
         }
 
-        core.onKeyReleased = function (keyCode, char) {
-            gui.onKeyReleased(keyCode, char);
+        core.onKeyReleased = function (keyCode, character) {
+            gui.onKeyReleased(keyCode, character);
         }
         
         core.onMouseEvent = function(action, button, x, y) {
