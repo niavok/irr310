@@ -54,4 +54,6 @@ public interface EngineEventVisitor {
     public abstract void visit(RemoveGuiComponentEvent event);
 
     public abstract void visit(NextWaveEvent event);
+
+    public abstract void visit(MoneyChangedEvent event);
 }

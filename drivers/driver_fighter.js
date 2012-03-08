@@ -664,10 +664,17 @@ function driver() {
             this.initialYMousePosition = core.mouse.getPosition().getY();
             this.initialSpeedTarget = speedTarget;
             this.thrustControlleurEnabled = true;
+            
+            
         }        
         
         this.disableThrustController = function() {
             this.thrustControlleurEnabled = false;
+            if(this.rotationControlleurEnabled) {
+                this.disableRotationController();
+                this.enableRotationController();
+            }
+            
         }
         
         

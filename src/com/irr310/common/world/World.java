@@ -1,6 +1,5 @@
 package com.irr310.common.world;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -230,6 +229,10 @@ public class World {
 
     public List<Ship> getShips() {
         return ships;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
     }
 
 }

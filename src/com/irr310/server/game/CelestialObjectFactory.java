@@ -2,6 +2,7 @@ package com.irr310.server.game;
 
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Asteroid;
+import com.irr310.common.world.Loot;
 import com.irr310.server.GameServer;
 
 public class CelestialObjectFactory {
@@ -18,5 +19,13 @@ public class CelestialObjectFactory {
         return asteroid;
     }
     
+    public static Loot createLoot(int value) {
+        Loot loot = new Loot(GameServer.pickNewId(), ""+value+" $");
+        loot.setValue(value);
+        loot.getFirstPart().setShape(new Vec3(value/50., value/50., value/50.));
+        loot.getFirstPart().setMass(value*20.);
+        
+        return loot;
+    }
     
 }

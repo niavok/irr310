@@ -97,4 +97,8 @@ public class DefaultEngineEventVisitor implements EngineEventVisitor {
     @Override
     public void visit(NextWaveEvent event) {
     }
+    
+    @Override
+    public void visit(MoneyChangedEvent event) {
+    }
 }

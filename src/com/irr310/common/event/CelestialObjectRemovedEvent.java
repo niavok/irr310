@@ -6,7 +6,7 @@ import com.irr310.common.world.CelestialObject;
 public class CelestialObjectRemovedEvent extends EngineEvent {
 
     public enum Reason {
-        LEAVE_OUT_WORLD, DESTROYED,
+        LEAVE_OUT_WORLD, DESTROYED, LOOTED,
     }
     
 	final private CelestialObject object;

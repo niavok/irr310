@@ -33,6 +33,7 @@ import com.irr310.common.world.Asteroid;
 import com.irr310.common.world.CelestialObject;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.DamageType;
+import com.irr310.common.world.Loot;
 import com.irr310.common.world.Monolith;
 import com.irr310.common.world.Part;
 import com.irr310.common.world.Ship;
@@ -85,6 +86,26 @@ public class ServerGameEngine extends FramerateEngine {
                 if (part.getParentObject() instanceof CelestialObject) {
                     CelestialObject object = (CelestialObject) part.getParentObject();
                     Game.getInstance().getWorld().removeCelestialObject(object, Reason.LEAVE_OUT_WORLD);
+                }
+            }
+        }
+
+        // Check loot gain
+        for (CelestialObject object : Game.getInstance().getWorld().getCelestialsObjects()) {
+            if (object instanceof Loot) {
+                for (Ship ship : Game.getInstance().getWorld().getShips()) {
+                    if (ship.getComponentByName("kernel")
+                            .getFirstPart()
+                            .getTransform()
+                            .getTranslation()
+                            .distanceTo(object.getFirstPart().getTransform().getTranslation()) < 20) {
+                        Loot loot = (Loot) object;
+
+                        Game.getInstance().getWorld().removeCelestialObject(object, Reason.LOOTED);
+
+                        ship.getOwner().giveMoney(loot.getValue(), true);
+
+                    }
                 }
             }
         }
@@ -213,6 +234,11 @@ public class ServerGameEngine extends FramerateEngine {
         public void visit(CelestialObjectRemovedEvent event) {
             if (event.getObject() instanceof Monolith) {
                 Game.getInstance().sendToAll(new GameOverEvent("The monolith is destroyed"));
+            } else if (event.getObject() instanceof Asteroid) {
+                Loot loot = CelestialObjectFactory.createLoot(50);
+                loot.getFirstPart().getLinearSpeed().set(event.getObject().getFirstPart().getLinearSpeed());
+                loot.getFirstPart().getTransform().setTranslation(event.getObject().getFirstPart().getTransform().getTranslation());
+                Game.getInstance().getWorld().addCelestialObject(loot);
             }
         }
 

@@ -100,6 +100,10 @@ public class Ship extends GameEntity implements Container {
         
         this.owner.giveShip(this);
     }
+    
+    public Player getOwner() {
+        return owner;
+    }
 
     public ShipView toView() {
         ShipView shipView = new ShipView();

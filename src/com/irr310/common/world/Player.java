@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
+import com.irr310.common.Game;
+import com.irr310.common.event.MoneyChangedEvent;
 import com.irr310.common.tools.Hash;
 import com.irr310.common.world.view.PlayerView;
 
@@ -17,6 +19,7 @@ public class Player extends GameEntity {
     private String passwordSalt;
     private List<Ship> shipList;
     private int  money;
+    private int  embeddedMoney;
     
 	public Player(long id, String login) {
 	    super(id);
@@ -70,5 +73,30 @@ public class Player extends GameEntity {
     
     public void setMoney(int money) {
         this.money = money;
+    }
+    
+    public int getEmbeddedMoney() {
+        return embeddedMoney;
+    }
+    
+    public void setEmbeddedMoney(int embeddedMoney) {
+        this.embeddedMoney = embeddedMoney;
+    }
+
+    public void giveMoney(int amount, boolean embedded) {
+        if(embedded) {
+            embeddedMoney += amount;
+        } else {
+            money += amount;
+        }
+        Game.getInstance().sendToAll(new MoneyChangedEvent(amount, this, embedded, true));
+    }
+    
+    public void retireMoney(int amount, boolean embedded) {
+        if(embedded) {
+            embeddedMoney -= amount;
+        } else {
+            money -= amount;
+        }
     }
 }

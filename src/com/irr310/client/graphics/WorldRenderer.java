@@ -39,6 +39,7 @@ import com.irr310.common.event.CollisionEvent;
 import com.irr310.common.event.DamageEvent;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEventVisitor;
+import com.irr310.common.event.MoneyChangedEvent;
 import com.irr310.common.event.NextWaveEvent;
 import com.irr310.common.event.RemoveGuiComponentEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
@@ -110,6 +111,8 @@ public class WorldRenderer implements GraphicRenderer {
     private Monolith monolith;
     private V3DGuiRectangle monolithStatus;
     private V3DLabel monolithStatusText;
+    private V3DLabel moneyText;
+    private V3DLabel embeddedMoneyText;
 
     public WorldRenderer(GraphicEngine engine) {
         this.engine = engine;
@@ -317,12 +320,21 @@ public class WorldRenderer implements GraphicRenderer {
         upgradeText.setColor(V3DColor.white, V3DColor.transparent);
         container.add(upgradeText);
 
-        final V3DLabel moneyText = new V3DLabel(LoginManager.localPlayer.getMoney() + " $");
+        moneyText = new V3DLabel(LoginManager.localPlayer.getMoney() + " $");
         moneyText.setyAlignment(GuiYAlignment.BOTTOM);
-        moneyText.setPosition(30, 15);
+        moneyText.setxAlignment(GuiXAlignment.RIGHT);
+        moneyText.setPosition(15, 28);
         moneyText.setFontStyle("Ubuntu", "bold", 45);
         moneyText.setColor(irrGreen, V3DColor.transparent);
         container.add(moneyText);
+        
+        embeddedMoneyText = new V3DLabel("+ "+ LoginManager.localPlayer.getMoney() + " $");
+        embeddedMoneyText.setyAlignment(GuiYAlignment.BOTTOM);
+        embeddedMoneyText.setPosition(35, 5);
+        embeddedMoneyText.setxAlignment(GuiXAlignment.RIGHT);
+        embeddedMoneyText.setFontStyle("Ubuntu", "bold", 25);
+        embeddedMoneyText.setColor(irrGreen, V3DColor.transparent);
+        container.add(embeddedMoneyText);
 
     }
 
@@ -811,6 +823,12 @@ public class WorldRenderer implements GraphicRenderer {
                 updateMonolithStatus();
             }
 
+        }
+        
+        @Override
+        public void visit(MoneyChangedEvent event) {
+            moneyText.setText(LoginManager.localPlayer.getMoney()+" $");
+            embeddedMoneyText.setText("+ "+ LoginManager.localPlayer.getEmbeddedMoney()+" $");
         }
 
     }
