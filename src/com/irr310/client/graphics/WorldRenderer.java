@@ -329,7 +329,7 @@ public class WorldRenderer implements GraphicRenderer {
         moneyText.setColor(irrGreen, V3DColor.transparent);
         container.add(moneyText);
         
-        embeddedMoneyText = new V3DLabel("+ "+ LoginManager.localPlayer.getMoney() + " $");
+        embeddedMoneyText = new V3DLabel("+ "+ LoginManager.localPlayer.getEmbeddedMoney() + " $");
         embeddedMoneyText.setyAlignment(GuiYAlignment.BOTTOM);
         embeddedMoneyText.setPosition(35, 5);
         embeddedMoneyText.setxAlignment(GuiXAlignment.RIGHT);
@@ -385,7 +385,7 @@ public class WorldRenderer implements GraphicRenderer {
 
         V3DContainer container = new V3DContainer();
         container.setxAlignment(GuiXAlignment.RIGHT);
-        container.setSize(200, 130);
+        container.setSize(240, 130);
         container.setPosition(10, 10);
         container.setyAlignment(GuiYAlignment.BOTTOM);
         interfaceLayer.add(container);
@@ -393,7 +393,7 @@ public class WorldRenderer implements GraphicRenderer {
         V3DGuiRectangle upgradeBase = new V3DGuiRectangle();
         upgradeBase.setyAlignment(GuiYAlignment.BOTTOM);
         upgradeBase.setPosition(0, 0);
-        upgradeBase.setSize(200, 110);
+        upgradeBase.setSize(240, 110);
         upgradeBase.setBorderWidth(4);
         upgradeBase.setFillColor(irrFill);
         upgradeBase.setBorderColor(irrRed);

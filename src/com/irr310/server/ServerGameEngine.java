@@ -102,9 +102,7 @@ public class ServerGameEngine extends FramerateEngine {
                             .distanceTo(object.getFirstPart().getTransform().getTranslation()) < 25) {
                         Loot loot = (Loot) object;
 
-                        Game.getInstance().getWorld().removeCelestialObject(object, Reason.LOOTED);
-
-                        ship.getOwner().giveMoney(loot.getValue(), true);
+                        loot(loot, ship.getOwner());
 
                     }
                 }
@@ -121,6 +119,32 @@ public class ServerGameEngine extends FramerateEngine {
         }
 
         if (monolith != null) {
+            for (CelestialObject object : Game.getInstance().getWorld().getCelestialsObjects()) {
+                if (object instanceof Loot) {
+                    if (object.getFirstPart().getTransform().getTranslation().distanceTo(monolith.getFirstPart().getTransform().getTranslation()) < 80) {
+                        Loot loot = (Loot) object;
+                        Game.getInstance().getWorld().removeCelestialObject(loot, Reason.LOOTED);
+                        distachRevenue(loot.getValue());
+                    }
+
+                    // Send loot to monolith
+                        Game.getInstance().getWorld().lock();
+                        Vec3 lootSpeed = monolith.getFirstPart()
+                                                 .getTransform()
+                                                 .getTranslation()
+                                                 .minus(object.getFirstPart().getTransform().getTranslation())
+                                                 .normalize()
+                                                 .multiply(1);
+                        System.err.println("Loot speed:" + lootSpeed+" "+lootSpeed.length());
+                        System.err.println("Loot pos:" + object.getFirstPart().getTransform().getTranslation());
+                        System.err.println("Player count:" + Game.getInstance().getWorld().getPlayers().size());
+                        
+                        object.getFirstPart().getLinearSpeed().set(lootSpeed);
+                        Game.getInstance().getPhysicEngine().reloadStates(object.getFirstPart());
+                        Game.getInstance().getWorld().unlock();
+                }
+            }
+
             for (Ship ship : Game.getInstance().getWorld().getShips()) {
                 if (ship.getComponentByName("kernel")
                         .getFirstPart()
@@ -129,9 +153,9 @@ public class ServerGameEngine extends FramerateEngine {
                         .distanceTo(monolith.getFirstPart().getTransform().getTranslation()) < 80) {
 
                     int embeddedMoney = ship.getOwner().getEmbeddedMoney();
+
                     if (embeddedMoney > 0) {
-                        ship.getOwner().retireMoney(embeddedMoney, true);
-                        ship.getOwner().giveMoney(embeddedMoney, false);
+                        ship.getOwner().retireMoney(distachRevenue(embeddedMoney), true);
                     }
 
                 }
@@ -157,6 +181,22 @@ public class ServerGameEngine extends FramerateEngine {
             currentWave.update(beginWaveTime.durationTo(currentTime));
         }
 
+    }
+
+    private int distachRevenue(int amount) {
+        List<Player> players = Game.getInstance().getWorld().getPlayers();
+
+        int amountPerPlayer = amount / players.size();
+        for (Player player : players) {
+            player.giveMoney(amountPerPlayer, false);
+
+        }
+        return amountPerPlayer * players.size();
+    }
+
+    private void loot(Loot loot, Player player) {
+        Game.getInstance().getWorld().removeCelestialObject(loot, Reason.LOOTED);
+        player.giveMoney(loot.getValue(), true);
     }
 
     private final class GameEngineEventVisitor extends DefaultEngineEventVisitor {
@@ -451,6 +491,14 @@ public class ServerGameEngine extends FramerateEngine {
         });
         waveQueue.add(wave3);
 
+        
+        for(int i = 4; i < 50; i++) {
+            Wave wave = new Wave(i);
+            wave.setDuration(new Duration(60f));
+            wave.setActiveDuration(new Duration(10f));
+            waveQueue.add(wave);
+        }
+        
         nextWaveTime = GameTime.getGameTime();
 
         nextWave();

@@ -127,10 +127,10 @@ public class V3DContainer extends V3DGuiComponent implements V3DLocalisable {
         
         //container.setSizeToMinSize();
         if(width < 1000) {
-        System.err.println("width"+width);
-        System.err.println("height"+height);
-        System.err.println("xPos"+xPos);
-        System.err.println("yPos"+yPos);
+        //System.err.println("width"+width);
+        //System.err.println("height"+height);
+        //System.err.println("xPos"+xPos);
+        //System.err.println("yPos"+yPos);
         
         }
         

@@ -54,6 +54,7 @@ import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
+import com.irr310.common.world.CelestialObject;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.Link;
 import com.irr310.common.world.Part;
@@ -309,8 +310,6 @@ public class PhysicEngine extends FramerateEngine {
     }
 
     public void reloadStates() {
-        if (Game.getInstance() instanceof GameClient) {
-        }
         for (Entry<Part, RigidBody> partEntry : partToBodyMap.entrySet()) {
             //TODO: fix concurrent modification on the map 
             RigidBody body = partEntry.getValue();
@@ -318,6 +317,16 @@ public class PhysicEngine extends FramerateEngine {
             motionState.reload();
         }
     }
+    
+    
+    public void reloadStates(Part part) {
+        RigidBody body = partToBodyMap.get(part);
+        if(body != null) {
+            PartMotionState motionState = (PartMotionState) body.getMotionState();
+            motionState.reload();
+        }
+    }
+    
 
     protected void addShip(Ship ship, Vec3 position) {
 
@@ -559,6 +568,7 @@ public class PhysicEngine extends FramerateEngine {
             body.setLinearVelocity(part.getLinearSpeed().toVector3f());
             body.setAngularVelocity(part.getRotationSpeed().toVector3f());
             body.activate(true);
+            System.err.println("vel: "+part.getLinearSpeed());
         }
 
         public void setBody(RigidBody body) {
@@ -640,5 +650,7 @@ public class PhysicEngine extends FramerateEngine {
         // TODO Auto-generated method stub
 
     }
+
+    
 
 }
