@@ -5,16 +5,18 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import sun.org.mozilla.javascript.BaseFunction;
-import sun.org.mozilla.javascript.ClassShutter;
-import sun.org.mozilla.javascript.Context;
-import sun.org.mozilla.javascript.ContextFactory;
-import sun.org.mozilla.javascript.ImporterTopLevel;
-import sun.org.mozilla.javascript.NativeJavaClass;
-import sun.org.mozilla.javascript.NativeJavaObject;
-import sun.org.mozilla.javascript.Scriptable;
-import sun.org.mozilla.javascript.ScriptableObject;
-import sun.org.mozilla.javascript.WrapFactory;
+import org.mozilla.javascript.BaseFunction;
+import org.mozilla.javascript.ClassShutter;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.ContextFactory;
+import org.mozilla.javascript.ImporterTopLevel;
+import org.mozilla.javascript.NativeJavaClass;
+import org.mozilla.javascript.NativeJavaObject;
+import org.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.ScriptableObject;
+import org.mozilla.javascript.WrapFactory;
+
+
 
 public class SandboxContextFactory extends ContextFactory {
     final SandboxShutter shutter;

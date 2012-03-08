@@ -6,12 +6,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import sun.org.mozilla.javascript.Context;
-import sun.org.mozilla.javascript.ContextFactory;
-import sun.org.mozilla.javascript.Function;
-import sun.org.mozilla.javascript.ImporterTopLevel;
-import sun.org.mozilla.javascript.RhinoException;
-import sun.org.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.ContextFactory;
+import org.mozilla.javascript.Function;
+import org.mozilla.javascript.ImporterTopLevel;
+import org.mozilla.javascript.RhinoException;
+import org.mozilla.javascript.Scriptable;
 
 import com.irr310.client.navigation.LoginManager;
 import com.irr310.client.script.js.SandboxContextFactory;
