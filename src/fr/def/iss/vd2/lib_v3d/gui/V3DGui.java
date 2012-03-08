@@ -17,6 +17,10 @@
 
 package fr.def.iss.vd2.lib_v3d.gui;
 
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -238,12 +242,21 @@ public class V3DGui implements V3DLocalisable {
     }
     private static ImageFont createFont(LabelStyle labelstyle) {
         
-        int style = 0;
+        String style = "R";
         if(labelstyle.getStyle() == "bold") {
-            style = java.awt.Font.BOLD;
+            style = "B";
         }
-        
-        return FontFactory.renderStandardFont(new java.awt.Font(labelstyle.getFont(), style, labelstyle.getSize()), true, Alphabet.getDefaultAlphabet());
+        Font font = null;
+        try {
+            font = Font.createFont(Font.TRUETYPE_FONT, new File("fonts/"+labelstyle.getFont()+"-"+style+".ttf"));
+            System.err.println("font size "+labelstyle.getSize());
+            font = font.deriveFont((float)labelstyle.getSize());
+        } catch (FontFormatException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return FontFactory.renderStandardFont(font, true, Alphabet.getDefaultAlphabet());
     }
         
 }
