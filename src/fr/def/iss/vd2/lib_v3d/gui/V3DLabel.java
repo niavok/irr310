@@ -44,6 +44,7 @@ public class V3DLabel extends V3DGuiComponent {
     Label label;
     private int xPos;
     private int yPos;
+    private Color color;
 
     public V3DLabel(String text) {
         label = new Label(text);
@@ -51,7 +52,7 @@ public class V3DLabel extends V3DGuiComponent {
         label.setExpandable(false);
         label.getAppearance().add(new PlainBackground(new Color(1.0f, 1.0f, 1.0f, 0.8f)));
         label.setShrinkable(true);
-
+        color = Color.BLACK;
     }
 
     public void setColor(V3DColor foregroundColor, V3DColor backgroundColor) {
@@ -60,7 +61,8 @@ public class V3DLabel extends V3DGuiComponent {
 
         TextStyle style = label.getAppearance().getStyle(TextStyle.DEFAULTSTYLEKEY);
         TextStyleEntry textEntryStyle = new TextStyleEntry();
-        textEntryStyle.setColor(new Color(foregroundColor.r, foregroundColor.g, foregroundColor.b, foregroundColor.a));
+        color = new Color(foregroundColor.r, foregroundColor.g, foregroundColor.b, foregroundColor.a);
+        textEntryStyle.setColor(color);
         style.addStyle(TextStyleEntry.DEFAULTSTYLESTATEKEY, textEntryStyle);
 
     }
@@ -142,7 +144,7 @@ public class V3DLabel extends V3DGuiComponent {
 
         
 
-        setFontToDefaultStyle(label.getAppearance(), font, org.fenggui.util.Color.BLACK);
+        setFontToDefaultStyle(label.getAppearance(), font, color);
 
     }
 
