@@ -681,7 +681,7 @@ function driver() {
         // Rotation controlleur
         this.rotationControlleurEnabled = false;
         this.rotationControlleurDeadZoneRadius = 5.0;
-        this.rotationControlleurControlRadius = 150.0;
+        this.rotationControlleurControlRadius = 300.0;
         this.rotationControlleurDeadZone = null;
         this.rotationControlleurControlZone = null;
         this.rotationControlleurMouseOrigin = null;
@@ -697,8 +697,8 @@ function driver() {
             this.rotationControlleurDeadZone.setBorderColor(new Color(0.0,0,0.3));
             
             this.rotationControlleurControlZone = core.gui.createRectangle();
-            this.rotationControlleurControlZone.setPosition(this.rotationControlleurMouseOrigin.minus(new Vec2(150,150)));
-            this.rotationControlleurControlZone.setSize(new Vec2(300,300));
+            this.rotationControlleurControlZone.setPosition(this.rotationControlleurMouseOrigin.minus(new Vec2(this.rotationControlleurControlRadius,this.rotationControlleurControlRadius)));
+            this.rotationControlleurControlZone.setSize(new Vec2(this.rotationControlleurControlRadius*2,this.rotationControlleurControlRadius*2));
             this.rotationControlleurControlZone.setBorderColor(new Color(0.0,0,0.3));
         }        
         
