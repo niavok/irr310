@@ -20,8 +20,12 @@ import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Point;
+import java.awt.event.HierarchyBoundsListener;
+import java.awt.event.HierarchyEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseWheelEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,17 +94,36 @@ public class V3DCanvas {
         try{
             
             frame = new JFrame("Irr310");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             //frame.setSize(width,height);
             //frame.setUndecorated(true);  //here
             frame.setVisible(true);
             //frame.setAlwaysOnTop(true);
             frame.setLocation(0, 0);
             Canvas canvas = new Canvas();
-            canvas.setMinimumSize(new Dimension(width, height));
+            canvas.setMinimumSize(new Dimension(800, 600));
             canvas.setPreferredSize(new Dimension(width, height));
             frame.add(canvas);
             frame.pack();
+            
+            frame.getContentPane().addHierarchyBoundsListener(new HierarchyBoundsListener(){
+                
+                @Override
+                public void ancestorMoved(HierarchyEvent e) {
+                }
+                @Override
+                public void ancestorResized(HierarchyEvent e) {
+                    System.err.println("resized "+frame.getContentPane().getWidth()+" "+frame.getContentPane().getHeight());
+                    
+                    width = frame.getContentPane().getWidth();
+                    height = frame.getContentPane().getHeight();
+                    reshape(0,0,width, height);
+//                    try {
+//                        Display.setDisplayMode(new DisplayMode(width, height));
+//                    } catch (LWJGLException e1) {
+//                        System.out.println("Error setting up display");
+//                    }
+                }          
+            });
             
             Display.setDisplayMode(new DisplayMode(width, height));
             //Display.setFullscreen(true);
