@@ -16,6 +16,8 @@ import org.fenggui.event.IButtonPressedListener;
 import org.lwjgl.opengl.ARBShaderObjects;
 
 import com.irr310.client.graphics.effects.BulletEffect;
+import com.irr310.client.graphics.gui.GuiConstants;
+import com.irr310.client.graphics.gui.UpgradeMenu;
 import com.irr310.client.graphics.skin.AsteroidSkin;
 import com.irr310.client.graphics.skin.CameraSkin;
 import com.irr310.client.graphics.skin.FactorySkin;
@@ -104,11 +106,7 @@ public class WorldRenderer implements GraphicRenderer {
         INTEFACE, HUD, MAIN_MENU,
     }
 
-    private static final V3DColor irrRed = new V3DColor(108, 0, 0);
-    private static final V3DColor irrGreen = new V3DColor(0, 108, 0);
-    private static final V3DColor irrBlue = new V3DColor(0, 82, 108);
-    private static final V3DColor irrFill = new V3DColor(0.9f, 0.9f, 0.9f, 0.5f);
-
+    
     // Game
     private V3DLabel waveCountText;
     private NextWaveEvent lastWaveEvent = null;
@@ -181,7 +179,7 @@ public class WorldRenderer implements GraphicRenderer {
         // Generate logo
         V3DLabel logoIRR = new V3DLabel("IRR");
         logoIRR.setFontStyle("Ubuntu", "bold", 24);
-        logoIRR.setColor(irrRed, V3DColor.transparent);
+        logoIRR.setColor(GuiConstants.irrRed, V3DColor.transparent);
         logoIRR.setPosition(10, 10);
         mainMenuLayer.add(logoIRR);
 
@@ -196,8 +194,8 @@ public class WorldRenderer implements GraphicRenderer {
         indicatorBorder.setyAlignment(GuiYAlignment.TOP);
         indicatorBorder.setPosition(120, 10);
         indicatorBorder.setSize(300, 30);
-        indicatorBorder.setFillColor(irrFill);
-        indicatorBorder.setBorderColor(irrRed);
+        indicatorBorder.setFillColor(GuiConstants.irrFill);
+        indicatorBorder.setBorderColor(GuiConstants.irrRed);
         mainMenuLayer.add(indicatorBorder);
 
         final V3DLabel resolutionIndicator = new V3DLabel("" + (int) engine.getViewportSize().x + "x" + (int) engine.getViewportSize().y + " px");
@@ -311,8 +309,8 @@ public class WorldRenderer implements GraphicRenderer {
         upgradeBase.setPosition(0, 0);
         upgradeBase.setSize(200, 80);
         upgradeBase.setBorderWidth(4);
-        upgradeBase.setFillColor(irrFill);
-        upgradeBase.setBorderColor(irrGreen);
+        upgradeBase.setFillColor(GuiConstants.irrFill);
+        upgradeBase.setBorderColor(GuiConstants.irrGreen);
         container.add(upgradeBase);
 
         V3DGuiRectangle upgradeTop = new V3DGuiRectangle();
@@ -320,8 +318,8 @@ public class WorldRenderer implements GraphicRenderer {
         upgradeTop.setPosition(0, 80);
         upgradeTop.setBorderWidth(4);
         upgradeTop.setSize(200, 30);
-        upgradeTop.setFillColor(irrGreen);
-        upgradeTop.setBorderColor(irrGreen);
+        upgradeTop.setFillColor(GuiConstants.irrGreen);
+        upgradeTop.setBorderColor(GuiConstants.irrGreen);
         container.add(upgradeTop);
 
         final V3DLabel upgradeText = new V3DLabel("Upgrades");
@@ -336,7 +334,7 @@ public class WorldRenderer implements GraphicRenderer {
         moneyText.setxAlignment(GuiXAlignment.RIGHT);
         moneyText.setPosition(15, 28);
         moneyText.setFontStyle("Ubuntu", "bold", 45);
-        moneyText.setColor(irrGreen, V3DColor.transparent);
+        moneyText.setColor(GuiConstants.irrGreen, V3DColor.transparent);
         container.add(moneyText);
         
         embeddedMoneyText = new V3DLabel("+ "+ LoginManager.localPlayer.getEmbeddedMoney() + " $");
@@ -344,7 +342,7 @@ public class WorldRenderer implements GraphicRenderer {
         embeddedMoneyText.setPosition(35, 5);
         embeddedMoneyText.setxAlignment(GuiXAlignment.RIGHT);
         embeddedMoneyText.setFontStyle("Ubuntu", "bold", 25);
-        embeddedMoneyText.setColor(irrGreen, V3DColor.transparent);
+        embeddedMoneyText.setColor(GuiConstants.irrGreen, V3DColor.transparent);
         container.add(embeddedMoneyText);
         
         
@@ -376,8 +374,8 @@ public class WorldRenderer implements GraphicRenderer {
         upgradeBase.setPosition(0, 0);
         upgradeBase.setSize(200, 80);
         upgradeBase.setBorderWidth(4);
-        upgradeBase.setFillColor(irrFill);
-        upgradeBase.setBorderColor(irrBlue);
+        upgradeBase.setFillColor(GuiConstants.irrFill);
+        upgradeBase.setBorderColor(GuiConstants.irrBlue);
         container.add(upgradeBase);
 
         V3DGuiRectangle upgradeTop = new V3DGuiRectangle();
@@ -385,8 +383,8 @@ public class WorldRenderer implements GraphicRenderer {
         upgradeTop.setPosition(0, 80);
         upgradeTop.setBorderWidth(4);
         upgradeTop.setSize(200, 30);
-        upgradeTop.setFillColor(irrBlue);
-        upgradeTop.setBorderColor(irrBlue);
+        upgradeTop.setFillColor(GuiConstants.irrBlue);
+        upgradeTop.setBorderColor(GuiConstants.irrBlue);
         container.add(upgradeTop);
 
         final V3DLabel upgradeText = new V3DLabel("Reputation");
@@ -400,7 +398,7 @@ public class WorldRenderer implements GraphicRenderer {
         moneyText.setyAlignment(GuiYAlignment.BOTTOM);
         moneyText.setPosition(30, 15);
         moneyText.setFontStyle("Ubuntu", "bold", 45);
-        moneyText.setColor(irrBlue, V3DColor.transparent);
+        moneyText.setColor(GuiConstants.irrBlue, V3DColor.transparent);
         container.add(moneyText);
 
     }
@@ -419,15 +417,15 @@ public class WorldRenderer implements GraphicRenderer {
         upgradeBase.setPosition(0, 0);
         upgradeBase.setSize(240, 110);
         upgradeBase.setBorderWidth(4);
-        upgradeBase.setFillColor(irrFill);
-        upgradeBase.setBorderColor(irrRed);
+        upgradeBase.setFillColor(GuiConstants.irrFill);
+        upgradeBase.setBorderColor(GuiConstants.irrRed);
         container.add(upgradeBase);
 
         waveCountText = new V3DLabel("Wave " + (lastWaveEvent == null ? "--" : lastWaveEvent.getWaveId()));
         waveCountText.setyAlignment(GuiYAlignment.BOTTOM);
         waveCountText.setPosition(25, 32);
         waveCountText.setFontStyle("Ubuntu", "bold", 45);
-        waveCountText.setColor(irrRed, V3DColor.transparent);
+        waveCountText.setColor(GuiConstants.irrRed, V3DColor.transparent);
         container.add(waveCountText);
 
     }
@@ -446,8 +444,8 @@ public class WorldRenderer implements GraphicRenderer {
         upgradeBase.setPosition(0, 0);
         upgradeBase.setSize(120, 200);
         upgradeBase.setBorderWidth(4);
-        upgradeBase.setFillColor(irrFill);
-        upgradeBase.setBorderColor(irrRed);
+        upgradeBase.setFillColor(GuiConstants.irrFill);
+        upgradeBase.setBorderColor(GuiConstants.irrRed);
         container.add(upgradeBase);
 
         monolithStatus = new V3DGuiRectangle();
@@ -471,29 +469,8 @@ public class WorldRenderer implements GraphicRenderer {
     
     private void toogleUpgradeMenu() {
         if(upgradeMenu == null) {
-        upgradeMenu = new V3DContainer();
-        upgradeMenu.setPosition(-2, 123);
-        upgradeMenu.setSize(500, 600);
-        upgradeMenu.setyAlignment(GuiYAlignment.BOTTOM);
-        interfaceLayer.add(upgradeMenu);
-
-        V3DGuiRectangle upgradeBase = new V3DGuiRectangle();
-        upgradeBase.setyAlignment(GuiYAlignment.BOTTOM);
-        upgradeBase.setPosition(0, 0);
-        upgradeBase.setSize(500, 600);
-        upgradeBase.setBorderWidth(4);
-        upgradeBase.setFillColor(irrFill);
-        upgradeBase.setBorderColor(irrGreen);
-        upgradeMenu.add(upgradeBase);
-
-        V3DGuiRectangle upgradeTop = new V3DGuiRectangle();
-        upgradeTop.setyAlignment(GuiYAlignment.BOTTOM);
-        upgradeTop.setPosition(0, 0);
-        upgradeTop.setBorderWidth(4);
-        upgradeTop.setSize(500, 30);
-        upgradeTop.setFillColor(irrGreen);
-        upgradeTop.setBorderColor(irrGreen);
-        upgradeMenu.add(upgradeTop);
+            upgradeMenu = new UpgradeMenu();
+            interfaceLayer.add(upgradeMenu);
         
         } else {
             interfaceLayer.remove(upgradeMenu);
