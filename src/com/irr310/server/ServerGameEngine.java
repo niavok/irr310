@@ -110,7 +110,7 @@ public class ServerGameEngine extends FramerateEngine {
                 }
             }
         }
-        
+
         // Check player distance to monolith
         Monolith monolith = null;
         for (CelestialObject object : Game.getInstance().getWorld().getCelestialsObjects()) {
@@ -119,37 +119,37 @@ public class ServerGameEngine extends FramerateEngine {
                 break;
             }
         }
-        
-        for (Ship ship : Game.getInstance().getWorld().getShips()) {
-            if (ship.getComponentByName("kernel")
-                    .getFirstPart()
-                    .getTransform()
-                    .getTranslation()
-                    .distanceTo(monolith.getFirstPart().getTransform().getTranslation()) < 80) {
-                
-                     int embeddedMoney = ship.getOwner().getEmbeddedMoney();
-                    if(embeddedMoney > 0) {
+
+        if (monolith != null) {
+            for (Ship ship : Game.getInstance().getWorld().getShips()) {
+                if (ship.getComponentByName("kernel")
+                        .getFirstPart()
+                        .getTransform()
+                        .getTranslation()
+                        .distanceTo(monolith.getFirstPart().getTransform().getTranslation()) < 80) {
+
+                    int embeddedMoney = ship.getOwner().getEmbeddedMoney();
+                    if (embeddedMoney > 0) {
                         ship.getOwner().retireMoney(embeddedMoney, true);
-                        ship.getOwner().giveMoney(embeddedMoney, false); 
-                     }
-                
-                
+                        ship.getOwner().giveMoney(embeddedMoney, false);
+                    }
+
                 }
-                
+
             }
-        
+        }
 
         if (stillPlaying) {
             // Next Wave
             if (currentTime.after(nextWaveTime)) {
                 nextWave();
                 beginWaveTime = currentTime;
-                
+
                 // Interrest (10%);
-                for (Player player: Game.getInstance().getWorld().getPlayers()) {
-                    player.giveMoney((int) (player.getMoney() *0.1), false);
+                for (Player player : Game.getInstance().getWorld().getPlayers()) {
+                    player.giveMoney((int) (player.getMoney() * 0.1), false);
                 }
-                
+
             }
         }
 
