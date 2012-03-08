@@ -7,11 +7,11 @@ function CoreProxy() {
         this.coreProxy.log(log);
     }
     
-    this.onKeyPressed = function(keyCode, char) {
+    this.onKeyPressed = function(keyCode, character) {
     
     }
 
-    this.onKeyReleased = function(keyCode, char) {
+    this.onKeyReleased = function(keyCode, character) {
     
     }
 
@@ -32,12 +32,12 @@ function CoreProxy() {
 var core = new CoreProxy();
 
 
-function onKeyPressed(keyCode, char) {
-    core.onKeyPressed(keyCode, char);
+function onKeyPressed(keyCode, character) {
+    core.onKeyPressed(keyCode, character);
 }
 
-function onKeyReleased(keyCode, char) {
-    core.onKeyReleased(keyCode, char);
+function onKeyReleased(keyCode, character) {
+    core.onKeyReleased(keyCode, character);
 }
 
 function onMouseEvent(action, button, x, y) {

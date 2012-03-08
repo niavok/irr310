@@ -87,6 +87,8 @@ public class Display extends Container
   private boolean                              enabled             = true;
 
   private ITooltipManager                      tooltips            = null;
+  private int canvasWidth;
+  private int canvasHeight;
 
   public Display()
   {
@@ -233,12 +235,12 @@ public class Display extends Container
     // possible.
     // opengl.activateTexture(0);
 
-    opengl.setViewPort(0, 0, binding.getCanvasWidth(), binding.getCanvasHeight());
+    opengl.setViewPort(0, 0, canvasWidth, canvasHeight);
 
     opengl.setProjectionMatrixMode();
     opengl.pushMatrix();
     opengl.loadIdentity();
-    opengl.setOrtho2D(0, binding.getCanvasWidth(), 0, binding.getCanvasHeight());
+    opengl.setOrtho2D(0, canvasWidth, 0, canvasHeight);
 
     opengl.setModelMatrixMode();
     opengl.pushMatrix();
@@ -845,6 +847,12 @@ public class Display extends Container
     //Displays content size doesn't count
     return null;
   }
+
+public void setCanvasSize(int canvasWidth, int canvasHeight) {
+    this.canvasWidth = canvasWidth;
+    this.canvasHeight = canvasHeight;
+    
+}
   
   
 }

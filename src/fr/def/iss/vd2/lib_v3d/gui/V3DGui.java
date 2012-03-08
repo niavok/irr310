@@ -69,6 +69,7 @@ public class V3DGui implements V3DLocalisable {
 
         if (display == null) {
             display = FengGUI.createWidget(Display.class);
+            display.setCanvasSize(this.width, this.height);
             // Repair
             // eventBinding = new EventBinding(canvas, display);
         } else {
@@ -128,7 +129,10 @@ public class V3DGui implements V3DLocalisable {
         this.y = parentBinding.mouseY;
         this.width = parentBinding.width;
         this.height = parentBinding.height;
-
+        if(display != null) {
+            display.setCanvasSize(this.width, this.height);
+        }
+        
         if (rootContainer != null) {
             
             

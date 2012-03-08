@@ -738,7 +738,7 @@ function driver() {
         }
         
         
-        this.onKeyPressed = function (keyCode, char) {
+        this.onKeyPressed = function (keyCode, character) {
             switch(keyCode) {
                 case KEY_UP:
                     break;
@@ -779,11 +779,11 @@ function driver() {
                     this.targetSpeedUpdated();
                     break;
                 default:
-                    core.log("pressed undefined key: '"+keyCode+"' / '"+char+"'");
+                    core.log("pressed undefined key: '"+keyCode+"' / '"+character+"'");
             }   
         }
         
-        this.onKeyReleased = function (keyCode, char) {
+        this.onKeyReleased = function (keyCode, character) {
             switch(keyCode) {
                 case KEY_UP:
                     break;
@@ -811,7 +811,7 @@ function driver() {
                 case KEY_SPACE:
                     break;
                 default:
-                    core.log("released undefined key: '"+keyCode+"' / '"+char+"'");
+                    core.log("released undefined key: '"+keyCode+"' / '"+character+"'");
             }   
         }
         
