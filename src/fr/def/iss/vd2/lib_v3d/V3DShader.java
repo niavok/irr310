@@ -55,6 +55,7 @@ public class V3DShader {
             vertShader = createVertShader("shaders/" + name + ".v.glsl");
             geoShader = createGeometryShader("shaders/" + name + ".g.glsl");
             fragShader = createFragShader("shaders/" + name + ".f.glsl");
+            
         } else {
             useShader = false;
         }
@@ -74,16 +75,29 @@ public class V3DShader {
             	ARBShaderObjects.glAttachObjectARB(shader, geoShader);
             }
             ARBShaderObjects.glAttachObjectARB(shader, fragShader);
+            //loadUniforms();
+            
             ARBShaderObjects.glLinkProgramARB(shader);
+            if (ARBShaderObjects.glGetObjectParameteriARB(shader, ARBShaderObjects.GL_OBJECT_LINK_STATUS_ARB) == GL11.GL_FALSE) {
+            	System.err.println("fail link");
+            	printLogInfo(shader, "link");
+                useShader=false;
+            }
             ARBShaderObjects.glValidateProgramARB(shader);
-            loadUniforms();
+            if (ARBShaderObjects.glGetObjectParameteriARB(shader, ARBShaderObjects.GL_OBJECT_VALIDATE_STATUS_ARB) == GL11.GL_FALSE) {
+            	System.err.println("fail validate");
+            	printLogInfo(shader, "validate");
+                useShader=false;
+            }
 
-            useShader = printLogInfo(shader, "attach");
+            
+            useShader = true;
             loaded = useShader;
         } else {
             useShader = false;
         }
 
+        System.err.println("use shader: "+useShader);
     }
 
     private void destroy() {
@@ -113,7 +127,7 @@ public class V3DShader {
         if (useShader) {
             try {
             ARBShaderObjects.glUseProgramObjectARB(shader);
-            setUniforms();
+            //setUniforms();
             } catch (OpenGLException e) {
                 System.err.println("error using shader: "+e.getMessage());
                 e.printStackTrace();
@@ -156,9 +170,12 @@ public class V3DShader {
          */
         ARBShaderObjects.glShaderSourceARB(vertShader, vertexCode);
         ARBShaderObjects.glCompileShaderARB(vertShader);
-        // if there was a problem compiling, reset vertShader to zero
-        if (!printLogInfo(vertShader, filename)) {
+        
+        if (ARBShaderObjects.glGetObjectParameteriARB(vertShader, ARBShaderObjects.GL_OBJECT_COMPILE_STATUS_ARB) == GL11.GL_FALSE) {
+        	// if there was a problem compiling, reset vertShader to zero
+        	printLogInfo(vertShader, filename);
             vertShader = 0;
+            System.err.println("vert compile fail");
         }
         // if zero we won't be using the shader
         return vertShader;
@@ -184,8 +201,11 @@ public class V3DShader {
         }
         ARBShaderObjects.glShaderSourceARB(fragShader, fragCode);
         ARBShaderObjects.glCompileShaderARB(fragShader);
-        if (!printLogInfo(fragShader, filename)) {
-            fragShader = 0;
+        if (ARBShaderObjects.glGetObjectParameteriARB(fragShader, ARBShaderObjects.GL_OBJECT_COMPILE_STATUS_ARB) == GL11.GL_FALSE) {
+        	// if there was a problem compiling, reset vertShader to zero
+        	printLogInfo(fragShader, filename);
+        	fragShader = 0;
+        	System.err.println("frag compile fail");
         }
 
         return fragShader;
@@ -230,8 +250,10 @@ public class V3DShader {
         
         
         
-        if (!printLogInfo(geoShader, filename)) {
-            geoShader = 0;
+        if (ARBShaderObjects.glGetObjectParameteriARB(geoShader, ARBShaderObjects.GL_OBJECT_COMPILE_STATUS_ARB) == GL11.GL_FALSE) {
+        	// if there was a problem compiling, reset vertShader to zero
+        	printLogInfo(geoShader, filename);
+        	geoShader = 0;
         }
 
         return geoShader;
