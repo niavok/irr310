@@ -77,17 +77,32 @@ The ammo are gain very quicky in the monolith control zone. Each weapon has is o
 Ship upgrade
 ------------
 
-
 ### Engine
-Increase engine thrust 
+Increase engine thrust so ship speed and acceleration
 
-- Increase engine speed
-- Increase engine reactivity
-- Increase wings efficiency
-- Increase each component armor
-- sheld
-- teleport   ( distance , speed, angle)
-- turn help (thrusters)
+
+### Flats
+Control damping
+
+### Wings
+    - Increase wings efficiency
+    - Wing efficiency controler
+    
+### Teleport    
+- teleport   (
+    - distance : instantaneous jump
+    - speed : instantaneous modify speed
+    - angle instantaneous modify angle (harder to implement)
+
+### Thruster
+Enable multidirectionnal thruster to stabilise the ship
+    - stabilise
+    - translation
+    - rotation helper
+
+### Booster
+Use ammo to boost speed during very short duration. In hardpoint.
+
 
 ### Big engine
 Add a big engine 
