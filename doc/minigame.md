@@ -55,9 +55,9 @@ You can have/buy as many weapon as you Weapon slot level. You can buy multiple t
  - Shotgun                                  **800 $**
     Medium weigth. Big damage in cone. Small range. Big impulse.
  - Laser                                    **800 $**
-    Light weigth. Light damage. Long range. No impulse.
+    Light weigth. Light damage. Long range. No impulse. Use energy but not ammo
  - Rocket
- - Pulse : big plasma ball, that push all enemies
+ - Pulse : big plasma ball, that push all enemies. Use energy but not ammo
  - Missile
  - Rear gun
  - Bomb
@@ -153,8 +153,9 @@ Hight resistance pike on the wings or the engine slot. Not available for nose.
 
 
 ### Countermeasure system
- - Alert following projectile
-
+ - Rank1 : Alert following projectile
+ - Rank2 : Cone attack with big cooling time and ammo use
+ 
 System upgrade
 --------------
 
