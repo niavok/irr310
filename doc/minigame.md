@@ -297,7 +297,7 @@ Perfect
 -------
 No hit on monolith allowed
 
-Waves
+Waves (need a lot of work :( )
 =====
 
 Wave 1
@@ -353,6 +353,8 @@ gunner asteroid
 
 Wave 8+
 ------
+
+
 
 bomb
 fighter
