@@ -15,6 +15,7 @@ import com.irr310.common.event.PlayerAddedEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.capacity.Capacity;
+import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.common.world.view.CelestialObjectView;
 import com.irr310.common.world.view.ComponentView;
 import com.irr310.common.world.view.PartView;
@@ -28,6 +29,7 @@ public class World {
     private final List<Player> players;
     private final List<Part> parts;
     private final List<Part> myParts;
+    private final Map<String, Upgrade> availableUpgrades;
     private final Map<Long, Player> playerIdMap;
     private final Map<Long, Ship> shipIdMap;
     private final Map<Long, CelestialObject> celestialObjectIdMap;
@@ -53,6 +55,7 @@ public class World {
         slotIdMap = new HashMap<Long, Slot>();
         componentIdMap = new HashMap<Long, Component>();
         partIdMap = new HashMap<Long, Part>();
+        availableUpgrades = new HashMap<String, Upgrade>();
         mutex = new ReentrantLock();
     }
 
@@ -233,6 +236,14 @@ public class World {
 
     public List<Player> getPlayers() {
         return players;
+    }
+
+    public void addUpgrade(Upgrade upgrade) {
+        availableUpgrades.put(upgrade.getTag(), upgrade);
+    }
+    
+    public Map<String, Upgrade> getAvailableUpgrades() {
+        return availableUpgrades;
     }
 
 }

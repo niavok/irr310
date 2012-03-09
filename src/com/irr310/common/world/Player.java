@@ -8,6 +8,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import com.irr310.common.Game;
 import com.irr310.common.event.MoneyChangedEvent;
 import com.irr310.common.tools.Hash;
+import com.irr310.common.world.upgrade.UpgradeOwnership;
 import com.irr310.common.world.view.PlayerView;
 
 public class Player extends GameEntity {
@@ -18,12 +19,14 @@ public class Player extends GameEntity {
     private String password;
     private String passwordSalt;
     private List<Ship> shipList;
+    private List<UpgradeOwnership> upgrades;
     private int  money;
     
 	public Player(long id, String login) {
 	    super(id);
         this.login = login;
         shipList = new ArrayList<Ship>();
+        upgrades = new ArrayList<UpgradeOwnership>();
         money = 0;
 	}
 	
@@ -81,5 +84,9 @@ public class Player extends GameEntity {
     
     public void retireMoney(int amount) {
         money -= amount;
+    }
+    
+    public List<UpgradeOwnership> getUpgrades() {
+        return upgrades;
     }
 }

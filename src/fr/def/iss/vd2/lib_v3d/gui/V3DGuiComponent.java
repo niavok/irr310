@@ -44,9 +44,11 @@ public abstract class V3DGuiComponent {
     }
 
     public void setPosition(int x, int y) {
-        this.x = x;
-        this.y = y;
-        repack();
+        if(this.x != x || this.y != y) {
+            this.x = x;
+            this.y = y;
+            repack();
+        }
     }
 
     public Point getPosition() {

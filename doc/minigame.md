@@ -62,9 +62,15 @@ You can have/buy as many weapon as you Weapon slot level. You can buy multiple t
  - Rear gun
  - Bomb
  - Mines (how avoid spam ?)
-
+ - Grapin
+ - Grow gun
+ - Slow gun
 
 Weapon levels ?
+
+
+### Weapon accumulator
+ - Add a buff for the new fire
 
 ### Ammo limit ???
 
@@ -392,10 +398,18 @@ avanced fighter
 repair ship
 minifighter
 battleship
+cruiser : engine, turret
 ram ship
 shield ship
 boss ?
 kamicaze
+porte nefs
+arbitre
+percepteur : suck the money
+
+
+try to scenarize all waves
+
 ...
 
 Different AI

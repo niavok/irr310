@@ -52,7 +52,7 @@ public class UpgradeMenu extends V3DContainer{
 //        addTab("Defenses", new UpgradeWeaponTab());
 //        addTab("Ship", new UpgradeWeaponTab());
 //        addTab("Monolith", new UpgradeWeaponTab());
-//        addTab("Tools", new UpgradeWeaponTab());
+//        addTab("Systel", new UpgradeWeaponTab());
 //        
         //Tab content
         V3DGuiRectangle tabContent= new V3DGuiRectangle();
@@ -101,7 +101,23 @@ public class UpgradeMenu extends V3DContainer{
 
     protected void setActive(GuiTab tabComponent) {
         for(GuiTab tab : tabs) {
-            tab.setActive(tab == tabComponent);
+            if(tab == tabComponent) {
+                tab.setActive(true);
+                V3DContainer contentPane = tab.getContentPane();
+                add(contentPane);
+                
+                contentPane.setPosition(140, 20);
+                contentPane.setSize(340, 530);
+                
+            } else {
+                tab.setActive(false);    
+                remove(tab.getContentPane());
+            }
+            
+            
+            
+            
+            
         }
     }
     

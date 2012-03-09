@@ -7,7 +7,7 @@ import fr.def.iss.vd2.lib_v3d.gui.V3DLabel;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent.GuiXAlignment;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent.GuiYAlignment;
 
-public class UpgradeTab implements GuiTab{
+public abstract class UpgradeTab implements GuiTab{
 
     private V3DContainer labelPane;
     private V3DLabel weaponTabText;
@@ -46,11 +46,6 @@ public class UpgradeTab implements GuiTab{
         labelPane.add(tabTextCount);
     }
     
-    @Override
-    public V3DContainer getContentPane() {
-        return null;
-    }
-
     @Override
     public V3DContainer getLabelPane() {
         return labelPane;

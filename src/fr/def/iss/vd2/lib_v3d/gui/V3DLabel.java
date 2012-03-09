@@ -45,6 +45,8 @@ public class V3DLabel extends V3DGuiComponent {
     private int xPos;
     private int yPos;
     private Color color;
+    private int width;
+    private boolean wordWrapping;
 
     public V3DLabel(String text) {
         label = new Label(text);
@@ -105,13 +107,14 @@ public class V3DLabel extends V3DGuiComponent {
 
             label.setXY(xPos, yPos);
         }
-        
-        label.setSizeToMinSize();
+        if(!wordWrapping) {
+            label.setSizeToMinSize();
+        }
         label.layout();
     }
 
     public void setText(String text) {
-        if(label.getText() != text) {
+        if(!label.getText().equals(text)) {
             label.setText(text);
             if (parent != null) {
                 parent.repack();
@@ -155,6 +158,17 @@ public class V3DLabel extends V3DGuiComponent {
         ITextRenderer renderer = appearance.getRenderer(ITextRenderer.DEFAULTTEXTRENDERERKEY).copy();
         renderer.setFont(font);
         appearance.addRenderer(ITextRenderer.DEFAULTTEXTRENDERERKEY, renderer);
+    }
+
+    public void setWordWarping(boolean wordWrapping, int width) {
+        this.wordWrapping = wordWrapping;
+        this.width = width;
+        label.setSizeToMinSize();
+        label.setSize(width, label.getY());
+        System.err.println("getHeight: "+label.getTextRendererData().getSize().getHeight());
+        label.setWordWarping(wordWrapping);
+        System.err.println("getHeight: "+label.getTextRendererData().getSize().getHeight());
+        label.setSize(width, label.getTextRendererData().getSize().getHeight());
     }
 
     

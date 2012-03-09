@@ -288,6 +288,7 @@ public class TextContentManager implements ITextContentManager, IXMLStreamable
   {
     TextStyle style = appearance.getStyle(TextStyle.DEFAULTSTYLEKEY);
     ITextRenderer renderer = getRenderer(appearance);
+    
     renderer.render(x, y, this.content, style.getTextStyleEntry(TextStyleEntry.DEFAULTSTYLESTATEKEY).getColor(), g);
   }
 
