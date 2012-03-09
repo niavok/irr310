@@ -26,9 +26,6 @@ All upgrades cost money. All upgrades can be sell.
 The player can buy or sell upgrade if in the controller radius of the monolith. The purchases are installed immediatly.
 
 
-
-
-
 Weapon upgrade
 --------------
 
@@ -37,6 +34,16 @@ Weapon upgrade
  - Rank 1 : increase the damage by 50%      **500 $**
  - Rank 2 : increase the damage by 100%     **2000 $**
  - Rank 3 : increase the damage by 200%     **8000 $**
+
+### Increase cooling
+ - Rank 1 : increase the cooling by 50%      **500 $**
+ - Rank 2 : increase the cooling by 100%     **2000 $**
+ - Rank 3 : increase the cooling by 200%     **8000 $**
+
+### Increase firerate
+ - Rank 1 : increase the firerate by 50%      **500 $**
+ - Rank 2 : increase the firerate by 100%     **2000 $**
+ - Rank 3 : increase the firerate by 200%     **8000 $**
 
 
 ### Weapons
@@ -50,7 +57,7 @@ You can have/buy as many weapon as you Weapon slot level. You can buy multiple t
  - Laser                                    **800 $**
     Light weigth. Light damage. Long range. No impulse.
  - Rocket
- - Pulse
+ - Pulse : big plasma ball, that push all enemies
  - Missile
  - Rear gun
  - Bomb
@@ -70,6 +77,10 @@ The ammo are gain very quicky in the monolith control zone. Each weapon has is o
 Ship upgrade
 ------------
 
+
+### Engine
+Increase engine thrust 
+
 - Increase engine speed
 - Increase engine reactivity
 - Increase wings efficiency
@@ -77,6 +88,9 @@ Ship upgrade
 - sheld
 - teleport   ( distance , speed, angle)
 - turn help (thrusters)
+
+### Big engine
+Add a big engine 
 
 
 ### Generator
@@ -90,8 +104,6 @@ Ship upgrade
  - Rank 3 : 30 kJ                          **8000 $**
 
 
-### Rear Camera
- - Use energy
 
 ### Hardpoint slot
 Point to attach weapon or other equipements.
@@ -101,7 +113,8 @@ Point to attach weapon or other equipements.
  - Rank 3 : 3 slots                       **6000 $**
  - Rank 4 :  ... 21 slots : 4 on each wing, 1 on nose, 1 on each engine
 
-
+## Revesable hardpoints
+Allow to attach stuff on hardpoint (not nose) turned to rear. Usefull to weapons.
 
 Defense upgrade
 ---------------
@@ -114,7 +127,7 @@ Renforce each part of the ship.
  - Rank 3 : Armor + 200%                  **8000 $**
 
 ### Shield
-Absorb global damages.
+Absorb global damages. Use energy
  - Rank 1 : 1000 damages                  **500 $**
  - Rank 2 : 2000 damages                  **2000 $**
  - Rank 3 : 4000 damages                  **8000 $**
@@ -142,41 +155,69 @@ Hight resistance pike on the wings or the engine slot. Not available for nose.
 ### Countermeasure system
  - Alert following projectile
 
-Gui upgrade
------------
-
-- directionnal weapons
-- rear camera
-- 
+System upgrade
+--------------
 
 
-- Collision alarm
-- Minimap
-- ...
-- follow
+### Radar
+Use energy
+ - Rank 1: display arrows (default)
+ - Rank 2: display a global minimap
+ - Rank 3: ?
 
-...
-- driver customization
+### Rear Camera
+Use energy
 
-- damage control
-- reparation control
-- inline auto repair
+### Target analysize
+Use energy
+ - Rank1 : Get the hit points
 
+### Follow target
+Use energy
+ - Rank1 : let the engine getting the same speed as the target
+ - Rank2 : let the engine getting the same speed and trajectory as the target 
+
+
+### Directionnal nose weapon
+Use energy
+The nose weapon can turn to target enemies
+
+### Energy monitor
+Use energy
+ - Rank1 : Show the current energy consumtion on the ship
+ - Rank1 : Allow to choose the alimentation priority
+
+
+### Damage monitor
+Use energy
+ - Rank1 : Show the current damage on the ship
+ - Rank1 : Allow to choose the repair priority
 
 
 Monolith upgrade
 ----------------
-- Increase capitalization rate - >Reput
-- Increase monolith repair rate
-- Increase ship repair rate
-- Increase interact zone
-- Buy a harvester / Increase harvester speed/capacity/resistance/ autorepair speed
-- ...
-- Turret
 
-- defence wall (destroyable ?)
+### Monolith repair
+ - Rank 1: Increase monolith repair rate
+ - ...
 
+### Monolith control zone
+- Increase control zone radius
+ 
+### Monolith ship repair
+    - Increase ship repair rate
 
+### Harvester
+An harvester is a small autonomus ship wicht gather loot on map.
+    - Buy a harvester / Increase harvester speed/capacity/resistance/ autorepair speed
+
+### Turret
+Get turret to deploy on the map
+    - 1 turret
+    - 2 turret
+
+### Defence wall
+Create defence wall around the monolith (destroyable but can be replaced after a cooldown)
 
 
 Reputation
@@ -187,7 +228,7 @@ By default, some Chooses are enabled, others are disabled. Some chooses increase
 
 The player has a reputation bar. Each wave, he can change his responsability. If the responsability is high, it gain a lot of reputation. If low, il lose some reputation.
 
-the reputation increase the interest rate
+the reputation increase the interest rate.
 
 
 Charity (+)
@@ -234,6 +275,11 @@ Fast waves
 ----------
 
 The wave last less
+
+
+Perfect
+-------
+No hit on monolith allowed
 
 Waves
 =====
