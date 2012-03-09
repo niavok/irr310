@@ -226,7 +226,6 @@ public class Container extends StandardWidget implements IContainer, Cloneable
     if (getDisplay() != null)
     {
       Binding b = getDisplay().getBinding();
-
       if (startX >= b.getCanvasWidth() || startY >= b.getCanvasHeight())
       {
         return false;

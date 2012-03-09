@@ -112,16 +112,9 @@ public class V3DCanvas {
                 }
                 @Override
                 public void ancestorResized(HierarchyEvent e) {
-                    System.err.println("resized "+frame.getContentPane().getWidth()+" "+frame.getContentPane().getHeight());
-                    
                     width = frame.getContentPane().getWidth();
                     height = frame.getContentPane().getHeight();
                     reshape(0,0,width, height);
-//                    try {
-//                        Display.setDisplayMode(new DisplayMode(width, height));
-//                    } catch (LWJGLException e1) {
-//                        System.out.println("Error setting up display");
-//                    }
                 }          
             });
             

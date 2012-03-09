@@ -4,6 +4,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
 import com.irr310.client.graphics.gui.GuiFpsIndicator;
+import com.irr310.common.Game;
 import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.event.AddGuiComponentEvent;
 import com.irr310.common.event.BulletFiredEvent;
@@ -23,6 +24,7 @@ import com.irr310.common.event.MouseEvent;
 import com.irr310.common.event.NextWaveEvent;
 import com.irr310.common.event.PauseEngineEvent;
 import com.irr310.common.event.QuitGameEvent;
+import com.irr310.common.event.ReloadUiEvent;
 import com.irr310.common.event.RemoveGuiComponentEvent;
 import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.event.WorldReadyEvent;
@@ -30,6 +32,7 @@ import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.common.tools.Vec2;
 import com.irr310.server.Duration;
 
+import fr.def.iss.vd2.lib_v3d.ResizeListener;
 import fr.def.iss.vd2.lib_v3d.V3DCanvas;
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
@@ -58,6 +61,15 @@ public class GraphicEngine extends FramerateEngine {
         canvas.setEnabled(true);
         fpsIndicator = new GuiFpsIndicator(this);
         changeRenderer(new BlankGraphicRenderer(this));
+        
+        canvas.addResizeListener(new ResizeListener() {
+            
+            @Override
+            public void resized(V3DCanvas canvas) {
+                Game.getInstance().getInstance().sendToAll(new ReloadUiEvent());
+            }
+        });
+        
         
         frame();
     }

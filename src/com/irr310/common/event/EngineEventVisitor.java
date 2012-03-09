@@ -56,4 +56,6 @@ public interface EngineEventVisitor {
     public abstract void visit(NextWaveEvent event);
 
     public abstract void visit(MoneyChangedEvent event);
+
+    public abstract void visit(ReloadUiEvent event);
 }

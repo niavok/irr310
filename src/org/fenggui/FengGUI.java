@@ -61,7 +61,16 @@ public class FengGUI {
     private static Map<Class<?>, IWidget> ptList = null;
 
     private static ITheme theme = null;
+    
+    public static int canvasWidth;
+    public static int canvasHeight;
 
+    
+    public static void setCanvasSize(int canvasWidth, int canvasHeight) {
+        FengGUI.canvasWidth = canvasWidth;
+        FengGUI.canvasHeight = canvasHeight;
+    }
+    
     /**
      * Inits the widget prototypes. This can be called to initialize all
      * prototypes at once. Very useful on loading screens.

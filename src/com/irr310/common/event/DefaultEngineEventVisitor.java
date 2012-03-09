@@ -101,4 +101,8 @@ public class DefaultEngineEventVisitor implements EngineEventVisitor {
     @Override
     public void visit(MoneyChangedEvent event) {
     }
+    
+    @Override
+    public void visit(ReloadUiEvent event) {
+    }
 }

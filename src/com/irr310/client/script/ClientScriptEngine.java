@@ -12,6 +12,7 @@ import com.irr310.common.event.KeyReleasedEvent;
 import com.irr310.common.event.MouseEvent;
 import com.irr310.common.event.PauseEngineEvent;
 import com.irr310.common.event.QuitGameEvent;
+import com.irr310.common.event.ReloadUiEvent;
 import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.event.WorldReadyEvent;
 import com.irr310.server.Duration;
@@ -78,6 +79,10 @@ public class ClientScriptEngine extends FramerateEngine {
 
         @Override
         public void visit(WorldReadyEvent event) {
+            init();
+        }
+        @Override
+        public void visit(ReloadUiEvent event) {
             init();
         }
 

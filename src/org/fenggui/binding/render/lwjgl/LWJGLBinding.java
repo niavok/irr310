@@ -25,6 +25,7 @@ import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
+import org.fenggui.FengGUI;
 import org.fenggui.binding.clipboard.AWTClipboard;
 import org.fenggui.binding.clipboard.IClipboard;
 import org.fenggui.binding.render.Binding;
@@ -80,7 +81,8 @@ public class LWJGLBinding extends Binding
    */
   public int getCanvasWidth()
   {
-    return Display.getDisplayMode().getWidth();
+    //return Display.getDisplayMode().getWidth();
+      return FengGUI.canvasWidth;
   }
 
   /* (non-Javadoc)
@@ -88,7 +90,8 @@ public class LWJGLBinding extends Binding
    */
   public int getCanvasHeight()
   {
-    return Display.getDisplayMode().getHeight();
+    //return Display.getDisplayMode().getHeight();
+      return FengGUI.canvasHeight;
   }
 
   @Override
