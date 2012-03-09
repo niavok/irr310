@@ -355,10 +355,36 @@ Wave 8+
 ------
 
 
+Enemy description
+-----------------
 
-bomb
-fighter
-bomber
+## Asteroid
+A big peace of rock.
+- Size and speed can vary
+- Constant speed aget lanch
+- No control
+- Directed or not to the monolith
+
+## Shielded asteroid
+Asteroid with a shield at the front
+
+## Boosted asteroid
+Asteroid with various buster. Gain speed over time. Can be shielded
+
+
+## Bomb
+Small or big piece of metal fill with explosive. Small damping
+Like a asteroid but weak and deadly
+
+## Fighter
+Small ship, like the player, but smaller
+
+## Bomber
+Small ship carring bombs
+
+
+
+
 anti figter missile
 Huge asteroid
 shielded asteroid (resistant at the front)
