@@ -11,19 +11,133 @@ Objects will come into the sphere and target the monolith. If the Monolith is hi
 The game restart at the last waypoint. The ability of reduce the difficulty is provide
 
 
-The player control a space ship. The space ship can be destoyed, partially or totally. The player can decide to abandon his ship, auto destroying it. A new ship appear at the Monolith. The operation take 10s and the collected money fall.
-
+The player control a space ship. The space ship can be destoyed, partially or totally. The player can decide to repair his ship. It is teleported to the Monolith. The operation take 5s. Then the ship is repair by the monotith control zone.
 
 Several waves of ennemy will come.
 
-
 The next wave will arrive after a few time, or if the player ask for it with a button.
-
-The player can buy or sell upgrade if in the controller radius of the monolith. If the player enter in the 
 
 
 Upgrades
 ========
+
+All upgrades cost money. All upgrades can be sell.
+
+The player can buy or sell upgrade if in the controller radius of the monolith. The purchases are installed immediatly.
+
+
+
+
+
+Weapon upgrade
+--------------
+
+
+### Weapon damage
+ - Rank 1 : increase the damage by 50%      **500 $**
+ - Rank 2 : increase the damage by 100%     **2000 $**
+ - Rank 3 : increase the damage by 200%     **8000 $**
+
+### Weapon slot
+ - Rank 1 : 2 weapons                       **500 $**
+ - Rank 2 : 3 weapons                       **2000 $**
+ - Rank 3 : 4 weapons                       **8000 $**
+
+### Weapons
+You can have/buy as many weapon as you Weapon slot level. You can buy multiple time the same weapons.
+ - Gun. 1 by default                        **200 $**
+    Light weigth. Medium damage, medium firerate. 4 Barrel with fast overheat. Medium range. Small impulse
+ - Cannon                                   **800 $**
+    Heavy weigth. Big damage, slow firerate. Long range. Big impulse.
+ - Shotgun                                  **800 $**
+    Medium weigth. Big damage in cone. Small range. Big impulse.
+ - Laser                                    **800 $**
+    Light weigth. Light damage. Long range. No impulse.
+ - Rocket
+ - Pulse
+ - Missile
+ - Rear gun
+ - Bomb
+ - Mines (how avoid spam ?)
+
+### Ammo limit ???
+The ammo are gain very quicky in the monolith control zone. Each weapon has is own ammo amount (? really interresting instead of a common amount poll ? )
+ - Rank 1 : increase the ammo limit by 50%      **500 $**
+ - Rank 2 : increase the ammo limit by 100%     **2000 $**
+ - Rank 3 : increase the ammo limit by 200%     **
+ 
+
+Ship upgrade
+------------
+
+- Increase engine speed
+- Increase engine reactivity
+- Increase wings efficiency
+- Increase each component armor
+- sheld
+- teleport   ( distance , speed, angle)
+- turn help (thrusters)
+
+
+
+### Hardpoint slot
+ - Rank 1 : 1 slot                        **500 $**
+ - Rank 2 : 2 slots                       **2000 $**
+ - Rank 3 : 3 slots                       **8000 $**
+
+
+### Hardpoint item
+ - Rear camera                            **500 $**
+ - Countermeasure
+ - 
+
+
+Defense upgrade
+---------------
+
+
+### Armor
+Renforce each part of the ship.
+ - Rank 1 : Armor + 50%                   **500 $**
+ - Rank 2 : Armor + 100%                  **2000 $**
+ - Rank 3 : Armor + 200%                  **8000 $**
+
+
+### Shield
+Absorb global damages.
+ - Rank 1 : 1000 damages                  **500 $**
+ - Rank 2 : 2000 damages                  **2000 $**
+ - Rank 3 : 4000 damages                  **8000 $**
+
+ 
+### Embedded repair 
+Repair the ship slowly outside the monolith control zone.
+ - Rank 1 : 10 damages/s                  **500 $**
+ - Rank 2 : 20 damages/s                  **2000 $**
+ - Rank 3 : 40 damages/s                  **8000 $**
+ 
+ 
+
+Gui upgrade
+-----------
+
+- directionnal weapons
+- rear camera
+- 
+
+
+- Collision alarm
+- Minimap
+- ...
+- follow
+
+...
+- driver customization
+
+- damage control
+- reparation control
+- inline auto repair
+
 
 
 Monolith upgrade
@@ -38,45 +152,8 @@ Monolith upgrade
 
 - defence wall (destroyable ?)
 
-Ship upgrade
-------------
-
-- Increase engine speed
-- Increase engine reactivity
-- Increase wings efficiency
-- Increase each component armor
-- sheld
-- teleport   ( distance , speed, angle)
-- turn help (thrusters)
 
 
-Weapon upgrade
---------------
-
--Slot count
-- Increase gun power
-- ...
-- shutgun
-- missile (ammo limit)
-- rear gun
-- bomb
-- mines
-
- 
-- damage control
-- reparation control
-- inline auto repair
-
-Gui upgrade
------------
-
-- Collision alarm
-- Minimap
-- ...
-- follow
-
-...
-- driver customization
 
 Reputation
 =================
@@ -206,6 +283,8 @@ shield ship
 boss ?
 kamicaze
 ...
+
+Different AI
 
 
 
