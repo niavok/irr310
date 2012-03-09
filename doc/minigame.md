@@ -38,10 +38,6 @@ Weapon upgrade
  - Rank 2 : increase the damage by 100%     **2000 $**
  - Rank 3 : increase the damage by 200%     **8000 $**
 
-### Weapon slot
- - Rank 1 : 2 weapons                       **500 $**
- - Rank 2 : 3 weapons                       **2000 $**
- - Rank 3 : 4 weapons                       **8000 $**
 
 ### Weapons
 You can have/buy as many weapon as you Weapon slot level. You can buy multiple time the same weapons.
@@ -60,11 +56,15 @@ You can have/buy as many weapon as you Weapon slot level. You can buy multiple t
  - Bomb
  - Mines (how avoid spam ?)
 
+
+Weapon levels ?
+
 ### Ammo limit ???
+
 The ammo are gain very quicky in the monolith control zone. Each weapon has is own ammo amount (? really interresting instead of a common amount poll ? )
  - Rank 1 : increase the ammo limit by 50%      **500 $**
  - Rank 2 : increase the ammo limit by 100%     **2000 $**
- - Rank 3 : increase the ammo limit by 200%     **
+ - Rank 3 : increase the ammo limit by 200%     **8000 $**
  
 
 Ship upgrade
@@ -79,17 +79,28 @@ Ship upgrade
 - turn help (thrusters)
 
 
+### Generator
+ - Rank 1 : 1 kW                          **500 $**
+ - Rank 2 : 2 kW                          **2000 $**
+ - Rank 3 : 3 kW                          **8000 $**
+
+### Battery
+ - Rank 1 : 10 kJ (10s for 1kW)            **500 $**
+ - Rank 2 : 20 kJ                          **2000 $**
+ - Rank 3 : 30 kJ                          **8000 $**
+
+
+### Rear Camera
+ - Use energy
 
 ### Hardpoint slot
- - Rank 1 : 1 slot                        **500 $**
- - Rank 2 : 2 slots                       **2000 $**
- - Rank 3 : 3 slots                       **8000 $**
+Point to attach weapon or other equipements.
 
+ - Rank 1 : 1 slots (nose slot)           **200 $**
+ - Rank 2 : 2 slots                       **4000 $**
+ - Rank 3 : 3 slots                       **6000 $**
+ - Rank 4 :  ... 21 slots : 4 on each wing, 1 on nose, 1 on each engine
 
-### Hardpoint item
- - Rear camera                            **500 $**
- - Countermeasure
- - 
 
 
 Defense upgrade
@@ -101,7 +112,6 @@ Renforce each part of the ship.
  - Rank 1 : Armor + 50%                   **500 $**
  - Rank 2 : Armor + 100%                  **2000 $**
  - Rank 3 : Armor + 200%                  **8000 $**
-
 
 ### Shield
 Absorb global damages.
@@ -115,8 +125,22 @@ Repair the ship slowly outside the monolith control zone.
  - Rank 1 : 10 damages/s                  **500 $**
  - Rank 2 : 20 damages/s                  **2000 $**
  - Rank 3 : 40 damages/s                  **8000 $**
- 
- 
+
+### Nose Ram
+Hight resistance block on the nose of the ship. Take the nose slot !
+ - Heavy, robust
+ - Very heavy, very robust
+ - Very very heavy, very very robust
+
+### Pike
+Hight resistance pike on the wings or the engine slot. Not available for nose.
+ - Heavy, robust
+ - Very heavy, very robust
+ - Very very heavy, very very robust
+
+
+### Countermeasure system
+ - Alert following projectile
 
 Gui upgrade
 -----------
