@@ -63,7 +63,7 @@ public class SoundEngine extends EventEngine {
             Vec3 audioPosition = localDistance.multiply(0.01);
             System.err.println("damage sound vector "+audioPosition);
             
-            explosionEffect.playAsSoundEffect(3.0f, 1.0f, false,audioPosition.x.floatValue(), audioPosition.y.floatValue() ,audioPosition.z.floatValue());
+            explosionEffect.playAsSoundEffect(3.0f, 0.5f, false,audioPosition.x.floatValue(), audioPosition.y.floatValue() ,audioPosition.z.floatValue());
             //explosionEffect.playAsSoundEffect(1.0f, 1.0f, false, 0,0,-1);
             //explosionEffect.playAsSoundEffect(1f, 1.0f, false, 100, 0 ,0);
         }

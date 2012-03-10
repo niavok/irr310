@@ -7,6 +7,7 @@ import org.lwjgl.input.Keyboard;
 
 import com.irr310.client.GameClient;
 import com.irr310.client.navigation.LoginManager;
+import com.irr310.common.Game;
 import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
@@ -29,8 +30,7 @@ import com.irr310.server.Duration;
 public class ClientGameEngine extends FramerateEngine {
 
     private List<CapacityController> capacityControllers;
-    private String cheatString = "";
-
+    
     public ClientGameEngine() {
         capacityControllers = new ArrayList<CapacityController>();
         framerate = new Duration(15000000);
@@ -85,23 +85,11 @@ public class ClientGameEngine extends FramerateEngine {
         
         @Override
         public void visit(GameOverEvent event) {
-            GameClient.getInstance().gameOver();
+            Game.getInstance().gameOver();
         }
 
         
-        @Override
-        public void visit(KeyPressedEvent event) {
-            // Cheats
-            if(event.getKeyCode() == Keyboard.KEY_RETURN) {
-                if(cheatString.toLowerCase().equals("glittering prizes")) {
-                    LoginManager.localPlayer.giveMoney(10000);
-                }
-                cheatString = "";
-            } else if(event.getCharacter() != null) {
-                cheatString += event.getCharacter();
-            }
-            
-        }
+        
     }
 
     private void addCapacityController(CapacityController controller) {

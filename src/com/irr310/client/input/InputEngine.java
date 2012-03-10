@@ -4,6 +4,7 @@ import org.lwjgl.input.Cursor;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
+import com.irr310.client.navigation.LoginManager;
 import com.irr310.common.Game;
 import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.event.DefaultEngineEventVisitor;
@@ -24,7 +25,8 @@ public class InputEngine extends FramerateEngine {
 
     private boolean dragging;
     private long[] pressTime;
-
+    private String cheatString = "";
+    
     public InputEngine() {
         framerate = new Duration(15000000);
         dragging = false;
@@ -138,6 +140,21 @@ public class InputEngine extends FramerateEngine {
         @Override
         public void visit(PauseEngineEvent event) {
             pause(true);
+        }
+        
+        
+        @Override
+        public void visit(KeyPressedEvent event) {
+            // Cheats
+            if(event.getKeyCode() == Keyboard.KEY_RETURN) {
+                if(cheatString.toLowerCase().equals("glittering prizes")) {
+                    LoginManager.localPlayer.giveMoney(10000);
+                }
+                cheatString = "";
+            } else if(event.getCharacter() != null) {
+                cheatString += event.getCharacter();
+            }
+            
         }
 
     }

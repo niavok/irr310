@@ -183,9 +183,9 @@ public class GameClient extends Game {
         worldEngineList.add(physicEngine);
 
         // ClientGame
-        ClientGameEngine clientGameEngine = new ClientGameEngine();
-        engineList.add(clientGameEngine);
-        worldEngineList.add(clientGameEngine);
+//        ClientGameEngine clientGameEngine = new ClientGameEngine();
+//        engineList.add(clientGameEngine);
+//        worldEngineList.add(clientGameEngine);
 
         // ClientScriptEngine
         ClientScriptEngine clientScriptEngine = new ClientScriptEngine();

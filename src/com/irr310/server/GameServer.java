@@ -179,4 +179,10 @@ public class GameServer extends Game {
     public Map<Integer, Player> getPlayerMap() {
         return playerMap;
     }
+
+    @Override
+    public void gameOver() {
+        // TODO Auto-generated method stub
+        
+    }
 }

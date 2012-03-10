@@ -61,5 +61,7 @@ public abstract class Game {
     
 
     public abstract PhysicEngine getPhysicEngine();
+
+    public abstract void gameOver();
     
 }

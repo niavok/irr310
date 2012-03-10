@@ -369,6 +369,11 @@ public class ServerGameEngine extends FramerateEngine {
             Game.getInstance().sendToAll(new UpgradeStateChanged(playerUpgrade, event.getPlayer()));
             UpgradeFactory.apply(playerUpgrade);
         }
+        
+        @Override
+        public void visit(GameOverEvent event) {
+            Game.getInstance().gameOver();
+        }
     }
 
     private void processCollision(Part part, float impulse) {

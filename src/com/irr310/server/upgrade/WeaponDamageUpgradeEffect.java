@@ -41,12 +41,6 @@ public class WeaponDamageUpgradeEffect extends UpgradeEffect {
                     
                 }
             }
-            
-            
-            
         }
-        
-        
     }
-
 }

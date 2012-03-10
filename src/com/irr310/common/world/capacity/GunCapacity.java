@@ -1,5 +1,9 @@
 package com.irr310.common.world.capacity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.DamageType;
 import com.irr310.common.world.view.CapacityView;
 
@@ -8,8 +12,24 @@ public class GunCapacity extends Capacity {
     public boolean fire;
     public double damage;
     public double range;
+    //Size of the dispertion cube
     public double accuracy;
+    
+    // Bullet count to overheat
+    public double heatingSpeed;
+
+    // Time to cool to zero
+    public double coolingSpeed;
+    
+    //Bullet par second
+    public double firerate;
+    
+    
+    //Offset of barrels
+    public List<Vec3> barrels;
+    
     public DamageType damageType;
+    
 
     public GunCapacity(long id) {
         super(id, "gun");
@@ -17,6 +37,15 @@ public class GunCapacity extends Capacity {
         damage = 50;
         range = 1000;
         accuracy = 10;
+        coolingSpeed = 10;
+        heatingSpeed = 5;
+        firerate = 1;
+        barrels = new ArrayList<Vec3>();
+        barrels.add(new Vec3(0.14,0,0.14));
+        barrels.add(new Vec3(-0.14,0,0.14));
+        barrels.add(new Vec3(-0.14,0,0.14));
+        barrels.add(new Vec3(0.14,0,-0.14));
+
         damageType = DamageType.PHYSICAL;
     }
 
@@ -31,6 +60,14 @@ public class GunCapacity extends Capacity {
         view.pushDouble(damage);
         view.pushDouble(range);
         view.pushDouble(accuracy);
+        view.pushDouble(coolingSpeed);
+        view.pushDouble(heatingSpeed);
+        view.pushDouble(firerate);
+        view.pushInteger(barrels.size());
+        for(Vec3 barrel: barrels) {
+            view.pushVect3(barrel);
+        }
+        
         view.pushInteger(damageType.ordinal());
         return view;
     }
@@ -41,6 +78,15 @@ public class GunCapacity extends Capacity {
         damage = view.popDouble();
         range = view.popDouble();
         accuracy = view.popDouble();
+        coolingSpeed = view.popDouble();
+        heatingSpeed = view.popDouble();
+        firerate = view.popDouble();
+        
+        int barrelCount = view.popInteger();
+        for(int i = 0; i < barrelCount; i++) {
+            barrels.add(view.popVect3());
+        }
+        
         damageType =DamageType.values()[view.popInteger()];
     }
 
