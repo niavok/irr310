@@ -99,7 +99,7 @@ public class UpgradeWeaponTab extends UpgradeTab{
             
             yPos += currentRankLabel.getSize().getY();
             
-            V3DLabel currentRankDescription = new V3DLabel(upgrade.getRankDescriptions().get(currentRank));
+            V3DLabel currentRankDescription = new V3DLabel(upgrade.getRankDescriptions().get(currentRank-1));
             currentRankDescription.setFontStyle("Ubuntu", "", 12);
             currentRankDescription.setColor(V3DColor.darkgrey, V3DColor.transparent);
             currentRankDescription.setWordWarping(true, 150);
