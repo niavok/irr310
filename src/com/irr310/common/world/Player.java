@@ -107,7 +107,9 @@ public class Player extends GameEntity {
         }
         
         UpgradeOwnership upgradeOwnership = new UpgradeOwnership(upgrade, this);
+        upgradeOwnership.setRank(upgrade.getInitialRank());
         upgrades.add(upgradeOwnership);
+        
         
         return upgradeOwnership;
     }

@@ -7,7 +7,9 @@ import com.irr310.common.world.Player;
 import com.irr310.common.world.Ship;
 import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.capacity.GunCapacity;
+import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
+import com.irr310.common.world.upgrade.Upgrade.UpgradeCategory;
 
 public class WeaponCoolingUpgradeEffect extends UpgradeEffect {
 
@@ -41,6 +43,21 @@ private static final double GUN_BASE_COOLINGSPEED = 10;
                 }
             }
         }
+    }
+
+    @Override
+    public Upgrade generateUpgrade()  {
+        Upgrade weaponCoolingUpgrade = new Upgrade();
+        weaponCoolingUpgrade.setCategory(UpgradeCategory.WEAPON_UPGRADE);
+        weaponCoolingUpgrade.setGlobalDescription("Increase the cooling speed of all your weapons.");
+        weaponCoolingUpgrade.setTag("weapon_upgrade.cooling");
+        weaponCoolingUpgrade.setName("Weapon cooling");
+        weaponCoolingUpgrade.addRank(50, "20% cooling speed increase.");
+        weaponCoolingUpgrade.addRank(200, "40% cooling increase.");
+        weaponCoolingUpgrade.addRank(800, "80% cooling increase.");
+        weaponCoolingUpgrade.addRank(1600, "160% cooling increase.");
+        weaponCoolingUpgrade.addRank(6400, "320% cooling increase.");
+        return weaponCoolingUpgrade;
     }
 
 }

@@ -7,7 +7,9 @@ import com.irr310.common.world.Player;
 import com.irr310.common.world.Ship;
 import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.capacity.GunCapacity;
+import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
+import com.irr310.common.world.upgrade.Upgrade.UpgradeCategory;
 
 public class WeaponFirerateUpgradeEffect extends UpgradeEffect {
 
@@ -41,6 +43,21 @@ public class WeaponFirerateUpgradeEffect extends UpgradeEffect {
                 }
             }
         }
+    }
+
+    @Override
+    public Upgrade generateUpgrade() {
+        Upgrade weaponFirerateUpgrade = new Upgrade();
+        weaponFirerateUpgrade.setCategory(UpgradeCategory.WEAPON_UPGRADE);
+        weaponFirerateUpgrade.setGlobalDescription("Increase the firerate of all your weapons.");
+        weaponFirerateUpgrade.setTag("weapon_upgrade.firerate");
+        weaponFirerateUpgrade.setName("Weapon firerate");
+        weaponFirerateUpgrade.addRank(50, "20% firerate increase.");
+        weaponFirerateUpgrade.addRank(200, "40% firerate increase.");
+        weaponFirerateUpgrade.addRank(800, "80% firerate increase.");
+        weaponFirerateUpgrade.addRank(1600, "160% firerate increase.");
+        weaponFirerateUpgrade.addRank(6400, "320% firerate increase.");
+        return weaponFirerateUpgrade;
     }
 
 }

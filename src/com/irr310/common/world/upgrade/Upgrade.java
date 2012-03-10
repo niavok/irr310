@@ -5,13 +5,15 @@ import java.util.List;
 
 public class Upgrade {
     public enum UpgradeCategory {
-        WEAPON,
-        SHIP,
+        WEAPON_UPGRADE,
+        WEAPONS,
+        SHIP_UPGRADE,
         DEFENSE,
         SYSTEM,
     }
     
     int maxRank;
+    int initialRank;
 
     private UpgradeCategory category;
     private String tag;
@@ -26,6 +28,7 @@ public class Upgrade {
         prices = new ArrayList<Integer>();
         rankDescriptions = new ArrayList<String>();
         maxRank = 0;
+        initialRank = 0;
     }
     
     public UpgradeCategory getCategory() {
@@ -82,6 +85,14 @@ public class Upgrade {
     
     public List<String> getRankDescriptions() {
         return rankDescriptions;
+    }
+    
+    public int getInitialRank() {
+        return initialRank;
+    }
+    
+    public void setInitialRank(int initialRank) {
+        this.initialRank = initialRank;
     }
     
 }

@@ -12,7 +12,7 @@ public abstract class UpgradeTab implements GuiTab{
     private V3DContainer labelPane;
     private V3DLabel weaponTabText;
     private V3DGuiRectangle weaponTabBox;
-    private V3DLabel tabTextCount;
+    //private V3DLabel tabTextCount;
 
     public UpgradeTab(String name) {
 
@@ -32,18 +32,18 @@ public abstract class UpgradeTab implements GuiTab{
         
         weaponTabText = new V3DLabel(name);
         weaponTabText.setyAlignment(GuiYAlignment.TOP);
-        weaponTabText.setPosition(25, 12);
-        weaponTabText.setFontStyle("Ubuntu", "bold", 18);
+        weaponTabText.setPosition(8, 14);
+        weaponTabText.setFontStyle("Ubuntu", "bold", 14);
         weaponTabText.setColor(GuiConstants.irrGreen, V3DColor.transparent);
         labelPane.add(weaponTabText);
         
-        tabTextCount = new V3DLabel("12");
-        tabTextCount.setyAlignment(GuiYAlignment.TOP);
-        tabTextCount.setxAlignment(GuiXAlignment.RIGHT);
-        tabTextCount.setPosition(10, 22);
-        tabTextCount.setFontStyle("Ubuntu", "", 10);
-        tabTextCount.setColor(V3DColor.darkgrey, V3DColor.transparent);
-        labelPane.add(tabTextCount);
+//        tabTextCount = new V3DLabel("12");
+//        tabTextCount.setyAlignment(GuiYAlignment.TOP);
+//        tabTextCount.setxAlignment(GuiXAlignment.RIGHT);
+//        tabTextCount.setPosition(10, 22);
+//        tabTextCount.setFontStyle("Ubuntu", "", 10);
+//        tabTextCount.setColor(V3DColor.darkgrey, V3DColor.transparent);
+//        labelPane.add(tabTextCount);
     }
     
     @Override
@@ -56,11 +56,11 @@ public abstract class UpgradeTab implements GuiTab{
         if(active) {
             weaponTabBox.setFillColor(GuiConstants.irrGreen);
             weaponTabText.setColor(V3DColor.white, V3DColor.transparent);
-            tabTextCount.setColor(V3DColor.lightgrey, V3DColor.transparent);
+            //tabTextCount.setColor(V3DColor.lightgrey, V3DColor.transparent);
         } else {
             weaponTabBox.setFillColor(GuiConstants.irrFill);
             weaponTabText.setColor(GuiConstants.irrGreen, V3DColor.transparent);
-            tabTextCount.setColor(V3DColor.darkgrey, V3DColor.transparent);
+            //tabTextCount.setColor(V3DColor.darkgrey, V3DColor.transparent);
         }
     }
 

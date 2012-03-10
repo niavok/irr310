@@ -29,7 +29,7 @@ public class World {
     private final List<Player> players;
     private final List<Part> parts;
     private final List<Part> myParts;
-    private final Map<String, Upgrade> availableUpgrades;
+    private final List<Upgrade> availableUpgrades;
     private final Map<Long, Player> playerIdMap;
     private final Map<Long, Ship> shipIdMap;
     private final Map<Long, CelestialObject> celestialObjectIdMap;
@@ -55,7 +55,7 @@ public class World {
         slotIdMap = new HashMap<Long, Slot>();
         componentIdMap = new HashMap<Long, Component>();
         partIdMap = new HashMap<Long, Part>();
-        availableUpgrades = new HashMap<String, Upgrade>();
+        availableUpgrades = new CopyOnWriteArrayList<Upgrade>();
         mutex = new ReentrantLock();
     }
 
@@ -239,10 +239,10 @@ public class World {
     }
 
     public void addUpgrade(Upgrade upgrade) {
-        availableUpgrades.put(upgrade.getTag(), upgrade);
+        availableUpgrades.add(upgrade);
     }
     
-    public Map<String, Upgrade> getAvailableUpgrades() {
+    public List<Upgrade> getAvailableUpgrades() {
         return availableUpgrades;
     }
 

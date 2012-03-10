@@ -146,8 +146,11 @@ public class InputEngine extends FramerateEngine {
         public void visit(KeyPressedEvent event) {
             // Cheats
             if(event.getKeyCode() == Keyboard.KEY_RETURN) {
-                if(cheatString.toLowerCase().equals("glittering prizes") || cheatString.toLowerCase().equals("gold")) {
+                if(cheatString.toLowerCase().equals("gold")) {
                     LoginManager.localPlayer.giveMoney(10000);
+                }
+                if(cheatString.toLowerCase().equals("glittering prizes")) {
+                    LoginManager.localPlayer.giveMoney(500000);
                 }
                 cheatString = "";
             } else if(event.getCharacter() != null) {

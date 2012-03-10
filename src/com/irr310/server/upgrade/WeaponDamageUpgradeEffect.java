@@ -7,7 +7,9 @@ import com.irr310.common.world.Player;
 import com.irr310.common.world.Ship;
 import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.capacity.GunCapacity;
+import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
+import com.irr310.common.world.upgrade.Upgrade.UpgradeCategory;
 
 public class WeaponDamageUpgradeEffect extends UpgradeEffect {
 
@@ -41,5 +43,20 @@ public class WeaponDamageUpgradeEffect extends UpgradeEffect {
                 }
             }
         }
+    }
+
+    @Override
+    public Upgrade generateUpgrade() {
+        Upgrade weaponDamageUpgrade = new Upgrade();
+        weaponDamageUpgrade.setCategory(UpgradeCategory.WEAPON_UPGRADE);
+        weaponDamageUpgrade.setGlobalDescription("Increase the damages of all your weapons.");
+        weaponDamageUpgrade.setTag("weapon_upgrade.damage");
+        weaponDamageUpgrade.setName("Weapon damage");
+        weaponDamageUpgrade.addRank(50, "20% damage increase.");
+        weaponDamageUpgrade.addRank(200, "40% damage increase.");
+        weaponDamageUpgrade.addRank(800, "80% damage increase.");
+        weaponDamageUpgrade.addRank(1600, "160% damage increase.");
+        weaponDamageUpgrade.addRank(6400, "320% damage increase.");
+        return weaponDamageUpgrade;
     }
 }
