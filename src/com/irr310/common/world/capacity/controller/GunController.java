@@ -70,8 +70,6 @@ public class GunController extends CapacityController {
             return;
         }
         
-        System.err.println("fire barrel "+barrel +" "+ this);
-        
         Part part = component.getFirstPart();
             
         double xoffset = capacity.barrels.get(barrel).getX();
@@ -95,10 +93,6 @@ public class GunController extends CapacityController {
         barrelHeat[barrel] += 1.0 /capacity.heatingSpeed;
         
         globalCooldown = 1.0 / (capacity.firerate * capacity.barrels.size());
-        
-        System.err.println("duration "+duration);
-        System.err.println("barrel cooldown "+barrelCooldown[barrel]);
-        System.err.println("barrel heat "+barrelHeat[barrel]);
         
     }
 

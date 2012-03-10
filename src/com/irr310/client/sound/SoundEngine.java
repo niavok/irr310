@@ -60,12 +60,9 @@ public class SoundEngine extends EventEngine {
             Vec3 worldDistance = target.minus(playerPosition);
             Vec3 localDistance = worldDistance.rotate(kernel.getFirstPart().getTransform().inverse());
             
-            Vec3 audioPosition = localDistance.multiply(0.01);
-            System.err.println("damage sound vector "+audioPosition);
+            Vec3 audioPosition = localDistance.multiply(0.03);
             
             explosionEffect.playAsSoundEffect(3.0f, 0.5f, false,audioPosition.x.floatValue(), audioPosition.y.floatValue() ,audioPosition.z.floatValue());
-            //explosionEffect.playAsSoundEffect(1.0f, 1.0f, false, 0,0,-1);
-            //explosionEffect.playAsSoundEffect(1f, 1.0f, false, 100, 0 ,0);
         }
     }
 
@@ -102,8 +99,7 @@ public class SoundEngine extends EventEngine {
 
     @Override
     protected void end() {
-        AL10.alSourceStop(source.get(0));
-        killALData();
+        //killALData();
         AL.destroy();
     }
 
@@ -139,10 +135,10 @@ public class SoundEngine extends EventEngine {
     */
     int loadALData() {
       // Load wav data into a buffer.
-      AL10.alGenBuffers(buffer);
+      //AL10.alGenBuffers(buffer);
 
-      if(AL10.alGetError() != AL10.AL_NO_ERROR)
-        return AL10.AL_FALSE;
+      //if(AL10.alGetError() != AL10.AL_NO_ERROR)
+      //  return AL10.AL_FALSE;
 
       //Loads the wave file from your file system
       /*java.io.FileInputStream fin = null;
