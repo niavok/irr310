@@ -94,7 +94,7 @@ public class ClientGameEngine extends FramerateEngine {
             // Cheats
             if(event.getKeyCode() == Keyboard.KEY_RETURN) {
                 if(cheatString.toLowerCase().equals("glittering prizes")) {
-                    LoginManager.localPlayer.giveMoney(90000);
+                    LoginManager.localPlayer.giveMoney(10000);
                 }
                 cheatString = "";
             } else if(event.getCharacter() != null) {
