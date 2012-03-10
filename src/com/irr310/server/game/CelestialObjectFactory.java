@@ -22,7 +22,7 @@ public class CelestialObjectFactory {
     public static Loot createLoot(int value) {
         Loot loot = new Loot(GameServer.pickNewId(), ""+value+" $");
         loot.setValue(value);
-        loot.getFirstPart().setShape(new Vec3(value/50., value/50., value/50.));
+        loot.getFirstPart().setShape(new Vec3(1+value/50., 1+value/50., 1+value/50.));
         loot.getFirstPart().setMass(value*20.);
         
         return loot;

@@ -27,6 +27,7 @@ import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.ReloadUiEvent;
 import com.irr310.common.event.RemoveGuiComponentEvent;
 import com.irr310.common.event.StartEngineEvent;
+import com.irr310.common.event.UpgradeStateChanged;
 import com.irr310.common.event.WorldReadyEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.common.tools.Vec2;
@@ -201,6 +202,11 @@ public class GraphicEngine extends FramerateEngine {
         
         @Override
         public void visit(MoneyChangedEvent event) {
+            rendererVisitor.visit(event);
+        }
+        
+        @Override
+        public void visit(UpgradeStateChanged event) {
             rendererVisitor.visit(event);
         }
     }

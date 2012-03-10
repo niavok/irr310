@@ -31,9 +31,16 @@ public class UpgradeWeaponTab extends UpgradeTab{
     public UpgradeWeaponTab() {
         super("Weapon");
         
+        root = new V3DContainer();
+        
+        generate();
+        
+    }
+
+    private void generate() {
         upgradesOwnership = LoginManager.localPlayer.getUpgrades();
         Map<String, Upgrade> availableUpgrades = Game.getInstance().getWorld().getAvailableUpgrades();
-        root = new V3DContainer();
+        
         
         int y = 10;
         
@@ -43,7 +50,6 @@ public class UpgradeWeaponTab extends UpgradeTab{
             root.add(upgradePane);
             y += 160;
         }
-        
     }
     
     private V3DGuiComponent generateUpgradePane(final Upgrade upgrade) {
@@ -162,10 +168,15 @@ public class UpgradeWeaponTab extends UpgradeTab{
     @Override
     public V3DContainer getContentPane() {
         
-        
-        
-        
         return root;
+    }
+
+    @Override
+    public void refresh() {
+        System.err.println("refresh");
+        root.removeAll();
+        generate();
+        
     }
 
     

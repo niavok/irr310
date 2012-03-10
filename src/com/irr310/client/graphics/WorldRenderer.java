@@ -47,6 +47,7 @@ import com.irr310.common.event.EngineEventVisitor;
 import com.irr310.common.event.MoneyChangedEvent;
 import com.irr310.common.event.NextWaveEvent;
 import com.irr310.common.event.RemoveGuiComponentEvent;
+import com.irr310.common.event.UpgradeStateChanged;
 import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.Vec3;
@@ -114,7 +115,7 @@ public class WorldRenderer implements GraphicRenderer {
     private V3DGuiRectangle monolithStatus;
     private V3DLabel monolithStatusText;
     private V3DLabel moneyText;
-    private V3DContainer upgradeMenu;
+    private MenuContainer upgradeMenu;
     boolean upgradeMenuEnabled = false;
 
     public WorldRenderer(GraphicEngine engine) {
@@ -335,8 +336,8 @@ public class WorldRenderer implements GraphicRenderer {
         moneyText = new V3DLabel(LoginManager.localPlayer.getMoney() + " $");
         moneyText.setyAlignment(GuiYAlignment.BOTTOM);
         moneyText.setxAlignment(GuiXAlignment.RIGHT);
-        moneyText.setPosition(20, 15);
-        moneyText.setFontStyle("Ubuntu", "bold", 45);
+        moneyText.setPosition(15, 20);
+        moneyText.setFontStyle("Ubuntu", "bold", 40);
         moneyText.setColor(GuiConstants.irrGreen, V3DColor.transparent);
         container.add(moneyText);
         
@@ -867,7 +868,14 @@ public class WorldRenderer implements GraphicRenderer {
         
         @Override
         public void visit(MoneyChangedEvent event) {
-            moneyText.setText(LoginManager.localPlayer.getMoney()+" $");
+            if(moneyText != null) {
+                moneyText.setText(LoginManager.localPlayer.getMoney()+" $");
+            }
+        }
+        
+        @Override
+        public void visit(UpgradeStateChanged event) {
+            upgradeMenu.refresh();
         }
 
     }

@@ -22,6 +22,8 @@ public class Player extends GameEntity {
     private List<Ship> shipList;
     private List<UpgradeOwnership> upgrades;
     private int  money;
+
+    private double lastInterrest;
     
 	public Player(long id, String login) {
 	    super(id);
@@ -29,6 +31,7 @@ public class Player extends GameEntity {
         shipList = new ArrayList<Ship>();
         upgrades = new ArrayList<UpgradeOwnership>();
         money = 0;
+        lastInterrest = 0;
 	}
 	
 	public void changePassword(String newPassword) {
@@ -79,13 +82,17 @@ public class Player extends GameEntity {
     }
     
     public void giveMoney(int amount) {
-        money += amount;
-        Game.getInstance().sendToAll(new MoneyChangedEvent(amount, this, true));
+        if(amount > 0) {
+            money += amount;
+            Game.getInstance().sendToAll(new MoneyChangedEvent(amount, this, true));
+        }
     }
     
     public void retireMoney(int amount) {
-        money -= amount;
-        Game.getInstance().sendToAll(new MoneyChangedEvent(amount, this, true));
+        if(amount > 0) {
+            money -= amount;
+            Game.getInstance().sendToAll(new MoneyChangedEvent(amount, this, true));
+        }
     }
     
     public List<UpgradeOwnership> getUpgrades() {
@@ -103,5 +110,12 @@ public class Player extends GameEntity {
         upgrades.add(upgradeOwnership);
         
         return upgradeOwnership;
+    }
+
+    public void giveInterrest(double interrest) {
+        double gain =  lastInterrest + interrest;
+        int realGain = (int) gain;
+        lastInterrest = gain -  realGain;
+        giveMoney(realGain);
     }
 }

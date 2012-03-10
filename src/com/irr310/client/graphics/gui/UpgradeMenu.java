@@ -6,6 +6,8 @@ import java.util.List;
 import org.fenggui.event.ButtonPressedEvent;
 import org.fenggui.event.IButtonPressedListener;
 
+import com.irr310.client.graphics.MenuContainer;
+
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.gui.V3DButton;
 import fr.def.iss.vd2.lib_v3d.gui.V3DContainer;
@@ -13,7 +15,7 @@ import fr.def.iss.vd2.lib_v3d.gui.V3DGuiRectangle;
 import fr.def.iss.vd2.lib_v3d.gui.V3DLabel;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent.GuiYAlignment;
 
-public class UpgradeMenu extends V3DContainer{
+public class UpgradeMenu extends MenuContainer{
 
     int tabOffset = 40;
     List<GuiTab> tabs = new ArrayList<GuiTab>();
@@ -118,6 +120,13 @@ public class UpgradeMenu extends V3DContainer{
             
             
             
+        }
+    }
+
+    @Override
+    public void refresh() {
+        for(GuiTab tab : tabs) {
+            tab.refresh();
         }
     }
     

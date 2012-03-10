@@ -63,12 +63,15 @@ public class ServerGameEngine extends FramerateEngine {
     private Time nextWaveTime;
     boolean stillPlaying = true;
     private Time beginWaveTime;
+    private Time lastInterrestTime;
+    private Duration interrestInterval;
 
     public ServerGameEngine() {
         capacityControllers = new ArrayList<CapacityController>();
         framerate = new Duration(15000000);
         reputation = 0;
         currentWave = null;
+        interrestInterval = new Duration(10f);
     }
 
     @Override
@@ -82,6 +85,14 @@ public class ServerGameEngine extends FramerateEngine {
 
         for (CapacityController controller : capacityControllers) {
             controller.update(framerate.getSeconds());
+        }
+        
+        // Interrest
+        if(lastInterrestTime.durationTo(currentTime).longer(interrestInterval)) {
+            for (Player player : Game.getInstance().getWorld().getPlayers()) {
+                player.giveInterrest(player.getMoney() * 0.1);
+            }
+            lastInterrestTime = currentTime;
         }
 
         // Check world leave
@@ -165,10 +176,7 @@ public class ServerGameEngine extends FramerateEngine {
                 nextWave();
                 beginWaveTime = currentTime;
 
-                // Interrest (10%);
-                for (Player player : Game.getInstance().getWorld().getPlayers()) {
-                    player.giveMoney((int) (player.getMoney() * 0.1));
-                }
+                
 
             }
         }
@@ -176,13 +184,18 @@ public class ServerGameEngine extends FramerateEngine {
         if (stillPlaying) {
             currentWave.update(beginWaveTime.durationTo(currentTime));
         }
+        
+        
+     
+        
 
     }
 
     private int distachRevenue(int amount) {
         List<Player> players = Game.getInstance().getWorld().getPlayers();
 
-        int amountPerPlayer = amount / players.size();
+        // Be generious, round to ceil
+        int amountPerPlayer = (int) Math.ceil((float) amount / (float) players.size());
         for (Player player : players) {
             player.giveMoney(amountPerPlayer);
 
@@ -301,7 +314,7 @@ public class ServerGameEngine extends FramerateEngine {
             if (event.getObject() instanceof Monolith) {
                 Game.getInstance().sendToAll(new GameOverEvent("The monolith is destroyed"));
             } else if (event.getObject() instanceof Asteroid) {
-                Loot loot = CelestialObjectFactory.createLoot(50);
+                Loot loot = CelestialObjectFactory.createLoot(5);
                 loot.getFirstPart().getLinearSpeed().set(event.getObject().getFirstPart().getLinearSpeed());
                 loot.getFirstPart().getTransform().setTranslation(event.getObject().getFirstPart().getTransform().getTranslation());
                 Game.getInstance().getWorld().addCelestialObject(loot);
@@ -379,6 +392,7 @@ public class ServerGameEngine extends FramerateEngine {
         // World
         UpgradeFactory.initUpgrades();
         initWorld();
+        lastInterrestTime = GameTime.getGameTime();
     }
 
     void createWaves() {
