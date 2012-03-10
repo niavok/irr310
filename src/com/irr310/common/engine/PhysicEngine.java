@@ -41,7 +41,6 @@ import com.bulletphysics.linearmath.MatrixUtil;
 import com.bulletphysics.linearmath.MotionState;
 import com.bulletphysics.linearmath.Transform;
 import com.bulletphysics.util.ObjectArrayList;
-import com.irr310.client.GameClient;
 import com.irr310.common.Game;
 import com.irr310.common.event.CelestialObjectAddedEvent;
 import com.irr310.common.event.CelestialObjectRemovedEvent;
@@ -54,7 +53,6 @@ import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
-import com.irr310.common.world.CelestialObject;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.Link;
 import com.irr310.common.world.Part;
@@ -171,7 +169,7 @@ public class PhysicEngine extends FramerateEngine {
     }
     
     public RayResultDescriptor rayTest(final Vec3 from, final Vec3 to) {
-        System.out.println("ray test");
+        //System.out.println("ray test");
         
         final List<RayResultDescriptor> rayResultDescriptorList = new ArrayList<RayResultDescriptor>();
         

@@ -1,5 +1,7 @@
 package com.irr310.common.world.capacity.controller;
 
+import java.util.Random;
+
 import com.irr310.common.Game;
 import com.irr310.common.event.BulletFiredEvent;
 import com.irr310.common.tools.Vec3;
@@ -21,8 +23,7 @@ public class GunController extends CapacityController {
     @Override
     public void update(double duration) {
         if(capacity.fire) {
-            capacity.fire = false;
-            System.err.println("Gun want fire !");          
+            //capacity.fire = false;
             
             Part part = component.getFirstPart();
             
@@ -52,7 +53,11 @@ public class GunController extends CapacityController {
             }
             
             Vec3 from = new Vec3(xoffset, 0, yoffset).transform(part.getTransform());
-            Vec3 to = new Vec3(xoffset, capacity.range, yoffset).transform(part.getTransform());
+            
+            Random random = new Random();
+            double accuracy = capacity.accuracy * (10 - 9* component.getEfficiency());
+            
+            Vec3 to = new Vec3(xoffset + accuracy *(0.5 - random.nextDouble()), capacity.range + accuracy *(0.5 - random.nextDouble()), yoffset + accuracy *(0.5 - random.nextDouble())).transform(part.getTransform());
             
             
             

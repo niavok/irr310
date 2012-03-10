@@ -37,7 +37,7 @@ public class GunSkin extends Skin {
 
         
         
-        GunCapacity gunCapacity = (GunCapacity) object.getCapacitiesByName("gun");
+        GunCapacity gunCapacity = (GunCapacity) object.getCapacityByName("gun");
         
         
         final V3DLine line = new V3DLine(engine.getV3DContext());

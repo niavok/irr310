@@ -398,7 +398,7 @@ avanced fighter
 repair ship
 minifighter
 battleship
-cruiser : engine, turret
+cruiser : engine, turret    
 ram ship
 shield ship
 boss ?

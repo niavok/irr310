@@ -3,7 +3,6 @@ package com.irr310.server;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
-import java.util.Random;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import com.irr310.common.Game;
@@ -14,15 +13,14 @@ import com.irr310.common.engine.RayResultDescriptor;
 import com.irr310.common.event.AddShipEvent;
 import com.irr310.common.event.AddWorldObjectEvent;
 import com.irr310.common.event.BulletFiredEvent;
+import com.irr310.common.event.BuyUpgradeRequestEvent;
 import com.irr310.common.event.CelestialObjectRemovedEvent;
 import com.irr310.common.event.CelestialObjectRemovedEvent.Reason;
-import com.irr310.common.event.BuyUpgradeRequestEvent;
 import com.irr310.common.event.CollisionEvent;
 import com.irr310.common.event.DamageEvent;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.GameOverEvent;
-import com.irr310.common.event.MoneyChangedEvent;
 import com.irr310.common.event.NextWaveEvent;
 import com.irr310.common.event.PauseEngineEvent;
 import com.irr310.common.event.QuitGameEvent;
@@ -31,7 +29,6 @@ import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.event.UpgradeStateChanged;
 import com.irr310.common.event.WorldReadyEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
-import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Asteroid;
 import com.irr310.common.world.CelestialObject;
@@ -52,6 +49,7 @@ import com.irr310.common.world.capacity.controller.LinearEngineController;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
 import com.irr310.server.game.CelestialObjectFactory;
 import com.irr310.server.game.ShipFactory;
+import com.irr310.server.upgrade.UpgradeFactory;
 
 public class ServerGameEngine extends FramerateEngine {
 
@@ -304,7 +302,8 @@ public class ServerGameEngine extends FramerateEngine {
         public void visit(BulletFiredEvent event) {
 
             RayResultDescriptor rayTest = Game.getInstance().getPhysicEngine().rayTest(event.getFrom(), event.getTo());
-            if (rayTest != null) {
+            if (rayTest != null && rayTest.getPart() != event.getSource())
+            {
                 // damage = (1-rangePercent^3)
                 double damage = event.getDamage() * (1 - Math.pow(rayTest.getHitFraction(), 3));
                 applyDamage(rayTest.getPart(), damage, event.getDamageType());
@@ -349,6 +348,7 @@ public class ServerGameEngine extends FramerateEngine {
             event.getPlayer().retireMoney(event.getUpgrade().getPrices().get(currentRank));
             playerUpgrade.setRank(currentRank + 1);
             Game.getInstance().sendToAll(new UpgradeStateChanged(playerUpgrade, event.getPlayer()));
+            UpgradeFactory.apply(playerUpgrade);
         }
         
         @Override
@@ -367,6 +367,7 @@ public class ServerGameEngine extends FramerateEngine {
             event.getPlayer().giveMoney(event.getUpgrade().getPrices().get(currentRank-1));
             playerUpgrade.setRank(currentRank - 1);
             Game.getInstance().sendToAll(new UpgradeStateChanged(playerUpgrade, event.getPlayer()));
+            UpgradeFactory.apply(playerUpgrade);
         }
     }
 

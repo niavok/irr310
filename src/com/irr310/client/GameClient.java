@@ -235,6 +235,21 @@ public class GameClient extends Game {
             engine.pushEvent(new QuitGameEvent());
             engineList.remove(engine);
         }
+        
+        boolean waitStop = true;
+
+        while (waitStop) {
+            waitStop = false;
+            for (Engine engine : worldEngineList) {
+                if (!engine.isStopped()) {
+                    waitStop = true;
+                    break;
+                }
+            }
+            Duration.HUNDRED_MILLISECONDE.sleep();
+        }
+
+        
         worldEngineList.clear();
         physicEngine = null;
     }

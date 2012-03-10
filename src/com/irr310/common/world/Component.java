@@ -240,7 +240,7 @@ public final class  Component extends WorldObject {
     }
 
     
-    public Capacity getCapacitiesByName(String name) {
+    public Capacity getCapacityByName(String name) {
         return capacityNameMap.get(name);
     }
 

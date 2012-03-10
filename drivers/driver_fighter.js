@@ -732,7 +732,14 @@ function driver() {
                         }
                     }
                     break;
-                    
+               case MOUSE_RELEASED:
+                    //core.log("mouse pressed");
+                    if(this.rotationControlleurEnabled) {
+                        if(button == 1) {
+                            gun.fire(false);
+                        }
+                    }
+                    break; 
             }
         
         }
@@ -795,7 +802,7 @@ function driver() {
                     break;
                 case KEY_A:
                     gui.disableThrustController();
-                    break;
+                    break;0
                 case  KEY_Z:
                     this.keyboardXTurn = 0;
                     break;
@@ -807,6 +814,9 @@ function driver() {
                     break;
                 case  KEY_D:
                     this.keyboardZTurn = 0;
+                    break;
+                case KEY_E:
+                    gun.fire(false);
                     break;
                 case KEY_SPACE:
                     break;

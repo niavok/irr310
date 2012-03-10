@@ -17,7 +17,7 @@ public class Component {
     }
 
 	public Capacity getCapacityByName(String name) {
-	    com.irr310.common.world.capacity.Capacity capacity = component.getCapacitiesByName(name);
+	    com.irr310.common.world.capacity.Capacity capacity = component.getCapacityByName(name);
 	    
 	    if(capacity.getName().equals("linearEngine")) {
 	            return new LinearEngineCapacity((com.irr310.common.world.capacity.LinearEngineCapacity) capacity);

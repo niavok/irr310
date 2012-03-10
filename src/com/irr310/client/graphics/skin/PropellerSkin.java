@@ -42,7 +42,7 @@ public class PropellerSkin extends Skin {
         elements.setTransformMatrix(transform.toFloatBuffer());
 
         // Configure animation
-        linearEngineCapacity = (LinearEngineCapacity) object.getCapacitiesByName("linearEngine");
+        linearEngineCapacity = (LinearEngineCapacity) object.getCapacityByName("linearEngine");
         angle = 0;
         speed = 50f;
     }

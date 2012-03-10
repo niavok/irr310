@@ -8,6 +8,7 @@ public class GunCapacity extends Capacity {
     public boolean fire;
     public double damage;
     public double range;
+    public double accuracy;
     public DamageType damageType;
 
     public GunCapacity(long id) {
@@ -15,6 +16,7 @@ public class GunCapacity extends Capacity {
         fire = false;
         damage = 50;
         range = 1000;
+        accuracy = 10;
         damageType = DamageType.PHYSICAL;
     }
 
@@ -28,6 +30,7 @@ public class GunCapacity extends Capacity {
         view.pushBoolean(fire);
         view.pushDouble(damage);
         view.pushDouble(range);
+        view.pushDouble(accuracy);
         view.pushInteger(damageType.ordinal());
         return view;
     }
@@ -37,6 +40,7 @@ public class GunCapacity extends Capacity {
         fire = view.popBoolean();
         damage = view.popDouble();
         range = view.popDouble();
+        accuracy = view.popDouble();
         damageType =DamageType.values()[view.popInteger()];
     }
 

@@ -1,12 +1,18 @@
-package com.irr310.server;
+package com.irr310.server.upgrade;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import com.irr310.common.Game;
 import com.irr310.common.world.World;
 import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.common.world.upgrade.Upgrade.UpgradeCategory;
+import com.irr310.common.world.upgrade.UpgradeOwnership;
 
 public class UpgradeFactory {
 
+    private static Map<String, UpgradeEffect> effectMap = new HashMap<String, UpgradeEffect>();
+    
     public static void initUpgrades() {
         World world = Game.getInstance().getWorld();
         
@@ -24,6 +30,7 @@ public class UpgradeFactory {
             weaponDamageUpgrade.addRank(1600, "160% damage increase.");
             weaponDamageUpgrade.addRank(6400, "320% damage increase.");
             world.addUpgrade(weaponDamageUpgrade);
+            effectMap.put(weaponDamageUpgrade.getTag(), new WeaponDamageUpgradeEffect());
         }
         
         {
@@ -38,6 +45,7 @@ public class UpgradeFactory {
             weaponCoolingUpgrade.addRank(1600, "160% cooling increase.");
             weaponCoolingUpgrade.addRank(6400, "320% cooling increase.");
             world.addUpgrade(weaponCoolingUpgrade);
+            effectMap.put(weaponCoolingUpgrade.getTag(), new WeaponCoolingUpgradeEffect());
         }
         
         {
@@ -52,7 +60,14 @@ public class UpgradeFactory {
             weaponFirerateUpgrade.addRank(1600, "160% firerate increase.");
             weaponFirerateUpgrade.addRank(6400, "320% firerate increase.");
             world.addUpgrade(weaponFirerateUpgrade);
+            effectMap.put(weaponFirerateUpgrade.getTag(), new WeaponFirerateUpgradeEffect());
         }
+        
+    }
+
+    public static void apply(UpgradeOwnership playerUpgrade) {
+        UpgradeEffect upgradeEffect = effectMap.get(playerUpgrade.getUpgrade().getTag());
+        upgradeEffect.apply(playerUpgrade);
         
     }
 }

@@ -9,7 +9,6 @@ import org.fenggui.event.IButtonPressedListener;
 import com.irr310.client.navigation.LoginManager;
 import com.irr310.common.Game;
 import com.irr310.common.event.BuyUpgradeRequestEvent;
-import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.SellUpgradeRequestEvent;
 import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
@@ -19,9 +18,9 @@ import fr.def.iss.vd2.lib_v3d.gui.V3DButton;
 import fr.def.iss.vd2.lib_v3d.gui.V3DContainer;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent.GuiXAlignment;
+import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent.GuiYAlignment;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiRectangle;
 import fr.def.iss.vd2.lib_v3d.gui.V3DLabel;
-import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent.GuiYAlignment;
 
 
 public class UpgradeWeaponTab extends UpgradeTab{
