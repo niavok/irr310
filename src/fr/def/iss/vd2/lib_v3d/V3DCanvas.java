@@ -37,6 +37,8 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
+import com.irr310.common.Game;
+import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.tools.Log;
 
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
@@ -104,6 +106,7 @@ public class V3DCanvas {
             canvas.setPreferredSize(new Dimension(width, height));
             frame.add(canvas);
             frame.pack();
+            frame.addWindowListener(generateWindowListener());
             
             frame.getContentPane().addHierarchyBoundsListener(new HierarchyBoundsListener(){
                 
@@ -163,6 +166,41 @@ public class V3DCanvas {
         
         new LWJGLBinding();
         
+    }
+
+    private WindowListener generateWindowListener() {
+        return new WindowListener() {
+            
+            @Override
+            public void windowOpened(WindowEvent e) {
+            }
+            
+            @Override
+            public void windowIconified(WindowEvent e) {
+            }
+            
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+            }
+            
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+            }
+            
+            @Override
+            public void windowClosing(WindowEvent e) {
+                Game.getInstance().sendToAll(new QuitGameEvent());
+            }
+            
+            @Override
+            public void windowClosed(WindowEvent e) {
+                
+            }
+            
+            @Override
+            public void windowActivated(WindowEvent e) {
+            }
+        };
     }
 
     public void destroy() {

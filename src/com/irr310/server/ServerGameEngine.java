@@ -26,6 +26,7 @@ import com.irr310.common.event.MoneyChangedEvent;
 import com.irr310.common.event.NextWaveEvent;
 import com.irr310.common.event.PauseEngineEvent;
 import com.irr310.common.event.QuitGameEvent;
+import com.irr310.common.event.SellUpgradeRequestEvent;
 import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.event.UpgradeStateChanged;
 import com.irr310.common.event.WorldReadyEvent;
@@ -90,7 +91,8 @@ public class ServerGameEngine extends FramerateEngine {
         // Interrest
         if(lastInterrestTime.durationTo(currentTime).longer(interrestInterval)) {
             for (Player player : Game.getInstance().getWorld().getPlayers()) {
-                player.giveInterrest(player.getMoney() * 0.1);
+                // 1% per minute
+                player.giveInterrest(player.getMoney() * 0.01/6);
             }
             lastInterrestTime = currentTime;
         }
@@ -346,6 +348,24 @@ public class ServerGameEngine extends FramerateEngine {
 
             event.getPlayer().retireMoney(event.getUpgrade().getPrices().get(currentRank));
             playerUpgrade.setRank(currentRank + 1);
+            Game.getInstance().sendToAll(new UpgradeStateChanged(playerUpgrade, event.getPlayer()));
+        }
+        
+        @Override
+        public void visit(SellUpgradeRequestEvent event) {
+
+            int currentRank = 0;
+
+            UpgradeOwnership playerUpgrade = event.getPlayer().getUpgradeState(event.getUpgrade());
+            currentRank = playerUpgrade.getRank();
+
+            // Check min rank
+            if (currentRank <= 0) {
+                return;
+            }
+
+            event.getPlayer().giveMoney(event.getUpgrade().getPrices().get(currentRank-1));
+            playerUpgrade.setRank(currentRank - 1);
             Game.getInstance().sendToAll(new UpgradeStateChanged(playerUpgrade, event.getPlayer()));
         }
     }

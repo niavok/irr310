@@ -164,7 +164,6 @@ public class V3DButton extends V3DGuiComponent {
         }
 
     }
-
     public void setFontStyle(String font, String style, int size) {
         setFontStyle(new LabelStyle(font, style, size));
     }

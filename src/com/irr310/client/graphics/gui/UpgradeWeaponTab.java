@@ -10,6 +10,7 @@ import com.irr310.client.navigation.LoginManager;
 import com.irr310.common.Game;
 import com.irr310.common.event.BuyUpgradeRequestEvent;
 import com.irr310.common.event.QuitGameEvent;
+import com.irr310.common.event.SellUpgradeRequestEvent;
 import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
 
@@ -113,6 +114,33 @@ public class UpgradeWeaponTab extends UpgradeTab{
             pane.add(currentRankDescription);
             
             yPos += currentRankDescription.getSize().getY();
+            
+            
+            final V3DButton sellButton = new V3DButton("Sell");
+            sellButton.setFontStyle("Ubuntu", "bold", 16);
+            sellButton.setColor(V3DColor.white, GuiConstants.irrRed);
+            sellButton.setxAlignment(GuiXAlignment.RIGHT);
+            sellButton.setyAlignment(GuiYAlignment.BOTTOM);
+            sellButton.setPadding(5,20,20,5);
+            sellButton.setPosition( 20,80);
+            sellButton.getFenGUIWidget().addButtonPressedListener(new IButtonPressedListener() {
+                
+                @Override
+                public void buttonPressed(ButtonPressedEvent e) {
+                    Game.getInstance().sendToAll(new SellUpgradeRequestEvent(upgrade, LoginManager.localPlayer));
+                }
+            });
+            pane.add(sellButton);
+            
+            
+            V3DLabel sellPrice = new V3DLabel(upgrade.getPrices().get(currentRank-1) +" $");
+            sellPrice.setFontStyle("Ubuntu", "bold", 16);
+            sellPrice.setColor(GuiConstants.irrRed, V3DColor.transparent);
+            sellPrice.setxAlignment(GuiXAlignment.RIGHT);
+            sellPrice.setyAlignment(GuiYAlignment.BOTTOM);
+            sellPrice.setPosition( 20,60);
+            pane.add(sellPrice);
+            
         }
         
         
@@ -142,7 +170,7 @@ public class UpgradeWeaponTab extends UpgradeTab{
             buyButton.setxAlignment(GuiXAlignment.RIGHT);
             buyButton.setyAlignment(GuiYAlignment.BOTTOM);
             buyButton.setPadding(5,30,30,5);
-            buyButton.setPosition( 20,40);
+            buyButton.setPosition( 20,30);
             buyButton.getFenGUIWidget().addButtonPressedListener(new IButtonPressedListener() {
                 
                 @Override
@@ -158,7 +186,7 @@ public class UpgradeWeaponTab extends UpgradeTab{
             buyPrice.setColor(GuiConstants.irrGreen, V3DColor.transparent);
             buyPrice.setxAlignment(GuiXAlignment.RIGHT);
             buyPrice.setyAlignment(GuiYAlignment.BOTTOM);
-            buyPrice.setPosition( 20,15);
+            buyPrice.setPosition( 20,10);
             pane.add(buyPrice);
         }
         

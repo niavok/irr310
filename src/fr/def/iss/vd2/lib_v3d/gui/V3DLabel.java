@@ -165,9 +165,7 @@ public class V3DLabel extends V3DGuiComponent {
         this.width = width;
         label.setSizeToMinSize();
         label.setSize(width, label.getY());
-        System.err.println("getHeight: "+label.getTextRendererData().getSize().getHeight());
         label.setWordWarping(wordWrapping);
-        System.err.println("getHeight: "+label.getTextRendererData().getSize().getHeight());
         label.setSize(width, label.getTextRendererData().getSize().getHeight());
     }
 
