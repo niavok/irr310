@@ -562,14 +562,12 @@ function driver() {
             
             
             if(this.keyboardXTurn != 0) {
-                core.log("keyboard rotation X ! ");
                 rotationSpeedTarget.x =  maxRotationSpeed * this.keyboardXTurn;
             } else {
                 rotationSpeedTarget.x =  0;
             }
             
             if(this.keyboardZTurn != 0) {
-                core.log("keyboard rotation Z ! ");
                 rotationSpeedTarget.z =  maxRotationSpeed * this.keyboardZTurn;
             } else {
                 rotationSpeedTarget.z =  0;
@@ -599,10 +597,12 @@ function driver() {
             
                 var mousePosition = core.mouse.getPosition();
 
+                
 
                 var diffX = (this.rotationControlleurMouseOrigin.getX() - mousePosition.getX());
                 var diffY = (this.rotationControlleurMouseOrigin.getY() - mousePosition.getY());
 
+                this.rotationControlleurControlZone.setSize(new Vec2(-diffX,-diffY));
                 
                 if(diffY > this.rotationControlleurControlRadius) {
                     diffY = this.rotationControlleurControlRadius;
@@ -641,9 +641,8 @@ function driver() {
         
                 var percentX = diffVert / (this.rotationControlleurControlRadius - this.rotationControlleurDeadZoneRadius);
                 var percentY = diffHoriz / (this.rotationControlleurControlRadius - this.rotationControlleurDeadZoneRadius);
-                
-                rotationSpeedTarget.z = maxRotationSpeed *  (percentX > 0 ? 1: -1) * Math.pow(percentX,2);
-                rotationSpeedTarget.x = - maxRotationSpeed * (percentY > 0 ? 1: -1) * Math.pow(percentY,2);
+                rotationSpeedTarget.z = rotationSpeedTarget.getZ() + maxRotationSpeed *  (percentX > 0 ? 1: -1) * Math.pow(percentX,2);
+                rotationSpeedTarget.x = rotationSpeedTarget.getX() - maxRotationSpeed * (percentY > 0 ? 1: -1) * Math.pow(percentY,2);
             }
             
             
@@ -696,10 +695,14 @@ function driver() {
             this.rotationControlleurDeadZone.setSize(new Vec2(this.rotationControlleurDeadZoneRadius * 2,this.rotationControlleurDeadZoneRadius*2));
             this.rotationControlleurDeadZone.setBorderColor(new Color(0.0,0,0.3));
             
-            this.rotationControlleurControlZone = core.gui.createRectangle();
-            this.rotationControlleurControlZone.setPosition(this.rotationControlleurMouseOrigin.minus(new Vec2(this.rotationControlleurControlRadius,this.rotationControlleurControlRadius)));
-            this.rotationControlleurControlZone.setSize(new Vec2(this.rotationControlleurControlRadius*2,this.rotationControlleurControlRadius*2));
-            this.rotationControlleurControlZone.setBorderColor(new Color(0.0,0,0.3));
+            //this.rotationControlleurControlZone = core.gui.createRectangle();
+            //this.rotationControlleurControlZone.setPosition(this.rotationControlleurMouseOrigin.minus(new Vec2(this.rotationControlleurControlRadius,this.rotationControlleurControlRadius)));
+            ///this.rotationControlleurControlZone.setSize(new Vec2(this.rotationControlleurControlRadius*2,this.rotationControlleurControlRadius*2));
+            //this.rotationControlleurControlZone.setBorderColor(new Color(0.0,0,0.3));
+            this.rotationControlleurControlZone = core.gui.createLine();
+            this.rotationControlleurControlZone.setPosition(this.rotationControlleurMouseOrigin);
+            this.rotationControlleurControlZone.setSize(new Vec2(10,10));
+            this.rotationControlleurControlZone.setColor(new Color(0.0,0,0.3));
         }        
         
         this.disableRotationController = function() {
@@ -726,18 +729,22 @@ function driver() {
             switch(action) {
                 case MOUSE_PRESSED:
                     //core.log("mouse pressed");
-                    if(this.rotationControlleurEnabled) {
-                        if(button == 1) {
-                            gun.fire(true);
-                        }
+                    if(button == 2) {
+                        gun.fire(true);
+                    }
+                    
+                    if(button == 1) {
+                        this.enableRotationController();
                     }
                     break;
                case MOUSE_RELEASED:
                     //core.log("mouse pressed");
-                    if(this.rotationControlleurEnabled) {
-                        if(button == 1) {
+                    if(button == 2) {
                             gun.fire(false);
-                        }
+                    }
+                    
+                    if(button == 1) {
+                        this.disableRotationController();
                     }
                     break; 
             }
@@ -756,13 +763,15 @@ function driver() {
                 case KEY_RIGHT:
                     break;
                 case KEY_SPACE:
-                    gui.toogleRotationController()
+                    gun.fire(true);
                     break;
                 case KEY_PLUS:
                     speedTarget += 1/3.6;
                     this.targetSpeedUpdated();
                     break;
                 case KEY_A:
+                    break;
+                case KEY_LEFT_SHIFT:
                     gui.enableThrustController();
                     break;
                 case  KEY_Z:
@@ -778,7 +787,6 @@ function driver() {
                     this.keyboardZTurn = -1;
                     break;
                 case KEY_E:
-                    gun.fire(true);
                     break;
                     
                 case KEY_MINUS:
@@ -801,6 +809,8 @@ function driver() {
                 case  KEY_RIGHT:
                     break;
                 case KEY_A:
+                    break;
+                case KEY_LEFT_SHIFT:
                     gui.disableThrustController();
                     break;0
                 case  KEY_Z:
@@ -816,9 +826,9 @@ function driver() {
                     this.keyboardZTurn = 0;
                     break;
                 case KEY_E:
-                    gun.fire(false);
                     break;
                 case KEY_SPACE:
+                    gun.fire(false);
                     break;
                 default:
                     core.log("released undefined key: '"+keyCode+"' / '"+character+"'");
