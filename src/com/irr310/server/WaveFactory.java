@@ -145,7 +145,7 @@ public class WaveFactory {
             waveQueue.add(wave);
             wave.addWaveEvent(new WaveEvent(new Duration(2f)) {
                 public void action() {
-                    for (int j = 10; j < 10+i; j++) {
+                    for (int j = 0; j < 10+i; j++) {
         
                         Random random = new Random();
         
@@ -154,7 +154,7 @@ public class WaveFactory {
                         float angularSpeed = 1;
         
                         Vec3 position = new Vec3(950, 0, 0);
-                        Vec3 linearSpeed = new Vec3(-10+i + random.nextDouble() * 1 , 0, 0);
+                        Vec3 linearSpeed = new Vec3(-10-i/20 + random.nextDouble() * 1 , 0, 0);
         
                         TransformMatrix rotation = TransformMatrix.identity();
                         rotation.rotateX(random.nextDouble() * 360);
