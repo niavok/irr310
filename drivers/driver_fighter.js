@@ -680,7 +680,7 @@ function driver() {
         // Rotation controlleur
         this.rotationControlleurEnabled = false;
         this.rotationControlleurDeadZoneRadius = 5.0;
-        this.rotationControlleurControlRadius = 300.0;
+        this.rotationControlleurControlRadius = 500.0;
         this.rotationControlleurDeadZone = null;
         this.rotationControlleurControlZone = null;
         this.rotationControlleurMouseOrigin = null;

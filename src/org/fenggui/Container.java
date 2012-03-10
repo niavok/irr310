@@ -364,7 +364,10 @@ public class Container extends StandardWidget implements IContainer, Cloneable
   {
     for (IWidget w : widgets)
     {
-      addWidgetInternal(w, notifyList.size());
+        synchronized (notifyList)
+        {
+            addWidgetInternal(w, notifyList.size());
+        }
     }
 
     updateMinSize();
