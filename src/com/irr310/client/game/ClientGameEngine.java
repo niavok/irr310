@@ -3,11 +3,15 @@ package com.irr310.client.game;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.input.Keyboard;
+
 import com.irr310.client.GameClient;
+import com.irr310.client.navigation.LoginManager;
 import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.GameOverEvent;
+import com.irr310.common.event.KeyPressedEvent;
 import com.irr310.common.event.PauseEngineEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
@@ -25,6 +29,7 @@ import com.irr310.server.Duration;
 public class ClientGameEngine extends FramerateEngine {
 
     private List<CapacityController> capacityControllers;
+    private String cheatString = "";
 
     public ClientGameEngine() {
         capacityControllers = new ArrayList<CapacityController>();
@@ -83,6 +88,20 @@ public class ClientGameEngine extends FramerateEngine {
             GameClient.getInstance().gameOver();
         }
 
+        
+        @Override
+        public void visit(KeyPressedEvent event) {
+            // Cheats
+            if(event.getKeyCode() == Keyboard.KEY_RETURN) {
+                if(cheatString.toLowerCase().equals("glittering prizes")) {
+                    LoginManager.localPlayer.giveMoney(90000);
+                }
+                cheatString = "";
+            } else if(event.getCharacter() != null) {
+                cheatString += event.getCharacter();
+            }
+            
+        }
     }
 
     private void addCapacityController(CapacityController controller) {
