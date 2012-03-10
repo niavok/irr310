@@ -25,6 +25,7 @@ public class Upgrade {
         dependencies = new ArrayList<Upgrade>();
         prices = new ArrayList<Integer>();
         rankDescriptions = new ArrayList<String>();
+        maxRank = 0;
     }
     
     public UpgradeCategory getCategory() {
@@ -34,7 +35,7 @@ public class Upgrade {
         return dependencies;
     }
     
-    public String getDescription() {
+    public String getGlobalDescription() {
         return globalDescription;
     }
     public int getMaxRank() {
@@ -61,10 +62,6 @@ public class Upgrade {
         this.globalDescription = description;
     }
     
-    public void setMaxRank(int maxRank) {
-        this.maxRank = maxRank;
-    }
-    
     public void setName(String name) {
         this.name = name;
     }
@@ -80,6 +77,11 @@ public class Upgrade {
     public void addRank(int price, String rankDescription) {
         prices.add(price);
         rankDescriptions.add(rankDescription);
+        maxRank ++;
+    }
+    
+    public List<String> getRankDescriptions() {
+        return rankDescriptions;
     }
     
 }

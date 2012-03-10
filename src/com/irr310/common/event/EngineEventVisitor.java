@@ -58,4 +58,8 @@ public interface EngineEventVisitor {
     public abstract void visit(MoneyChangedEvent event);
 
     public abstract void visit(ReloadUiEvent event);
+
+    public abstract void visit(BuyUpgradeRequestEvent event);
+
+    public abstract void visit(UpgradeStateChanged event);
 }

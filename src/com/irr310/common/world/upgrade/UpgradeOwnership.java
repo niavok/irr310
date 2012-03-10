@@ -7,6 +7,7 @@ public class UpgradeOwnership {
     
     public UpgradeOwnership(Upgrade upgrade) {
         this.upgrade = upgrade;
+        rank = 0;
     }
     
     public int getRank() {
@@ -16,4 +17,8 @@ public class UpgradeOwnership {
         return upgrade;
     }
     
+    
+    public void setRank(int rank) {
+        this.rank = rank;
+    }
 }

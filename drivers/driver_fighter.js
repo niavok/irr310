@@ -484,7 +484,7 @@ function driver() {
             this.targetLine.setColor(new Color(0.0,0.0,0.0));
             
             this.speedTargetIndicator = core.gui.createLabel();
-            this.speedTargetIndicator.setText((speedTarget * 3.6).toFixed(0)+" km/s");
+            this.speedTargetIndicator.setText((speedTarget * 3.6).toFixed(0)+" km/h");
             this.speedTargetIndicator.setPosition(new Vec2(this.screenSize.getX() - 80,193 + deltaHeigth ));
             this.speedTargetIndicator.setFontStyle("bold",14);
             this.speedTargetIndicator.setColor(new Color(0.0,0.0,0.0));
@@ -657,7 +657,7 @@ function driver() {
             var deltaHeigth = this.speedBoxMaxSize * speedTarget / theoricalMaxSpeed;
             this.targetLine.setPosition((new Vec2(this.screenSize.getX() - 125,200 + deltaHeigth)));
             this.speedTargetIndicator.setPosition(new Vec2(this.screenSize.getX() - 80, 193 + deltaHeigth ));
-            this.speedTargetIndicator.setText((speedTarget * 3.6).toFixed(0)+" km/s");
+            this.speedTargetIndicator.setText((speedTarget * 3.6).toFixed(0)+" km/h");
         }
 
         this.enableThrustController = function() {

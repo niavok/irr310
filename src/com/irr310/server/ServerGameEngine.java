@@ -16,15 +16,18 @@ import com.irr310.common.event.AddWorldObjectEvent;
 import com.irr310.common.event.BulletFiredEvent;
 import com.irr310.common.event.CelestialObjectRemovedEvent;
 import com.irr310.common.event.CelestialObjectRemovedEvent.Reason;
+import com.irr310.common.event.BuyUpgradeRequestEvent;
 import com.irr310.common.event.CollisionEvent;
 import com.irr310.common.event.DamageEvent;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.GameOverEvent;
+import com.irr310.common.event.MoneyChangedEvent;
 import com.irr310.common.event.NextWaveEvent;
 import com.irr310.common.event.PauseEngineEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
+import com.irr310.common.event.UpgradeStateChanged;
 import com.irr310.common.event.WorldReadyEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.common.tools.TransformMatrix;
@@ -45,6 +48,7 @@ import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.common.world.capacity.controller.CapacityController;
 import com.irr310.common.world.capacity.controller.GunController;
 import com.irr310.common.world.capacity.controller.LinearEngineController;
+import com.irr310.common.world.upgrade.UpgradeOwnership;
 import com.irr310.server.game.CelestialObjectFactory;
 import com.irr310.server.game.ShipFactory;
 
@@ -128,17 +132,17 @@ public class ServerGameEngine extends FramerateEngine {
                     }
 
                     // Send loot to monolith
-                        Game.getInstance().getWorld().lock();
-                        Vec3 lootSpeed = monolith.getFirstPart()
-                                                 .getTransform()
-                                                 .getTranslation()
-                                                 .minus(object.getFirstPart().getTransform().getTranslation())
-                                                 .normalize()
-                                                 .multiply(1);
-                        
-                        object.getFirstPart().getLinearSpeed().set(lootSpeed);
-                        Game.getInstance().getPhysicEngine().reloadStates(object.getFirstPart());
-                        Game.getInstance().getWorld().unlock();
+                    Game.getInstance().getWorld().lock();
+                    Vec3 lootSpeed = monolith.getFirstPart()
+                                             .getTransform()
+                                             .getTranslation()
+                                             .minus(object.getFirstPart().getTransform().getTranslation())
+                                             .normalize()
+                                             .multiply(1);
+
+                    object.getFirstPart().getLinearSpeed().set(lootSpeed);
+                    Game.getInstance().getPhysicEngine().reloadStates(object.getFirstPart());
+                    Game.getInstance().getWorld().unlock();
                 }
             }
 
@@ -149,7 +153,7 @@ public class ServerGameEngine extends FramerateEngine {
                         .getTranslation()
                         .distanceTo(monolith.getFirstPart().getTransform().getTranslation()) < 80) {
 
-                        // Can build
+                    // Can build
                 }
 
             }
@@ -185,7 +189,6 @@ public class ServerGameEngine extends FramerateEngine {
         }
         return amountPerPlayer * players.size();
     }
-
 
     private final class GameEngineEventVisitor extends DefaultEngineEventVisitor {
 
@@ -308,6 +311,29 @@ public class ServerGameEngine extends FramerateEngine {
         @Override
         public void visit(WorldReadyEvent event) {
             createWaves();
+        }
+
+        @Override
+        public void visit(BuyUpgradeRequestEvent event) {
+
+            int currentRank = 0;
+
+            UpgradeOwnership playerUpgrade = event.getPlayer().getUpgradeState(event.getUpgrade());
+            currentRank = playerUpgrade.getRank();
+
+            // Check max rank
+            if (currentRank >= event.getUpgrade().getMaxRank()) {
+                return;
+            }
+
+            // Check cost
+            if (event.getPlayer().getMoney() < event.getUpgrade().getPrices().get(currentRank)) {
+                return;
+            }
+
+            event.getPlayer().retireMoney(event.getUpgrade().getPrices().get(currentRank));
+            playerUpgrade.setRank(currentRank + 1);
+            Game.getInstance().sendToAll(new UpgradeStateChanged(playerUpgrade, event.getPlayer()));
         }
     }
 

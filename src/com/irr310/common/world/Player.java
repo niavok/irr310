@@ -8,6 +8,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import com.irr310.common.Game;
 import com.irr310.common.event.MoneyChangedEvent;
 import com.irr310.common.tools.Hash;
+import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
 import com.irr310.common.world.view.PlayerView;
 
@@ -84,9 +85,23 @@ public class Player extends GameEntity {
     
     public void retireMoney(int amount) {
         money -= amount;
+        Game.getInstance().sendToAll(new MoneyChangedEvent(amount, this, true));
     }
     
     public List<UpgradeOwnership> getUpgrades() {
         return upgrades;
+    }
+
+    public UpgradeOwnership getUpgradeState(Upgrade upgrade) {
+        for(UpgradeOwnership upgradeOwnership : upgrades) {
+            if(upgradeOwnership.getUpgrade() == upgrade) {
+                return upgradeOwnership;
+            }
+        }
+        
+        UpgradeOwnership upgradeOwnership = new UpgradeOwnership(upgrade);
+        upgrades.add(upgradeOwnership);
+        
+        return upgradeOwnership;
     }
 }

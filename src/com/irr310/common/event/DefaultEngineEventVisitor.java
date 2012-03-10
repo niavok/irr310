@@ -105,4 +105,12 @@ public class DefaultEngineEventVisitor implements EngineEventVisitor {
     @Override
     public void visit(ReloadUiEvent event) {
     }
+    
+    @Override
+    public void visit(BuyUpgradeRequestEvent event) {
+    }
+    
+    @Override
+    public void visit(UpgradeStateChanged event) {
+    }
 }
