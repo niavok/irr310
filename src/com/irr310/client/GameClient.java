@@ -11,6 +11,7 @@ import com.irr310.client.navigation.LoginTask;
 import com.irr310.client.navigation.SignupTask;
 import com.irr310.client.network.ClientNetworkEngine;
 import com.irr310.client.script.ClientScriptEngine;
+import com.irr310.client.sound.SoundEngine;
 import com.irr310.common.Game;
 import com.irr310.common.engine.Engine;
 import com.irr310.common.engine.PhysicEngine;
@@ -63,6 +64,7 @@ public class GameClient extends Game {
         graphicEngine = new GraphicEngine();
 
         engineList.add(new InputEngine());
+        engineList.add(new SoundEngine());
         // engineList.add(new ClientGameEngine());
         // engineList.add(physicEngine);
         // engineList.add(clientNetworkEngine);
