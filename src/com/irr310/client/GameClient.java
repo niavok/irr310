@@ -3,12 +3,9 @@ package com.irr310.client;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.irr310.client.game.ClientGameEngine;
 import com.irr310.client.graphics.GraphicEngine;
 import com.irr310.client.input.InputEngine;
 import com.irr310.client.navigation.LoginManager;
-import com.irr310.client.navigation.LoginTask;
-import com.irr310.client.navigation.SignupTask;
 import com.irr310.client.network.ClientNetworkEngine;
 import com.irr310.client.script.ClientScriptEngine;
 import com.irr310.client.sound.SoundEngine;
@@ -16,9 +13,9 @@ import com.irr310.common.Game;
 import com.irr310.common.engine.Engine;
 import com.irr310.common.engine.PhysicEngine;
 import com.irr310.common.event.EngineEvent;
+import com.irr310.common.event.LoadingGameEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
-import com.irr310.common.event.LoadingGameEvent;
 import com.irr310.common.event.WorldReadyEvent;
 import com.irr310.common.network.protocol.CapacityUpdateMessage;
 import com.irr310.common.tools.Log;
@@ -144,14 +141,14 @@ public class GameClient extends Game {
         }
     }
 
-    private void autologin() {
+    /*private void autologin() {
         SignupTask signupTask = new SignupTask("default", "");
         signupTask.startAndWait();
 
         LoginTask loginTask = new LoginTask("default", "");
         loginTask.startAndWait();
 
-    }
+    }*/
 
     public void updateCapacityTask(com.irr310.common.world.capacity.Capacity capacity) {
         if (clientNetworkEngine != null) {

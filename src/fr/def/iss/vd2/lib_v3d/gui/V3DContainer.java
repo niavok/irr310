@@ -17,21 +17,17 @@
 
 package fr.def.iss.vd2.lib_v3d.gui;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.fenggui.Container;
 import org.fenggui.decorator.background.PlainBackground;
-import org.fenggui.decorator.border.PlainBorder;
 import org.fenggui.layout.StaticLayout;
 import org.fenggui.util.Color;
 import org.fenggui.util.Dimension;
 import org.fenggui.util.Point;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
-import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent.GuiXAlignment;
-import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent.GuiYAlignment;
 
 /**
  * @author fberto

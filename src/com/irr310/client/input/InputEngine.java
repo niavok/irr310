@@ -1,6 +1,5 @@
 package com.irr310.client.input;
 
-import org.lwjgl.input.Cursor;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 

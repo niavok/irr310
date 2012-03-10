@@ -2,12 +2,9 @@ package com.irr310.client.script.js.objects;
 
 import org.fenggui.appearance.TextAppearance;
 import org.fenggui.binding.render.IFont;
-import org.fenggui.binding.render.ImageFont;
 import org.fenggui.binding.render.text.ITextRenderer;
 import org.fenggui.text.content.factory.simple.TextStyle;
 import org.fenggui.text.content.factory.simple.TextStyleEntry;
-import org.fenggui.util.Alphabet;
-import org.fenggui.util.fonttoolkit.FontFactory;
 
 import com.irr310.common.tools.Vec2;
 

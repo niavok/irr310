@@ -26,8 +26,6 @@ import org.fenggui.util.Color;
 import org.fenggui.util.Point;
 import org.fenggui.util.Rectangle;
 
-import sun.java2d.loops.DrawRect;
-
 /**
  * Provides a library of graphical functions for GUI classes to utilise, rather
  * than each class having to implement its own OpenGL rendering directly.

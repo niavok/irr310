@@ -32,7 +32,6 @@ import org.fenggui.binding.render.Binding;
 import org.fenggui.binding.render.IOpenGL;
 import org.fenggui.binding.render.ITexture;
 import org.fenggui.theme.XMLTheme;
-import org.lwjgl.opengl.Display;
 
 /**
  * Binds FengGUI to LWJGL.

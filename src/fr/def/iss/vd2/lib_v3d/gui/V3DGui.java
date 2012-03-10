@@ -31,12 +31,9 @@ import org.fenggui.Display;
 import org.fenggui.FengGUI;
 import org.fenggui.binding.render.ImageFont;
 import org.fenggui.binding.render.jogl.EventBinding;
-import org.fenggui.decorator.background.PlainBackground;
-import org.fenggui.decorator.border.PlainBorder;
 import org.fenggui.event.mouse.MouseButton;
 import org.fenggui.layout.StaticLayout;
 import org.fenggui.util.Alphabet;
-import org.fenggui.util.Color;
 import org.fenggui.util.fonttoolkit.FontFactory;
 
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;

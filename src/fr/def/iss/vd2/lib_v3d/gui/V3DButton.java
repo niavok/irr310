@@ -17,27 +17,19 @@
 
 package fr.def.iss.vd2.lib_v3d.gui;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.fenggui.Button;
-import org.fenggui.Label;
 import org.fenggui.appearance.TextAppearance;
 import org.fenggui.binding.render.IFont;
 import org.fenggui.binding.render.ImageFont;
 import org.fenggui.binding.render.text.ITextRenderer;
 import org.fenggui.decorator.background.PlainBackground;
 import org.fenggui.decorator.border.PaddingBorder;
-import org.fenggui.decorator.border.PlainBorder;
 import org.fenggui.text.content.factory.simple.TextStyle;
 import org.fenggui.text.content.factory.simple.TextStyleEntry;
-import org.fenggui.util.Alphabet;
 import org.fenggui.util.Color;
 import org.fenggui.util.Dimension;
 import org.fenggui.util.Point;
-import org.fenggui.util.Spacing;
 import org.fenggui.util.Span;
-import org.fenggui.util.fonttoolkit.FontFactory;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 

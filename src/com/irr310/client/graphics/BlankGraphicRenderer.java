@@ -6,7 +6,6 @@ import com.irr310.common.event.EngineEventVisitor;
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
 import fr.def.iss.vd2.lib_v3d.camera.V3DSimple2DCamera;
-import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent;
 
 public class BlankGraphicRenderer implements GraphicRenderer {
 

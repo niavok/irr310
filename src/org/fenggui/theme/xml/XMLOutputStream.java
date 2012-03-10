@@ -260,7 +260,6 @@ public class XMLOutputStream extends OutputOnlyStream
     return value;
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public <T extends IXMLStreamable> void processChildren(String childName, @SuppressWarnings("rawtypes") List children, Class<T> childClass)
       throws IOException, IXMLStreamableException
