@@ -1,5 +1,9 @@
 package com.irr310.server.upgrade;
 
+import com.irr310.common.world.Component;
+import com.irr310.common.world.Player;
+import com.irr310.common.world.Ship;
+import com.irr310.common.world.item.Item;
 import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.common.world.upgrade.Upgrade.UpgradeCategory;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
@@ -9,6 +13,25 @@ public class WeaponGunEffect extends UpgradeEffect {
     
     @Override
     public void apply(UpgradeOwnership playerUpgrade) {
+        Player player = playerUpgrade.getPlayer();
+        int currentWeaponCount = 0;
+        for(Item item: player.getInventory()) {
+            if(item.getName().equals("weapon.gun")) {
+                currentWeaponCount ++;
+            }
+        }
+        
+        for(Ship ship: player.getShipList()) {
+            for(Component component: ship.getComponents()) {
+                if(component.getName().equals("weapon.gun")) {
+                    currentWeaponCount ++;
+                }
+            }
+        }
+        System.err.println("current count: "+currentWeaponCount);
+        System.err.println("target count: "+playerUpgrade.getRank());
+        
+        
     }
 
     @Override
