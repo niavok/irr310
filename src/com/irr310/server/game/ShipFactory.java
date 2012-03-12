@@ -125,7 +125,7 @@ public class ShipFactory {
 //        newShip.assign(camera);
 
         // Gun
-        Component gun = ComponentFactory.createGun("gun");
+        Component gun = ComponentFactory.createGun("weapon.gun");
         gun.setShipPosition(new Vec3(0, 0.5, 0));
         world.addComponent(gun);
         newShip.assign(gun);

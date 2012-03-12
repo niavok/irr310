@@ -8,6 +8,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import com.irr310.common.Game;
 import com.irr310.common.event.MoneyChangedEvent;
 import com.irr310.common.tools.Hash;
+import com.irr310.common.world.item.Item;
 import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
 import com.irr310.common.world.view.PlayerView;
@@ -20,6 +21,7 @@ public class Player extends GameEntity {
     private String password;
     private String passwordSalt;
     private List<Ship> shipList;
+    private List<Item> inventory;
     private List<UpgradeOwnership> upgrades;
     private int  money;
 
@@ -30,6 +32,7 @@ public class Player extends GameEntity {
         this.login = login;
         shipList = new ArrayList<Ship>();
         upgrades = new ArrayList<UpgradeOwnership>();
+        inventory = new ArrayList<Item>();
         money = 0;
         lastInterrest = 0;
 	}
@@ -119,5 +122,17 @@ public class Player extends GameEntity {
         int realGain = (int) gain;
         lastInterrest = gain -  realGain;
         giveMoney(realGain);
+    }
+    
+    public List<Item> getInventory() {
+        return inventory;
+    }
+    
+    public void giveItem(Item item) {
+        inventory.add(item);
+    }
+    
+    public void retireItem(Item item) {
+        inventory.remove(item);
     }
 }
