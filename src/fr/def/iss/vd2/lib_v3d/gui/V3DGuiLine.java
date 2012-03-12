@@ -40,7 +40,7 @@ public class V3DGuiLine extends V3DGuiComponent {
             
             @Override
             public Dimension getSize() {
-                return new Dimension(Math.abs(size.getWidth()), Math.abs(size.getHeight()));
+                return new Dimension(Math.max(1, Math.abs(size.getWidth())), Math.max(1,Math.abs(size.getHeight())));
             }
             
         };
