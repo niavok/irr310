@@ -34,7 +34,7 @@ function driver() {
         var rightEngine = ship.getComponentByName("rightReactor").getCapacityByName("linearEngine");
         var topEngine = ship.getComponentByName("topReactor").getCapacityByName("linearEngine");
         var bottomEngine = ship.getComponentByName("bottomReactor").getCapacityByName("linearEngine");
-        var gun = ship.getComponentByName("gun").getCapacityByName("gun");
+        var gun = ship.getComponentByName("weapon.gun").getCapacityByName("gun");
         var kernel = ship.getComponentByName("kernel");
         
         core.log("leftEngine.maxThrust "+leftEngine.getMaxThrust());
@@ -693,7 +693,7 @@ function driver() {
             this.rotationControlleurDeadZone = core.gui.createRectangle();
             this.rotationControlleurDeadZone.setPosition(this.rotationControlleurMouseOrigin.minus(new Vec2(this.rotationControlleurDeadZoneRadius,this.rotationControlleurDeadZoneRadius)));
             this.rotationControlleurDeadZone.setSize(new Vec2(this.rotationControlleurDeadZoneRadius * 2,this.rotationControlleurDeadZoneRadius*2));
-            this.rotationControlleurDeadZone.setBorderColor(new Color(0.0,0,0.3));
+            this.rotationControlleurDeadZone.setBorderColor(new Color(0.3,0,0.0));
             
             //this.rotationControlleurControlZone = core.gui.createRectangle();
             //this.rotationControlleurControlZone.setPosition(this.rotationControlleurMouseOrigin.minus(new Vec2(this.rotationControlleurControlRadius,this.rotationControlleurControlRadius)));
@@ -702,7 +702,7 @@ function driver() {
             this.rotationControlleurControlZone = core.gui.createLine();
             this.rotationControlleurControlZone.setPosition(this.rotationControlleurMouseOrigin);
             this.rotationControlleurControlZone.setSize(new Vec2(10,10));
-            this.rotationControlleurControlZone.setColor(new Color(0.0,0,0.3));
+            this.rotationControlleurControlZone.setColor(new Color(0.3,0,0.0));
         }        
         
         this.disableRotationController = function() {
