@@ -67,7 +67,7 @@ public class GraphicEngine extends FramerateEngine {
             
             @Override
             public void resized(V3DCanvas canvas) {
-                Game.getInstance().getInstance().sendToAll(new ReloadUiEvent());
+                Game.getInstance().sendToAll(new ReloadUiEvent());
             }
         });
         
@@ -147,6 +147,8 @@ public class GraphicEngine extends FramerateEngine {
                 System.out.println("Reload shaders");
                 context.reloadShader();
                 return;
+            } else {
+                rendererVisitor.visit(event);
             }
         }
 
@@ -209,6 +211,8 @@ public class GraphicEngine extends FramerateEngine {
         public void visit(UpgradeStateChanged event) {
             rendererVisitor.visit(event);
         }
+        
+        
     }
 
     public V3DContext getV3DContext() {

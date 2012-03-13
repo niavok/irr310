@@ -13,6 +13,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.fenggui.event.ButtonPressedEvent;
 import org.fenggui.event.IButtonPressedListener;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.ARBShaderObjects;
 
 import com.irr310.client.graphics.effects.BulletEffect;
@@ -44,6 +45,7 @@ import com.irr310.common.event.CollisionEvent;
 import com.irr310.common.event.DamageEvent;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEventVisitor;
+import com.irr310.common.event.KeyPressedEvent;
 import com.irr310.common.event.MoneyChangedEvent;
 import com.irr310.common.event.NextWaveEvent;
 import com.irr310.common.event.RemoveGuiComponentEvent;
@@ -878,6 +880,18 @@ public class WorldRenderer implements GraphicRenderer {
             upgradeMenu.refresh();
         }
 
+        
+        @Override
+        public void visit(KeyPressedEvent event) {
+            if(event.getKeyCode() == Keyboard.KEY_ESCAPE) {
+                if(upgradeMenuEnabled) {
+                    toogleUpgradeMenu();
+                }
+            } else if(event.getKeyCode() == Keyboard.KEY_TAB) {
+                toogleUpgradeMenu();
+            } 
+            
+        }
     }
 
     @Override
