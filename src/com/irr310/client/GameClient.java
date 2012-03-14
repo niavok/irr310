@@ -61,7 +61,9 @@ public class GameClient extends Game {
         graphicEngine = new GraphicEngine();
 
         engineList.add(new InputEngine());
-        engineList.add(new SoundEngine());
+        if(ClientConfig.sound_isEnabled()) {
+            engineList.add(new SoundEngine());
+        }
         // engineList.add(new ClientGameEngine());
         // engineList.add(physicEngine);
         // engineList.add(clientNetworkEngine);
