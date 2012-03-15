@@ -928,8 +928,12 @@ public class WorldRenderer implements GraphicRenderer {
         
         @Override
         public void visit(UpgradeStateChanged event) {
-            upgradeMenu.refresh();
-            inventoryMenu.refresh();
+            if(upgradeMenu != null) {
+                upgradeMenu.refresh();
+            }
+            if(inventoryMenu != null) {
+                inventoryMenu.refresh();
+            }
         }
 
         

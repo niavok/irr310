@@ -18,9 +18,9 @@ vec3 genTex2( in vec3 p1 )
     
     vec3 d = vec3(1.0);
     
-    d.x  = (sin(1.9*time + 8.3*c) * sin(2.1*time + 0.5*a) * cos(2.5 * time + 19.7*b)) * 0.2 +1.0;
-    d.y  = (sin(1.7*time + 9.3*c) * cos(1.2*time + 8.4*a) * sin(2.3 * time + 8.6*b)) * 0.3 +1.0;
-    d.z  = (cos(1.8*time + 7.3*c) * sin(2.3*time +  6.45*a) * sin(2.45 * time + 5.64*b)) * 0.05 +0.85;
+    d.x  = (sin(1.9*time + 8.3*c) * sin(2.1*time + 0.5*a) * cos(2.5 * time + 19.7*b)) * 0.2 +0.8;
+    d.y  = (sin(1.7*time + 9.3*c) * cos(1.2*time + 8.4*a) * sin(2.3 * time + 8.6*b)) * 0.3 +0.8;
+    d.z  = (cos(1.8*time + 7.3*c) * sin(2.3*time +  6.45*a) * sin(2.45 * time + 5.64*b)) * 0.05 +0.65;
    
    //d.x = 0.0;
    //d.y = 0.0;
@@ -52,7 +52,8 @@ void main(void)
     
     fill = vec4(genTex2(verpos.xyz), 1.0);
     
- 	gl_FragColor = I*WIRE_COL + (0.2 + 0.8 * ( 1 - I) )*fill;
+ 	gl_FragColor = (I*WIRE_COL + (0.2 + 0.8 * ( 1 - I) )*fill);
+ 	gl_FragColor.w = 1.0;
  	
  	if (gl_FrontFacing) {
         gl_FragColor = vec4(0.0,0.0,0.0,0.0);
