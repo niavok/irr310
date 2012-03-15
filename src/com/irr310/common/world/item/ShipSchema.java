@@ -14,5 +14,9 @@ public class ShipSchema {
     public void addItemSlot(ItemSlot slot) {
         itemSlotList.add(slot);
     }
+
+    public List<ItemSlot> getItemSlots() {
+        return itemSlotList;
+    }
     
 }

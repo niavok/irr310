@@ -46,6 +46,8 @@ import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.common.world.capacity.controller.CapacityController;
 import com.irr310.common.world.capacity.controller.GunController;
 import com.irr310.common.world.capacity.controller.LinearEngineController;
+import com.irr310.common.world.item.ItemSlot;
+import com.irr310.common.world.item.ShipSchema;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
 import com.irr310.server.game.CelestialObjectFactory;
 import com.irr310.server.game.ShipFactory;
@@ -258,6 +260,38 @@ public class ServerGameEngine extends FramerateEngine {
                 case SIMPLE_FIGHTER:
                     ship = ShipFactory.createSimpleFighter();
                     ship.setOwner(event.getOwner());
+                    ShipSchema shipShema = new ShipSchema();
+                    //Center slot
+                    shipShema.addItemSlot(new ItemSlot(new Vec3(0, 0.5, 0)));
+                    //Engine slot                    
+                    shipShema.addItemSlot(new ItemSlot(new Vec3(5.5, -3.5, 0)));
+                    shipShema.addItemSlot(new ItemSlot(new Vec3(-5.5, -3.5, 0)));
+                    shipShema.addItemSlot(new ItemSlot(new Vec3(0, -3.5, 5.5)));
+                    shipShema.addItemSlot(new ItemSlot(new Vec3(0, -3.5, -5.5)));
+                    //Wings slot
+                    shipShema.addItemSlot(new ItemSlot(new Vec3(2., -3.5, 1)));
+                    shipShema.addItemSlot(new ItemSlot(new Vec3(2., -3.5, -1)));
+                    shipShema.addItemSlot(new ItemSlot(new Vec3(3., -3.5, 1)));
+                    shipShema.addItemSlot(new ItemSlot(new Vec3(3., -3.5, -1)));
+                    
+                    shipShema.addItemSlot(new ItemSlot(new Vec3(-2., -3.5, 1)));
+                    shipShema.addItemSlot(new ItemSlot(new Vec3(-2., -3.5, -1)));
+                    shipShema.addItemSlot(new ItemSlot(new Vec3(-3., -3.5, 1)));
+                    shipShema.addItemSlot(new ItemSlot(new Vec3(-3., -3.5, -1)));
+                    
+                    shipShema.addItemSlot(new ItemSlot(new Vec3(1, -3.5, 2.)));
+                    shipShema.addItemSlot(new ItemSlot(new Vec3(-1, -3.5, 2.)));
+                    shipShema.addItemSlot(new ItemSlot(new Vec3(1, -3.5, 3.)));
+                    shipShema.addItemSlot(new ItemSlot(new Vec3(-1, -3.5, 3.)));
+                    
+                    shipShema.addItemSlot(new ItemSlot(new Vec3(1, -3.5, -2.)));
+                    shipShema.addItemSlot(new ItemSlot(new Vec3(-1, -3.5, -2.)));
+                    shipShema.addItemSlot(new ItemSlot(new Vec3(1, -3.5, -3.)));
+                    shipShema.addItemSlot(new ItemSlot(new Vec3(-1, -3.5, -3.)));
+                    
+                    
+                    
+                    event.getOwner().setShipShema(shipShema);
                     break;
             }
 

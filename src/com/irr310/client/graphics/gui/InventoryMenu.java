@@ -1,16 +1,19 @@
 package com.irr310.client.graphics.gui;
 
+import java.util.List;
+
 import com.irr310.client.graphics.MenuContainer;
 import com.irr310.client.navigation.LoginManager;
+import com.irr310.common.world.item.ItemSlot;
 import com.irr310.common.world.item.ShipSchema;
 
+import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.element.V3DCircle;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiCircle;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiRectangle;
 
-public class InventoryMenu extends MenuContainer{
+public class InventoryMenu extends MenuContainer {
 
-    
     public InventoryMenu() {
         setPosition(-2, 123);
         setSize(500, 600);
@@ -34,15 +37,15 @@ public class InventoryMenu extends MenuContainer{
         inventoryTop.setFillColor(GuiConstants.irrRed);
         inventoryTop.setBorderColor(GuiConstants.irrRed);
         add(inventoryTop);
-        
+
         generateInventory();
-        
+
     }
 
     private void generateInventory() {
         ShipSchema shipSchema = LoginManager.getLocalPlayer().getShipSchema();
-        
-        //top wing
+
+        // top wing
         V3DGuiRectangle topWing = new V3DGuiRectangle();
         topWing.setBorderColor(GuiConstants.irrBlue);
         topWing.setFillColor(GuiConstants.irrBlue.copy().setAlpha(0.5f));
@@ -50,8 +53,8 @@ public class InventoryMenu extends MenuContainer{
         topWing.setSize(5, 100);
         topWing.setBorderWidth(3);
         add(topWing);
-        
-        //left wing
+
+        // left wing
         V3DGuiRectangle leftWing = new V3DGuiRectangle();
         leftWing.setBorderColor(GuiConstants.irrBlue);
         leftWing.setFillColor(GuiConstants.irrBlue.copy().setAlpha(0.5f));
@@ -59,9 +62,8 @@ public class InventoryMenu extends MenuContainer{
         leftWing.setSize(100, 5);
         leftWing.setBorderWidth(3);
         add(leftWing);
-        
-        
-        //right wing
+
+        // right wing
         V3DGuiRectangle rightWing = new V3DGuiRectangle();
         rightWing.setBorderColor(GuiConstants.irrBlue);
         rightWing.setFillColor(GuiConstants.irrBlue.copy().setAlpha(0.5f));
@@ -69,8 +71,8 @@ public class InventoryMenu extends MenuContainer{
         rightWing.setSize(100, 5);
         rightWing.setBorderWidth(3);
         add(rightWing);
-        
-        //bottom wing
+
+        // bottom wing
         V3DGuiRectangle bottomWing = new V3DGuiRectangle();
         bottomWing.setBorderColor(GuiConstants.irrBlue);
         bottomWing.setFillColor(GuiConstants.irrBlue.copy().setAlpha(0.5f));
@@ -78,8 +80,7 @@ public class InventoryMenu extends MenuContainer{
         bottomWing.setSize(5, 100);
         bottomWing.setBorderWidth(3);
         add(bottomWing);
-        
-        
+
         // Hull
         V3DGuiCircle hull = new V3DGuiCircle();
         hull.setBorderColor(GuiConstants.irrBlue);
@@ -89,7 +90,7 @@ public class InventoryMenu extends MenuContainer{
         hull.setQuality(32);
         hull.setBorderWidth(3);
         add(hull);
-        
+
         // Top engine
         V3DGuiCircle topEngine = new V3DGuiCircle();
         topEngine.setBorderColor(GuiConstants.irrBlue);
@@ -99,7 +100,7 @@ public class InventoryMenu extends MenuContainer{
         topEngine.setQuality(32);
         topEngine.setBorderWidth(3);
         add(topEngine);
-        
+
         // Bottom engine
         V3DGuiCircle bottomEngine = new V3DGuiCircle();
         bottomEngine.setBorderColor(GuiConstants.irrBlue);
@@ -109,7 +110,7 @@ public class InventoryMenu extends MenuContainer{
         bottomEngine.setQuality(32);
         bottomEngine.setBorderWidth(3);
         add(bottomEngine);
-        
+
         // Left engine
         V3DGuiCircle leftEngine = new V3DGuiCircle();
         leftEngine.setBorderColor(GuiConstants.irrBlue);
@@ -119,8 +120,7 @@ public class InventoryMenu extends MenuContainer{
         leftEngine.setQuality(32);
         leftEngine.setBorderWidth(3);
         add(leftEngine);
-        
-        
+
         // Right engine
         V3DGuiCircle rightEngine = new V3DGuiCircle();
         rightEngine.setBorderColor(GuiConstants.irrBlue);
@@ -130,12 +130,29 @@ public class InventoryMenu extends MenuContainer{
         rightEngine.setQuality(32);
         rightEngine.setBorderWidth(3);
         add(rightEngine);
+        
+        
+        // Add slots
+        for (ItemSlot itemSlot : shipSchema.getItemSlots()) {
+            addSlot(itemSlot);
+        }
+    }
+
+    private void addSlot(ItemSlot itemSlot) {
+        double scale = 41;
+         
+        V3DGuiRectangle slot = new V3DGuiRectangle();
+        slot.setBorderColor(V3DColor.grey);
+        slot.setFillColor(V3DColor.grey.copy().setAlpha(0.5f));
+        slot.setPosition((int) (250-(int) (scale/2)+scale*itemSlot.getPosition().x.doubleValue()), 250-(int) (scale/2)+ (int)(scale *itemSlot.getPosition().z.doubleValue()));
+        slot.setSize((int)scale,(int)scale);
+        slot.setBorderWidth(3);
+        add(slot);
+
     }
 
     @Override
     public void refresh() {
     }
-    
-    
-    
+
 }
