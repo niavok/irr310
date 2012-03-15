@@ -18,6 +18,7 @@ import org.lwjgl.opengl.ARBShaderObjects;
 
 import com.irr310.client.graphics.effects.BulletEffect;
 import com.irr310.client.graphics.gui.GuiConstants;
+import com.irr310.client.graphics.gui.InventoryMenu;
 import com.irr310.client.graphics.gui.UpgradeMenu;
 import com.irr310.client.graphics.skin.AsteroidSkin;
 import com.irr310.client.graphics.skin.CameraSkin;
@@ -118,7 +119,9 @@ public class WorldRenderer implements GraphicRenderer {
     private V3DLabel monolithStatusText;
     private V3DLabel moneyText;
     private MenuContainer upgradeMenu;
+    private MenuContainer inventoryMenu;
     boolean upgradeMenuEnabled = false;
+    boolean inventoryMenuEnabled = false;
 
     public WorldRenderer(GraphicEngine engine) {
         this.engine = engine;
@@ -180,7 +183,9 @@ public class WorldRenderer implements GraphicRenderer {
     private void reloadGui() {
 
         upgradeMenu = null;
+        inventoryMenu = null;
         upgradeMenuEnabled = false;
+        inventoryMenuEnabled = false;
         
         // Generate logo
         V3DLabel logoIRR = new V3DLabel("IRR");
@@ -479,6 +484,54 @@ public class WorldRenderer implements GraphicRenderer {
         }
         
     }
+    
+    private void enabledUpgradeMenu() {
+        if(upgradeMenu == null) {
+            upgradeMenu = new UpgradeMenu();
+        }
+        
+        if(!upgradeMenuEnabled) {
+            interfaceLayer.add(upgradeMenu);
+            upgradeMenuEnabled = true;
+        }
+    }
+    
+    private void disableUpgradeMenu() {
+        interfaceLayer.remove(upgradeMenu);
+        upgradeMenuEnabled = false;
+    }
+    
+    private void enabledInventoryMenu() {
+        if(inventoryMenu == null) {
+            inventoryMenu = new InventoryMenu();
+        }
+        
+        if(!inventoryMenuEnabled) {
+            interfaceLayer.add(inventoryMenu);
+            inventoryMenuEnabled = true;
+        }
+    }
+    
+    private void disableInventoryMenu() {
+        interfaceLayer.remove(inventoryMenu);
+        inventoryMenuEnabled = false;
+    }
+    
+    
+    private void toogleInventoryMenu() {
+        if(inventoryMenu == null) {
+            inventoryMenu = new InventoryMenu();
+        }
+        
+        if(!inventoryMenuEnabled) {
+            interfaceLayer.add(inventoryMenu);
+            inventoryMenuEnabled = true;
+        } else {
+            interfaceLayer.remove(inventoryMenu);
+            inventoryMenuEnabled = false;
+        }
+        
+    }
 
     private void updateMonolithStatus() {
         if (monolithStatusText != null && monolith != null) {
@@ -537,13 +590,11 @@ public class WorldRenderer implements GraphicRenderer {
         elementStructure.setScale(1000);
 
         V3DShader shader = new V3DShader("bubble") {
-            private int inputRotation;
             private int resolution;
             private int time;
             private long startTime;
 
             protected void loadUniforms() {
-                inputRotation = ARBShaderObjects.glGetUniformLocationARB(shader, "inputRotation");
                 resolution = ARBShaderObjects.glGetUniformLocationARB(shader, "resolution");
                 time = ARBShaderObjects.glGetUniformLocationARB(shader, "time");
 
@@ -878,16 +929,27 @@ public class WorldRenderer implements GraphicRenderer {
         @Override
         public void visit(UpgradeStateChanged event) {
             upgradeMenu.refresh();
+            inventoryMenu.refresh();
         }
 
         
         @Override
         public void visit(KeyPressedEvent event) {
             if(event.getKeyCode() == Keyboard.KEY_ESCAPE) {
-                if(upgradeMenuEnabled) {
-                    toogleUpgradeMenu();
-                }
+                disableInventoryMenu();
+                disableUpgradeMenu();
             } else if(event.getKeyCode() == Keyboard.KEY_TAB) {
+                if(upgradeMenuEnabled || inventoryMenuEnabled) {
+                    disableInventoryMenu();
+                    disableUpgradeMenu();
+                } else {
+                    enabledInventoryMenu();
+                    enabledUpgradeMenu();
+                }
+                    
+            } else if(event.getKeyCode() == Keyboard.KEY_I) {
+                toogleInventoryMenu();
+            } else if(event.getKeyCode() == Keyboard.KEY_U) {
                 toogleUpgradeMenu();
             } 
             

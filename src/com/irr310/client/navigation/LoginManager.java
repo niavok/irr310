@@ -9,4 +9,8 @@ public class LoginManager {
     public static boolean  isLogged() {
         return localPlayer != null;
     }
+    
+    public static Player getLocalPlayer() {
+        return localPlayer;
+    }
 }

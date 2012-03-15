@@ -25,6 +25,9 @@ import org.fenggui.util.CharacterPixmap;
 import org.fenggui.util.Color;
 import org.fenggui.util.Point;
 import org.fenggui.util.Rectangle;
+import org.lwjgl.opengl.GL11;
+
+import fr.def.iss.vd2.lib_v3d.V3DColor;
 
 /**
  * Provides a library of graphical functions for GUI classes to utilise, rather
@@ -951,5 +954,50 @@ public class Graphics {
         drawRoundedCorner(x + radius, y + radius, bottom, left, (double) radius, 4);
         drawLine(x, y + height - radius - 1, x, y + radius);
     }
+
+    public void drawCircle(int x, int y, int width, int height, int quality, Color innerColor, Color outerColor) {
+
+            x += offset.getX();
+            y += offset.getY();
+            
+
+            gl.startTriangleFan();
+
+            setColor(innerColor);
+            
+
+            gl.vertex(x, y);
+            
+            float step = 2f * (float) Math.PI / (float) quality;
+            
+            setColor(outerColor);
+
+            for (int i = 0; i <= quality; i++) {
+                gl.vertex((float) (x + width/2 * Math.cos(step * i)), (float) (y+ height/2 * Math.sin(step * i)));
+            }
+
+            gl.end();
+    }
+    
+    public void drawCircleBorder(int x, int y, int width, int height, int quality, Color color) {
+
+            x += offset.getX();
+            y += offset.getY();
+            
+
+            gl.startLineLoop();
+
+            setColor(color);
+            
+            float step = 2f * (float) Math.PI / (float) quality;
+            
+            for (int i = 0; i <= quality; i++) {
+                gl.vertex((float) (x + width/2 * Math.cos(step * i)), (float) (y+ height/2 * Math.sin(step * i)));
+            }
+
+            gl.end();
+    }
+    
+
 
 }

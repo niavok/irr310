@@ -43,10 +43,10 @@ public class UpgradeMenu extends MenuContainer{
         //Tabs
         addTab(new UpgradeWeaponsTab());
         addTab(new UpgradeWeaponUpgradeTab());
-        addTab(new UpgradeWeaponUpgradeTab());
-        addTab(new UpgradeWeaponUpgradeTab());
-        addTab(new UpgradeWeaponUpgradeTab());
-        addTab(new UpgradeWeaponUpgradeTab());
+        //addTab(new UpgradeWeaponUpgradeTab());
+        //addTab(new UpgradeWeaponUpgradeTab());
+        //addTab(new UpgradeWeaponUpgradeTab());
+        //addTab(new UpgradeWeaponUpgradeTab());
 //        addTab("Weapon", new UpgradeWeaponTab());
 //        addTab("Defenses", new UpgradeWeaponTab());
 //        addTab("Ship", new UpgradeWeaponTab());

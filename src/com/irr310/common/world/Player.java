@@ -9,6 +9,7 @@ import com.irr310.common.Game;
 import com.irr310.common.event.MoneyChangedEvent;
 import com.irr310.common.tools.Hash;
 import com.irr310.common.world.item.Item;
+import com.irr310.common.world.item.ShipSchema;
 import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
 import com.irr310.common.world.view.PlayerView;
@@ -26,6 +27,8 @@ public class Player extends GameEntity {
     private int  money;
 
     private double lastInterrest;
+
+    private ShipSchema shipShema;
     
 	public Player(long id, String login) {
 	    super(id);
@@ -134,5 +137,17 @@ public class Player extends GameEntity {
     
     public void retireItem(Item item) {
         inventory.remove(item);
+    }
+
+    public Ship getPreferredShip() {
+        return getShipList().get(0);
+    }
+    
+    public ShipSchema getShipSchema() {
+        return shipShema;
+    }
+    
+    public void setShipShema(ShipSchema shipShema) {
+        this.shipShema = shipShema;
     }
 }
