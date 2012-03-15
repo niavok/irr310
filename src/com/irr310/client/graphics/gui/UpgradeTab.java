@@ -1,5 +1,7 @@
 package com.irr310.client.graphics.gui;
 
+import com.irr310.client.graphics.GraphicEngine;
+
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.gui.V3DContainer;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiRectangle;
@@ -13,10 +15,12 @@ public abstract class UpgradeTab implements GuiTab{
     private V3DLabel weaponTabText;
     private V3DGuiRectangle weaponTabBox;
     //private V3DLabel tabTextCount;
+    private final GraphicEngine engine;
 
-    public UpgradeTab(String name) {
+    public UpgradeTab(GraphicEngine engine,  String name) {
 
     
+        this.engine = engine;
         labelPane = new V3DContainer();
         labelPane.setSize(130, 40);
         

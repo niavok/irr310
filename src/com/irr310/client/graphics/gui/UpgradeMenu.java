@@ -6,6 +6,7 @@ import java.util.List;
 import org.fenggui.event.ButtonPressedEvent;
 import org.fenggui.event.IButtonPressedListener;
 
+import com.irr310.client.graphics.GraphicEngine;
 import com.irr310.client.graphics.MenuContainer;
 
 import fr.def.iss.vd2.lib_v3d.gui.V3DButton;
@@ -17,7 +18,7 @@ public class UpgradeMenu extends MenuContainer{
     int tabOffset = 40;
     List<GuiTab> tabs = new ArrayList<GuiTab>();
     
-    public UpgradeMenu() {
+    public UpgradeMenu(GraphicEngine engine) {
         setPosition(-2, 123);
         setSize(500, 600);
         setyAlignment(GuiYAlignment.BOTTOM);
@@ -41,8 +42,8 @@ public class UpgradeMenu extends MenuContainer{
         
         
         //Tabs
-        addTab(new UpgradeWeaponsTab());
-        addTab(new UpgradeWeaponUpgradeTab());
+        addTab(new UpgradeWeaponsTab(engine));
+        addTab(new UpgradeWeaponUpgradeTab(engine));
         //addTab(new UpgradeWeaponUpgradeTab());
         //addTab(new UpgradeWeaponUpgradeTab());
         //addTab(new UpgradeWeaponUpgradeTab());

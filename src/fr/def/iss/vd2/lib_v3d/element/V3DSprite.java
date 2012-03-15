@@ -19,6 +19,8 @@ package fr.def.iss.vd2.lib_v3d.element;
 
 import java.awt.image.BufferedImage;
 
+import javax.naming.Context;
+
 import org.lwjgl.opengl.GL11;
 
 import fr.def.iss.vd2.lib_v3d.V3DContext;
@@ -70,7 +72,7 @@ public class V3DSprite extends V3DElement {
 
     @Override
     protected void doInit() {
-        texture = getContext().getTextureManager().getTexture(image);
+        texture = new TextureHandler(getContext().getTextureManager(), image);
        
     }
     
@@ -98,7 +100,7 @@ public class V3DSprite extends V3DElement {
         float w = 0.5f * size.x * image.getWidth();
         float h = 0.5f * size.y * image.getHeight();
         
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getGlId());
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getID());
         GL11.glBegin(GL11.GL_QUADS);
         GL11.glTexCoord2f(0.0f,  0.0f);
         GL11.glVertex3f(-w, -h,  0.0f);

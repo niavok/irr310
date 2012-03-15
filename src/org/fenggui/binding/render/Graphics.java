@@ -558,6 +558,44 @@ public class Graphics {
         // gl.translateXY(-offset.getX(), -offset.getY());
 
     }
+    
+    public void drawImage(ITexture tex, int x, int y, int width, int height) {
+        x += offset.getX();
+        y += offset.getY();
+
+        gl.enableTexture2D(true);
+
+        gl.setTexEnvModeModulate();
+
+        tex.bind();
+
+        gl.startQuads();
+
+        int imgWidth = tex.getImageWidth();
+        int imgHeight = tex.getImageHeight();
+
+        float endY = (float) imgHeight / (float) tex.getTextureHeight();
+        float endX = (float) imgWidth / (float) tex.getTextureWidth();
+        float startX = 0;
+        float startY = 0;
+
+        gl.texCoord(startX, endY);
+        gl.vertex(x, y);
+
+        gl.texCoord(startX, startY);
+        gl.vertex(x, height + y);
+
+        gl.texCoord(endX, startY);
+        gl.vertex(width + x, height + y);
+
+        gl.texCoord(endX, endY);
+        gl.vertex(width + x, y);
+        gl.end();
+        // gl.translate(0,0,-0.1f);
+        gl.enableTexture2D(false);
+        // gl.translateXY(-offset.getX(), -offset.getY());
+
+    }
 
     /**
      * Sets the current pen colour.

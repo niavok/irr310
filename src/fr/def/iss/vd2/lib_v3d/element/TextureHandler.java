@@ -18,35 +18,88 @@
 package fr.def.iss.vd2.lib_v3d.element;
 
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.nio.IntBuffer;
 
-public class TextureHandler {
+import org.fenggui.binding.render.ITexture;
+import org.fenggui.theme.xml.IXMLStreamableException;
+import org.fenggui.theme.xml.InputOutputStream;
+import org.lwjgl.opengl.GL11;
 
-    private int glId = -1;
+import fr.def.iss.vd2.lib_v3d.element.TextureManager.Texture;
+
+public class TextureHandler implements ITexture {
+
     private TextureManager textureManager;
     private BufferedImage buffer;
+    private Texture texture;
 
     
-
-    TextureHandler(TextureManager textureManager, BufferedImage buffer, int i) {
+    public TextureHandler(TextureManager textureManager, BufferedImage buffer) {
         this.textureManager = textureManager;
-        glId = i;
         this.buffer = buffer;
+        this.texture = textureManager.getTexture(buffer);
     }
-
-    public int getGlId() {
-        if(glId == -1) {
-            textureManager.refresh(this);
-        }
-        return glId;
-    }
-
-    public void setGlId(int glId) {
-        this.glId = glId;
-    }
-
 
     BufferedImage getBuffer() {
         return buffer;
+    }
+
+    @Override
+    public void process(InputOutputStream stream) throws IOException, IXMLStreamableException {
+    }
+
+    @Override
+    public String getUniqueName() {
+        return null;
+    }
+
+    @Override
+    public void dispose() {
+        GL11.glDeleteTextures(IntBuffer.wrap(new int[] { texture.getGlId() }));
+        texture.setValid(false);
+    }
+
+    @Override
+    public void bind() {
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getGlId());
+    }
+
+    @Override
+    public int getTextureWidth() {
+        return texture.getWidth();
+    }
+
+    @Override
+    public int getTextureHeight() {
+        return texture.getHeight();
+    }
+
+    @Override
+    public int getImageWidth() {
+        return buffer.getWidth();
+    }
+
+    @Override
+    public int getImageHeight() {
+        return buffer.getHeight();
+    }
+
+    @Override
+    public boolean hasAlpha() {
+        return true;
+    }
+
+    @Override
+    public int getID() {
+        if(texture == null) {
+            textureManager.refresh(this);
+        }
+        return texture.getGlId();
+    }
+
+    public void setTexture(Texture texture) {
+        this.texture = texture;
     }
 
 

@@ -6,6 +6,7 @@ import java.util.Map;
 import org.fenggui.event.ButtonPressedEvent;
 import org.fenggui.event.IButtonPressedListener;
 
+import com.irr310.client.graphics.GraphicEngine;
 import com.irr310.client.navigation.LoginManager;
 import com.irr310.common.Game;
 import com.irr310.common.event.BuyUpgradeRequestEvent;
@@ -28,8 +29,8 @@ public class UpgradeWeaponsTab extends UpgradeTab{
 
     private V3DContainer root;
 
-    public UpgradeWeaponsTab() {
-        super("Weapons");
+    public UpgradeWeaponsTab(GraphicEngine engine) {
+        super(engine, "Weapons");
         
         root = new V3DContainer();
         

@@ -1,7 +1,9 @@
 package com.irr310.client.graphics.gui;
 
+import java.io.IOException;
 import java.util.List;
 
+import com.irr310.client.graphics.GraphicEngine;
 import com.irr310.client.graphics.MenuContainer;
 import com.irr310.client.navigation.LoginManager;
 import com.irr310.common.world.item.ItemSlot;
@@ -9,12 +11,17 @@ import com.irr310.common.world.item.ShipSchema;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.element.V3DCircle;
+import fr.def.iss.vd2.lib_v3d.element.V3DSprite;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiCircle;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiRectangle;
+import fr.def.iss.vd2.lib_v3d.gui.V3DGuiSprite;
 
 public class InventoryMenu extends MenuContainer {
 
-    public InventoryMenu() {
+    private final GraphicEngine engine;
+
+    public InventoryMenu(GraphicEngine engine) {
+        this.engine = engine;
         setPosition(-2, 123);
         setSize(500, 600);
         setyAlignment(GuiYAlignment.BOTTOM);
@@ -144,11 +151,24 @@ public class InventoryMenu extends MenuContainer {
         V3DGuiRectangle slot = new V3DGuiRectangle();
         slot.setBorderColor(V3DColor.grey);
         slot.setFillColor(V3DColor.grey.copy().setAlpha(0.5f));
-        slot.setPosition((int) (250-(int) (scale/2)+scale*itemSlot.getPosition().x.doubleValue()), 250-(int) (scale/2)+ (int)(scale *itemSlot.getPosition().z.doubleValue()));
-        slot.setSize((int)scale,(int)scale);
+        int x2 = (int) (250-(int) (scale/2)+scale*itemSlot.getPosition().x.doubleValue());
+        int y2 = 250-(int) (scale/2)+ (int)(scale *itemSlot.getPosition().z.doubleValue());
+        slot.setPosition(x2, y2);
+        slot.setSize((int)scale-3,(int)scale-3);
         slot.setBorderWidth(3);
         add(slot);
-
+        
+        
+        try {
+            V3DGuiSprite icon = new V3DGuiSprite(engine.getV3DContext(),"graphics/icons/gun_item_icon_64.png");
+            icon.setPosition(x2, y2);
+            icon.setSize((int)scale-4,(int)scale-4);
+            add(icon);
+            
+        } catch (IOException e) {
+            System.err.println("Fail to load sprite: graphics/icons/gun_item_icon_64.png");
+        }
+        
     }
 
     @Override

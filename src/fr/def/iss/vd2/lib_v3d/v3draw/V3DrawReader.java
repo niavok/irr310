@@ -342,7 +342,7 @@ public class V3DrawReader {
         } catch (IOException e) {
             return;
         }
-        TextureHandler texture = context.getTextureManager().getTexture(image);
+        TextureHandler texture = new TextureHandler(context.getTextureManager(), image);
 
         textureList.add(texture);
     }
@@ -378,7 +378,7 @@ public class V3DrawReader {
         GL11.glAlphaFunc(GL11.GL_GREATER, 0.1f);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
 
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureList.get(textureIndex).getGlId());
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureList.get(textureIndex).getID());
     }
 
     private void disableTexture() {

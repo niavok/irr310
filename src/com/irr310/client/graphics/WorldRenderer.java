@@ -472,7 +472,7 @@ public class WorldRenderer implements GraphicRenderer {
     
     private void toogleUpgradeMenu() {
         if(upgradeMenu == null) {
-            upgradeMenu = new UpgradeMenu();
+            upgradeMenu = new UpgradeMenu(engine);
         }
         
         if(!upgradeMenuEnabled) {
@@ -487,7 +487,7 @@ public class WorldRenderer implements GraphicRenderer {
     
     private void enabledUpgradeMenu() {
         if(upgradeMenu == null) {
-            upgradeMenu = new UpgradeMenu();
+            upgradeMenu = new UpgradeMenu(engine);
         }
         
         if(!upgradeMenuEnabled) {
@@ -503,7 +503,7 @@ public class WorldRenderer implements GraphicRenderer {
     
     private void enabledInventoryMenu() {
         if(inventoryMenu == null) {
-            inventoryMenu = new InventoryMenu();
+            inventoryMenu = new InventoryMenu(engine);
         }
         
         if(!inventoryMenuEnabled) {
@@ -520,7 +520,7 @@ public class WorldRenderer implements GraphicRenderer {
     
     private void toogleInventoryMenu() {
         if(inventoryMenu == null) {
-            inventoryMenu = new InventoryMenu();
+            inventoryMenu = new InventoryMenu(engine);
         }
         
         if(!inventoryMenuEnabled) {
