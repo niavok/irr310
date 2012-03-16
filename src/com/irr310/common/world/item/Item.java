@@ -11,10 +11,12 @@ public class  Item extends GameEntity {
 	
 	
 	private String name;
+    private boolean used;
 
     public Item(long id, String name) {
 	    super(id);
         this.name = name;
+        this.used = false;
 	}
 
     public ItemView toView() {
@@ -22,7 +24,7 @@ public class  Item extends GameEntity {
         
         itemView.id = getId();
         itemView.name = getName();
-        
+        itemView.used = used;
         // WorldObject properties    
         
         return itemView;
@@ -32,7 +34,7 @@ public class  Item extends GameEntity {
         World world = Game.getInstance().getWorld();
 
         // World objectProperties
-       
+        used = itemView.used;
     }
     
     
@@ -42,5 +44,13 @@ public class  Item extends GameEntity {
     
     public void setName(String name) {
         this.name = name;
+    }
+    
+    public void setUsed(boolean used) {
+        this.used = used;
+    }
+
+    public boolean isUsed() {
+        return used;
     }
 }

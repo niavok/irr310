@@ -127,6 +127,7 @@ public class V3DCanvas {
             Display.setTitle("Irr310");
             Display.setParent(canvas);
             Display.create();
+            canvas.requestFocus();
         }catch(Exception e){
             System.out.println("Error setting up display");
             System.exit(0);

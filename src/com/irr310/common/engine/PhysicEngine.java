@@ -300,7 +300,6 @@ public class PhysicEngine extends FramerateEngine {
     }
     
     protected void removeObject(WorldObject object) {
-        System.err.println("physical removeObject "+ object.getName()+" "+object.getId());
         for (final Part part : object.getParts()) {
             RigidBody body = partToBodyMap.remove(part);
             dynamicsWorld.removeCollisionObject(body);

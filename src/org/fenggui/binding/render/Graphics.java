@@ -574,10 +574,10 @@ public class Graphics {
         int imgWidth = tex.getImageWidth();
         int imgHeight = tex.getImageHeight();
 
-        float endY = (float) imgHeight / (float) tex.getTextureHeight();
-        float endX = (float) imgWidth / (float) tex.getTextureWidth();
-        float startX = 0;
-        float startY = 0;
+        float startY = (float) imgHeight / (float) tex.getTextureHeight();
+        float startX = (float) imgWidth / (float) tex.getTextureWidth();
+        float endX = 0;
+        float endY = 0;
 
         gl.texCoord(startX, endY);
         gl.vertex(x, y);

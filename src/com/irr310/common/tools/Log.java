@@ -10,6 +10,19 @@ public class Log {
     private static int indent = 0;
     private static boolean enable = false; 
     
+    
+    public static void log(String log) {
+        System.out.println(log);
+    }
+    
+    public static void console(String log) {
+        System.out.println(log);
+    }
+    
+    public static void trace(String log) {
+        System.err.println(log);
+    }
+    
     public static void perfBegin(String log) {
         if(!enable) {
             return;
@@ -91,4 +104,6 @@ public class Log {
             return log;
         }
     }
+    
+    
 }

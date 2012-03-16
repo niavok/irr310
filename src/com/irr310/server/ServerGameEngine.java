@@ -66,6 +66,7 @@ public class ServerGameEngine extends FramerateEngine {
     private Time beginWaveTime;
     private Time lastInterrestTime;
     private Duration interrestInterval;
+    private boolean inited;
 
     public ServerGameEngine() {
         capacityControllers = new ArrayList<CapacityController>();
@@ -73,6 +74,7 @@ public class ServerGameEngine extends FramerateEngine {
         reputation = 0;
         currentWave = null;
         interrestInterval = new Duration(10f);
+        inited = false;
     }
 
     @Override
@@ -87,12 +89,12 @@ public class ServerGameEngine extends FramerateEngine {
         for (CapacityController controller : capacityControllers) {
             controller.update(framerate.getSeconds());
         }
-        
+
         // Interrest
-        if(lastInterrestTime.durationTo(currentTime).longer(interrestInterval)) {
+        if (lastInterrestTime.durationTo(currentTime).longer(interrestInterval)) {
             for (Player player : Game.getInstance().getWorld().getPlayers()) {
                 // 1% per minute
-                player.giveInterrest(player.getMoney() * 0.01/6);
+                player.giveInterrest(player.getMoney() * 0.01 / 6);
             }
             lastInterrestTime = currentTime;
         }
@@ -178,18 +180,12 @@ public class ServerGameEngine extends FramerateEngine {
                 nextWave();
                 beginWaveTime = currentTime;
 
-                
-
             }
         }
 
         if (stillPlaying) {
             currentWave.update(beginWaveTime.durationTo(currentTime));
         }
-        
-        
-     
-        
 
     }
 
@@ -261,36 +257,34 @@ public class ServerGameEngine extends FramerateEngine {
                     ship = ShipFactory.createSimpleFighter();
                     ship.setOwner(event.getOwner());
                     ShipSchema shipShema = new ShipSchema();
-                    //Center slot
+                    // Center slot
                     shipShema.addItemSlot(new ItemSlot(new Vec3(0, 0.5, 0)));
-                    //Engine slot                    
+                    // Engine slot
                     shipShema.addItemSlot(new ItemSlot(new Vec3(5.5, -3.5, 0)));
                     shipShema.addItemSlot(new ItemSlot(new Vec3(-5.5, -3.5, 0)));
                     shipShema.addItemSlot(new ItemSlot(new Vec3(0, -3.5, 5.5)));
                     shipShema.addItemSlot(new ItemSlot(new Vec3(0, -3.5, -5.5)));
-                    //Wings slot
+                    // Wings slot
                     shipShema.addItemSlot(new ItemSlot(new Vec3(2., -3.5, 1)));
                     shipShema.addItemSlot(new ItemSlot(new Vec3(2., -3.5, -1)));
                     shipShema.addItemSlot(new ItemSlot(new Vec3(3., -3.5, 1)));
                     shipShema.addItemSlot(new ItemSlot(new Vec3(3., -3.5, -1)));
-                    
+
                     shipShema.addItemSlot(new ItemSlot(new Vec3(-2., -3.5, 1)));
                     shipShema.addItemSlot(new ItemSlot(new Vec3(-2., -3.5, -1)));
                     shipShema.addItemSlot(new ItemSlot(new Vec3(-3., -3.5, 1)));
                     shipShema.addItemSlot(new ItemSlot(new Vec3(-3., -3.5, -1)));
-                    
+
                     shipShema.addItemSlot(new ItemSlot(new Vec3(1, -3.5, 2.)));
                     shipShema.addItemSlot(new ItemSlot(new Vec3(-1, -3.5, 2.)));
                     shipShema.addItemSlot(new ItemSlot(new Vec3(1, -3.5, 3.)));
                     shipShema.addItemSlot(new ItemSlot(new Vec3(-1, -3.5, 3.)));
-                    
+
                     shipShema.addItemSlot(new ItemSlot(new Vec3(1, -3.5, -2.)));
                     shipShema.addItemSlot(new ItemSlot(new Vec3(-1, -3.5, -2.)));
                     shipShema.addItemSlot(new ItemSlot(new Vec3(1, -3.5, -3.)));
                     shipShema.addItemSlot(new ItemSlot(new Vec3(-1, -3.5, -3.)));
-                    
-                    
-                    
+
                     event.getOwner().setShipShema(shipShema);
                     break;
             }
@@ -336,8 +330,7 @@ public class ServerGameEngine extends FramerateEngine {
         public void visit(BulletFiredEvent event) {
 
             RayResultDescriptor rayTest = Game.getInstance().getPhysicEngine().rayTest(event.getFrom(), event.getTo());
-            if (rayTest != null && rayTest.getPart() != event.getSource())
-            {
+            if (rayTest != null && rayTest.getPart() != event.getSource()) {
                 // damage = (1-rangePercent^3)
                 double damage = event.getDamage() * (1 - Math.pow(rayTest.getHitFraction(), 3));
                 applyDamage(rayTest.getPart(), damage, event.getDamageType());
@@ -384,7 +377,7 @@ public class ServerGameEngine extends FramerateEngine {
             Game.getInstance().sendToAll(new UpgradeStateChanged(playerUpgrade, event.getPlayer()));
             UpgradeFactory.apply(playerUpgrade);
         }
-        
+
         @Override
         public void visit(SellUpgradeRequestEvent event) {
 
@@ -398,12 +391,12 @@ public class ServerGameEngine extends FramerateEngine {
                 return;
             }
 
-            event.getPlayer().giveMoney(event.getUpgrade().getPrices().get(currentRank-1));
+            event.getPlayer().giveMoney(event.getUpgrade().getPrices().get(currentRank - 1));
             playerUpgrade.setRank(currentRank - 1);
             Game.getInstance().sendToAll(new UpgradeStateChanged(playerUpgrade, event.getPlayer()));
-            UpgradeFactory.apply(playerUpgrade);
+            UpgradeFactory.refresh(event.getPlayer());
         }
-        
+
         @Override
         public void visit(GameOverEvent event) {
             Game.getInstance().gameOver();
@@ -451,8 +444,11 @@ public class ServerGameEngine extends FramerateEngine {
     protected void init() {
         // World
         UpgradeFactory.initUpgrades();
+        UpgradeFactory.refresh();
         initWorld();
         lastInterrestTime = GameTime.getGameTime();
+        
+        inited = true;
     }
 
     void createWaves() {

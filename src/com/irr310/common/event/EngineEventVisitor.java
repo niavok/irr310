@@ -64,4 +64,6 @@ public interface EngineEventVisitor {
     public abstract void visit(UpgradeStateChanged event);
 
     public abstract void visit(SellUpgradeRequestEvent event);
+
+    public abstract void visit(InventoryChangedEvent event);
 }

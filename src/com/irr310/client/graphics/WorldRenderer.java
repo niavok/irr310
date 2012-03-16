@@ -46,6 +46,7 @@ import com.irr310.common.event.CollisionEvent;
 import com.irr310.common.event.DamageEvent;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEventVisitor;
+import com.irr310.common.event.InventoryChangedEvent;
 import com.irr310.common.event.KeyPressedEvent;
 import com.irr310.common.event.MoneyChangedEvent;
 import com.irr310.common.event.NextWaveEvent;
@@ -931,6 +932,10 @@ public class WorldRenderer implements GraphicRenderer {
             if(upgradeMenu != null) {
                 upgradeMenu.refresh();
             }
+        }
+        
+        @Override
+        public void visit(InventoryChangedEvent event) {
             if(inventoryMenu != null) {
                 inventoryMenu.refresh();
             }

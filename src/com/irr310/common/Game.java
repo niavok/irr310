@@ -10,6 +10,7 @@ import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.World;
 import com.irr310.server.GameServer;
+import com.irr310.server.upgrade.UpgradeFactory;
 
 public abstract class Game {
 
@@ -36,6 +37,8 @@ public abstract class Game {
         newPlayer.changePassword(password);
         playerLoginMap.put(login, newPlayer);
         getWorld().addPlayer(newPlayer);
+        
+        UpgradeFactory.refresh(newPlayer);
         // Ship playerShip = ShipFactory.createSimpleShip();
 
         AddShipEvent addShipEvent = new AddShipEvent(newPlayer);

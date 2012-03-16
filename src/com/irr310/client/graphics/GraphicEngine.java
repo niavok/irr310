@@ -16,6 +16,7 @@ import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.EngineEventVisitor;
 import com.irr310.common.event.GameOverEvent;
+import com.irr310.common.event.InventoryChangedEvent;
 import com.irr310.common.event.KeyPressedEvent;
 import com.irr310.common.event.LoadingGameEvent;
 import com.irr310.common.event.MinimizeWindowEvent;
@@ -209,6 +210,11 @@ public class GraphicEngine extends FramerateEngine {
         
         @Override
         public void visit(UpgradeStateChanged event) {
+            rendererVisitor.visit(event);
+        }
+        
+        @Override
+        public void visit(InventoryChangedEvent event) {
             rendererVisitor.visit(event);
         }
         

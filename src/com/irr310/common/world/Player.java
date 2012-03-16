@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import com.irr310.common.Game;
+import com.irr310.common.event.InventoryChangedEvent;
 import com.irr310.common.event.MoneyChangedEvent;
 import com.irr310.common.tools.Hash;
 import com.irr310.common.world.item.Item;
@@ -133,10 +134,12 @@ public class Player extends GameEntity {
     
     public void giveItem(Item item) {
         inventory.add(item);
+        Game.getInstance().sendToAll(new InventoryChangedEvent(this, item, true));
     }
     
     public void retireItem(Item item) {
         inventory.remove(item);
+        Game.getInstance().sendToAll(new InventoryChangedEvent(this, item, false));
     }
 
     public Ship getPreferredShip() {
@@ -149,5 +152,30 @@ public class Player extends GameEntity {
     
     public void setShipShema(ShipSchema shipShema) {
         this.shipShema = shipShema;
+    }
+
+    public void removeItemByName(String string) {
+        Item itemToRemove = null;
+        
+        //Look for a not used item
+        for (Item item : inventory) {
+            if(item.getName().equals(string) && item.isUsed()) {
+                itemToRemove = item;
+            }
+        }
+        if(itemToRemove != null) {
+            retireItem(itemToRemove);
+            return;
+        }
+        
+        // Look an used item
+        for (Item item : inventory) {
+            if(item.getName().equals(string)) {
+                itemToRemove = item;
+            }
+        }
+        if(itemToRemove != null) {
+            retireItem(itemToRemove);
+        }
     }
 }

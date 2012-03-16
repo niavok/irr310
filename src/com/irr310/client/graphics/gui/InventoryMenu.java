@@ -1,24 +1,27 @@
 package com.irr310.client.graphics.gui;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import com.irr310.client.graphics.GraphicEngine;
 import com.irr310.client.graphics.MenuContainer;
 import com.irr310.client.navigation.LoginManager;
+import com.irr310.common.world.item.Item;
 import com.irr310.common.world.item.ItemSlot;
 import com.irr310.common.world.item.ShipSchema;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
-import fr.def.iss.vd2.lib_v3d.element.V3DCircle;
-import fr.def.iss.vd2.lib_v3d.element.V3DSprite;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiCircle;
+import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiRectangle;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiSprite;
 
 public class InventoryMenu extends MenuContainer {
 
     private final GraphicEngine engine;
+    private final List<V3DGuiComponent> dynamicComponents = new ArrayList<V3DGuiComponent>();
 
     public InventoryMenu(GraphicEngine engine) {
         this.engine = engine;
@@ -45,11 +48,12 @@ public class InventoryMenu extends MenuContainer {
         inventoryTop.setBorderColor(GuiConstants.irrRed);
         add(inventoryTop);
 
+        generateTemplate();
         generateInventory();
 
     }
 
-    private void generateInventory() {
+    private void generateTemplate() {
         ShipSchema shipSchema = LoginManager.getLocalPlayer().getShipSchema();
 
         // top wing
@@ -139,9 +143,42 @@ public class InventoryMenu extends MenuContainer {
         add(rightEngine);
         
         
+        
+        
         // Add slots
         for (ItemSlot itemSlot : shipSchema.getItemSlots()) {
             addSlot(itemSlot);
+        }
+    }
+        
+    private void generateInventory() {
+        ShipSchema shipSchema = LoginManager.getLocalPlayer().getShipSchema();
+        //Add inventory
+        
+        int xInventoryOffset = 5;
+        
+        for (Item item : LoginManager.getLocalPlayer().getInventory()) {
+            if(item.isUsed()) {
+                return;
+            }
+            String path = item.getName().replace(".", "-");
+            try {
+                
+                V3DGuiSprite icon = new V3DGuiSprite(engine.getV3DContext(),"graphics/icons/"+path+"_item_icon_64.png");
+                icon.setPosition(xInventoryOffset, 500);
+                icon.setSize(64,64);
+                add(icon);
+                xInventoryOffset += 70;
+                dynamicComponents.add(icon);
+                
+            } catch (IOException e) {
+                System.err.println("Fail to load sprite: graphics/icons/"+path+"_item_icon_64.png");
+            }
+            
+        }
+        
+        for (ItemSlot itemSlot : shipSchema.getItemSlots()) {
+            addSlotContent(itemSlot);
         }
     }
 
@@ -157,22 +194,34 @@ public class InventoryMenu extends MenuContainer {
         slot.setSize((int)scale-3,(int)scale-3);
         slot.setBorderWidth(3);
         add(slot);
-        
-        
-        try {
-            V3DGuiSprite icon = new V3DGuiSprite(engine.getV3DContext(),"graphics/icons/gun_item_icon_64.png");
-            icon.setPosition(x2, y2);
-            icon.setSize((int)scale-4,(int)scale-4);
-            add(icon);
+    }
+    private void addSlotContent(ItemSlot itemSlot) {  
+        if(!itemSlot.isEmpty()) {
+            Item item = itemSlot.getContent();
+            double scale = 41;
+            int x2 = (int) (250-(int) (scale/2)+scale*itemSlot.getPosition().x.doubleValue());
+            int y2 = 250-(int) (scale/2)+ (int)(scale *itemSlot.getPosition().z.doubleValue());
+            try {
+                V3DGuiSprite icon = new V3DGuiSprite(engine.getV3DContext(),"graphics/icons/"+item.getName()+"_item_icon_64.png");
+                icon.setPosition(x2, y2);
+                icon.setSize((int)scale-4,(int)scale-4);
+                add(icon);
+                dynamicComponents.add(icon);
+            } catch (IOException e) {
+                System.err.println("Fail to load sprite: graphics/icons/gun_item_icon_64.png");
+            }
             
-        } catch (IOException e) {
-            System.err.println("Fail to load sprite: graphics/icons/gun_item_icon_64.png");
         }
-        
     }
 
     @Override
     public void refresh() {
+        
+        for (V3DGuiComponent v3dGuiComponent : dynamicComponents) {
+            remove(v3dGuiComponent);
+        }
+        dynamicComponents.clear();
+        generateInventory();
     }
 
 }

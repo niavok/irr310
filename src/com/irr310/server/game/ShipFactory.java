@@ -125,10 +125,10 @@ public class ShipFactory {
 //        newShip.assign(camera);
 
         // Gun
-        Component gun = ComponentFactory.createGun("weapon.gun");
-        gun.setShipPosition(new Vec3(0, 0.5, 0));
-        world.addComponent(gun);
-        newShip.assign(gun);
+//        Component gun = ComponentFactory.createGun("weapon.gun");
+//        gun.setShipPosition(new Vec3(0, 0.5, 0));
+//        world.addComponent(gun);
+//        newShip.assign(gun);
 
         // CompactThrusterBlock Front
         Component thrusterBlockFront = ComponentFactory.createThrusterBlock("trusterBlock1");
@@ -197,7 +197,7 @@ public class ShipFactory {
 
 //        newShip.link(gun, camera, new Vect3(0.5, 0, 0.));
 //        newShip.link(gun, kernel, new Vect3(-0.5, 0, 0));
-        newShip.link(gun, thrusterBlockFront, new Vec3(0, -0.5, 0));
+        //newShip.link(gun, thrusterBlockFront, new Vec3(0, -0.5, 0));
         newShip.link(thrusterBlockFront, hull, new Vec3(0, -1.5, 0));
         newShip.link(hull, thrusterBlockBack, new Vec3(0, -4.5, 0));
         newShip.link(hull, wingRight, new Vec3(1, -3, 0));

@@ -11,4 +11,7 @@ public class ItemView {
    
     @NetworkField
     public String name;
+    
+    @NetworkField
+    public boolean used;
 }

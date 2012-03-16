@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.irr310.common.Game;
+import com.irr310.common.world.Player;
 import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
 
@@ -35,5 +36,17 @@ public class UpgradeFactory {
         UpgradeEffect upgradeEffect = effectMap.get(playerUpgrade.getUpgrade().getTag());
         upgradeEffect.apply(playerUpgrade);
         
+    }
+
+    public static void refresh(Player player) {
+        for(Upgrade upgrade : Game.getInstance().getWorld().getAvailableUpgrades()) {
+            apply(player.getUpgradeState(upgrade));
+        }
+        
+    }
+    public static void refresh() {
+        for(Player player: Game.getInstance().getWorld().getPlayers()) {
+            refresh(player);
+        }
     }
 }

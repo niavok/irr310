@@ -110,10 +110,10 @@ public class InputEngine extends FramerateEngine {
                 return true;
             }
             
-            if(Keyboard.getEventKey() == Keyboard.KEY_TAB && Keyboard.isKeyDown(Keyboard.KEY_LMENU)){
-                Game.getInstance().sendToAll(new MinimizeWindowEvent());
-                return true;
-            }
+//            if(Keyboard.getEventKey() == Keyboard.KEY_TAB && Keyboard.isKeyDown(Keyboard.KEY_LMENU)){
+//                Game.getInstance().sendToAll(new MinimizeWindowEvent());
+//                return true;
+//            }
             
         }
         return false;
