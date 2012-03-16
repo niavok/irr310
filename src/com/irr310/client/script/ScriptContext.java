@@ -135,7 +135,6 @@ public class ScriptContext {
     }
 
     public void close() {
-        System.out.println("close");
         Context.exit();
     }
 

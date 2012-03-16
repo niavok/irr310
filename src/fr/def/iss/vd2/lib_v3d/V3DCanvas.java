@@ -91,8 +91,6 @@ public class V3DCanvas {
      * @see javax.media.openGL11.GLEventListener#init(javax.media.openGL11.GLAutoDrawable)
      */
     public void init() {
-    	System.out.println("Init OpenGl Canvas");
-    
         try{
             
             frame = new JFrame("Irr310");

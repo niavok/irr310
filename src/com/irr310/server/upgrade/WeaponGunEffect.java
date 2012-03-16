@@ -22,9 +22,6 @@ public class WeaponGunEffect extends UpgradeEffect {
             }
         }
         
-        System.err.println("current count: "+currentWeaponCount);
-        System.err.println("target count: "+playerUpgrade.getRank());
-        
         if(currentWeaponCount > playerUpgrade.getRank()) {
             while(currentWeaponCount > playerUpgrade.getRank()){
                 player.removeItemByName("weapon.gun");

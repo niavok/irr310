@@ -104,6 +104,11 @@ public class Log {
             return log;
         }
     }
+
+    public static void error(String string) {
+        // TODO Auto-generated method stub
+        
+    }
     
     
 }

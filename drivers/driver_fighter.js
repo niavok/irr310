@@ -5,7 +5,6 @@ var engine;
 function driver() {
 
     if(!core.me) {
-        core.log("not logged: "+core.me);
         return;
     }
     
@@ -20,10 +19,6 @@ function driver() {
     gui = new Gui();
     engine = new Engine();
     
-    
-    core.log("Logged as: "+core.me.getLogin());
-    
-    
     var ships = core.me.getShips();
 
     if(ships.size() > 0) {
@@ -34,11 +29,8 @@ function driver() {
         var rightEngine = ship.getComponentByName("rightReactor").getCapacityByName("linearEngine");
         var topEngine = ship.getComponentByName("topReactor").getCapacityByName("linearEngine");
         var bottomEngine = ship.getComponentByName("bottomReactor").getCapacityByName("linearEngine");
-        var gun = ship.getComponentByName("weapon.gun").getCapacityByName("gun");
+        /*var gun = ship.getComponentByName("weapon.gun").getCapacityByName("gun");*/
         var kernel = ship.getComponentByName("kernel");
-        
-        core.log("leftEngine.maxThrust "+leftEngine.getMaxThrust());
-        core.log("rightEngine.maxThrust "+rightEngine.getMaxThrust());
         
         var maxThrust = Math.min(leftEngine.getMaxThrust(), rightEngine.getMaxThrust())
         var minThrust = Math.min( -leftEngine.getMinThrust(), -rightEngine.getMinThrust())
@@ -58,7 +50,6 @@ function driver() {
         var deadZone = null;
         var controlZone = null;
         
-        core.log("maxThrust "+maxThrust);        
         // Add key handler
         core.onKeyPressed = function (keyCode, character) {
             gui.onKeyPressed(keyCode, character);
@@ -223,7 +214,7 @@ function driver() {
                     //Thrust target changed, full power allowed
                     this.allowPower = 1;
                     this.phase = 0;
-                    core.log("engine go to phase 0");
+                    //core.log("engine go to phase 0");
                     
                     this.maxOptimalPower = 1;
                     this.minOptimalPower = -1;
@@ -253,7 +244,7 @@ function driver() {
                         this.bottomThrustTarget = 0;
                     }
                     this.phase = 1;
-                    core.log("engine go to phase 1");
+                    //core.log("engine go to phase 1");
                 } else if(this.phase == 1) {
                     if (speedTarget > currentSpeed && this.lastTooFast && deltaSpeed < -0.001) {
                         // Too slow
@@ -262,7 +253,7 @@ function driver() {
                         this.topThrustTarget = maxVerticalThrust * this.optimalPower;
                         this.bottomThrustTarget = maxVerticalThrust * this.optimalPower;
                         this.phase = 2;
-                        core.log("engine go to phase 2 too slow");
+                        //core.log("engine go to phase 2 too slow");
                     } else if (speedTarget < currentSpeed && this.lastTooSlow && deltaSpeed > 0.001) {
                         // Too fast
                         this.leftThrustTarget = maxHorizontalThrust * this.optimalPower;
@@ -270,7 +261,7 @@ function driver() {
                         this.topThrustTarget = maxVerticalThrust * this.optimalPower;
                         this.bottomThrustTarget = maxVerticalThrust * this.optimalPower;
                         this.phase = 2;
-                        core.log("engine g o to phase 2 too fast");
+                        //core.log("engine g o to phase 2 too fast");
                     }
                 } else if(this.phase == 2) {
                     if(Math.abs(speedTarget - currentSpeed) > theoricalMaxSpeed/6) {
@@ -730,7 +721,7 @@ function driver() {
                 case MOUSE_PRESSED:
                     //core.log("mouse pressed");
                     if(button == 2) {
-                        gun.fire(true);
+                        //gun.fire(true);
                     }
                     
                     if(button == 1) {
@@ -740,7 +731,7 @@ function driver() {
                case MOUSE_RELEASED:
                     //core.log("mouse pressed");
                     if(button == 2) {
-                            gun.fire(false);
+                            //gun.fire(false);
                     }
                     
                     if(button == 1) {
@@ -763,7 +754,7 @@ function driver() {
                 case KEY_RIGHT:
                     break;
                 case KEY_SPACE:
-                    gun.fire(true);
+                    //gun.fire(true);
                     break;
                 case KEY_PLUS:
                     speedTarget += 1/3.6;
@@ -794,7 +785,7 @@ function driver() {
                     this.targetSpeedUpdated();
                     break;
                 default:
-                    core.log("pressed undefined key: '"+keyCode+"' / '"+character+"'");
+                    //core.log("pressed undefined key: '"+keyCode+"' / '"+character+"'");
             }   
         }
         
@@ -828,10 +819,10 @@ function driver() {
                 case KEY_E:
                     break;
                 case KEY_SPACE:
-                    gun.fire(false);
+                    //gun.fire(false);
                     break;
                 default:
-                    core.log("released undefined key: '"+keyCode+"' / '"+character+"'");
+                    //core.log("released undefined key: '"+keyCode+"' / '"+character+"'");
             }   
         }
         

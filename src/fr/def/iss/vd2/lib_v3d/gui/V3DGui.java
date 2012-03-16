@@ -245,7 +245,6 @@ public class V3DGui implements V3DLocalisable {
         Font font = null;
         try {
             font = Font.createFont(Font.TRUETYPE_FONT, new File("fonts/"+labelstyle.getFont()+"-"+style+".ttf"));
-            System.err.println("font size "+labelstyle.getSize());
             font = font.deriveFont((float)labelstyle.getSize());
         } catch (FontFormatException e) {
             e.printStackTrace();

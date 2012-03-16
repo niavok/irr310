@@ -95,7 +95,6 @@ public class MenuGraphicRenderer implements GraphicRenderer {
 
             @Override
             public void buttonPressed(ButtonPressedEvent e) {
-                System.err.println("play button clicked");
                 GameClient.getInstance().playSoloGame();
             }
         });

@@ -545,7 +545,6 @@ public class WorldRenderer implements GraphicRenderer {
     }
 
     private void loadCurrentWorld() {
-        System.err.println("add current world");
         World world = Game.getInstance().getWorld();
         for (CelestialObject celestialObject : world.getCelestialsObjects()) {
             addCelestialObject(celestialObject);
@@ -848,7 +847,6 @@ public class WorldRenderer implements GraphicRenderer {
     }
 
     public void resetGui() {
-        System.err.println("reset GUI");
         interfaceLayer.removeAll();
         hudLayer.removeAll();
         mainMenuLayer.removeAll();
