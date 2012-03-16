@@ -10,6 +10,7 @@ import com.irr310.common.event.InventoryChangedEvent;
 import com.irr310.common.event.MoneyChangedEvent;
 import com.irr310.common.tools.Hash;
 import com.irr310.common.world.item.Item;
+import com.irr310.common.world.item.ItemSlot;
 import com.irr310.common.world.item.ShipSchema;
 import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
@@ -138,6 +139,13 @@ public class Player extends GameEntity {
     }
     
     public void retireItem(Item item) {
+        if(item.isUsed()) {
+            for (ItemSlot slot : shipShema.getItemSlots()) {
+                if(slot.getContent() == item) {
+                    slot.setContent(null);
+                }
+            }
+        }
         inventory.remove(item);
         Game.getInstance().sendToAll(new InventoryChangedEvent(this, item, false));
     }

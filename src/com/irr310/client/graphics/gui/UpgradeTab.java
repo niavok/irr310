@@ -4,10 +4,9 @@ import com.irr310.client.graphics.GraphicEngine;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.gui.V3DContainer;
+import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent.GuiYAlignment;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiRectangle;
 import fr.def.iss.vd2.lib_v3d.gui.V3DLabel;
-import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent.GuiXAlignment;
-import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent.GuiYAlignment;
 
 public abstract class UpgradeTab implements GuiTab{
 

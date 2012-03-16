@@ -1,7 +1,6 @@
 package com.irr310.client.graphics.gui;
 
 import java.util.List;
-import java.util.Map;
 
 import org.fenggui.event.ButtonPressedEvent;
 import org.fenggui.event.IButtonPressedListener;
@@ -73,7 +72,7 @@ public class UpgradeWeaponsTab extends UpgradeTab{
         upgradeName.setPosition(5, 0);
         pane.add(upgradeName);
         
-        int yPos = 20;
+        int yPos = 25;
         
         V3DLabel upgradeDescription = new V3DLabel(upgrade.getGlobalDescription());
         upgradeDescription.setFontStyle("Ubuntu", "", 12);

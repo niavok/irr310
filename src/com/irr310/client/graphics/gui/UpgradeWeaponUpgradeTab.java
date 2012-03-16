@@ -1,7 +1,6 @@
 package com.irr310.client.graphics.gui;
 
 import java.util.List;
-import java.util.Map;
 
 import org.fenggui.event.ButtonPressedEvent;
 import org.fenggui.event.IButtonPressedListener;
@@ -12,8 +11,8 @@ import com.irr310.common.Game;
 import com.irr310.common.event.BuyUpgradeRequestEvent;
 import com.irr310.common.event.SellUpgradeRequestEvent;
 import com.irr310.common.world.upgrade.Upgrade;
-import com.irr310.common.world.upgrade.UpgradeOwnership;
 import com.irr310.common.world.upgrade.Upgrade.UpgradeCategory;
+import com.irr310.common.world.upgrade.UpgradeOwnership;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.gui.V3DButton;

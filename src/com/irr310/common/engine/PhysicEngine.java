@@ -45,6 +45,7 @@ import com.irr310.common.Game;
 import com.irr310.common.event.CelestialObjectAddedEvent;
 import com.irr310.common.event.CelestialObjectRemovedEvent;
 import com.irr310.common.event.CollisionEvent;
+import com.irr310.common.event.ComponentRemovedEvent;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.PauseEngineEvent;
@@ -83,12 +84,14 @@ public class PhysicEngine extends FramerateEngine {
     private List<Pair<LinearEngineCapacity, RigidBody>> linearEngines;
     private List<Pair<WingCapacity, RigidBody>> wings;
 
+    private PhysicEngineEventVisitor eventVisitor;
+
     public PhysicEngine() {
         framerate = new Duration(10000000); // 10 ms
 
         linearEngines = new ArrayList<Pair<LinearEngineCapacity, RigidBody>>();
         wings = new ArrayList<Pair<WingCapacity, RigidBody>>();
-
+        eventVisitor = new PhysicEngineEventVisitor();
         initPhysics();
     }
 
@@ -597,7 +600,7 @@ public class PhysicEngine extends FramerateEngine {
 
     @Override
     protected void processEvent(EngineEvent e) {
-        e.accept(new PhysicEngineEventVisitor());
+        e.accept(eventVisitor);
     }
 
     private final class PhysicEngineEventVisitor extends DefaultEngineEventVisitor {
@@ -626,6 +629,11 @@ public class PhysicEngine extends FramerateEngine {
         @Override
         public void visit(CelestialObjectRemovedEvent event) {
             removeObject(event.getObject());
+        }
+        
+        @Override
+        public void visit(ComponentRemovedEvent event) {
+            removeObject(event.getComponent());
         }
 
         @Override

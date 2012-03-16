@@ -2,7 +2,6 @@ package com.irr310.client.graphics.gui;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import com.irr310.client.graphics.GraphicEngine;
@@ -148,6 +147,7 @@ public class InventoryMenu extends MenuContainer {
         // Add slots
         for (ItemSlot itemSlot : shipSchema.getItemSlots()) {
             addSlot(itemSlot);
+            
         }
     }
         
@@ -159,7 +159,7 @@ public class InventoryMenu extends MenuContainer {
         
         for (Item item : LoginManager.getLocalPlayer().getInventory()) {
             if(item.isUsed()) {
-                return;
+                continue;
             }
             String path = item.getName().replace(".", "-");
             try {
@@ -201,14 +201,15 @@ public class InventoryMenu extends MenuContainer {
             double scale = 41;
             int x2 = (int) (250-(int) (scale/2)+scale*itemSlot.getPosition().x.doubleValue());
             int y2 = 250-(int) (scale/2)+ (int)(scale *itemSlot.getPosition().z.doubleValue());
+            String path = item.getName().replace(".", "-");
             try {
-                V3DGuiSprite icon = new V3DGuiSprite(engine.getV3DContext(),"graphics/icons/"+item.getName()+"_item_icon_64.png");
-                icon.setPosition(x2, y2);
+                V3DGuiSprite icon = new V3DGuiSprite(engine.getV3DContext(),"graphics/icons/"+path+"_item_icon_64.png");
+                icon.setPosition(x2+1, y2+1);
                 icon.setSize((int)scale-4,(int)scale-4);
                 add(icon);
                 dynamicComponents.add(icon);
             } catch (IOException e) {
-                System.err.println("Fail to load sprite: graphics/icons/gun_item_icon_64.png");
+                System.err.println("Fail to load sprite: graphics/icons/"+path+"_item_icon_64.png");
             }
             
         }

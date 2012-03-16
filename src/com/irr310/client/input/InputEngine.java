@@ -10,7 +10,6 @@ import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.KeyPressedEvent;
 import com.irr310.common.event.KeyReleasedEvent;
-import com.irr310.common.event.MinimizeWindowEvent;
 import com.irr310.common.event.MouseEvent;
 import com.irr310.common.event.PauseEngineEvent;
 import com.irr310.common.event.QuitGameEvent;

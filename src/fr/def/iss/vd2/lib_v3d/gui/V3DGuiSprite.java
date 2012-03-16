@@ -8,7 +8,6 @@ import org.fenggui.binding.render.Graphics;
 import org.fenggui.util.Color;
 import org.fenggui.util.Dimension;
 
-import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.element.TextureHandler;
 import fr.def.iss.vd2.lib_v3d.element.TextureManager;

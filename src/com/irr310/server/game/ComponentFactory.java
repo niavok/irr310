@@ -1,11 +1,14 @@
 package com.irr310.server.game;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.Part;
 import com.irr310.common.world.capacity.GunCapacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.common.world.capacity.WingCapacity;
+import com.irr310.common.world.item.Item;
 import com.irr310.server.GameServer;
 
 public class ComponentFactory {
@@ -316,6 +319,13 @@ public class ComponentFactory {
         component.addSlot(GameServer.pickNewId(), part, new Vec3(0, 0, shape.z / 2));
         component.addSlot(GameServer.pickNewId(), part, new Vec3(0, 0, -shape.z / 2));
 
+    }
+
+    public static Component createByItem(Item content) {
+        if(content.getName().equals("weapon.gun")) {
+            return createGun("weapon.gun");
+        }
+        throw new RuntimeException("No component found to "+content.getName());
     }
 
     

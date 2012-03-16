@@ -43,6 +43,7 @@ import com.irr310.common.event.BulletFiredEvent;
 import com.irr310.common.event.CelestialObjectAddedEvent;
 import com.irr310.common.event.CelestialObjectRemovedEvent;
 import com.irr310.common.event.CollisionEvent;
+import com.irr310.common.event.ComponentRemovedEvent;
 import com.irr310.common.event.DamageEvent;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEventVisitor;
@@ -580,6 +581,10 @@ public class WorldRenderer implements GraphicRenderer {
         for (CelestialObject celestialObject : world.getCelestialsObjects()) {
             addCelestialObject(celestialObject);
         }
+        
+        for (Ship ship : world.getShips()) {
+            addShip(ship);
+        }
     }
 
     public void frame() {
@@ -687,12 +692,24 @@ public class WorldRenderer implements GraphicRenderer {
         }
 
     }
+    
+    protected void removeComponent(final Component component) {
+        List<GraphicalElement> elements = worldObjectToV3DElementMap.get(component);
+        for (GraphicalElement element : elements) {
+            if (element != null) {
+                element.destroy();
+            }
+        }
+
+    }
 
     protected void addShip(final Ship ship) {
 
         for (Component component : ship.getComponents()) {
-            addObject(component);
-
+            GraphicalElement graphicalElement = addObject(component);
+            worldObjectToV3DElementMap.put(component, new ArrayList<GraphicalElement>());
+            worldObjectToV3DElementMap.get(component).add(graphicalElement);
+            
             for (Capacity capacity : component.getCapacities()) {
                 if (capacity instanceof LinearEngineCapacity) {
 
@@ -900,6 +917,11 @@ public class WorldRenderer implements GraphicRenderer {
         @Override
         public void visit(CelestialObjectRemovedEvent event) {
             removeCelestialObject(event.getObject());
+        }
+        
+        @Override
+        public void visit(ComponentRemovedEvent event ) {
+            removeComponent(event.getComponent());
         }
 
         @Override

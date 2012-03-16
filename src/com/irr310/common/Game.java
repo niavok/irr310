@@ -4,12 +4,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.irr310.common.engine.PhysicEngine;
-import com.irr310.common.event.AddShipEvent;
 import com.irr310.common.event.EngineEvent;
 import com.irr310.common.tools.Vec3;
+import com.irr310.common.world.Component;
 import com.irr310.common.world.Player;
+import com.irr310.common.world.Ship;
 import com.irr310.common.world.World;
+import com.irr310.common.world.item.ItemSlot;
+import com.irr310.common.world.item.ShipSchema;
 import com.irr310.server.GameServer;
+import com.irr310.server.game.ShipFactory;
 import com.irr310.server.upgrade.UpgradeFactory;
 
 public abstract class Game {
@@ -41,13 +45,48 @@ public abstract class Game {
         UpgradeFactory.refresh(newPlayer);
         // Ship playerShip = ShipFactory.createSimpleShip();
 
-        AddShipEvent addShipEvent = new AddShipEvent(newPlayer);
-        // addShipEvent.setType(AddShipEvent.Type.SIMPLE);
-        addShipEvent.setType(AddShipEvent.Type.SIMPLE_FIGHTER);
-        addShipEvent.setPosition(new Vec3(20, -50, 0));
-        Game.getInstance().sendToAll(addShipEvent);
+        
+        
+        
+        Ship ship = ShipFactory.createSimpleFighter();
+        ship.setOwner(newPlayer);
+        ShipSchema shipShema = new ShipSchema();
+        // Center slot
+        //public ItemSlot(Ship ship, Component slotComponent,  Vec3 position, Vec3 connectionPosition)
+        ItemSlot centerSlot = new ItemSlot(ship, ship.getComponentByName("trusterBlock1"), new Vec3(0, 0.5, 0), new Vec3(0, -0.5, 0));
+        shipShema.addItemSlot(centerSlot);
+        // Engine slot
+        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("rightReator"),new Vec3(5.5, -3.5, 0),new Vec3(6, -3.5, 0)));
+        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("leftReator"),new Vec3(-5.5, -3.5, 0),new Vec3(-6, -3.5, 0)));
+        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("topReactor"),new Vec3(0, -3.5, 5.5),new Vec3(0, -3.5, 6)));
+        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("bottomReactor"),new Vec3(0, -3.5, -5.5),new Vec3(0, -3.5, -6)));
+        // Wings slot
+//        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("trusterBlock1"),new Vec3(2., -3.5, 1)));
+//        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("trusterBlock1"),new Vec3(2., -3.5, -1)));
+//        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("trusterBlock1"),new Vec3(3., -3.5, 1)));
+//        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("trusterBlock1"),new Vec3(3., -3.5, -1)));
+//
+//        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("trusterBlock1"),new Vec3(-2., -3.5, 1)));
+//        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("trusterBlock1"),new Vec3(-2., -3.5, -1)));
+//        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("trusterBlock1"),new Vec3(-3., -3.5, 1)));
+//        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("trusterBlock1"),new Vec3(-3., -3.5, -1)));
+//
+//        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("trusterBlock1"),new Vec3(1, -3.5, 2.)));
+//        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("trusterBlock1"),new Vec3(-1, -3.5, 2.)));
+//        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("trusterBlock1"),new Vec3(1, -3.5, 3.)));
+//        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("trusterBlock1"),new Vec3(-1, -3.5, 3.)));
+//
+//        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("trusterBlock1"),new Vec3(1, -3.5, -2.)));
+//        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("trusterBlock1"),new Vec3(-1, -3.5, -2.)));
+//        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("trusterBlock1"),new Vec3(1, -3.5, -3.)));
+//        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("trusterBlock1"),new Vec3(-1, -3.5, -3.)));
 
-        /* world.addShip(playerShip, new Vect3(10.0,20.0,30.0)); */
+        newPlayer.setShipShema(shipShema);
+        Game.getInstance().getWorld().addShip(ship, new Vec3(20, -50, 0));
+        
+        centerSlot.setContent(newPlayer.getInventory().get(0));
+        
+        
 
         return newPlayer;
     }

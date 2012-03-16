@@ -17,8 +17,6 @@ public interface EngineEventVisitor {
 
 	public abstract void visit(CelestialObjectAddedEvent event);
 
-	public abstract void visit(AddShipEvent event);
-
 	public abstract void visit(WorldShipAddedEvent event);
 
     public abstract void visit(NetworkEvent event);
@@ -66,4 +64,6 @@ public interface EngineEventVisitor {
     public abstract void visit(SellUpgradeRequestEvent event);
 
     public abstract void visit(InventoryChangedEvent event);
+
+    public abstract void visit(ComponentRemovedEvent event);
 }

@@ -1,6 +1,7 @@
 package com.irr310.common.world.item;
 
 import com.irr310.common.Game;
+import com.irr310.common.world.Component;
 import com.irr310.common.world.GameEntity;
 import com.irr310.common.world.World;
 import com.irr310.common.world.view.ItemView;
@@ -12,6 +13,7 @@ public class  Item extends GameEntity {
 	
 	private String name;
     private boolean used;
+    private Component component;
 
     public Item(long id, String name) {
 	    super(id);
@@ -52,5 +54,13 @@ public class  Item extends GameEntity {
 
     public boolean isUsed() {
         return used;
+    }
+
+    public void setComponent(Component component) {
+        this.component = component;
+    }
+    
+    public Component getComponent() {
+        return component;
     }
 }

@@ -11,6 +11,7 @@ import com.irr310.common.Game;
 import com.irr310.common.event.CelestialObjectAddedEvent;
 import com.irr310.common.event.CelestialObjectRemovedEvent;
 import com.irr310.common.event.CelestialObjectRemovedEvent.Reason;
+import com.irr310.common.event.ComponentRemovedEvent;
 import com.irr310.common.event.PlayerAddedEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.common.tools.Vec3;
@@ -74,6 +75,7 @@ public class World {
             Game.getInstance().sendToAll(new CelestialObjectRemovedEvent(o, reason));
         }
     }
+    
 
     public void addComponent(Component component) {
         addParts(component.getParts());
@@ -81,6 +83,14 @@ public class World {
         List<Capacity> capacities = component.getCapacities();
         for (Capacity capacity : capacities) {
             capacityIdMap.put(capacity.getId(), capacity);
+        }
+    }
+    
+    public void removeComponent(Component component) {
+        if (componentIdMap.containsKey(component.getId())) {
+            removeParts(component.getParts());
+            componentIdMap.remove(component.getId());
+            Game.getInstance().sendToAll(new ComponentRemovedEvent(component, com.irr310.common.event.ComponentRemovedEvent.Reason.INVENTORY));
         }
     }
 
@@ -245,5 +255,7 @@ public class World {
     public List<Upgrade> getAvailableUpgrades() {
         return availableUpgrades;
     }
+
+    
 
 }

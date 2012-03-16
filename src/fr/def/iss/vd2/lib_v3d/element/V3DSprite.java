@@ -19,8 +19,6 @@ package fr.def.iss.vd2.lib_v3d.element;
 
 import java.awt.image.BufferedImage;
 
-import javax.naming.Context;
-
 import org.lwjgl.opengl.GL11;
 
 import fr.def.iss.vd2.lib_v3d.V3DContext;

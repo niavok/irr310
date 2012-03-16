@@ -25,9 +25,6 @@ import org.fenggui.util.CharacterPixmap;
 import org.fenggui.util.Color;
 import org.fenggui.util.Point;
 import org.fenggui.util.Rectangle;
-import org.lwjgl.opengl.GL11;
-
-import fr.def.iss.vd2.lib_v3d.V3DColor;
 
 /**
  * Provides a library of graphical functions for GUI classes to utilise, rather

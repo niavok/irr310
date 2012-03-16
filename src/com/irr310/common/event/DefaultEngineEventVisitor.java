@@ -24,10 +24,6 @@ public class DefaultEngineEventVisitor implements EngineEventVisitor {
     }
 
     @Override
-    public void visit(AddShipEvent event) {
-    }
-
-    @Override
     public void visit(WorldShipAddedEvent event) {
     }
 
@@ -69,56 +65,60 @@ public class DefaultEngineEventVisitor implements EngineEventVisitor {
 
     public void visit(BulletFiredEvent event) {
     };
-    
+
     @Override
     public void visit(CelestialObjectRemovedEvent event) {
     }
-    
+
     @Override
     public void visit(LoadingGameEvent event) {
     }
-    
+
     @Override
     public void visit(WorldReadyEvent event) {
     }
-    
+
     @Override
     public void visit(GameOverEvent event) {
     }
-    
+
     @Override
     public void visit(AddGuiComponentEvent event) {
     }
-    
+
     @Override
     public void visit(RemoveGuiComponentEvent event) {
     }
-    
+
     @Override
     public void visit(NextWaveEvent event) {
     }
-    
+
     @Override
     public void visit(MoneyChangedEvent event) {
     }
-    
+
     @Override
     public void visit(ReloadUiEvent event) {
     }
-    
+
     @Override
     public void visit(BuyUpgradeRequestEvent event) {
     }
-    
+
     @Override
     public void visit(UpgradeStateChanged event) {
     }
-    
+
     @Override
     public void visit(SellUpgradeRequestEvent event) {
     }
-    
+
     @Override
     public void visit(InventoryChangedEvent event) {
+    }
+
+    @Override
+    public void visit(ComponentRemovedEvent event) {
     }
 }
