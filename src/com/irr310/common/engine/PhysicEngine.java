@@ -2,6 +2,7 @@ package com.irr310.common.engine;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -36,6 +37,7 @@ import com.bulletphysics.dynamics.RigidBodyConstructionInfo;
 import com.bulletphysics.dynamics.constraintsolver.ConstraintSolver;
 import com.bulletphysics.dynamics.constraintsolver.Generic6DofConstraint;
 import com.bulletphysics.dynamics.constraintsolver.SequentialImpulseConstraintSolver;
+import com.bulletphysics.dynamics.constraintsolver.TypedConstraint;
 import com.bulletphysics.linearmath.Clock;
 import com.bulletphysics.linearmath.MatrixUtil;
 import com.bulletphysics.linearmath.MotionState;
@@ -45,6 +47,7 @@ import com.irr310.common.Game;
 import com.irr310.common.event.CelestialObjectAddedEvent;
 import com.irr310.common.event.CelestialObjectRemovedEvent;
 import com.irr310.common.event.CollisionEvent;
+import com.irr310.common.event.ComponentAddedEvent;
 import com.irr310.common.event.ComponentRemovedEvent;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
@@ -52,6 +55,7 @@ import com.irr310.common.event.PauseEngineEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
+import com.irr310.common.tools.Log;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Component;
@@ -83,6 +87,9 @@ public class PhysicEngine extends FramerateEngine {
 
     private List<Pair<LinearEngineCapacity, RigidBody>> linearEngines;
     private List<Pair<WingCapacity, RigidBody>> wings;
+    private List<Component> components;
+    private List<Ship> ships;
+    private List<Link> links;
 
     private PhysicEngineEventVisitor eventVisitor;
 
@@ -92,6 +99,9 @@ public class PhysicEngine extends FramerateEngine {
         linearEngines = new ArrayList<Pair<LinearEngineCapacity, RigidBody>>();
         wings = new ArrayList<Pair<WingCapacity, RigidBody>>();
         eventVisitor = new PhysicEngineEventVisitor();
+        components = new ArrayList<Component>();
+        ships = new ArrayList<Ship>();
+        links = new ArrayList<Link>();
         initPhysics();
     }
 
@@ -162,7 +172,7 @@ public class PhysicEngine extends FramerateEngine {
         }
 
         Game.getInstance().getWorld().unlock();
-        
+
     }
 
     public float getDeltaTimeMicroseconds() {
@@ -170,44 +180,42 @@ public class PhysicEngine extends FramerateEngine {
         clock.reset();
         return dt;
     }
-    
+
     public RayResultDescriptor rayTest(final Vec3 from, final Vec3 to) {
-        //System.out.println("ray test");
-        
+        // System.out.println("ray test");
+
         final List<RayResultDescriptor> rayResultDescriptorList = new ArrayList<RayResultDescriptor>();
-        
+
         dynamicsWorld.rayTest(from.toVector3f(), to.toVector3f(), new RayResultCallback() {
-            
+
             @Override
             public float addSingleResult(LocalRayResult rayResult, boolean normalInWorldSpace) {
                 System.out.println("ray test result !");
-                
+
                 UserData data = (UserData) ((RigidBody) rayResult.collisionObject).getUserPointer();
-                System.out.println("hit on "+data.part.getParentObject().getName()+" at "+ rayResult.hitFraction);
-                
-                
+                System.out.println("hit on " + data.part.getParentObject().getName() + " at " + rayResult.hitFraction);
+
                 Vec3 globalPosition = from.plus(to.minus(from).multiply(rayResult.hitFraction));
-                
-                
+
                 Vec3 localPosition = globalPosition.transform(data.part.getTransform().inverse());
-                
+
                 RayResultDescriptor descriptor = new RayResultDescriptor();
                 descriptor.setHitFraction(rayResult.hitFraction);
                 descriptor.setGlobalPosition(globalPosition);
                 descriptor.setPart(data.part);
                 descriptor.setLocalPosition(localPosition);
-                
-                if(!rayResultDescriptorList.isEmpty()) {
+
+                if (!rayResultDescriptorList.isEmpty()) {
                     System.err.println("Unexpectind multiple result in ray test");
                 }
-                
+
                 rayResultDescriptorList.add(descriptor);
-                
+
                 return 0;
             }
         });
-        
-        if(rayResultDescriptorList.isEmpty()) {
+
+        if (rayResultDescriptorList.isEmpty()) {
             return null;
         } else {
             return rayResultDescriptorList.get(0);
@@ -228,8 +236,6 @@ public class PhysicEngine extends FramerateEngine {
 
         broadphase = new DbvtBroadphase();
 
-        
-        
         // the default constraint solver. For parallel processing you can use a
         // different solver (see Extras/BulletMultiThreaded)
         SequentialImpulseConstraintSolver sol = new SequentialImpulseConstraintSolver();
@@ -242,57 +248,50 @@ public class PhysicEngine extends FramerateEngine {
         dynamicsWorld = new DiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
 
         dynamicsWorld.setInternalTickCallback(new CollisionDetectionCallback(), null);
-        
+
         // No gravity
         dynamicsWorld.setGravity(new Vector3f(0f, 0f, 0f));
 
         dynamicsWorld.getPairCache().setOverlapFilterCallback(new OverlapFilterCallback() {
 
-            
-            
             @Override
             public boolean needBroadphaseCollision(BroadphaseProxy proxy0, BroadphaseProxy proxy1) {
 
                 UserData data0 = (UserData) ((RigidBody) proxy0.clientObject).getUserPointer();
                 UserData data1 = (UserData) ((RigidBody) proxy1.clientObject).getUserPointer();
 
-                
-
                 if (data0 != null && data1 != null) {
-                    if(data0.ship != null && data0.ship == data1.ship) {
+                    if (data0.ship != null && data0.ship == data1.ship) {
                         return false;
                     }
                 }
-                
-                
+
                 // System.out.println("valid collision");
                 return true;
             }
         });
-        
-        
+
         dispatcher.setNearCallback(new NearCallback() {
-            
+
             DefaultNearCallback defaultNearCallback = new DefaultNearCallback();
-            
+
             @Override
             public void handleCollision(BroadphasePair collisionPair, CollisionDispatcher dispatcher, DispatcherInfo dispatchInfo) {
-                
+
                 UserData data0 = (UserData) ((RigidBody) collisionPair.pProxy0.clientObject).getUserPointer();
                 UserData data1 = (UserData) ((RigidBody) collisionPair.pProxy1.clientObject).getUserPointer();
-                
-                if(data0.part.getParentObject().isBroken()) {
+
+                if (data0.part.getParentObject().isBroken()) {
                     return;
                 }
-                
-                if(data1.part.getParentObject().isBroken()) {
+
+                if (data1.part.getParentObject().isBroken()) {
                     return;
                 }
-                
+
                 defaultNearCallback.handleCollision(collisionPair, dispatcher, dispatchInfo);
             }
         });
-        
 
     }
 
@@ -301,64 +300,60 @@ public class PhysicEngine extends FramerateEngine {
             addPart(part, new UserData());
         }
     }
-    
+
     protected void removeObject(WorldObject object) {
         for (final Part part : object.getParts()) {
             RigidBody body = partToBodyMap.remove(part);
-            dynamicsWorld.removeCollisionObject(body);
+
+            int numConstraint = dynamicsWorld.getNumConstraints();
+            List<TypedConstraint> contraintToRemove = new ArrayList<TypedConstraint>();
+            for (int i = 0; i < numConstraint; i++) {
+                TypedConstraint constraint = dynamicsWorld.getConstraint(i);
+                if (constraint.getRigidBodyA() == body || constraint.getRigidBodyB() == body) {
+                    contraintToRemove.add(constraint);
+                }
+            }
+
+            for (TypedConstraint typedConstraint : contraintToRemove) {
+                dynamicsWorld.removeConstraint(typedConstraint);
+                Log.trace("ph remove constraint");
+            }
+
+            dynamicsWorld.removeRigidBody(body);
         }
+    }
+
+    protected void removeComponent(Component component) {
+        components.remove(component);
+        removeObject(component);
     }
 
     public void reloadStates() {
         for (Entry<Part, RigidBody> partEntry : partToBodyMap.entrySet()) {
-            //TODO: fix concurrent modification on the map 
+            // TODO: fix concurrent modification on the map
             RigidBody body = partEntry.getValue();
             PartMotionState motionState = (PartMotionState) body.getMotionState();
             motionState.reload();
         }
     }
-    
-    
+
     public void reloadStates(Part part) {
         RigidBody body = partToBodyMap.get(part);
-        if(body != null) {
+        if (body != null) {
             PartMotionState motionState = (PartMotionState) body.getMotionState();
             motionState.reload();
         }
     }
-    
 
-    protected void addShip(Ship ship, Vec3 position) {
+    protected void addShip(Ship ship, TransformMatrix transform) {
+        if (ships.contains(ship)) {
+            return;
+        }
+
+        ships.add(ship);
 
         for (Component component : ship.getComponents()) {
-            for (final Part part : component.getParts()) {
-
-                if (position != null) {
-                    part.getTransform().rotate(component.getShipRotation());
-
-                    part.getTransform().translate(position.plus(component.getShipPosition()));
-                }
-
-                UserData userData = new UserData();
-                userData.ship = ship;
-                RigidBody rigidBody = addPart(part, userData);
-                
-                
-                
-                rigidBody.setUserPointer(userData);
-            }
-
-            for (Capacity capacity : component.getCapacities()) {
-                if (capacity instanceof LinearEngineCapacity) {
-                    linearEngines.add(new ImmutablePair<LinearEngineCapacity, RigidBody>((LinearEngineCapacity) capacity,
-                                                                                         partToBodyMap.get(component.getFirstPart())));
-                }
-
-                if (capacity instanceof WingCapacity) {
-                    wings.add(new ImmutablePair<WingCapacity, RigidBody>((WingCapacity) capacity, partToBodyMap.get(component.getFirstPart())));
-                }
-
-            }
+            addComponent(transform, component);
         }
 
         for (Link link : ship.getLinks()) {
@@ -367,7 +362,52 @@ public class PhysicEngine extends FramerateEngine {
 
     }
 
+    private void addComponent(TransformMatrix transform, Component component) {
+        if (components.contains(component)) {
+            return;
+        }
+        if (!ships.contains(component.getShip())) {
+            // Wait the parent ship is added
+            return;
+        }
+
+        for (final Part part : component.getParts()) {
+
+            if (transform != null) {
+                part.getTransform().rotate(component.getShipRotation());
+
+                part.getTransform().translate(component.getShipPosition());
+                part.getTransform().preMultiply(transform);
+            }
+
+            UserData userData = new UserData();
+            userData.ship = component.getShip();
+            RigidBody rigidBody = addPart(part, userData);
+
+            rigidBody.setUserPointer(userData);
+        }
+
+        for (Capacity capacity : component.getCapacities()) {
+            if (capacity instanceof LinearEngineCapacity) {
+                linearEngines.add(new ImmutablePair<LinearEngineCapacity, RigidBody>((LinearEngineCapacity) capacity,
+                                                                                     partToBodyMap.get(component.getFirstPart())));
+            }
+
+            if (capacity instanceof WingCapacity) {
+                wings.add(new ImmutablePair<WingCapacity, RigidBody>((WingCapacity) capacity, partToBodyMap.get(component.getFirstPart())));
+            }
+
+        }
+        components.add(component);
+    }
+
     protected void addLink(Link link) {
+        if (links.contains(link)) {
+            return;
+        }
+
+        links.add(link);
+
         Slot slot1 = link.getSlot1();
         Slot slot2 = link.getSlot2();
         RigidBody body1 = partToBodyMap.get(slot1.getPart());
@@ -411,28 +451,28 @@ public class PhysicEngine extends FramerateEngine {
         // create a few dynamic rigidbodies
         // Re-using the same collision is better for memory usage and
         // performance
-        
-        
+        if (partToBodyMap.get(part) != null) {
+            Log.trace("part already present");
+            return partToBodyMap.get(part);
+        }
+        Log.trace("part not present");
+
         com.irr310.common.world.Part.CollisionShape collisionShape = part.getCollisionShape();
         CollisionShape colShape = null;
-        
-        
+
         switch (collisionShape) {
             case BOX:
                 colShape = new BoxShape(part.getShape().divide(2).toVector3f());
                 break;
             case SPHERE:
-                colShape = new SphereShape(part.getShape().x.floatValue()/2);
+                colShape = new SphereShape(part.getShape().x.floatValue() / 2);
                 break;
-                
+
             default:
                 colShape = new BoxShape(part.getShape().divide(2).toVector3f());
                 break;
         }
-        
-        
 
-        
         // CollisionShape colShape = new SphereShape(1f);
         collisionShapes.add(colShape);
 
@@ -456,14 +496,14 @@ public class PhysicEngine extends FramerateEngine {
         PartMotionState myMotionState = new PartMotionState(part);
         RigidBodyConstructionInfo rbInfo = new RigidBodyConstructionInfo(mass, myMotionState, colShape, localInertia);
         RigidBody body = new RigidBody(rbInfo);
-        userData.part  = part;
+        userData.part = part;
         body.setUserPointer(userData);
-        
+
         myMotionState.setBody(body);
 
         body.setActivationState(RigidBody.ISLAND_SLEEPING);
         body.setDamping(part.getLinearDamping().floatValue(), part.getAngularDamping().floatValue());
-        
+
         body.setSleepingThresholds(0.001f, 0.001f);
         // body.setDeactivationTime(deactivationTime)
 
@@ -474,9 +514,9 @@ public class PhysicEngine extends FramerateEngine {
         body.setActivationState(RigidBody.ACTIVE_TAG);
         body.setCcdMotionThreshold(1f);
         body.setCcdSweptSphereRadius(0.2f);
-        
+        Log.trace("add in body map "+part+" "+body);
         partToBodyMap.put(part, body);
-        
+
         return body;
 
     }
@@ -485,62 +525,52 @@ public class PhysicEngine extends FramerateEngine {
         @Override
         public void internalTick(DynamicsWorld world, float timeStep) {
             int numManifolds = world.getDispatcher().getNumManifolds();
-            for (int i=0;i<numManifolds;i++)
-            {
-                PersistentManifold contactManifold =  world.getDispatcher().getManifoldByIndexInternal(i);
+            for (int i = 0; i < numManifolds; i++) {
+                PersistentManifold contactManifold = world.getDispatcher().getManifoldByIndexInternal(i);
                 RigidBody obA = (RigidBody) contactManifold.getBody0();
                 RigidBody obB = (RigidBody) contactManifold.getBody1();
-            
+
                 int numContacts = contactManifold.getNumContacts();
-                for (int j=0;j<numContacts;j++)
-                {
+                for (int j = 0; j < numContacts; j++) {
                     ManifoldPoint pt = contactManifold.getContactPoint(j);
-                    if (pt.getDistance()<0.f)
-                    {
+                    if (pt.getDistance() < 0.f) {
                         Vector3f ptA = new Vector3f();
                         Vector3f ptB = new Vector3f();
-                        
-                        
-                        
-                        
+
                         Vector3f vA = new Vector3f();
                         Vector3f vB = new Vector3f();
-                        
-                        
+
                         pt.getPositionWorldOnA(ptA);
                         pt.getPositionWorldOnB(ptB);
                         obA.getLinearVelocity(vA);
                         obB.getLinearVelocity(vB);
-                        
-                        
+
                         CollisionDescriptor collisionDescriptor = new CollisionDescriptor();
-                        Part partA = ((UserData)obA.getUserPointer()).part;
-                        Part partB = ((UserData)obB.getUserPointer()).part;
-                        
-                        
+                        Part partA = ((UserData) obA.getUserPointer()).part;
+                        Part partB = ((UserData) obB.getUserPointer()).part;
+
                         collisionDescriptor.setPartA(partA);
                         collisionDescriptor.setPartB(partB);
-                        
+
                         Vec3 localPositionA = new Vec3(pt.localPointA);
                         Vec3 globalPositionA = new Vec3(ptA);
                         Vec3 localPositionB = new Vec3(pt.localPointB);
-                        Vec3 globalPositionB =new Vec3(ptB);
-                        
+                        Vec3 globalPositionB = new Vec3(ptB);
+
                         Vec3 globalPosition = globalPositionA.plus(globalPositionB).divide(2);
-                        
+
                         collisionDescriptor.setLocalPositionOnA(localPositionA);
                         collisionDescriptor.setLocalPositionOnB(localPositionB);
                         collisionDescriptor.setGlobalPosition(globalPosition);
-                        
+
                         collisionDescriptor.setImpulse(pt.appliedImpulse);
-                        
+
                         Game.getInstance().sendToAll(new CollisionEvent(collisionDescriptor));
-                       
-                        
+
                     }
                 }
             }
-            
+
         }
     }
 
@@ -625,20 +655,44 @@ public class PhysicEngine extends FramerateEngine {
         public void visit(CelestialObjectAddedEvent event) {
             addObject(event.getObject());
         }
-        
+
         @Override
         public void visit(CelestialObjectRemovedEvent event) {
             removeObject(event.getObject());
         }
-        
+
+        @Override
+        public void visit(ComponentAddedEvent event) {
+
+            Component component = event.getComponent();
+            Log.trace("ph  comp add event " + component.getName());
+            Component kernel = component.getShip().getComponentByName("kernel");
+            addComponent(TransformMatrix.identity().translate(kernel.getShipPosition().negative()).preMultiply(kernel.getFirstPart().getTransform()),
+                         component);
+            if (components.contains(event.getComponent())) {
+                for (Link link : component.getShip().getLinks()) {
+                    addLink(link);
+                }
+            }
+        }
+
         @Override
         public void visit(ComponentRemovedEvent event) {
+            Log.trace("ph  remove comp " + event.getComponent().getName());
             removeObject(event.getComponent());
+
+            for (Iterator<Link> iterator = links.iterator(); iterator.hasNext();) {
+                Link link = iterator.next();
+                if (link.getSlot1().getComponent() == event.getComponent() || link.getSlot2().getComponent() == event.getComponent()) {
+                    iterator.remove();
+                }
+            }
         }
 
         @Override
         public void visit(WorldShipAddedEvent event) {
-            addShip(event.getShip(), event.getPosition());
+            Log.trace("ph ship add event");
+            addShip(event.getShip(), event.getTransform());
         }
 
     }
@@ -654,7 +708,5 @@ public class PhysicEngine extends FramerateEngine {
         // TODO Auto-generated method stub
 
     }
-
-    
 
 }

@@ -1,6 +1,7 @@
 package com.irr310.common.world;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -11,9 +12,11 @@ import com.irr310.common.Game;
 import com.irr310.common.event.CelestialObjectAddedEvent;
 import com.irr310.common.event.CelestialObjectRemovedEvent;
 import com.irr310.common.event.CelestialObjectRemovedEvent.Reason;
+import com.irr310.common.event.ComponentAddedEvent;
 import com.irr310.common.event.ComponentRemovedEvent;
 import com.irr310.common.event.PlayerAddedEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
+import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.upgrade.Upgrade;
@@ -84,6 +87,7 @@ public class World {
         for (Capacity capacity : capacities) {
             capacityIdMap.put(capacity.getId(), capacity);
         }
+        Game.getInstance().sendToAll(new ComponentAddedEvent(component));
     }
     
     public void removeComponent(Component component) {
@@ -127,10 +131,10 @@ public class World {
         Game.getInstance().sendToAll(new PlayerAddedEvent(player));
     }
 
-    public void addShip(Ship ship, Vec3 position) {
+    public void addShip(Ship ship, TransformMatrix transform) {
         ships.add(ship);
         shipIdMap.put(ship.getId(), ship);
-        Game.getInstance().sendToAll(new WorldShipAddedEvent(ship, position));
+        Game.getInstance().sendToAll(new WorldShipAddedEvent(ship, transform));
     }
 
     public void addSlot(Slot slot) {

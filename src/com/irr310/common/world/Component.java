@@ -22,7 +22,7 @@ public final class  Component extends WorldObject {
 	
 	private double quality;
 	private double efficiency;
-	private Container container;
+	private Ship ship;
 	private Vec3 shipPosition;
 	private Vec3 shipRotation;
 	private List<Slot> slots;
@@ -91,13 +91,12 @@ public final class  Component extends WorldObject {
 		return efficiency <=0; 
 	}
 
-	public Container getContainer() {
-		
-		return container;
+	public Ship getShip() {
+		return ship;
 	}
 
-	public void setContainer(Container container) {
-		this.container = container;
+	public void setShip(Ship ship) {
+		this.ship = ship;
 	}
 
 	public void setShipPosition(Vec3 shipPosition) {

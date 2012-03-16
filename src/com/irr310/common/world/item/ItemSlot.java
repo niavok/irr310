@@ -1,6 +1,8 @@
 package com.irr310.common.world.item;
 
 import com.irr310.common.Game;
+import com.irr310.common.event.InventoryChangedEvent;
+import com.irr310.common.event.InventoryChangedEvent.ChangeType;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.Ship;
@@ -37,6 +39,7 @@ public class ItemSlot {
             ship.remove(component);
             Game.getInstance().getWorld().removeComponent(component);
             this.content.setUsed(false);
+            Game.getInstance().sendToAll(new InventoryChangedEvent(ship.getOwner(), content, ChangeType.DESACTIVATED));
         }
 
         this.content = content;
@@ -44,10 +47,11 @@ public class ItemSlot {
             content.setUsed(true);
             Component component = ComponentFactory.createByItem(content);
             component.setShipPosition(position);
-            Game.getInstance().getWorld().addComponent(component);
             ship.assign(component);
             ship.link(component, slotComponent, connectionPosition);
+            Game.getInstance().getWorld().addComponent(component);
             content.setComponent(component);
+            Game.getInstance().sendToAll(new InventoryChangedEvent(ship.getOwner(), content, ChangeType.ACTIVATED));
         }
     }
 

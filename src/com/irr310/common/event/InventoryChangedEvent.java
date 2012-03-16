@@ -7,12 +7,20 @@ public class InventoryChangedEvent extends EngineEvent {
 
     private final Item item;
     private final Player player;
-    private final boolean added;
+    
+    public enum ChangeType {
+        ADDED,
+        REMOVE,
+        ACTIVATED,
+        DESACTIVATED
+    }
+    private final ChangeType change;
 
-    public InventoryChangedEvent(Player player, Item item, boolean added) {
+    
+    public InventoryChangedEvent(Player player, Item item, ChangeType change) {
         this.item = item;
         this.player = player;
-        this.added = added;
+        this.change = change;
     }
 
     @Override
@@ -28,8 +36,8 @@ public class InventoryChangedEvent extends EngineEvent {
         return item;
     }
 
-    public boolean isAdded() {
-        return added;
+    public ChangeType getChange() {
+        return change;
     }
 
 }

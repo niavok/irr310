@@ -11,6 +11,7 @@ import com.irr310.common.event.BulletFiredEvent;
 import com.irr310.common.event.CelestialObjectAddedEvent;
 import com.irr310.common.event.CelestialObjectRemovedEvent;
 import com.irr310.common.event.CollisionEvent;
+import com.irr310.common.event.ComponentAddedEvent;
 import com.irr310.common.event.ComponentRemovedEvent;
 import com.irr310.common.event.DamageEvent;
 import com.irr310.common.event.DefaultEngineEventVisitor;
@@ -227,6 +228,10 @@ public class GraphicEngine extends FramerateEngine {
             rendererVisitor.visit(event);
         }
         
+        @Override
+        public void visit(ComponentAddedEvent event) {
+            rendererVisitor.visit(event);
+        }
         
     }
 

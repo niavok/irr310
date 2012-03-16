@@ -40,8 +40,9 @@ public class TransformMatrix {
         return transform;
     }
 
-    public void translate(Vec3 vect) {
+    public TransformMatrix translate(Vec3 vect) {
         translate(vect.x.floatValue(), vect.y.floatValue(), vect.z.floatValue());
+        return this;
     }
 
     public void translate(float x, float y, float z) {
@@ -67,7 +68,7 @@ public class TransformMatrix {
         set(2, 3, vect.z.floatValue());
     }
 
-    public void preMultiply(TransformMatrix mat) { // mat × this
+    public TransformMatrix preMultiply(TransformMatrix mat) { // mat × this
         TransformMatrix tmp = new TransformMatrix();
         float f;
 
@@ -80,6 +81,7 @@ public class TransformMatrix {
             }
         }
         set(tmp.getData());
+        return this;
     }
 
     public float get(int i, int j) {

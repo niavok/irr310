@@ -1,6 +1,5 @@
 package com.irr310.common.event;
 
-import com.irr310.common.world.CelestialObject;
 import com.irr310.common.world.Component;
 
 

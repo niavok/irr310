@@ -66,4 +66,6 @@ public interface EngineEventVisitor {
     public abstract void visit(InventoryChangedEvent event);
 
     public abstract void visit(ComponentRemovedEvent event);
+
+    public abstract void visit(ComponentAddedEvent event);
 }

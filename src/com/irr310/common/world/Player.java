@@ -8,6 +8,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import com.irr310.common.Game;
 import com.irr310.common.event.InventoryChangedEvent;
 import com.irr310.common.event.MoneyChangedEvent;
+import com.irr310.common.event.InventoryChangedEvent.ChangeType;
 import com.irr310.common.tools.Hash;
 import com.irr310.common.world.item.Item;
 import com.irr310.common.world.item.ItemSlot;
@@ -135,7 +136,7 @@ public class Player extends GameEntity {
     
     public void giveItem(Item item) {
         inventory.add(item);
-        Game.getInstance().sendToAll(new InventoryChangedEvent(this, item, true));
+        Game.getInstance().sendToAll(new InventoryChangedEvent(this, item, ChangeType.ADDED));
     }
     
     public void retireItem(Item item) {
@@ -147,7 +148,7 @@ public class Player extends GameEntity {
             }
         }
         inventory.remove(item);
-        Game.getInstance().sendToAll(new InventoryChangedEvent(this, item, false));
+        Game.getInstance().sendToAll(new InventoryChangedEvent(this, item, ChangeType.REMOVE));
     }
 
     public Ship getPreferredShip() {

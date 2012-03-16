@@ -43,6 +43,7 @@ import com.irr310.common.event.BulletFiredEvent;
 import com.irr310.common.event.CelestialObjectAddedEvent;
 import com.irr310.common.event.CelestialObjectRemovedEvent;
 import com.irr310.common.event.CollisionEvent;
+import com.irr310.common.event.ComponentAddedEvent;
 import com.irr310.common.event.ComponentRemovedEvent;
 import com.irr310.common.event.DamageEvent;
 import com.irr310.common.event.DefaultEngineEventVisitor;
@@ -706,45 +707,52 @@ public class WorldRenderer implements GraphicRenderer {
     protected void addShip(final Ship ship) {
 
         for (Component component : ship.getComponents()) {
-            GraphicalElement graphicalElement = addObject(component);
-            worldObjectToV3DElementMap.put(component, new ArrayList<GraphicalElement>());
-            worldObjectToV3DElementMap.get(component).add(graphicalElement);
-            
-            for (Capacity capacity : component.getCapacities()) {
-                if (capacity instanceof LinearEngineCapacity) {
-
-                    V3DLine thrustLine = new V3DLine(engine.getV3DContext());
-                    thrustLine.setThickness(3);
-                    thrustLine.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, 0, 0));
-
-                    final V3DColorElement group = new V3DColorElement(thrustLine, V3DColor.fushia);
-
-                    final Part part = component.getFirstPart();
-
-                    addElement(new AnimatedElement(this) {
-
-                        @Override
-                        public void update() {
-                            group.setTransformMatrix(part.getTransform().toFloatBuffer());
-                        }
-
-                        @Override
-                        public V3DElement getV3DElement() {
-                            return group;
-                        }
-
-                    });
-
-                    thrustLines.add(new ImmutablePair<LinearEngineCapacity, V3DLine>((LinearEngineCapacity) capacity, thrustLine));
-                }
-
-            }
-
+            addComponent(component);
         }
 
         cameraController.setFollowed(ship.getComponentByName("kernel").getFirstPart());
 
         activeCamera.fitAll();
+    }
+
+    private void addComponent(Component component) {
+        if(worldObjectToV3DElementMap.get(component) != null) {
+            return;
+        }
+        Log.trace("add component");
+        GraphicalElement graphicalElement = addObject(component);
+        worldObjectToV3DElementMap.put(component, new ArrayList<GraphicalElement>());
+        worldObjectToV3DElementMap.get(component).add(graphicalElement);
+        
+        for (Capacity capacity : component.getCapacities()) {
+            if (capacity instanceof LinearEngineCapacity) {
+
+                V3DLine thrustLine = new V3DLine(engine.getV3DContext());
+                thrustLine.setThickness(3);
+                thrustLine.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, 0, 0));
+
+                final V3DColorElement group = new V3DColorElement(thrustLine, V3DColor.fushia);
+
+                final Part part = component.getFirstPart();
+
+                addElement(new AnimatedElement(this) {
+
+                    @Override
+                    public void update() {
+                        group.setTransformMatrix(part.getTransform().toFloatBuffer());
+                    }
+
+                    @Override
+                    public V3DElement getV3DElement() {
+                        return group;
+                    }
+
+                });
+
+                thrustLines.add(new ImmutablePair<LinearEngineCapacity, V3DLine>((LinearEngineCapacity) capacity, thrustLine));
+            }
+
+        }
     }
 
     protected GraphicalElement addObject(final WorldObject object) {
@@ -918,6 +926,13 @@ public class WorldRenderer implements GraphicRenderer {
         public void visit(CelestialObjectRemovedEvent event) {
             removeCelestialObject(event.getObject());
         }
+        
+        @Override
+        public void visit(ComponentAddedEvent event ) {
+            Log.trace("g: ComponentAddedEvent");
+            addComponent(event.getComponent());
+        }
+
         
         @Override
         public void visit(ComponentRemovedEvent event ) {

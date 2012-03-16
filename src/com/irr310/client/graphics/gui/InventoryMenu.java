@@ -4,14 +4,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.fenggui.event.ButtonPressedEvent;
+import org.fenggui.event.IButtonPressedListener;
+
 import com.irr310.client.graphics.GraphicEngine;
 import com.irr310.client.graphics.MenuContainer;
 import com.irr310.client.navigation.LoginManager;
+import com.irr310.common.tools.Log;
 import com.irr310.common.world.item.Item;
 import com.irr310.common.world.item.ItemSlot;
 import com.irr310.common.world.item.ShipSchema;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
+import fr.def.iss.vd2.lib_v3d.gui.V3DButton;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiCircle;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiRectangle;
@@ -19,11 +24,13 @@ import fr.def.iss.vd2.lib_v3d.gui.V3DGuiSprite;
 
 public class InventoryMenu extends MenuContainer {
 
+    protected static Item activeItem;
     private final GraphicEngine engine;
     private final List<V3DGuiComponent> dynamicComponents = new ArrayList<V3DGuiComponent>();
 
     public InventoryMenu(GraphicEngine engine) {
         this.engine = engine;
+        activeItem = null;
         setPosition(-2, 123);
         setSize(500, 600);
         setyAlignment(GuiYAlignment.BOTTOM);
@@ -157,7 +164,7 @@ public class InventoryMenu extends MenuContainer {
         
         int xInventoryOffset = 5;
         
-        for (Item item : LoginManager.getLocalPlayer().getInventory()) {
+        for (final Item item : LoginManager.getLocalPlayer().getInventory()) {
             if(item.isUsed()) {
                 continue;
             }
@@ -168,8 +175,25 @@ public class InventoryMenu extends MenuContainer {
                 icon.setPosition(xInventoryOffset, 500);
                 icon.setSize(64,64);
                 add(icon);
-                xInventoryOffset += 70;
+                
                 dynamicComponents.add(icon);
+                
+                V3DButton button = new V3DButton("");
+                button.setPadding(64, 64, 0, 0);
+                button.setPosition(xInventoryOffset, 500);
+                button.getFenGUIWidget().addButtonPressedListener(new IButtonPressedListener() {
+                    
+                    @Override
+                    public void buttonPressed(ButtonPressedEvent e) {
+                        InventoryMenu.activeItem = item;
+                        Log.trace("active item "+item.getName());
+                    }
+                });
+                add(button);
+                dynamicComponents.add(button);
+                
+                xInventoryOffset += 70;
+                
                 
             } catch (IOException e) {
                 System.err.println("Fail to load sprite: graphics/icons/"+path+"_item_icon_64.png");
@@ -182,25 +206,40 @@ public class InventoryMenu extends MenuContainer {
         }
     }
 
-    private void addSlot(ItemSlot itemSlot) {
+    private void addSlot(final ItemSlot itemSlot) {
         double scale = 41;
          
         V3DGuiRectangle slot = new V3DGuiRectangle();
         slot.setBorderColor(V3DColor.grey);
         slot.setFillColor(V3DColor.grey.copy().setAlpha(0.5f));
         int x2 = (int) (250-(int) (scale/2)+scale*itemSlot.getPosition().x.doubleValue());
-        int y2 = 250-(int) (scale/2)+ (int)(scale *itemSlot.getPosition().z.doubleValue());
+        int y2 = 250-(int) (scale/2)+ (int)(scale *  -1 *itemSlot.getPosition().z.doubleValue());
         slot.setPosition(x2, y2);
         slot.setSize((int)scale-3,(int)scale-3);
         slot.setBorderWidth(3);
         add(slot);
+        
+        V3DButton button = new V3DButton("");
+        button.setPadding((int)scale-3,(int)scale-3, 0, 0);
+        button.setPosition(x2, y2);
+        button.getFenGUIWidget().addButtonPressedListener(new IButtonPressedListener() {
+            
+            @Override
+            public void buttonPressed(ButtonPressedEvent e) {
+                Item lastItem = itemSlot.getContent();
+                itemSlot.setContent(InventoryMenu.activeItem);
+                InventoryMenu.activeItem = lastItem;
+                System.err.println("setContent");
+            }
+        });
+        add(button);
     }
     private void addSlotContent(ItemSlot itemSlot) {  
         if(!itemSlot.isEmpty()) {
             Item item = itemSlot.getContent();
             double scale = 41;
             int x2 = (int) (250-(int) (scale/2)+scale*itemSlot.getPosition().x.doubleValue());
-            int y2 = 250-(int) (scale/2)+ (int)(scale *itemSlot.getPosition().z.doubleValue());
+            int y2 = 250-(int) (scale/2)+ (int)(scale * -1 * itemSlot.getPosition().z.doubleValue());
             String path = item.getName().replace(".", "-");
             try {
                 V3DGuiSprite icon = new V3DGuiSprite(engine.getV3DContext(),"graphics/icons/"+path+"_item_icon_64.png");
@@ -208,6 +247,7 @@ public class InventoryMenu extends MenuContainer {
                 icon.setSize((int)scale-4,(int)scale-4);
                 add(icon);
                 dynamicComponents.add(icon);
+                
             } catch (IOException e) {
                 System.err.println("Fail to load sprite: graphics/icons/"+path+"_item_icon_64.png");
             }

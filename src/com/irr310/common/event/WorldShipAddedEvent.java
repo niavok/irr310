@@ -1,16 +1,17 @@
 package com.irr310.common.event;
 
+import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Ship;
 
 public class WorldShipAddedEvent extends EngineEvent {
 
 	final private Ship ship;
-	private final Vec3 position;
+	private final TransformMatrix transform;
 
-	public WorldShipAddedEvent(Ship ship, Vec3 position) {
+	public WorldShipAddedEvent(Ship ship, TransformMatrix transform) {
 		this.ship = ship;
-		this.position = position;
+		this.transform = transform;
 	}
 
 	@Override
@@ -22,8 +23,8 @@ public class WorldShipAddedEvent extends EngineEvent {
 		return ship;
 	}
 	
-	public Vec3 getPosition() {
-		return position;
+	public TransformMatrix getTransform() {
+		return transform;
 	}
 
 }

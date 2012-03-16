@@ -148,8 +148,8 @@ public class ComponentFactory {
         component.addSlot(GameServer.pickNewId(), part, new Vec3(0, -shape.y/2, 0));
         component.addSlot(GameServer.pickNewId(), part, new Vec3(shape.x / 2,-shape.y/4, 0));
         component.addSlot(GameServer.pickNewId(), part, new Vec3(-shape.x / 2, -shape.y/4, 0));
-        component.addSlot(GameServer.pickNewId(), part, new Vec3(0 , -shape.z/4, shape.z / 2));
-        component.addSlot(GameServer.pickNewId(), part, new Vec3(0 , -shape.z/4, -shape.z / 2));
+        component.addSlot(GameServer.pickNewId(), part, new Vec3(0 , -shape.y/4, shape.z / 2));
+        component.addSlot(GameServer.pickNewId(), part, new Vec3(0 , -shape.y/4, -shape.z / 2));
 
         
         GunCapacity gunCapacity = new GunCapacity(GameServer.pickNewId());

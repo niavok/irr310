@@ -2,6 +2,7 @@ package com.irr310.common.world;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -28,12 +29,12 @@ public class Ship extends GameEntity implements Container {
 
     @Override
     public boolean assign(Component component) {
-        if (component.getContainer() != null) {
-            component.getContainer().remove(component);
+        if (component.getShip() != null) {
+            component.getShip().remove(component);
         }
         components.add(component);
         componentNamesMap.put(component.getName(), component);
-        component.setContainer(this);
+        component.setShip(this);
         return true;
     }
 
@@ -50,7 +51,8 @@ public class Ship extends GameEntity implements Container {
 
         if (slot1.getAbsoluteShipPosition().distanceTo(slot2.getAbsoluteShipPosition()) > MIN_LINK_DISTANCE) {
             System.err.println("the distance between slot is " + slot1.getAbsoluteShipPosition().distanceTo(slot2.getAbsoluteShipPosition())
-                    + " but must be lesser than " + MIN_LINK_DISTANCE + "("+slot1.getComponent().getName()+" - "+slot2.getComponent().getName()+")");
+                    + " but must be lesser than " + MIN_LINK_DISTANCE + "(" + slot1.getComponent().getName() + " - " + slot2.getComponent().getName()
+                    + ")");
             return null;
         }
 
@@ -62,8 +64,14 @@ public class Ship extends GameEntity implements Container {
 
     @Override
     public void remove(Component component) {
+        for (Iterator<Link> iterator = this.getLinks().iterator(); iterator.hasNext();) {
+            Link link = iterator.next();
+            if (link.getSlot1().getComponent() == component || link.getSlot2().getComponent() == component) {
+                iterator.remove();
+            }
+        }
         components.remove(component);
-        component.setContainer(null);
+        component.setShip(null);
     }
 
     public Link link(Component component1, Component component2, Vec3 position) {
@@ -93,14 +101,14 @@ public class Ship extends GameEntity implements Container {
         }
         this.owner = owner;
         for (Component component : components) {
-            for(Part part: component.getParts()) {
+            for (Part part : component.getParts()) {
                 part.setOwner(owner);
             }
         }
-        
+
         this.owner.giveShip(this);
     }
-    
+
     public Player getOwner() {
         return owner;
     }
