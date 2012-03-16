@@ -38,8 +38,8 @@ import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 /**
  * @author fberto
  */
-public class V3DFollow3DCameraController implements V3DCameraController, GraphicalElement {
 
+public class V3DFollow3DCameraController implements V3DCameraController, GraphicalElement {
     V3DEye3DCamera camera;
     float cameraXInitial = 0;
     float cameraYInitial = 0;
@@ -61,6 +61,10 @@ public class V3DFollow3DCameraController implements V3DCameraController, Graphic
     private TransformMatrix eye;
     private TransformMatrix target;
     private TransformMatrix top;
+    private float distance;
+    private float xOffset;
+    private float yOffset;
+    private float zOffset;
 
     private enum MovementType {
 
@@ -75,6 +79,12 @@ public class V3DFollow3DCameraController implements V3DCameraController, Graphic
         eye = TransformMatrix.identity();
         target = TransformMatrix.identity();
         top = TransformMatrix.identity();
+        
+        distance = 500;
+        xOffset = -2;
+        yOffset = -30;
+        zOffset = 2;
+        
     }
 
     public void setFollowed(Part element) {
@@ -215,11 +225,6 @@ public class V3DFollow3DCameraController implements V3DCameraController, Graphic
             TransformMatrix transform = element.getTransform();
             Vec3 translation = transform.getTranslation();
 
-            float distance = 500;
-            float xOffset = -2;
-            float yOffset = -30;
-            float zOffset = 2;
-
             // Target
             target = TransformMatrix.identity();
             // target.translate(2,0,2);
@@ -297,5 +302,13 @@ public class V3DFollow3DCameraController implements V3DCameraController, Graphic
 
     public Vec3 getTop() {
         return top.getTranslation();
+    }
+
+    public void configure(int distance, int x, int y, int z) {
+        this.distance = distance;
+        xOffset = x;
+        yOffset = y;
+        zOffset = z;
+        
     }
 }

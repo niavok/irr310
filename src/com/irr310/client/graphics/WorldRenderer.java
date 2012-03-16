@@ -106,12 +106,16 @@ public class WorldRenderer implements GraphicRenderer {
     private V3DGuiLayer interfaceLayer;
     private V3DGuiLayer hudLayer;
     private V3DGuiLayer mainMenuLayer;
+    private GuiKeyMode currentGuiMode;
 
     public enum GuiLayer {
         INTEFACE, HUD, MAIN_MENU,
     }
 
-    
+    public enum GuiKeyMode {
+        NO_MODE, CAMERA_MODE, PAUSE_MODE,
+    }
+
     // Game
     private V3DLabel waveCountText;
     private NextWaveEvent lastWaveEvent = null;
@@ -127,6 +131,7 @@ public class WorldRenderer implements GraphicRenderer {
     public WorldRenderer(GraphicEngine engine) {
         this.engine = engine;
         thrustLines = new ArrayList<Pair<LinearEngineCapacity, V3DLine>>();
+        currentGuiMode = GuiKeyMode.NO_MODE;
     }
 
     @Override
@@ -134,6 +139,7 @@ public class WorldRenderer implements GraphicRenderer {
         activeCamera = new V3DEye3DCamera(engine.getV3DContext());
 
         cameraController = new V3DFollow3DCameraController(this, activeCamera);
+        configureDefaultCamera();
         animatedList.add(cameraController);
 
         fullscreenBinding = V3DCameraBinding.buildFullscreenCamera(activeCamera);
@@ -181,13 +187,40 @@ public class WorldRenderer implements GraphicRenderer {
 
     }
 
+    private void configureDefaultCamera() {
+        Log.trace("configureDefaultCamera");
+        cameraController.configure(500,-2,-30, 2);
+    }
+    
+    private void configureBackCamera() {
+        Log.trace("configureBackCamera");
+        cameraController.configure(500,0,-30, 0);
+    }
+    
+    private void configureFrontCamera() {
+        Log.trace("configureFrontCamera");
+        cameraController.configure(-500,-2,30, 2);
+    }
+    
+    private void configureLeftCamera() {
+        Log.trace("configureLeftCamera");
+        cameraController.configure(0,30,0, 0);
+    }
+    
+    private void configureRightCamera() {
+        Log.trace("configureRightCamera");
+        cameraController.configure(0,-30,0, 2);
+    }
+    
+    
+
     private void reloadGui() {
 
         upgradeMenu = null;
         inventoryMenu = null;
         upgradeMenuEnabled = false;
         inventoryMenuEnabled = false;
-        
+
         // Generate logo
         V3DLabel logoIRR = new V3DLabel("IRR");
         logoIRR.setFontStyle("Ubuntu", "bold", 24);
@@ -348,18 +381,17 @@ public class WorldRenderer implements GraphicRenderer {
         moneyText.setFontStyle("Ubuntu", "bold", 40);
         moneyText.setColor(GuiConstants.irrGreen, V3DColor.transparent);
         container.add(moneyText);
-        
-        V3DButton button  = new V3DButton("");
+
+        V3DButton button = new V3DButton("");
         button.setPosition(0, 0);
-        button.setPadding(140,200,0,0);
+        button.setPadding(140, 200, 0, 0);
         button.getFenGUIWidget().addButtonPressedListener(new IButtonPressedListener() {
-            
+
             @Override
             public void buttonPressed(ButtonPressedEvent e) {
                 toogleUpgradeMenu();
             }
 
-            
         });
         container.add(button);
     }
@@ -470,68 +502,67 @@ public class WorldRenderer implements GraphicRenderer {
         updateMonolithStatus();
 
     }
-    
+
     private void toogleUpgradeMenu() {
-        if(upgradeMenu == null) {
+        if (upgradeMenu == null) {
             upgradeMenu = new UpgradeMenu(engine);
         }
-        
-        if(!upgradeMenuEnabled) {
+
+        if (!upgradeMenuEnabled) {
             interfaceLayer.add(upgradeMenu);
             upgradeMenuEnabled = true;
         } else {
             interfaceLayer.remove(upgradeMenu);
             upgradeMenuEnabled = false;
         }
-        
+
     }
-    
+
     private void enabledUpgradeMenu() {
-        if(upgradeMenu == null) {
+        if (upgradeMenu == null) {
             upgradeMenu = new UpgradeMenu(engine);
         }
-        
-        if(!upgradeMenuEnabled) {
+
+        if (!upgradeMenuEnabled) {
             interfaceLayer.add(upgradeMenu);
             upgradeMenuEnabled = true;
         }
     }
-    
+
     private void disableUpgradeMenu() {
         interfaceLayer.remove(upgradeMenu);
         upgradeMenuEnabled = false;
     }
-    
+
     private void enabledInventoryMenu() {
-        if(inventoryMenu == null) {
+        if (inventoryMenu == null) {
             inventoryMenu = new InventoryMenu(engine);
         }
-        
-        if(!inventoryMenuEnabled) {
+
+        if (!inventoryMenuEnabled) {
             interfaceLayer.add(inventoryMenu);
             inventoryMenuEnabled = true;
         }
     }
-    
+
     private void disableInventoryMenu() {
         interfaceLayer.remove(inventoryMenu);
         inventoryMenuEnabled = false;
     }
-    
-    
+
     private void toogleInventoryMenu() {
-        if(inventoryMenu == null) {
+        if (inventoryMenu == null) {
             inventoryMenu = new InventoryMenu(engine);
         }
-        
-        if(!inventoryMenuEnabled) {
+
+        if (!inventoryMenuEnabled) {
             interfaceLayer.add(inventoryMenu);
             inventoryMenuEnabled = true;
         } else {
             interfaceLayer.remove(inventoryMenu);
             inventoryMenuEnabled = false;
         }
-        
+
     }
 
     private void updateMonolithStatus() {
@@ -757,7 +788,7 @@ public class WorldRenderer implements GraphicRenderer {
                 guiTrackingArrow.setColor(new V3DColor(32, 200, 32, 0.8f));
                 addPersistantGuiElement(guiTrackingArrow);
                 worldObjectToV3DElementMap.get(object).add(guiTrackingArrow);
-            }else {
+            } else {
                 System.err.println("No skin found for: " + object.getSkin());
                 skin = new GenericSkin(this, object);
             }
@@ -917,49 +948,86 @@ public class WorldRenderer implements GraphicRenderer {
             }
 
         }
-        
+
         @Override
         public void visit(MoneyChangedEvent event) {
-            if(moneyText != null) {
-                moneyText.setText(LoginManager.localPlayer.getMoney()+" $");
+            if (moneyText != null) {
+                moneyText.setText(LoginManager.localPlayer.getMoney() + " $");
             }
         }
-        
+
         @Override
         public void visit(UpgradeStateChanged event) {
-            if(upgradeMenu != null) {
+            if (upgradeMenu != null) {
                 upgradeMenu.refresh();
             }
         }
-        
+
         @Override
         public void visit(InventoryChangedEvent event) {
-            if(inventoryMenu != null) {
+            if (inventoryMenu != null) {
                 inventoryMenu.refresh();
             }
         }
 
-        
         @Override
         public void visit(KeyPressedEvent event) {
-            if(event.getKeyCode() == Keyboard.KEY_ESCAPE) {
-                disableInventoryMenu();
-                disableUpgradeMenu();
-            } else if(event.getKeyCode() == Keyboard.KEY_TAB) {
-                if(upgradeMenuEnabled || inventoryMenuEnabled) {
+
+            if (currentGuiMode == GuiKeyMode.NO_MODE) {
+                if (event.getKeyCode() == Keyboard.KEY_ESCAPE) {
+
                     disableInventoryMenu();
                     disableUpgradeMenu();
-                } else {
-                    enabledInventoryMenu();
-                    enabledUpgradeMenu();
+
+                } else if (event.getKeyCode() == Keyboard.KEY_TAB) {
+                    if (upgradeMenuEnabled || inventoryMenuEnabled) {
+                        disableInventoryMenu();
+                        disableUpgradeMenu();
+                    } else {
+                        enabledInventoryMenu();
+                        enabledUpgradeMenu();
+                    }
+
+                } else if (event.getKeyCode() == Keyboard.KEY_I) {
+                    toogleInventoryMenu();
+                } else if (event.getKeyCode() == Keyboard.KEY_U) {
+                    toogleUpgradeMenu();
+                } else if (event.getKeyCode() == Keyboard.KEY_U) {
+                    toogleUpgradeMenu();
+                } else if (event.getKeyCode() == Keyboard.KEY_C) {
+                    currentGuiMode = GuiKeyMode.CAMERA_MODE;
                 }
-                    
-            } else if(event.getKeyCode() == Keyboard.KEY_I) {
-                toogleInventoryMenu();
-            } else if(event.getKeyCode() == Keyboard.KEY_U) {
-                toogleUpgradeMenu();
-            } 
-            
+            } else {
+                if (event.getKeyCode() == Keyboard.KEY_ESCAPE) {
+                    currentGuiMode = GuiKeyMode.NO_MODE;
+                }
+
+                if (currentGuiMode == GuiKeyMode.CAMERA_MODE) {
+                    if (event.getKeyCode() == Keyboard.KEY_NUMPAD0) {
+                        configureDefaultCamera();
+                        currentGuiMode = GuiKeyMode.NO_MODE;
+                    }
+                    if (event.getKeyCode() == Keyboard.KEY_NUMPAD2) {
+                        configureBackCamera();
+                        currentGuiMode = GuiKeyMode.NO_MODE;
+                    }
+                    if (event.getKeyCode() == Keyboard.KEY_NUMPAD8) {
+                        configureFrontCamera();
+                        currentGuiMode = GuiKeyMode.NO_MODE;
+                    }
+                    if (event.getKeyCode() == Keyboard.KEY_NUMPAD4) {
+                        configureLeftCamera();
+                        currentGuiMode = GuiKeyMode.NO_MODE;
+                    }
+                    if (event.getKeyCode() == Keyboard.KEY_NUMPAD6) {
+                        configureRightCamera();
+                        currentGuiMode = GuiKeyMode.NO_MODE;
+                    }
+                    Log.trace("key code"+event.getKeyCode()+ " "+ event.getCharacter());
+                }
+
+            }
+
         }
     }
 
