@@ -55,7 +55,7 @@ import com.irr310.server.upgrade.UpgradeFactory;
 
 public class ServerGameEngine extends FramerateEngine {
 
-    private static final double WORLD_SIZE = 1000;
+    
     private List<CapacityController> capacityControllers;
 
     private int reputation;
@@ -104,8 +104,9 @@ public class ServerGameEngine extends FramerateEngine {
         }
 
         // Check world leave
+        double worldSize = Game.getInstance().getWorld().getWorldSize();
         for (Part part : Game.getInstance().getWorld().getParts()) {
-            if (part.getTransform().getTranslation().length() > WORLD_SIZE) {
+            if (part.getTransform().getTranslation().length() > worldSize) {
 
                 if (part.getParentObject() instanceof CelestialObject) {
                     CelestialObject object = (CelestialObject) part.getParentObject();
@@ -252,7 +253,7 @@ public class ServerGameEngine extends FramerateEngine {
         public void visit(WorldShipAddedEvent event) {
 
         }
-        
+
         @Override
         public void visit(ComponentAddedEvent event) {
             Component component = event.getComponent();
@@ -298,16 +299,16 @@ public class ServerGameEngine extends FramerateEngine {
         public void visit(BulletFiredEvent event) {
 
             List<RayResultDescriptor> rayTestResults = Game.getInstance().getPhysicEngine().rayTest(event.getFrom(), event.getTo());
-            for(RayResultDescriptor rayTest: rayTestResults) {
-                
-                //Ignore it on the ship
-                if(event.getSource().getParentObject() instanceof Component) {
+            for (RayResultDescriptor rayTest : rayTestResults) {
+
+                // Ignore it on the ship
+                if (event.getSource().getParentObject() instanceof Component) {
                     Component component = (Component) event.getSource().getParentObject();
-                    if(component.getShip().getComponents().contains(rayTest.getPart().getParentObject())) {
+                    if (component.getShip().getComponents().contains(rayTest.getPart().getParentObject())) {
                         continue;
                     }
                 }
-                
+
                 // damage = (1-rangePercent^3)
                 double damage = event.getDamage() * (1 - Math.pow(rayTest.getHitFraction(), 3));
                 applyDamage(rayTest.getPart(), damage, event.getDamageType());

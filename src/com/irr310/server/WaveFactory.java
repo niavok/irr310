@@ -19,14 +19,14 @@ public class WaveFactory {
         wave1.addWaveEvent(new WaveEvent(new Duration(2f)) {
 
             public void action() {
-
+                Game.getInstance().getWorld().setWorldSize(500);
                 Random random = new Random();
 
                 double size = 8 + random.nextDouble() * 3;
 
                 float angularSpeed = 1;
 
-                Vec3 position = new Vec3(950, 0, 0);
+                Vec3 position = new Vec3(Game.getInstance().getWorld().getWorldSize() -50, 0, 0);
                 Vec3 linearSpeed = new Vec3(-10 + random.nextDouble() * 1, 0, 0);
 
                 TransformMatrix rotation = TransformMatrix.identity();
@@ -58,7 +58,7 @@ public class WaveFactory {
         wave2.addWaveEvent(new WaveEvent(new Duration(2f)) {
 
             public void action() {
-
+                Game.getInstance().getWorld().setWorldSize(800);
                 for (int i = 0; i < 5; i++) {
 
                     Random random = new Random();
@@ -67,7 +67,7 @@ public class WaveFactory {
 
                     float angularSpeed = 1;
 
-                    Vec3 position = new Vec3(950, 0, 0);
+                    Vec3 position = new Vec3(Game.getInstance().getWorld().getWorldSize() -50, 0, 0);
                     Vec3 linearSpeed = new Vec3(-10 + random.nextDouble() * 1, 0, 0);
 
                     TransformMatrix rotation = TransformMatrix.identity();
@@ -100,7 +100,7 @@ public class WaveFactory {
         wave3.addWaveEvent(new WaveEvent(new Duration(2f)) {
 
             public void action() {
-
+                Game.getInstance().getWorld().setWorldSize(1000);
                 for (int i = 0; i < 10; i++) {
 
                     Random random = new Random();
@@ -109,7 +109,7 @@ public class WaveFactory {
 
                     float angularSpeed = 1;
 
-                    Vec3 position = new Vec3(950, 0, 0);
+                    Vec3 position = new Vec3(Game.getInstance().getWorld().getWorldSize() -50, 0, 0);
                     Vec3 linearSpeed = new Vec3(-10 + random.nextDouble() * 1, 0, 0);
 
                     TransformMatrix rotation = TransformMatrix.identity();
@@ -144,6 +144,7 @@ public class WaveFactory {
             waveQueue.add(wave);
             wave.addWaveEvent(new WaveEvent(new Duration(2f)) {
                 public void action() {
+                    Game.getInstance().getWorld().setWorldSize(1200 + i * 100);
                     for (int j = 0; j < 10 + i; j++) {
 
                         Random random = new Random();
@@ -152,7 +153,7 @@ public class WaveFactory {
 
                         float angularSpeed = 1;
 
-                        Vec3 position = new Vec3(950, 0, 0);
+                        Vec3 position = new Vec3(Game.getInstance().getWorld().getWorldSize() -50, 0, 0);
                         Vec3 linearSpeed = new Vec3(-10 - i / 20 + random.nextDouble() * 1, 0, 0);
 
                         TransformMatrix rotation = TransformMatrix.identity();

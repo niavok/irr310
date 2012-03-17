@@ -55,6 +55,7 @@ import com.irr310.common.event.NextWaveEvent;
 import com.irr310.common.event.RemoveGuiComponentEvent;
 import com.irr310.common.event.UpgradeStateChanged;
 import com.irr310.common.event.WorldShipAddedEvent;
+import com.irr310.common.event.WorldSizeChangedEvent;
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.CelestialObject;
@@ -129,6 +130,7 @@ public class WorldRenderer implements GraphicRenderer {
     private MenuContainer inventoryMenu;
     boolean upgradeMenuEnabled = false;
     boolean inventoryMenuEnabled = false;
+    private V3DrawElement bubbleElement;
 
     public WorldRenderer(GraphicEngine engine) {
         this.engine = engine;
@@ -626,9 +628,9 @@ public class WorldRenderer implements GraphicRenderer {
     private void createBubble() {
 
         File v3drawFileStructure = new File("graphics/output/bubble.v3draw");
-        final V3DrawElement elementStructure = V3DrawElement.LoadFromFile(v3drawFileStructure, engine.getV3DContext());
+        bubbleElement = V3DrawElement.LoadFromFile(v3drawFileStructure, engine.getV3DContext());
         // elementStructure.setShader("bubble");
-        elementStructure.setScale(1000);
+        bubbleElement.setScale((float)Game.getInstance().getWorld().getWorldSize());
 
         V3DShader shader = new V3DShader("bubble") {
             private int resolution;
@@ -654,7 +656,7 @@ public class WorldRenderer implements GraphicRenderer {
             }
         };
 
-        scene.add(new V3DColorElement(new V3DShaderElement(elementStructure, shader), new V3DColor(255, 255, 255)));
+        scene.add(new V3DColorElement(new V3DShaderElement(bubbleElement, shader), new V3DColor(255, 255, 255)));
     }
 
     private V3DElement generateReference() {
@@ -1072,7 +1074,14 @@ public class WorldRenderer implements GraphicRenderer {
                 }
 
             }
+            
+            
 
+        }
+        
+        @Override
+        public void visit(WorldSizeChangedEvent event) {
+            bubbleElement.setScale((float)Game.getInstance().getWorld().getWorldSize());
         }
     }
 

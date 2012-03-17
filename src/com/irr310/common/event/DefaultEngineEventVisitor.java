@@ -125,4 +125,8 @@ public class DefaultEngineEventVisitor implements EngineEventVisitor {
     @Override
     public void visit(ComponentAddedEvent event) {
     }
+    
+    @Override
+    public void visit(WorldSizeChangedEvent event) {
+    }
 }

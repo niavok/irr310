@@ -68,4 +68,6 @@ public interface EngineEventVisitor {
     public abstract void visit(ComponentRemovedEvent event);
 
     public abstract void visit(ComponentAddedEvent event);
+
+    public abstract void visit(WorldSizeChangedEvent event);
 }

@@ -7,7 +7,9 @@ import com.irr310.client.graphics.gui.GuiFpsIndicator;
 import com.irr310.common.Game;
 import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.event.AddGuiComponentEvent;
+import com.irr310.common.event.AddWorldObjectEvent;
 import com.irr310.common.event.BulletFiredEvent;
+import com.irr310.common.event.BuyUpgradeRequestEvent;
 import com.irr310.common.event.CelestialObjectAddedEvent;
 import com.irr310.common.event.CelestialObjectRemovedEvent;
 import com.irr310.common.event.CollisionEvent;
@@ -18,21 +20,29 @@ import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.EngineEventVisitor;
 import com.irr310.common.event.GameOverEvent;
+import com.irr310.common.event.InitEngineEvent;
 import com.irr310.common.event.InventoryChangedEvent;
 import com.irr310.common.event.KeyPressedEvent;
+import com.irr310.common.event.KeyReleasedEvent;
 import com.irr310.common.event.LoadingGameEvent;
 import com.irr310.common.event.MinimizeWindowEvent;
 import com.irr310.common.event.MoneyChangedEvent;
 import com.irr310.common.event.MouseEvent;
+import com.irr310.common.event.NetworkEvent;
 import com.irr310.common.event.NextWaveEvent;
 import com.irr310.common.event.PauseEngineEvent;
+import com.irr310.common.event.PlayerAddedEvent;
+import com.irr310.common.event.PlayerLoggedEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.ReloadUiEvent;
 import com.irr310.common.event.RemoveGuiComponentEvent;
+import com.irr310.common.event.SellUpgradeRequestEvent;
 import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.event.UpgradeStateChanged;
+import com.irr310.common.event.UseScriptEvent;
 import com.irr310.common.event.WorldReadyEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
+import com.irr310.common.event.WorldSizeChangedEvent;
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.Vec2;
 import com.irr310.server.Duration;
@@ -96,7 +106,7 @@ public class GraphicEngine extends FramerateEngine {
         e.accept(eventVisitor); 
     }
 
-    private final class GraphicEngineEventVisitor extends DefaultEngineEventVisitor {
+    private final class GraphicEngineEventVisitor implements EngineEventVisitor {
 
         EngineEventVisitor rendererVisitor = new DefaultEngineEventVisitor();
 
@@ -231,6 +241,58 @@ public class GraphicEngine extends FramerateEngine {
         @Override
         public void visit(ComponentAddedEvent event) {
             rendererVisitor.visit(event);
+        }
+
+        @Override
+        public void visit(InitEngineEvent event) {
+        }
+
+        @Override
+        public void visit(UseScriptEvent event) {
+        }
+
+        @Override
+        public void visit(AddWorldObjectEvent event) {
+            rendererVisitor.visit(event);
+        }
+
+        @Override
+        public void visit(NetworkEvent event) {
+        }
+
+        @Override
+        public void visit(PlayerAddedEvent event) {
+            rendererVisitor.visit(event);
+        }
+
+        @Override
+        public void visit(KeyReleasedEvent event) {
+            rendererVisitor.visit(event);
+        }
+
+        @Override
+        public void visit(PlayerLoggedEvent event) {
+            rendererVisitor.visit(event);            
+        }
+
+        @Override
+        public void visit(ReloadUiEvent event) {
+            rendererVisitor.visit(event);
+        }
+
+        @Override
+        public void visit(BuyUpgradeRequestEvent event) {
+            rendererVisitor.visit(event);
+        }
+
+        @Override
+        public void visit(SellUpgradeRequestEvent event) {
+            rendererVisitor.visit(event);
+        }
+
+        @Override
+        public void visit(WorldSizeChangedEvent event) {
+            rendererVisitor.visit(event);            
         }
         
     }

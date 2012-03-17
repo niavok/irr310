@@ -1,11 +1,12 @@
 package com.irr310.common.world;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.ReentrantLock;
+
+import org.newdawn.slick.util.Log;
 
 import com.irr310.client.navigation.LoginManager;
 import com.irr310.common.Game;
@@ -16,8 +17,8 @@ import com.irr310.common.event.ComponentAddedEvent;
 import com.irr310.common.event.ComponentRemovedEvent;
 import com.irr310.common.event.PlayerAddedEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
+import com.irr310.common.event.WorldSizeChangedEvent;
 import com.irr310.common.tools.TransformMatrix;
-import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.common.world.view.CelestialObjectView;
@@ -41,7 +42,7 @@ public class World {
     private final Map<Long, Component> componentIdMap;
     private final Map<Long, Slot> slotIdMap;
     private final Map<Long, Part> partIdMap;
-    
+    private double worldSize;
     
 
     ReentrantLock mutex;
@@ -61,6 +62,7 @@ public class World {
         partIdMap = new HashMap<Long, Part>();
         availableUpgrades = new CopyOnWriteArrayList<Upgrade>();
         mutex = new ReentrantLock();
+        worldSize = 50;
     }
 
     public void addCelestialObject(CelestialObject o) {
@@ -260,6 +262,20 @@ public class World {
         return availableUpgrades;
     }
 
+    public void setWorldSize(double worldSize) {
+        if(this.worldSize != worldSize) {
+            double oldSize = this.worldSize;
+            this.worldSize = worldSize;
+            if(oldSize > worldSize) {
+                Log.warn("World size pass from "+ oldSize+ " to "+worldSize+". Its dangerous to reduce the world size!");
+            }
+            Game.getInstance().sendToAll(new WorldSizeChangedEvent(oldSize, worldSize));
+        }
+    }
+    
+    public double getWorldSize() {
+        return worldSize;
+    }
     
 
 }
