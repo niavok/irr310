@@ -14,6 +14,13 @@ import com.irr310.common.event.MouseEvent;
 import com.irr310.common.event.PauseEngineEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
+import com.irr310.common.tools.Log;
+import com.irr310.common.world.CelestialObject;
+import com.irr310.common.world.Component;
+import com.irr310.common.world.Monolith;
+import com.irr310.common.world.Ship;
+import com.irr310.common.world.capacity.Capacity;
+import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.server.Duration;
 
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
@@ -147,9 +154,44 @@ public class InputEngine extends FramerateEngine {
             if(event.getKeyCode() == Keyboard.KEY_RETURN) {
                 if(cheatString.toLowerCase().equals("gold")) {
                     LoginManager.localPlayer.giveMoney(10000);
+                    Log.log("Cheat - 10000 $");
                 }
                 if(cheatString.toLowerCase().equals("glittering prizes")) {
                     LoginManager.localPlayer.giveMoney(500000);
+                    Log.log("Cheat - 500000 $");
+                }
+                if(cheatString.toLowerCase().equals("armor")) {
+                    Monolith monolith = null;
+                    for (CelestialObject object : Game.getInstance().getWorld().getCelestialsObjects()) {
+                        if (object instanceof Monolith) {
+                            monolith = (Monolith) object;
+                            break;
+                        }
+                    }
+                    if (monolith != null) {
+                        if(monolith.getPhysicalResistance() < 1) {
+                            Log.log("Cheat - Monolith invicibility activated");
+                            monolith.setPhysicalResistance(1);
+                            monolith.setHeatResistance(1);
+                        } else {
+                            Log.log("Cheat - Monolith invicibility desactivated");
+                            monolith.setPhysicalResistance(0.5);
+                            monolith.setHeatResistance(0);
+                        }
+                        
+                    }
+                    
+                }
+                if(cheatString.toLowerCase().equals("power+")) {
+                    Ship ship = LoginManager.getLocalPlayer().getShipList().get(0);
+                    for(Component component : ship.getComponents()) {
+                        Capacity cap = component.getCapacityByName("linearEngine");
+                        if(cap != null) {
+                            LinearEngineCapacity engineCapacity = (LinearEngineCapacity) cap;
+                            engineCapacity.theoricalMaxThrust *=2;
+                            engineCapacity.theoricalMinThrust *=2;
+                        }
+                    }
                 }
                 cheatString = "";
             } else if(event.getCharacter() != null) {
