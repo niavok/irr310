@@ -297,21 +297,25 @@ public class ServerGameEngine extends FramerateEngine {
         @Override
         public void visit(BulletFiredEvent event) {
 
-            RayResultDescriptor rayTest = Game.getInstance().getPhysicEngine().rayTest(event.getFrom(), event.getTo());
-            if (rayTest != null) {
+            List<RayResultDescriptor> rayTestResults = Game.getInstance().getPhysicEngine().rayTest(event.getFrom(), event.getTo());
+            Log.trace("ray tests: "+rayTestResults.size());
+            for(RayResultDescriptor rayTest: rayTestResults) {
+                
+                Log.trace("ray location: "+rayTest.getHitFraction()+" on "+ rayTest.getPart().getParentObject().getName());
                 
                 //Ignore it on the ship
                 if(event.getSource().getParentObject() instanceof Component) {
                     Component component = (Component) event.getSource().getParentObject();
                     if(component.getShip().getComponents().contains(rayTest.getPart().getParentObject())) {
                         Log.trace("Hit on the shooter ship avoid: "+component.getName()+" to "+rayTest.getPart().getParentObject().getName());
-                        return;
+                        continue;
                     }
                 }
                 
                 // damage = (1-rangePercent^3)
                 double damage = event.getDamage() * (1 - Math.pow(rayTest.getHitFraction(), 3));
                 applyDamage(rayTest.getPart(), damage, event.getDamageType());
+                break;
             }
         }
 

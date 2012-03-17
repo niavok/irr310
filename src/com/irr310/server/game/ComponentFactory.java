@@ -218,17 +218,17 @@ public class ComponentFactory {
         Part part = component.getFirstPart();
         part.setMass(5d);
 
-        part.setShape(new Vec3(3, 3, 1));
+        part.setShape(new Vec3(3, 3, 0.5));
 
         Vec3 shape = part.getShape();
 
         component.addSlot(GameServer.pickNewId(), part, new Vec3(-shape.x / 2, -shape.y / 6, 0));
         component.addSlot(GameServer.pickNewId(), part, new Vec3(shape.x / 2, 0, 0));
 
-        component.addSlot(GameServer.pickNewId(), part, new Vec3(-shape.x / 6, -0.25, 0.5));
-        component.addSlot(GameServer.pickNewId(), part, new Vec3(-shape.x / 6, -0.25, -0.5));
-        component.addSlot(GameServer.pickNewId(), part, new Vec3(shape.x / 6, 0.25, 0.5));
-        component.addSlot(GameServer.pickNewId(), part, new Vec3(shape.x / 6, 0.25, -0.5));
+        component.addSlot(GameServer.pickNewId(), part, new Vec3(-shape.x / 6, -0.25, shape.z / 2));
+        component.addSlot(GameServer.pickNewId(), part, new Vec3(-shape.x / 6, -0.25, -shape.z / 2));
+        component.addSlot(GameServer.pickNewId(), part, new Vec3(shape.x / 6, 0.25, shape.z / 2));
+        component.addSlot(GameServer.pickNewId(), part, new Vec3(shape.x / 6, 0.25, -shape.z / 2));
 
         WingCapacity wingCapacity = new WingCapacity(GameServer.pickNewId());
         component.addCapacity(wingCapacity);

@@ -228,7 +228,7 @@ public class InventoryMenu extends MenuContainer {
             public void buttonPressed(ButtonPressedEvent e) {
                 Item lastItem = itemSlot.getContent();
                 itemSlot.setContent(InventoryMenu.activeItem);
-                InventoryMenu.activeItem = lastItem;
+                InventoryMenu.activeItem = null;
                 System.err.println("setContent");
             }
         });
@@ -263,6 +263,7 @@ public class InventoryMenu extends MenuContainer {
         }
         dynamicComponents.clear();
         generateInventory();
+        InventoryMenu.activeItem = null;
     }
 
 }

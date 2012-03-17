@@ -47,7 +47,7 @@ public class SoundEngine extends EventEngine {
 
         @Override
         public void visit(BulletFiredEvent event) {
-            oggEffect.playAsSoundEffect(1f, 0.3f, false, 0, 0 ,0);
+            oggEffect.playAsSoundEffect(1f, 0.05f, false, 0, 0 ,0);
         }
         
         @Override

@@ -1,6 +1,7 @@
 package com.irr310.common.engine;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -181,7 +182,7 @@ public class PhysicEngine extends FramerateEngine {
         return dt;
     }
 
-    public RayResultDescriptor rayTest(final Vec3 from, final Vec3 to) {
+    public List<RayResultDescriptor> rayTest(final Vec3 from, final Vec3 to) {
         // System.out.println("ray test");
 
         final List<RayResultDescriptor> rayResultDescriptorList = new ArrayList<RayResultDescriptor>();
@@ -206,7 +207,7 @@ public class PhysicEngine extends FramerateEngine {
                 descriptor.setLocalPosition(localPosition);
 
                 if (!rayResultDescriptorList.isEmpty()) {
-                    System.err.println("Unexpectind multiple result in ray test");
+                    Log.trace("Multiple result in ray test");
                 }
 
                 rayResultDescriptorList.add(descriptor);
@@ -214,12 +215,12 @@ public class PhysicEngine extends FramerateEngine {
                 return 0;
             }
         });
-
-        if (rayResultDescriptorList.isEmpty()) {
-            return null;
-        } else {
-            return rayResultDescriptorList.get(0);
+        
+        if(rayResultDescriptorList.size() > 1) {
+            Collections.sort(rayResultDescriptorList);
         }
+        
+        return rayResultDescriptorList;
     }
 
     public void initPhysics() {

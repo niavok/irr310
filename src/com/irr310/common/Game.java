@@ -62,25 +62,25 @@ public abstract class Game {
         shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("topReactor"),new Vec3(0, -3, 5.5),new Vec3(0, -3.5, 5)));
         shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("bottomReactor"),new Vec3(0, -3, -5.5),new Vec3(0, -3.5, -5)));
         // Wings slot
-        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("wingRight"),new Vec3(2., -2.25, 1),new Vec3(2., -2.5, 0.5)));
-        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("wingRight"),new Vec3(2., -2.25, -1),new Vec3(2., -2.5, -0.5)));
-        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("wingRight"),new Vec3(3., -2.75, 1),new Vec3(3., -3.0, 0.5)));
-        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("wingRight"),new Vec3(3., -2.75, -1),new Vec3(3., -3.0, -0.5)));
+        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("wingRight"),new Vec3(2., -2.25, 0.75),new Vec3(2., -2.5, 0.25)));
+        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("wingRight"),new Vec3(2., -2.25, -0.75),new Vec3(2., -2.5, -0.25)));
+        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("wingRight"),new Vec3(3., -2.75, 0.75),new Vec3(3., -3.0, 0.25)));
+        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("wingRight"),new Vec3(3., -2.75, -0.75),new Vec3(3., -3.0, -0.25)));
 
-        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("wingLeft"),new Vec3(-2., -2.25, 1),new Vec3(-2., -2.5, 0.5)));
-        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("wingLeft"),new Vec3(-2., -2.25, -1),new Vec3(-2., -2.5, -0.5)));
-        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("wingLeft"),new Vec3(-3., -2.75, 1),new Vec3(-3., -3.0, 0.5)));
-        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("wingLeft"),new Vec3(-3., -2.75, -1),new Vec3(-3., -3.0, -0.5)));
+        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("wingLeft"),new Vec3(-2., -2.25, 0.75),new Vec3(-2., -2.5, 0.25)));
+        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("wingLeft"),new Vec3(-2., -2.25, -0.75),new Vec3(-2., -2.5, -0.25)));
+        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("wingLeft"),new Vec3(-3., -2.75, 0.75),new Vec3(-3., -3.0, 0.25)));
+        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("wingLeft"),new Vec3(-3., -2.75, -0.75),new Vec3(-3., -3.0, -0.25)));
 
-        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("wingTop"),new Vec3(1, -2.25, 2.),new Vec3(0.5, -2.5, 2.)));
-        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("wingTop"),new Vec3(-1, -2.25, 2.),new Vec3(-0.5, -2.5, 2.)));
-        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("wingTop"),new Vec3(1, -2.75, 3.),new Vec3(0.5, -3.5, 3.)));
-        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("wingTop"),new Vec3(-1, -2.75, 3.),new Vec3(-0.5, -3.5, 3.)));
+        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("wingTop"),new Vec3(0.75, -2.25, 2.),new Vec3(0.25, -2.5, 2.)));
+        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("wingTop"),new Vec3(-0.75, -2.25, 2.),new Vec3(-0.25, -2.5, 2.)));
+        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("wingTop"),new Vec3(0.75, -2.75, 3.),new Vec3(0.25, -3.5, 3.)));
+        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("wingTop"),new Vec3(-0.75, -2.75, 3.),new Vec3(-0.25, -3.5, 3.)));
 
-        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("wingBottom"),new Vec3(1, -2.25, -2.),new Vec3(0.5, -2.5, -2.)));
-        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("wingBottom"),new Vec3(-1, -2.25, -2.),new Vec3(-0.5, -2.5, -2.)));
-        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("wingBottom"),new Vec3(1, -2.75, -3.),new Vec3(0.5, -3.0, -3.)));
-        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("wingBottom"),new Vec3(-1, -2.75, -3.),new Vec3(-0.5, -3.0, -3.)));
+        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("wingBottom"),new Vec3(0.75, -2.25, -2.),new Vec3(0.25, -2.5, -2.)));
+        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("wingBottom"),new Vec3(-0.75, -2.25, -2.),new Vec3(-0.25, -2.5, -2.)));
+        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("wingBottom"),new Vec3(0.75, -2.75, -3.),new Vec3(0.25, -3.0, -3.)));
+        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("wingBottom"),new Vec3(-0.75, -2.75, -3.),new Vec3(-0.25, -3.0, -3.)));
 
         newPlayer.setShipShema(shipShema);
         Game.getInstance().getWorld().addShip(ship, TransformMatrix.identity().translate(new Vec3(20, -50, 0)));

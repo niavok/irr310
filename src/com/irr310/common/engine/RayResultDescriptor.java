@@ -3,7 +3,7 @@ package com.irr310.common.engine;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Part;
 
-public class RayResultDescriptor {
+public class RayResultDescriptor implements Comparable<RayResultDescriptor>{
 
     private Part part;
     private Vec3 localPosition;
@@ -33,6 +33,16 @@ public class RayResultDescriptor {
     }
     public void setHitFraction(float hitFraction) {
         this.hitFraction = hitFraction;
+    }
+    @Override
+    public int compareTo(RayResultDescriptor o) {
+        if(hitFraction > o.getHitFraction()) {
+            return 1;
+        } else if(hitFraction < o.getHitFraction()) {
+            return -1;
+        } else {
+            return 0;
+        }
     }
 
   
