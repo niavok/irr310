@@ -1,6 +1,7 @@
 package com.irr310.server;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -16,6 +17,8 @@ import com.irr310.common.event.BuyUpgradeRequestEvent;
 import com.irr310.common.event.CelestialObjectRemovedEvent;
 import com.irr310.common.event.CelestialObjectRemovedEvent.Reason;
 import com.irr310.common.event.CollisionEvent;
+import com.irr310.common.event.ComponentAddedEvent;
+import com.irr310.common.event.ComponentRemovedEvent;
 import com.irr310.common.event.DamageEvent;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
@@ -28,6 +31,7 @@ import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.event.UpgradeStateChanged;
 import com.irr310.common.event.WorldReadyEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
+import com.irr310.common.tools.Log;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Asteroid;
 import com.irr310.common.world.CelestialObject;
@@ -80,10 +84,10 @@ public class ServerGameEngine extends FramerateEngine {
 
     @Override
     protected void frame() {
-        if(nextWaveTime == null) {
+        if (nextWaveTime == null) {
             return;
         }
-        
+
         Time currentTime = GameTime.getGameTime();
 
         for (CapacityController controller : capacityControllers) {
@@ -246,19 +250,31 @@ public class ServerGameEngine extends FramerateEngine {
 
         @Override
         public void visit(WorldShipAddedEvent event) {
-            Ship ship = event.getShip();
 
-            for (Component component : ship.getComponents()) {
-                for (Capacity capacity : component.getCapacities()) {
-                    if (capacity instanceof LinearEngineCapacity) {
-                        addCapacityController(new LinearEngineController(component, (LinearEngineCapacity) capacity));
-                    }
-                    if (capacity instanceof GunCapacity) {
-                        addCapacityController(new GunController(component, (GunCapacity) capacity));
-                    }
+        }
+        
+        @Override
+        public void visit(ComponentAddedEvent event) {
+            Component component = event.getComponent();
+            for (Capacity capacity : component.getCapacities()) {
+                if (capacity instanceof LinearEngineCapacity) {
+                    addCapacityController(new LinearEngineController(component, (LinearEngineCapacity) capacity));
+                }
+                if (capacity instanceof GunCapacity) {
+                    Log.trace("sge add GunCapacity");
+                    addCapacityController(new GunController(component, (GunCapacity) capacity));
                 }
             }
+        }
 
+        @Override
+        public void visit(ComponentRemovedEvent event) {
+            for (Iterator<CapacityController> iterator = capacityControllers.iterator(); iterator.hasNext();) {
+                CapacityController capacityController = iterator.next();
+                if (capacityController.getComponent() == event.getComponent()) {
+                    iterator.remove();
+                }
+            }
         }
 
         @Override
@@ -399,7 +415,7 @@ public class ServerGameEngine extends FramerateEngine {
         UpgradeFactory.refresh();
         initWorld();
         lastInterrestTime = GameTime.getGameTime();
-        
+
         inited = true;
     }
 

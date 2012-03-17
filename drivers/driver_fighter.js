@@ -721,7 +721,7 @@ function driver() {
                 case MOUSE_PRESSED:
                     //core.log("mouse pressed");
                     if(button == 2) {
-                        //gun.fire(true);
+                        fire(true);
                     }
                     
                     if(button == 1) {
@@ -731,7 +731,7 @@ function driver() {
                case MOUSE_RELEASED:
                     //core.log("mouse pressed");
                     if(button == 2) {
-                            //gun.fire(false);
+                            fire(false);
                     }
                     
                     if(button == 1) {
@@ -754,6 +754,7 @@ function driver() {
                 case KEY_RIGHT:
                     break;
                 case KEY_SPACE:
+                    fire(true);
                     //gun.fire(true);
                     break;
                 case KEY_PLUS:
@@ -819,6 +820,7 @@ function driver() {
                 case KEY_E:
                     break;
                 case KEY_SPACE:
+                    fire(false);
                     //gun.fire(false);
                     break;
                 default:
@@ -828,6 +830,16 @@ function driver() {
         
         this.init();
 
+    }
+    
+    this.fire = function(order) {
+        
+        var gunComponents = ship.getComponentsByName("weapon.gun")
+        
+        for(var i = 0; i< gunComponents.size() ; i++) {
+            var gun = gunComponents.get(i).getCapacityByName("gun");
+            gun.fire(order);
+        }
     }
     
 }

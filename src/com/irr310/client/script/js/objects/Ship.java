@@ -1,6 +1,10 @@
 package com.irr310.client.script.js.objects;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.irr310.common.Game;
+import com.irr310.common.tools.Log;
 
 public class Ship {
 
@@ -16,6 +20,16 @@ public class Ship {
 	
 	public Component getComponentByName(String name) {
 	    return new Component(ship.getComponentByName(name).getId());
+	}
+	
+	public List<Component> getComponentsByName(String name) {
+	    List<Component> components = new ArrayList<Component>();
+	    for(com.irr310.common.world.Component component : ship.getComponents()) {
+	        if(component.getName().equals(name)) {
+	            components.add(new Component(component.getId()));
+	        }
+	    }
+	    return components;
 	}
 	
 }

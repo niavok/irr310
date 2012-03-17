@@ -41,7 +41,7 @@ public class BulletEffect extends GenericGraphicalElement{
         bullet.setLocation(from.toV3DVect3(), from.plus(bulletVector).toV3DVect3());
         //bullet.setLocation(from.toV3DVect3(), to.toV3DVect3());
 
-        elements.add(new V3DColorElement(bullet, new V3DColor(255, 180, 160)));
+        elements.add(new V3DColorElement(bullet, new V3DColor(235, 160, 140)));
     }
 
     @Override

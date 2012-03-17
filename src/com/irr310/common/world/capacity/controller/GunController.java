@@ -75,7 +75,7 @@ public class GunController extends CapacityController {
         double xoffset = capacity.barrels.get(barrel).getX();
         double yoffset = capacity.barrels.get(barrel).getY();
             
-        Vec3 from = new Vec3(xoffset, 0, yoffset).transform(part.getTransform());
+        Vec3 from = new Vec3(xoffset, 1, yoffset).transform(part.getTransform());
             
         Random random = new Random();
         double accuracy = capacity.accuracy * (10 - 9* component.getEfficiency());
@@ -94,6 +94,11 @@ public class GunController extends CapacityController {
         
         globalCooldown = 1.0 / (capacity.firerate * capacity.barrels.size());
         
+    }
+
+    @Override
+    public Component getComponent() {
+        return component;
     }
 
 }

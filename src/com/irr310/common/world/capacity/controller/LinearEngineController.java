@@ -52,4 +52,9 @@ public class LinearEngineController extends CapacityController {
 
     }
 
+    @Override
+    public Component getComponent() {
+        return component;
+    }
+
 }
