@@ -193,6 +193,10 @@ public class WorldRenderer implements GraphicRenderer {
         Log.trace("configureDefaultCamera");
         cameraController.configure(500,-2,-30, 2);
     }
+    private void configureHeadCamera() {
+        Log.trace("configureHeadCamera");
+        cameraController.configure(500,0,4, 0);
+    }
     
     private void configureBackCamera() {
         Log.trace("configureBackCamera");
@@ -1058,6 +1062,10 @@ public class WorldRenderer implements GraphicRenderer {
                     }
                     if (event.getKeyCode() == Keyboard.KEY_NUMPAD6) {
                         configureRightCamera();
+                        currentGuiMode = GuiKeyMode.NO_MODE;
+                    }
+                    if (event.getKeyCode() == Keyboard.KEY_NUMPAD5) {
+                        configureHeadCamera();
                         currentGuiMode = GuiKeyMode.NO_MODE;
                     }
                     Log.trace("key code"+event.getKeyCode()+ " "+ event.getCharacter());
