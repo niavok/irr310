@@ -360,27 +360,27 @@ function driver() {
 
             this.screenSize = core.gui.getViewportSize()
                     
-            var cursorCenter = core.gui.createRectangle();
+            var cursorCenter = core.gui.createLine();
             cursorCenter.setPosition((new Vec2(this.screenSize.getX()/2-1,this.screenSize.getY()/2-1)));
-                            cursorCenter.setSize(new Vec2(2,2));
-                            cursorCenter.setBorderColor(new Color(0.8,0.0,0));
+                            cursorCenter.setSize(new Vec2(1,1));
+                            cursorCenter.setColor(new Color(0.8,0.0,0));
             
-            var cursorTop = core.gui.createRectangle();
+            var cursorTop = core.gui.createLine();
                             cursorTop.setPosition((new Vec2(this.screenSize.getX()/2,this.screenSize.getY()/2+10)));
-                            cursorTop.setSize(new Vec2(1,30));
-                            cursorTop.setBorderColor(new Color(0.8,0.0,0));
-            var cursorBottom = core.gui.createRectangle();
+                            cursorTop.setSize(new Vec2(0,30));
+                            cursorTop.setColor(new Color(0.8,0.0,0));
+            var cursorBottom = core.gui.createLine();
                             cursorBottom.setPosition((new Vec2(this.screenSize.getX()/2,this.screenSize.getY()/2-40)));
-                            cursorBottom.setSize(new Vec2(1,30));
-                            cursorBottom.setBorderColor(new Color(0.8,0.0,0));
-            var cursorLeft = core.gui.createRectangle();
+                            cursorBottom.setSize(new Vec2(0,30));
+                            cursorBottom.setColor(new Color(0.8,0.0,0));
+            var cursorLeft = core.gui.createLine();
                             cursorLeft.setPosition((new Vec2(this.screenSize.getX()/2-40,this.screenSize.getY()/2)));
-                            cursorLeft.setSize(new Vec2(30,1));
-                            cursorLeft.setBorderColor(new Color(0.8,0.0,0));
-            var cursorRight = core.gui.createRectangle();
+                            cursorLeft.setSize(new Vec2(30,0));
+                            cursorLeft.setColor(new Color(0.8,0.0,0));
+            var cursorRight = core.gui.createLine();
                             cursorRight.setPosition((new Vec2(this.screenSize.getX()/2+10,this.screenSize.getY()/2)));
-                            cursorRight.setSize(new Vec2(30,1));
-                            cursorRight.setBorderColor(new Color(0.8,0.0,0));
+                            cursorRight.setSize(new Vec2(30,0));
+                            cursorRight.setColor(new Color(0.8,0.0,0));
 
           
             // Navigation indicators

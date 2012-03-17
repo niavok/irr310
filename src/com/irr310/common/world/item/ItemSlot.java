@@ -18,6 +18,7 @@ public class ItemSlot {
     private Component component;
 
     public ItemSlot(Ship ship, Component slotComponent, Vec3 position, Vec3 connectionPosition) {
+        assert(slotComponent != null);
         this.ship = ship;
         this.slotComponent = slotComponent;
         this.position = position;

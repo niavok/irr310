@@ -79,7 +79,7 @@ public abstract class Game {
 
         shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("wingBottom"),new Vec3(1, -2.25, -2.),new Vec3(0.5, -2.5, -2.)));
         shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("wingBottom"),new Vec3(-1, -2.25, -2.),new Vec3(-0.5, -2.5, -2.)));
-        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("wingBottoqqm"),new Vec3(1, -2.75, -3.),new Vec3(0.5, -3.0, -3.)));
+        shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("wingBottom"),new Vec3(1, -2.75, -3.),new Vec3(0.5, -3.0, -3.)));
         shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("wingBottom"),new Vec3(-1, -2.75, -3.),new Vec3(-0.5, -3.0, -3.)));
 
         newPlayer.setShipShema(shipShema);

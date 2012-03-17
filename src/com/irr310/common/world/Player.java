@@ -168,7 +168,7 @@ public class Player extends GameEntity {
         
         //Look for a not used item
         for (Item item : inventory) {
-            if(item.getName().equals(string) && item.isUsed()) {
+            if(item.getName().equals(string) && !item.isUsed()) {
                 itemToRemove = item;
             }
         }
