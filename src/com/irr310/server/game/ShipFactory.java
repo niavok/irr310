@@ -112,23 +112,23 @@ public class ShipFactory {
 
         Ship newShip = new Ship(GameServer.pickNewId());
 
-//        // Kernel
-//        Component kernel = ComponentFactory.createKernel("kernel");
-//        kernel.setShipPosition(new Vect3(-1, 0, 0));
-//        world.addComponent(kernel);
-//        newShip.assign(kernel);
-//
-//        // Camera
-//        Component camera = ComponentFactory.createCamera("camera");
-//        camera.setShipPosition(new Vect3(1, 0, 0));
-//        world.addComponent(camera);
-//        newShip.assign(camera);
+        // // Kernel
+        // Component kernel = ComponentFactory.createKernel("kernel");
+        // kernel.setShipPosition(new Vect3(-1, 0, 0));
+        // world.addComponent(kernel);
+        // newShip.assign(kernel);
+        //
+        // // Camera
+        // Component camera = ComponentFactory.createCamera("camera");
+        // camera.setShipPosition(new Vect3(1, 0, 0));
+        // world.addComponent(camera);
+        // newShip.assign(camera);
 
         // Gun
-//        Component gun = ComponentFactory.createGun("weapon.gun");
-//        gun.setShipPosition(new Vec3(0, 0.5, 0));
-//        world.addComponent(gun);
-//        newShip.assign(gun);
+        // Component gun = ComponentFactory.createGun("weapon.gun");
+        // gun.setShipPosition(new Vec3(0, 0.5, 0));
+        // world.addComponent(gun);
+        // newShip.assign(gun);
 
         // CompactThrusterBlock Front
         Component thrusterBlockFront = ComponentFactory.createThrusterBlock("trusterBlock1");
@@ -151,13 +151,13 @@ public class ShipFactory {
         // Wings
         Component wingTop = ComponentFactory.createWing("wingTop");
         wingTop.setShipPosition(new Vec3(0, -3, 2.5));
-        wingTop.setShipRotation(new Vec3(0,90,0));
+        wingTop.setShipRotation(new Vec3(0, 90, 0));
         world.addComponent(wingTop);
         newShip.assign(wingTop);
 
         Component wingBottom = ComponentFactory.createWing("wingBottom");
         wingBottom.setShipPosition(new Vec3(0, -3, -2.5));
-        wingBottom.setShipRotation(new Vec3(0,-90,0));
+        wingBottom.setShipRotation(new Vec3(0, -90, 0));
         world.addComponent(wingBottom);
         newShip.assign(wingBottom);
 
@@ -168,7 +168,7 @@ public class ShipFactory {
 
         Component wingRight = ComponentFactory.createWing("wingRight");
         wingRight.setShipPosition(new Vec3(2.5, -3, 0));
-        wingRight.setShipRotation(new Vec3(0,180,0));
+        wingRight.setShipRotation(new Vec3(0, 180, 0));
         world.addComponent(wingRight);
         newShip.assign(wingRight);
 
@@ -195,13 +195,13 @@ public class ShipFactory {
 
         // Links
 
-//        newShip.link(gun, camera, new Vect3(0.5, 0, 0.));
-//        newShip.link(gun, kernel, new Vect3(-0.5, 0, 0));
-        //newShip.link(gun, thrusterBlockFront, new Vec3(0, -0.5, 0));
+        // newShip.link(gun, camera, new Vect3(0.5, 0, 0.));
+        // newShip.link(gun, kernel, new Vect3(-0.5, 0, 0));
+        // newShip.link(gun, thrusterBlockFront, new Vec3(0, -0.5, 0));
         newShip.link(thrusterBlockFront, hull, new Vec3(0, -1.5, 0));
         newShip.link(hull, thrusterBlockBack, new Vec3(0, -4.5, 0));
         newShip.link(hull, wingRight, new Vec3(1, -3, 0));
-        newShip.link(hull, wingTop, new Vec3(0, -3,1));
+        newShip.link(hull, wingTop, new Vec3(0, -3, 1));
         newShip.link(hull, wingBottom, new Vec3(0, -3, -1));
         newShip.link(hull, wingLeft, new Vec3(-1, -3, 0));
         newShip.link(wingRight, rightReactor, new Vec3(4, -3.5, 0));

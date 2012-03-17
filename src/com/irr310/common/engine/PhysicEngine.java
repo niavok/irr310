@@ -316,7 +316,6 @@ public class PhysicEngine extends FramerateEngine {
 
             for (TypedConstraint typedConstraint : contraintToRemove) {
                 dynamicsWorld.removeConstraint(typedConstraint);
-                Log.trace("ph remove constraint");
             }
 
             dynamicsWorld.removeRigidBody(body);
@@ -452,10 +451,8 @@ public class PhysicEngine extends FramerateEngine {
         // Re-using the same collision is better for memory usage and
         // performance
         if (partToBodyMap.get(part) != null) {
-            Log.trace("part already present");
             return partToBodyMap.get(part);
         }
-        Log.trace("part not present");
 
         com.irr310.common.world.Part.CollisionShape collisionShape = part.getCollisionShape();
         CollisionShape colShape = null;
@@ -514,7 +511,6 @@ public class PhysicEngine extends FramerateEngine {
         body.setActivationState(RigidBody.ACTIVE_TAG);
         body.setCcdMotionThreshold(1f);
         body.setCcdSweptSphereRadius(0.2f);
-        Log.trace("add in body map "+part+" "+body);
         partToBodyMap.put(part, body);
 
         return body;
@@ -665,7 +661,6 @@ public class PhysicEngine extends FramerateEngine {
         public void visit(ComponentAddedEvent event) {
 
             Component component = event.getComponent();
-            Log.trace("ph  comp add event " + component.getName());
             Component kernel = component.getShip().getComponentByName("kernel");
             addComponent(TransformMatrix.identity().translate(kernel.getShipPosition().negative()).preMultiply(kernel.getFirstPart().getTransform()),
                          component);
@@ -678,7 +673,6 @@ public class PhysicEngine extends FramerateEngine {
 
         @Override
         public void visit(ComponentRemovedEvent event) {
-            Log.trace("ph  remove comp " + event.getComponent().getName());
             removeObject(event.getComponent());
 
             for (Iterator<Link> iterator = links.iterator(); iterator.hasNext();) {
@@ -691,7 +685,6 @@ public class PhysicEngine extends FramerateEngine {
 
         @Override
         public void visit(WorldShipAddedEvent event) {
-            Log.trace("ph ship add event");
             addShip(event.getShip(), event.getTransform());
         }
 
