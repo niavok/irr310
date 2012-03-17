@@ -36,7 +36,7 @@ public class BulletEffect extends GenericGraphicalElement{
         elements = new V3DGroupElement(engine.getV3DContext());
 
         bullet = new V3DLine(engine.getV3DContext());
-        bullet.setThickness(3);
+        bullet.setThickness(3.5f);
 
         bullet.setLocation(from.toV3DVect3(), from.plus(bulletVector).toV3DVect3());
         //bullet.setLocation(from.toV3DVect3(), to.toV3DVect3());

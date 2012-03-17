@@ -43,13 +43,13 @@ public class GunSkin extends Skin {
         final V3DLine line = new V3DLine(engine.getV3DContext());
         line.setThickness(1);
         line.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, (float) gunCapacity.range, 0));
-        elements.add(new V3DColorElement(line, new V3DColor(135, 255, 158 , 0.7f)));
+        elements.add(new V3DColorElement(line, new V3DColor(255, 135,  158 , 0.7f)));
 
         
         final V3DPoint point100 = new V3DPoint(engine.getV3DContext());
         point100.setSize(5);
         point100.setPosition(new V3DVect3(0, (float) gunCapacity.range, 0));
-        elements.add(new V3DColorElement(point100, new V3DColor(35, 255, 58, 0.8f)));
+        elements.add(new V3DColorElement(point100, new V3DColor(255, 35, 58, 0.8f)));
         
     }
 
