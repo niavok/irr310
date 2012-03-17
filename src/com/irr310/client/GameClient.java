@@ -1,6 +1,7 @@
 package com.irr310.client;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import com.irr310.client.graphics.GraphicEngine;
@@ -232,9 +233,10 @@ public class GameClient extends Game {
     public void gameOver() {
         System.err.println("Game over");
         
-        for(Engine engine : worldEngineList) {
+        for (Iterator<Engine>  iterator = worldEngineList.iterator(); iterator.hasNext();) {
+            Engine engine = iterator.next();
             engine.pushEvent(new QuitGameEvent());
-            engineList.remove(engine);
+            iterator.remove();            
         }
         
         boolean waitStop = true;

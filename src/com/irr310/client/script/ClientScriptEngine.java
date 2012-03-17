@@ -43,7 +43,7 @@ public class ClientScriptEngine extends FramerateEngine {
     private final class ClientScriptEngineEventVisitor extends DefaultEngineEventVisitor {
         @Override
         public void visit(QuitGameEvent event) {
-            System.out.println("stopping game engine");
+            System.out.println("stopping script engine");
             setRunning(false);
         }
 

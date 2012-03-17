@@ -191,10 +191,8 @@ public class PhysicEngine extends FramerateEngine {
 
             @Override
             public float addSingleResult(LocalRayResult rayResult, boolean normalInWorldSpace) {
-                System.out.println("ray test result !");
 
                 UserData data = (UserData) ((RigidBody) rayResult.collisionObject).getUserPointer();
-                System.out.println("hit on " + data.part.getParentObject().getName() + " at " + rayResult.hitFraction);
 
                 Vec3 globalPosition = from.plus(to.minus(from).multiply(rayResult.hitFraction));
 
@@ -205,10 +203,6 @@ public class PhysicEngine extends FramerateEngine {
                 descriptor.setGlobalPosition(globalPosition);
                 descriptor.setPart(data.part);
                 descriptor.setLocalPosition(localPosition);
-
-                if (!rayResultDescriptorList.isEmpty()) {
-                    Log.trace("Multiple result in ray test");
-                }
 
                 rayResultDescriptorList.add(descriptor);
 

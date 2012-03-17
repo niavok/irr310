@@ -84,7 +84,7 @@ public class ServerGameEngine extends FramerateEngine {
 
     @Override
     protected void frame() {
-        if (nextWaveTime == null) {
+        if (!inited) {
             return;
         }
 
@@ -298,16 +298,12 @@ public class ServerGameEngine extends FramerateEngine {
         public void visit(BulletFiredEvent event) {
 
             List<RayResultDescriptor> rayTestResults = Game.getInstance().getPhysicEngine().rayTest(event.getFrom(), event.getTo());
-            Log.trace("ray tests: "+rayTestResults.size());
             for(RayResultDescriptor rayTest: rayTestResults) {
-                
-                Log.trace("ray location: "+rayTest.getHitFraction()+" on "+ rayTest.getPart().getParentObject().getName());
                 
                 //Ignore it on the ship
                 if(event.getSource().getParentObject() instanceof Component) {
                     Component component = (Component) event.getSource().getParentObject();
                     if(component.getShip().getComponents().contains(rayTest.getPart().getParentObject())) {
-                        Log.trace("Hit on the shooter ship avoid: "+component.getName()+" to "+rayTest.getPart().getParentObject().getName());
                         continue;
                     }
                 }
