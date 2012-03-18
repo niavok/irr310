@@ -13,25 +13,25 @@ public class TransformMatrixMessageFieldGenerator extends MessageFieldGenerator<
 
     @Override
     public int getSize(TransformMatrix value) {
-        // 16 float = 4*16 = 64
-        return 64;
+        // 16 double = 8*16 = 64
+        return 128;
     }
 
     @Override
     public int write(TransformMatrix value, byte[] buffer, int offset) {
-        float[] data = value.getData();
+        double[] data = value.getData();
         for(int i = 0; i < 16; i++) {
-            TypeConversion.writeIntToByteArray(Float.floatToIntBits(data[i]), buffer, offset + i*4);
+            TypeConversion.writeLongToByteArray(Double.doubleToLongBits(data[i]), buffer, offset + i*8);
         }
-        return 64;
+        return 128;
     }
 
     @Override
     public Pair<Integer, TransformMatrix> load(byte[] buffer, int offset) {
         TransformMatrix t = new TransformMatrix();
-        float[] data = new float[16];
+        double[] data = new double[16];
         for(int i = 0; i < 16; i++) {
-            data[i] = Float.intBitsToFloat(TypeConversion.intFromByteArray(buffer, offset + i*4));
+            data[i] = Double.longBitsToDouble(TypeConversion.longFromByteArray(buffer, offset + i*8));
         }
         t.set(data);
         

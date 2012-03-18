@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.vecmath.Vector3d;
-import javax.vecmath.Vector3f;
+import javax.vecmath.Vector3d;
 
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 
 public class Vec3 {
 
-    public Double x;
-    public Double y;
-    public Double z;
+    public double x;
+    public double y;
+    public double z;
 
     //TODO: try to remove
     private List<Vect3ChangeListener> changeListeners;
@@ -22,6 +22,12 @@ public class Vec3 {
         this(0, 0, 0);
     }
 
+    public Vec3(Vec3 v) {
+        this.x = v.x;
+        this.y = v.y;
+        this.z = v.z;
+    }
+    
     public Vec3(double x, double y, double z) {
         this.x = x;
         this.y = y;
@@ -37,16 +43,12 @@ public class Vec3 {
         this((double) x, (double) y, (double) z);
     }
 
-    public Vec3(Vector3f vect) {
+    public Vec3(Vector3d vect) {
         this(vect.x, vect.y, vect.z);
     }
 
     public V3DVect3 toV3DVect3() {
-        return new V3DVect3(x.floatValue(), y.floatValue(), z.floatValue());
-    }
-
-    public Vector3f toVector3f() {
-        return new Vector3f(x.floatValue(), y.floatValue(), z.floatValue());
+        return new V3DVect3((float) x,(float) y,(float) z);
     }
 
     public Vector3d toVector3d() {
@@ -68,7 +70,7 @@ public class Vec3 {
 
     }
 
-    public void set(Vector3f vect) {
+    public void set(Vector3d vect) {
         this.x = (double) vect.x;
         this.y = (double) vect.y;
         this.z = (double) vect.z;

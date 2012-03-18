@@ -2,32 +2,49 @@ package com.irr310.common.tools;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
 
 public class TransformMatrix {
 
-    public float[] transform;
+    public double[] transform;
 
     public TransformMatrix() {
-        transform = new float[16];
+        transform = new double[16];
     }
 
-    public FloatBuffer toFloatBuffer() {
-        ByteBuffer bb = ByteBuffer.allocateDirect(transform.length * 4);
+    public DoubleBuffer toDoubleBuffer() {
+        ByteBuffer bb = ByteBuffer.allocateDirect(transform.length * 8);
         bb.order(ByteOrder.nativeOrder());
-        FloatBuffer fb = bb.asFloatBuffer();
+        DoubleBuffer fb = bb.asDoubleBuffer();
         fb.put(transform);
         fb.position(0);
         return fb;
 
     }
+    
+    public FloatBuffer toFloatBuffer() {
+        ByteBuffer bb = ByteBuffer.allocateDirect(transform.length * 4);
+        bb.order(ByteOrder.nativeOrder());
+        FloatBuffer fb = bb.asFloatBuffer();
+        for (int j = 0; j < 16; j++) {
+            fb.put((float) transform[j]);
+        }
+        fb.position(0);
+        return fb;
 
-    public void set(float[] transform) {
+    }
+
+    public void set(double[] transform) {
+        for (int j = 0; j < 16; j++) {
+            assert(transform[j] != Double.NaN);
+        }
         this.transform = transform;
 
     }
 
-    private void set(int i, int j, float val) {
+    private void set(int i, int j, double val) {
+        assert(val != Double.NaN);
         transform[j * 4 + i] = val;
     }
 
@@ -36,16 +53,16 @@ public class TransformMatrix {
         public void valueChanged();
     }
 
-    public float[] getData() {
+    public double[] getData() {
         return transform;
     }
 
     public TransformMatrix translate(Vec3 vect) {
-        translate(vect.x.floatValue(), vect.y.floatValue(), vect.z.floatValue());
+        translate(vect.x, vect.y, vect.z);
         return this;
     }
 
-    public void translate(float x, float y, float z) {
+    public void translate(double x, double y, double z) {
         TransformMatrix tmp = TransformMatrix.identity();
 
         tmp.set(0, 3, x);
@@ -56,16 +73,16 @@ public class TransformMatrix {
 
     }
 
-    public void setTranslation(float x, float y, float z) {
+    public void setTranslation(double x, double y, double z) {
         set(0, 3, x);
         set(1, 3, y);
         set(2, 3, z);
     }
     
     public void setTranslation(Vec3 vect) {
-        set(0, 3, vect.x.floatValue());
-        set(1, 3, vect.y.floatValue());
-        set(2, 3, vect.z.floatValue());
+        set(0, 3, vect.x);
+        set(1, 3, vect.y);
+        set(2, 3, vect.z);
     }
 
     public TransformMatrix preMultiply(TransformMatrix mat) { // mat × this
@@ -84,7 +101,7 @@ public class TransformMatrix {
         return this;
     }
 
-    public float get(int i, int j) {
+    public double get(int i, int j) {
         return transform[j * 4 + i];
     }
 
@@ -176,6 +193,11 @@ public class TransformMatrix {
         return tmp;
     }
 
+    public TransformMatrix scale(double scale) {
+        setTranslation(getTranslation().multiply(scale));
+        return this;
+    }
+
     /*
      * public void getLocalVectorToGlobalVector(Vect3 vect3) { TransformMatrix
      * force = TransformMatrix.identity(); force.translate(new Vect3(0,
@@ -184,7 +206,7 @@ public class TransformMatrix {
      * rotation.setTranslation(0, 0, 0); force.preMultiply(rotation);
      * rotation.getLocalVectorToGlobalVector(new Vect3(0,
      * linearEngine.getLeft().getCurrentThrust(), 0));
-     * body.applyCentralForce(force.getTranslation().toVector3f()); }
+     * body.applyCentralForce(force.getTranslation().toVector3d()); }
      */
 
 }

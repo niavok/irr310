@@ -136,7 +136,6 @@ public class GraphicEngine extends FramerateEngine {
 
         @Override
         public void visit(WorldReadyEvent event) {
-            Log.trace("WorldReadyEvent");
             changeRenderer(new WorldRenderer(GraphicEngine.this));
         }
         
@@ -184,7 +183,6 @@ public class GraphicEngine extends FramerateEngine {
         
         @Override
         public void visit(WorldShipAddedEvent event) {
-            Log.trace("WorldShipAddedEvent");
             rendererVisitor.visit(event);
         }
 

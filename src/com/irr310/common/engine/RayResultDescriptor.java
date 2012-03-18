@@ -8,7 +8,7 @@ public class RayResultDescriptor implements Comparable<RayResultDescriptor>{
     private Part part;
     private Vec3 localPosition;
     private Vec3 globalPosition;
-    private float hitFraction;
+    private double hitFraction;
     
     public Part getPart() {
         return part;
@@ -28,10 +28,10 @@ public class RayResultDescriptor implements Comparable<RayResultDescriptor>{
     public void setGlobalPosition(Vec3 globalPosition) {
         this.globalPosition = globalPosition;
     }
-    public float getHitFraction() {
+    public double getHitFraction() {
         return hitFraction;
     }
-    public void setHitFraction(float hitFraction) {
+    public void setHitFraction(double hitFraction) {
         this.hitFraction = hitFraction;
     }
     @Override

@@ -186,7 +186,6 @@ public class InventoryMenu extends MenuContainer {
                     @Override
                     public void buttonPressed(ButtonPressedEvent e) {
                         InventoryMenu.activeItem = item;
-                        Log.trace("active item "+item.getName());
                     }
                 });
                 add(button);
@@ -212,8 +211,8 @@ public class InventoryMenu extends MenuContainer {
         V3DGuiRectangle slot = new V3DGuiRectangle();
         slot.setBorderColor(V3DColor.grey);
         slot.setFillColor(V3DColor.grey.copy().setAlpha(0.5f));
-        int x2 = (int) (250-(int) (scale/2)+scale*itemSlot.getPosition().x.doubleValue());
-        int y2 = 250-(int) (scale/2)+ (int)(scale *  -1 *itemSlot.getPosition().z.doubleValue());
+        int x2 = (int) (250-(int) (scale/2)+scale*itemSlot.getPosition().x);
+        int y2 = 250-(int) (scale/2)+ (int)(scale *  -1 *itemSlot.getPosition().z);
         slot.setPosition(x2, y2);
         slot.setSize((int)scale-3,(int)scale-3);
         slot.setBorderWidth(3);
@@ -238,8 +237,8 @@ public class InventoryMenu extends MenuContainer {
         if(!itemSlot.isEmpty()) {
             Item item = itemSlot.getContent();
             double scale = 41;
-            int x2 = (int) (250-(int) (scale/2)+scale*itemSlot.getPosition().x.doubleValue());
-            int y2 = 250-(int) (scale/2)+ (int)(scale * -1 * itemSlot.getPosition().z.doubleValue());
+            int x2 = (int) (250-(int) (scale/2)+scale*itemSlot.getPosition().x);
+            int y2 = 250-(int) (scale/2)+ (int)(scale * -1 * itemSlot.getPosition().z);
             String path = item.getName().replace(".", "-");
             try {
                 V3DGuiSprite icon = new V3DGuiSprite(engine.getV3DContext(),"graphics/icons/"+path+"_item_icon_64.png");

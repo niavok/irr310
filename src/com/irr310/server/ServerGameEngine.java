@@ -161,7 +161,7 @@ public class ServerGameEngine extends FramerateEngine {
                                              .multiply(1);
 
                     object.getFirstPart().getLinearSpeed().set(lootSpeed);
-                    Game.getInstance().getPhysicEngine().reloadStates(object.getFirstPart());
+                    //Game.getInstance().getPhysicEngine().reloadStates(object.getFirstPart());
                     Game.getInstance().getWorld().unlock();
                 }
             }
@@ -262,7 +262,6 @@ public class ServerGameEngine extends FramerateEngine {
                     addCapacityController(new LinearEngineController(component, (LinearEngineCapacity) capacity));
                 }
                 if (capacity instanceof GunCapacity) {
-                    Log.trace("sge add GunCapacity");
                     addCapacityController(new GunController(component, (GunCapacity) capacity));
                 }
             }
@@ -382,8 +381,8 @@ public class ServerGameEngine extends FramerateEngine {
         }
     }
 
-    private void processCollision(Part part, float impulse) {
-        applyDamage(part, impulse, DamageType.PHYSICAL);
+    private void processCollision(Part part, double impulse) {
+        applyDamage(part, impulse*0.1, DamageType.PHYSICAL);
     }
 
     private void applyDamage(Part target, double damage, DamageType damageType) {

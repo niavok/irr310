@@ -233,10 +233,8 @@ public class GameClient extends Game {
     public void gameOver() {
         System.err.println("Game over");
         
-        for (Iterator<Engine>  iterator = worldEngineList.iterator(); iterator.hasNext();) {
-            Engine engine = iterator.next();
+        for (Engine engine : worldEngineList) {
             engine.pushEvent(new QuitGameEvent());
-            iterator.remove();            
         }
         
         boolean waitStop = true;
@@ -244,17 +242,21 @@ public class GameClient extends Game {
         while (waitStop) {
             waitStop = false;
             for (Engine engine : worldEngineList) {
-                if (!engine.isStopped()) {
+                if (!engine.isStopped() && !(engine instanceof ServerGameEngine) ) {
                     waitStop = true;
                     break;
                 }
             }
             Duration.HUNDRED_MILLISECONDE.sleep();
         }
-
+        
+        for (Engine engine : worldEngineList) {
+            engineList.remove(engine);
+        }
         
         worldEngineList.clear();
         physicEngine = null;
+        System.err.println("Game cleaned");
     }
 
 }

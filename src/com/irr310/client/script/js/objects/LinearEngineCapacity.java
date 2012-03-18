@@ -1,5 +1,6 @@
 package com.irr310.client.script.js.objects;
 
+
 public class LinearEngineCapacity extends Capacity {
 
     private final com.irr310.common.world.capacity.LinearEngineCapacity capacity;

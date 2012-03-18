@@ -10,7 +10,7 @@ public class CollisionDescriptor {
     private Vec3 localPositionOnA;
     private Vec3 localPositionOnB;
     private Vec3 globalPosition;
-    private float impulse;
+    private double impulse;
 
     public void setPartA(Part partA) {
         this.partA = partA;
@@ -34,7 +34,7 @@ public class CollisionDescriptor {
         this.globalPosition = position;
     }
 
-    public void setImpulse(float impulse) {
+    public void setImpulse(double impulse) {
         this.impulse = impulse;
         
     }
@@ -43,7 +43,7 @@ public class CollisionDescriptor {
         return globalPosition;
     }
     
-    public float getImpulse() {
+    public double getImpulse() {
         return impulse;
     }
     

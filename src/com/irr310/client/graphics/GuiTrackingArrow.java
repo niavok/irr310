@@ -64,6 +64,7 @@ public class GuiTrackingArrow extends GuiAnimatedElement {
         
         double deltaAngle = front.dot(relPos);
 
+        
         // System.err.println("eye: "+eye);
         // System.err.println("target: "+target);
         // System.err.println("distance: "+distance);
@@ -96,6 +97,7 @@ public class GuiTrackingArrow extends GuiAnimatedElement {
         
         double size = 10 + (Math.max(1000f - distance.length(), 0)) / 100f;
 
+        assert(size != Double.NaN);
         double boxSize = size *5;
         
         container.setPosition((int) (pxPos.x - boxSize), (int) (pxPos.y  - boxSize));

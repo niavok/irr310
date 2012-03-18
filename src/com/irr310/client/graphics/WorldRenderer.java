@@ -192,31 +192,25 @@ public class WorldRenderer implements GraphicRenderer {
     }
 
     private void configureDefaultCamera() {
-        Log.trace("configureDefaultCamera");
         cameraController.configure(500,-2,-30, 2);
     }
     private void configureHeadCamera() {
-        Log.trace("configureHeadCamera");
         cameraController.configure(500,0,4, 0);
     }
     
     private void configureBackCamera() {
-        Log.trace("configureBackCamera");
         cameraController.configure(500,0,-30, 0);
     }
     
     private void configureFrontCamera() {
-        Log.trace("configureFrontCamera");
         cameraController.configure(-500,-2,30, 2);
     }
     
     private void configureLeftCamera() {
-        Log.trace("configureLeftCamera");
         cameraController.configure(0,30,0, 0);
     }
     
     private void configureRightCamera() {
-        Log.trace("configureRightCamera");
         cameraController.configure(0,-30,0, 2);
     }
     
@@ -725,7 +719,6 @@ public class WorldRenderer implements GraphicRenderer {
         if(worldObjectToV3DElementMap.get(component) != null) {
             return;
         }
-        Log.trace("add component");
         GraphicalElement graphicalElement = addObject(component);
         worldObjectToV3DElementMap.put(component, new ArrayList<GraphicalElement>());
         worldObjectToV3DElementMap.get(component).add(graphicalElement);
@@ -935,7 +928,6 @@ public class WorldRenderer implements GraphicRenderer {
         
         @Override
         public void visit(ComponentAddedEvent event ) {
-            Log.trace("g: ComponentAddedEvent");
             addComponent(event.getComponent());
         }
 
@@ -1070,7 +1062,6 @@ public class WorldRenderer implements GraphicRenderer {
                         configureHeadCamera();
                         currentGuiMode = GuiKeyMode.NO_MODE;
                     }
-                    Log.trace("key code"+event.getKeyCode()+ " "+ event.getCharacter());
                 }
 
             }

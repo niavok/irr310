@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.vecmath.Vector3f;
+import javax.vecmath.Vector3d;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -73,6 +73,7 @@ import com.irr310.server.Duration;
 public class PhysicEngine extends FramerateEngine {
 
     public static final float PI_2 = 1.57079632679489661923f;
+    public static final float PHYSICAL_SCALE = 1f;
 
     // keep the collision shapes, for deletion/cleanup
     private ObjectArrayList<CollisionShape> collisionShapes = new ObjectArrayList<CollisionShape>();
@@ -109,22 +110,21 @@ public class PhysicEngine extends FramerateEngine {
     @Override
     protected void frame() {
         // Apply forces
-
         // Linear Engines
         for (Pair<LinearEngineCapacity, RigidBody> linearEngine : linearEngines) {
+            
             RigidBody body = linearEngine.getRight();
             Transform t = new Transform();
             body.getWorldTransform(t);
 
             TransformMatrix force = TransformMatrix.identity();
-            force.translate(new Vec3(0, linearEngine.getLeft().getCurrentThrust(), 0));
+            force.translate(new Vec3(0, linearEngine.getLeft().getCurrentThrust() * PHYSICAL_SCALE * 1, 0));
 
             TransformMatrix rotation = new TransformMatrix();
             t.getOpenGLMatrix(rotation.getData());
             rotation.setTranslation(0, 0, 0);
             force.preMultiply(rotation);
-
-            body.applyCentralForce(force.getTranslation().toVector3f());
+            body.applyCentralForce(force.getTranslation().toVector3d());
             body.setActivationState(RigidBody.ACTIVE_TAG);
         }
 
@@ -145,7 +145,7 @@ public class PhysicEngine extends FramerateEngine {
             Vec3 thrustAxis = wingCapacity.getThrustAxis();
             Vec3 absoluteThrustAxis = thrustAxis.rotate(bodyTransform);
 
-            Vector3f lv = new Vector3f();
+            Vector3d lv = new Vector3d();
             body.getLinearVelocity(lv);
             Vec3 velocity = new Vec3(lv);
 
@@ -153,13 +153,17 @@ public class PhysicEngine extends FramerateEngine {
 
                 // Resistance
                 double opposition = velocity.dot(absoluteBreakAxis);
-                body.applyCentralForce(absoluteBreakAxis.multiply(opposition * wingCapacity.getFriction() * -1).toVector3f());
+                
+                Vec3 oppositionVector = absoluteBreakAxis.multiply(opposition * wingCapacity.getFriction() * -1);
 
                 // Conversion
                 double conversion = velocity.dot(absoluteThrustAxis) / velocity.length();
-
-                body.applyCentralForce(absoluteThrustAxis.multiply(conversion * Math.abs(opposition) * wingCapacity.getFriction()
-                        * wingCapacity.getYield()).toVector3f());
+                
+                double force = Math.pow(conversion, 2) * Math.abs(opposition)
+                        * wingCapacity.getYield();
+                Vec3 conversionVector = absoluteThrustAxis.multiply(force);
+                
+                body.applyCentralForce(conversionVector.plus(oppositionVector).toVector3d());
             }
             body.setActivationState(RigidBody.ACTIVE_TAG);
 
@@ -183,14 +187,13 @@ public class PhysicEngine extends FramerateEngine {
     }
 
     public List<RayResultDescriptor> rayTest(final Vec3 from, final Vec3 to) {
-        // System.out.println("ray test");
 
         final List<RayResultDescriptor> rayResultDescriptorList = new ArrayList<RayResultDescriptor>();
 
-        dynamicsWorld.rayTest(from.toVector3f(), to.toVector3f(), new RayResultCallback() {
+        dynamicsWorld.rayTest(from.toVector3d(), to.toVector3d(), new RayResultCallback() {
 
             @Override
-            public float addSingleResult(LocalRayResult rayResult, boolean normalInWorldSpace) {
+            public double addSingleResult(LocalRayResult rayResult, boolean normalInWorldSpace) {
 
                 UserData data = (UserData) ((RigidBody) rayResult.collisionObject).getUserPointer();
 
@@ -245,7 +248,7 @@ public class PhysicEngine extends FramerateEngine {
         dynamicsWorld.setInternalTickCallback(new CollisionDetectionCallback(), null);
 
         // No gravity
-        dynamicsWorld.setGravity(new Vector3f(0f, 0f, 0f));
+        dynamicsWorld.setGravity(new Vector3d(0f, 0f, 0f));
 
         dynamicsWorld.getPairCache().setOverlapFilterCallback(new OverlapFilterCallback() {
 
@@ -414,7 +417,7 @@ public class PhysicEngine extends FramerateEngine {
         localA.setIdentity();
         Vec3 position1 = slot1.getPosition();
 
-        localA.origin.set(position1.x.floatValue(), position1.y.floatValue(), position1.z.floatValue());
+        localA.origin.set(position1.x* PHYSICAL_SCALE, position1.y * PHYSICAL_SCALE, position1.z * PHYSICAL_SCALE);
 
         MatrixUtil.setEulerZYX(localA.basis,
                                (float) -Math.toRadians(shipRotation1.z),
@@ -423,7 +426,7 @@ public class PhysicEngine extends FramerateEngine {
 
         localB.setIdentity();
         Vec3 position2 = slot2.getPosition();
-        localB.origin.set(position2.x.floatValue(), position2.y.floatValue(), position2.z.floatValue());
+        localB.origin.set(position2.x * PHYSICAL_SCALE, position2.y * PHYSICAL_SCALE, position2.z * PHYSICAL_SCALE);
 
         MatrixUtil.setEulerZYX(localB.basis,
                                (float) -Math.toRadians(shipRotation2.z),
@@ -431,11 +434,11 @@ public class PhysicEngine extends FramerateEngine {
                                (float) -Math.toRadians(shipRotation2.x));
 
         Generic6DofConstraint constraint = new Generic6DofConstraint(body1, body2, localA, localB, false);
-        constraint.setLinearLowerLimit(new Vector3f());
-        constraint.setLinearUpperLimit(new Vector3f());
+        constraint.setLinearLowerLimit(new Vector3d());
+        constraint.setLinearUpperLimit(new Vector3d());
 
-        constraint.setAngularLowerLimit(new Vector3f(0, 0, 0));
-        constraint.setAngularUpperLimit(new Vector3f(0, 0, 0));
+        constraint.setAngularLowerLimit(new Vector3d(0, 0, 0));
+        constraint.setAngularUpperLimit(new Vector3d(0, 0, 0));
 
         dynamicsWorld.addConstraint(constraint, true);
 
@@ -454,14 +457,14 @@ public class PhysicEngine extends FramerateEngine {
 
         switch (collisionShape) {
             case BOX:
-                colShape = new BoxShape(part.getShape().divide(2).toVector3f());
+                colShape = new BoxShape(part.getShape().divide(2).multiply(PHYSICAL_SCALE).toVector3d());
                 break;
             case SPHERE:
-                colShape = new SphereShape(part.getShape().x.floatValue() / 2);
+                colShape = new SphereShape(part.getShape().x*PHYSICAL_SCALE / 2);
                 break;
 
             default:
-                colShape = new BoxShape(part.getShape().divide(2).toVector3f());
+                colShape = new BoxShape(part.getShape().divide(2).multiply(PHYSICAL_SCALE).toVector3d());
                 break;
         }
 
@@ -470,15 +473,15 @@ public class PhysicEngine extends FramerateEngine {
 
         // Create Dynamic Objects
 
-        float mass = part.getMass().floatValue() / 10;
+        float mass = (part.getMass().floatValue()) * PHYSICAL_SCALE / 10;
 
         // rigidbody is dynamic if and only if mass is non zero, otherwise
         // static
         boolean isDynamic = (mass != 0f);
 
-        Vector3f localInertia = new Vector3f(0, 0, 0);
+        Vector3d localInertia = new Vector3d(0, 0, 0);
         if (isDynamic) {
-            colShape.calculateLocalInertia(mass * 2, localInertia);
+            colShape.calculateLocalInertia(mass  * 2, localInertia);
         }
 
         // TODO rotation
@@ -497,15 +500,16 @@ public class PhysicEngine extends FramerateEngine {
         body.setDamping(part.getLinearDamping().floatValue(), part.getAngularDamping().floatValue());
 
         body.setSleepingThresholds(0.001f, 0.001f);
-        // body.setDeactivationTime(deactivationTime)
+        //body.setDeactivationTime(30);
 
         dynamicsWorld.addRigidBody(body);
-
-        body.setLinearVelocity(part.getLinearSpeed().toVector3f());
-        body.setAngularVelocity(part.getRotationSpeed().toVector3f());
+        if(mass > 0) {
+            body.setLinearVelocity(part.getLinearSpeed().multiply(PHYSICAL_SCALE).toVector3d());
+            body.setAngularVelocity(part.getRotationSpeed().toVector3d());
+        }
         body.setActivationState(RigidBody.ACTIVE_TAG);
-        body.setCcdMotionThreshold(1f);
-        body.setCcdSweptSphereRadius(0.2f);
+        body.setCcdMotionThreshold(10000f*PHYSICAL_SCALE);
+        body.setCcdSweptSphereRadius(0.2f*PHYSICAL_SCALE);
         partToBodyMap.put(part, body);
 
         return body;
@@ -514,7 +518,7 @@ public class PhysicEngine extends FramerateEngine {
 
     private final class CollisionDetectionCallback extends InternalTickCallback {
         @Override
-        public void internalTick(DynamicsWorld world, float timeStep) {
+        public void internalTick(DynamicsWorld world, double timeStep) {
             int numManifolds = world.getDispatcher().getNumManifolds();
             for (int i = 0; i < numManifolds; i++) {
                 PersistentManifold contactManifold = world.getDispatcher().getManifoldByIndexInternal(i);
@@ -525,11 +529,11 @@ public class PhysicEngine extends FramerateEngine {
                 for (int j = 0; j < numContacts; j++) {
                     ManifoldPoint pt = contactManifold.getContactPoint(j);
                     if (pt.getDistance() < 0.f) {
-                        Vector3f ptA = new Vector3f();
-                        Vector3f ptB = new Vector3f();
+                        Vector3d ptA = new Vector3d();
+                        Vector3d ptB = new Vector3d();
 
-                        Vector3f vA = new Vector3f();
-                        Vector3f vB = new Vector3f();
+                        Vector3d vA = new Vector3d();
+                        Vector3d vB = new Vector3d();
 
                         pt.getPositionWorldOnA(ptA);
                         pt.getPositionWorldOnB(ptB);
@@ -576,6 +580,7 @@ public class PhysicEngine extends FramerateEngine {
 
         private final Part part;
         private RigidBody body;
+        
 
         PartMotionState(Part part) {
             this.part = part;
@@ -586,8 +591,8 @@ public class PhysicEngine extends FramerateEngine {
             Transform transform = new Transform();
             getWorldTransform(transform);
             body.setWorldTransform(transform);
-            body.setLinearVelocity(part.getLinearSpeed().toVector3f());
-            body.setAngularVelocity(part.getRotationSpeed().toVector3f());
+            body.setLinearVelocity(part.getLinearSpeed().multiply(PHYSICAL_SCALE).toVector3d());
+            body.setAngularVelocity(part.getRotationSpeed().toVector3d());
             body.activate(true);
         }
 
@@ -599,23 +604,26 @@ public class PhysicEngine extends FramerateEngine {
         public Transform getWorldTransform(Transform out) {
             out.setIdentity();
             // out.origin.set(part.getTransform().getTranslation().toVector3d());
-            out.setFromOpenGLMatrix(part.getTransform().getData());
+            out.setFromOpenGLMatrix(part.getTransform().scale(PHYSICAL_SCALE).getData());
             return out;
         }
 
         @Override
         public void setWorldTransform(Transform worldTrans) {
-            Vector3f origin = worldTrans.origin;
+            Vector3d origin = worldTrans.origin;
             part.getTransform().translate(origin.x, origin.y, origin.z);
             worldTrans.getOpenGLMatrix(part.getTransform().getData());
+            part.getTransform().scale(1.0f/PHYSICAL_SCALE);
 
-            Vector3f lv = new Vector3f();
+            Vector3d lv = new Vector3d();
+            
             body.getLinearVelocity(lv);
-            part.getLinearSpeed().set(lv);
+            part.getLinearSpeed().set(new Vec3(lv).divide(PHYSICAL_SCALE));
 
-            Vector3f av = new Vector3f();
+            Vector3d av = new Vector3d();
             body.getAngularVelocity(av);
             part.getRotationSpeed().set(av);
+            
         }
     }
 

@@ -61,7 +61,7 @@ public class SoundEngine extends EventEngine {
             
             Vec3 audioPosition = localDistance.multiply(0.03);
             
-            explosionEffect.playAsSoundEffect(3.0f, (float) (event.getDamage()* 0.005f), false,audioPosition.x.floatValue(), audioPosition.y.floatValue() ,audioPosition.z.floatValue());
+            explosionEffect.playAsSoundEffect(3.0f, (float) (event.getDamage()* 0.005f), false, (float)  audioPosition.x, (float)  audioPosition.y , (float) audioPosition.z);
         }
     }
 

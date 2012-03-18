@@ -8,6 +8,7 @@ import com.irr310.common.Game;
 import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
+import com.irr310.common.event.GameOverEvent;
 import com.irr310.common.event.KeyPressedEvent;
 import com.irr310.common.event.KeyReleasedEvent;
 import com.irr310.common.event.MouseEvent;
@@ -192,6 +193,9 @@ public class InputEngine extends FramerateEngine {
                             engineCapacity.theoricalMinThrust *=2;
                         }
                     }
+                }
+                if(cheatString.toLowerCase().equals("looser")) {
+                    Game.getInstance().sendToAll(new GameOverEvent("Cheat"));
                 }
                 cheatString = "";
             } else if(event.getCharacter() != null) {

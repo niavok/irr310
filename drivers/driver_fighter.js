@@ -9,7 +9,7 @@ function driver() {
     }
     
     
-    var theoricalMaxSpeed = 65.27;
+    var theoricalMaxSpeed = 565.27;
     var speedTarget = 0;
     var maxRotationSpeed = 2;
     var rotationSpeedTarget = new Vec3(0,0,0.0);
@@ -202,13 +202,13 @@ function driver() {
             var deltaSpeed = (currentSpeed - this.lastSpeed);
             var deltaAcc = (deltaSpeed - this.lastDeltaSpeed);
             
+            var maxHorizontalThrust = Math.min(leftEngine.getMaxThrust(), rightEngine.getMaxThrust()) 
+            var minHorizontalThrust = Math.min( -leftEngine.getMinThrust(), -rightEngine.getMinThrust())
+            var maxVerticalThrust = Math.min(topEngine.getMaxThrust(), bottomEngine.getMaxThrust())
+            var minVerticalThrust = Math.min( -topEngine.getMinThrust(), -bottomEngine.getMinThrust())
+            
             if(Math.abs(speedTarget - currentSpeed) > 0.1) {
                 
-
-                var maxHorizontalThrust = Math.min(leftEngine.getMaxThrust(), rightEngine.getMaxThrust()) 
-                var minHorizontalThrust = Math.min( -leftEngine.getMinThrust(), -rightEngine.getMinThrust())
-                var maxVerticalThrust = Math.min(topEngine.getMaxThrust(), bottomEngine.getMaxThrust())
-                var minVerticalThrust = Math.min( -topEngine.getMinThrust(), -bottomEngine.getMinThrust())
 
                 if(this.lastSpeedTarget != speedTarget) {
                     //Thrust target changed, full power allowed
@@ -289,7 +289,7 @@ function driver() {
                 } else {
                     thrustRatio = 10 * deltaRotRatio //Math.pow(5*deltaRotRatio,2);
                 }
-                var thrustMax = 4;
+                var thrustMax = minHorizontalThrust;
                 if((localRotationSpeed.getX() - rotationSpeedTarget.getX() < 0)) {
                     //Too slow
                     topRotThrust -= thrustMax * thrustRatio;
@@ -316,7 +316,7 @@ function driver() {
                 } else {
                     thrustRatio = 10 * deltaRotRatio //Math.pow(5*deltaRotRatio,2);
                 }
-                var thrustMax = 4;
+                var thrustMax = minVerticalThrust;
                 if((localRotationSpeed.getZ() - rotationSpeedTarget.getZ() < 0)) {
                     //Too slow
                     leftRotThrust -= thrustMax * thrustRatio;
