@@ -5,11 +5,11 @@ import com.irr310.common.world.view.CapacityView;
 
 public abstract class Capacity extends GameEntity{
 
-    private final String name;
+    private String name;
 
-    public Capacity(long id, String name) {
+    public Capacity(long id) {
         super(id);
-        this.name = name;
+        this.name = "undefined";
     }
 
     public enum CapacityType {
@@ -38,6 +38,10 @@ public abstract class Capacity extends GameEntity{
 
     public String getName() {
         return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
     }
     
 }

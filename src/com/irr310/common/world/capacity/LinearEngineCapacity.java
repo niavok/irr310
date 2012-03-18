@@ -16,7 +16,7 @@ public class LinearEngineCapacity extends Capacity {
     public double targetThrustInput;
 
     public LinearEngineCapacity(long id) {
-        super(id, "linearEngine");
+        super(id);
         currentThrust = 0;
         targetThrust = 0;
         targetThrustInput =0 ;
@@ -80,6 +80,7 @@ public class LinearEngineCapacity extends Capacity {
 
     @Override
     public void fromView(CapacityView view) {
+        setName(view.name);
         currentThrust = view.popDouble();
         targetThrust = view.popDouble();
         theoricalMaxThrust = view.popDouble();

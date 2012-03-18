@@ -13,33 +13,23 @@ import com.irr310.common.world.upgrade.Upgrade.UpgradeCategory;
 
 public class WeaponDamageUpgradeEffect extends UpgradeEffect {
 
-    private static final double GUN_BASE_DAMAGE = 50;
-    
     @Override
     public void apply(UpgradeOwnership playerUpgrade) {
         Player player = playerUpgrade.getPlayer();
         List<Ship> shipList = player.getShipList();
-        
-        for(Ship ship: shipList) {
-            for(Component component: ship.getComponents()) {
-                Capacity capacity = component.getCapacityByName("gun");
-                if(capacity != null) {
-                    GunCapacity gunCapacity = (GunCapacity) capacity;
-                    System.err.println("gun capacity found");
-                    
+
+        for (Ship ship : shipList) {
+            for (Component component : ship.getComponents()) {
+                List<GunCapacity> capacities = component.getCapacitiesByClass(GunCapacity.class);
+                for (GunCapacity gunCapacity : capacities) {
                     double lastDamage = gunCapacity.damage;
-                    System.err.println("last damage: "+lastDamage);
-                    
-                    if(playerUpgrade.getRank() == 0) {
-                        gunCapacity.damage = GUN_BASE_DAMAGE;
-                    } else {
-                        gunCapacity.damage = GUN_BASE_DAMAGE * (1 + 0.1 * Math.pow(2,playerUpgrade.getRank()));
+
+                    if (playerUpgrade.getRank() > 0) {
+                        gunCapacity.damage *=  (1 + 0.1 * Math.pow(2, playerUpgrade.getRank()));
                     }
-                    System.err.println("new damage: "+gunCapacity.damage);
-                    if(gunCapacity.damage != lastDamage) {
-                        //TODO: network !
+                    if (gunCapacity.damage != lastDamage) {
+                        // TODO: network !
                     }
-                    
                 }
             }
         }

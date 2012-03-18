@@ -13,8 +13,6 @@ import com.irr310.common.world.upgrade.Upgrade.UpgradeCategory;
 
 public class WeaponCoolingUpgradeEffect extends UpgradeEffect {
 
-private static final double GUN_BASE_COOLINGSPEED = 10;
-    
     @Override
     public void apply(UpgradeOwnership playerUpgrade) {
         Player player = playerUpgrade.getPlayer();
@@ -22,20 +20,14 @@ private static final double GUN_BASE_COOLINGSPEED = 10;
         
         for(Ship ship: shipList) {
             for(Component component: ship.getComponents()) {
-                Capacity capacity = component.getCapacityByName("gun");
-                if(capacity != null) {
-                    GunCapacity gunCapacity = (GunCapacity) capacity;
-                    System.err.println("gun capacity found");
+                List<GunCapacity> capacities = component.getCapacitiesByClass(GunCapacity.class);
+                for (GunCapacity gunCapacity : capacities) {
                     
                     double lastCoolingspeed = gunCapacity.coolingSpeed;
-                    System.err.println("last coolingSpeed: "+lastCoolingspeed);
                     
-                    if(playerUpgrade.getRank() == 0) {
-                        gunCapacity.coolingSpeed = GUN_BASE_COOLINGSPEED;
-                    } else {
-                        gunCapacity.coolingSpeed = GUN_BASE_COOLINGSPEED / (1 + 0.1 * Math.pow(2,playerUpgrade.getRank()));
+                    if(playerUpgrade.getRank() > 0) {
+                        gunCapacity.coolingSpeed /=  (1 + 0.1 * Math.pow(2,playerUpgrade.getRank()));
                     }
-                    System.err.println("new coolingSpeed: "+gunCapacity.coolingSpeed);
                     if(gunCapacity.coolingSpeed != lastCoolingspeed) {
                         //TODO: network !
                     }

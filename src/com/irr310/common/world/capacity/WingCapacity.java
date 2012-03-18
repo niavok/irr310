@@ -11,7 +11,7 @@ public class WingCapacity extends Capacity {
     public double friction;
 
     public WingCapacity(long id) {
-        super(id, "wing");
+        super(id);
         this.breakAxis = new Vec3(0, 0, 1);
         this.thrustAxis = new Vec3(0, 1, 0);
         yield = 0.2;
@@ -52,6 +52,7 @@ public class WingCapacity extends Capacity {
 
     @Override
     public void fromView(CapacityView view) {
+        setName(view.name);
         yield = view.popDouble();
         friction = view.popDouble();
         breakAxis = view.popVect3();

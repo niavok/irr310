@@ -10,6 +10,7 @@ import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.capacity.Capacity.CapacityType;
+import com.irr310.common.world.capacity.GunCapacity;
 import com.irr310.common.world.view.CapacityView;
 import com.irr310.common.world.view.ComponentView;
 import com.irr310.common.world.view.PartView;
@@ -238,9 +239,26 @@ public final class  Component extends WorldObject {
         return capacities;
     }
 
-    
+    /**
+     * 
+     * @param name
+     * @deprecated wrong result if multiple identical capacities on the same component. (as multiple thrusters in thruster block)
+     * @return
+     */
+    @Deprecated
     public Capacity getCapacityByName(String name) {
         return capacityNameMap.get(name);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends Capacity> List<T> getCapacitiesByClass(Class<T> clazz) {
+        List<T> matchCapacities = new ArrayList<T>();
+        for(Capacity capacity: capacities) {
+            if(capacity.getClass().equals(clazz)) {
+                matchCapacities.add((T) capacity);
+            }
+        }
+        return matchCapacities;
     }
 
     

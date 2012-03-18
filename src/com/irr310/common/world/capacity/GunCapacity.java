@@ -32,7 +32,7 @@ public class GunCapacity extends Capacity {
     
 
     public GunCapacity(long id) {
-        super(id, "gun");
+        super(id);
         fire = false;
         damage = 50;
         range = 1000;
@@ -74,6 +74,7 @@ public class GunCapacity extends Capacity {
 
     @Override
     public void fromView(CapacityView view) {
+        setName(view.name);
         fire = view.popBoolean();
         damage = view.popDouble();
         range = view.popDouble();

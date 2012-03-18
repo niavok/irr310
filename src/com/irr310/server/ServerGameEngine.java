@@ -23,6 +23,7 @@ import com.irr310.common.event.DamageEvent;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.GameOverEvent;
+import com.irr310.common.event.InventoryChangedEvent;
 import com.irr310.common.event.NextWaveEvent;
 import com.irr310.common.event.PauseEngineEvent;
 import com.irr310.common.event.QuitGameEvent;
@@ -362,7 +363,7 @@ public class ServerGameEngine extends FramerateEngine {
             event.getPlayer().retireMoney(event.getUpgrade().getPrices().get(currentRank));
             playerUpgrade.setRank(currentRank + 1);
             Game.getInstance().sendToAll(new UpgradeStateChanged(playerUpgrade, event.getPlayer()));
-            UpgradeFactory.apply(playerUpgrade);
+            UpgradeFactory.refresh(event.getPlayer());
         }
 
         @Override
@@ -383,7 +384,11 @@ public class ServerGameEngine extends FramerateEngine {
             Game.getInstance().sendToAll(new UpgradeStateChanged(playerUpgrade, event.getPlayer()));
             UpgradeFactory.refresh(event.getPlayer());
         }
-
+        
+        @Override
+        public void visit(InventoryChangedEvent event) {
+            UpgradeFactory.refresh(event.getPlayer());
+        }
         @Override
         public void visit(GameOverEvent event) {
             Game.getInstance().gameOver();

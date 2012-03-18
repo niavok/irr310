@@ -28,6 +28,7 @@ public class ComponentFactory {
         engineCapacity.theoricalMinThrust = -4;
         engineCapacity.theoricalVariationSpeed = 5;
         engineCapacity.currentThrust = 0;
+        engineCapacity.setName("linearEngine");
         // engineCapacity.setTargetThrust(4);
         component.addCapacity(engineCapacity);
 
@@ -138,8 +139,8 @@ public class ComponentFactory {
         return component;
     }
 
-    public static Component createGun(String name) {
-        Component component = createSimpleComponent(name);
+    public static Component createGun(String componentName, String capacityName) {
+        Component component = createSimpleComponent(componentName);
         component.setSkin("gun");
         Part part = component.getFirstPart();
         part.setMass(2d);
@@ -152,7 +153,9 @@ public class ComponentFactory {
         component.addSlot(GameServer.pickNewId(), part, new Vec3(0, -shape.y / 4, -shape.z / 2));
 
         GunCapacity gunCapacity = new GunCapacity(GameServer.pickNewId());
+        gunCapacity.setName(capacityName);
         component.addCapacity(gunCapacity);
+        
 
         return component;
     }
@@ -174,6 +177,7 @@ public class ComponentFactory {
         engineCapacityTop.theoricalMinThrust = -2;
         engineCapacityTop.theoricalVariationSpeed = 10;
         engineCapacityTop.currentThrust = 0;
+        engineCapacityTop.setName("linearEngine");
         component.addCapacity(engineCapacityTop);
 
         LinearEngineCapacity engineCapacityBottom = new LinearEngineCapacity(GameServer.pickNewId());
@@ -181,6 +185,7 @@ public class ComponentFactory {
         engineCapacityBottom.theoricalMinThrust = -2;
         engineCapacityBottom.theoricalVariationSpeed = 10;
         engineCapacityBottom.currentThrust = 0;
+        engineCapacityBottom.setName("linearEngine");
         component.addCapacity(engineCapacityBottom);
 
         LinearEngineCapacity engineCapacityLeft = new LinearEngineCapacity(GameServer.pickNewId());
@@ -188,6 +193,7 @@ public class ComponentFactory {
         engineCapacityLeft.theoricalMinThrust = -2;
         engineCapacityLeft.theoricalVariationSpeed = 10;
         engineCapacityLeft.currentThrust = 0;
+        engineCapacityLeft.setName("linearEngine");
         component.addCapacity(engineCapacityLeft);
 
         LinearEngineCapacity engineCapacityRight = new LinearEngineCapacity(GameServer.pickNewId());
@@ -195,6 +201,7 @@ public class ComponentFactory {
         engineCapacityRight.theoricalMinThrust = -2;
         engineCapacityRight.theoricalVariationSpeed = 10;
         engineCapacityRight.currentThrust = 0;
+        engineCapacityRight.setName("linearEngine");
         component.addCapacity(engineCapacityRight);
         return component;
     }
@@ -231,6 +238,7 @@ public class ComponentFactory {
         component.addSlot(GameServer.pickNewId(), part, new Vec3(shape.x / 6, 0.25, -shape.z / 2));
 
         WingCapacity wingCapacity = new WingCapacity(GameServer.pickNewId());
+        wingCapacity.setName("wing");
         component.addCapacity(wingCapacity);
 
         return component;
@@ -251,6 +259,7 @@ public class ComponentFactory {
         engineCapacity.theoricalMinThrust = -4;
         engineCapacity.theoricalVariationSpeed = 80;
         engineCapacity.currentThrust = 0;
+        engineCapacity.setName("linearEngine");
         component.addCapacity(engineCapacity);
 
         return component;
@@ -323,7 +332,7 @@ public class ComponentFactory {
 
     public static Component createByItem(Item content) {
         if (content.getName().equals("weapon.gun")) {
-            return createGun("weapon.gun");
+            return createGun("weapon.gun", "gun");
         }
         throw new RuntimeException("No component found to " + content.getName());
     }

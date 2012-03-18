@@ -1,51 +1,99 @@
 package com.irr310.server.upgrade;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.irr310.common.Game;
+import com.irr310.common.world.Component;
 import com.irr310.common.world.Player;
+import com.irr310.common.world.Ship;
+import com.irr310.common.world.capacity.Capacity;
+import com.irr310.common.world.capacity.GunCapacity;
 import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
 
 public class UpgradeFactory {
 
     private static Map<String, UpgradeEffect> effectMap = new HashMap<String, UpgradeEffect>();
-    
+    private static final double GUN_BASE_DAMAGE = 50;
+    private static final double GUN_BASE_FIRERATE = 1;
+    private static final double GUN_BASE_RANGE = 1000;
+    private static final double GUN_BASE_ACCURACY = 10;
+    private static final double GUN_BASE_COOLINGSPEED = 10;
+    private static final double GUN_BASE_HEATINGSPEED = 5;
+
+    private static final double SHOTGUN_BASE_DAMAGE = 50;
+    private static final double SHOTGUN_BASE_FIRERATE = 2;
+    private static final double SHOTGUN_BASE_RANGE = 200;
+    private static final double SHOTGUN_BASE_ACCURACY = 250;
+    private static final double SHOTGUN_BASE_COOLINGSPEED = 15;
+    private static final double SHOTGUN_BASE_HEATINGSPEED = 5;
+
     public static void initUpgrades() {
-        
-        addUpgrade(new WeaponDamageUpgradeEffect());
-        addUpgrade(new WeaponFirerateUpgradeEffect());
-        addUpgrade(new WeaponCoolingUpgradeEffect());
-        
+
         addUpgrade(new WeaponGunEffect());
         addUpgrade(new WeaponShotgunEffect());
         addUpgrade(new WeaponCannonEffect());
         addUpgrade(new WeaponLaserEffect());
-        
+
+        addUpgrade(new WeaponDamageUpgradeEffect());
+        addUpgrade(new WeaponFirerateUpgradeEffect());
+        addUpgrade(new WeaponCoolingUpgradeEffect());
+
     }
 
     private static void addUpgrade(UpgradeEffect upgradeEffect) {
-            Upgrade upgrade = upgradeEffect.generateUpgrade();
-            Game.getInstance().getWorld().addUpgrade(upgrade);
-            effectMap.put(upgrade.getTag(), upgradeEffect);
-        
+        Upgrade upgrade = upgradeEffect.generateUpgrade();
+        Game.getInstance().getWorld().addUpgrade(upgrade);
+        effectMap.put(upgrade.getTag(), upgradeEffect);
+
     }
 
-    public static void apply(UpgradeOwnership playerUpgrade) {
+    private static void apply(UpgradeOwnership playerUpgrade) {
         UpgradeEffect upgradeEffect = effectMap.get(playerUpgrade.getUpgrade().getTag());
         upgradeEffect.apply(playerUpgrade);
-        
+
     }
 
     public static void refresh(Player player) {
-        for(Upgrade upgrade : Game.getInstance().getWorld().getAvailableUpgrades()) {
+        initWorldUpgradables(player);
+        for (Upgrade upgrade : Game.getInstance().getWorld().getAvailableUpgrades()) {
             apply(player.getUpgradeState(upgrade));
         }
-        
+
     }
+
+    private static void initWorldUpgradables(Player player) {
+
+        List<Ship> shipList = player.getShipList();
+        for (Ship ship : shipList) {
+            for (Component component : ship.getComponents()) {
+                List<GunCapacity> capacities = component.getCapacitiesByClass(GunCapacity.class);
+                for (GunCapacity gunCapacity : capacities) {
+                    if (gunCapacity.getName().equals("gun")) {
+                        gunCapacity.damage = GUN_BASE_DAMAGE;
+                        gunCapacity.accuracy = GUN_BASE_ACCURACY;
+                        gunCapacity.coolingSpeed = GUN_BASE_COOLINGSPEED;
+                        gunCapacity.firerate = GUN_BASE_FIRERATE;
+                        gunCapacity.heatingSpeed = GUN_BASE_HEATINGSPEED;
+                        gunCapacity.range = GUN_BASE_RANGE;
+                    } else if (gunCapacity.getName().equals("shotgun")) {
+                        gunCapacity.damage = SHOTGUN_BASE_DAMAGE;
+                        gunCapacity.accuracy = SHOTGUN_BASE_ACCURACY;
+                        gunCapacity.coolingSpeed = SHOTGUN_BASE_COOLINGSPEED;
+                        gunCapacity.firerate = SHOTGUN_BASE_FIRERATE;
+                        gunCapacity.heatingSpeed = SHOTGUN_BASE_HEATINGSPEED;
+                        gunCapacity.range = SHOTGUN_BASE_RANGE;
+                    }
+                }
+            }
+        }
+
+    }
+
     public static void refresh() {
-        for(Player player: Game.getInstance().getWorld().getPlayers()) {
+        for (Player player : Game.getInstance().getWorld().getPlayers()) {
             refresh(player);
         }
     }
