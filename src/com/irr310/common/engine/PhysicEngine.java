@@ -705,4 +705,9 @@ public class PhysicEngine extends FramerateEngine {
 
     }
 
+    public void impulse(Part part, double energy, Vec3 localPosition, Vec3 axis) {
+        RigidBody body = partToBodyMap.get(part);
+        body.applyImpulse(axis.multiply(energy).toVector3d(), localPosition.toVector3d());
+    }
+
 }

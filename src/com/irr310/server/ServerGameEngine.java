@@ -55,7 +55,6 @@ import com.irr310.server.upgrade.UpgradeFactory;
 
 public class ServerGameEngine extends FramerateEngine {
 
-    
     private List<CapacityController> capacityControllers;
 
     private int reputation;
@@ -145,7 +144,11 @@ public class ServerGameEngine extends FramerateEngine {
         if (monolith != null) {
             for (CelestialObject object : Game.getInstance().getWorld().getCelestialsObjects()) {
                 if (object instanceof Loot) {
-                    if (object.getFirstPart().getTransform().getTranslation().distanceTo(monolith.getFirstPart().getTransform().getTranslation()) < 80) {
+                    double distanceTo = object.getFirstPart()
+                                              .getTransform()
+                                              .getTranslation()
+                                              .distanceTo(monolith.getFirstPart().getTransform().getTranslation());
+                    if (distanceTo < 80) {
                         Loot loot = (Loot) object;
                         Game.getInstance().getWorld().removeCelestialObject(loot, Reason.LOOTED);
                         distachRevenue(loot.getValue());
@@ -158,10 +161,10 @@ public class ServerGameEngine extends FramerateEngine {
                                              .getTranslation()
                                              .minus(object.getFirstPart().getTransform().getTranslation())
                                              .normalize()
-                                             .multiply(1);
+                                             .multiply(1 + Math.log10(distanceTo) * 1);
 
                     object.getFirstPart().getLinearSpeed().set(lootSpeed);
-                    //Game.getInstance().getPhysicEngine().reloadStates(object.getFirstPart());
+                    Game.getInstance().getPhysicEngine().reloadStates(object.getFirstPart());
                     Game.getInstance().getWorld().unlock();
                 }
             }
@@ -311,8 +314,14 @@ public class ServerGameEngine extends FramerateEngine {
                 // damage = (1-rangePercent^3)
                 double damage = event.getDamage() * (1 - Math.pow(rayTest.getHitFraction(), 3));
                 applyDamage(rayTest.getPart(), damage, event.getDamageType());
+                impulse(rayTest.getPart(), damage, rayTest.getLocalPosition(), event.getTo().minus(event.getFrom()).normalize());
+
                 break;
             }
+        }
+
+        private void impulse(Part part, double energy, Vec3 localPosition, Vec3 axis) {
+            Game.getInstance().getPhysicEngine().impulse(part, energy, localPosition, axis);
         }
 
         @Override
@@ -382,7 +391,7 @@ public class ServerGameEngine extends FramerateEngine {
     }
 
     private void processCollision(Part part, double impulse) {
-        applyDamage(part, impulse*0.1, DamageType.PHYSICAL);
+        applyDamage(part, impulse * 0.5, DamageType.PHYSICAL);
     }
 
     private void applyDamage(Part target, double damage, DamageType damageType) {
