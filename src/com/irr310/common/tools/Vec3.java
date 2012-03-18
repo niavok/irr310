@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.vecmath.Vector3d;
-import javax.vecmath.Vector3d;
 
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 
@@ -13,10 +12,6 @@ public class Vec3 {
     public double x;
     public double y;
     public double z;
-
-    //TODO: try to remove
-    private List<Vect3ChangeListener> changeListeners;
-    private V3DVect3 v3dVect3;
 
     public Vec3() {
         this(0, 0, 0);
@@ -27,12 +22,11 @@ public class Vec3 {
         this.y = v.y;
         this.z = v.z;
     }
-    
+
     public Vec3(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;
-        changeListeners = new ArrayList<Vec3.Vect3ChangeListener>();
     }
 
     public Vec3(int x, int y, int z) {
@@ -48,7 +42,7 @@ public class Vec3 {
     }
 
     public V3DVect3 toV3DVect3() {
-        return new V3DVect3((float) x,(float) y,(float) z);
+        return new V3DVect3((float) x, (float) y, (float) z);
     }
 
     public Vector3d toVector3d() {
@@ -59,22 +53,18 @@ public class Vec3 {
         this.x = (double) x;
         this.y = (double) y;
         this.z = (double) z;
-        fireChanged();
     }
 
     public void set(Vec3 vect) {
         this.x = vect.x;
         this.y = vect.y;
         this.z = vect.z;
-        fireChanged();
-
     }
 
     public void set(Vector3d vect) {
         this.x = (double) vect.x;
         this.y = (double) vect.y;
         this.z = (double) vect.z;
-        fireChanged();
     }
 
     public static Vec3 origin() {
@@ -85,29 +75,13 @@ public class Vec3 {
         return new Vec3(1, 1, 1);
     }
 
-    public void addListener(Vect3ChangeListener listener) {
-        changeListeners.add(listener);
-    }
-
-    public void fireChanged() {
-        for (Vect3ChangeListener listener : changeListeners) {
-            listener.valueChanged();
-        }
-    }
-
-    public interface Vect3ChangeListener {
-
-        public void valueChanged();
-    }
-
     public Vec3 divide(double i) {
         return new Vec3(x / i, y / i, z / i);
     }
-    
+
     public Vec3 multiply(double i) {
         return new Vec3(x * i, y * i, z * i);
     }
-    
 
     public double length() {
         return Math.sqrt(x * x + y * y + z * z);
@@ -124,7 +98,7 @@ public class Vec3 {
     public Vec3 minus(Vec3 v) {
         return new Vec3(x - v.x, y - v.y, z - v.z);
     }
-    
+
     public Vec3 plus(Vec3 v) {
         return new Vec3(v.x + x, v.y + y, v.z + z);
     }
@@ -171,7 +145,7 @@ public class Vec3 {
 
         return out;
     }
-    
+
     public Vec3 rotate(TransformMatrix transform) {
         Vec3 out = new Vec3();
 
@@ -181,7 +155,6 @@ public class Vec3 {
 
         return out;
     }
-    
 
     public double dot(Vec3 vect) {
         return x * vect.x + y * vect.y + z * vect.z;
@@ -192,10 +165,7 @@ public class Vec3 {
     }
 
     public Vec3 cross(Vec3 v) {
-        return new Vec3(y*v.z - z*v.y, z*v.x - x*v.z, x*v.y - y*v.x);
+        return new Vec3(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x);
     }
-
-    
-
 
 }
