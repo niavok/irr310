@@ -45,6 +45,11 @@ Weapon upgrade
  - Rank 2 : increase the firerate by 100%     **2000 $**
  - Rank 3 : increase the firerate by 200%     **8000 $**
 
+### Increase range
+
+
+### Increase accurancy
+
 
 ### Weapons
 You can have/buy as many weapon as you Weapon slot level. You can buy multiple time the same weapons.
@@ -186,6 +191,9 @@ Use energy
  - Rank 1: display arrows (default)
  - Rank 2: display a global minimap
  - Rank 3: ?
+
+### targeting laser
+
 
 ### Rear Camera
 Use energy
