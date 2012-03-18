@@ -944,12 +944,12 @@ public class WorldRenderer implements GraphicRenderer {
 
         @Override
         public void visit(CollisionEvent event) {
-            V3DPoint point = new V3DPoint(engine.getV3DContext());
-            point.setPosition(event.getCollisionDescriptor().getGlobalPosition().toV3DVect3());
-            point.setSize(5f);
-            scene.add(new V3DColorElement(point, new V3DColor((int) event.getCollisionDescriptor().getImpulse() * 10,
-                                                              50,
-                                                              255 - (int) event.getCollisionDescriptor().getImpulse() * 10)));
+//            V3DPoint point = new V3DPoint(engine.getV3DContext());
+//            point.setPosition(event.getCollisionDescriptor().getGlobalPosition().toV3DVect3());
+//            point.setSize(5f);
+//            scene.add(new V3DColorElement(point, new V3DColor((int) event.getCollisionDescriptor().getImpulse() * 10,
+//                                                              50,
+//                                                              255 - (int) event.getCollisionDescriptor().getImpulse() * 10)));
         }
 
         @Override
