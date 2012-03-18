@@ -12,7 +12,7 @@ public class GunCapacity extends Capacity {
     public boolean fire;
     public double damage;
     public double range;
-    //Size of the dispertion cube
+    //Size of the dispertion cube at 1000m
     public double accuracy;
     
     // Bullet count to overheat

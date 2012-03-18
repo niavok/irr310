@@ -78,7 +78,7 @@ public class GunController extends CapacityController {
         Vec3 from = new Vec3(xoffset, 1, yoffset).transform(part.getTransform());
             
         Random random = new Random();
-        double accuracy = capacity.accuracy * (10 - 9* component.getEfficiency());
+        double accuracy = capacity.range * capacity.accuracy * (10 - 9* component.getEfficiency()) / 1000.0;
             
         Vec3 to = new Vec3(xoffset + accuracy *(0.5 - random.nextDouble()), capacity.range + accuracy *(0.5 - random.nextDouble()), yoffset + accuracy *(0.5 - random.nextDouble())).transform(part.getTransform());
             
