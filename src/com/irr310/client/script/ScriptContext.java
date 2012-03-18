@@ -167,7 +167,7 @@ public class ScriptContext {
                 allowedClasses.add(com.irr310.client.script.js.objects.Component.class);
                 allowedClasses.add(com.irr310.client.script.js.objects.Capacity.class);
                 allowedClasses.add(com.irr310.client.script.js.objects.LinearEngineCapacity.class);
-                allowedClasses.add(com.irr310.client.script.js.objects.GunCapacity.class);
+                allowedClasses.add(com.irr310.client.script.js.objects.WeaponCapacity.class);
                 
                 allowedClasses.add(com.irr310.common.tools.Vec3.class);
                 allowedClasses.add(com.irr310.common.tools.TransformMatrix.class);

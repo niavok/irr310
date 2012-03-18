@@ -19,7 +19,7 @@ public class WeaponShotgunEffect extends UpgradeEffect {
                 currentWeaponCount ++;
             }
         }
-        
+
         if(currentWeaponCount > playerUpgrade.getRank()) {
             while(currentWeaponCount > playerUpgrade.getRank()){
                 player.removeItemByName("weapon.shotgun");

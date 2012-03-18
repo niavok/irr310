@@ -9,7 +9,7 @@ import com.irr310.common.world.Component;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.Ship;
 import com.irr310.common.world.capacity.Capacity;
-import com.irr310.common.world.capacity.GunCapacity;
+import com.irr310.common.world.capacity.WeaponCapacity;
 import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
 
@@ -23,11 +23,11 @@ public class UpgradeFactory {
     private static final double GUN_BASE_COOLINGSPEED = 10;
     private static final double GUN_BASE_HEATINGSPEED = 5;
 
-    private static final double SHOTGUN_BASE_DAMAGE = 50;
-    private static final double SHOTGUN_BASE_FIRERATE = 2;
+    private static final double SHOTGUN_BASE_DAMAGE = 20;
+    private static final double SHOTGUN_BASE_FIRERATE = 0.5;
     private static final double SHOTGUN_BASE_RANGE = 200;
     private static final double SHOTGUN_BASE_ACCURACY = 250;
-    private static final double SHOTGUN_BASE_COOLINGSPEED = 15;
+    private static final double SHOTGUN_BASE_COOLINGSPEED = 25;
     private static final double SHOTGUN_BASE_HEATINGSPEED = 5;
 
     public static void initUpgrades() {
@@ -69,8 +69,8 @@ public class UpgradeFactory {
         List<Ship> shipList = player.getShipList();
         for (Ship ship : shipList) {
             for (Component component : ship.getComponents()) {
-                List<GunCapacity> capacities = component.getCapacitiesByClass(GunCapacity.class);
-                for (GunCapacity gunCapacity : capacities) {
+                List<WeaponCapacity> capacities = component.getCapacitiesByClass(WeaponCapacity.class);
+                for (WeaponCapacity gunCapacity : capacities) {
                     if (gunCapacity.getName().equals("gun")) {
                         gunCapacity.damage = GUN_BASE_DAMAGE;
                         gunCapacity.accuracy = GUN_BASE_ACCURACY;

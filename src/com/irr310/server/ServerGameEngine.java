@@ -45,10 +45,12 @@ import com.irr310.common.world.Player;
 import com.irr310.common.world.Ship;
 import com.irr310.common.world.WorldObject;
 import com.irr310.common.world.capacity.Capacity;
-import com.irr310.common.world.capacity.GunCapacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
+import com.irr310.common.world.capacity.WeaponCapacity;
 import com.irr310.common.world.capacity.controller.CapacityController;
 import com.irr310.common.world.capacity.controller.GunController;
+import com.irr310.common.world.capacity.controller.ShotgunController;
+import com.irr310.common.world.capacity.controller.WeaponController;
 import com.irr310.common.world.capacity.controller.LinearEngineController;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
 import com.irr310.server.game.CelestialObjectFactory;
@@ -265,8 +267,12 @@ public class ServerGameEngine extends FramerateEngine {
                 if (capacity instanceof LinearEngineCapacity) {
                     addCapacityController(new LinearEngineController(component, (LinearEngineCapacity) capacity));
                 }
-                if (capacity instanceof GunCapacity) {
-                    addCapacityController(new GunController(component, (GunCapacity) capacity));
+                if (capacity instanceof WeaponCapacity) {
+                    if(capacity.getName().equals("gun")) {
+                        addCapacityController(new GunController(component, (WeaponCapacity) capacity));
+                    } else if(capacity.getName().equals("shotgun")) { 
+                        addCapacityController(new ShotgunController(component, (WeaponCapacity) capacity));
+                    }
                 }
             }
         }

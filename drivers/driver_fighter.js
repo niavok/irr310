@@ -841,7 +841,13 @@ function driver() {
         
         for(var i = 0; i< gunComponents.size() ; i++) {
             var gun = gunComponents.get(i).getCapacityByName("gun");
-            gun.fire(order);
+            if(gun) {
+                gun.fire(order);
+            }
+            var gun = gunComponents.get(i).getCapacityByName("shotgun");
+            if(gun) {
+                gun.fire(order);
+            }
         }
     }
     

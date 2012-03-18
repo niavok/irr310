@@ -29,7 +29,7 @@ public abstract class Capacity extends GameEntity{
             case WING:
                 return new WingCapacity(id);
             case GUN:
-                return new GunCapacity(id);
+                return new WeaponCapacity(id);
             default:
                 System.err.println("Not implemented capacity type: "+type.toString());
         }

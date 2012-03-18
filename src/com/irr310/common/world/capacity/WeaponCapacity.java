@@ -7,7 +7,7 @@ import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.DamageType;
 import com.irr310.common.world.view.CapacityView;
 
-public class GunCapacity extends Capacity {
+public class WeaponCapacity extends Capacity {
 
     public boolean fire;
     public double damage;
@@ -31,7 +31,7 @@ public class GunCapacity extends Capacity {
     public DamageType damageType;
     
 
-    public GunCapacity(long id) {
+    public WeaponCapacity(long id) {
         super(id);
         fire = false;
         damage = 50;
@@ -41,11 +41,7 @@ public class GunCapacity extends Capacity {
         heatingSpeed = 5;
         firerate = 1;
         barrels = new ArrayList<Vec3>();
-        barrels.add(new Vec3(0.14,0,0.14));
-        barrels.add(new Vec3(-0.14,0,0.14));
-        barrels.add(new Vec3(-0.14,0,0.14));
-        barrels.add(new Vec3(0.14,0,-0.14));
-
+        
         damageType = DamageType.PHYSICAL;
     }
 

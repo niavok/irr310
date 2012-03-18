@@ -1,12 +1,11 @@
 package com.irr310.client.script.js.objects;
 
-import com.irr310.common.tools.Log;
 
-public class GunCapacity extends Capacity {
+public class WeaponCapacity extends Capacity {
 
-    private final com.irr310.common.world.capacity.GunCapacity capacity;
+    private final com.irr310.common.world.capacity.WeaponCapacity capacity;
 
-    public GunCapacity(com.irr310.common.world.capacity.GunCapacity capacity) {
+    public WeaponCapacity(com.irr310.common.world.capacity.WeaponCapacity capacity) {
         super(capacity);
         this.capacity = capacity;
     }

@@ -6,7 +6,7 @@ import com.irr310.client.graphics.GraphicEngine;
 import com.irr310.client.graphics.WorldRenderer;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.world.Component;
-import com.irr310.common.world.capacity.GunCapacity;
+import com.irr310.common.world.capacity.WeaponCapacity;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
@@ -37,7 +37,8 @@ public class GunSkin extends Skin {
 
         
         
-        GunCapacity gunCapacity = (GunCapacity) object.getCapacityByName("gun");
+        WeaponCapacity gunCapacity = (WeaponCapacity) object.getCapacitiesByClass(WeaponCapacity.class).get(0);
+        
         
         
         final V3DLine line = new V3DLine(engine.getV3DContext());

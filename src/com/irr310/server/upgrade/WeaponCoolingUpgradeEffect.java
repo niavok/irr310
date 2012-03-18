@@ -6,7 +6,7 @@ import com.irr310.common.world.Component;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.Ship;
 import com.irr310.common.world.capacity.Capacity;
-import com.irr310.common.world.capacity.GunCapacity;
+import com.irr310.common.world.capacity.WeaponCapacity;
 import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
 import com.irr310.common.world.upgrade.Upgrade.UpgradeCategory;
@@ -20,8 +20,8 @@ public class WeaponCoolingUpgradeEffect extends UpgradeEffect {
         
         for(Ship ship: shipList) {
             for(Component component: ship.getComponents()) {
-                List<GunCapacity> capacities = component.getCapacitiesByClass(GunCapacity.class);
-                for (GunCapacity gunCapacity : capacities) {
+                List<WeaponCapacity> capacities = component.getCapacitiesByClass(WeaponCapacity.class);
+                for (WeaponCapacity gunCapacity : capacities) {
                     
                     double lastCoolingspeed = gunCapacity.coolingSpeed;
                     

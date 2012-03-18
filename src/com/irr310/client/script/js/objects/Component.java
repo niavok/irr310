@@ -19,11 +19,15 @@ public class Component {
 	public Capacity getCapacityByName(String name) {
 	    com.irr310.common.world.capacity.Capacity capacity = component.getCapacityByName(name);
 	    
+	    if(capacity == null) {
+	        return null;
+	    }
+	    
 	    if(capacity.getName().equals("linearEngine")) {
 	            return new LinearEngineCapacity((com.irr310.common.world.capacity.LinearEngineCapacity) capacity);
 	    }
-	    if(capacity.getName().equals("gun")) {
-            return new GunCapacity((com.irr310.common.world.capacity.GunCapacity) capacity);
+	    if(capacity.getName().equals("gun") || capacity.getName().equals("shotgun")) {
+            return new WeaponCapacity((com.irr310.common.world.capacity.WeaponCapacity) capacity);
 	    }
 	    System.err.println("unknown capacity name");
 	    return null;

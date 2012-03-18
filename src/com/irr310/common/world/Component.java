@@ -10,7 +10,7 @@ import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.capacity.Capacity.CapacityType;
-import com.irr310.common.world.capacity.GunCapacity;
+import com.irr310.common.world.capacity.WeaponCapacity;
 import com.irr310.common.world.view.CapacityView;
 import com.irr310.common.world.view.ComponentView;
 import com.irr310.common.world.view.PartView;

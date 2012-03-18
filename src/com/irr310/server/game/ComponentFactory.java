@@ -5,7 +5,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.Part;
-import com.irr310.common.world.capacity.GunCapacity;
+import com.irr310.common.world.capacity.WeaponCapacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.common.world.capacity.WingCapacity;
 import com.irr310.common.world.item.Item;
@@ -152,8 +152,20 @@ public class ComponentFactory {
         component.addSlot(GameServer.pickNewId(), part, new Vec3(0, -shape.y / 4, shape.z / 2));
         component.addSlot(GameServer.pickNewId(), part, new Vec3(0, -shape.y / 4, -shape.z / 2));
 
-        GunCapacity gunCapacity = new GunCapacity(GameServer.pickNewId());
+        WeaponCapacity gunCapacity = new WeaponCapacity(GameServer.pickNewId());
         gunCapacity.setName(capacityName);
+        if(capacityName.equals("gun")) {
+            
+            gunCapacity.barrels.add(new Vec3(0.14,0,0.14));
+            gunCapacity.barrels.add(new Vec3(-0.14,0,0.14));
+            gunCapacity.barrels.add(new Vec3(-0.14,0,0.14));
+            gunCapacity.barrels.add(new Vec3(0.14,0,-0.14));
+
+        } else if(capacityName.equals("shotgun")) {
+            gunCapacity.barrels.add(new Vec3(0.0,0,0.0));
+        }
+         
+        
         component.addCapacity(gunCapacity);
         
 
@@ -333,7 +345,10 @@ public class ComponentFactory {
     public static Component createByItem(Item content) {
         if (content.getName().equals("weapon.gun")) {
             return createGun("weapon.gun", "gun");
+        } else if (content.getName().equals("weapon.shotgun")) {
+            return createGun("weapon.gun", "shotgun");
         }
+        
         throw new RuntimeException("No component found to " + content.getName());
     }
 
