@@ -14,7 +14,7 @@ import fr.def.iss.vd2.lib_v3d.element.V3DLine;
 public class BulletEffect extends GenericGraphicalElement{
 
     private V3DGroupElement elements;
-    private float speed = 2000;
+    private float speed = 10000;
     private float currentLocation = 0;
 
     private final Vec3 to;
