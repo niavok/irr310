@@ -9,7 +9,7 @@ function driver() {
     }
     
     
-    var theoricalMaxSpeed = 565.27;
+    var theoricalMaxSpeed = 65.27;
     var speedTarget = 0;
     var maxRotationSpeed = 2;
     var rotationSpeedTarget = new Vec3(0,0,0.0);
@@ -202,13 +202,12 @@ function driver() {
             var deltaSpeed = (currentSpeed - this.lastSpeed);
             var deltaAcc = (deltaSpeed - this.lastDeltaSpeed);
             
-            var maxHorizontalThrust = Math.min(leftEngine.getMaxThrust(), rightEngine.getMaxThrust()) 
-            var minHorizontalThrust = Math.min( -leftEngine.getMinThrust(), -rightEngine.getMinThrust())
-            var maxVerticalThrust = Math.min(topEngine.getMaxThrust(), bottomEngine.getMaxThrust())
-            var minVerticalThrust = Math.min( -topEngine.getMinThrust(), -bottomEngine.getMinThrust())
             
             if(Math.abs(speedTarget - currentSpeed) > 0.1) {
-                
+                var maxHorizontalThrust = Math.min(leftEngine.getMaxThrust(), rightEngine.getMaxThrust())
+                var minHorizontalThrust = Math.min( -leftEngine.getMinThrust(), -rightEngine.getMinThrust())
+                var maxVerticalThrust = Math.min(topEngine.getMaxThrust(), bottomEngine.getMaxThrust())
+                var minVerticalThrust = Math.min( -topEngine.getMinThrust(), -bottomEngine.getMinThrust())
 
                 if(this.lastSpeedTarget != speedTarget) {
                     //Thrust target changed, full power allowed
@@ -277,6 +276,10 @@ function driver() {
             var bottomRotThrust = 0;
             var leftRotThrust = 0;
             var rightRotThrust = 0;
+
+           var minHorizontalThrust = Math.max( -leftEngine.getMinThrust(), -rightEngine.getMinThrust())
+            var minVerticalThrust = Math.max( -topEngine.getMinThrust(), -bottomEngine.getMinThrust())
+
 
             if(Math.abs(localRotationSpeed.getX() - rotationSpeedTarget.getX()) > 0.001) {
                 var deltaThrust = this.topThrustTarget - this.bottomThrustTarget;
