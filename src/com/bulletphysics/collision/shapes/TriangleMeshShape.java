@@ -195,7 +195,8 @@ public abstract class TriangleMeshShape extends ConcaveShape {
 			}
 		}
 
-		public Vector3d getSupportVertexWorldSpace(Vector3d out) {
+		@SuppressWarnings("unused")
+        public Vector3d getSupportVertexWorldSpace(Vector3d out) {
 			out.set(supportVertexLocal);
 			worldTrans.transform(out);
 			return out;

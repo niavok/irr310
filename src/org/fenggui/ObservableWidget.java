@@ -538,7 +538,8 @@ public abstract class ObservableWidget extends StandardWidget
   /* (non-Javadoc)
    * @see org.fenggui.Widget#keyPressed(org.fenggui.event.key.KeyPressedEvent)
    */
-  public void keyPressed(KeyPressedEvent keyPressedEvent)
+  @SuppressWarnings("deprecation")
+public void keyPressed(KeyPressedEvent keyPressedEvent)
   {
     if (!enabled || !isVisible() || !isInWidgetTree())
       return;
@@ -578,7 +579,8 @@ public abstract class ObservableWidget extends StandardWidget
   /* (non-Javadoc)
    * @see org.fenggui.Widget#keyReleased(org.fenggui.event.key.KeyReleasedEvent)
    */
-  public void keyReleased(KeyReleasedEvent keyReleasedEvent)
+  @SuppressWarnings("deprecation")
+public void keyReleased(KeyReleasedEvent keyReleasedEvent)
   {
     if (!enabled || !isVisible() || !isInWidgetTree())
       return;
@@ -598,7 +600,8 @@ public abstract class ObservableWidget extends StandardWidget
   /* (non-Javadoc)
    * @see org.fenggui.Widget#keyTyped(org.fenggui.event.key.KeyTypedEvent)
    */
-  public void keyTyped(KeyTypedEvent keyTypedEvent)
+  @SuppressWarnings("deprecation")
+public void keyTyped(KeyTypedEvent keyTypedEvent)
   {
     if (!enabled || !isVisible() || !isInWidgetTree())
       return;

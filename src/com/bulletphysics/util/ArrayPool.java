@@ -36,9 +36,11 @@ import java.util.Map;
  */
 public class ArrayPool<T> {
 
-	private Class componentType;
-	private ObjectArrayList list = new ObjectArrayList();
-	private Comparator comparator;
+	@SuppressWarnings("rawtypes")
+    private Class componentType;
+	private ObjectArrayList<T> list = new ObjectArrayList<T>();
+	@SuppressWarnings("rawtypes")
+    private Comparator comparator;
 	private IntValue key = new IntValue();
 	
 	/**
@@ -46,7 +48,8 @@ public class ArrayPool<T> {
 	 * 
 	 * @param componentType
 	 */
-	public ArrayPool(Class componentType) {
+	@SuppressWarnings("rawtypes")
+    public ArrayPool(Class componentType) {
 		this.componentType = componentType;
 		
 		if (componentType == double.class) {
@@ -82,7 +85,7 @@ public class ArrayPool<T> {
 		if (index < 0) {
 			return create(length);
 		}
-		return (T)list.remove(index);
+		return list.remove(index);
 	}
 
 	/**
@@ -130,7 +133,8 @@ public class ArrayPool<T> {
 	
 	////////////////////////////////////////////////////////////////////////////
 
-	private static Comparator doubleComparator = new Comparator() {
+	@SuppressWarnings("rawtypes")
+    private static Comparator doubleComparator = new Comparator() {
 		public int compare(Object o1, Object o2) {
 			int len1 = (o1 instanceof IntValue)? ((IntValue)o1).value : ((double[])o1).length;
 			int len2 = (o2 instanceof IntValue)? ((IntValue)o2).value : ((double[])o2).length;
@@ -138,7 +142,8 @@ public class ArrayPool<T> {
 		}
 	};
 
-	private static Comparator intComparator = new Comparator() {
+	@SuppressWarnings("rawtypes")
+    private static Comparator intComparator = new Comparator() {
 		public int compare(Object o1, Object o2) {
 			int len1 = (o1 instanceof IntValue)? ((IntValue)o1).value : ((int[])o1).length;
 			int len2 = (o2 instanceof IntValue)? ((IntValue)o2).value : ((int[])o2).length;
@@ -146,7 +151,8 @@ public class ArrayPool<T> {
 		}
 	};
 	
-	private static Comparator objectComparator = new Comparator() {
+	@SuppressWarnings("rawtypes")
+    private static Comparator objectComparator = new Comparator() {
 		public int compare(Object o1, Object o2) {
 			int len1 = (o1 instanceof IntValue)? ((IntValue)o1).value : ((Object[])o1).length;
 			int len2 = (o2 instanceof IntValue)? ((IntValue)o2).value : ((Object[])o2).length;
@@ -160,7 +166,8 @@ public class ArrayPool<T> {
 	
 	////////////////////////////////////////////////////////////////////////////
 	
-	private static ThreadLocal<Map> threadLocal = new ThreadLocal<Map>() {
+	@SuppressWarnings("rawtypes")
+    private static ThreadLocal<Map> threadLocal = new ThreadLocal<Map>() {
 		@Override
 		protected Map initialValue() {
 			return new HashMap();
@@ -173,11 +180,11 @@ public class ArrayPool<T> {
 	 * @param cls type
 	 * @return object pool
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static <T> ArrayPool<T> get(Class cls) {
-		Map map = threadLocal.get();
+		Map<Class, ArrayPool<T>> map = threadLocal.get();
 		
-		ArrayPool<T> pool = (ArrayPool<T>)map.get(cls);
+		ArrayPool<T> pool = map.get(cls);
 		if (pool == null) {
 			pool = new ArrayPool<T>(cls);
 			map.put(cls, pool);

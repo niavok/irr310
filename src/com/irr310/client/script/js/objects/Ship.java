@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.irr310.common.Game;
-import com.irr310.common.tools.Log;
 
 public class Ship {
 

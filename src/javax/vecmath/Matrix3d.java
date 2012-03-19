@@ -87,12 +87,7 @@ public class Matrix3d implements java.io.Serializable, Cloneable {
      */
     public	double	m22;
 
-    //double[]    tmp = new double[9];  // scratch matrix
-    //double[]    tmp_rot = new double[9];  // scratch matrix
-    //double[]    tmp_scale = new double[3];  // scratch matrix
     private static final double EPS = 1.110223024E-16;
-    private static final double ERR_EPS = 1.0E-8;
-    private static double xin,yin,zin,xout,yout,zout;
 
     /**
      * Constructs and initializes a Matrix3d from the specified nine values.

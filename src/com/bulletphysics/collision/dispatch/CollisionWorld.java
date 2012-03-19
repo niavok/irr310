@@ -670,7 +670,7 @@ public class CollisionWorld {
 		}
 
 		public boolean needsCollision(BroadphaseProxy proxy0) {
-			boolean collides = ((proxy0.collisionFilterGroup & collisionFilterMask) & 0xFFFF) != 0;
+			boolean collides = (proxy0 != null) && ((proxy0.collisionFilterGroup & collisionFilterMask) & 0xFFFF) != 0;
 			collides = collides && ((collisionFilterGroup & proxy0.collisionFilterMask) & 0xFFFF) != 0;
 			return collides;
 		}

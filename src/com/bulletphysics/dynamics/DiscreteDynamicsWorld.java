@@ -57,7 +57,6 @@ import com.bulletphysics.linearmath.ScalarUtil;
 import com.bulletphysics.linearmath.Transform;
 import com.bulletphysics.linearmath.TransformUtil;
 import com.bulletphysics.util.ObjectArrayList;
-import com.irr310.common.tools.Log;
 
 /**
  * DiscreteDynamicsWorld provides discrete rigid body simulation.

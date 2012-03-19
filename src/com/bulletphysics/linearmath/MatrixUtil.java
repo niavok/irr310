@@ -29,7 +29,6 @@ import javax.vecmath.Vector3d;
 
 import com.bulletphysics.BulletGlobals;
 import com.bulletphysics.util.ArrayPool;
-import com.irr310.common.tools.Log;
 
 /**
  * Utility functions for matrices.

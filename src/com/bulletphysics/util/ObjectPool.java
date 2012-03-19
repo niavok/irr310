@@ -76,7 +76,7 @@ public class ObjectPool<T> {
 	}
 	
 	////////////////////////////////////////////////////////////////////////////
-	
+	@SuppressWarnings("all")
 	private static ThreadLocal<Map> threadLocal = new ThreadLocal<Map>() {
 		@Override
 		protected Map initialValue() {
@@ -90,7 +90,7 @@ public class ObjectPool<T> {
 	 * @param cls type
 	 * @return object pool
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("all")
 	public static <T> ObjectPool<T> get(Class<T> cls) {
 		Map map = threadLocal.get();
 		

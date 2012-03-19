@@ -31,7 +31,6 @@
 
 package javax.vecmath;
 
-import com.irr310.common.tools.Log;
 
 /**
  * A generic 3-element tuple that is represented by double-precision floating

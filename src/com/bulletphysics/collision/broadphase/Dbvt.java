@@ -768,6 +768,7 @@ public class Dbvt {
 
 	private static Vector3d[] axis = new Vector3d[] { new Vector3d(1, 0, 0), new Vector3d(0, 1, 0), new Vector3d(0, 0, 1) };
 	
+	@SuppressWarnings("all")
 	private static Node topdown(Dbvt pdbvt, ObjectArrayList<Node> leaves, int bu_treshold) {
 		if (leaves.size() > 1) {
 			if (leaves.size() > bu_treshold) {
@@ -854,13 +855,6 @@ public class Dbvt {
 
 			DbvtAabbMm.swap(p.volume, n.volume);
 			return p;
-		}
-		return n;
-	}
-	
-	private static Node walkup(Node n, int count) {
-		while (n != null && (count--) != 0) {
-			n = n.parent;
 		}
 		return n;
 	}

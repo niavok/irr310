@@ -1,51 +1,65 @@
 package com.irr310.client.script.js.objects;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.newdawn.slick.util.Log;
+
 import com.irr310.common.Game;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
 
 public class Component {
 
-	private com.irr310.common.world.Component component;
-	
-	public Component(long id) {
-	    component = Game.getInstance().getWorld().getComponentBy(id);
-	}
+    private com.irr310.common.world.Component component;
 
-	public long getId() {
+    public Component(long id) {
+        component = Game.getInstance().getWorld().getComponentBy(id);
+    }
+
+    public long getId() {
         return component.getId();
     }
 
-	public Capacity getCapacityByName(String name) {
-	    com.irr310.common.world.capacity.Capacity capacity = component.getCapacityByName(name);
-	    
-	    if(capacity == null) {
-	        return null;
-	    }
-	    
-	    if(capacity.getName().equals("linearEngine")) {
-	            return new LinearEngineCapacity((com.irr310.common.world.capacity.LinearEngineCapacity) capacity);
-	    }
-	    if(capacity.getName().equals("gun") || capacity.getName().equals("shotgun")) {
-            return new WeaponCapacity((com.irr310.common.world.capacity.WeaponCapacity) capacity);
-	    }
-	    System.err.println("unknown capacity name");
-	    return null;
+    @SuppressWarnings("unchecked")
+    public List<Capacity> getCapacitiesByClass(String className) {
+        List<Capacity> outCapacities = new ArrayList<Capacity>();
+        
+        Class<com.irr310.common.world.capacity.Capacity> clazz;
+        try {
+            clazz = (Class<com.irr310.common.world.capacity.Capacity>) Class.forName("com.irr310.common.world.capacity."
+                    + className);
+        } catch (ClassNotFoundException e) {
+            Log.warn("Class call from js with getCapacitiesByClass not found: "+className);
+            return outCapacities;
+        }
+
+        List<com.irr310.common.world.capacity.Capacity> capacities = component.getCapacitiesByClass(clazz);
+
+        for (com.irr310.common.world.capacity.Capacity capacity : capacities) {
+            if (capacity instanceof com.irr310.common.world.capacity.LinearEngineCapacity) {
+                outCapacities.add(new LinearEngineCapacity((com.irr310.common.world.capacity.LinearEngineCapacity) capacity));
+            } else if (capacity instanceof com.irr310.common.world.capacity.WeaponCapacity) {
+                outCapacities.add(new WeaponCapacity((com.irr310.common.world.capacity.WeaponCapacity) capacity));
+            }
+        }
+
+        return outCapacities;
     }
-	
-	public Vec3 getLinearSpeed() {
-	    return component.getFirstPart().getLinearSpeed();
-	}
-	
-	public Vec3 getPosition() {
-	    return component.getFirstPart().getTransform().getTranslation();
-	}
-	
-	public TransformMatrix getTransform() {
+
+    public Vec3 getLinearSpeed() {
+        return component.getFirstPart().getLinearSpeed();
+    }
+
+    public Vec3 getPosition() {
+        return component.getFirstPart().getTransform().getTranslation();
+    }
+
+    public TransformMatrix getTransform() {
         return component.getFirstPart().getTransform();
     }
-	
-	public Vec3 getRotationSpeed() {
+
+    public Vec3 getRotationSpeed() {
         return component.getFirstPart().getRotationSpeed();
     }
 }

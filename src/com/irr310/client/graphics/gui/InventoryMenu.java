@@ -10,7 +10,6 @@ import org.fenggui.event.IButtonPressedListener;
 import com.irr310.client.graphics.GraphicEngine;
 import com.irr310.client.graphics.MenuContainer;
 import com.irr310.client.navigation.LoginManager;
-import com.irr310.common.tools.Log;
 import com.irr310.common.world.item.Item;
 import com.irr310.common.world.item.ItemSlot;
 import com.irr310.common.world.item.ShipSchema;

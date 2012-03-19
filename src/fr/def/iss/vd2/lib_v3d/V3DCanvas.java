@@ -289,17 +289,6 @@ public class V3DCanvas {
      */
     public void display() {
 
-        if (showFps) {
-            //int fps = (int) animator.getFps();
-            //Graphics g = canvas.getGraphics();
-            //g.setColor(Color.yellow);
-            //g.drawString("" + fps + " fps", 10, 20);*/
-        	//TODO repair
-            
-            //fps
-        }
-
-
         GL11.glClear(GL11.GL_ACCUM_BUFFER_BIT);
 
         int i = 0;

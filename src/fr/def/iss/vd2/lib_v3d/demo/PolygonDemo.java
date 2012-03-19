@@ -187,6 +187,7 @@ public class PolygonDemo {
         return pointsList;
     }
 
+    @SuppressWarnings("unused")
     private List<V3DVect3> getTrianglePointList() {
 
         List<V3DVect3> pointsList = new ArrayList<V3DVect3>();
@@ -195,6 +196,7 @@ public class PolygonDemo {
         pointsList.add(new V3DVect3( ZERO,-UN,   0));
         return pointsList;
     }
+        @SuppressWarnings("unused")
         private List<V3DVect3> getTriang1ePointList() {
 
         List<V3DVect3> pointsList = new ArrayList<V3DVect3>();

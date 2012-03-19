@@ -1,9 +1,6 @@
 package com.irr310.common.world.item;
 
 import com.irr310.common.Game;
-import com.irr310.common.event.EngineEvent;
-import com.irr310.common.event.EngineEventVisitor;
-import com.irr310.common.event.InventoryChangedEvent;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.GameEntity;
 import com.irr310.common.world.World;

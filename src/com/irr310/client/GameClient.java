@@ -1,7 +1,6 @@
 package com.irr310.client;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import com.irr310.client.graphics.GraphicEngine;

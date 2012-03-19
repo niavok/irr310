@@ -25,10 +25,10 @@ function driver() {
         
         var ship = ships.get(0);
 
-        var leftEngine = ship.getComponentByName("leftReactor").getCapacityByName("linearEngine");
-        var rightEngine = ship.getComponentByName("rightReactor").getCapacityByName("linearEngine");
-        var topEngine = ship.getComponentByName("topReactor").getCapacityByName("linearEngine");
-        var bottomEngine = ship.getComponentByName("bottomReactor").getCapacityByName("linearEngine");
+        var leftEngine = ship.getComponentByName("leftReactor").getCapacitiesByClass("LinearEngineCapacity").get(0);
+        var rightEngine = ship.getComponentByName("rightReactor").getCapacitiesByClass("LinearEngineCapacity").get(0);
+        var topEngine = ship.getComponentByName("topReactor").getCapacitiesByClass("LinearEngineCapacity").get(0);
+        var bottomEngine = ship.getComponentByName("bottomReactor").getCapacitiesByClass("LinearEngineCapacity").get(0);
         /*var gun = ship.getComponentByName("weapon.gun").getCapacityByName("gun");*/
         var kernel = ship.getComponentByName("kernel");
         
@@ -840,14 +840,12 @@ function driver() {
         var gunComponents = ship.getComponentsByName("weapon.gun")
         
         for(var i = 0; i< gunComponents.size() ; i++) {
-            var gun = gunComponents.get(i).getCapacityByName("gun");
-            if(gun) {
+            var guns = gunComponents.get(i).getCapacitiesByClass("WeaponCapacity");
+            
+             for(var j = 0; j< guns.size() ; j++) {
+                var gun = guns.get(j);
                 gun.fire(order);
-            }
-            var gun = gunComponents.get(i).getCapacityByName("shotgun");
-            if(gun) {
-                gun.fire(order);
-            }
+             }
         }
     }
     

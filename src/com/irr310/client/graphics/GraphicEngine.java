@@ -43,7 +43,6 @@ import com.irr310.common.event.UseScriptEvent;
 import com.irr310.common.event.WorldReadyEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.common.event.WorldSizeChangedEvent;
-import com.irr310.common.tools.Log;
 import com.irr310.common.tools.Vec2;
 import com.irr310.server.Duration;
 

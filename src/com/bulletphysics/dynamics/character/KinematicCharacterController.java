@@ -466,6 +466,7 @@ public class KinematicCharacterController extends ActionInterface {
 		updateTargetPositionBasedOnCollision(hitNormal, 0f, 1f);
 	}
 
+	@SuppressWarnings("all")
 	protected void updateTargetPositionBasedOnCollision(Vector3d hitNormal, double tangentMag, double normalMag) {
 		Vector3d movementDirection = new Vector3d();
 		movementDirection.sub(targetPosition, currentPosition);
@@ -480,6 +481,7 @@ public class KinematicCharacterController extends ActionInterface {
 			Vector3d perpindicularDir = perpindicularComponent(reflectDir, hitNormal, new Vector3d());
 
 			targetPosition.set(currentPosition);
+			
 			if (false) //tangentMag != 0.0)
 			{
 				Vector3d parComponent = new Vector3d();

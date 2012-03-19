@@ -5,11 +5,10 @@ import java.util.List;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.Ship;
-import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.capacity.WeaponCapacity;
 import com.irr310.common.world.upgrade.Upgrade;
-import com.irr310.common.world.upgrade.UpgradeOwnership;
 import com.irr310.common.world.upgrade.Upgrade.UpgradeCategory;
+import com.irr310.common.world.upgrade.UpgradeOwnership;
 
 public class WeaponCoolingUpgradeEffect extends UpgradeEffect {
 

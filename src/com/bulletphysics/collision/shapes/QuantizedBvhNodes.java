@@ -86,6 +86,7 @@ public class QuantizedBvhNodes implements Serializable {
 		return STRIDE*4;
 	}
 	
+	@SuppressWarnings("all")
 	public void set(int destId, QuantizedBvhNodes srcNodes, int srcId) {
 		assert (STRIDE == 4);
 
@@ -99,6 +100,7 @@ public class QuantizedBvhNodes implements Serializable {
 		buf[destId*STRIDE+3] = srcBuf[srcId*STRIDE+3];
 	}
 	
+	@SuppressWarnings("all")
 	public void swap(int id1, int id2) {
 		assert (STRIDE == 4);
 		

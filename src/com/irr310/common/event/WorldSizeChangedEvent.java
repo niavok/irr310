@@ -1,7 +1,5 @@
 package com.irr310.common.event;
 
-import com.irr310.common.world.DamageType;
-import com.irr310.common.world.Part;
 
 public class WorldSizeChangedEvent extends EngineEvent {
 

@@ -7,8 +7,8 @@ import org.apache.commons.lang3.RandomStringUtils;
 
 import com.irr310.common.Game;
 import com.irr310.common.event.InventoryChangedEvent;
-import com.irr310.common.event.MoneyChangedEvent;
 import com.irr310.common.event.InventoryChangedEvent.ChangeType;
+import com.irr310.common.event.MoneyChangedEvent;
 import com.irr310.common.tools.Hash;
 import com.irr310.common.world.item.Item;
 import com.irr310.common.world.item.ItemSlot;

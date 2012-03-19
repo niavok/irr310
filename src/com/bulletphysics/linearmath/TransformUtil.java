@@ -28,7 +28,6 @@ import javax.vecmath.Quat4d;
 import javax.vecmath.Vector3d;
 
 import com.bulletphysics.BulletGlobals;
-import com.irr310.common.tools.Log;
 
 /**
  * Utility functions for transforms.

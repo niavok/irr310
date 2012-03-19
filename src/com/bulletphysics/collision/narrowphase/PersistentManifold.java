@@ -230,6 +230,7 @@ public class PersistentManifold {
 		return nearestPoint;
 	}
 
+	@SuppressWarnings("all")
 	public int addManifoldPoint(ManifoldPoint newPoint) {
 		assert (validContactDistance(newPoint));
 

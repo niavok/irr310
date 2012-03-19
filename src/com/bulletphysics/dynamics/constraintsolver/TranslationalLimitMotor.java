@@ -34,7 +34,6 @@ import javax.vecmath.Vector3d;
 
 import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.linearmath.VectorUtil;
-import com.irr310.common.tools.Log;
 
 /**
  *

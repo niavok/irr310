@@ -1,8 +1,5 @@
 package com.irr310.common.tools;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.vecmath.Vector3d;
 
 import fr.def.iss.vd2.lib_v3d.V3DVect3;

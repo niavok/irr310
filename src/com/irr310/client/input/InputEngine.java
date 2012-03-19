@@ -1,5 +1,7 @@
 package com.irr310.client.input;
 
+import java.util.List;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
@@ -20,7 +22,6 @@ import com.irr310.common.world.CelestialObject;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.Monolith;
 import com.irr310.common.world.Ship;
-import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.server.Duration;
 
@@ -186,9 +187,9 @@ public class InputEngine extends FramerateEngine {
                 if(cheatString.toLowerCase().equals("power+")) {
                     Ship ship = LoginManager.getLocalPlayer().getShipList().get(0);
                     for(Component component : ship.getComponents()) {
-                        Capacity cap = component.getCapacityByName("linearEngine");
-                        if(cap != null) {
-                            LinearEngineCapacity engineCapacity = (LinearEngineCapacity) cap;
+                        
+                        List<LinearEngineCapacity> engines = component.getCapacitiesByClass(LinearEngineCapacity.class);
+                        for (LinearEngineCapacity engineCapacity : engines) {
                             engineCapacity.theoricalMaxThrust *=2;
                             engineCapacity.theoricalMinThrust *=2;
                         }

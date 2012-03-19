@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import fr.def.iss.vd2.lib_v3d.V3DInputEvent;
+import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraController;
 import fr.def.iss.vd2.lib_v3d.camera.V3DSimple3DCamera;
 import fr.def.iss.vd2.lib_v3d.controller.listener.V3DMoveListener;
@@ -73,25 +74,26 @@ public class V3DMove3DController implements V3DCameraController {
             return;
         }
 
-        /*if (e instanceof MouseEvent) {
-            MouseEvent em = (MouseEvent) e;
+        if (e instanceof V3DMouseEvent) {
+            V3DMouseEvent em = (V3DMouseEvent) e;
 
-            if (em.getID() == MouseEvent.MOUSE_PRESSED) {
+            if (em.getAction() == V3DMouseEvent.Action.MOUSE_PRESSED) {
                 lastPressedButton = em.getButton();
             }
 
-            if (em.getID() == MouseEvent.MOUSE_RELEASED) {
+            if (em.getAction() == V3DMouseEvent.Action.MOUSE_RELEASED) {
                 mouseReleased(em);
             }
 
-            if (em.getID() == MouseEvent.MOUSE_DRAGGED && lastPressedButton == translationButton) {
+            if (em.getAction() == V3DMouseEvent.Action.MOUSE_DRAGGED && lastPressedButton == translationButton) {
+
                 beginMove(em);
             }
-        }*/
+        }
 
     }
 
-    private void beginMove(MouseEvent e) {
+    private void beginMove(V3DMouseEvent e) {
 
         V3DElement overElement = camera.getContext().getMouseOverlapTop();
 
@@ -122,7 +124,7 @@ public class V3DMove3DController implements V3DCameraController {
         }
     }
 
-    public void mouseReleased(MouseEvent e) {
+    public void mouseReleased(V3DMouseEvent e) {
         moving = false;
         if (listener != null) {
             listener.moveEnded(clickedElement, elementToMove);
@@ -130,7 +132,7 @@ public class V3DMove3DController implements V3DCameraController {
 
     }
 
-    private void mouseMoving(MouseEvent e) {
+    private void mouseMoving(V3DMouseEvent e) {
 
 
 

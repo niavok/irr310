@@ -166,7 +166,7 @@ public class V3DEye3DCamera extends V3DCamera {
         }
         final float h = currentWidth / currentHeight;
 
-        GLU.gluPerspective(perspective, h, distance * 0.1f, distance * 1000.0f);
+        GLU.gluPerspective(perspective, h, distance * 0.001f, distance * 100000.0f);
 
     }
 
