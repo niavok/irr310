@@ -24,5 +24,9 @@ public abstract class GenericGraphicalElement implements GraphicalElement {
         return renderer.getEngine();
     }
     
+    public WorldRenderer getRenderer() {
+        return renderer;
+    }
+    
     
 }

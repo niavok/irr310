@@ -3,7 +3,6 @@ package com.irr310.client.script;
 import org.lwjgl.input.Keyboard;
 
 import com.irr310.client.GameClient;
-import com.irr310.common.GameTime;
 import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
@@ -16,6 +15,7 @@ import com.irr310.common.event.ReloadUiEvent;
 import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.event.WorldReadyEvent;
 import com.irr310.server.Duration;
+import com.irr310.server.Time;
 
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 
@@ -31,7 +31,7 @@ public class ClientScriptEngine extends FramerateEngine {
     @Override
     protected void frame() {
         Object[] args = new Object[1];
-        args[0] = GameTime.getGameTime().getSeconds();
+        args[0] = Time.now(true).getSeconds();
         scriptContext.callFunction("onFrame", args);
     }
 

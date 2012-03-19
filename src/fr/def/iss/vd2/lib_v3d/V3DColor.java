@@ -19,29 +19,27 @@ package fr.def.iss.vd2.lib_v3d;
 
 import java.awt.Color;
 
-
 /**
  * Class representing a color with alpha channel
+ * 
  * @author fberto
  */
 public class V3DColor {
 
     public static V3DColor randomLightOpaqueColor() {
-        
+
         float r = (float) Math.random();
         float g = (float) Math.random();
         float b = (float) Math.random();
 
-        if(r+g+b < 0.3) {
+        if (r + g + b < 0.3) {
             return randomLightOpaqueColor();
         } else {
             return new V3DColor(r, g, b);
         }
 
-
     }
 
-    
     public float r = 0;
     public float g = 0;
     public float b = 0;
@@ -55,6 +53,7 @@ public class V3DColor {
 
     /**
      * Initialize color
+     * 
      * @param r red between 0.0 and 1.0
      * @param g green between 0.0 and 1.0
      * @param b blue between 0.0 and 1.0
@@ -69,20 +68,22 @@ public class V3DColor {
 
     /**
      * Initialize color
+     * 
      * @param r red between 0 and 255
      * @param g green between 0 and 255
      * @param b blue between 0 and 255
      * @param a alpha between 0.0 and 1.0
      */
     public V3DColor(int r, int g, int b, float a) {
-        this.r = r/255f;
-        this.g = g/255f;
-        this.b = b/255f;
+        this.r = r / 255f;
+        this.g = g / 255f;
+        this.b = b / 255f;
         this.a = a;
     }
 
     /**
      * Copy a color
+     * 
      * @param color copied color
      */
     public V3DColor(V3DColor color) {
@@ -91,6 +92,7 @@ public class V3DColor {
 
     /**
      * Initialize opaque color
+     * 
      * @param r red between 0.0 and 1.0
      * @param g green between 0.0 and 1.0
      * @param b blue between 0.0 and 1.0
@@ -101,6 +103,7 @@ public class V3DColor {
 
     /**
      * Initialize opaque color
+     * 
      * @param r red between 0 and 1
      * @param g green between 0 and 1
      * @param b blue between 0 and 1
@@ -111,10 +114,11 @@ public class V3DColor {
 
     /**
      * Initialize for an awt color
+     * 
      * @param color awt color
      */
     public V3DColor(Color color) {
-        this(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()/255f);
+        this(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha() / 255f);
     }
 
     public static V3DColor transparent = new V3DColor(1.0f, 1.0f, 1.0f, 0.0f);
@@ -142,6 +146,7 @@ public class V3DColor {
 
     /**
      * Return a new instance of the same color
+     * 
      * @return copied color
      */
     public V3DColor copy() {
@@ -162,6 +167,13 @@ public class V3DColor {
     }
 
     public org.fenggui.util.Color getFengguiColor() {
-        return new org.fenggui.util.Color(r,g,b,a);
+        return new org.fenggui.util.Color(r, g, b, a);
+    }
+
+    public static V3DColor mix(V3DColor baseColor, V3DColor targetColor, float mix) {
+        return new V3DColor(baseColor.r * (1 - mix) + targetColor.r * mix, //
+                            baseColor.g * (1 - mix) + targetColor.g * mix, //
+                            baseColor.b * (1 - mix) + targetColor.b * mix, //
+                            baseColor.a * (1 - mix) + targetColor.a * mix); //
     }
 }

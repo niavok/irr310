@@ -1,11 +1,9 @@
 package com.irr310.server;
 
+
 public class Time {
 	private final long nanotime;
-	
-	public Time() {
-		nanotime = System.nanoTime(); 
-	}
+	private static long initialTime = System.nanoTime();
 	
 	public Time(long nanotime) {
 		this.nanotime = nanotime;
@@ -34,4 +32,20 @@ public class Time {
 	public Duration durationTo(Time otherTime) {
 		return new Duration(otherTime.nanotime - nanotime);
 	}
+
+    public Duration getTimeToNow(boolean gameTime) {
+        return durationTo(now(gameTime));
+    }
+    
+    public static Time now(boolean gameTime) {
+        if(gameTime) {
+            return getGameTime();
+        } else {
+            return new Time(System.nanoTime()); 
+        }
+    }
+    
+    public static Time getGameTime() {
+        return new Time(System.nanoTime() - initialTime);
+    }
 }

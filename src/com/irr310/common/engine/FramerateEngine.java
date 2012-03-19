@@ -23,7 +23,7 @@ public abstract class FramerateEngine extends Engine {
         System.out.println("Start engine " + this.getClass().getSimpleName());
 
         isPaused = true;
-        Time lastTime = new Time();
+        Time lastTime = Time.now(false);
 
         init();
         setRunning(true);
@@ -36,10 +36,10 @@ public abstract class FramerateEngine extends Engine {
             
             if (!isPaused) {
 
-                lastTime = new Time();
+                lastTime = Time.now(false);
                 frame();
 
-                Time currentTime = new Time();
+                Time currentTime = Time.now(false);
                 Time nextTime = lastTime.add(framerate);
                 if (nextTime.after(currentTime)) {
                     // Pause

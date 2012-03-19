@@ -7,7 +7,6 @@ import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import com.irr310.common.Game;
-import com.irr310.common.GameTime;
 import com.irr310.common.engine.CollisionDescriptor;
 import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.engine.RayResultDescriptor;
@@ -88,7 +87,7 @@ public class ServerGameEngine extends FramerateEngine {
             return;
         }
 
-        Time currentTime = GameTime.getGameTime();
+        Time currentTime = Time.now(true);
 
         for (CapacityController controller : capacityControllers) {
             controller.update(framerate.getSeconds());
@@ -149,7 +148,7 @@ public class ServerGameEngine extends FramerateEngine {
                                               .getTransform()
                                               .getTranslation()
                                               .distanceTo(monolith.getFirstPart().getTransform().getTranslation());
-                    if (distanceTo < 80) {
+                    if (distanceTo < 25) {
                         Loot loot = (Loot) object;
                         Game.getInstance().getWorld().removeCelestialObject(loot, Reason.LOOTED);
                         distachRevenue(loot.getValue());
@@ -442,7 +441,7 @@ public class ServerGameEngine extends FramerateEngine {
         UpgradeFactory.initUpgrades();
         UpgradeFactory.refresh();
         initWorld();
-        lastInterrestTime = GameTime.getGameTime();
+        lastInterrestTime = Time.now(true);
 
         inited = true;
     }
@@ -450,7 +449,7 @@ public class ServerGameEngine extends FramerateEngine {
     void createWaves() {
         // Create waves
         WaveFactory.createWaves(waveQueue);
-        nextWaveTime = GameTime.getGameTime();
+        nextWaveTime = Time.now(true);
 
         nextWave();
     }
@@ -464,7 +463,7 @@ public class ServerGameEngine extends FramerateEngine {
         }
         Game.getInstance().sendToAll(new NextWaveEvent(currentWave.getId(), currentWave.getDuration(), currentWave.getActiveDuration()));
         beginWaveTime = nextWaveTime;
-        nextWaveTime = GameTime.getGameTime().add(currentWave.getDuration());
+        nextWaveTime = Time.now(true).add(currentWave.getDuration());
     }
 
     private void initWorld() {

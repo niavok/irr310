@@ -38,6 +38,10 @@ public class Vec3 {
         this(vect.x, vect.y, vect.z);
     }
 
+    public Vec3(V3DVect3 vect) {
+        this(vect.x, vect.y, vect.z);
+    }
+
     public V3DVect3 toV3DVect3() {
         return new V3DVect3((float) x, (float) y, (float) z);
     }

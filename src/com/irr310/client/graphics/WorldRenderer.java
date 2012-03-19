@@ -37,7 +37,6 @@ import com.irr310.client.graphics.skin.ThrusterBlockSkin;
 import com.irr310.client.graphics.skin.WingSkin;
 import com.irr310.client.navigation.LoginManager;
 import com.irr310.common.Game;
-import com.irr310.common.GameTime;
 import com.irr310.common.event.AddGuiComponentEvent;
 import com.irr310.common.event.BulletFiredEvent;
 import com.irr310.common.event.CelestialObjectAddedEvent;
@@ -67,6 +66,7 @@ import com.irr310.common.world.World;
 import com.irr310.common.world.WorldObject;
 import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
+import com.irr310.server.Time;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DScene;
@@ -296,7 +296,7 @@ public class WorldRenderer implements GraphicRenderer {
 
             @Override
             public void update() {
-                clockIndicator.setText("Time: " + format.format(GameTime.getGameTime().getSeconds()) + " s");
+                clockIndicator.setText("Time: " + format.format(Time.now(true).getSeconds()) + " s");
 
             }
 
