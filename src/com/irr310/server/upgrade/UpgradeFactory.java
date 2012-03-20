@@ -17,16 +17,16 @@ public class UpgradeFactory {
     private static Map<String, UpgradeEffect> effectMap = new HashMap<String, UpgradeEffect>();
     private static final double GUN_BASE_DAMAGE = 50;
     private static final double GUN_BASE_FIRERATE = 1;
-    private static final double GUN_BASE_RANGE = 1000;
+    private static final double GUN_BASE_RANGE = 1500;
     private static final double GUN_BASE_ACCURACY = 10;
     private static final double GUN_BASE_COOLINGSPEED = 10;
     private static final double GUN_BASE_HEATINGSPEED = 5;
 
     private static final double SHOTGUN_BASE_DAMAGE = 20;
     private static final double SHOTGUN_BASE_FIRERATE = 0.5;
-    private static final double SHOTGUN_BASE_RANGE = 200;
-    private static final double SHOTGUN_BASE_ACCURACY = 250;
-    private static final double SHOTGUN_BASE_COOLINGSPEED = 25;
+    private static final double SHOTGUN_BASE_RANGE = 400;
+    private static final double SHOTGUN_BASE_ACCURACY = 150;
+    private static final double SHOTGUN_BASE_COOLINGSPEED = 15;
     private static final double SHOTGUN_BASE_HEATINGSPEED = 5;
 
     public static void initUpgrades() {
@@ -39,6 +39,8 @@ public class UpgradeFactory {
         addUpgrade(new WeaponDamageUpgradeEffect());
         addUpgrade(new WeaponFirerateUpgradeEffect());
         addUpgrade(new WeaponCoolingUpgradeEffect());
+        addUpgrade(new WeaponRangeUpgradeEffect());
+        addUpgrade(new WeaponAccuracyUpgradeEffect());
 
     }
 

@@ -44,16 +44,7 @@ public class UpgradeMenu extends MenuContainer{
         //Tabs
         addTab(new UpgradeWeaponsTab(engine));
         addTab(new UpgradeWeaponUpgradeTab(engine));
-        //addTab(new UpgradeWeaponUpgradeTab());
-        //addTab(new UpgradeWeaponUpgradeTab());
-        //addTab(new UpgradeWeaponUpgradeTab());
-        //addTab(new UpgradeWeaponUpgradeTab());
-//        addTab("Weapon", new UpgradeWeaponTab());
-//        addTab("Defenses", new UpgradeWeaponTab());
-//        addTab("Ship", new UpgradeWeaponTab());
-//        addTab("Monolith", new UpgradeWeaponTab());
-//        addTab("Systel", new UpgradeWeaponTab());
-//        
+
         //Tab content
         V3DGuiRectangle tabContent= new V3DGuiRectangle();
         tabContent.setyAlignment(GuiYAlignment.TOP);
@@ -101,9 +92,9 @@ public class UpgradeMenu extends MenuContainer{
 
     protected void setActive(GuiTab tabComponent) {
         for(GuiTab tab : tabs) {
+            tab.setSize(340, 530);
             if(tab == tabComponent) {
                 tab.setActive(true);
-                tab.setSize(340, 530);
                 V3DContainer contentPane = tab.getContentPane();
                 add(contentPane);
                 

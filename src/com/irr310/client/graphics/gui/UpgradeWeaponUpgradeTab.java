@@ -49,8 +49,6 @@ public class UpgradeWeaponUpgradeTab extends UpgradeTab{
         
         root = null;
         popup = null;
-        
-        
     }
 
     private void generate() {
@@ -61,8 +59,6 @@ public class UpgradeWeaponUpgradeTab extends UpgradeTab{
         int blockWidth = 70;
         int blockHeight = 70;
         
-        Log.trace("width "+width);
-        
         for(Upgrade upgrade: availableUpgrades) {
             
             if(upgrade.getCategory() != UpgradeCategory.WEAPON_UPGRADE) {
@@ -71,12 +67,11 @@ public class UpgradeWeaponUpgradeTab extends UpgradeTab{
             V3DGuiComponent upgradePane = generateUpgradePane(upgrade);
             upgradePane.setPosition(x, y);
             root.add(upgradePane);
+            x += blockWidth;
             if(x + blockWidth >  width  ) {
                x = 10;
                y += blockHeight;
-            } else {
-                x += blockWidth;
-            }
+            } 
         }
     }
     

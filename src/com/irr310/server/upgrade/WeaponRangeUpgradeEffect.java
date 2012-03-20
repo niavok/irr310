@@ -10,7 +10,7 @@ import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.common.world.upgrade.Upgrade.UpgradeCategory;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
 
-public class WeaponCoolingUpgradeEffect extends UpgradeEffect {
+public class WeaponRangeUpgradeEffect extends UpgradeEffect {
 
     @Override
     public void apply(UpgradeOwnership playerUpgrade) {
@@ -22,32 +22,33 @@ public class WeaponCoolingUpgradeEffect extends UpgradeEffect {
                 List<WeaponCapacity> capacities = component.getCapacitiesByClass(WeaponCapacity.class);
                 for (WeaponCapacity gunCapacity : capacities) {
                     
-                    double lastCoolingspeed = gunCapacity.coolingSpeed;
+                    double lastRange = gunCapacity.range;
                     
                     if(playerUpgrade.getRank() > 0) {
-                        gunCapacity.coolingSpeed /=  (1 + 0.1 * Math.pow(2,playerUpgrade.getRank()));
+                        gunCapacity.range *= (1 +  0.1 * 3 * Math.pow(2,playerUpgrade.getRank()));
                     }
-                    if(gunCapacity.coolingSpeed != lastCoolingspeed) {
+                    if(gunCapacity.range != lastRange) {
                         //TODO: network !
                     }
+                    
                 }
             }
         }
     }
 
     @Override
-    public Upgrade generateUpgrade()  {
-        Upgrade weaponCoolingUpgrade = new Upgrade();
-        weaponCoolingUpgrade.setCategory(UpgradeCategory.WEAPON_UPGRADE);
-        weaponCoolingUpgrade.setGlobalDescription("Increase the cooling speed of all your weapons.");
-        weaponCoolingUpgrade.setTag("weapon_upgrade.cooling");
-        weaponCoolingUpgrade.setName("Weapon cooling");
-        weaponCoolingUpgrade.addRank(50, "20% cooling speed increase.");
-        weaponCoolingUpgrade.addRank(200, "40% cooling increase.");
-        weaponCoolingUpgrade.addRank(800, "80% cooling increase.");
-        weaponCoolingUpgrade.addRank(1600, "160% cooling increase.");
-        weaponCoolingUpgrade.addRank(6400, "320% cooling increase.");
-        return weaponCoolingUpgrade;
+    public Upgrade generateUpgrade() {
+        Upgrade weaponFirerateUpgrade = new Upgrade();
+        weaponFirerateUpgrade.setCategory(UpgradeCategory.WEAPON_UPGRADE);
+        weaponFirerateUpgrade.setGlobalDescription("Increase the range of all your weapons.");
+        weaponFirerateUpgrade.setTag("weapon_upgrade.range");
+        weaponFirerateUpgrade.setName("Weapon range");
+        weaponFirerateUpgrade.addRank(50, "60% range increase.");
+        weaponFirerateUpgrade.addRank(200, "120% range increase.");
+        weaponFirerateUpgrade.addRank(800, "240% range increase.");
+        weaponFirerateUpgrade.addRank(1600, "480% range increase.");
+        weaponFirerateUpgrade.addRank(6400, "960% range increase.");
+        return weaponFirerateUpgrade;
     }
 
 }

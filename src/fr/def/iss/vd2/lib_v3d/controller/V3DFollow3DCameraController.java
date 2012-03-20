@@ -304,7 +304,7 @@ public class V3DFollow3DCameraController implements V3DCameraController, Graphic
         return top.getTranslation();
     }
 
-    public void configure(int distance, int x, int y, int z) {
+    public void configure(float distance, float x, float y, float z) {
         this.distance = distance;
         xOffset = x;
         yOffset = y;

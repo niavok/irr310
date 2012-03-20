@@ -195,7 +195,7 @@ public class WorldRenderer implements GraphicRenderer {
         cameraController.configure(500,-2,-30, 2);
     }
     private void configureHeadCamera() {
-        cameraController.configure(500,0,4, 0);
+        cameraController.configure(500,0f,5, 0.1f);
     }
     
     private void configureBackCamera() {
