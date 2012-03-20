@@ -1,9 +1,12 @@
 package com.irr310.client.graphics;
 
+import org.fenggui.util.Dimension;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
 import com.irr310.client.graphics.gui.GuiFpsIndicator;
+import com.irr310.client.graphics.gui.UpgradeWeaponUpgradeTab;
 import com.irr310.common.Game;
 import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.event.AddGuiComponentEvent;
@@ -43,6 +46,7 @@ import com.irr310.common.event.UseScriptEvent;
 import com.irr310.common.event.WorldReadyEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.common.event.WorldSizeChangedEvent;
+import com.irr310.common.tools.Log;
 import com.irr310.common.tools.Vec2;
 import com.irr310.server.Duration;
 
@@ -50,6 +54,7 @@ import fr.def.iss.vd2.lib_v3d.ResizeListener;
 import fr.def.iss.vd2.lib_v3d.V3DCanvas;
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
+import fr.def.iss.vd2.lib_v3d.gui.V3DContainer;
 
 public class GraphicEngine extends FramerateEngine {
 
@@ -326,4 +331,22 @@ public class GraphicEngine extends FramerateEngine {
         
     }
 
+    public void addPopup(V3DContainer popup, V3DContainer parent) {
+        renderer.getPopupLayer().removeAll();
+        int parentAbsoluteX = parent.getAbsoluteX();
+        int parentAbsoluteY = parent.getAbsoluteY();
+        Dimension parentSize = parent.getSize();
+        
+        int defaultX = parentAbsoluteX + parentSize.getWidth();
+        int defaultY = parentAbsoluteY ;
+        
+        //TODO: implement limit cases
+        
+        popup.setPosition(defaultX + 15 , canvas.getHeight() - defaultY + 15);
+        renderer.getPopupLayer().add(popup);
+    }
+
+    public void removePopup(V3DContainer popup) {
+        renderer.getPopupLayer().remove(popup);        
+    }
 }

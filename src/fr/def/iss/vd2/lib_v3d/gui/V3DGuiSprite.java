@@ -91,4 +91,9 @@ public class V3DGuiSprite extends V3DGuiComponent {
         widget.setSizeToMinSize();
         widget.layout();
     }
+    
+    @Override
+    public Dimension getSize() {
+        return size;
+    }
 }

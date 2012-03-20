@@ -3,6 +3,7 @@ package fr.def.iss.vd2.lib_v3d.gui;
 import org.fenggui.Widget;
 import org.fenggui.binding.render.Graphics;
 import org.fenggui.util.Dimension;
+import org.fenggui.util.Point;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 
@@ -105,6 +106,11 @@ public class V3DGuiCircle extends V3DGuiComponent {
             }
 
         };
+    }
+    
+    @Override
+    public Dimension getSize() {
+        return size;
     }
 
     public void setQuality(int quality) {

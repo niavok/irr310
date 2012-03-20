@@ -121,9 +121,9 @@ public class V3DTooltipController implements V3DCameraController {
 
             tooltip.setPosition(mouseX + 5, mouseY + 15);
             currentBinding.getGui().repack();
-            if (tooltip.getSize().getX() + tooltip.getComputedPosition().getX() > currentBinding.width) {
+            if (tooltip.getSize().getWidth() + tooltip.getComputedPosition().getX() > currentBinding.width) {
 
-                int newX = currentBinding.width - tooltip.getSize().getX();
+                int newX = currentBinding.width - tooltip.getSize().getWidth();
                 if (newX < 0) {
                     newX = 0;
                 }
@@ -131,8 +131,8 @@ public class V3DTooltipController implements V3DCameraController {
                 currentBinding.getGui().repack();
             }
 
-            if (tooltip.getSize().getY() + tooltip.getComputedPosition().getY() > currentBinding.height) {
-                int newY = tooltip.getComputedPosition().getY() - tooltip.getSize().getY() - 10;
+            if (tooltip.getSize().getHeight() + tooltip.getComputedPosition().getY() > currentBinding.height) {
+                int newY = tooltip.getComputedPosition().getY() - tooltip.getSize().getHeight() - 10;
                 if (newY < 0) {
                     newY = 0;
                 }

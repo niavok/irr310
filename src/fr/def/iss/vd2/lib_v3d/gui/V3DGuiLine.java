@@ -95,5 +95,10 @@ public class V3DGuiLine extends V3DGuiComponent {
     public void setBorderWidth(float borderWidth) {
         this.borderWidth = borderWidth;
     }
+
+    @Override
+    public Dimension getSize() {
+        return size;
+    }
     
 }

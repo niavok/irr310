@@ -121,4 +121,9 @@ public class V3DGuiTriangle extends V3DGuiComponent {
         this.borderWidth = borderWidth;
     }
     
+    
+    @Override
+    public Dimension getSize() {
+        return size;
+    }
 }

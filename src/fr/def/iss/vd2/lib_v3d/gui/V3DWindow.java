@@ -19,6 +19,7 @@ package fr.def.iss.vd2.lib_v3d.gui;
 
 import org.fenggui.Widget;
 import org.fenggui.composite.Window;
+import org.fenggui.util.Dimension;
 
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 
@@ -71,4 +72,8 @@ public class V3DWindow extends V3DGuiComponent {
         
     }
 
+    @Override
+    public Dimension getSize() {
+        return new Dimension(width, height);
+    }
 }

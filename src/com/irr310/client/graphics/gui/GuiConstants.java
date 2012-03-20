@@ -8,5 +8,6 @@ public class GuiConstants {
     public static final V3DColor irrGreen = new V3DColor(0, 108, 0);
     public static final V3DColor irrBlue = new V3DColor(0, 82, 108);
     public static final V3DColor irrFill = new V3DColor(0.9f, 0.9f, 0.9f, 0.5f);
+    public static final V3DColor irrDarkFill = new V3DColor(0.0f, 0.0f, 0.0f, 0.9f);
 
 }

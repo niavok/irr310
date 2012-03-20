@@ -117,10 +117,8 @@ public class V3DLabel extends V3DGuiComponent {
         }
     }
 
-    public Point getSize() {
-        Dimension dim = label.getSize();
-
-        return new Point(dim.getWidth(), dim.getHeight());
+    public Dimension getSize() {
+        return label.getSize();
     }
 
     public Point getComputedPosition() {

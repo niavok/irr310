@@ -18,6 +18,7 @@
 package fr.def.iss.vd2.lib_v3d.gui;
 
 import org.fenggui.Widget;
+import org.fenggui.util.Dimension;
 import org.fenggui.util.Point;
 
 /**
@@ -84,6 +85,8 @@ public abstract class V3DGuiComponent {
     abstract public boolean containsPoint(int i, int i0);
 
     abstract public void repack();
+
+    abstract public Dimension getSize();
 
     
     

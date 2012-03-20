@@ -106,4 +106,9 @@ public class V3DGuiRectangle extends V3DGuiComponent {
         this.borderWidth = borderWidth;
     }
     
+    @Override
+    public Dimension getSize() {
+        return size;
+    }
+    
 }

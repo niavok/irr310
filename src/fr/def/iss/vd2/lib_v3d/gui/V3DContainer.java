@@ -139,10 +139,8 @@ public class V3DContainer extends V3DGuiComponent implements V3DLocalisable {
         container.layout();
     }
 
-    public Point getSize() {
-        Dimension dim = container.getSize();
-
-        return new Point(dim.getWidth(), dim.getHeight());
+    public Dimension getSize() {
+        return container.getSize();
     }
 
     public Point getComputedPosition() {
@@ -184,12 +182,12 @@ public class V3DContainer extends V3DGuiComponent implements V3DLocalisable {
 
     @Override
     public int getAbsoluteX() {
-        return xPos;
+        return xPos + parent.getAbsoluteX();
     }
 
     @Override
     public int getAbsoluteY() {
-        return yPos;
+        return yPos+ parent.getAbsoluteY();
     }
     
     public void removeAll() {

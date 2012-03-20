@@ -16,6 +16,7 @@ import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
 import fr.def.iss.vd2.lib_v3d.camera.V3DSimple2DCamera;
 import fr.def.iss.vd2.lib_v3d.gui.V3DButton;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent;
+import fr.def.iss.vd2.lib_v3d.gui.V3DGuiLayer;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent.GuiXAlignment;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent.GuiYAlignment;
 import fr.def.iss.vd2.lib_v3d.gui.V3DLabel;
@@ -154,6 +155,11 @@ public class MenuGraphicRenderer implements GraphicRenderer {
     @Override
     public void resetGui() {
         cameraBinding.getGui().clear();
+    }
+    
+    @Override
+    public V3DGuiLayer getPopupLayer() {
+        return null;
     }
 
 }

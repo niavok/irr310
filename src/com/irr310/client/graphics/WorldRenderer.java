@@ -108,6 +108,7 @@ public class WorldRenderer implements GraphicRenderer {
     private V3DGuiLayer interfaceLayer;
     private V3DGuiLayer hudLayer;
     private V3DGuiLayer mainMenuLayer;
+    private V3DGuiLayer popupLayer;
     private GuiKeyMode currentGuiMode;
 
     public enum GuiLayer {
@@ -275,15 +276,15 @@ public class WorldRenderer implements GraphicRenderer {
         V3DGuiLayer pauseLayer = new V3DGuiLayer(gui);
         pauseLayer.getFenGUIWidget().setBlockClick(false);
         // pauseLayer.setColor(new V3DColor(0,0,0,0.5f));
-        V3DGuiLayer popUpLayer = new V3DGuiLayer(gui);
-        popUpLayer.getFenGUIWidget().setBlockClick(false);
+        popupLayer = new V3DGuiLayer(gui);
+        popupLayer.getFenGUIWidget().setBlockClick(false);
 
         gui.add(hudLayer);
         gui.add(interfaceLayer);
         gui.add(menuLayer);
         gui.add(pauseLayer);
         gui.add(mainMenuLayer);
-        gui.add(popUpLayer);
+        gui.add(popupLayer);
 
         addPersistantGuiElement(new GuiAnimatedElement(this) {
             final V3DLabel clockIndicator = new V3DLabel("Time: --");
@@ -1089,4 +1090,9 @@ public class WorldRenderer implements GraphicRenderer {
         return engine;
     }
 
+    @Override
+    public V3DGuiLayer getPopupLayer() {
+        return popupLayer;
+    }
+    
 }

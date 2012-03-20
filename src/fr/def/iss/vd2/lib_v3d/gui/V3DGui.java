@@ -36,6 +36,8 @@ import org.fenggui.layout.StaticLayout;
 import org.fenggui.util.Alphabet;
 import org.fenggui.util.fonttoolkit.FontFactory;
 
+import com.irr310.common.tools.Log;
+
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
 
@@ -195,10 +197,13 @@ public class V3DGui implements V3DLocalisable {
             switch (e.getButton()) {
                 case 1:
                     mouseButton = MouseButton.LEFT;
+                    break;
                 case 2:
-                    mouseButton = MouseButton.MIDDLE;
-                case 3:
                     mouseButton = MouseButton.RIGHT;
+                    break;
+                case 3:
+                    mouseButton = MouseButton.MIDDLE;
+                    break;
                 default:
                     mouseButton =  MouseButton.LEFT;
             }

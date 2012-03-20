@@ -103,6 +103,7 @@ public class UpgradeMenu extends MenuContainer{
         for(GuiTab tab : tabs) {
             if(tab == tabComponent) {
                 tab.setActive(true);
+                tab.setSize(340, 530);
                 V3DContainer contentPane = tab.getContentPane();
                 add(contentPane);
                 

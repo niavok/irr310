@@ -82,7 +82,7 @@ public class UpgradeWeaponsTab extends UpgradeTab{
         upgradeDescription.setWordWarping(true, 150);
         pane.add(upgradeDescription);
         
-        yPos += upgradeDescription.getSize().getY();
+        yPos += upgradeDescription.getSize().getHeight();
         
         
         UpgradeOwnership ownership  = LoginManager.localPlayer.getUpgradeState(upgrade);
@@ -170,6 +170,11 @@ public class UpgradeWeaponsTab extends UpgradeTab{
         System.err.println("refresh");
         root.removeAll();
         generate();
+        
+    }
+    
+    @Override
+    public void setSize(int width, int height) {
         
     }
 

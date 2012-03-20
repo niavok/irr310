@@ -11,4 +11,6 @@ public interface GuiTab  {
     public  void refresh();
     
     public  void setActive(boolean active);
+
+    public void setSize(int width, int height);
 }

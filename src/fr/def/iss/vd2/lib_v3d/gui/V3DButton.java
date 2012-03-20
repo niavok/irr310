@@ -141,10 +141,8 @@ public class V3DButton extends V3DGuiComponent {
     }
 
     
-    public Point getSize() {
-        Dimension dim = button.getSize();
-
-        return new Point(dim.getWidth(), dim.getHeight());
+    public Dimension getSize() {
+        return button.getSize();
     }
 
     public Point getComputedPosition() {

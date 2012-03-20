@@ -114,10 +114,8 @@ public class V3DTextEditor extends V3DGuiComponent {
         return editor.getText();
     }
 
-    public Point getSize() {
-        Dimension dim = editor.getSize();
-
-        return new Point(dim.getWidth(), dim.getHeight());
+    public Dimension getSize() {
+        return editor.getSize();
     }
 
     public Point getComputedPosition() {

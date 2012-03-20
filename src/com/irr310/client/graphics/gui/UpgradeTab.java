@@ -66,5 +66,8 @@ public abstract class UpgradeTab implements GuiTab{
             //tabTextCount.setColor(V3DColor.darkgrey, V3DColor.transparent);
         }
     }
-
+    
+    public GraphicEngine getEngine() {
+        return engine;
+    }
 }
