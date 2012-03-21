@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.irr310.common.tools.Vec3;
-import com.irr310.common.world.DamageType;
+import com.irr310.common.world.DamageDescriptor;
 import com.irr310.common.world.view.CapacityView;
 
 public class WeaponCapacity extends Capacity {
@@ -12,24 +12,25 @@ public class WeaponCapacity extends Capacity {
     public boolean fire;
     public double damage;
     public double range;
-    //Size of the dispertion cube at 1000m
+    // Size of the dispertion cube at 1000m
     public double accuracy;
-    
+
     // Bullet count to overheat
     public double heatingSpeed;
 
     // Time to cool to zero
     public double coolingSpeed;
-    
-    //Bullet par second
+
+    // Bullet par second
     public double firerate;
-    
-    
-    //Offset of barrels
+
+    // Armor penetration
+    public double armorPenetration;
+
+    // Offset of barrels
     public List<Vec3> barrels;
-    
-    public DamageType damageType;
-    
+
+    public DamageDescriptor.DamageType damageType;
 
     public WeaponCapacity(long id) {
         super(id);
@@ -40,9 +41,10 @@ public class WeaponCapacity extends Capacity {
         coolingSpeed = 10;
         heatingSpeed = 5;
         firerate = 1;
+        armorPenetration = 0;
         barrels = new ArrayList<Vec3>();
-        
-        damageType = DamageType.PHYSICAL;
+
+        damageType = DamageDescriptor.DamageType.PHYSICAL;
     }
 
     @Override
@@ -59,11 +61,12 @@ public class WeaponCapacity extends Capacity {
         view.pushDouble(coolingSpeed);
         view.pushDouble(heatingSpeed);
         view.pushDouble(firerate);
+        view.pushDouble(armorPenetration);
         view.pushInteger(barrels.size());
-        for(Vec3 barrel: barrels) {
+        for (Vec3 barrel : barrels) {
             view.pushVect3(barrel);
         }
-        
+
         view.pushInteger(damageType.ordinal());
         return view;
     }
@@ -78,15 +81,14 @@ public class WeaponCapacity extends Capacity {
         coolingSpeed = view.popDouble();
         heatingSpeed = view.popDouble();
         firerate = view.popDouble();
-        
+        armorPenetration = view.popDouble();
+
         int barrelCount = view.popInteger();
-        for(int i = 0; i < barrelCount; i++) {
+        for (int i = 0; i < barrelCount; i++) {
             barrels.add(view.popVect3());
         }
-        
-        damageType =DamageType.values()[view.popInteger()];
-    }
 
-    
+        damageType = DamageDescriptor.DamageType.values()[view.popInteger()];
+    }
 
 }

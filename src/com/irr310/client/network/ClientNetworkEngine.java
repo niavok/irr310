@@ -20,7 +20,7 @@ import com.irr310.common.network.protocol.PartStateUpdateListMessage;
 import com.irr310.common.network.protocol.ShipListMessage;
 import com.irr310.common.network.protocol.WorldObjectListMessage;
 import com.irr310.common.world.CelestialObject;
-import com.irr310.common.world.DamageType;
+import com.irr310.common.world.DamageDescriptor;
 import com.irr310.common.world.Part;
 import com.irr310.common.world.Ship;
 import com.irr310.common.world.WorldObject;
@@ -172,7 +172,11 @@ public class ClientNetworkEngine extends EventEngine {
         
         target.setDurability(newDurablility);
         
-        Game.getInstance().sendToAll(new DamageEvent(partById, message.damage, DamageType.values()[message.damageType]));
+        //TODO: set right armor penetration
+        DamageDescriptor damageDescriptor = new DamageDescriptor(DamageDescriptor.DamageType.values()[message.damageType], 0);
+        damageDescriptor.setEffectiveDamage(message.damage);
+        
+        Game.getInstance().sendToAll(new DamageEvent(partById, damageDescriptor));
         
         
     }

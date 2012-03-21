@@ -47,7 +47,7 @@ public class SoundEngine extends EventEngine {
 
         @Override
         public void visit(BulletFiredEvent event) {
-            oggEffect.playAsSoundEffect(1f, 0.05f, false, 0, 0 ,0);
+            oggEffect.playAsSoundEffect(1f, 0.1f, false, 0, 0 ,0);
         }
         
         @Override
@@ -61,7 +61,7 @@ public class SoundEngine extends EventEngine {
             
             Vec3 audioPosition = localDistance.multiply(0.03);
             
-            explosionEffect.playAsSoundEffect(3.0f, (float) (event.getDamage()* 0.005f), false, (float)  audioPosition.x, (float)  audioPosition.y , (float) audioPosition.z);
+            explosionEffect.playAsSoundEffect(3.0f, (float) (event.getDamage().getEffectiveDamage()* 0.005f), false, (float)  audioPosition.x, (float)  audioPosition.y , (float) audioPosition.z);
         }
     }
 

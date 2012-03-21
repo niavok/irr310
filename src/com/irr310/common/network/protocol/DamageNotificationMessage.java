@@ -2,7 +2,7 @@ package com.irr310.common.network.protocol;
 
 import com.irr310.common.network.NetworkField;
 import com.irr310.common.network.NetworkMessage;
-import com.irr310.common.world.DamageType;
+import com.irr310.common.world.DamageDescriptor;
 import com.irr310.common.world.Part;
 
 public class DamageNotificationMessage extends NetworkMessage {
@@ -20,10 +20,10 @@ public class DamageNotificationMessage extends NetworkMessage {
         super(NetworkMessageType.DAMAGE_NOTIFICATION);
     }
     
-    public DamageNotificationMessage(Part target, double damage, DamageType damageType) {
+    public DamageNotificationMessage(Part target, DamageDescriptor damage) {
         super(NetworkMessageType.DAMAGE_NOTIFICATION);
-        this.damage = damage;
-        this.damageType = damageType.ordinal();
+        this.damage = damage.getEffectiveDamage();
+        this.damageType = damage.type.ordinal();
         this.target = target.getId();
     }
 

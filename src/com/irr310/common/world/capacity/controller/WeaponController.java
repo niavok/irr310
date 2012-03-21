@@ -6,6 +6,7 @@ import com.irr310.common.Game;
 import com.irr310.common.event.BulletFiredEvent;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Component;
+import com.irr310.common.world.DamageDescriptor;
 import com.irr310.common.world.Part;
 import com.irr310.common.world.capacity.WeaponCapacity;
 
@@ -93,10 +94,14 @@ public abstract class WeaponController extends CapacityController {
             
         Random random = new Random();
         double accuracy = capacity.range * capacity.accuracy * (10 - 9* component.getEfficiency()) / 1000.0;
+        
+        Vec3 imprecision = new Vec3( accuracy,  0, 0).rotate(new Vec3(random.nextDouble()*360, random.nextDouble()*360, random.nextDouble()*360));
+        
+        Vec3 to = new Vec3(xoffset, capacity.range , yoffset ).plus(imprecision).transform(part.getTransform());
             
-        Vec3 to = new Vec3(xoffset + accuracy *(0.5 - random.nextDouble()), capacity.range + accuracy *(0.5 - random.nextDouble()), yoffset + accuracy *(0.5 - random.nextDouble())).transform(part.getTransform());
-            
-        Game.getInstance().sendToAll(new BulletFiredEvent(part, component.getEfficiency() * capacity.damage, capacity.range, capacity.damageType, from, to));
+        DamageDescriptor damage = new DamageDescriptor(capacity.damageType, capacity.armorPenetration);
+        damage.setWeaponBaseDamage(component.getEfficiency() * capacity.damage);
+        Game.getInstance().sendToAll(new BulletFiredEvent(part, damage , capacity.range, from, to));
 
     }
 

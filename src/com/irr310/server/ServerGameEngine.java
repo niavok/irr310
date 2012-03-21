@@ -35,7 +35,7 @@ import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Asteroid;
 import com.irr310.common.world.CelestialObject;
 import com.irr310.common.world.Component;
-import com.irr310.common.world.DamageType;
+import com.irr310.common.world.DamageDescriptor;
 import com.irr310.common.world.Loot;
 import com.irr310.common.world.Monolith;
 import com.irr310.common.world.Part;
@@ -316,9 +316,10 @@ public class ServerGameEngine extends FramerateEngine {
                 }
 
                 // damage = (1-rangePercent^3)
-                double damage = event.getDamage() * (1 - Math.pow(rayTest.getHitFraction(), 3));
-                applyDamage(rayTest.getPart(), damage, event.getDamageType());
-                impulse(rayTest.getPart(), damage, rayTest.getLocalPosition(), event.getTo().minus(event.getFrom()).normalize());
+                double attenuedDamage = event.getDamage().getWeaponBaseDamage() * (1 - Math.pow(rayTest.getHitFraction(), 3));
+                event.getDamage().setBaseDamage(attenuedDamage);
+                applyDamage(rayTest.getPart(), event.getDamage());
+                impulse(rayTest.getPart(), attenuedDamage, rayTest.getLocalPosition(), event.getTo().minus(event.getFrom()).normalize());
 
                 break;
             }
@@ -399,13 +400,15 @@ public class ServerGameEngine extends FramerateEngine {
     }
 
     private void processCollision(Part part, double impulse) {
-        applyDamage(part, impulse * 0.5, DamageType.PHYSICAL);
+        DamageDescriptor damage = new DamageDescriptor( DamageDescriptor.DamageType.PHYSICAL, 0);
+        damage.setBaseDamage(impulse*0.5);
+        applyDamage(part, damage);
     }
 
-    private void applyDamage(Part target, double damage, DamageType damageType) {
+    private void applyDamage(Part target, DamageDescriptor damage) {
         WorldObject parentObject = target.getParentObject();
 
-        double effectiveDamage = damage * (1.0 - parentObject.getPhysicalResistance());
+        double effectiveDamage = damage.getBaseDamage() * (1.0 - parentObject.getPhysicalResistance()*(1 - damage.armorPenetration));
 
         if (effectiveDamage == 0) {
             return;
@@ -419,9 +422,10 @@ public class ServerGameEngine extends FramerateEngine {
 
         parentObject.setDurability(newDurablility);
 
+        damage.setEffectiveDamage(effectiveDamage);
         // TODO: extras damage transmission
 
-        Game.getInstance().sendToAll(new DamageEvent(target, effectiveDamage, damageType));
+        Game.getInstance().sendToAll(new DamageEvent(target, damage));
 
         if (newDurablility == 0) {
             if (parentObject instanceof CelestialObject) {

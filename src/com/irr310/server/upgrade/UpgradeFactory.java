@@ -21,6 +21,7 @@ public class UpgradeFactory {
     private static final double GUN_BASE_ACCURACY = 10;
     private static final double GUN_BASE_COOLINGSPEED = 10;
     private static final double GUN_BASE_HEATINGSPEED = 5;
+    private static final double GUN_BASE_ARMOR_PENETRATION = 0.1;
 
     private static final double SHOTGUN_BASE_DAMAGE = 20;
     private static final double SHOTGUN_BASE_FIRERATE = 0.5;
@@ -28,6 +29,7 @@ public class UpgradeFactory {
     private static final double SHOTGUN_BASE_ACCURACY = 150;
     private static final double SHOTGUN_BASE_COOLINGSPEED = 15;
     private static final double SHOTGUN_BASE_HEATINGSPEED = 5;
+    private static final double SHOTGUN_BASE_ARMOR_PENETRATION = 0.2;
 
     public static void initUpgrades() {
 
@@ -41,7 +43,7 @@ public class UpgradeFactory {
         addUpgrade(new WeaponCoolingUpgradeEffect());
         addUpgrade(new WeaponRangeUpgradeEffect());
         addUpgrade(new WeaponAccuracyUpgradeEffect());
-
+        addUpgrade(new WeaponArmorPenetrationUpgradeEffect());
     }
 
     private static void addUpgrade(UpgradeEffect upgradeEffect) {
@@ -79,6 +81,7 @@ public class UpgradeFactory {
                         gunCapacity.firerate = GUN_BASE_FIRERATE;
                         gunCapacity.heatingSpeed = GUN_BASE_HEATINGSPEED;
                         gunCapacity.range = GUN_BASE_RANGE;
+                        gunCapacity.armorPenetration = GUN_BASE_ARMOR_PENETRATION;
                     } else if (gunCapacity.getName().equals("shotgun")) {
                         gunCapacity.damage = SHOTGUN_BASE_DAMAGE;
                         gunCapacity.accuracy = SHOTGUN_BASE_ACCURACY;
@@ -86,6 +89,7 @@ public class UpgradeFactory {
                         gunCapacity.firerate = SHOTGUN_BASE_FIRERATE;
                         gunCapacity.heatingSpeed = SHOTGUN_BASE_HEATINGSPEED;
                         gunCapacity.range = SHOTGUN_BASE_RANGE;
+                        gunCapacity.armorPenetration = GUN_BASE_ARMOR_PENETRATION;
                     }
                 }
             }
