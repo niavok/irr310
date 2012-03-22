@@ -16,7 +16,7 @@ import com.irr310.common.world.Component;
 import com.irr310.common.world.Ship;
 import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
-import com.irr310.common.world.capacity.WeaponCapacity;
+import com.irr310.common.world.capacity.BalisticWeaponCapacity;
 import com.irr310.common.world.capacity.controller.CapacityController;
 import com.irr310.common.world.capacity.controller.GunController;
 import com.irr310.common.world.capacity.controller.LinearEngineController;
@@ -60,11 +60,11 @@ public class ClientGameEngine extends FramerateEngine {
                     if (capacity instanceof LinearEngineCapacity) {
                         addCapacityController(new LinearEngineController(component, (LinearEngineCapacity) capacity));
                     }
-                    if (capacity instanceof WeaponCapacity) {
+                    if (capacity instanceof BalisticWeaponCapacity) {
                         if(capacity.getName().equals("gun")) {
-                            addCapacityController(new GunController(component, (WeaponCapacity) capacity));
+                            addCapacityController(new GunController(component, (BalisticWeaponCapacity) capacity));
                         } else if(capacity.getName().equals("shotgun")) { 
-                            addCapacityController(new ShotgunController(component, (WeaponCapacity) capacity));
+                            addCapacityController(new ShotgunController(component, (BalisticWeaponCapacity) capacity));
                         }
                     }
                 }

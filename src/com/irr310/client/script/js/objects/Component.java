@@ -3,9 +3,9 @@ package com.irr310.client.script.js.objects;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.newdawn.slick.util.Log;
 
 import com.irr310.common.Game;
+import com.irr310.common.tools.Log;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
 
@@ -39,8 +39,10 @@ public class Component {
         for (com.irr310.common.world.capacity.Capacity capacity : capacities) {
             if (capacity instanceof com.irr310.common.world.capacity.LinearEngineCapacity) {
                 outCapacities.add(new LinearEngineCapacity((com.irr310.common.world.capacity.LinearEngineCapacity) capacity));
-            } else if (capacity instanceof com.irr310.common.world.capacity.WeaponCapacity) {
-                outCapacities.add(new WeaponCapacity((com.irr310.common.world.capacity.WeaponCapacity) capacity));
+            } else if (capacity instanceof com.irr310.common.world.capacity.BalisticWeaponCapacity) {
+                outCapacities.add(new BalisticWeaponCapacity((com.irr310.common.world.capacity.BalisticWeaponCapacity) capacity));
+            } else if (capacity instanceof com.irr310.common.world.capacity.RocketWeaponCapacity) {
+                outCapacities.add(new RocketWeaponCapacity((com.irr310.common.world.capacity.RocketWeaponCapacity) capacity));
             }
         }
 

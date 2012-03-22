@@ -783,7 +783,9 @@ function driver() {
                     break;
                 case KEY_E:
                     break;
-                    
+                case KEY_R:
+                    fireRocket(true);
+                    break;   
                 case KEY_MINUS:
                     speedTarget -= 1/3.6;
                     this.targetSpeedUpdated();
@@ -822,6 +824,9 @@ function driver() {
                     break;
                 case KEY_E:
                     break;
+                case KEY_R:
+                    fireRocket(false);
+                    break;
                 case KEY_SPACE:
                     fire(false);
                     //gun.fire(false);
@@ -840,7 +845,21 @@ function driver() {
         var gunComponents = ship.getComponentsByName("weapon.gun")
         
         for(var i = 0; i< gunComponents.size() ; i++) {
-            var guns = gunComponents.get(i).getCapacitiesByClass("WeaponCapacity");
+            var guns = gunComponents.get(i).getCapacitiesByClass("BalisticWeaponCapacity");
+            
+             for(var j = 0; j< guns.size() ; j++) {
+                var gun = guns.get(j);
+                gun.fire(order);
+             }
+        }
+    }
+    
+    this.fireRocket = function(order) {
+        
+        var gunComponents = ship.getComponentsByName("weapon.gun")
+        
+        for(var i = 0; i< gunComponents.size() ; i++) {
+            var guns = gunComponents.get(i).getCapacitiesByClass("RocketWeaponCapacity");
             
              for(var j = 0; j< guns.size() ; j++) {
                 var gun = guns.get(j);

@@ -3,7 +3,7 @@ package com.irr310.common.world;
 public class DamageDescriptor {
     public enum DamageType {
         PHYSICAL,
-        HEAT, 
+        HEAT,
     }
 
     private double baseDamage;

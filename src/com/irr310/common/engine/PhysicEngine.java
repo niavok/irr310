@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Map.Entry;
 
 import javax.vecmath.Vector3d;
@@ -66,6 +67,7 @@ import com.irr310.common.world.Slot;
 import com.irr310.common.world.WorldObject;
 import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
+import com.irr310.common.world.capacity.RocketCapacity;
 import com.irr310.common.world.capacity.WingCapacity;
 import com.irr310.server.Duration;
 
@@ -88,22 +90,26 @@ public class PhysicEngine extends FramerateEngine {
 
     private List<Pair<LinearEngineCapacity, RigidBody>> linearEngines;
     private List<Pair<WingCapacity, RigidBody>> wings;
+    private List<Pair<RocketCapacity, RigidBody>> rockets;
     private List<Component> components;
     private List<Ship> ships;
     private List<Link> links;
 
     private PhysicEngineEventVisitor eventVisitor;
+    private Random random;
 
     public PhysicEngine() {
         framerate = new Duration(10000000); // 10 ms
 
         linearEngines = new ArrayList<Pair<LinearEngineCapacity, RigidBody>>();
         wings = new ArrayList<Pair<WingCapacity, RigidBody>>();
+        rockets = new ArrayList<Pair<RocketCapacity, RigidBody>>();
         eventVisitor = new PhysicEngineEventVisitor();
         components = new ArrayList<Component>();
         ships = new ArrayList<Ship>();
         links = new ArrayList<Link>();
         initPhysics();
+        random = new Random();
     }
 
     @Override
@@ -117,7 +123,7 @@ public class PhysicEngine extends FramerateEngine {
             body.getWorldTransform(t);
 
             TransformMatrix force = TransformMatrix.identity();
-            force.translate(new Vec3(0, linearEngine.getLeft().getCurrentThrust() * PHYSICAL_SCALE * 1, 0));
+            force.translate(new Vec3(0, linearEngine.getLeft().getCurrentThrust() * PHYSICAL_SCALE, 0));
 
             TransformMatrix rotation = new TransformMatrix();
             t.getOpenGLMatrix(rotation.getData());
@@ -127,6 +133,25 @@ public class PhysicEngine extends FramerateEngine {
             body.setActivationState(RigidBody.ACTIVE_TAG);
         }
 
+        // Linear Engines
+        for (Pair<RocketCapacity, RigidBody> rocket : rockets) {
+            
+            RigidBody body = rocket.getRight();
+            Transform t = new Transform();
+            body.getWorldTransform(t);
+
+            TransformMatrix force = TransformMatrix.identity();
+                        
+            force.translate(new Vec3(random.nextDouble()*rocket.getLeft().stability* PHYSICAL_SCALE,(random.nextDouble()*rocket.getLeft().stability + rocket.getLeft().getCurrentThrust()) * PHYSICAL_SCALE, random.nextDouble()*rocket.getLeft().stability* PHYSICAL_SCALE));
+
+            TransformMatrix rotation = new TransformMatrix();
+            t.getOpenGLMatrix(rotation.getData());
+            rotation.setTranslation(0, 0, 0);
+            force.preMultiply(rotation);
+            body.applyCentralForce(force.getTranslation().toVector3d());
+            body.setActivationState(RigidBody.ACTIVE_TAG);
+        }
+        
         // wings
         for (Pair<WingCapacity, RigidBody> wing : wings) {
             RigidBody body = wing.getRight();
@@ -285,6 +310,11 @@ public class PhysicEngine extends FramerateEngine {
                 if (data1.part.getParentObject().isBroken()) {
                     return;
                 }
+                
+                // Collision exclusion
+                if (data0.part.getCollisionExcludeList() != null && data0.part.getCollisionExcludeList().contains(data1.part)) {
+                        return;
+                }
 
                 defaultNearCallback.handleCollision(collisionPair, dispatcher, dispatchInfo);
             }
@@ -387,12 +417,13 @@ public class PhysicEngine extends FramerateEngine {
             if (capacity instanceof LinearEngineCapacity) {
                 linearEngines.add(new ImmutablePair<LinearEngineCapacity, RigidBody>((LinearEngineCapacity) capacity,
                                                                                      partToBodyMap.get(component.getFirstPart())));
-            }
-
-            if (capacity instanceof WingCapacity) {
+            } else if (capacity instanceof WingCapacity) {
                 wings.add(new ImmutablePair<WingCapacity, RigidBody>((WingCapacity) capacity, partToBodyMap.get(component.getFirstPart())));
+            } else if (capacity instanceof RocketCapacity) {
+                rockets.add(new ImmutablePair<RocketCapacity, RigidBody>((RocketCapacity) capacity, partToBodyMap.get(component.getFirstPart())));
+                partToBodyMap.get(component.getFirstPart()).setCcdMotionThreshold(1);
+                partToBodyMap.get(component.getFirstPart()).setCcdSweptSphereRadius(0);
             }
-
         }
         components.add(component);
     }
@@ -507,7 +538,7 @@ public class PhysicEngine extends FramerateEngine {
             body.setAngularVelocity(part.getRotationSpeed().toVector3d());
         }
         body.setActivationState(RigidBody.ACTIVE_TAG);
-        body.setCcdMotionThreshold(10000f*PHYSICAL_SCALE);
+        body.setCcdMotionThreshold(0f);
         body.setCcdSweptSphereRadius(0.2f*PHYSICAL_SCALE);
         partToBodyMap.put(part, body);
 

@@ -7,7 +7,7 @@ import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.DamageDescriptor;
 import com.irr310.common.world.view.CapacityView;
 
-public class WeaponCapacity extends Capacity {
+public class BalisticWeaponCapacity extends Capacity {
 
     public boolean fire;
     public double damage;
@@ -32,7 +32,7 @@ public class WeaponCapacity extends Capacity {
 
     public DamageDescriptor.DamageType damageType;
 
-    public WeaponCapacity(long id) {
+    public BalisticWeaponCapacity(long id) {
         super(id);
         fire = false;
         damage = 50;

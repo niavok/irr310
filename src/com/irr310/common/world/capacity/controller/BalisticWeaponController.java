@@ -8,20 +8,20 @@ import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.DamageDescriptor;
 import com.irr310.common.world.Part;
-import com.irr310.common.world.capacity.WeaponCapacity;
+import com.irr310.common.world.capacity.BalisticWeaponCapacity;
 
-public abstract class WeaponController extends CapacityController {
+public abstract class BalisticWeaponController extends CapacityController {
 
-    private final WeaponCapacity capacity;
+    private final BalisticWeaponCapacity capacity;
     private final Component component;
     private double[] barrelHeat;
     private double[] barrelCooldown;
     double globalCooldown;
 
-    public WeaponController(Component component, WeaponCapacity capacity) {
+    public BalisticWeaponController(Component component, BalisticWeaponCapacity capacity) {
         this.component = component;
         this.capacity = capacity;
-        
+        globalCooldown = 0;
         barrelHeat = new double[capacity.barrels.size()];
         barrelCooldown = new double[capacity.barrels.size()];
         
@@ -88,7 +88,7 @@ public abstract class WeaponController extends CapacityController {
         Part part = component.getFirstPart();
             
         double xoffset = capacity.barrels.get(barrel).getX();
-        double yoffset = capacity.barrels.get(barrel).getY();
+        double yoffset = capacity.barrels.get(barrel).getZ();
             
         Vec3 from = new Vec3(xoffset, 1, yoffset).transform(part.getTransform());
             

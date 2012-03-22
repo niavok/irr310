@@ -8,7 +8,7 @@ import com.irr310.common.Game;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.Ship;
-import com.irr310.common.world.capacity.WeaponCapacity;
+import com.irr310.common.world.capacity.BalisticWeaponCapacity;
 import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
 
@@ -35,6 +35,7 @@ public class UpgradeFactory {
 
         addUpgrade(new WeaponGunEffect());
         addUpgrade(new WeaponShotgunEffect());
+        addUpgrade(new WeaponRocketPodEffect());
         addUpgrade(new WeaponCannonEffect());
         addUpgrade(new WeaponLaserEffect());
 
@@ -72,8 +73,8 @@ public class UpgradeFactory {
         List<Ship> shipList = player.getShipList();
         for (Ship ship : shipList) {
             for (Component component : ship.getComponents()) {
-                List<WeaponCapacity> capacities = component.getCapacitiesByClass(WeaponCapacity.class);
-                for (WeaponCapacity gunCapacity : capacities) {
+                List<BalisticWeaponCapacity> capacities = component.getCapacitiesByClass(BalisticWeaponCapacity.class);
+                for (BalisticWeaponCapacity gunCapacity : capacities) {
                     if (gunCapacity.getName().equals("gun")) {
                         gunCapacity.damage = GUN_BASE_DAMAGE;
                         gunCapacity.accuracy = GUN_BASE_ACCURACY;
@@ -89,7 +90,7 @@ public class UpgradeFactory {
                         gunCapacity.firerate = SHOTGUN_BASE_FIRERATE;
                         gunCapacity.heatingSpeed = SHOTGUN_BASE_HEATINGSPEED;
                         gunCapacity.range = SHOTGUN_BASE_RANGE;
-                        gunCapacity.armorPenetration = GUN_BASE_ARMOR_PENETRATION;
+                        gunCapacity.armorPenetration = SHOTGUN_BASE_ARMOR_PENETRATION;
                     }
                 }
             }

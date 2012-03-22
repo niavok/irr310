@@ -29,6 +29,7 @@ import javax.vecmath.Vector3d;
 
 import com.bulletphysics.BulletGlobals;
 import com.bulletphysics.util.ArrayPool;
+import com.irr310.common.tools.Log;
 
 /**
  * Utility functions for matrices.
@@ -120,6 +121,10 @@ public class MatrixUtil {
 	
 	public static void setRotation(Matrix3d dest, Quat4d q) {
 		double d = q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w;
+		
+		if(!(d!=0)) {
+		   Log.trace("plop"); 
+		}
 		
 		assert (d != 0);
 		double s = 2f / d;

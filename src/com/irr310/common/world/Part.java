@@ -1,5 +1,8 @@
 package com.irr310.common.world;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.irr310.common.Game;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
@@ -19,7 +22,9 @@ public class Part extends GameEntity {
     private Player owner;
     private final WorldObject parentObject;
     private CollisionShape collisionShape;
-
+    private List<Part> collisionExcludeList;
+    
+    
     public enum CollisionShape {
         BOX, SPHERE,
     }
@@ -36,6 +41,8 @@ public class Part extends GameEntity {
         collisionShape = CollisionShape.BOX;
         linearDamping = 0.1;
         angularDamping = 0.9;
+        
+        collisionExcludeList = null;
     }
 
     public void setMass(Double mass) {
@@ -168,5 +175,18 @@ public class Part extends GameEntity {
         this.collisionShape = collisionShape;
     }
 
+    public void addCollisionExclusion(Part part) {
+        if(collisionExcludeList == null) {
+            collisionExcludeList = new ArrayList<Part>();
+        }
+        if(!collisionExcludeList.contains(part)) {
+            collisionExcludeList.add(part);
+            part.addCollisionExclusion(this);
+        }
+    }
+    
+    public List<Part> getCollisionExcludeList() {
+        return collisionExcludeList;
+    }
 
 }

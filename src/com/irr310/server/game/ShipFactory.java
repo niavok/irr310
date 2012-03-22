@@ -1,8 +1,11 @@
 package com.irr310.server.game;
 
+import java.util.List;
+
 import com.irr310.common.Game;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Component;
+import com.irr310.common.world.RocketDescriptor;
 import com.irr310.common.world.Ship;
 import com.irr310.common.world.World;
 import com.irr310.server.GameServer;
@@ -216,6 +219,17 @@ public class ShipFactory {
     public static Ship createOre() {
         Ship ship = new Ship(GameServer.pickNewId());
         return ship;
+    }
+
+    public static Ship createRocket(RocketDescriptor rocket, Vec3 initialSpeed) {
+        World world = Game.getInstance().getWorld();
+        Ship newShip = new Ship(GameServer.pickNewId());
+        Component rocketHull = ComponentFactory.createRocketHull("kernel", rocket);
+        rocketHull.setShipPosition(new Vec3(0, 0, 0));
+        rocketHull.getFirstPart().getLinearSpeed().set(initialSpeed);
+        newShip.assign(rocketHull);
+
+        return newShip;
     }
 
 }

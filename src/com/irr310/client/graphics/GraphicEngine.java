@@ -39,6 +39,7 @@ import com.irr310.common.event.PlayerLoggedEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.ReloadUiEvent;
 import com.irr310.common.event.RemoveGuiComponentEvent;
+import com.irr310.common.event.RocketFiredEvent;
 import com.irr310.common.event.SellUpgradeRequestEvent;
 import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.event.UpgradeStateChanged;
@@ -297,6 +298,10 @@ public class GraphicEngine extends FramerateEngine {
             rendererVisitor.visit(event);            
         }
         
+        @Override
+        public void visit(RocketFiredEvent event) {
+            rendererVisitor.visit(event);     
+        }
     }
 
     public V3DContext getV3DContext() {

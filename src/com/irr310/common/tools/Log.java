@@ -106,9 +106,10 @@ public class Log {
     }
 
     public static void error(String string) {
-        // TODO Auto-generated method stub
-        
+        System.err.println(string);
     }
     
-    
+    public static void warn(String string) {
+        System.err.println(string);
+    }
 }

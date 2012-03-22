@@ -24,7 +24,7 @@ import com.irr310.client.graphics.skin.AsteroidSkin;
 import com.irr310.client.graphics.skin.CameraSkin;
 import com.irr310.client.graphics.skin.FactorySkin;
 import com.irr310.client.graphics.skin.GenericSkin;
-import com.irr310.client.graphics.skin.GunSkin;
+import com.irr310.client.graphics.skin.WeaponSkin;
 import com.irr310.client.graphics.skin.HullSkin;
 import com.irr310.client.graphics.skin.LootSkin;
 import com.irr310.client.graphics.skin.MonolithSkin;
@@ -710,7 +710,10 @@ public class WorldRenderer implements GraphicRenderer {
             addComponent(component);
         }
 
-        cameraController.setFollowed(ship.getComponentByName("kernel").getFirstPart());
+        if(cameraController.getFollowed() == null) {
+            Component kernel = ship.getComponentByName("kernel");
+            cameraController.setFollowed(kernel.getFirstPart());
+        }
 
         activeCamera.fitAll();
     }
@@ -789,7 +792,7 @@ public class WorldRenderer implements GraphicRenderer {
             } else if (object.getSkin().equals("thrusterBlock")) {
                 skin = new ThrusterBlockSkin(this, (Component) object);
             } else if (object.getSkin().equals("gun")) {
-                skin = new GunSkin(this, (Component) object);
+                skin = new WeaponSkin(this, (Component) object);
             } else if (object.getSkin().equals("asteroid")) {
                 skin = new AsteroidSkin(this, (CelestialObject) object);
 

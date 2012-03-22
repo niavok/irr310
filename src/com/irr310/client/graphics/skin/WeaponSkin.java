@@ -1,12 +1,13 @@
 package com.irr310.client.graphics.skin;
 
 import java.io.File;
+import java.util.List;
 
 import com.irr310.client.graphics.GraphicEngine;
 import com.irr310.client.graphics.WorldRenderer;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.world.Component;
-import com.irr310.common.world.capacity.WeaponCapacity;
+import com.irr310.common.world.capacity.BalisticWeaponCapacity;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
@@ -18,12 +19,12 @@ import fr.def.iss.vd2.lib_v3d.element.V3DPoint;
 import fr.def.iss.vd2.lib_v3d.element.V3DShaderElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DrawElement;
 
-public class GunSkin extends Skin {
+public class WeaponSkin extends Skin {
 
     private V3DGroupElement elements;
     private TransformMatrix transform;
 
-    public GunSkin(WorldRenderer renderer, final Component object) {
+    public WeaponSkin(WorldRenderer renderer, final Component object) {
         super(renderer);
         GraphicEngine engine = renderer.getEngine();
         elements = new V3DGroupElement(engine.getV3DContext());
@@ -37,19 +38,23 @@ public class GunSkin extends Skin {
 
         
         
-        WeaponCapacity gunCapacity = (WeaponCapacity) object.getCapacitiesByClass(WeaponCapacity.class).get(0);
+        double range = 1000;
+        List<BalisticWeaponCapacity> balisticWeaponcapacities = object.getCapacitiesByClass(BalisticWeaponCapacity.class);
         
-        
+        if(!balisticWeaponcapacities.isEmpty()) {
+            BalisticWeaponCapacity gunCapacity = (BalisticWeaponCapacity) balisticWeaponcapacities.get(0);
+            range = gunCapacity.range;
+        }
         
         final V3DLine line = new V3DLine(engine.getV3DContext());
         line.setThickness(1);
-        line.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, (float) gunCapacity.range, 0));
+        line.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, (float) range, 0));
         elements.add(new V3DColorElement(line, new V3DColor(255, 135,  158 , 0.7f)));
 
         
         final V3DPoint point100 = new V3DPoint(engine.getV3DContext());
         point100.setSize(5);
-        point100.setPosition(new V3DVect3(0, (float) gunCapacity.range, 0));
+        point100.setPosition(new V3DVect3(0, (float) range, 0));
         elements.add(new V3DColorElement(point100, new V3DColor(255, 35, 58, 0.8f)));
         
     }

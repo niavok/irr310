@@ -5,7 +5,7 @@ import java.util.List;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.Ship;
-import com.irr310.common.world.capacity.WeaponCapacity;
+import com.irr310.common.world.capacity.BalisticWeaponCapacity;
 import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.common.world.upgrade.Upgrade.UpgradeCategory;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
@@ -19,8 +19,8 @@ public class WeaponDamageUpgradeEffect extends UpgradeEffect {
 
         for (Ship ship : shipList) {
             for (Component component : ship.getComponents()) {
-                List<WeaponCapacity> capacities = component.getCapacitiesByClass(WeaponCapacity.class);
-                for (WeaponCapacity gunCapacity : capacities) {
+                List<BalisticWeaponCapacity> capacities = component.getCapacitiesByClass(BalisticWeaponCapacity.class);
+                for (BalisticWeaponCapacity gunCapacity : capacities) {
                     double lastDamage = gunCapacity.damage;
 
                     if (playerUpgrade.getRank() > 0) {

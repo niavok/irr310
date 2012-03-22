@@ -13,6 +13,10 @@ public class TransformMatrix {
         transform = new double[16];
     }
 
+    public TransformMatrix(TransformMatrix transform) {
+        set(transform.getData());
+    }
+
     public DoubleBuffer toDoubleBuffer() {
         ByteBuffer bb = ByteBuffer.allocateDirect(transform.length * 8);
         bb.order(ByteOrder.nativeOrder());

@@ -1,11 +1,13 @@
 package com.irr310.common.world.capacity.controller;
 
+import com.irr310.common.tools.Log;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.capacity.BalisticWeaponCapacity;
+import com.irr310.common.world.capacity.RocketWeaponCapacity;
 
-public class GunController extends BalisticWeaponController{
+public class RocketPodController extends RocketWeaponController{
 
-    public GunController(Component component, BalisticWeaponCapacity capacity) {
+    public RocketPodController(Component component, RocketWeaponCapacity capacity) {
         super(component, capacity);
     }
 

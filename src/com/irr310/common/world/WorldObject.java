@@ -3,6 +3,9 @@ package com.irr310.common.world;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bulletphysics.collision.shapes.CollisionShape;
+import com.bulletphysics.util.ObjectArrayList;
+
 public abstract class WorldObject extends GameEntity {
 
     private String name;
@@ -92,6 +95,5 @@ public abstract class WorldObject extends GameEntity {
     public boolean isBroken() {
         return this.durability <= 0;
     }
-    
 
 }

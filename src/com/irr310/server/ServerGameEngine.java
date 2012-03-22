@@ -26,11 +26,13 @@ import com.irr310.common.event.InventoryChangedEvent;
 import com.irr310.common.event.NextWaveEvent;
 import com.irr310.common.event.PauseEngineEvent;
 import com.irr310.common.event.QuitGameEvent;
+import com.irr310.common.event.RocketFiredEvent;
 import com.irr310.common.event.SellUpgradeRequestEvent;
 import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.event.UpgradeStateChanged;
 import com.irr310.common.event.WorldReadyEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
+import com.irr310.common.tools.Log;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Asteroid;
 import com.irr310.common.world.CelestialObject;
@@ -44,13 +46,16 @@ import com.irr310.common.world.Ship;
 import com.irr310.common.world.WorldObject;
 import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
-import com.irr310.common.world.capacity.WeaponCapacity;
+import com.irr310.common.world.capacity.BalisticWeaponCapacity;
+import com.irr310.common.world.capacity.RocketWeaponCapacity;
 import com.irr310.common.world.capacity.controller.CapacityController;
 import com.irr310.common.world.capacity.controller.GunController;
 import com.irr310.common.world.capacity.controller.LinearEngineController;
+import com.irr310.common.world.capacity.controller.RocketPodController;
 import com.irr310.common.world.capacity.controller.ShotgunController;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
 import com.irr310.server.game.CelestialObjectFactory;
+import com.irr310.server.game.ShipFactory;
 import com.irr310.server.upgrade.UpgradeFactory;
 
 public class ServerGameEngine extends FramerateEngine {
@@ -264,14 +269,19 @@ public class ServerGameEngine extends FramerateEngine {
                 if (capacity instanceof LinearEngineCapacity) {
                     addCapacityController(new LinearEngineController(component, (LinearEngineCapacity) capacity));
                 }
-                if (capacity instanceof WeaponCapacity) {
+                if (capacity instanceof BalisticWeaponCapacity) {
                     if(capacity.getName().equals("gun")) {
-                        addCapacityController(new GunController(component, (WeaponCapacity) capacity));
+                        addCapacityController(new GunController(component, (BalisticWeaponCapacity) capacity));
                     } else if(capacity.getName().equals("shotgun")) { 
-                        addCapacityController(new ShotgunController(component, (WeaponCapacity) capacity));
+                        addCapacityController(new ShotgunController(component, (BalisticWeaponCapacity) capacity));
+                    } 
+                } else if (capacity instanceof RocketWeaponCapacity) {
+                    if(capacity.getName().equals("rocketpod")) { 
+                        addCapacityController(new RocketPodController(component, (RocketWeaponCapacity) capacity));
                     }
                 }
             }
+            UpgradeFactory.refresh(component.getShip().getOwner());
         }
 
         @Override
@@ -323,6 +333,13 @@ public class ServerGameEngine extends FramerateEngine {
 
                 break;
             }
+        }
+        
+        @Override
+        public void visit(RocketFiredEvent event) {
+            Ship rocket = ShipFactory.createRocket(event.getRocket(),event.getInitialSpeed());
+            rocket.getComponentByName("kernel").getFirstPart().addCollisionExclusion(event.getSource());
+            Game.getInstance().getWorld().addShip(rocket, event.getFrom());
         }
 
         private void impulse(Part part, double energy, Vec3 localPosition, Vec3 axis) {
@@ -430,7 +447,7 @@ public class ServerGameEngine extends FramerateEngine {
         if (newDurablility == 0) {
             if (parentObject instanceof CelestialObject) {
                 Game.getInstance().getWorld().removeCelestialObject((CelestialObject) parentObject, Reason.DESTROYED);
-            }
+            } 
         }
 
     }

@@ -16,6 +16,7 @@ public abstract class Capacity extends GameEntity{
         LINEAR_ENGINE,
         WING,
         GUN,
+        ROCKET,
     }
     
     public abstract CapacityView toView();
@@ -29,7 +30,7 @@ public abstract class Capacity extends GameEntity{
             case WING:
                 return new WingCapacity(id);
             case GUN:
-                return new WeaponCapacity(id);
+                return new BalisticWeaponCapacity(id);
             default:
                 System.err.println("Not implemented capacity type: "+type.toString());
         }

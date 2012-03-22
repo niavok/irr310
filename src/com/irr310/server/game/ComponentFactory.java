@@ -2,9 +2,14 @@ package com.irr310.server.game;
 
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Component;
+import com.irr310.common.world.DamageDescriptor;
 import com.irr310.common.world.Part;
+import com.irr310.common.world.RocketDescriptor;
+import com.irr310.common.world.capacity.ExplosiveCapacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
-import com.irr310.common.world.capacity.WeaponCapacity;
+import com.irr310.common.world.capacity.BalisticWeaponCapacity;
+import com.irr310.common.world.capacity.RocketCapacity;
+import com.irr310.common.world.capacity.RocketWeaponCapacity;
 import com.irr310.common.world.capacity.WingCapacity;
 import com.irr310.common.world.item.Item;
 import com.irr310.server.GameServer;
@@ -150,23 +155,31 @@ public class ComponentFactory {
         component.addSlot(GameServer.pickNewId(), part, new Vec3(0, -shape.y / 4, shape.z / 2));
         component.addSlot(GameServer.pickNewId(), part, new Vec3(0, -shape.y / 4, -shape.z / 2));
 
-        WeaponCapacity gunCapacity = new WeaponCapacity(GameServer.pickNewId());
-        gunCapacity.setName(capacityName);
         if(capacityName.equals("gun")) {
-            
+            BalisticWeaponCapacity gunCapacity = new BalisticWeaponCapacity(GameServer.pickNewId());
+            gunCapacity.setName(capacityName);
             gunCapacity.barrels.add(new Vec3(0.14,0,0.14));
             gunCapacity.barrels.add(new Vec3(-0.14,0,0.14));
-            gunCapacity.barrels.add(new Vec3(-0.14,0,0.14));
+            gunCapacity.barrels.add(new Vec3(-0.14,0,-0.14));
             gunCapacity.barrels.add(new Vec3(0.14,0,-0.14));
-
+            component.addCapacity(gunCapacity);
         } else if(capacityName.equals("shotgun")) {
+            BalisticWeaponCapacity gunCapacity = new BalisticWeaponCapacity(GameServer.pickNewId());
+            gunCapacity.setName(capacityName);
             gunCapacity.barrels.add(new Vec3(0.0,0,0.0));
+            component.addCapacity(gunCapacity);
+        } else if(capacityName.equals("rocketpod")) {
+            RocketWeaponCapacity gunCapacity = new RocketWeaponCapacity(GameServer.pickNewId());
+            gunCapacity.setName(capacityName);
+            component.addCapacity(gunCapacity);
+            for(int i = 0; i <  9; i++) {
+                gunCapacity.barrels.add(new Vec3(0.4,0,0.0).rotate(new Vec3(0, i*360./9, 0)));
+            }
+            for(int i = 0; i <  3; i++) {
+                gunCapacity.barrels.add(new Vec3(0.2,0,0.0).rotate(new Vec3(0, i*360./3, 0)));
+            }
         }
          
-        
-        component.addCapacity(gunCapacity);
-        
-
         return component;
     }
 
@@ -275,6 +288,38 @@ public class ComponentFactory {
         return component;
     }
 
+    public static Component createRocketHull(String name, RocketDescriptor rocket) {
+        Component component = createSimpleComponent(name);
+        Part part = component.getFirstPart();
+        part.setMass(0.01d);
+        component.setSkin("rocket_hull");
+        
+        part.setShape(new Vec3(0.1, 1.5, 0.1));
+        part.setLinearDamping(rocket.damping);
+        component.setDurabilityMax(rocket.hitPoint);
+        component.setDurability(rocket.hitPoint);
+        
+        ExplosiveCapacity explosiveCapacity = new ExplosiveCapacity(GameServer.pickNewId());
+        explosiveCapacity.explosionRadius = rocket.explosionRadius;
+        explosiveCapacity.explosionBlast = rocket.explosionBlast;
+        explosiveCapacity.armorPenetration = rocket.armorPenetration;
+        explosiveCapacity.explosiontDamage = rocket.explosionDamage;
+        explosiveCapacity.damageType = rocket.damageType;
+        
+        RocketCapacity rocketCapacity = new RocketCapacity(GameServer.pickNewId());
+        rocketCapacity.explosive = explosiveCapacity;
+        rocketCapacity.securityTimeout = rocket.securityTimeout;
+        rocketCapacity.theoricalMaxThrust = rocket.thrust;
+        rocketCapacity.thrustDuration = rocket.thrustDuration;
+        rocketCapacity.stability = rocket.stability;
+        
+        component.addCapacity(explosiveCapacity);
+        component.addCapacity(rocketCapacity);
+        
+        
+        return component;
+    }
+    
     public static Component createGate(String name) {
         Component component = createSimpleComponent(name);
         return component;
@@ -345,6 +390,8 @@ public class ComponentFactory {
             return createGun("weapon.gun", "gun");
         } else if (content.getName().equals("weapon.shotgun")) {
             return createGun("weapon.gun", "shotgun");
+        } else if (content.getName().equals("weapon.rocketpod")) {
+            return createGun("weapon.gun", "rocketpod");
         }
         
         throw new RuntimeException("No component found to " + content.getName());

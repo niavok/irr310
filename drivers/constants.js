@@ -22,6 +22,7 @@ var KEY_D = 32;
 var KEY_E = 18;
 var KEY_K = 37;
 var KEY_Q = 16;
+var KEY_R = 19;
 var KEY_S = 31;
 var KEY_Z = 44;
 

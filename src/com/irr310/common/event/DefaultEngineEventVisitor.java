@@ -129,4 +129,8 @@ public class DefaultEngineEventVisitor implements EngineEventVisitor {
     @Override
     public void visit(WorldSizeChangedEvent event) {
     }
+    
+    @Override
+    public void visit(RocketFiredEvent event) {
+    }
 }
