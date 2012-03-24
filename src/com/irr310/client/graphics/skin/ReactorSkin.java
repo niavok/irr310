@@ -34,7 +34,7 @@ public class ReactorSkin extends Skin {
         final V3DrawElement elementStator = V3DrawElement.LoadFromFile(v3drawFileStator, engine.getV3DContext());
         elements.add(new V3DColorElement(new V3DShaderElement(elementStator, "propeller"), new V3DColor(135, 158, 255)));
 
-        // stator
+        // rotor
         File v3drawFileRotor = new File("graphics/output/reactor_rotor.v3draw");
         elementRotor = V3DrawElement.LoadFromFile(v3drawFileRotor, engine.getV3DContext());
         elements.add(new V3DColorElement(new V3DShaderElement(elementRotor, "propeller"), new V3DColor(135, 158, 169)));

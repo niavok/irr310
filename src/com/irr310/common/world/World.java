@@ -62,7 +62,7 @@ public class World {
         partIdMap = new HashMap<Long, Part>();
         availableUpgrades = new CopyOnWriteArrayList<Upgrade>();
         mutex = new ReentrantLock();
-        worldSize = 100;
+        worldSize = 200;
     }
 
     public void addCelestialObject(CelestialObject o) {

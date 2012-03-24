@@ -25,6 +25,7 @@ import com.irr310.client.graphics.skin.AsteroidSkin;
 import com.irr310.client.graphics.skin.CameraSkin;
 import com.irr310.client.graphics.skin.FactorySkin;
 import com.irr310.client.graphics.skin.GenericSkin;
+import com.irr310.client.graphics.skin.RocketSkin;
 import com.irr310.client.graphics.skin.WeaponSkin;
 import com.irr310.client.graphics.skin.HullSkin;
 import com.irr310.client.graphics.skin.LootSkin;
@@ -795,6 +796,8 @@ public class WorldRenderer implements GraphicRenderer {
                 skin = new ThrusterBlockSkin(this, (Component) object);
             } else if (object.getSkin().equals("gun")) {
                 skin = new WeaponSkin(this, (Component) object);
+            } else if (object.getSkin().equals("rocket_hull")) {
+                skin = new RocketSkin(this, (Component) object);
             } else if (object.getSkin().equals("asteroid")) {
                 skin = new AsteroidSkin(this, (CelestialObject) object);
 

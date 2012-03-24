@@ -18,11 +18,9 @@ import fr.def.iss.vd2.lib_v3d.element.V3DrawElement;
 public class ExplosionEffect extends GenericGraphicalElement{
 
     private V3DGroupElement elements;
-    private float speed = 500;
-    private float currentLocation = 0;
+    private float speed;
+    private float currentLocation;
 
-    private final Vec3 from;
-    private Vec3 bulletVector;
     private final GraphicEngine engine;
     private final double radius;
     private V3DrawElement bubbleElement;
@@ -31,9 +29,8 @@ public class ExplosionEffect extends GenericGraphicalElement{
         super(renderer);
         this.radius = radius;
         this.engine = renderer.getEngine();
-        this.from = from;
-
-
+        currentLocation = (float) (radius/10);
+        speed = (float) radius*10; 
         elements = new V3DGroupElement(engine.getV3DContext());
 
         File v3drawFileStructure = new File("graphics/output/bubble.v3draw");

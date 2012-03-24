@@ -41,15 +41,15 @@ public class RocketWeaponCapacity extends Capacity {
         firerate = 5;
 
         securityTimeout = 60;
-        thrust = 0.5;
+        thrust = 0.00000;
         damping = 0.1;
         thrustDuration = 5;
         stability = 0.01;
-        hitPoint = 20;
+        hitPoint = 5;
 
         explosionDamage = 50;
-        explosionRadius = 40;
-        explosionBlast = 50;
+        explosionRadius = 10;
+        explosionBlast = 20;
         armorPenetration = 5;
         damageType = DamageDescriptor.DamageType.HEAT;
     }

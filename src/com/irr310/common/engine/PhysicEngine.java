@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Map.Entry;
+import java.util.concurrent.locks.ReentrantLock;
 
 import javax.vecmath.Vector3d;
 
@@ -74,6 +75,7 @@ import com.irr310.common.world.Link;
 import com.irr310.common.world.Part;
 import com.irr310.common.world.Ship;
 import com.irr310.common.world.Slot;
+import com.irr310.common.world.World;
 import com.irr310.common.world.WorldObject;
 import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
@@ -109,6 +111,7 @@ public class PhysicEngine extends FramerateEngine {
     private Random random;
     private OverlapFilterCallback overlapFilterCallback;
     private NearCallback nearCallback;
+    ReentrantLock mutex;
 
     public PhysicEngine() {
         framerate = new Duration(10000000); // 10 ms
@@ -122,10 +125,14 @@ public class PhysicEngine extends FramerateEngine {
         links = new ArrayList<Link>();
         initPhysics();
         random = new Random();
+        mutex = new ReentrantLock();
     }
 
     @Override
     protected void frame() {
+        
+        mutex.lock();
+        
         // Apply forces
         // Linear Engines
         for (Pair<LinearEngineCapacity, RigidBody> linearEngine : linearEngines) {
@@ -154,9 +161,9 @@ public class PhysicEngine extends FramerateEngine {
 
             TransformMatrix force = TransformMatrix.identity();
 
-            force.translate(new Vec3(random.nextDouble() * rocket.getLeft().stability * PHYSICAL_SCALE, (random.nextDouble()
+            force.translate(new Vec3((random.nextDouble()-0.5) * rocket.getLeft().stability * PHYSICAL_SCALE, ((random.nextDouble()-0.5)
                     * rocket.getLeft().stability + rocket.getLeft().getCurrentThrust())
-                    * PHYSICAL_SCALE, random.nextDouble() * rocket.getLeft().stability * PHYSICAL_SCALE));
+                    * PHYSICAL_SCALE, (random.nextDouble()-0.5) * rocket.getLeft().stability * PHYSICAL_SCALE));
 
             TransformMatrix rotation = new TransformMatrix();
             t.getOpenGLMatrix(rotation.getData());
@@ -205,19 +212,21 @@ public class PhysicEngine extends FramerateEngine {
             body.setActivationState(RigidBody.ACTIVE_TAG);
 
         }
-
+        mutex.unlock();
+        
         Game.getInstance().getWorld().lock();
+        mutex.lock();
 
         // step the simulation
         if (dynamicsWorld != null) {
             dynamicsWorld.stepSimulation(framerate.getSeconds());
         }
-
+        mutex.unlock();
         Game.getInstance().getWorld().unlock();
-
+        
     }
 
-    public float getDeltaTimeMicroseconds() {
+    private float getDeltaTimeMicroseconds() {
         float dt = clock.getTimeMicroseconds();
         clock.reset();
         return dt;
@@ -225,6 +234,8 @@ public class PhysicEngine extends FramerateEngine {
 
     public List<SphereResultDescriptor> sphereTest(final Vec3 from, final double radius) {
 
+        mutex.lock();
+        
         Log.trace("sphereTest at "+from+" radius "+radius);
         
         final List<SphereResultDescriptor> sphereResultDescriptorList = new ArrayList<SphereResultDescriptor>();
@@ -276,7 +287,6 @@ public class PhysicEngine extends FramerateEngine {
         transform.origin.set(from.toVector3d());
         ghost.setWorldTransform(transform);
 
-        Game.getInstance().getWorld().lock();
         dynamicsWorld.addCollisionObject(ghost);
 
         dynamicsWorld.getPairCache().setOverlapFilterCallback(new OverlapFilterCallback() {
@@ -366,23 +376,14 @@ public class PhysicEngine extends FramerateEngine {
         
         dispatcher.setNearCallback(nearCallback);
         dynamicsWorld.getPairCache().setOverlapFilterCallback(overlapFilterCallback);
-        Game.getInstance().getWorld().unlock();
 
-        // Log.trace("ghost overide "+ ghost.getNumOverlappingObjects());
-
-        // ObjectArrayList<CollisionObject> overlappingPairs =
-        // ghost.getOverlappingPairs();
-        // for (CollisionObject collisionObject : overlappingPairs) {
-        // UserData data = (UserData) ((RigidBody)
-        // collisionObject).getUserPointer();
-        // Log.trace("overide detect with "+data.part.getParentObject().getName());
-        // }
-
+        mutex.unlock();
         return sphereResultDescriptorList;
     }
 
     public List<RayResultDescriptor> rayTest(final Vec3 from, final Vec3 to) {
 
+        mutex.lock();
         final List<RayResultDescriptor> rayResultDescriptorList = new ArrayList<RayResultDescriptor>();
 
         dynamicsWorld.rayTest(from.toVector3d(), to.toVector3d(), new RayResultCallback() {
@@ -408,14 +409,17 @@ public class PhysicEngine extends FramerateEngine {
             }
         });
 
+        
+        mutex.unlock();
         if (rayResultDescriptorList.size() > 1) {
             Collections.sort(rayResultDescriptorList);
         }
+        
 
         return rayResultDescriptorList;
     }
 
-    public void initPhysics() {
+    private void initPhysics() {
 
         partToBodyMap = new HashMap<Part, RigidBody>();
 
@@ -495,13 +499,13 @@ public class PhysicEngine extends FramerateEngine {
 
     }
 
-    protected void addObject(WorldObject object) {
+    private void addObject(WorldObject object) {
         for (final Part part : object.getParts()) {
             addPart(part, new UserData());
         }
     }
 
-    protected void removeObject(WorldObject object) {
+    private void removeObject(WorldObject object) {
         for (final Part part : object.getParts()) {
             RigidBody body = partToBodyMap.remove(part);
 
@@ -522,29 +526,33 @@ public class PhysicEngine extends FramerateEngine {
         }
     }
 
-    protected void removeComponent(Component component) {
+    private void removeComponent(Component component) {
         components.remove(component);
         removeObject(component);
     }
 
     public void reloadStates() {
+        mutex.lock();
         for (Entry<Part, RigidBody> partEntry : partToBodyMap.entrySet()) {
             // TODO: fix concurrent modification on the map
             RigidBody body = partEntry.getValue();
             PartMotionState motionState = (PartMotionState) body.getMotionState();
             motionState.reload();
         }
+        mutex.unlock();
     }
 
     public void reloadStates(Part part) {
+        mutex.lock();
         RigidBody body = partToBodyMap.get(part);
         if (body != null) {
             PartMotionState motionState = (PartMotionState) body.getMotionState();
             motionState.reload();
         }
+        mutex.unlock();
     }
 
-    protected void addShip(Ship ship, TransformMatrix transform) {
+    private void addShip(Ship ship, TransformMatrix transform) {
         if (ships.contains(ship)) {
             return;
         }
@@ -601,7 +609,7 @@ public class PhysicEngine extends FramerateEngine {
         components.add(component);
     }
 
-    protected void addLink(Link link) {
+    private void addLink(Link link) {
         if (links.contains(link)) {
             return;
         }
@@ -647,7 +655,7 @@ public class PhysicEngine extends FramerateEngine {
 
     }
 
-    protected RigidBody addPart(Part part, UserData userData) {
+    private RigidBody addPart(Part part, UserData userData) {
         // create a few dynamic rigidbodies
         // Re-using the same collision is better for memory usage and
         // performance
@@ -772,14 +780,14 @@ public class PhysicEngine extends FramerateEngine {
         }
     }
 
-    public class UserData {
+    private class UserData {
 
         public Part part = null;
         public Ship ship = null;
 
     }
 
-    public class PartMotionState extends MotionState {
+    private class PartMotionState extends MotionState {
 
         private final Part part;
         private RigidBody body;
@@ -831,7 +839,9 @@ public class PhysicEngine extends FramerateEngine {
 
     @Override
     protected void processEvent(EngineEvent e) {
+        mutex.lock();
         e.accept(eventVisitor);
+        mutex.unlock();
     }
 
     private final class PhysicEngineEventVisitor extends DefaultEngineEventVisitor {
@@ -865,6 +875,7 @@ public class PhysicEngine extends FramerateEngine {
         @Override
         public void visit(ComponentAddedEvent event) {
 
+            
             Component component = event.getComponent();
             Component kernel = component.getShip().getComponentByName("kernel");
             addComponent(TransformMatrix.identity().translate(kernel.getShipPosition().negative()).preMultiply(kernel.getFirstPart().getTransform()),
@@ -878,7 +889,7 @@ public class PhysicEngine extends FramerateEngine {
 
         @Override
         public void visit(ComponentRemovedEvent event) {
-            removeObject(event.getComponent());
+            removeComponent(event.getComponent());
 
             for (Iterator<Link> iterator = links.iterator(); iterator.hasNext();) {
                 Link link = iterator.next();

@@ -24,7 +24,7 @@ public class RocketCapacity extends Capacity {
         currentThrust = 1;
         targetThrust = 0;
         targetThrustInput =0 ;
-        stability = 0.1;
+        stability = 0.5;
     }
 
     public double getCurrentThrust() {

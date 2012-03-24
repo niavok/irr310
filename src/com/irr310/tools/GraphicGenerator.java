@@ -80,6 +80,20 @@ public class GraphicGenerator {
             objectsPlasma.add("plasma");
             generateObj("graphics/monolith.obj", "graphics/output/monolith_plasma.v3draw", objectsPlasma);
         }
+        
+        // Rocket
+        {
+            List<String> objectsStator = new ArrayList<String>();
+            objectsStator.add("tube");
+
+            generateObj("graphics/rocket.obj", "graphics/output/rocket_tube.v3draw", objectsStator);
+
+            List<String> objectsRotor = new ArrayList<String>();
+            objectsRotor.add("fins");
+            generateObj("graphics/rocket.obj", "graphics/output/rocket_fins.v3draw", objectsRotor);
+        }
+
+        
 
         // Camera
         generateObj("graphics/camera.obj", "graphics/output/camera.v3draw", null);
