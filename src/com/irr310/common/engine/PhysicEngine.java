@@ -131,6 +131,7 @@ public class PhysicEngine extends FramerateEngine {
     @Override
     protected void frame() {
         
+
         mutex.lock();
         
         // Apply forces
@@ -159,11 +160,19 @@ public class PhysicEngine extends FramerateEngine {
             Transform t = new Transform();
             body.getWorldTransform(t);
 
+            if(rocket.getLeft().collisionSecurity) {
+                ((UserData) body.getUserPointer()).noCollision  = true;
+            } else {
+                ((UserData) body.getUserPointer()).noCollision = false;
+            }
+            
             TransformMatrix force = TransformMatrix.identity();
 
-            force.translate(new Vec3((random.nextDouble()-0.5) * rocket.getLeft().stability * PHYSICAL_SCALE, ((random.nextDouble()-0.5)
-                    * rocket.getLeft().stability + rocket.getLeft().getCurrentThrust())
-                    * PHYSICAL_SCALE, (random.nextDouble()-0.5) * rocket.getLeft().stability * PHYSICAL_SCALE));
+            Vec3 imprecision = new Vec3( rocket.getLeft().stability* PHYSICAL_SCALE,  0, 0).rotate(new Vec3(random.nextDouble()*360, random.nextDouble()*360, random.nextDouble()*360));
+            
+            force.translate(new Vec3(0,  rocket.getLeft().getCurrentThrust(),0));
+                   
+            body.applyTorque(imprecision.toVector3d());
 
             TransformMatrix rotation = new TransformMatrix();
             t.getOpenGLMatrix(rotation.getData());
@@ -236,49 +245,9 @@ public class PhysicEngine extends FramerateEngine {
 
         mutex.lock();
         
-        Log.trace("sphereTest at "+from+" radius "+radius);
+//        Log.trace("sphereTest at "+from+" radius "+radius);
         
         final List<SphereResultDescriptor> sphereResultDescriptorList = new ArrayList<SphereResultDescriptor>();
-
-        // double allowedCcdPenetration =
-        // dynamicsWorld.getDispatchInfo().allowedCcdPenetration;
-        // dynamicsWorld.getDispatchInfo().allowedCcdPenetration = -1;
-        //
-        // SphereShape castShape = new SphereShape(radius);
-        // dynamicsWorld.shapeTest(castShape, transform, new
-        // ConvexResultCallback() {
-        //
-        //
-        // @Override
-        // public double addSingleResult(LocalConvexResult convexResult, boolean
-        // normalInWorldSpace) {
-        //
-        // UserData data = (UserData) ((RigidBody)
-        // convexResult.hitCollisionObject).getUserPointer();
-        //
-        // Vec3 distance = new Vec3(convexResult.hitPointLocal);
-        // Vec3 globalPosition = from.plus(distance);
-        //
-        // Vec3 localPosition =
-        // globalPosition.transform(data.part.getTransform().inverse());
-        //
-        // Log.trace("explosion hit on "+data.part.getParentObject().getName()
-        // +" at distance "+ distance.length());
-        //
-        // SphereResultDescriptor descriptor = new SphereResultDescriptor();
-        // descriptor.setDistance(distance);
-        // descriptor.setGlobalPosition(globalPosition);
-        // descriptor.setPart(data.part);
-        // descriptor.setLocalPosition(localPosition);
-        //
-        // sphereResultDescriptorList.add(descriptor);
-        //
-        // return 0;
-        // }
-        // });
-        //
-        // dynamicsWorld.getDispatchInfo().allowedCcdPenetration =
-        // allowedCcdPenetration;
 
         final RigidBody ghost = new RigidBody(0, null, new SphereShape(radius));
         // ghost.setCollisionShape(new SphereShape(radius));
@@ -303,14 +272,14 @@ public class PhysicEngine extends FramerateEngine {
 
             @Override
             public void handleCollision(BroadphasePair collisionPair, CollisionDispatcher dispatcher, DispatcherInfo dispatchInfo) {
-                Log.trace("Contact ?");
+//                Log.trace("Contact ?");
                 
                 if (!collisionPair.pProxy0.clientObject.equals(ghost) && !collisionPair.pProxy1.clientObject.equals(ghost)) {
                     return;
                 }
                 //UserData data1 = (UserData) ((RigidBody) collisionPair.pProxy1.clientObject).getUserPointer();
 
-                Log.trace("ghost ..");
+//                Log.trace("ghost ..");
                 
                 defaultNearCallback.handleCollision(collisionPair, dispatcher, dispatchInfo);
 
@@ -319,7 +288,7 @@ public class PhysicEngine extends FramerateEngine {
                 int numContacts = contactManifold.getNumContacts();
                 for (int j = 0; j < numContacts; j++) {
                     ManifoldPoint pt = contactManifold.getContactPoint(j);
-                    Log.trace("Contact !");
+//                    Log.trace("Contact !");
                     if (pt.getDistance() < 0.f) {
                         
                         RigidBody obA = (RigidBody) contactManifold.getBody0();
@@ -351,9 +320,9 @@ public class PhysicEngine extends FramerateEngine {
                         descriptor.setPart(((UserData) target.getUserPointer()).part);
                         descriptor.setLocalPosition(localPosition);
                        
-                        Log.trace("Contact at "+ globalPosition+" on "+ descriptor.getPart().getParentObject().getName());
-                        Log.trace("Contact distance "+ descriptor.getDistance());
-                        Log.trace(descriptor.getPart().getParentObject().getName()+ "centert at "+ descriptor.getPart().getTransform().getTranslation());
+//                        Log.trace("Contact at "+ globalPosition+" on "+ descriptor.getPart().getParentObject().getName());
+//                        Log.trace("Contact distance "+ descriptor.getDistance());
+//                        Log.trace(descriptor.getPart().getParentObject().getName()+ "centert at "+ descriptor.getPart().getTransform().getTranslation());
                         
                         sphereResultDescriptorList.add(descriptor);
                         
@@ -459,6 +428,10 @@ public class PhysicEngine extends FramerateEngine {
 
                 if (data0 != null && data1 != null) {
                     if (data0.ship != null && data0.ship == data1.ship) {
+                        return false;
+                    }
+                    
+                    if(data0.noCollision || data1.noCollision) {
                         return false;
                     }
                 }
@@ -782,6 +755,7 @@ public class PhysicEngine extends FramerateEngine {
 
     private class UserData {
 
+        public boolean noCollision = false;
         public Part part = null;
         public Ship ship = null;
 

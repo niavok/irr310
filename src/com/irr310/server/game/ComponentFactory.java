@@ -6,6 +6,7 @@ import com.irr310.common.world.DamageDescriptor;
 import com.irr310.common.world.Part;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.RocketDescriptor;
+import com.irr310.common.world.Ship;
 import com.irr310.common.world.capacity.ContactDetectorCapacity;
 import com.irr310.common.world.capacity.ExplosiveCapacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
@@ -34,7 +35,6 @@ public class ComponentFactory {
         engineCapacity.theoricalVariationSpeed = 5;
         engineCapacity.currentThrust = 0;
         engineCapacity.setName("linearEngine");
-        // engineCapacity.setTargetThrust(4);
         component.addCapacity(engineCapacity);
 
         return component;
@@ -291,10 +291,10 @@ public class ComponentFactory {
         return component;
     }
 
-    public static Component createRocketHull(String name, RocketDescriptor rocket, Player player) {
+    public static Component createRocket(String name, RocketDescriptor rocket, Ship sourceShip) {
         Component component = createSimpleComponent(name);
         Part part = component.getFirstPart();
-        part.setOwner(player);
+        part.setOwner(sourceShip.getOwner());
         part.setMass(0.05d);
         component.setSkin("rocket_hull");
         
@@ -308,19 +308,21 @@ public class ComponentFactory {
         explosiveCapacity.explosionBlast = rocket.explosionBlast;
         explosiveCapacity.armorPenetration = rocket.armorPenetration;
         explosiveCapacity.explosionDamage = rocket.explosionDamage;
+        explosiveCapacity.disarmTimeout = rocket.disarmTimeout;
         explosiveCapacity.damageType = rocket.damageType;
         
         RocketCapacity rocketCapacity = new RocketCapacity(GameServer.pickNewId());
         rocketCapacity.explosive = explosiveCapacity;
-        rocketCapacity.securityTimeout = rocket.securityTimeout;
         rocketCapacity.theoricalMaxThrust = rocket.thrust;
         rocketCapacity.thrustDuration = rocket.thrustDuration;
         rocketCapacity.stability = rocket.stability;
         
         ContactDetectorCapacity contactDetectorCapacity = new ContactDetectorCapacity(GameServer.pickNewId());
         contactDetectorCapacity.minImpulse = 0.001;
+        contactDetectorCapacity.minTime = 0.1;
         contactDetectorCapacity.triggerTarget = explosiveCapacity;
         contactDetectorCapacity.triggerCode = "fire";
+        contactDetectorCapacity.sourceShip = sourceShip;
 
         WingCapacity wingCapacity = new WingCapacity(GameServer.pickNewId());
         wingCapacity.yield =0;

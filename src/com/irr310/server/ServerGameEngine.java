@@ -49,17 +49,19 @@ import com.irr310.common.world.Part;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.Ship;
 import com.irr310.common.world.WorldObject;
+import com.irr310.common.world.capacity.BalisticWeaponCapacity;
 import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.capacity.ContactDetectorCapacity;
 import com.irr310.common.world.capacity.ExplosiveCapacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
-import com.irr310.common.world.capacity.BalisticWeaponCapacity;
+import com.irr310.common.world.capacity.RocketCapacity;
 import com.irr310.common.world.capacity.RocketWeaponCapacity;
 import com.irr310.common.world.capacity.controller.CapacityController;
 import com.irr310.common.world.capacity.controller.ContactDetectorController;
 import com.irr310.common.world.capacity.controller.ExplosiveCapacityController;
 import com.irr310.common.world.capacity.controller.GunController;
 import com.irr310.common.world.capacity.controller.LinearEngineController;
+import com.irr310.common.world.capacity.controller.RocketController;
 import com.irr310.common.world.capacity.controller.RocketPodController;
 import com.irr310.common.world.capacity.controller.ShotgunController;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
@@ -128,7 +130,9 @@ public class ServerGameEngine extends FramerateEngine {
                     Game.getInstance().getWorld().removeCelestialObject(object, Reason.LEAVE_OUT_WORLD);
                 } else if (part.getParentObject() instanceof Component) {
                     Component object = (Component) part.getParentObject();
-                    Game.getInstance().getWorld().removeShip(object.getShip());
+                    if(object.getShip().isDestructible()) {
+                        Game.getInstance().getWorld().removeShip(object.getShip());
+                    }
                 }
             }
         }
@@ -285,13 +289,13 @@ public class ServerGameEngine extends FramerateEngine {
                     addCapacityController(new LinearEngineController(component, (LinearEngineCapacity) capacity));
                 }
                 if (capacity instanceof BalisticWeaponCapacity) {
-                    if(capacity.getName().equals("gun")) {
+                    if (capacity.getName().equals("gun")) {
                         addCapacityController(new GunController(component, (BalisticWeaponCapacity) capacity));
-                    } else if(capacity.getName().equals("shotgun")) { 
+                    } else if (capacity.getName().equals("shotgun")) {
                         addCapacityController(new ShotgunController(component, (BalisticWeaponCapacity) capacity));
-                    } 
+                    }
                 } else if (capacity instanceof RocketWeaponCapacity) {
-                    if(capacity.getName().equals("rocketpod")) { 
+                    if (capacity.getName().equals("rocketpod")) {
                         addCapacityController(new RocketPodController(component, (RocketWeaponCapacity) capacity));
                     }
                 } else if (capacity instanceof ExplosiveCapacity) {
@@ -300,6 +304,8 @@ public class ServerGameEngine extends FramerateEngine {
                     ContactDetectorController contactDetectorController = new ContactDetectorController(component, (ContactDetectorCapacity) capacity);
                     contactDetectorMap.put(component, contactDetectorController);
                     addCapacityController(contactDetectorController);
+                } else if (capacity instanceof RocketCapacity) {
+                    addCapacityController(new RocketController(component, (RocketCapacity) capacity));
                 }
             }
             UpgradeFactory.refresh(component.getShip().getOwner());
@@ -314,9 +320,9 @@ public class ServerGameEngine extends FramerateEngine {
                 }
                 if (capacityController instanceof ContactDetectorController) {
                     ContactDetectorController contactController = (ContactDetectorController) capacityController;
-                    contactDetectorMap.remove(contactController);   
+                    contactDetectorMap.remove(contactController);
                 }
-                
+
             }
         }
 
@@ -333,8 +339,8 @@ public class ServerGameEngine extends FramerateEngine {
         @Override
         public void visit(CollisionEvent event) {
             CollisionDescriptor collisionDescriptor = event.getCollisionDescriptor();
-            processCollision(collisionDescriptor.getPartA(), collisionDescriptor.getImpulse());
-            processCollision(collisionDescriptor.getPartB(), collisionDescriptor.getImpulse());
+            processCollision(collisionDescriptor.getPartA(), collisionDescriptor.getPartB(), collisionDescriptor.getImpulse());
+            processCollision(collisionDescriptor.getPartB(), collisionDescriptor.getPartA(), collisionDescriptor.getImpulse());
         }
 
         @Override
@@ -360,16 +366,14 @@ public class ServerGameEngine extends FramerateEngine {
                 break;
             }
         }
-        
+
         @Override
         public void visit(RocketFiredEvent event) {
-            Ship rocket = ShipFactory.createRocket(event.getRocket(),event.getInitialSpeed(), event.getSource().getOwner());
-            
+            Ship rocket = ShipFactory.createRocket(event.getRocket(), event.getInitialSpeed(), ((Component)event.getSource().getParentObject()).getShip());
+
             rocket.getComponentByName("kernel").getFirstPart().addCollisionExclusion(event.getSource());
             Game.getInstance().getWorld().addShip(rocket, event.getFrom());
         }
-
-       
 
         @Override
         public void visit(CelestialObjectRemovedEvent event) {
@@ -430,40 +434,44 @@ public class ServerGameEngine extends FramerateEngine {
             Game.getInstance().sendToAll(new UpgradeStateChanged(playerUpgrade, event.getPlayer()));
             UpgradeFactory.refresh(event.getPlayer());
         }
-        
+
         @Override
         public void visit(InventoryChangedEvent event) {
             UpgradeFactory.refresh(event.getPlayer());
         }
+
         @Override
         public void visit(GameOverEvent event) {
             Game.getInstance().gameOver();
         }
-        
+
         @Override
         public void visit(ExplosionFiredEvent event) {
-            applyExplosion(event.getLocation(), event.getExplosionDamage(), event.getExplosionRadius(), event.getExplosionBlast(), event.getArmorPenetration());
+            applyExplosion(event.getLocation(),
+                           event.getExplosionDamage(),
+                           event.getExplosionRadius(),
+                           event.getExplosionBlast(),
+                           event.getArmorPenetration());
         }
 
-        
     }
 
-    private void processCollision(Part part, double impulse) {
-        DamageDescriptor damage = new DamageDescriptor( DamageDescriptor.DamageType.PHYSICAL, 0);
-        damage.setBaseDamage(impulse*0.5);
+    private void processCollision(Part part, Part collider, double impulse) {
+        DamageDescriptor damage = new DamageDescriptor(DamageDescriptor.DamageType.PHYSICAL, 0);
+        damage.setBaseDamage(impulse * 0.5);
         applyDamage(part, damage);
-        
-        if(contactDetectorMap.containsKey(part.getParentObject())) {
+
+        if (contactDetectorMap.containsKey(part.getParentObject())) {
             ContactDetectorController contactDetectorController = contactDetectorMap.get(part.getParentObject());
-            contactDetectorController.contact(impulse);
+            contactDetectorController.contact(impulse, collider);
         }
-        
+
     }
 
     private void applyDamage(Part target, DamageDescriptor damage) {
         WorldObject parentObject = target.getParentObject();
 
-        double effectiveDamage = damage.getBaseDamage() * (1.0 - parentObject.getPhysicalResistance()*(1 - damage.armorPenetration));
+        double effectiveDamage = damage.getBaseDamage() * (1.0 - parentObject.getPhysicalResistance() * (1 - damage.armorPenetration));
 
         if (effectiveDamage == 0) {
             return;
@@ -486,20 +494,25 @@ public class ServerGameEngine extends FramerateEngine {
             if (parentObject instanceof CelestialObject) {
                 Game.getInstance().getWorld().removeCelestialObject((CelestialObject) parentObject, Reason.DESTROYED);
             }
-            if(parentObject instanceof Component) {
+            if (parentObject instanceof Component) {
                 Component component = (Component) parentObject;
-                if(((Component) parentObject).getShip().isDestructible()) {
+                if (((Component) parentObject).getShip().isDestructible()) {
                     // Destroy component
-                    
+
                     List<ExplosiveCapacity> explosiveCapacities = component.getCapacitiesByClass(ExplosiveCapacity.class);
                     for (ExplosiveCapacity explosiveCapacity : explosiveCapacities) {
-                        if(!explosiveCapacity.consumed) {
+                        if (!explosiveCapacity.consumed) {
                             explosiveCapacity.consumed = true;
-                            Game.getInstance().sendToAll(new ExplosionFiredEvent(component.getFirstPart(), component.getFirstPart().getTransform().getTranslation(), explosiveCapacity.armorPenetration, explosiveCapacity.explosionBlast, explosiveCapacity.explosionRadius, explosiveCapacity.explosionDamage));
+                            Game.getInstance().sendToAll(new ExplosionFiredEvent(component.getFirstPart(),
+                                                                                 component.getFirstPart().getTransform().getTranslation(),
+                                                                                 explosiveCapacity.armorPenetration,
+                                                                                 explosiveCapacity.explosionBlast,
+                                                                                 explosiveCapacity.explosionRadius,
+                                                                                 explosiveCapacity.explosionDamage));
                         }
                     }
                     Game.getInstance().getWorld().removeComponent(component, com.irr310.common.event.ComponentRemovedEvent.Reason.DESTROYED);
-                    if(component.getShip().getComponents().size() == 0) {
+                    if (component.getShip().getComponents().size() == 0) {
                         Game.getInstance().getWorld().removeShip(component.getShip());
                     }
                 }
@@ -511,23 +524,24 @@ public class ServerGameEngine extends FramerateEngine {
     private void applyExplosion(Vec3 location, double explosionDamage, double explosionRadius, double explosionBlast, double armorPenetration) {
         List<SphereResultDescriptor> sphereTestResults = Game.getInstance().getPhysicEngine().sphereTest(location, explosionRadius);
         for (SphereResultDescriptor rayTest : sphereTestResults) {
-            Log.trace("explosion result to"+rayTest.getPart().getParentObject().getName()+ " at "+rayTest.getDistance().length());
-            
+            Log.trace("explosion result to" + rayTest.getPart().getParentObject().getName() + " at " + rayTest.getDistance().length());
+
             DamageDescriptor damageDescriptor = new DamageDescriptor(DamageType.HEAT, armorPenetration);
             damageDescriptor.setWeaponBaseDamage(explosionDamage);
-            damageDescriptor.setBaseDamage(explosionDamage * (1- (rayTest.getDistance().length()/ explosionRadius)));
-            
-            
+            damageDescriptor.setBaseDamage(explosionDamage * (1 - (rayTest.getDistance().length() / explosionRadius)));
+
             applyDamage(rayTest.getPart(), damageDescriptor);
-            impulse(rayTest.getPart(), explosionBlast * (1- (rayTest.getDistance().length()/ explosionRadius)), rayTest.getLocalPosition(), rayTest.getDistance().normalize());
+            impulse(rayTest.getPart(),
+                    explosionBlast * (1 - (rayTest.getDistance().length() / explosionRadius)),
+                    rayTest.getLocalPosition(),
+                    rayTest.getDistance().normalize());
 
         }
     }
-    
+
     private void impulse(Part part, double energy, Vec3 localPosition, Vec3 axis) {
         Game.getInstance().getPhysicEngine().impulse(part, energy, localPosition, axis);
     }
-    
 
     private void addCapacityController(CapacityController controller) {
         capacityControllers.add(controller);

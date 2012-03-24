@@ -1,6 +1,7 @@
 package com.irr310.client.graphics.skin;
 
 import java.io.File;
+import java.util.List;
 
 import javax.swing.Renderer;
 
@@ -11,6 +12,7 @@ import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.CelestialObject;
 import com.irr310.common.world.Component;
+import com.irr310.common.world.capacity.RocketCapacity;
 import com.irr310.server.Duration;
 import com.irr310.server.Time;
 
@@ -28,6 +30,7 @@ public class RocketSkin extends Skin {
     private final WorldRenderer renderer;
     private Time lastDustEmission;
     private final Component object;
+    private RocketCapacity rocketCapacity;
 
     public RocketSkin(WorldRenderer renderer, final Component object) {
         super(renderer);
@@ -49,13 +52,16 @@ public class RocketSkin extends Skin {
         transform = object.getFirstPart().getTransform();
         elements.setTransformMatrix(transform.toFloatBuffer());
         lastDustEmission = Time.getGameTime();
+        
+        rocketCapacity = object.getCapacitiesByClass(RocketCapacity.class).get(0);
+        
     }
 
     @Override
     public void update() {
         elements.setTransformMatrix(transform.toFloatBuffer());
         
-        if(lastDustEmission.getTimeToNow(true).longer(new Duration(0.001f))) {
+        if(rocketCapacity.currentThrust > 0 && lastDustEmission.getTimeToNow(true).longer(new Duration(0.001f))) {
             lastDustEmission = Time.getGameTime();
             renderer.addElement(new AsteroidDust(renderer, transform.getTranslation(), new Vec3(new Vec3(0.1, 0.1, 0.1)) , new V3DColor(255, 255, 255,0.6f)));
         }

@@ -281,7 +281,6 @@ public class World {
     }
 
     public void removeShip(Ship ship) {
-        Log.trace("remove ship");
         ships.remove(ship);
         shipIdMap.remove(ship.getId());
         for (Component component : ship.getComponents()) {

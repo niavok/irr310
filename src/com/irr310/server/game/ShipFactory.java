@@ -223,12 +223,12 @@ public class ShipFactory {
         return ship;
     }
 
-    public static Ship createRocket(RocketDescriptor rocket, Vec3 initialSpeed, Player player) {
+    public static Ship createRocket(RocketDescriptor rocket, Vec3 initialSpeed, Ship sourceShip) {
         World world = Game.getInstance().getWorld();
         Ship newShip = new Ship(GameServer.pickNewId());
-        newShip.setOwner(player);
+        newShip.setOwner(sourceShip.getOwner());
         newShip.setDestructible(true);
-        Component rocketHull = ComponentFactory.createRocketHull("kernel", rocket, player);
+        Component rocketHull = ComponentFactory.createRocket("kernel", rocket, sourceShip);
         rocketHull.setShipPosition(new Vec3(0, 0, 0));
         rocketHull.getFirstPart().getLinearSpeed().set(initialSpeed);
         newShip.assign(rocketHull);

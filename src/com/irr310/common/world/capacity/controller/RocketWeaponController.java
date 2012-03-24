@@ -89,7 +89,7 @@ public abstract class RocketWeaponController extends CapacityController {
         rocket.explosionBlast = capacity.explosionBlast;
         rocket.explosionRadius = capacity.explosionRadius;
         rocket.hitPoint = capacity.hitPoint;
-        rocket.securityTimeout = capacity.securityTimeout;
+        rocket.disarmTimeout = capacity.securityTimeout;
         rocket.stability = capacity.stability;
         rocket.thrust = capacity.thrust;
         rocket.thrustDuration = capacity.thrustDuration;

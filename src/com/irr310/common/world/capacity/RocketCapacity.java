@@ -4,64 +4,25 @@ import com.irr310.common.world.view.CapacityView;
 
 public class RocketCapacity extends Capacity {
 
+    public boolean  collisionSecurity;
     public double currentThrust;
-    public double targetThrust;
     public double theoricalMaxThrust;
-    public double theoricalMinThrust;
-    public double theoricalVariationSpeed;
-    public double maxThrust;
-    public double minThrust;
-    public double variationSpeed;
 
-    public double targetThrustInput;
     public ExplosiveCapacity explosive;
-    public double securityTimeout;
     public double thrustDuration;
     public double stability;
 
     public RocketCapacity(long id) {
         super(id);
-        currentThrust = 1;
-        targetThrust = 0;
-        targetThrustInput =0 ;
+        currentThrust = 0;
+        theoricalMaxThrust = 0;
         stability = 0.5;
+        collisionSecurity = true;
     }
 
     public double getCurrentThrust() {
 
         return currentThrust;
-    }
-
-    public double getTargetThrust() {
-        return targetThrust;
-    }
-
-    public double getTheoricalMaxThrust() {
-        return theoricalMaxThrust;
-    }
-    
-    public double getTheoricalMinThrust() {
-        return theoricalMinThrust;
-    }
-
-    public double getMaxThrust() {
-        return maxThrust;
-    }
-    
-    public double getMinThrust() {
-        return minThrust;
-    }
-
-    public double getVariationSpeed() {
-        return variationSpeed;
-    }
-
-    public void setTargetThrust(double targetThrustInput) {
-        this.targetThrustInput = targetThrustInput;
-    }
-    
-    public double getTargetThrustInput() {
-        return targetThrustInput;
     }
 
     @Override

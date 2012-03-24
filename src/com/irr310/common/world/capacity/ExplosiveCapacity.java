@@ -7,7 +7,7 @@ public class ExplosiveCapacity extends Capacity {
 
     public boolean fire;
     public boolean consumed;
-    public boolean disarm;
+    public double disarmTimeout;
     public double explosionRadius;
     public double explosionBlast;
     public double armorPenetration;
