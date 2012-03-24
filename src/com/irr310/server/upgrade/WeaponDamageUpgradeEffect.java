@@ -6,6 +6,7 @@ import com.irr310.common.world.Component;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.Ship;
 import com.irr310.common.world.capacity.BalisticWeaponCapacity;
+import com.irr310.common.world.capacity.RocketWeaponCapacity;
 import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.common.world.upgrade.Upgrade.UpgradeCategory;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
@@ -27,6 +28,18 @@ public class WeaponDamageUpgradeEffect extends UpgradeEffect {
                         gunCapacity.damage *=  (1 + 0.1 * Math.pow(2, playerUpgrade.getRank()));
                     }
                     if (gunCapacity.damage != lastDamage) {
+                        // TODO: network !
+                    }
+                }
+                
+                List<RocketWeaponCapacity> rocketCapacities = component.getCapacitiesByClass(RocketWeaponCapacity.class);
+                for (RocketWeaponCapacity rocketCapacity : rocketCapacities) {
+                    double lastDamage = rocketCapacity.explosionDamage;
+
+                    if (playerUpgrade.getRank() > 0) {
+                        rocketCapacity.explosionDamage *=  (1 + 0.1 * Math.pow(2, playerUpgrade.getRank()));
+                    }
+                    if (rocketCapacity.explosionDamage != lastDamage) {
                         // TODO: network !
                     }
                 }

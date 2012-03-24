@@ -37,6 +37,7 @@ import com.irr310.common.event.UpgradeStateChanged;
 import com.irr310.common.event.WorldReadyEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.common.tools.Log;
+import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Asteroid;
 import com.irr310.common.world.CelestialObject;
@@ -372,7 +373,10 @@ public class ServerGameEngine extends FramerateEngine {
             Ship rocket = ShipFactory.createRocket(event.getRocket(), event.getInitialSpeed(), ((Component)event.getSource().getParentObject()).getShip());
 
             rocket.getComponentByName("kernel").getFirstPart().addCollisionExclusion(event.getSource());
-            Game.getInstance().getWorld().addShip(rocket, event.getFrom());
+            
+            TransformMatrix transformMatrix = new TransformMatrix(event.getFrom());
+            
+            Game.getInstance().getWorld().addShip(rocket, transformMatrix);
         }
 
         @Override
@@ -380,7 +384,7 @@ public class ServerGameEngine extends FramerateEngine {
             if (event.getObject() instanceof Monolith) {
                 Game.getInstance().sendToAll(new GameOverEvent("The monolith is destroyed"));
             } else if (event.getObject() instanceof Asteroid) {
-                Loot loot = CelestialObjectFactory.createLoot(5);
+                Loot loot = CelestialObjectFactory.createLoot(25);
                 loot.getFirstPart().getLinearSpeed().set(event.getObject().getFirstPart().getLinearSpeed());
                 loot.getFirstPart().getTransform().setTranslation(event.getObject().getFirstPart().getTransform().getTranslation());
                 Game.getInstance().getWorld().addCelestialObject(loot);

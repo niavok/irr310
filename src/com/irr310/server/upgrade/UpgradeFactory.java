@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 import com.irr310.common.Game;
+import com.irr310.common.tools.Log;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.Ship;
 import com.irr310.common.world.capacity.BalisticWeaponCapacity;
+import com.irr310.common.world.capacity.RocketWeaponCapacity;
 import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
 
@@ -31,6 +33,16 @@ public class UpgradeFactory {
     private static final double SHOTGUN_BASE_HEATINGSPEED = 5;
     private static final double SHOTGUN_BASE_ARMOR_PENETRATION = 0.2;
 
+    private static final double ROCKETPOD_BASE_DAMAGE = 100;
+    private static final double ROCKETPOD_BASE_RADIUS = 50;
+    private static final double ROCKETPOD_BASE_BLAST = 50;
+    private static final double ROCKETPOD_BASE_COOLDOWN = 10;
+    private static final double ROCKETPOD_BASE_FIRERATE = 3;
+    private static final double ROCKETPOD_BASE_THRUST = 3;
+    private static final double ROCKETPOD_BASE_THRUST_DURATION = 2;
+    private static final double ROCKETPOD_BASE_STABILITY = 0.005;
+    private static final double ROCKETPOD_BASE_ARMOR_PENETRATION = 0.05;
+    
     public static void initUpgrades() {
 
         addUpgrade(new WeaponGunEffect());
@@ -93,6 +105,21 @@ public class UpgradeFactory {
                         gunCapacity.armorPenetration = SHOTGUN_BASE_ARMOR_PENETRATION;
                     }
                 }
+                
+                List<RocketWeaponCapacity> rocketCapacities = component.getCapacitiesByClass(RocketWeaponCapacity.class);
+                for (RocketWeaponCapacity rocketCapacity : rocketCapacities) {
+                    rocketCapacity.explosionDamage = ROCKETPOD_BASE_DAMAGE;
+                    rocketCapacity.explosionRadius = ROCKETPOD_BASE_RADIUS;
+                    rocketCapacity.explosionBlast = ROCKETPOD_BASE_BLAST;
+                    rocketCapacity.cooldown = ROCKETPOD_BASE_COOLDOWN;
+                    rocketCapacity.thrust = ROCKETPOD_BASE_THRUST;
+                    rocketCapacity.thrustDuration = ROCKETPOD_BASE_THRUST_DURATION;
+                    rocketCapacity.stability = ROCKETPOD_BASE_STABILITY;
+                    rocketCapacity.armorPenetration = ROCKETPOD_BASE_ARMOR_PENETRATION;
+                    rocketCapacity.firerate = ROCKETPOD_BASE_FIRERATE;
+                    Log.trace("init stability "+ rocketCapacity.stability);
+                }
+                
             }
         }
 

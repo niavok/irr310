@@ -184,6 +184,12 @@ public class InputEngine extends FramerateEngine {
                     }
                     
                 }
+                if(cheatString.toLowerCase().equals("repair")) {
+                    Ship ship = LoginManager.getLocalPlayer().getShipList().get(0);
+                    for(Component component : ship.getComponents()) {
+                        component.setDurability(component.getDurabilityMax()) ; 
+                    }
+                }
                 if(cheatString.toLowerCase().equals("power+")) {
                     Ship ship = LoginManager.getLocalPlayer().getShipList().get(0);
                     for(Component component : ship.getComponents()) {

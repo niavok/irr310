@@ -6,6 +6,7 @@ import com.irr310.common.world.Component;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.Ship;
 import com.irr310.common.world.capacity.BalisticWeaponCapacity;
+import com.irr310.common.world.capacity.RocketWeaponCapacity;
 import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.common.world.upgrade.Upgrade.UpgradeCategory;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
@@ -16,21 +17,34 @@ public class WeaponRangeUpgradeEffect extends UpgradeEffect {
     public void apply(UpgradeOwnership playerUpgrade) {
         Player player = playerUpgrade.getPlayer();
         List<Ship> shipList = player.getShipList();
-        
-        for(Ship ship: shipList) {
-            for(Component component: ship.getComponents()) {
+
+        for (Ship ship : shipList) {
+            for (Component component : ship.getComponents()) {
                 List<BalisticWeaponCapacity> capacities = component.getCapacitiesByClass(BalisticWeaponCapacity.class);
                 for (BalisticWeaponCapacity gunCapacity : capacities) {
-                    
+
                     double lastRange = gunCapacity.range;
-                    
-                    if(playerUpgrade.getRank() > 0) {
-                        gunCapacity.range *= (1 +  0.1 * 3 * Math.pow(2,playerUpgrade.getRank()));
+
+                    if (playerUpgrade.getRank() > 0) {
+                        gunCapacity.range *= (1 + 0.1 * 3 * Math.pow(2, playerUpgrade.getRank()));
                     }
-                    if(gunCapacity.range != lastRange) {
-                        //TODO: network !
+                    if (gunCapacity.range != lastRange) {
+                        // TODO: network !
                     }
-                    
+
+                }
+
+                List<RocketWeaponCapacity> rocketCapacities = component.getCapacitiesByClass(RocketWeaponCapacity.class);
+                for (RocketWeaponCapacity rocketCapacity : rocketCapacities) {
+                    double lastRange = rocketCapacity.thrustDuration;
+
+                    if (playerUpgrade.getRank() > 0) {
+                        rocketCapacity.thrustDuration *= (1 + 0.1 * 3 * Math.pow(2, playerUpgrade.getRank()));
+                        rocketCapacity.securityTimeout *= (1 + 0.1 * 3 * Math.pow(2, playerUpgrade.getRank()));
+                    }
+                    if (rocketCapacity.thrustDuration != lastRange) {
+                        // TODO: network !
+                    }
                 }
             }
         }

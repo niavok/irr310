@@ -22,7 +22,7 @@ public class RocketController extends CapacityController {
     public void update(double duration) {
         
         if(thrustTime > 0.1) {
-            capacity.collisionSecurity = false;
+           capacity.collisionSecurity = false;
         }
         
         if(thrustTime > capacity.thrustDuration) {

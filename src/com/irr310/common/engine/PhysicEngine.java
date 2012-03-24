@@ -164,6 +164,8 @@ public class PhysicEngine extends FramerateEngine {
                 ((UserData) body.getUserPointer()).noCollision  = true;
             } else {
                 ((UserData) body.getUserPointer()).noCollision = false;
+                body.setCcdMotionThreshold(1);
+                body.setCcdSweptSphereRadius(0);
             }
             
             TransformMatrix force = TransformMatrix.identity();
@@ -575,8 +577,8 @@ public class PhysicEngine extends FramerateEngine {
                 wings.add(new ImmutablePair<WingCapacity, RigidBody>((WingCapacity) capacity, partToBodyMap.get(component.getFirstPart())));
             } else if (capacity instanceof RocketCapacity) {
                 rockets.add(new ImmutablePair<RocketCapacity, RigidBody>((RocketCapacity) capacity, partToBodyMap.get(component.getFirstPart())));
-                partToBodyMap.get(component.getFirstPart()).setCcdMotionThreshold(1);
-                partToBodyMap.get(component.getFirstPart()).setCcdSweptSphereRadius(0);
+                
+                ((UserData)  partToBodyMap.get(component.getFirstPart()).getUserPointer()).noCollision = true;
             }
         }
         components.add(component);

@@ -6,34 +6,46 @@ import com.irr310.common.world.Component;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.Ship;
 import com.irr310.common.world.capacity.BalisticWeaponCapacity;
+import com.irr310.common.world.capacity.RocketWeaponCapacity;
 import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.common.world.upgrade.Upgrade.UpgradeCategory;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
 
 public class WeaponFirerateUpgradeEffect extends UpgradeEffect {
 
-    
-    
     @Override
     public void apply(UpgradeOwnership playerUpgrade) {
         Player player = playerUpgrade.getPlayer();
         List<Ship> shipList = player.getShipList();
-        
-        for(Ship ship: shipList) {
-            for(Component component: ship.getComponents()) {
+
+        for (Ship ship : shipList) {
+            for (Component component : ship.getComponents()) {
                 List<BalisticWeaponCapacity> capacities = component.getCapacitiesByClass(BalisticWeaponCapacity.class);
                 for (BalisticWeaponCapacity gunCapacity : capacities) {
-                    
+
                     double lastFirerate = gunCapacity.firerate;
-                    
-                    if(playerUpgrade.getRank() > 0) {
-                        gunCapacity.firerate *= (1 + 0.1 * Math.pow(2,playerUpgrade.getRank()));
+
+                    if (playerUpgrade.getRank() > 0) {
+                        gunCapacity.firerate *= (1 + 0.1 * Math.pow(2, playerUpgrade.getRank()));
                     }
-                    if(gunCapacity.firerate != lastFirerate) {
-                        //TODO: network !
+                    if (gunCapacity.firerate != lastFirerate) {
+                        // TODO: network !
                     }
-                    
+
                 }
+
+                List<RocketWeaponCapacity> rocketCapacities = component.getCapacitiesByClass(RocketWeaponCapacity.class);
+                for (RocketWeaponCapacity rocketCapacity : rocketCapacities) {
+                    double lastFirerate = rocketCapacity.firerate;
+
+                    if (playerUpgrade.getRank() > 0) {
+                        rocketCapacity.firerate *= (1 + 0.1 * Math.pow(2, playerUpgrade.getRank()));
+                    }
+                    if (rocketCapacity.firerate != lastFirerate) {
+                        // TODO: network !
+                    }
+                }
+
             }
         }
     }

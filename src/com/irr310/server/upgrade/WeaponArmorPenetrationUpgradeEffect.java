@@ -44,7 +44,7 @@ public class WeaponArmorPenetrationUpgradeEffect extends UpgradeEffect {
         Upgrade weaponCoolingUpgrade = new Upgrade();
         weaponCoolingUpgrade.setCategory(UpgradeCategory.WEAPON_UPGRADE);
         weaponCoolingUpgrade.setGlobalDescription("Increase the armor penetration of all your weapons.");
-        weaponCoolingUpgrade.setTag("weapon_upgrade.accuracy");
+        weaponCoolingUpgrade.setTag("weapon_upgrade.armor_penetration");
         weaponCoolingUpgrade.setName("Weapon armor penetration");
         weaponCoolingUpgrade.addRank(50, "5% armor penetration increase.");
         weaponCoolingUpgrade.addRank(200, "10% armor penetration increase.");
