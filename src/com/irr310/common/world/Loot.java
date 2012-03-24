@@ -10,7 +10,8 @@ public class Loot extends CelestialObject {
     
     public Loot(long id, String name) {
         super(id, name);
-        setPhysicalResistance(1);
+        setPhysicalResistance(100);
+        setHeatResistance(100);
         setDurabilityMax(250);
         setDurability(250);
         setSkin("loot");

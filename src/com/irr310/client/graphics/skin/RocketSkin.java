@@ -8,6 +8,7 @@ import javax.swing.Renderer;
 import com.irr310.client.graphics.GraphicEngine;
 import com.irr310.client.graphics.WorldRenderer;
 import com.irr310.client.graphics.effects.AsteroidDust;
+import com.irr310.client.graphics.effects.RocketSteam;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.CelestialObject;
@@ -31,6 +32,7 @@ public class RocketSkin extends Skin {
     private Time lastDustEmission;
     private final Component object;
     private RocketCapacity rocketCapacity;
+    private Vec3 lastPosition;
 
     public RocketSkin(WorldRenderer renderer, final Component object) {
         super(renderer);
@@ -55,6 +57,8 @@ public class RocketSkin extends Skin {
         
         rocketCapacity = object.getCapacitiesByClass(RocketCapacity.class).get(0);
         
+        lastPosition = null;
+        
     }
 
     @Override
@@ -63,7 +67,14 @@ public class RocketSkin extends Skin {
         
         if(rocketCapacity.currentThrust > 0 && lastDustEmission.getTimeToNow(true).longer(new Duration(0.001f))) {
             lastDustEmission = Time.getGameTime();
-            renderer.addElement(new AsteroidDust(renderer, transform.getTranslation(), new Vec3(new Vec3(0.1, 0.1, 0.1)) , new V3DColor(255, 255, 255,0.6f)));
+            
+            if(lastPosition != null) {
+                renderer.addElement(new RocketSteam(renderer, transform.getTranslation(), transform.getTranslation().diff(lastPosition) , new V3DColor(255, 255, 255,0.8f), 10, 1));
+            }
+            
+            if(transform.getTranslation().length() > 0) {
+                lastPosition = transform.getTranslation();
+            }
         }
     }
 

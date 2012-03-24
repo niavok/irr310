@@ -48,8 +48,8 @@ public class UpgradeFactory {
         addUpgrade(new WeaponGunEffect());
         addUpgrade(new WeaponShotgunEffect());
         addUpgrade(new WeaponRocketPodEffect());
-        addUpgrade(new WeaponCannonEffect());
-        addUpgrade(new WeaponLaserEffect());
+//        addUpgrade(new WeaponCannonEffect());
+//        addUpgrade(new WeaponLaserEffect());
 
         addUpgrade(new WeaponDamageUpgradeEffect());
         addUpgrade(new WeaponFirerateUpgradeEffect());

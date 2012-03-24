@@ -173,8 +173,8 @@ public class InputEngine extends FramerateEngine {
                     if (monolith != null) {
                         if(monolith.getPhysicalResistance() < 1) {
                             Log.log("Cheat - Monolith invicibility activated");
-                            monolith.setPhysicalResistance(1);
-                            monolith.setHeatResistance(1);
+                            monolith.setPhysicalResistance(100);
+                            monolith.setHeatResistance(100);
                         } else {
                             Log.log("Cheat - Monolith invicibility desactivated");
                             monolith.setPhysicalResistance(0.5);
