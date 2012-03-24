@@ -59,9 +59,14 @@ public class WaveFactory {
 
             public void action() {
                 Game.getInstance().getWorld().setWorldSize(800);
+                Random random = new Random();
+                double baseRotationX = random.nextDouble() * 360;
+                double baseRotationY = random.nextDouble() * 360;
+                double baseRotationZ = random.nextDouble() * 360;
+                
                 for (int i = 0; i < 5; i++) {
 
-                    Random random = new Random();
+                    
 
                     double size = 8 + random.nextDouble() * 3;
 
@@ -71,9 +76,9 @@ public class WaveFactory {
                     Vec3 linearSpeed = new Vec3(-10 + random.nextDouble() * 1, 0, 0);
 
                     TransformMatrix rotation = TransformMatrix.identity();
-                    rotation.rotateX(random.nextDouble() * 360);
-                    rotation.rotateY(random.nextDouble() * 360);
-                    rotation.rotateZ(random.nextDouble() * 360);
+                    rotation.rotateX(Math.toRadians(baseRotationX + random.nextDouble() * 10));
+                    rotation.rotateY(Math.toRadians(baseRotationY + random.nextDouble() * 10));
+                    rotation.rotateZ(Math.toRadians(baseRotationZ + random.nextDouble() * 10));
 
                     position = position.rotate(rotation);
                     linearSpeed = linearSpeed.rotate(rotation);
@@ -101,9 +106,14 @@ public class WaveFactory {
 
             public void action() {
                 Game.getInstance().getWorld().setWorldSize(1000);
+                Random random = new Random();
+                double baseRotationX = random.nextDouble() * 360;
+                double baseRotationY = random.nextDouble() * 360;
+                double baseRotationZ = random.nextDouble() * 360;
+                
                 for (int i = 0; i < 10; i++) {
 
-                    Random random = new Random();
+                    
 
                     double size = 8 + random.nextDouble() * 3;
 
@@ -113,9 +123,10 @@ public class WaveFactory {
                     Vec3 linearSpeed = new Vec3(-10 + random.nextDouble() * 1, 0, 0);
 
                     TransformMatrix rotation = TransformMatrix.identity();
-                    rotation.rotateX(random.nextDouble() * 360);
-                    rotation.rotateY(random.nextDouble() * 360);
-                    rotation.rotateZ(random.nextDouble() * 360);
+                    rotation.rotateX(Math.toRadians(baseRotationX + random.nextDouble() * 10));
+                    rotation.rotateY(Math.toRadians(baseRotationY + random.nextDouble() * 10));
+                    rotation.rotateZ(Math.toRadians(baseRotationZ + random.nextDouble() * 10));
+
 
                     position = position.rotate(rotation);
                     linearSpeed = linearSpeed.rotate(rotation);
@@ -145,9 +156,13 @@ public class WaveFactory {
             wave.addWaveEvent(new WaveEvent(new Duration(2f)) {
                 public void action() {
                     Game.getInstance().getWorld().setWorldSize(1200 + i * 100);
+                    
+                    Random random = new Random();
+                    double baseRotationX = random.nextDouble() * 360;
+                    double baseRotationY = random.nextDouble() * 360;
+                    double baseRotationZ = random.nextDouble() * 360;
+                    
                     for (int j = 0; j < 10 + i; j++) {
-
-                        Random random = new Random();
 
                         double size = 8 + random.nextDouble() * 3;
 
@@ -157,9 +172,10 @@ public class WaveFactory {
                         Vec3 linearSpeed = new Vec3(-10 - i / 20 + random.nextDouble() * 1, 0, 0);
 
                         TransformMatrix rotation = TransformMatrix.identity();
-                        rotation.rotateX(random.nextDouble() * 360);
-                        rotation.rotateY(random.nextDouble() * 360);
-                        rotation.rotateZ(random.nextDouble() * 360);
+                        rotation.rotateX(Math.toRadians(baseRotationX + random.nextDouble() * 10));
+                        rotation.rotateY(Math.toRadians(baseRotationY + random.nextDouble() * 10));
+                        rotation.rotateZ(Math.toRadians(baseRotationZ + random.nextDouble() * 10));
+
 
                         position = position.rotate(rotation);
                         linearSpeed = linearSpeed.rotate(rotation);

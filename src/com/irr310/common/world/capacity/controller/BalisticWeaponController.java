@@ -95,7 +95,7 @@ public abstract class BalisticWeaponController extends CapacityController {
         Random random = new Random();
         double accuracy = capacity.range * capacity.accuracy * (10 - 9* component.getEfficiency()) / 1000.0;
         
-        Vec3 imprecision = new Vec3( accuracy,  0, 0).rotate(new Vec3(random.nextDouble()*360, random.nextDouble()*360, random.nextDouble()*360));
+        Vec3 imprecision = new Vec3( accuracy* random.nextDouble(),  0, 0).rotate(new Vec3(random.nextDouble()*360, random.nextDouble()*360, random.nextDouble()*360));
         
         Vec3 to = new Vec3(xoffset, capacity.range , yoffset ).plus(imprecision).transform(part.getTransform());
             
