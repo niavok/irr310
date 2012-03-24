@@ -6,7 +6,7 @@ import com.irr310.common.world.Component;
 public class ComponentRemovedEvent extends EngineEvent {
 
     public enum Reason {
-        INVENTORY, DESTROYED,
+        INVENTORY, DESTROYED, SHIP,
     }
     
 	final private Component component;

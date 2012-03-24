@@ -1,8 +1,10 @@
 package com.irr310.server;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -10,6 +12,7 @@ import com.irr310.common.Game;
 import com.irr310.common.engine.CollisionDescriptor;
 import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.engine.RayResultDescriptor;
+import com.irr310.common.engine.SphereResultDescriptor;
 import com.irr310.common.event.AddWorldObjectEvent;
 import com.irr310.common.event.BulletFiredEvent;
 import com.irr310.common.event.BuyUpgradeRequestEvent;
@@ -21,6 +24,7 @@ import com.irr310.common.event.ComponentRemovedEvent;
 import com.irr310.common.event.DamageEvent;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
+import com.irr310.common.event.ExplosionFiredEvent;
 import com.irr310.common.event.GameOverEvent;
 import com.irr310.common.event.InventoryChangedEvent;
 import com.irr310.common.event.NextWaveEvent;
@@ -38,6 +42,7 @@ import com.irr310.common.world.Asteroid;
 import com.irr310.common.world.CelestialObject;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.DamageDescriptor;
+import com.irr310.common.world.DamageDescriptor.DamageType;
 import com.irr310.common.world.Loot;
 import com.irr310.common.world.Monolith;
 import com.irr310.common.world.Part;
@@ -45,10 +50,14 @@ import com.irr310.common.world.Player;
 import com.irr310.common.world.Ship;
 import com.irr310.common.world.WorldObject;
 import com.irr310.common.world.capacity.Capacity;
+import com.irr310.common.world.capacity.ContactDetectorCapacity;
+import com.irr310.common.world.capacity.ExplosiveCapacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.common.world.capacity.BalisticWeaponCapacity;
 import com.irr310.common.world.capacity.RocketWeaponCapacity;
 import com.irr310.common.world.capacity.controller.CapacityController;
+import com.irr310.common.world.capacity.controller.ContactDetectorController;
+import com.irr310.common.world.capacity.controller.ExplosiveCapacityController;
 import com.irr310.common.world.capacity.controller.GunController;
 import com.irr310.common.world.capacity.controller.LinearEngineController;
 import com.irr310.common.world.capacity.controller.RocketPodController;
@@ -61,6 +70,7 @@ import com.irr310.server.upgrade.UpgradeFactory;
 public class ServerGameEngine extends FramerateEngine {
 
     private List<CapacityController> capacityControllers;
+    private Map<Component, ContactDetectorController> contactDetectorMap;
 
     private int reputation;
     private Wave currentWave;
@@ -74,6 +84,7 @@ public class ServerGameEngine extends FramerateEngine {
 
     public ServerGameEngine() {
         capacityControllers = new ArrayList<CapacityController>();
+        contactDetectorMap = new HashMap<Component, ContactDetectorController>();
         framerate = new Duration(15000000);
         reputation = 0;
         currentWave = null;
@@ -264,6 +275,7 @@ public class ServerGameEngine extends FramerateEngine {
 
         @Override
         public void visit(ComponentAddedEvent event) {
+
             Component component = event.getComponent();
             for (Capacity capacity : component.getCapacities()) {
                 if (capacity instanceof LinearEngineCapacity) {
@@ -279,6 +291,12 @@ public class ServerGameEngine extends FramerateEngine {
                     if(capacity.getName().equals("rocketpod")) { 
                         addCapacityController(new RocketPodController(component, (RocketWeaponCapacity) capacity));
                     }
+                } else if (capacity instanceof ExplosiveCapacity) {
+                    addCapacityController(new ExplosiveCapacityController(component, (ExplosiveCapacity) capacity));
+                } else if (capacity instanceof ContactDetectorCapacity) {
+                    ContactDetectorController contactDetectorController = new ContactDetectorController(component, (ContactDetectorCapacity) capacity);
+                    contactDetectorMap.put(component, contactDetectorController);
+                    addCapacityController(contactDetectorController);
                 }
             }
             UpgradeFactory.refresh(component.getShip().getOwner());
@@ -291,6 +309,11 @@ public class ServerGameEngine extends FramerateEngine {
                 if (capacityController.getComponent() == event.getComponent()) {
                     iterator.remove();
                 }
+                if (capacityController instanceof ContactDetectorController) {
+                    ContactDetectorController contactController = (ContactDetectorController) capacityController;
+                    contactDetectorMap.remove(contactController);   
+                }
+                
             }
         }
 
@@ -337,14 +360,13 @@ public class ServerGameEngine extends FramerateEngine {
         
         @Override
         public void visit(RocketFiredEvent event) {
-            Ship rocket = ShipFactory.createRocket(event.getRocket(),event.getInitialSpeed());
+            Ship rocket = ShipFactory.createRocket(event.getRocket(),event.getInitialSpeed(), event.getSource().getOwner());
+            
             rocket.getComponentByName("kernel").getFirstPart().addCollisionExclusion(event.getSource());
             Game.getInstance().getWorld().addShip(rocket, event.getFrom());
         }
 
-        private void impulse(Part part, double energy, Vec3 localPosition, Vec3 axis) {
-            Game.getInstance().getPhysicEngine().impulse(part, energy, localPosition, axis);
-        }
+       
 
         @Override
         public void visit(CelestialObjectRemovedEvent event) {
@@ -414,12 +436,25 @@ public class ServerGameEngine extends FramerateEngine {
         public void visit(GameOverEvent event) {
             Game.getInstance().gameOver();
         }
+        
+        @Override
+        public void visit(ExplosionFiredEvent event) {
+            applyExplosion(event.getLocation(), event.getExplosionDamage(), event.getExplosionRadius(), event.getExplosionBlast(), event.getArmorPenetration());
+        }
+
+        
     }
 
     private void processCollision(Part part, double impulse) {
         DamageDescriptor damage = new DamageDescriptor( DamageDescriptor.DamageType.PHYSICAL, 0);
         damage.setBaseDamage(impulse*0.5);
         applyDamage(part, damage);
+        
+        if(contactDetectorMap.containsKey(part.getParentObject())) {
+            ContactDetectorController contactDetectorController = contactDetectorMap.get(part.getParentObject());
+            contactDetectorController.contact(impulse);
+        }
+        
     }
 
     private void applyDamage(Part target, DamageDescriptor damage) {
@@ -447,10 +482,49 @@ public class ServerGameEngine extends FramerateEngine {
         if (newDurablility == 0) {
             if (parentObject instanceof CelestialObject) {
                 Game.getInstance().getWorld().removeCelestialObject((CelestialObject) parentObject, Reason.DESTROYED);
-            } 
+            }
+            if(parentObject instanceof Component) {
+                Component component = (Component) parentObject;
+                if(((Component) parentObject).getShip().isDestructible()) {
+                    // Destroy component
+                    
+                    List<ExplosiveCapacity> explosiveCapacities = component.getCapacitiesByClass(ExplosiveCapacity.class);
+                    for (ExplosiveCapacity explosiveCapacity : explosiveCapacities) {
+                        if(!explosiveCapacity.consumed) {
+                            explosiveCapacity.consumed = true;
+                            Game.getInstance().sendToAll(new ExplosionFiredEvent(component.getFirstPart(), component.getFirstPart().getTransform().getTranslation(), explosiveCapacity.armorPenetration, explosiveCapacity.explosionBlast, explosiveCapacity.explosionRadius, explosiveCapacity.explosionDamage));
+                        }
+                    }
+                    Game.getInstance().getWorld().removeComponent(component, com.irr310.common.event.ComponentRemovedEvent.Reason.DESTROYED);
+                    if(component.getShip().getComponents().size() == 0) {
+                        Game.getInstance().getWorld().removeShip(component.getShip());
+                    }
+                }
+            }
         }
 
     }
+
+    private void applyExplosion(Vec3 location, double explosionDamage, double explosionRadius, double explosionBlast, double armorPenetration) {
+        List<SphereResultDescriptor> sphereTestResults = Game.getInstance().getPhysicEngine().sphereTest(location, explosionRadius);
+        for (SphereResultDescriptor rayTest : sphereTestResults) {
+            Log.trace("explosion result to"+rayTest.getPart().getParentObject().getName()+ " at "+rayTest.getDistance().length());
+            
+            DamageDescriptor damageDescriptor = new DamageDescriptor(DamageType.HEAT, armorPenetration);
+            damageDescriptor.setWeaponBaseDamage(explosionDamage);
+            damageDescriptor.setBaseDamage(explosionDamage * (1- (rayTest.getDistance().length()/ explosionRadius)));
+            
+            
+            applyDamage(rayTest.getPart(), damageDescriptor);
+            impulse(rayTest.getPart(), explosionBlast * (1- (rayTest.getDistance().length()/ explosionRadius)), rayTest.getLocalPosition(), rayTest.getDistance().normalize());
+
+        }
+    }
+    
+    private void impulse(Part part, double energy, Vec3 localPosition, Vec3 axis) {
+        Game.getInstance().getPhysicEngine().impulse(part, energy, localPosition, axis);
+    }
+    
 
     private void addCapacityController(CapacityController controller) {
         capacityControllers.add(controller);

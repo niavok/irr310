@@ -6,17 +6,19 @@ import com.irr310.common.world.view.CapacityView;
 public class ExplosiveCapacity extends Capacity {
 
     public boolean fire;
+    public boolean consumed;
     public boolean disarm;
     public double explosionRadius;
     public double explosionBlast;
     public double armorPenetration;
-    public double explosiontDamage;
+    public double explosionDamage;
     public DamageType damageType;
 
 
     public ExplosiveCapacity(long id) {
         super(id);
-        boolean fire = false;
+        fire = false;
+        consumed = false;
     }
 
     
@@ -35,6 +37,13 @@ public class ExplosiveCapacity extends Capacity {
     public void fromView(CapacityView view) {
         setName(view.name);
         //TODO
+    }
+    
+    @Override
+    public void trigger(String triggerCode) {
+        if(triggerCode.equals("fire")) {
+            fire = true;
+        }
     }
 
     

@@ -21,10 +21,12 @@ public class Ship extends GameEntity implements Container {
     Map<String, Component> componentNamesMap = new HashMap<String, Component>();
     KernelCapacity kernel;
     private Player owner;
+    private boolean destructible;
 
     public Ship(long id) {
         super(id);
         owner = null;
+        destructible = true;
     }
 
     @Override
@@ -35,6 +37,7 @@ public class Ship extends GameEntity implements Container {
         components.add(component);
         componentNamesMap.put(component.getName(), component);
         component.setShip(this);
+        
         return true;
     }
 
@@ -147,4 +150,11 @@ public class Ship extends GameEntity implements Container {
         return componentNamesMap.get(name);
     }
 
+    public void setDestructible(boolean destructible) {
+        this.destructible = destructible;
+    }
+    
+    public boolean isDestructible() {
+        return destructible;
+    }
 }

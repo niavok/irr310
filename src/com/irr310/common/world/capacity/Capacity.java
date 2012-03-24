@@ -44,5 +44,8 @@ public abstract class Capacity extends GameEntity{
     public void setName(String name) {
         this.name = name;
     }
+
+    public void trigger(String triggerCode) {
+    }
     
 }

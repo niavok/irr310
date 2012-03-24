@@ -28,7 +28,7 @@ public class WeaponRocketPodEffect extends UpgradeEffect {
                 
         } else {
             while(currentWeaponCount < playerUpgrade.getRank()){
-                player.giveItem(new Item(GameServer.pickNewId(), "weapon.rocketpod"));
+                player.giveItem(new Item(GameServer.pickNewId(), "weapon.rocketpod",player));
                 currentWeaponCount++;
             }
         }

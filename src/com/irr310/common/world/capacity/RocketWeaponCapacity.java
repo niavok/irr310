@@ -37,19 +37,19 @@ public class RocketWeaponCapacity extends Capacity {
         super(id);
         fire = false;
         barrels = new ArrayList<Vec3>();
-        cooldown = 1;
+        cooldown = 5;
         firerate = 5;
 
         securityTimeout = 60;
-        thrust = 0.01;
+        thrust = 0.5;
         damping = 0.1;
         thrustDuration = 5;
         stability = 0.01;
         hitPoint = 20;
 
-        explosionDamage = 20;
-        explosionRadius = 10;
-        explosionBlast = 30;
+        explosionDamage = 50;
+        explosionRadius = 40;
+        explosionBlast = 50;
         armorPenetration = 5;
         damageType = DamageDescriptor.DamageType.HEAT;
     }

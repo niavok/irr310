@@ -6,8 +6,6 @@ import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.newdawn.slick.util.Log;
-
 import com.irr310.client.navigation.LoginManager;
 import com.irr310.common.Game;
 import com.irr310.common.event.CelestialObjectAddedEvent;
@@ -17,7 +15,9 @@ import com.irr310.common.event.ComponentAddedEvent;
 import com.irr310.common.event.ComponentRemovedEvent;
 import com.irr310.common.event.PlayerAddedEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
+import com.irr310.common.event.WorldShipRemovedEvent;
 import com.irr310.common.event.WorldSizeChangedEvent;
+import com.irr310.common.tools.Log;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.upgrade.Upgrade;
@@ -92,11 +92,11 @@ public class World {
         Game.getInstance().sendToAll(new ComponentAddedEvent(component));
     }
     
-    public void removeComponent(Component component) {
+    public void removeComponent(Component component, com.irr310.common.event.ComponentRemovedEvent.Reason reason) {
         if (componentIdMap.containsKey(component.getId())) {
             removeParts(component.getParts());
             componentIdMap.remove(component.getId());
-            Game.getInstance().sendToAll(new ComponentRemovedEvent(component, com.irr310.common.event.ComponentRemovedEvent.Reason.INVENTORY));
+            Game.getInstance().sendToAll(new ComponentRemovedEvent(component, reason));
         }
     }
 
@@ -135,6 +135,9 @@ public class World {
 
     public void addShip(Ship ship, TransformMatrix transform) {
         ships.add(ship);
+        for (Component component : ship.getComponents()) {
+            addComponent(component);
+        }
         shipIdMap.put(ship.getId(), ship);
         Game.getInstance().sendToAll(new WorldShipAddedEvent(ship, transform));
     }
@@ -275,6 +278,16 @@ public class World {
     
     public double getWorldSize() {
         return worldSize;
+    }
+
+    public void removeShip(Ship ship) {
+        Log.trace("remove ship");
+        ships.remove(ship);
+        shipIdMap.remove(ship.getId());
+        for (Component component : ship.getComponents()) {
+            removeComponent(component,com.irr310.common.event.ComponentRemovedEvent.Reason.SHIP);
+        }
+        Game.getInstance().sendToAll(new WorldShipRemovedEvent(ship));
     }
     
 

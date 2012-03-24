@@ -22,6 +22,7 @@ import com.irr310.common.event.DamageEvent;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.EngineEventVisitor;
+import com.irr310.common.event.ExplosionFiredEvent;
 import com.irr310.common.event.GameOverEvent;
 import com.irr310.common.event.InitEngineEvent;
 import com.irr310.common.event.InventoryChangedEvent;
@@ -46,6 +47,7 @@ import com.irr310.common.event.UpgradeStateChanged;
 import com.irr310.common.event.UseScriptEvent;
 import com.irr310.common.event.WorldReadyEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
+import com.irr310.common.event.WorldShipRemovedEvent;
 import com.irr310.common.event.WorldSizeChangedEvent;
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.Vec2;
@@ -68,29 +70,29 @@ public class GraphicEngine extends FramerateEngine {
     private GraphicEngineEventVisitor eventVisitor;
 
     private V3DCameraBinding cameraBinding;
+
     public GraphicEngine() {
         framerate = new Duration(16666666);
     }
 
     @Override
     protected void init() {
-        
+
         // canvas = new V3DCanvas(context, 1920, 1200);
         eventVisitor = new GraphicEngineEventVisitor();
         canvas = new V3DCanvas(context, 1280, 1024);
         canvas.setEnabled(true);
         fpsIndicator = new GuiFpsIndicator(this);
         changeRenderer(new BlankGraphicRenderer(this));
-        
+
         canvas.addResizeListener(new ResizeListener() {
-            
+
             @Override
             public void resized(V3DCanvas canvas) {
                 Game.getInstance().sendToAll(new ReloadUiEvent());
             }
         });
-        
-        
+
         frame();
     }
 
@@ -108,7 +110,7 @@ public class GraphicEngine extends FramerateEngine {
 
     @Override
     protected void processEvent(EngineEvent e) {
-        e.accept(eventVisitor); 
+        e.accept(eventVisitor);
     }
 
     private final class GraphicEngineEventVisitor implements EngineEventVisitor {
@@ -131,7 +133,7 @@ public class GraphicEngine extends FramerateEngine {
             pause(false);
             changeRenderer(new MenuGraphicRenderer(GraphicEngine.this));
         }
-        
+
         @Override
         public void visit(LoadingGameEvent event) {
             LoadingGraphicRenderer loadingRenderer = new LoadingGraphicRenderer(GraphicEngine.this);
@@ -143,12 +145,11 @@ public class GraphicEngine extends FramerateEngine {
         public void visit(WorldReadyEvent event) {
             changeRenderer(new WorldRenderer(GraphicEngine.this));
         }
-        
+
         @Override
         public void visit(MouseEvent event) {
             canvas.onMouseEvent(event.getMouseEvent());
         }
-        
 
         @Override
         public void visit(PauseEngineEvent event) {
@@ -185,7 +186,7 @@ public class GraphicEngine extends FramerateEngine {
         public void visit(ComponentRemovedEvent event) {
             rendererVisitor.visit(event);
         }
-        
+
         @Override
         public void visit(WorldShipAddedEvent event) {
             rendererVisitor.visit(event);
@@ -200,47 +201,47 @@ public class GraphicEngine extends FramerateEngine {
         public void visit(BulletFiredEvent event) {
             rendererVisitor.visit(event);
         }
-        
+
         @Override
         public void visit(GameOverEvent event) {
             changeRenderer(new MenuGraphicRenderer(GraphicEngine.this, event.getReason()));
         }
-        
+
         @Override
         public void visit(AddGuiComponentEvent event) {
             rendererVisitor.visit(event);
         }
-        
+
         @Override
         public void visit(RemoveGuiComponentEvent event) {
             rendererVisitor.visit(event);
         }
-        
+
         @Override
         public void visit(NextWaveEvent event) {
             rendererVisitor.visit(event);
         }
-        
+
         @Override
         public void visit(DamageEvent event) {
             rendererVisitor.visit(event);
         }
-        
+
         @Override
         public void visit(MoneyChangedEvent event) {
             rendererVisitor.visit(event);
         }
-        
+
         @Override
         public void visit(UpgradeStateChanged event) {
             rendererVisitor.visit(event);
         }
-        
+
         @Override
         public void visit(InventoryChangedEvent event) {
             rendererVisitor.visit(event);
         }
-        
+
         @Override
         public void visit(ComponentAddedEvent event) {
             rendererVisitor.visit(event);
@@ -275,7 +276,7 @@ public class GraphicEngine extends FramerateEngine {
 
         @Override
         public void visit(PlayerLoggedEvent event) {
-            rendererVisitor.visit(event);            
+            rendererVisitor.visit(event);
         }
 
         @Override
@@ -295,12 +296,22 @@ public class GraphicEngine extends FramerateEngine {
 
         @Override
         public void visit(WorldSizeChangedEvent event) {
-            rendererVisitor.visit(event);            
+            rendererVisitor.visit(event);
+        }
+
+        @Override
+        public void visit(RocketFiredEvent event) {
+            rendererVisitor.visit(event);
+        }
+
+        @Override
+        public void visit(WorldShipRemovedEvent event) {
+            rendererVisitor.visit(event);
         }
         
         @Override
-        public void visit(RocketFiredEvent event) {
-            rendererVisitor.visit(event);     
+        public void visit(ExplosionFiredEvent event) {
+            rendererVisitor.visit(event);
         }
     }
 
@@ -319,21 +330,19 @@ public class GraphicEngine extends FramerateEngine {
     public GraphicRenderer getRenderer() {
         return renderer;
     }
-    
+
     private void changeRenderer(GraphicRenderer renderer) {
         this.renderer = renderer;
         renderer.init();
         eventVisitor.setRendererVisitor(renderer.getEventVisitor());
-        
+
         canvas.addCamera(renderer.getCameraBinding());
-        
-        if(cameraBinding != null) {
-        canvas.removeCamera(cameraBinding);
+
+        if (cameraBinding != null) {
+            canvas.removeCamera(cameraBinding);
         }
         cameraBinding = renderer.getCameraBinding();
-        
-        
-        
+
     }
 
     public void addPopup(V3DContainer popup, V3DContainer parent) {
@@ -341,17 +350,17 @@ public class GraphicEngine extends FramerateEngine {
         int parentAbsoluteX = parent.getAbsoluteX();
         int parentAbsoluteY = parent.getAbsoluteY();
         Dimension parentSize = parent.getSize();
-        
+
         int defaultX = parentAbsoluteX + parentSize.getWidth();
-        int defaultY = parentAbsoluteY ;
-        
-        //TODO: implement limit cases
-        
-        popup.setPosition(defaultX + 15 , canvas.getHeight() - defaultY + 15);
+        int defaultY = parentAbsoluteY;
+
+        // TODO: implement limit cases
+
+        popup.setPosition(defaultX + 15, canvas.getHeight() - defaultY + 15);
         renderer.getPopupLayer().add(popup);
     }
 
     public void removePopup(V3DContainer popup) {
-        renderer.getPopupLayer().remove(popup);        
+        renderer.getPopupLayer().remove(popup);
     }
 }

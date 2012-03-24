@@ -133,4 +133,12 @@ public class DefaultEngineEventVisitor implements EngineEventVisitor {
     @Override
     public void visit(RocketFiredEvent event) {
     }
+    
+    @Override
+    public void visit(WorldShipRemovedEvent event) {
+    }
+    
+    @Override
+    public void visit(ExplosionFiredEvent event) {
+    }
 }

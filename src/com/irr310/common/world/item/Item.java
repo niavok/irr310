@@ -3,6 +3,7 @@ package com.irr310.common.world.item;
 import com.irr310.common.Game;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.GameEntity;
+import com.irr310.common.world.Player;
 import com.irr310.common.world.World;
 import com.irr310.common.world.view.ItemView;
 
@@ -14,10 +15,12 @@ public class  Item extends GameEntity {
 	private String name;
     private boolean used;
     private Component component;
+    private final Player owner;
 
-    public Item(long id, String name) {
+    public Item(long id, String name, Player owner) {
 	    super(id);
         this.name = name;
+        this.owner = owner;
         this.used = false;
 	}
 
@@ -62,5 +65,9 @@ public class  Item extends GameEntity {
     
     public Component getComponent() {
         return component;
+    }
+
+    public Player getOwner() {
+        return owner;
     }
 }

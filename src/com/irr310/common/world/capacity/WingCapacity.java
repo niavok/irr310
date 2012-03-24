@@ -23,8 +23,6 @@ public class WingCapacity extends Capacity {
     }
     
     public double getFriction() {
-        yield = 0.2;
-        friction = 1.5;
         return friction;
     }
     

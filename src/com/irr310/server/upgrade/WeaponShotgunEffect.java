@@ -28,7 +28,7 @@ public class WeaponShotgunEffect extends UpgradeEffect {
                 
         } else {
             while(currentWeaponCount < playerUpgrade.getRank()){
-                player.giveItem(new Item(GameServer.pickNewId(), "weapon.shotgun"));
+                player.giveItem(new Item(GameServer.pickNewId(), "weapon.shotgun",player));
                 currentWeaponCount++;
             }
         }

@@ -17,6 +17,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.ARBShaderObjects;
 
 import com.irr310.client.graphics.effects.BulletEffect;
+import com.irr310.client.graphics.effects.ExplosionEffect;
 import com.irr310.client.graphics.gui.GuiConstants;
 import com.irr310.client.graphics.gui.InventoryMenu;
 import com.irr310.client.graphics.gui.UpgradeMenu;
@@ -47,6 +48,7 @@ import com.irr310.common.event.ComponentRemovedEvent;
 import com.irr310.common.event.DamageEvent;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEventVisitor;
+import com.irr310.common.event.ExplosionFiredEvent;
 import com.irr310.common.event.InventoryChangedEvent;
 import com.irr310.common.event.KeyPressedEvent;
 import com.irr310.common.event.MoneyChangedEvent;
@@ -959,6 +961,12 @@ public class WorldRenderer implements GraphicRenderer {
         public void visit(BulletFiredEvent event) {
             addBullet(event.getFrom(), event.getTo());
         }
+        
+        @Override
+        public void visit(ExplosionFiredEvent event) {
+            addElement(new ExplosionEffect(WorldRenderer.this, event.getLocation(), event.getExplosionRadius()));
+        }
+        
 
         @Override
         public void visit(AddGuiComponentEvent event) {

@@ -34,7 +34,7 @@ import com.bulletphysics.collision.broadphase.DispatcherInfo;
  */
 public class DefaultNearCallback extends NearCallback {
 
-	private final ManifoldResult contactPointResult = new ManifoldResult();
+	public final ManifoldResult contactPointResult = new ManifoldResult();
 
 	public void handleCollision(BroadphasePair collisionPair, CollisionDispatcher dispatcher, DispatcherInfo dispatchInfo) {
 		CollisionObject colObj0 = (CollisionObject) collisionPair.pProxy0.clientObject;

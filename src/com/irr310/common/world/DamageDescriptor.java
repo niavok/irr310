@@ -5,6 +5,11 @@ public class DamageDescriptor {
         PHYSICAL,
         HEAT,
     }
+    
+    public enum DamageCause {
+        BULLET,
+        EXPLOSION,
+    }
 
     private double baseDamage;
     public final double armorPenetration;
