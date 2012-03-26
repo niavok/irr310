@@ -18,7 +18,6 @@ public class WeaponAccuracyUpgradeEffect extends UpgradeEffect {
     public void apply(UpgradeOwnership playerUpgrade) {
         Player player = playerUpgrade.getPlayer();
         List<Ship> shipList = player.getShipList();
-        Log.trace("update accuracy");
         for(Ship ship: shipList) {
             for(Component component: ship.getComponents()) {
                 List<BalisticWeaponCapacity> capacities = component.getCapacitiesByClass(BalisticWeaponCapacity.class);

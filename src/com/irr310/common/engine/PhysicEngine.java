@@ -85,6 +85,7 @@ import com.irr310.server.Duration;
 
 public class PhysicEngine extends FramerateEngine {
 
+    public static final int MASS_FACTOR = 10;
     public static final float PI_2 = 1.57079632679489661923f;
     public static final float PHYSICAL_SCALE = 1f;
 
@@ -659,7 +660,7 @@ public class PhysicEngine extends FramerateEngine {
 
         // Create Dynamic Objects
 
-        float mass = (part.getMass().floatValue()) * PHYSICAL_SCALE / 10;
+        float mass = (part.getMass().floatValue()) * PHYSICAL_SCALE / MASS_FACTOR;
 
         // rigidbody is dynamic if and only if mass is non zero, otherwise
         // static

@@ -9,21 +9,20 @@ function driver() {
     }
     
     
-    var theoricalMaxSpeed = 65.27;
+    
     var speedTarget = 0;
     var maxRotationSpeed = 2;
     var rotationSpeedTarget = new Vec3(0,0,0.0);
     
     
     // GUI
-    gui = new Gui();
-    engine = new Engine();
     
     var ships = core.me.getShips();
+    var ship;
 
     if(ships.size() > 0) {
         
-        var ship = ships.get(0);
+        ship = ships.get(0);
 
         var leftEngine = ship.getComponentByName("leftReactor").getCapacitiesByClass("LinearEngineCapacity").get(0);
         var rightEngine = ship.getComponentByName("rightReactor").getCapacitiesByClass("LinearEngineCapacity").get(0);
@@ -68,112 +67,14 @@ function driver() {
         core.log("no ships");
     }
     
+    gui = new Gui();
+    engine = new Engine();
+    
+    
     
     core.onFrame = function(time) {
         
         gui.update(time);
-        
-        //core.log("js frame: "+orderAccelerate);
-        
-        var speedVector = kernel.getLinearSpeed();
-        var speed = speedVector.length();
-        
-        //core.log("kernel speed vector: x="+speedVector.getX()+" y="+speedVector.getY()+" z="+speedVector.getZ());
-        //core.log("kernel speed: "+speed);
-        
-        var leftThrustTarget = 0;
-        var rightThrustTarget = 0;
-        var topThrustTarget = 0;
-        var bottomThrustTarget = 0;
-        
-        if(orderTurnUp) {
-            topThrustTarget = -maxRotationThrust;
-            bottomThrustTarget = maxRotationThrust;
-        } else if(orderTurnDown) {
-            topThrustTarget = maxRotationThrust;
-            bottomThrustTarget = -maxRotationThrust;
-        }
-        
-        
-        
-        
-        if (useMouseController) {
-            //core.log("useMouseController");
-            var deadZoneRadius = 10;
-            var controlRadius = 150.0;
-            var mousePosition = core.mouse.getPosition();
-
-
-            var diffX = (mouseControlleurOrigin.getX() - mousePosition.getX());
-            var diffY = (mouseControlleurOrigin.getY() - mousePosition.getY());
-            
-            if(diffY > controlRadius) {
-                diffY = controlRadius;
-            }
-            if(diffX > controlRadius) {
-                diffX = controlRadius;
-            }
-            
-
-            //var diffVert = diffX * Math.cos(Math.PI / 4.0) + diffY * Math.sin(Math.PI / 4.0);
-            //var diffHoriz = -1 * diffX * Math.sin(Math.PI / 4.0) + diffY * Math.cos(Math.PI / 4.0);
-            var diffVert = diffX;
-            var diffHoriz = diffY;
-
-            if(Math.abs(diffVert) < deadZoneRadius) {
-                leftEngine.targetThrust = 0;
-                rightEngine.targetThrust = 0;
-            } else {
-                var move =  (diffVert) / controlRadius;
-                
-                leftThrustTarget = - move * maxRotationThrust;
-                rightThrustTarget = move * maxRotationThrust;
-            }
-            
-            if(Math.abs(diffHoriz) < deadZoneRadius) {
-                leftEngine.targetThrust = 0;
-                rightEngine.targetThrust = 0;
-            } else {
-                var move =  (diffHoriz) / controlRadius;
-                
-                topThrustTarget = move * maxRotationThrust;
-                bottomThrustTarget = - move * maxRotationThrust;
-            }
-                
-        }
-        
-        if(orderTurnLeft) {
-            leftThrustTarget = -maxRotationThrust;
-            rightThrustTarget = maxRotationThrust;
-        } else if(orderTurnRight) {
-            leftThrustTarget = maxRotationThrust;
-            rightThrustTarget = -maxRotationThrust;
-        }
-        
-        if(baseThrust > 0) {
-            leftThrustTarget += (baseThrust * maxThrust) / 100.0;
-            rightThrustTarget += (baseThrust * maxThrust) / 100.0;
-            topThrustTarget += (baseThrust * maxThrust) / 100.0;
-            bottomThrustTarget += (baseThrust * maxThrust) / 100.0;
-        } else {
-            leftThrustTarget += (baseThrust * minThrust) / 100.0;
-            rightThrustTarget += (baseThrust * minThrust) / 100.0;
-            topThrustTarget += (baseThrust * minThrust) / 100.0;
-            bottomThrustTarget += (baseThrust * minThrust) / 100.0;
-
-        }
-        
-        
-        //bottomEngine.targetThrust = 2000;
-        
-        
-        //leftEngine.targetThrust = leftThrustTarget;
-        //rightEngine.targetThrust = rightThrustTarget;
-        //topEngine.targetThrust = topThrustTarget;
-        //bottomEngine.targetThrust = bottomThrustTarget;
-
-        
-        
         engine.update(time);
         
     }
@@ -194,6 +95,7 @@ function driver() {
         this.optimalPower = 0;
         this.minOptimalPower = 0;
         this.phase = 0;
+        this.theoricalMaxSpeed = ship.getTheoricalMaxSpeed();
         
         this.update = function(time) {
 
@@ -217,7 +119,7 @@ function driver() {
                     
                     this.maxOptimalPower = 1;
                     this.minOptimalPower = -1;
-                    this.optimalPower = speedTarget / theoricalMaxSpeed;
+                    this.optimalPower = speedTarget /  this.theoricalMaxSpeed;
                     this.initiaSpeed = currentSpeed;
                 }
 
@@ -263,7 +165,7 @@ function driver() {
                         //core.log("engine g o to phase 2 too fast");
                     }
                 } else if(this.phase == 2) {
-                    if(Math.abs(speedTarget - currentSpeed) > theoricalMaxSpeed/6) {
+                    if(Math.abs(speedTarget - currentSpeed) >  this.theoricalMaxSpeed/6) {
                         this.phase = 0;
                     }
                 }
@@ -471,7 +373,7 @@ function driver() {
             speedTargetBox.setBorderColor(new Color(0.3,0.0,0));
 
 
-            var deltaHeigth = this.speedBoxMaxSize * speedTarget / theoricalMaxSpeed;
+            var deltaHeigth = this.speedBoxMaxSize * speedTarget /  this.theoricalMaxSpeed;
             this.targetLine = core.gui.createLine();
             this.targetLine.setPosition((new Vec2(this.screenSize.getX() - 125,200 + deltaHeigth)));
             this.targetLine.setSize(new Vec2(40,0));
@@ -488,6 +390,7 @@ function driver() {
         
         this.update = function(time) {
             
+            this.theoricalMaxSpeed = ship.getTheoricalMaxSpeed();
             //this.clockIndicator.setText("Time: "+time.toFixed(0)+" s");
             
             if(time - this.lastTime > 0.25) {
@@ -549,7 +452,7 @@ function driver() {
             if(speed < 0) {
                 speed = 0;
             }
-            var speedBarSize = this.speedBoxMaxSize * speed / theoricalMaxSpeed;
+            var speedBarSize = this.speedBoxMaxSize * speed /  this.theoricalMaxSpeed;
             this.speedCurrentBox.setSize(new Vec2(30,speedBarSize));
                 
             
@@ -573,10 +476,10 @@ function driver() {
                 var deltaMouse = this.initialYMousePosition - core.mouse.getPosition().getY();
                 speedTarget = this.initialSpeedTarget - deltaMouse;
                 
-                if(speedTarget > theoricalMaxSpeed) {
-                    this.deltaMouse -= (speedTarget - theoricalMaxSpeed)
-                    this.initialSpeedTarget -= (speedTarget - theoricalMaxSpeed)
-                    speedTarget = theoricalMaxSpeed;
+                if(speedTarget >  this.theoricalMaxSpeed) {
+                    this.deltaMouse -= (speedTarget -  this.theoricalMaxSpeed)
+                    this.initialSpeedTarget -= (speedTarget -  this.theoricalMaxSpeed)
+                    speedTarget =  this.theoricalMaxSpeed;
                 }
                 
                 if(speedTarget < 0) {
@@ -647,7 +550,7 @@ function driver() {
         }
 
         this.targetSpeedUpdated = function() {
-            var deltaHeigth = this.speedBoxMaxSize * speedTarget / theoricalMaxSpeed;
+            var deltaHeigth = this.speedBoxMaxSize * speedTarget /  this.theoricalMaxSpeed;
             this.targetLine.setPosition((new Vec2(this.screenSize.getX() - 125,200 + deltaHeigth)));
             this.speedTargetIndicator.setPosition(new Vec2(this.screenSize.getX() - 80, 193 + deltaHeigth ));
             this.speedTargetIndicator.setText((speedTarget * 3.6).toFixed(0)+" km/h");

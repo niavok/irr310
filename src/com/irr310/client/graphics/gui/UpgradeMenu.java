@@ -44,6 +44,7 @@ public class UpgradeMenu extends MenuContainer{
         //Tabs
         addTab(new UpgradeWeaponsTab(engine));
         addTab(new UpgradeWeaponUpgradeTab(engine));
+        addTab(new UpgradeShipUpgradeTab(engine));
 
         //Tab content
         V3DGuiRectangle tabContent= new V3DGuiRectangle();

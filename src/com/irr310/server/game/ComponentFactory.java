@@ -198,37 +198,37 @@ public class ComponentFactory {
         component.addSlot(GameServer.pickNewId(), part, new Vec3(0, shape.y / 2, 0));
         component.addSlot(GameServer.pickNewId(), part, new Vec3(0, -shape.y / 2, 0));
 
-        LinearEngineCapacity engineCapacityTop = new LinearEngineCapacity(GameServer.pickNewId());
-        engineCapacityTop.theoricalMaxThrust = 2;
-        engineCapacityTop.theoricalMinThrust = -2;
-        engineCapacityTop.theoricalVariationSpeed = 10;
-        engineCapacityTop.currentThrust = 0;
-        engineCapacityTop.setName("linearEngine");
-        component.addCapacity(engineCapacityTop);
-
-        LinearEngineCapacity engineCapacityBottom = new LinearEngineCapacity(GameServer.pickNewId());
-        engineCapacityBottom.theoricalMaxThrust = 2;
-        engineCapacityBottom.theoricalMinThrust = -2;
-        engineCapacityBottom.theoricalVariationSpeed = 10;
-        engineCapacityBottom.currentThrust = 0;
-        engineCapacityBottom.setName("linearEngine");
-        component.addCapacity(engineCapacityBottom);
-
-        LinearEngineCapacity engineCapacityLeft = new LinearEngineCapacity(GameServer.pickNewId());
-        engineCapacityLeft.theoricalMaxThrust = 2;
-        engineCapacityLeft.theoricalMinThrust = -2;
-        engineCapacityLeft.theoricalVariationSpeed = 10;
-        engineCapacityLeft.currentThrust = 0;
-        engineCapacityLeft.setName("linearEngine");
-        component.addCapacity(engineCapacityLeft);
-
-        LinearEngineCapacity engineCapacityRight = new LinearEngineCapacity(GameServer.pickNewId());
-        engineCapacityRight.theoricalMaxThrust = 2;
-        engineCapacityRight.theoricalMinThrust = -2;
-        engineCapacityRight.theoricalVariationSpeed = 10;
-        engineCapacityRight.currentThrust = 0;
-        engineCapacityRight.setName("linearEngine");
-        component.addCapacity(engineCapacityRight);
+//        LinearEngineCapacity engineCapacityTop = new LinearEngineCapacity(GameServer.pickNewId());
+//        engineCapacityTop.theoricalMaxThrust = 2;
+//        engineCapacityTop.theoricalMinThrust = -2;
+//        engineCapacityTop.theoricalVariationSpeed = 10;
+//        engineCapacityTop.currentThrust = 0;
+//        engineCapacityTop.setName("linearEngine");
+//        component.addCapacity(engineCapacityTop);
+//
+//        LinearEngineCapacity engineCapacityBottom = new LinearEngineCapacity(GameServer.pickNewId());
+//        engineCapacityBottom.theoricalMaxThrust = 2;
+//        engineCapacityBottom.theoricalMinThrust = -2;
+//        engineCapacityBottom.theoricalVariationSpeed = 10;
+//        engineCapacityBottom.currentThrust = 0;
+//        engineCapacityBottom.setName("linearEngine");
+//        component.addCapacity(engineCapacityBottom);
+//
+//        LinearEngineCapacity engineCapacityLeft = new LinearEngineCapacity(GameServer.pickNewId());
+//        engineCapacityLeft.theoricalMaxThrust = 2;
+//        engineCapacityLeft.theoricalMinThrust = -2;
+//        engineCapacityLeft.theoricalVariationSpeed = 10;
+//        engineCapacityLeft.currentThrust = 0;
+//        engineCapacityLeft.setName("linearEngine");
+//        component.addCapacity(engineCapacityLeft);
+//
+//        LinearEngineCapacity engineCapacityRight = new LinearEngineCapacity(GameServer.pickNewId());
+//        engineCapacityRight.theoricalMaxThrust = 2;
+//        engineCapacityRight.theoricalMinThrust = -2;
+//        engineCapacityRight.theoricalVariationSpeed = 10;
+//        engineCapacityRight.currentThrust = 0;
+//        engineCapacityRight.setName("linearEngine");
+//        component.addCapacity(engineCapacityRight);
         return component;
     }
 
@@ -264,6 +264,8 @@ public class ComponentFactory {
         component.addSlot(GameServer.pickNewId(), part, new Vec3(shape.x / 6, 0.25, -shape.z / 2));
 
         WingCapacity wingCapacity = new WingCapacity(GameServer.pickNewId());
+        wingCapacity.yield =0.2;
+        wingCapacity.friction = 1.5;
         wingCapacity.setName("wing");
         component.addCapacity(wingCapacity);
 
@@ -283,9 +285,9 @@ public class ComponentFactory {
         LinearEngineCapacity engineCapacity = new LinearEngineCapacity(GameServer.pickNewId());
         engineCapacity.theoricalMaxThrust = 10;
         engineCapacity.theoricalMinThrust = -4;
-        engineCapacity.theoricalVariationSpeed = 80;
+        engineCapacity.theoricalVariationSpeed = 8;
         engineCapacity.currentThrust = 0;
-        engineCapacity.setName("linearEngine");
+        engineCapacity.setName("reactor");
         component.addCapacity(engineCapacity);
 
         return component;

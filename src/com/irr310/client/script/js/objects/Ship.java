@@ -21,6 +21,10 @@ public class Ship {
 	    return new Component(ship.getComponentByName(name).getId());
 	}
 	
+	public double getTheoricalMaxSpeed() {
+	    return ship.getTheoricalMaxSpeed();
+	}
+	
 	public List<Component> getComponentsByName(String name) {
 	    List<Component> components = new ArrayList<Component>();
 	    for(com.irr310.common.world.Component component : ship.getComponents()) {

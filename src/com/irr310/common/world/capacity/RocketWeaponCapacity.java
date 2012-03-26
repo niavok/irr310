@@ -40,7 +40,7 @@ public class RocketWeaponCapacity extends Capacity {
         cooldown = 5;
         firerate = 5;
 
-        securityTimeout = 5;
+        securityTimeout = 15;
         thrust = 3;
         damping = 0.1;
         thrustDuration = 2;

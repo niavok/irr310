@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.irr310.common.Game;
-import com.irr310.common.tools.Log;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.Ship;
 import com.irr310.common.world.capacity.BalisticWeaponCapacity;
+import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.common.world.capacity.RocketWeaponCapacity;
 import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
@@ -43,6 +43,10 @@ public class UpgradeFactory {
     private static final double ROCKETPOD_BASE_STABILITY = 0.005;
     private static final double ROCKETPOD_BASE_ARMOR_PENETRATION = 0.05;
     
+    private static final double REACTOR_BASE_MAX_THRUST = 10;
+    private static final double REACTOR_BASE_MIN_THRUST = -4;
+    private static final double REACTOR_BASE_VARIATION_SPEED = 8;
+    
     public static void initUpgrades() {
 
         addUpgrade(new WeaponGunEffect());
@@ -57,6 +61,11 @@ public class UpgradeFactory {
         addUpgrade(new WeaponRangeUpgradeEffect());
         addUpgrade(new WeaponAccuracyUpgradeEffect());
         addUpgrade(new WeaponArmorPenetrationUpgradeEffect());
+        
+        //Ship
+        addUpgrade(new ReactorThrustUpgradeEffect());
+        addUpgrade(new ReactorReverseThrustUpgradeEffect());
+        addUpgrade(new ReactorReactivityUpgradeEffect());
     }
 
     private static void addUpgrade(UpgradeEffect upgradeEffect) {
@@ -117,9 +126,16 @@ public class UpgradeFactory {
                     rocketCapacity.stability = ROCKETPOD_BASE_STABILITY;
                     rocketCapacity.armorPenetration = ROCKETPOD_BASE_ARMOR_PENETRATION;
                     rocketCapacity.firerate = ROCKETPOD_BASE_FIRERATE;
-                    Log.trace("init stability "+ rocketCapacity.stability);
                 }
                 
+                List<LinearEngineCapacity> engineCapacities = component.getCapacitiesByClass(LinearEngineCapacity.class);
+                for (LinearEngineCapacity engineCapacity : engineCapacities) {
+                    if(engineCapacity.getName().equals("reactor")) {
+                        engineCapacity.theoricalMaxThrust = REACTOR_BASE_MAX_THRUST;
+                        engineCapacity.theoricalMinThrust = REACTOR_BASE_MIN_THRUST;
+                        engineCapacity.theoricalVariationSpeed = REACTOR_BASE_VARIATION_SPEED;
+                    }
+                }
             }
         }
 

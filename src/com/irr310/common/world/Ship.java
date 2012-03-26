@@ -7,11 +7,15 @@ import java.util.List;
 import java.util.Map;
 
 import com.irr310.common.Game;
+import com.irr310.common.engine.PhysicEngine;
+import com.irr310.common.tools.Log;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.capacity.KernelCapacity;
+import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.common.world.view.ComponentView;
 import com.irr310.common.world.view.LinkView;
 import com.irr310.common.world.view.ShipView;
+import com.irr310.server.Duration;
 
 public class Ship extends GameEntity implements Container {
 
@@ -37,7 +41,7 @@ public class Ship extends GameEntity implements Container {
         components.add(component);
         componentNamesMap.put(component.getName(), component);
         component.setShip(this);
-        
+
         return true;
     }
 
@@ -153,8 +157,38 @@ public class Ship extends GameEntity implements Container {
     public void setDestructible(boolean destructible) {
         this.destructible = destructible;
     }
-    
+
     public boolean isDestructible() {
         return destructible;
+    }
+
+    public double getTheoricalMaxSpeed() {
+        double totalMass = 0;
+        double totalMassWithDamping = 0;
+        double totalForce = 0;
+
+        double timeStep = Game.getInstance().getPhysicEngine().getFramerate().getSeconds();
+
+        for (Component component : components) {
+            for (Part part : component.getParts()) {
+                totalMass += part.getMass();
+                totalMassWithDamping += part.getMass() * (1 / Math.pow(1 - part.getLinearDamping(), timeStep) - 1);
+            }
+
+            for (LinearEngineCapacity linearEngineCapacity : component.getCapacitiesByClass(LinearEngineCapacity.class)) {
+                totalForce += linearEngineCapacity.getTheoricalMaxThrust();
+            }
+        }
+        
+        // The 10 factor it for the 
+        
+        double theoricalMaxSpeed = PhysicEngine.MASS_FACTOR *totalForce * timeStep / totalMassWithDamping;
+
+        Log.trace("totalMass " + totalMass);
+        Log.trace("totalMassWithDamping " + totalMassWithDamping);
+        Log.trace("totalForce " + totalForce);
+        Log.trace("theoricalMaxSpeed " + theoricalMaxSpeed);
+
+        return theoricalMaxSpeed;
     }
 }

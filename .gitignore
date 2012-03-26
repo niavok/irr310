@@ -7,3 +7,4 @@ hs_err_pid*.log
 *.blend1
 *.blend2
 drivers/*~
+dist
