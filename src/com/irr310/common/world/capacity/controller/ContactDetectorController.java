@@ -31,7 +31,7 @@ public class ContactDetectorController extends CapacityController {
             if(target.getParentObject() instanceof Component) {
                 Log.trace("contact on component");
                 Component component = (Component) target.getParentObject();
-                if(component.getShip().equals(capacity.sourceShip)) {
+                if(component.getShip().getOwner().equals(capacity.sourceShip.getOwner())) {
                     Log.trace("save autokill");
                     return;
                 }
