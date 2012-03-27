@@ -31,11 +31,6 @@ function driver() {
         /*var gun = ship.getComponentByName("weapon.gun").getCapacityByName("gun");*/
         var kernel = ship.getComponentByName("kernel");
         
-        var maxThrust = Math.min(leftEngine.getMaxThrust(), rightEngine.getMaxThrust())
-        var minThrust = Math.min( -leftEngine.getMinThrust(), -rightEngine.getMinThrust())
-        
-        var maxRotationThrust = Math.min(minThrust, maxThrust)
-        
         var orderAccelerate = false;
         var orderBreak = false;
         var orderTurnLeft = false;
@@ -95,21 +90,25 @@ function driver() {
         this.optimalPower = 0;
         this.minOptimalPower = 0;
         this.phase = 0;
-        this.theoricalMaxSpeed = ship.getTheoricalMaxSpeed();
+
         
         this.update = function(time) {
 
+            this.theoricalMaxSpeed = ship.getTheoricalMaxSpeed();
             var currentSpeed = kernel.getLinearSpeed().dot( new Vec3(0,1,0).rotate(kernel.getTransform()));        
             var deltaTime = time - this.lastTime;
             var deltaSpeed = (currentSpeed - this.lastSpeed);
             var deltaAcc = (deltaSpeed - this.lastDeltaSpeed);
-            
+            var maxThrust = Math.min(leftEngine.getMaxThrust(), rightEngine.getMaxThrust())
+            var minThrust = Math.min( -leftEngine.getMinThrust(), -rightEngine.getMinThrust())
+            var maxRotationThrust = Math.min(minThrust, maxThrust)
+            var maxHorizontalThrust = Math.min(leftEngine.getMaxThrust(), rightEngine.getMaxThrust())
+            var minHorizontalThrust = Math.min( -leftEngine.getMinThrust(), -rightEngine.getMinThrust())
+            var maxVerticalThrust = Math.min(topEngine.getMaxThrust(), bottomEngine.getMaxThrust())
+            var minVerticalThrust = Math.min( -topEngine.getMinThrust(), -bottomEngine.getMinThrust())
+            this.optimalPower = speedTarget /  this.theoricalMaxSpeed;
             
             if(Math.abs(speedTarget - currentSpeed) > 0.1) {
-                var maxHorizontalThrust = Math.min(leftEngine.getMaxThrust(), rightEngine.getMaxThrust())
-                var minHorizontalThrust = Math.min( -leftEngine.getMinThrust(), -rightEngine.getMinThrust())
-                var maxVerticalThrust = Math.min(topEngine.getMaxThrust(), bottomEngine.getMaxThrust())
-                var minVerticalThrust = Math.min( -topEngine.getMinThrust(), -bottomEngine.getMinThrust())
 
                 if(this.lastSpeedTarget != speedTarget) {
                     //Thrust target changed, full power allowed
@@ -119,7 +118,6 @@ function driver() {
                     
                     this.maxOptimalPower = 1;
                     this.minOptimalPower = -1;
-                    this.optimalPower = speedTarget /  this.theoricalMaxSpeed;
                     this.initiaSpeed = currentSpeed;
                 }
 
@@ -179,8 +177,8 @@ function driver() {
             var leftRotThrust = 0;
             var rightRotThrust = 0;
 
-           var minHorizontalThrust = Math.max( -leftEngine.getMinThrust(), -rightEngine.getMinThrust())
-            var minVerticalThrust = Math.max( -topEngine.getMinThrust(), -bottomEngine.getMinThrust())
+           //var minHorizontalThrust = Math.max( -leftEngine.getMinThrust(), -rightEngine.getMinThrust())
+           // var minVerticalThrust = Math.max( -topEngine.getMinThrust(), -bottomEngine.getMinThrust())
 
 
             if(Math.abs(localRotationSpeed.getX() - rotationSpeedTarget.getX()) > 0.001) {
@@ -301,63 +299,7 @@ function driver() {
             speedIndicatorUnit.setPosition(new Vec2(this.screenSize.getX() - 230,206));
             speedIndicatorUnit.setFontStyle("bold",25);
             speedIndicatorUnit.setColor(new Color(0.0,0.0,0.0));
-            
-            /*this.xPositionIndicator = core.gui.createLabel();
-            this.xPositionIndicator.setText("x= -- m");
-            this.xPositionIndicator.setPosition(new Vec2(this.screenSize.getX() - 100,this.screenSize.getY() - 200 ));
-            this.xPositionIndicator.setFontStyle("",16);
-            this.xPositionIndicator.setColor(new Color(0.0,0.0,0.0));
-            
-            this.yPositionIndicator = core.gui.createLabel();
-            this.yPositionIndicator.setText("y= -- m");
-            this.yPositionIndicator.setPosition(new Vec2(this.screenSize.getX() - 100,this.screenSize.getY() - 220 ));
-            this.yPositionIndicator.setFontStyle("",16);
-            this.yPositionIndicator.setColor(new Color(0.0,0.0,0.0));
-            
-            this.zPositionIndicator = core.gui.createLabel();
-            this.zPositionIndicator.setText("z= -- m");
-            this.zPositionIndicator.setPosition(new Vec2(this.screenSize.getX() - 100,this.screenSize.getY() - 240 ));
-            this.zPositionIndicator.setFontStyle("",16);
-            this.zPositionIndicator.setColor(new Color(0.0,0.0,0.0));
-            
-            
-            this.xRotationSpeedIndicator = core.gui.createLabel();
-            this.xRotationSpeedIndicator.setText("wx= -- ?");
-            this.xRotationSpeedIndicator.setPosition(new Vec2(this.screenSize.getX() - 100,this.screenSize.getY() - 260 ));
-            this.xRotationSpeedIndicator.setFontStyle("",16);
-            this.xRotationSpeedIndicator.setColor(new Color(0.0,0.0,0.0));
-            
-            this.yRotationSpeedIndicator = core.gui.createLabel();
-            this.yRotationSpeedIndicator.setText("wy= -- ?");
-            this.yRotationSpeedIndicator.setPosition(new Vec2(this.screenSize.getX() - 100,this.screenSize.getY() - 280 ));
-            this.yRotationSpeedIndicator.setFontStyle("",16);
-            this.yRotationSpeedIndicator.setColor(new Color(0.0,0.0,0.0));
-            
-            this.zRotationSpeedIndicator = core.gui.createLabel();
-            this.zRotationSpeedIndicator.setText("wz= -- ?");
-            this.zRotationSpeedIndicator.setPosition(new Vec2(this.screenSize.getX() - 100,this.screenSize.getY() - 300 ));
-            this.zRotationSpeedIndicator.setFontStyle("",16);
-            this.zRotationSpeedIndicator.setColor(new Color(0.0,0.0,0.0));
-
-            this.xLinearSpeedIndicator = core.gui.createLabel();
-            this.xLinearSpeedIndicator.setText("wz= -- ?");
-            this.xLinearSpeedIndicator.setPosition(new Vec2(this.screenSize.getX() - 100,this.screenSize.getY() - 320 ));
-            this.xLinearSpeedIndicator.setFontStyle("",16);
-            this.xLinearSpeedIndicator.setColor(new Color(0.0,0.0,0.0));
-            
-            this.yLinearSpeedIndicator = core.gui.createLabel();
-            this.yLinearSpeedIndicator.setText("wz= -- ?");
-            this.yLinearSpeedIndicator.setPosition(new Vec2(this.screenSize.getX() - 100,this.screenSize.getY() - 340 ));
-            this.yLinearSpeedIndicator.setFontStyle("",16);
-            this.yLinearSpeedIndicator.setColor(new Color(0.0,0.0,0.0));
-            
-
-            this.zLinearSpeedIndicator = core.gui.createLabel();
-            this.zLinearSpeedIndicator.setText("wz= -- ?");
-            this.zLinearSpeedIndicator.setPosition(new Vec2(this.screenSize.getX() - 100,this.screenSize.getY() - 360 ));
-            this.zLinearSpeedIndicator.setFontStyle("",16);
-            this.zLinearSpeedIndicator.setColor(new Color(0.0,0.0,0.0));
-            */
+           
 
             //Speed box
             this.speedBoxMaxSize = 200;
@@ -390,7 +332,11 @@ function driver() {
         
         this.update = function(time) {
             
-            this.theoricalMaxSpeed = ship.getTheoricalMaxSpeed();
+            if(this.theoricalMaxSpeed != ship.getTheoricalMaxSpeed() ) {
+                this.theoricalMaxSpeed = ship.getTheoricalMaxSpeed();
+                this.targetSpeedUpdated();
+            }
+            
             //this.clockIndicator.setText("Time: "+time.toFixed(0)+" s");
             
             if(time - this.lastTime > 0.25) {
@@ -541,12 +487,6 @@ function driver() {
                 rotationSpeedTarget.z = rotationSpeedTarget.getZ() + maxRotationSpeed *  (percentX > 0 ? 1: -1) * Math.pow(percentX,2);
                 rotationSpeedTarget.x = rotationSpeedTarget.getX() - maxRotationSpeed * (percentY > 0 ? 1: -1) * Math.pow(percentY,2);
             }
-            
-            
-            
-                    
-            
-            
         }
 
         this.targetSpeedUpdated = function() {
