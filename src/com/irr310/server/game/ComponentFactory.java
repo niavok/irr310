@@ -264,7 +264,7 @@ public class ComponentFactory {
         component.addSlot(GameServer.pickNewId(), part, new Vec3(shape.x / 6, 0.25, -shape.z / 2));
 
         WingCapacity wingCapacity = new WingCapacity(GameServer.pickNewId());
-        wingCapacity.yield =0.2;
+        wingCapacity.yield =0.4;
         wingCapacity.friction = 1.5;
         wingCapacity.setName("wing");
         component.addCapacity(wingCapacity);

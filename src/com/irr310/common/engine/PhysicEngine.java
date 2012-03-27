@@ -214,11 +214,16 @@ public class PhysicEngine extends FramerateEngine {
                 Vec3 oppositionVector = absoluteBreakAxis.multiply(opposition * wingCapacity.getFriction() * -1);
 
                 // Conversion
-                double conversion = velocity.dot(absoluteThrustAxis) / velocity.length();
-
+                double conversion = 0.5 + 0.5 * velocity.dot(absoluteThrustAxis) / velocity.length();
                 double force = Math.pow(conversion, 2) * Math.abs(opposition) * wingCapacity.getYield();
                 Vec3 conversionVector = absoluteThrustAxis.multiply(force);
 
+//                Log.trace("wing opposition: "+ opposition);
+//                Log.trace("wing conversion: "+ conversion);
+//                Log.trace("wing force: "+ force);
+//                Log.trace("wing fiction: "+  wingCapacity.getFriction());
+//                Log.trace("wing vector: "+ conversionVector.length());
+                
                 body.applyCentralForce(conversionVector.plus(oppositionVector).toVector3d());
             }
             body.setActivationState(RigidBody.ACTIVE_TAG);

@@ -184,10 +184,10 @@ public class Ship extends GameEntity implements Container {
         
         double theoricalMaxSpeed = PhysicEngine.MASS_FACTOR *totalForce * timeStep / totalMassWithDamping;
 
-        Log.trace("totalMass " + totalMass);
-        Log.trace("totalMassWithDamping " + totalMassWithDamping);
-        Log.trace("totalForce " + totalForce);
-        Log.trace("theoricalMaxSpeed " + theoricalMaxSpeed);
+//        Log.trace("totalMass " + totalMass);
+//        Log.trace("totalMassWithDamping " + totalMassWithDamping);
+//        Log.trace("totalForce " + totalForce);
+//        Log.trace("theoricalMaxSpeed " + theoricalMaxSpeed);
 
         return theoricalMaxSpeed;
     }
