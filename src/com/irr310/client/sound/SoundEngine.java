@@ -62,10 +62,10 @@ public class SoundEngine extends EventEngine {
             
             Vec3 audioPosition = localDistance.multiply(0.03);
             
-            Log.trace("(float) (event.getDamage().getEffectiveDamage()* 0.005f) "+(float) (event.getDamage().getEffectiveDamage()* 0.005f));
-            Log.trace("(float)  audioPosition.x"+(float)  audioPosition.x);
-            Log.trace("(float)  audioPosition.y"+(float)  audioPosition.y);
-            Log.trace("(float)  audioPosition.z"+(float)  audioPosition.z);
+//            Log.trace("(float) (event.getDamage().getEffectiveDamage()* 0.005f) "+(float) (event.getDamage().getEffectiveDamage()* 0.005f));
+//            Log.trace("(float)  audioPosition.x"+(float)  audioPosition.x);
+//            Log.trace("(float)  audioPosition.y"+(float)  audioPosition.y);
+//            Log.trace("(float)  audioPosition.z"+(float)  audioPosition.z);
             explosionEffect.playAsSoundEffect(3.0f,(float) Math.max(0,  (event.getDamage().getEffectiveDamage()* 0.005f)), false, (float)  audioPosition.x, (float)  audioPosition.y , (float) audioPosition.z);
         }
     }
