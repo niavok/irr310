@@ -177,8 +177,8 @@ function driver() {
             var leftRotThrust = 0;
             var rightRotThrust = 0;
 
-           //var minHorizontalThrust = Math.max( -leftEngine.getMinThrust(), -rightEngine.getMinThrust())
-           // var minVerticalThrust = Math.max( -topEngine.getMinThrust(), -bottomEngine.getMinThrust())
+            var minHorizontalThrust = Math.max( -leftEngine.getMinThrust(), -rightEngine.getMinThrust())
+            var minVerticalThrust = Math.max( -topEngine.getMinThrust(), -bottomEngine.getMinThrust())
 
 
             if(Math.abs(localRotationSpeed.getX() - rotationSpeedTarget.getX()) > 0.001) {
