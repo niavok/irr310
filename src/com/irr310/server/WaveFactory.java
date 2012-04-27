@@ -7,7 +7,10 @@ import com.irr310.common.Game;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Asteroid;
+import com.irr310.common.world.Player;
+import com.irr310.common.world.Ship;
 import com.irr310.server.game.CelestialObjectFactory;
+import com.irr310.server.game.ShipFactory;
 
 public class WaveFactory {
 
@@ -17,6 +20,8 @@ public class WaveFactory {
         wave1.setDuration(new Duration(20f));
         wave1.setActiveDuration(new Duration(2f));
         wave1.addWaveEvent(new WaveEvent(new Duration(2f)) {
+
+            private Player enemies;
 
             public void action() {
                 Game.getInstance().getWorld().setWorldSize(500);
@@ -47,6 +52,24 @@ public class WaveFactory {
                              random.nextFloat() * angularSpeed - angularSpeed / 2f);
 
                 Game.getInstance().getWorld().addCelestialObject(asteroid);
+                
+                enemies = new Player(GameServer.pickNewId(), "enemies");
+                Game.getInstance().getWorld().addPlayer(enemies);
+                
+                Ship ship = ShipFactory.createSimpleFighter();
+                ship.setOwner(enemies);
+                
+                Vec3 shipPosition = new Vec3(Game.getInstance().getWorld().getWorldSize() -50, 0, 0);
+                TransformMatrix shipRotation = TransformMatrix.identity();
+                shipRotation.rotateX(random.nextDouble() * 360);
+                shipRotation.rotateY(random.nextDouble() * 360);
+                shipRotation.rotateZ(random.nextDouble() * 360);
+
+                shipPosition = shipPosition.rotate(shipRotation);
+
+                shipRotation.translate(shipPosition);
+                Game.getInstance().getWorld().addShip(ship, shipRotation);
+                
             }
 
         });

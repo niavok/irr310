@@ -22,6 +22,7 @@ import com.irr310.common.tools.Log;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.World;
 import com.irr310.server.Duration;
+import com.irr310.server.GameServer;
 import com.irr310.server.ParameterAnalyser;
 import com.irr310.server.ServerGameEngine;
 
@@ -199,7 +200,7 @@ public class GameClient extends Game {
         startAndWaitAllEngines();
 
         sendToAll(new StartEngineEvent());
-
+        
         Player player = createPlayer("player", "");
         LoginManager.localPlayer = player;
 
