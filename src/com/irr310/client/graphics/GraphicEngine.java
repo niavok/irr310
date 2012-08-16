@@ -80,7 +80,7 @@ public class GraphicEngine extends FramerateEngine {
 
         // canvas = new V3DCanvas(context, 1920, 1200);
         eventVisitor = new GraphicEngineEventVisitor();
-        canvas = new V3DCanvas(context, 1280, 1024);
+        canvas = new V3DCanvas(context, 1664, 936);
         canvas.setEnabled(true);
         fpsIndicator = new GuiFpsIndicator(this);
         changeRenderer(new BlankGraphicRenderer(this));
