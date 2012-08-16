@@ -14,12 +14,17 @@ import com.irr310.common.event.QuitGameEvent;
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
 import fr.def.iss.vd2.lib_v3d.camera.V3DSimple2DCamera;
+import fr.def.iss.vd2.lib_v3d.element.V3DGroupElement;
+import fr.def.iss.vd2.lib_v3d.element.V3DRectangle;
 import fr.def.iss.vd2.lib_v3d.gui.V3DButton;
+import fr.def.iss.vd2.lib_v3d.gui.V3DContainer;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiLayer;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent.GuiXAlignment;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent.GuiYAlignment;
+import fr.def.iss.vd2.lib_v3d.gui.V3DGuiTriangle;
 import fr.def.iss.vd2.lib_v3d.gui.V3DLabel;
+import fr.def.iss.vd2.lib_v3d.v3draw.V3DrawTriangle;
 
 public class MenuGraphicRenderer implements GraphicRenderer {
 
@@ -48,6 +53,27 @@ public class MenuGraphicRenderer implements GraphicRenderer {
         camera = new V3DSimple2DCamera(engine.getV3DContext());
         camera.setBackgroundColor(V3DColor.white);
         cameraBinding = V3DCameraBinding.buildFullscreenCamera(camera);
+
+        int logoSize = 38;
+
+        V3DContainer logoPanel = new V3DContainer();
+        logoPanel.setPosition(105, 164);
+        logoPanel.setSize(logoSize, logoSize);
+
+        V3DGuiTriangle logoBlack = new V3DGuiTriangle();
+        logoBlack.setFillColor(V3DColor.black);
+        logoBlack.setPoint((int) (logoSize * 1), (int) (logoSize * 1), 0, 0, (int) (logoSize * 1), 0);
+        logoBlack.setPosition(0, 0);
+        logoPanel.add(logoBlack);
+
+        V3DGuiTriangle logoRed = new V3DGuiTriangle();
+        logoRed.setFillColor(irrRed);
+        logoRed.setPoint(0, (int) (logoSize * 1.0), 0, (int) (logoSize * 0.2), (int) (logoSize * 0.8), (int) (logoSize * 1));
+        logoRed.setPosition(0, 0);
+        logoRed.setyAlignment(GuiYAlignment.BOTTOM);
+        logoPanel.add(logoRed);
+
+        addGuiComponent(logoPanel);
 
         logoIRR = new V3DLabel("IRR");
         logoIRR.setFontStyle("Ubuntu", "bold", 55);
@@ -133,9 +159,9 @@ public class MenuGraphicRenderer implements GraphicRenderer {
             eventVisitor = new DefaultEngineEventVisitor() {
                 @Override
                 public void visit(KeyPressedEvent event) {
-                    if(event.getKeyCode() == Keyboard.KEY_RETURN) {
+                    if (event.getKeyCode() == Keyboard.KEY_RETURN) {
                         GameClient.getInstance().playSoloGame();
-                    } else if(event.getKeyCode() == Keyboard.KEY_ESCAPE) {
+                    } else if (event.getKeyCode() == Keyboard.KEY_ESCAPE) {
                         Game.getInstance().sendToAll(new QuitGameEvent());
                     }
                 }
@@ -156,7 +182,7 @@ public class MenuGraphicRenderer implements GraphicRenderer {
     public void resetGui() {
         cameraBinding.getGui().clear();
     }
-    
+
     @Override
     public V3DGuiLayer getPopupLayer() {
         return null;
