@@ -16,6 +16,8 @@ import com.irr310.server.GameServer;
 import com.irr310.server.game.ShipFactory;
 import com.irr310.server.upgrade.UpgradeFactory;
 
+import fr.def.iss.vd2.lib_v3d.V3DColor;
+
 public abstract class Game {
 
     private static Game instance = null;
@@ -38,6 +40,7 @@ public abstract class Game {
 
     public Player createPlayer(String login, String password) {
         Player newPlayer = new Player(GameServer.pickNewId(), login);
+        newPlayer.setColor(new V3DColor(108, 0, 0));
         newPlayer.changePassword(password);
         playerLoginMap.put(login, newPlayer);
         getWorld().addPlayer(newPlayer);

@@ -17,6 +17,8 @@ import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
 import com.irr310.common.world.view.PlayerView;
 
+import fr.def.iss.vd2.lib_v3d.V3DColor;
+
 public class Player extends GameEntity {
 
     private static final int PASSWORD_SALT_LENGTH = 32;
@@ -28,10 +30,12 @@ public class Player extends GameEntity {
     private List<Item> inventory;
     private List<UpgradeOwnership> upgrades;
     private int  money;
+    private V3DColor color;
 
     private double lastInterrest;
 
     private ShipSchema shipShema;
+
     
 	public Player(long id, String login) {
 	    super(id);
@@ -41,6 +45,7 @@ public class Player extends GameEntity {
         inventory = new ArrayList<Item>();
         money = 0;
         lastInterrest = 0;
+        color = V3DColor.grey;
 	}
 	
 	public void changePassword(String newPassword) {
@@ -186,5 +191,13 @@ public class Player extends GameEntity {
         if(itemToRemove != null) {
             retireItem(itemToRemove);
         }
+    }
+
+    public V3DColor getColor() {
+        return color;
+    }
+
+    public void setColor(V3DColor color) {
+        this.color = color;
     }
 }

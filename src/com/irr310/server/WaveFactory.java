@@ -12,20 +12,33 @@ import com.irr310.common.world.Ship;
 import com.irr310.server.game.CelestialObjectFactory;
 import com.irr310.server.game.ShipFactory;
 
+import fr.def.iss.vd2.lib_v3d.V3DColor;
+
 public class WaveFactory {
 
-    public static void createWaves(Queue<Wave> waveQueue) {
+    private Player enemies;
+    private Random random;
+
+    public WaveFactory() {
+        
+    }
+    
+    public void createWaves(Queue<Wave> waveQueue) {
+        enemies = new Player(GameServer.pickNewId(), "enemies");
+        enemies.setColor(new V3DColor(50, 60, 60));
+        Game.getInstance().getWorld().addPlayer(enemies);
+        random = new Random();
+        
         // Create waves
         Wave wave1 = new Wave(1);
         wave1.setDuration(new Duration(20f));
         wave1.setActiveDuration(new Duration(2f));
         wave1.addWaveEvent(new WaveEvent(new Duration(2f)) {
 
-            private Player enemies;
 
             public void action() {
                 Game.getInstance().getWorld().setWorldSize(500);
-                Random random = new Random();
+                
 
                 double size = 8 + random.nextDouble() * 3;
 
@@ -53,23 +66,7 @@ public class WaveFactory {
 
                 Game.getInstance().getWorld().addCelestialObject(asteroid);
                 
-                enemies = new Player(GameServer.pickNewId(), "enemies");
-                Game.getInstance().getWorld().addPlayer(enemies);
-                
-                Ship ship = ShipFactory.createSimpleFighter();
-                ship.setOwner(enemies);
-                
-                Vec3 shipPosition = new Vec3(Game.getInstance().getWorld().getWorldSize() -50, 0, 0);
-                TransformMatrix shipRotation = TransformMatrix.identity();
-                shipRotation.rotateX(random.nextDouble() * 360);
-                shipRotation.rotateY(random.nextDouble() * 360);
-                shipRotation.rotateZ(random.nextDouble() * 360);
-
-                shipPosition = shipPosition.rotate(shipRotation);
-
-                shipRotation.translate(shipPosition);
-                Game.getInstance().getWorld().addShip(ship, shipRotation);
-                
+                createFighter();
             }
 
         });
@@ -82,7 +79,6 @@ public class WaveFactory {
 
             public void action() {
                 Game.getInstance().getWorld().setWorldSize(800);
-                Random random = new Random();
                 double baseRotationX = random.nextDouble() * 360;
                 double baseRotationY = random.nextDouble() * 360;
                 double baseRotationZ = random.nextDouble() * 360;
@@ -117,6 +113,9 @@ public class WaveFactory {
 
                     Game.getInstance().getWorld().addCelestialObject(asteroid);
                 }
+                
+                createFighter();
+                
             }
 
         });
@@ -129,7 +128,6 @@ public class WaveFactory {
 
             public void action() {
                 Game.getInstance().getWorld().setWorldSize(1000);
-                Random random = new Random();
                 double baseRotationX = random.nextDouble() * 360;
                 double baseRotationY = random.nextDouble() * 360;
                 double baseRotationZ = random.nextDouble() * 360;
@@ -165,6 +163,8 @@ public class WaveFactory {
 
                     Game.getInstance().getWorld().addCelestialObject(asteroid);
                 }
+                
+                createFighter();
             }
 
         });
@@ -214,10 +214,30 @@ public class WaveFactory {
 
                         Game.getInstance().getWorld().addCelestialObject(asteroid);
                     }
+                    
+                    createFighter();
                 }
             });
 
         }
 
     }
+    
+    private void createFighter() {
+        
+        Ship ship = ShipFactory.createSimpleFighter();
+        ship.setOwner(enemies);
+        
+        Vec3 shipPosition = new Vec3(Game.getInstance().getWorld().getWorldSize() -50, 0, 0);
+        TransformMatrix shipRotation = TransformMatrix.identity();
+        shipRotation.rotateX(random.nextDouble() * 360);
+        shipRotation.rotateY(random.nextDouble() * 360);
+        shipRotation.rotateZ(random.nextDouble() * 360);
+
+        shipPosition = shipPosition.rotate(shipRotation);
+
+        shipRotation.translate(shipPosition);
+        Game.getInstance().getWorld().addShip(ship, shipRotation);
+    }
+    
 }

@@ -718,7 +718,15 @@ public class WorldRenderer implements GraphicRenderer {
             cameraController.setFollowed(kernel.getFirstPart());
         }
 
-        activeCamera.fitAll();
+        if(LoginManager.getLocalPlayer().equals(ship.getOwner())) {
+            activeCamera.fitAll();
+        } else {
+            Component kernel = ship.getComponentByName("kernel");
+            GuiTrackingArrow guiTrackingArrow = new GuiTrackingArrow(this, cameraController, kernel.getFirstPart());
+            guiTrackingArrow.setColor(ship.getOwner().getColor().copy().setAlpha(0.8f));
+            addPersistantGuiElement(guiTrackingArrow);
+            worldObjectToV3DElementMap.get(kernel).add(guiTrackingArrow);    
+        }
     }
 
     private void addComponent(Component component) {

@@ -26,8 +26,10 @@ public class WingSkin extends Skin {
 
         File v3drawFileStructure = new File("graphics/output/wing.v3draw");
         final V3DrawElement elementStructure = V3DrawElement.LoadFromFile(v3drawFileStructure, engine.getV3DContext());
-        elements.add(new V3DColorElement(new V3DShaderElement(elementStructure, "propeller"), new V3DColor(108, 0, 0)));
+        elements.add(new V3DColorElement(new V3DShaderElement(elementStructure, "propeller"), object.getShip().getOwner().getColor()));
 
+        
+        
         transform = object.getFirstPart().getTransform();
         elements.setTransformMatrix(transform.toFloatBuffer());
 

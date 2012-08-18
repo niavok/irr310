@@ -565,7 +565,7 @@ public class ServerGameEngine extends FramerateEngine {
 
     void createWaves() {
         // Create waves
-        WaveFactory.createWaves(waveQueue);
+        new WaveFactory().createWaves(waveQueue);
         nextWaveTime = Time.now(true);
 
         nextWave();
