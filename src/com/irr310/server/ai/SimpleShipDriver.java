@@ -1,6 +1,7 @@
 package com.irr310.server.ai;
 
 import com.irr310.common.tools.Log;
+import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.Ship;
@@ -85,6 +86,70 @@ public class SimpleShipDriver {
 
     public void processOrders() {
         // TODO rotation
+        TransformMatrix shipTransform = kernel.getFirstPart().getTransform();
+
+        Vec3 shipPosition = shipTransform.getTranslation();
+        //Vec3 targetDirection = shipPosition.minus(targetPosition).normalize();
+        
+        //
+        
+        
+        Log.trace("shipPositon ="+ shipPosition);
+        //Log.trace("targetDirection ="+ targetDirection);
+        Vec3 localTargetPosition = targetPosition.transform(shipTransform.inverse());
+        
+        Vec3 localTargetDirection  = localTargetPosition.normalize();
+        
+        Log.trace("localTargetPosition ="+ localTargetPosition);
+        Log.trace("localTargetDirection ="+ localTargetDirection);
+        
+        
+        Vec3 left = new Vec3(1, 0, 0);
+        Vec3 top = new Vec3(0, 0, 1);
+        Vec3 front = new Vec3(0, 1, 0);
+        
+        Log.trace("top ="+ top);
+        Log.trace("left ="+ left);
+        Log.trace("front ="+ front);
+        
+        
+        double diffX = left.dot(localTargetDirection);
+        double diffY = front.dot(localTargetDirection);
+        double diffZ = top.dot(localTargetDirection);
+        double dir = front.dot(localTargetDirection);
+        
+        Log.trace("diffX ="+ diffX);
+        Log.trace("diffY ="+ diffY);
+        Log.trace("diffZ ="+ diffZ);
+        Log.trace("dir ="+ dir);
+
+        this.rotationSpeedTarget.x = 0;
+        this.rotationSpeedTarget.z = 0;
+        
+        /*if(dir < 0) {
+            this.rotationSpeedTarget.x = 1 * diffZ / Math.abs(diffZ);
+        } else {
+            this.rotationSpeedTarget.x = -diffZ/10;
+        }*/
+        
+        
+        
+        this.rotationSpeedTarget.z = -diffX * maxRotationSpeed/2;
+        this.rotationSpeedTarget.x = diffZ * maxRotationSpeed/2;
+        //this.rotationSpeedTarget.x = -diffY/1;
+        
+        //this.rotationSpeedTarget.x = -diffZ/10;
+        
+        if(dir < 0) {
+            //this.rotationSpeedTarget.x = -0.1;
+            //this.rotationSpeedTarget.z = Math.abs(diffZ);
+        } else {
+            //this.rotationSpeedTarget.x = - Math.abs(diffX);
+            //this.rotationSpeedTarget.z = - Math.abs(diffZ);
+        }
+        
+        Log.trace("this.rotationSpeedTarget.x ="+ this.rotationSpeedTarget.x);
+        Log.trace("this.rotationSpeedTarget.z ="+ this.rotationSpeedTarget.z);
 
         processEngines();
     }
@@ -106,6 +171,7 @@ public class SimpleShipDriver {
 
         if (maxThrustLeft != lastMaxThrustLeft || maxThrustRight != lastMaxThrustRight || maxThrustTop != lastMaxThrustTop
                 || maxThrustBottom != lastMaxThrustBottom) {
+            Log.trace("return to phase 0 lastMaxThrustLeft diff ");
             phase = 0;
         }
 
@@ -177,6 +243,7 @@ public class SimpleShipDriver {
                 }
             } else if (this.phase == 2) {
                 if (Math.abs(this.targetSpeed - currentSpeed) > theoricalMaxSpeed / 6) {
+                    Log.trace("return to phase 0 because too big difference ");
                     this.phase = 0;
                 }
             }
@@ -263,7 +330,7 @@ public class SimpleShipDriver {
         this.lastMaxThrustLeft = maxThrustLeft;
         this.lastMaxThrustRight = maxThrustRight;
         this.lastMaxThrustTop = maxThrustTop;
-        this.lastMaxThrustBottom = maxThrust;
+        this.lastMaxThrustBottom = maxThrustBottom;
     }
 
 }

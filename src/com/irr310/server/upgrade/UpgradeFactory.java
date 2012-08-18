@@ -43,9 +43,9 @@ public class UpgradeFactory {
     private static final double ROCKETPOD_BASE_STABILITY = 0.005;
     private static final double ROCKETPOD_BASE_ARMOR_PENETRATION = 0.05;
     
-    private static final double REACTOR_BASE_MAX_THRUST = 10;
-    private static final double REACTOR_BASE_MIN_THRUST = -4;
-    private static final double REACTOR_BASE_VARIATION_SPEED = 8;
+    private static final double REACTOR_BASE_MAX_THRUST = 20;
+    private static final double REACTOR_BASE_MIN_THRUST = -8;
+    private static final double REACTOR_BASE_VARIATION_SPEED = 16;
     
     public static void initUpgrades() {
 

@@ -224,10 +224,12 @@ public class WaveFactory {
             ship.setOwner(enemies);
     
             Vec3 shipPosition = new Vec3(Game.getInstance().getWorld().getWorldSize() - 50, 0, 0);
+            //Vec3 shipPosition = new Vec3(50, 0, 0);
             TransformMatrix shipTransform = TransformMatrix.identity();
             shipTransform.rotateX(random.nextDouble() * 360);
-            shipTransform.rotateY(random.nextDouble() * 360);
+            
             shipTransform.rotateZ(random.nextDouble() * 360);
+            shipTransform.rotateY(random.nextDouble() * 360);
             
             TransformMatrix shipRotation = TransformMatrix.identity();
             shipRotation.rotateX(random.nextDouble() * 360);
@@ -243,7 +245,7 @@ public class WaveFactory {
             Game.getInstance().getWorld().addShip(ship, shipTransform);
             Log.trace("bindai");
             Game.getInstance().sendToAll(new BindAIEvent(ship));
-       // }
+        //}
     }
 
 }

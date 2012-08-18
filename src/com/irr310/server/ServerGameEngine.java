@@ -364,7 +364,7 @@ public class ServerGameEngine extends FramerateEngine {
                 double attenuedDamage = event.getDamage().getWeaponBaseDamage() * (1 - Math.pow(rayTest.getHitFraction(), 3));
                 event.getDamage().setBaseDamage(attenuedDamage);
                 applyDamage(rayTest.getPart(), event.getDamage(), rayTest.getGlobalPosition());
-                impulse(rayTest.getPart(), attenuedDamage/100, rayTest.getLocalPosition(), event.getTo().minus(event.getFrom()).normalize());
+                impulse(rayTest.getPart(), attenuedDamage/10, rayTest.getLocalPosition(), event.getTo().minus(event.getFrom()).normalize());
 
                 break;
             }

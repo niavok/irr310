@@ -149,7 +149,7 @@ public class ComponentFactory {
         component.setSkin("gun");
         Part part = component.getFirstPart();
         part.setOwner(player);
-        part.setMass(2d);
+        part.setMass(4d);
         part.setShape(new Vec3(1, 2, 1));
         Vec3 shape = part.getShape();
         component.addSlot(GameServer.pickNewId(), part, new Vec3(0, -shape.y / 2, 0));
@@ -190,7 +190,7 @@ public class ComponentFactory {
         Component component = createSimpleComponent(name);
         component.setSkin("thrusterBlock");
         Part part = component.getFirstPart();
-        part.setMass(4d);
+        part.setMass(16d);
 
         part.setShape(new Vec3(2, 1, 2));
 
@@ -236,7 +236,7 @@ public class ComponentFactory {
         Component component = createSimpleComponent(name);
         component.setSkin("hull");
         Part part = component.getFirstPart();
-        part.setMass(12d);
+        part.setMass(50d);
 
         part.setShape(new Vec3(2, 3, 2));
 
@@ -249,7 +249,7 @@ public class ComponentFactory {
         Component component = createSimpleComponent(name);
         component.setSkin("wing");
         Part part = component.getFirstPart();
-        part.setMass(5d);
+        part.setMass(10d);
 
         part.setShape(new Vec3(3, 3, 0.5));
 
@@ -275,7 +275,7 @@ public class ComponentFactory {
     public static Component createReactor(String name) {
         Component component = createSimpleComponent(name);
         Part part = component.getFirstPart();
-        part.setMass(4d);
+        part.setMass(8d);
         component.setSkin("reactor");
 
         part.setShape(new Vec3(1, 2, 1));
@@ -297,7 +297,7 @@ public class ComponentFactory {
         Component component = createSimpleComponent(name);
         Part part = component.getFirstPart();
         part.setOwner(sourceShip.getOwner());
-        part.setMass(0.05d);
+        part.setMass(0.1d);
         component.setSkin("rocket_hull");
         
         part.setShape(new Vec3(0.1, 1.5, 0.1));
