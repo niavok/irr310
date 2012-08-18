@@ -131,10 +131,9 @@ public class PhysicEngine extends FramerateEngine {
 
     @Override
     protected void frame() {
-        
 
         mutex.lock();
-        
+
         // Apply forces
         // Linear Engines
         for (Pair<LinearEngineCapacity, RigidBody> linearEngine : linearEngines) {
@@ -161,20 +160,22 @@ public class PhysicEngine extends FramerateEngine {
             Transform t = new Transform();
             body.getWorldTransform(t);
 
-            if(rocket.getLeft().collisionSecurity) {
-                ((UserData) body.getUserPointer()).noCollision  = true;
+            if (rocket.getLeft().collisionSecurity) {
+                ((UserData) body.getUserPointer()).noCollision = true;
             } else {
                 ((UserData) body.getUserPointer()).noCollision = false;
                 body.setCcdMotionThreshold(1);
                 body.setCcdSweptSphereRadius(0);
             }
-            
+
             TransformMatrix force = TransformMatrix.identity();
 
-            Vec3 imprecision = new Vec3( rocket.getLeft().stability* PHYSICAL_SCALE,  0, 0).rotate(new Vec3(random.nextDouble()*360, random.nextDouble()*360, random.nextDouble()*360));
-            
-            force.translate(new Vec3(0,  rocket.getLeft().getCurrentThrust(),0));
-                   
+            Vec3 imprecision = new Vec3(rocket.getLeft().stability * PHYSICAL_SCALE, 0, 0).rotate(new Vec3(random.nextDouble() * 360,
+                                                                                                           random.nextDouble() * 360,
+                                                                                                           random.nextDouble() * 360));
+
+            force.translate(new Vec3(0, rocket.getLeft().getCurrentThrust(), 0));
+
             body.applyTorque(imprecision.toVector3d());
 
             TransformMatrix rotation = new TransformMatrix();
@@ -218,19 +219,19 @@ public class PhysicEngine extends FramerateEngine {
                 double force = Math.pow(conversion, 2) * Math.abs(opposition) * wingCapacity.getYield();
                 Vec3 conversionVector = absoluteThrustAxis.multiply(force);
 
-//                Log.trace("wing opposition: "+ opposition);
-//                Log.trace("wing conversion: "+ conversion);
-//                Log.trace("wing force: "+ force);
-//                Log.trace("wing fiction: "+  wingCapacity.getFriction());
-//                Log.trace("wing vector: "+ conversionVector.length());
-                
+                // Log.trace("wing opposition: "+ opposition);
+                // Log.trace("wing conversion: "+ conversion);
+                // Log.trace("wing force: "+ force);
+                // Log.trace("wing fiction: "+ wingCapacity.getFriction());
+                // Log.trace("wing vector: "+ conversionVector.length());
+
                 body.applyCentralForce(conversionVector.plus(oppositionVector).toVector3d());
             }
             body.setActivationState(RigidBody.ACTIVE_TAG);
 
         }
         mutex.unlock();
-        
+
         Game.getInstance().getWorld().lock();
         mutex.lock();
 
@@ -240,7 +241,7 @@ public class PhysicEngine extends FramerateEngine {
         }
         mutex.unlock();
         Game.getInstance().getWorld().unlock();
-        
+
     }
 
     private float getDeltaTimeMicroseconds() {
@@ -252,9 +253,9 @@ public class PhysicEngine extends FramerateEngine {
     public List<SphereResultDescriptor> sphereTest(final Vec3 from, final double radius) {
 
         mutex.lock();
-        
-//        Log.trace("sphereTest at "+from+" radius "+radius);
-        
+
+        // Log.trace("sphereTest at "+from+" radius "+radius);
+
         final List<SphereResultDescriptor> sphereResultDescriptorList = new ArrayList<SphereResultDescriptor>();
 
         final RigidBody ghost = new RigidBody(0, null, new SphereShape(radius));
@@ -280,77 +281,71 @@ public class PhysicEngine extends FramerateEngine {
 
             @Override
             public void handleCollision(BroadphasePair collisionPair, CollisionDispatcher dispatcher, DispatcherInfo dispatchInfo) {
-//                Log.trace("Contact ?");
-                
+                // Log.trace("Contact ?");
+
                 if (!collisionPair.pProxy0.clientObject.equals(ghost) && !collisionPair.pProxy1.clientObject.equals(ghost)) {
                     return;
                 }
-                //UserData data1 = (UserData) ((RigidBody) collisionPair.pProxy1.clientObject).getUserPointer();
+                // UserData data1 = (UserData) ((RigidBody)
+                // collisionPair.pProxy1.clientObject).getUserPointer();
 
-//                Log.trace("ghost ..");
-                
+                // Log.trace("ghost ..");
+
                 defaultNearCallback.handleCollision(collisionPair, dispatcher, dispatchInfo);
 
                 PersistentManifold contactManifold = defaultNearCallback.contactPointResult.getPersistentManifold();
-                
+
                 int numContacts = contactManifold.getNumContacts();
                 for (int j = 0; j < numContacts; j++) {
                     ManifoldPoint pt = contactManifold.getContactPoint(j);
-//                    Log.trace("Contact !");
+                    // Log.trace("Contact !");
                     if (pt.getDistance() < 0.f) {
-                        
+
                         RigidBody obA = (RigidBody) contactManifold.getBody0();
                         RigidBody obB = (RigidBody) contactManifold.getBody1();
-                        
+
                         RigidBody target;
-                        
+
                         Vec3 globalPosition;
                         Vec3 localPosition;
-                        if(obA.equals(ghost)) {
+                        if (obA.equals(ghost)) {
                             target = obB;
                             Vector3d ptTarget = new Vector3d();
                             pt.getPositionWorldOnB(ptTarget);
-                            globalPosition  = new Vec3(ptTarget);
+                            globalPosition = new Vec3(ptTarget);
                             localPosition = new Vec3(pt.localPointB);
                         } else {
                             target = obA;
                             Vector3d ptTarget = new Vector3d();
                             pt.getPositionWorldOnA(ptTarget);
-                            globalPosition  = new Vec3(ptTarget);
+                            globalPosition = new Vec3(ptTarget);
                             localPosition = new Vec3(pt.localPointA);
                         }
-                        
-                        
-                        
+
                         SphereResultDescriptor descriptor = new SphereResultDescriptor();
                         descriptor.setDistance(globalPosition.minus(from));
                         descriptor.setGlobalPosition(globalPosition);
                         descriptor.setPart(((UserData) target.getUserPointer()).part);
                         descriptor.setLocalPosition(localPosition);
-                       
-//                        Log.trace("Contact at "+ globalPosition+" on "+ descriptor.getPart().getParentObject().getName());
-//                        Log.trace("Contact distance "+ descriptor.getDistance());
-//                        Log.trace(descriptor.getPart().getParentObject().getName()+ "centert at "+ descriptor.getPart().getTransform().getTranslation());
-                        
+
+                        // Log.trace("Contact at "+ globalPosition+" on "+
+                        // descriptor.getPart().getParentObject().getName());
+                        // Log.trace("Contact distance "+
+                        // descriptor.getDistance());
+                        // Log.trace(descriptor.getPart().getParentObject().getName()+
+                        // "centert at "+
+                        // descriptor.getPart().getTransform().getTranslation());
+
                         sphereResultDescriptorList.add(descriptor);
-                        
+
                     }
                 }
-                    
-                    
-                    
-                    
-                }
-
-
+            }
         });
-
 
         dynamicsWorld.performDiscreteCollisionDetection();
         dynamicsWorld.removeCollisionObject(ghost);
 
-        
-        
         dispatcher.setNearCallback(nearCallback);
         dynamicsWorld.getPairCache().setOverlapFilterCallback(overlapFilterCallback);
 
@@ -370,6 +365,10 @@ public class PhysicEngine extends FramerateEngine {
 
                 UserData data = (UserData) ((RigidBody) rayResult.collisionObject).getUserPointer();
 
+                if (data.part.getParentObject().isBroken()) {
+                    return 0;
+                }
+                
                 Vec3 globalPosition = from.plus(to.minus(from).multiply(rayResult.hitFraction));
 
                 Vec3 localPosition = globalPosition.transform(data.part.getTransform().inverse());
@@ -386,12 +385,10 @@ public class PhysicEngine extends FramerateEngine {
             }
         });
 
-        
         mutex.unlock();
         if (rayResultDescriptorList.size() > 1) {
             Collections.sort(rayResultDescriptorList);
         }
-        
 
         return rayResultDescriptorList;
     }
@@ -438,8 +435,8 @@ public class PhysicEngine extends FramerateEngine {
                     if (data0.ship != null && data0.ship == data1.ship) {
                         return false;
                     }
-                    
-                    if(data0.noCollision || data1.noCollision) {
+
+                    if (data0.noCollision || data1.noCollision) {
                         return false;
                     }
                 }
@@ -583,8 +580,8 @@ public class PhysicEngine extends FramerateEngine {
                 wings.add(new ImmutablePair<WingCapacity, RigidBody>((WingCapacity) capacity, partToBodyMap.get(component.getFirstPart())));
             } else if (capacity instanceof RocketCapacity) {
                 rockets.add(new ImmutablePair<RocketCapacity, RigidBody>((RocketCapacity) capacity, partToBodyMap.get(component.getFirstPart())));
-                
-                ((UserData)  partToBodyMap.get(component.getFirstPart()).getUserPointer()).noCollision = true;
+
+                ((UserData) partToBodyMap.get(component.getFirstPart()).getUserPointer()).noCollision = true;
             }
         }
         components.add(component);
@@ -857,7 +854,6 @@ public class PhysicEngine extends FramerateEngine {
         @Override
         public void visit(ComponentAddedEvent event) {
 
-            
             Component component = event.getComponent();
             Component kernel = component.getShip().getComponentByName("kernel");
             addComponent(TransformMatrix.identity().translate(kernel.getShipPosition().negative()).preMultiply(kernel.getFirstPart().getTransform()),

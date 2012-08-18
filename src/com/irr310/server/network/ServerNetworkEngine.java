@@ -72,7 +72,7 @@ public class ServerNetworkEngine extends EventEngine {
         @Override
         public void visit(DamageEvent event) {
             
-            DamageNotificationMessage damageNotificationMessage = new DamageNotificationMessage(event.getTarget(), event.getDamage());
+            DamageNotificationMessage damageNotificationMessage = new DamageNotificationMessage(event.getTarget(), event.getDamage(), event.getImpact());
             
             for(NetworkClient client: worker.getClients().values()) {
                 client.send(damageNotificationMessage);

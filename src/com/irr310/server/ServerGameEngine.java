@@ -340,8 +340,9 @@ public class ServerGameEngine extends FramerateEngine {
         @Override
         public void visit(CollisionEvent event) {
             CollisionDescriptor collisionDescriptor = event.getCollisionDescriptor();
-            processCollision(collisionDescriptor.getPartA(), collisionDescriptor.getPartB(), collisionDescriptor.getImpulse());
-            processCollision(collisionDescriptor.getPartB(), collisionDescriptor.getPartA(), collisionDescriptor.getImpulse());
+            
+            processCollision(collisionDescriptor.getPartA(), collisionDescriptor.getPartB(), collisionDescriptor.getImpulse(), collisionDescriptor.getGlobalPosition());
+            processCollision(collisionDescriptor.getPartB(), collisionDescriptor.getPartA(), collisionDescriptor.getImpulse(), collisionDescriptor.getGlobalPosition());
         }
 
         @Override
@@ -357,11 +358,11 @@ public class ServerGameEngine extends FramerateEngine {
                         continue;
                     }
                 }
-
+                
                 // damage = (1-rangePercent^3)
                 double attenuedDamage = event.getDamage().getWeaponBaseDamage() * (1 - Math.pow(rayTest.getHitFraction(), 3));
                 event.getDamage().setBaseDamage(attenuedDamage);
-                applyDamage(rayTest.getPart(), event.getDamage());
+                applyDamage(rayTest.getPart(), event.getDamage(), rayTest.getGlobalPosition());
                 impulse(rayTest.getPart(), attenuedDamage/100, rayTest.getLocalPosition(), event.getTo().minus(event.getFrom()).normalize());
 
                 break;
@@ -460,10 +461,10 @@ public class ServerGameEngine extends FramerateEngine {
 
     }
 
-    private void processCollision(Part part, Part collider, double impulse) {
+    private void processCollision(Part part, Part collider, double impulse, Vec3 impact) {
         DamageDescriptor damage = new DamageDescriptor(DamageDescriptor.DamageType.PHYSICAL, 0);
         damage.setBaseDamage(impulse * 0.5);
-        applyDamage(part, damage);
+        applyDamage(part, damage, impact);
 
         if (contactDetectorMap.containsKey(part.getParentObject())) {
             ContactDetectorController contactDetectorController = contactDetectorMap.get(part.getParentObject());
@@ -472,7 +473,7 @@ public class ServerGameEngine extends FramerateEngine {
 
     }
 
-    private void applyDamage(Part target, DamageDescriptor damage) {
+    private void applyDamage(Part target, DamageDescriptor damage, Vec3 impact) {
         WorldObject parentObject = target.getParentObject();
 
         double effectiveDamage = damage.getBaseDamage() * (1.0 - parentObject.getPhysicalResistance() * (1 - damage.armorPenetration));
@@ -492,7 +493,7 @@ public class ServerGameEngine extends FramerateEngine {
         damage.setEffectiveDamage(effectiveDamage);
         // TODO: extras damage transmission
 
-        Game.getInstance().sendToAll(new DamageEvent(target, damage));
+        Game.getInstance().sendToAll(new DamageEvent(target, damage, impact));
 
         if (newDurablility == 0) {
             if (parentObject instanceof CelestialObject) {
@@ -534,7 +535,7 @@ public class ServerGameEngine extends FramerateEngine {
             damageDescriptor.setWeaponBaseDamage(explosionDamage);
             damageDescriptor.setBaseDamage(explosionDamage * (1 - (rayTest.getDistance().length() / explosionRadius)));
 
-            applyDamage(rayTest.getPart(), damageDescriptor);
+            applyDamage(rayTest.getPart(), damageDescriptor, rayTest.getGlobalPosition());
             impulse(rayTest.getPart(),
                     explosionBlast * (1 - (rayTest.getDistance().length() / explosionRadius)),
                     rayTest.getLocalPosition(),

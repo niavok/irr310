@@ -991,7 +991,8 @@ public class WorldRenderer implements GraphicRenderer {
 
         @Override
         public void visit(DamageEvent event) {
-
+            addElement(new ExplosionEffect(WorldRenderer.this, event.getImpact(), event.getDamage().getEffectiveDamage()/50));
+            
             if (event.getTarget().getParentObject() instanceof Monolith) {
                 updateMonolithStatus();
             }

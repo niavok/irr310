@@ -4,9 +4,13 @@ import java.io.File;
 
 import com.irr310.client.graphics.GraphicEngine;
 import com.irr310.client.graphics.WorldRenderer;
+import com.irr310.client.graphics.effects.AsteroidDust;
 import com.irr310.common.tools.TransformMatrix;
+import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
+import com.irr310.server.Duration;
+import com.irr310.server.Time;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
@@ -23,9 +27,12 @@ public class ReactorSkin extends Skin {
     private LinearEngineCapacity linearEngineCapacity;
     private float speed;
     private TransformMatrix transform;
+    private final Component object;
+    private Time lastDustEmission;
 
     public ReactorSkin(WorldRenderer renderer, final Component object) {
         super(renderer);
+        this.object = object;
         GraphicEngine engine = renderer.getEngine();
         elements = new V3DGroupElement(engine.getV3DContext());
 
@@ -46,6 +53,7 @@ public class ReactorSkin extends Skin {
         linearEngineCapacity = object.getCapacitiesByClass(LinearEngineCapacity.class).get(0);
         angle = 0;
         speed = 100f;
+        lastDustEmission = Time.getGameTime();
     }
   
     @Override
@@ -69,6 +77,21 @@ public class ReactorSkin extends Skin {
         
         elementRotor.setRotation(0, angle, 0);
      
+        if(object.isBroken()) {
+            elements.setVisible(false);
+        } else {
+            elements.setVisible(true);
+            double durablility = object.getDurabilityRatio();
+            if(durablility < 1.0) {
+            
+                if(lastDustEmission.getTimeToNow(true).longer(new Duration(0.05f))) {
+                    lastDustEmission = Time.getGameTime();
+                    getRenderer().addElement(new AsteroidDust(getRenderer(), transform.getTranslation(), new Vec3(object.getFirstPart().getShape()).multiply(0.4 * 0.5 + 0.5 * (1-durablility)) , new V3DColor((float)durablility, (float)durablility, (float)durablility,(float)(1.0 - durablility/3.0))));
+                }
+            
+            }
+            
+        }
         
     }
     

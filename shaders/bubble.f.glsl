@@ -50,7 +50,7 @@ void main(void)
     fill.y = verpos.y;
     fill.z = verpos.z;
     
-    fill = vec4(1 - genTex2(verpos.xyz), 1.0);
+    fill = vec4(genTex2(verpos.xyz), 1.0);
     
  	gl_FragColor = (I*WIRE_COL + (0.2 + 0.8 * ( 1 - I) )*fill);
  	gl_FragColor.w = 1.0;

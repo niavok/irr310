@@ -68,6 +68,10 @@ public abstract class WorldObject extends GameEntity {
         return durabilityMax;
     }
     
+    public double getDurabilityRatio() {
+        return durability / durabilityMax;
+    }
+    
     public double getHeatResistance() {
         return heatResistance;
     }

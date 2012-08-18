@@ -176,7 +176,7 @@ public class ClientNetworkEngine extends EventEngine {
         DamageDescriptor damageDescriptor = new DamageDescriptor(DamageDescriptor.DamageType.values()[message.damageType], 0);
         damageDescriptor.setEffectiveDamage(message.damage);
         
-        Game.getInstance().sendToAll(new DamageEvent(partById, damageDescriptor));
+        Game.getInstance().sendToAll(new DamageEvent(partById, damageDescriptor, message.impact));
         
         
     }
