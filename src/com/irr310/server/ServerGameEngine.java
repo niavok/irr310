@@ -143,7 +143,7 @@ public class ServerGameEngine extends FramerateEngine {
         for (CelestialObject object : Game.getInstance().getWorld().getCelestialsObjects()) {
             if (object instanceof Loot) {
                 for (Ship ship : Game.getInstance().getWorld().getShips()) {
-                    if (ship.getComponentByName("kernel")
+                    if (ship.getOwner().isHuman() && ship.getComponentByName("kernel")
                             .getFirstPart()
                             .getTransform()
                             .getTranslation()
@@ -326,6 +326,11 @@ public class ServerGameEngine extends FramerateEngine {
                 }
 
             }
+
+            Loot loot = CelestialObjectFactory.createLoot(event.getComponent().getFirstPart().getMass().intValue());
+            loot.getFirstPart().getLinearSpeed().set(event.getComponent().getFirstPart().getLinearSpeed());
+            loot.getFirstPart().getTransform().setTranslation(event.getComponent().getFirstPart().getTransform().getTranslation());
+            Game.getInstance().getWorld().addCelestialObject(loot);
         }
 
         @Override

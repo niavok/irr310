@@ -36,6 +36,8 @@ public class Player extends GameEntity {
 
     private ShipSchema shipShema;
 
+    private boolean human;
+
     
 	public Player(long id, String login) {
 	    super(id);
@@ -46,6 +48,7 @@ public class Player extends GameEntity {
         money = 0;
         lastInterrest = 0;
         color = V3DColor.grey;
+        human = false;
 	}
 	
 	public void changePassword(String newPassword) {
@@ -71,6 +74,10 @@ public class Player extends GameEntity {
     
     public List<Ship> getShipList() {
         return shipList;
+    }
+    
+    public void setHuman(boolean human) {
+        this.human = human;
     }
 
     public PlayerView toView() {
@@ -199,5 +206,9 @@ public class Player extends GameEntity {
 
     public void setColor(V3DColor color) {
         this.color = color;
+    }
+
+    public boolean isHuman() {
+        return human;
     }
 }

@@ -72,7 +72,7 @@ public class SimpleShipDriver {
     }
 
     public double getMaxSpeed() {
-        return ship.getTheoricalMaxSpeed();
+        return ship.getMaxSpeed(false);
     }
 
     public void setTargetSpeed(double targetSpeed) {
@@ -134,8 +134,8 @@ public class SimpleShipDriver {
         
         
         
-        this.rotationSpeedTarget.z = -diffX * maxRotationSpeed/2;
-        this.rotationSpeedTarget.x = diffZ * maxRotationSpeed/2;
+        this.rotationSpeedTarget.z = -diffX * maxRotationSpeed;
+        this.rotationSpeedTarget.x = diffZ * maxRotationSpeed;
         //this.rotationSpeedTarget.x = -diffY/1;
         
         //this.rotationSpeedTarget.x = -diffZ/10;
@@ -158,7 +158,7 @@ public class SimpleShipDriver {
 
         Time time = Time.getGameTime();
 
-        double theoricalMaxSpeed = ship.getTheoricalMaxSpeed();
+        double theoricalMaxSpeed = ship.getMaxSpeed(true);
         double currentSpeed = kernel.getFirstPart().getLinearSpeed().dot(new Vec3(0, 1, 0).rotate(kernel.getFirstPart().getTransform()));
         Duration deltaTime = lastTime.durationTo(time);
         double deltaSpeed = (currentSpeed - this.lastSpeed);

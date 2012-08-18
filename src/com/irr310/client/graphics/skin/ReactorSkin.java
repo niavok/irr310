@@ -22,7 +22,10 @@ import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DGroupElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DLine;
+import fr.def.iss.vd2.lib_v3d.element.V3DRectangle;
 import fr.def.iss.vd2.lib_v3d.element.V3DShaderElement;
+import fr.def.iss.vd2.lib_v3d.element.V3DTriangle;
+import fr.def.iss.vd2.lib_v3d.element.V3DTriangle.RenderMode;
 import fr.def.iss.vd2.lib_v3d.element.V3DrawElement;
 
 public class ReactorSkin extends Skin {
@@ -35,7 +38,9 @@ public class ReactorSkin extends Skin {
     private TransformMatrix transform;
     private final Component object;
     private Time lastDustEmission;
-    private V3DLine thrustLine;
+    private V3DTriangle flame1;
+    private V3DColorElement colorFlame;
+    private V3DTriangle flame2;
 
     public ReactorSkin(WorldRenderer renderer, final Component object) {
         super(renderer);
@@ -54,12 +59,19 @@ public class ReactorSkin extends Skin {
         elements.add(new V3DColorElement(new V3DShaderElement(elementRotor, "propeller"), new V3DColor(135, 158, 169)));
 
         // Flame
-        thrustLine = new V3DLine(engine.getV3DContext());
-        thrustLine.setThickness(3);
-        thrustLine.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, 0, 0));
+        flame1 = new V3DTriangle(engine.getV3DContext());
+        flame1.setRenderMode(RenderMode.PLAIN);
+        flame1.setSize((float)object.getFirstPart().getShape().x*0.8f, 0f);
+        flame2 = new V3DTriangle(engine.getV3DContext());
+        flame2.setRenderMode(RenderMode.PLAIN);
+        flame2.setSize((float)object.getFirstPart().getShape().x*0.8f, 0f);
+        flame2.setRotation(0, 90, 0);
 
-        final V3DColorElement group = new V3DColorElement(thrustLine, V3DColor.fushia);
-        elements.add(group);
+        V3DGroupElement flames = new V3DGroupElement(engine.getV3DContext());
+        flames.add(flame1);
+        flames.add(flame2);
+        colorFlame = new V3DColorElement(flames, V3DColor.transparent);
+        elements.add(colorFlame);
         
         
         transform = object.getFirstPart().getTransform();
@@ -110,7 +122,13 @@ public class ReactorSkin extends Skin {
             
         }
         
-        thrustLine.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, -(float) linearEngineCapacity.getCurrentThrust(), 0));
+        
+        flame1.setSize((float)object.getFirstPart().getShape().x*0.7f, (float)linearEngineCapacity.getCurrentThrust());
+        flame1.setPosition(0, (float) - linearEngineCapacity.getCurrentThrust() /2, 0);
+        flame2.setSize((float)object.getFirstPart().getShape().x*0.7f, (float)linearEngineCapacity.getCurrentThrust());
+        flame2.setPosition(0, (float) - linearEngineCapacity.getCurrentThrust() /2, 0);
+        double percent = 1 - Math.abs(linearEngineCapacity.getCurrentThrust() / linearEngineCapacity.getMaxThrust());
+        colorFlame.setColor(new V3DColor((int) (108* percent + (1-percent) * 255) , (int) ( 200 * percent + (1-percent) * 180)  ,(int) (251 * percent + (1-percent) * 0) , 0.6f ));
         
     }
     

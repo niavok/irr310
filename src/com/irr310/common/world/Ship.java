@@ -162,7 +162,7 @@ public class Ship extends GameEntity implements Container {
         return destructible;
     }
 
-    public double getTheoricalMaxSpeed() {
+    public double getMaxSpeed(boolean theorical) {
         double totalMass = 0;
         double totalMassWithDamping = 0;
         double totalForce = 0;
@@ -176,7 +176,11 @@ public class Ship extends GameEntity implements Container {
             }
 
             for (LinearEngineCapacity linearEngineCapacity : component.getCapacitiesByClass(LinearEngineCapacity.class)) {
-                totalForce += linearEngineCapacity.getTheoricalMaxThrust();
+                if(theorical) {
+                    totalForce += linearEngineCapacity.getTheoricalMaxThrust();
+                } else {
+                    totalForce += linearEngineCapacity.getMaxThrust();
+                }
             }
         }
         

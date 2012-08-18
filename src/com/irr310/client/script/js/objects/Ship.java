@@ -22,7 +22,7 @@ public class Ship {
 	}
 	
 	public double getTheoricalMaxSpeed() {
-	    return ship.getTheoricalMaxSpeed();
+	    return ship.getMaxSpeed(true);
 	}
 	
 	public List<Component> getComponentsByName(String name) {

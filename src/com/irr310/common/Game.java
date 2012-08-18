@@ -42,6 +42,7 @@ public abstract class Game {
         Player newPlayer = new Player(GameServer.pickNewId(), login);
         newPlayer.setColor(new V3DColor(108, 0, 0));
         newPlayer.changePassword(password);
+        newPlayer.setHuman(true);
         playerLoginMap.put(login, newPlayer);
         getWorld().addPlayer(newPlayer);
         
@@ -52,7 +53,7 @@ public abstract class Game {
         
         
         Ship ship = ShipFactory.createSimpleFighter();
-        ship.setDestructible(false);
+        //ship.setDestructible(false);
         ship.setOwner(newPlayer);
         ShipSchema shipShema = new ShipSchema();
         // Center slot
