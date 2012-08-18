@@ -62,6 +62,7 @@ import com.irr310.common.tools.Log;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.CelestialObject;
 import com.irr310.common.world.Component;
+import com.irr310.common.world.DamageDescriptor.DamageCause;
 import com.irr310.common.world.Monolith;
 import com.irr310.common.world.Part;
 import com.irr310.common.world.Ship;
@@ -958,7 +959,9 @@ public class WorldRenderer implements GraphicRenderer {
 
         @Override
         public void visit(DamageEvent event) {
-            addElement(new ExplosionEffect(WorldRenderer.this, event.getImpact(), event.getDamage().getEffectiveDamage()/50));
+            if(event.getDamage().getCause() == DamageCause.BULLET) {
+                addElement(new ExplosionEffect(WorldRenderer.this, event.getImpact(), event.getDamage().getEffectiveDamage()/50));
+            }
             
             if (event.getTarget().getParentObject() instanceof Monolith) {
                 updateMonolithStatus();

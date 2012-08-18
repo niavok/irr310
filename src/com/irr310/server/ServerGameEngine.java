@@ -43,6 +43,7 @@ import com.irr310.common.world.Asteroid;
 import com.irr310.common.world.CelestialObject;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.DamageDescriptor;
+import com.irr310.common.world.DamageDescriptor.DamageCause;
 import com.irr310.common.world.DamageDescriptor.DamageType;
 import com.irr310.common.world.Loot;
 import com.irr310.common.world.Monolith;
@@ -462,7 +463,7 @@ public class ServerGameEngine extends FramerateEngine {
     }
 
     private void processCollision(Part part, Part collider, double impulse, Vec3 impact) {
-        DamageDescriptor damage = new DamageDescriptor(DamageDescriptor.DamageType.PHYSICAL, 0);
+        DamageDescriptor damage = new DamageDescriptor(DamageDescriptor.DamageType.PHYSICAL, 0, DamageCause.COLLISION);
         damage.setBaseDamage(impulse * 0.5);
         applyDamage(part, damage, impact);
 
@@ -531,7 +532,7 @@ public class ServerGameEngine extends FramerateEngine {
         for (SphereResultDescriptor rayTest : sphereTestResults) {
             Log.trace("explosion result to" + rayTest.getPart().getParentObject().getName() + " at " + rayTest.getDistance().length());
 
-            DamageDescriptor damageDescriptor = new DamageDescriptor(DamageType.HEAT, armorPenetration);
+            DamageDescriptor damageDescriptor = new DamageDescriptor(DamageType.HEAT, armorPenetration, DamageCause.EXPLOSION);
             damageDescriptor.setWeaponBaseDamage(explosionDamage);
             damageDescriptor.setBaseDamage(explosionDamage * (1 - (rayTest.getDistance().length() / explosionRadius)));
 

@@ -9,6 +9,7 @@ public class DamageDescriptor {
     public enum DamageCause {
         BULLET,
         EXPLOSION,
+        COLLISION,
     }
 
     private double baseDamage;
@@ -16,10 +17,12 @@ public class DamageDescriptor {
     public final DamageType type;
     private double effectiveDamage;
     private double weaponBaseDamage;
+    public final DamageCause cause;
     
-    public DamageDescriptor(DamageType type, double armorPenetration) {
+    public DamageDescriptor(DamageType type, double armorPenetration, DamageCause cause) {
         this.type = type;
         this.armorPenetration = armorPenetration;
+        this.cause = cause;
         weaponBaseDamage = -1;
         baseDamage = -1;
         effectiveDamage = -1;
@@ -48,5 +51,13 @@ public class DamageDescriptor {
     
     public double getBaseDamage() {
         return baseDamage;
+    }
+    
+    public DamageCause getCause() {
+        return cause;
+    }
+    
+    public DamageType getType() {
+        return type;
     }
 }

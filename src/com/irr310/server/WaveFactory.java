@@ -5,6 +5,7 @@ import java.util.Random;
 
 import com.irr310.common.Game;
 import com.irr310.common.event.BindAIEvent;
+import com.irr310.common.tools.Log;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Asteroid;
@@ -217,7 +218,8 @@ public class WaveFactory {
 
     private void createFighter() {
 
-        for(int i = 0; i < 20; i++) {
+        //for(int i = 0; i < 20; i++) {
+            Log.trace("createSimpleFighter");
             Ship ship = ShipFactory.createSimpleFighter();
             ship.setOwner(enemies);
     
@@ -237,10 +239,11 @@ public class WaveFactory {
             
             
             shipTransform.translate(shipPosition);
+            Log.trace("add ship");
             Game.getInstance().getWorld().addShip(ship, shipTransform);
-    
+            Log.trace("bindai");
             Game.getInstance().sendToAll(new BindAIEvent(ship));
-        }
+       // }
     }
 
 }

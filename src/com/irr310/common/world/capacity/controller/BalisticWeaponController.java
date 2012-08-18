@@ -8,6 +8,7 @@ import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Component;
 import com.irr310.common.world.DamageDescriptor;
 import com.irr310.common.world.Part;
+import com.irr310.common.world.DamageDescriptor.DamageCause;
 import com.irr310.common.world.capacity.BalisticWeaponCapacity;
 
 public abstract class BalisticWeaponController extends CapacityController {
@@ -99,7 +100,7 @@ public abstract class BalisticWeaponController extends CapacityController {
         
         Vec3 to = new Vec3(xoffset, capacity.range , yoffset ).plus(imprecision).transform(part.getTransform());
             
-        DamageDescriptor damage = new DamageDescriptor(capacity.damageType, capacity.armorPenetration);
+        DamageDescriptor damage = new DamageDescriptor(capacity.damageType, capacity.armorPenetration, DamageCause.BULLET);
         damage.setWeaponBaseDamage(component.getEfficiency() * capacity.damage);
         Game.getInstance().sendToAll(new BulletFiredEvent(part, damage , capacity.range, from, to));
 

@@ -10,11 +10,15 @@ import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.PauseEngineEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
+import com.irr310.common.event.WorldShipAddedEvent;
+import com.irr310.common.event.WorldShipRemovedEvent;
 import com.irr310.common.world.Ship;
 
 public class AIEngine extends FramerateEngine {
 
-    List<AIProcessor> processors = new CopyOnWriteArrayList<AIProcessor>();
+    List<AIProcessor> activeProcessors = new CopyOnWriteArrayList<AIProcessor>();
+    List<Ship> activeShips = new CopyOnWriteArrayList<Ship>();
+    List<AIProcessor> pendingProcessors = new CopyOnWriteArrayList<AIProcessor>();
 
     public AIEngine() {
     }
@@ -26,7 +30,8 @@ public class AIEngine extends FramerateEngine {
 
     @Override
     protected void frame() {
-        for(AIProcessor processor: processors) {
+        //TODO remove procesoir for destroyed ships
+        for(AIProcessor processor: activeProcessors) {
             processor.process();
         }
     }
@@ -63,10 +68,36 @@ public class AIEngine extends FramerateEngine {
         public void visit(PauseEngineEvent event) {
             pause(true);
         }
+        
+        @Override
+        public void visit(WorldShipAddedEvent event) {
+            activeShips.add(event.getShip());
+            for(AIProcessor processor: pendingProcessors) {
+                if(processor.getShip() == event.getShip()) {
+                    pendingProcessors.remove(processor);
+                    activeProcessors.add(processor);
+                }
+            }
+        }
+        
+        @Override
+        public void visit(WorldShipRemovedEvent event) {
+            activeShips.remove(event.getShip());
+            for(AIProcessor processor: activeProcessors) {
+                if(processor.getShip() == event.getShip()) {
+                    activeProcessors.remove(processor);
+                }
+            }
+        }
     }
 
     private void createAI(Ship ship) {
-        processors.add(new AISucideProcessor(ship));
+        AIProcessor processor = new AISucideProcessor(ship);
+        if(activeShips.contains(ship)) {
+            activeProcessors.add(processor);
+        } else {
+            pendingProcessors.add(processor);
+        }
     }
 
 }

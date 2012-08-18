@@ -18,6 +18,9 @@ public class DamageNotificationMessage extends NetworkMessage {
     public  int damageType;
     
     @NetworkField
+    public  int damageCause;
+    
+    @NetworkField
     public  Vec3 impact;
     
     public DamageNotificationMessage() {
@@ -28,6 +31,7 @@ public class DamageNotificationMessage extends NetworkMessage {
         super(NetworkMessageType.DAMAGE_NOTIFICATION);
         this.damage = damage.getEffectiveDamage();
         this.damageType = damage.type.ordinal();
+        this.damageCause = damage.cause.ordinal();
         this.target = target.getId();
         this.impact = impact;
     }

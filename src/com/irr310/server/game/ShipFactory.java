@@ -112,7 +112,7 @@ public class ShipFactory {
 
     public static Ship createSimpleFighter() {
 
-        World world = Game.getInstance().getWorld();
+        //World world = Game.getInstance().getWorld();
 
         Ship newShip = new Ship(GameServer.pickNewId());
 
@@ -137,64 +137,64 @@ public class ShipFactory {
         // CompactThrusterBlock Front
         Component thrusterBlockFront = ComponentFactory.createThrusterBlock("trusterBlock1");
         thrusterBlockFront.setShipPosition(new Vec3(0, -1, 0));
-        world.addComponent(thrusterBlockFront);
+        //world.addComponent(thrusterBlockFront);
         newShip.assign(thrusterBlockFront);
 
         // LightHull
         Component hull = ComponentFactory.createLightHull("kernel");
         hull.setShipPosition(new Vec3(0, -3, 0));
-        world.addComponent(hull);
+        //world.addComponent(hull);
         newShip.assign(hull);
 
         // CompactThrusterBlock Back
         Component thrusterBlockBack = ComponentFactory.createThrusterBlock("trusterBlock2");
         thrusterBlockBack.setShipPosition(new Vec3(0, -5, 0));
-        world.addComponent(thrusterBlockBack);
+        //world.addComponent(thrusterBlockBack);
         newShip.assign(thrusterBlockBack);
 
         // Wings
         Component wingTop = ComponentFactory.createWing("wingTop");
         wingTop.setShipPosition(new Vec3(0, -3, 2.5));
         wingTop.setShipRotation(new Vec3(0, 90, 0));
-        world.addComponent(wingTop);
+        //world.addComponent(wingTop);
         newShip.assign(wingTop);
 
         Component wingBottom = ComponentFactory.createWing("wingBottom");
         wingBottom.setShipPosition(new Vec3(0, -3, -2.5));
         wingBottom.setShipRotation(new Vec3(0, -90, 0));
-        world.addComponent(wingBottom);
+        //world.addComponent(wingBottom);
         newShip.assign(wingBottom);
 
         Component wingLeft = ComponentFactory.createWing("wingLeft");
         wingLeft.setShipPosition(new Vec3(-2.5, -3, 0));
-        world.addComponent(wingLeft);
+        //world.addComponent(wingLeft);
         newShip.assign(wingLeft);
 
         Component wingRight = ComponentFactory.createWing("wingRight");
         wingRight.setShipPosition(new Vec3(2.5, -3, 0));
         wingRight.setShipRotation(new Vec3(0, 180, 0));
-        world.addComponent(wingRight);
+        //world.addComponent(wingRight);
         newShip.assign(wingRight);
 
         // Engines
         Component topReactor = ComponentFactory.createReactor("topReactor");
         topReactor.setShipPosition(new Vec3(0, -3.5, 4.5));
-        world.addComponent(topReactor);
+        //world.addComponent(topReactor);
         newShip.assign(topReactor);
 
         Component bottomReactor = ComponentFactory.createReactor("bottomReactor");
         bottomReactor.setShipPosition(new Vec3(0, -3.5, -4.5));
-        world.addComponent(bottomReactor);
+        //world.addComponent(bottomReactor);
         newShip.assign(bottomReactor);
 
         Component leftReactor = ComponentFactory.createReactor("leftReactor");
         leftReactor.setShipPosition(new Vec3(-4.5, -3.5, 0));
-        world.addComponent(leftReactor);
+        //world.addComponent(leftReactor);
         newShip.assign(leftReactor);
 
         Component rightReactor = ComponentFactory.createReactor("rightReactor");
         rightReactor.setShipPosition(new Vec3(4.5, -3.5, 0));
-        world.addComponent(rightReactor);
+        //world.addComponent(rightReactor);
         newShip.assign(rightReactor);
 
         // Links
@@ -223,7 +223,7 @@ public class ShipFactory {
     }
 
     public static Ship createRocket(RocketDescriptor rocket, Vec3 initialSpeed, Ship sourceShip) {
-        World world = Game.getInstance().getWorld();
+        //World world = Game.getInstance().getWorld();
         Ship newShip = new Ship(GameServer.pickNewId());
         newShip.setOwner(sourceShip.getOwner());
         newShip.setDestructible(true);
