@@ -97,7 +97,7 @@ import fr.def.iss.vd2.lib_v3d.gui.V3DLabel;
 public class WorldRenderer implements GraphicRenderer {
     V3DCameraBinding fullscreenBinding;
     private V3DScene scene;
-    private List<Pair<LinearEngineCapacity, V3DLine>> thrustLines;
+    //private List<Pair<LinearEngineCapacity, V3DLine>> thrustLines;
     private List<GraphicalElement> animatedList = new CopyOnWriteArrayList<GraphicalElement>();
     private List<GraphicalElement> guiAnimatedList = new CopyOnWriteArrayList<GraphicalElement>();
     private List<GraphicalElement> elementList = new CopyOnWriteArrayList<GraphicalElement>();
@@ -137,7 +137,6 @@ public class WorldRenderer implements GraphicRenderer {
 
     public WorldRenderer(GraphicEngine engine) {
         this.engine = engine;
-        thrustLines = new ArrayList<Pair<LinearEngineCapacity, V3DLine>>();
         currentGuiMode = GuiKeyMode.NO_MODE;
     }
 
@@ -609,16 +608,6 @@ public class WorldRenderer implements GraphicRenderer {
          * Log.perfEnd();
          */
 
-        Log.perfBegin("Apply forces");
-        // Apply forces
-        for (Pair<LinearEngineCapacity, V3DLine> thrustLinePair : thrustLines) {
-            V3DLine thrustLine = thrustLinePair.getRight();
-            LinearEngineCapacity engine = thrustLinePair.getLeft();
-
-            thrustLine.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, -(float) engine.getCurrentThrust(), 0));
-        }
-        Log.perfEnd();
-
         Game.getInstance().getWorld().unlock();
     }
 
@@ -736,36 +725,6 @@ public class WorldRenderer implements GraphicRenderer {
         GraphicalElement graphicalElement = addObject(component);
         worldObjectToV3DElementMap.put(component, new ArrayList<GraphicalElement>());
         worldObjectToV3DElementMap.get(component).add(graphicalElement);
-        
-        for (Capacity capacity : component.getCapacities()) {
-            if (capacity instanceof LinearEngineCapacity) {
-
-                V3DLine thrustLine = new V3DLine(engine.getV3DContext());
-                thrustLine.setThickness(3);
-                thrustLine.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, 0, 0));
-
-                final V3DColorElement group = new V3DColorElement(thrustLine, V3DColor.fushia);
-
-                final Part part = component.getFirstPart();
-
-                addElement(new AnimatedElement(this) {
-
-                    @Override
-                    public void update() {
-                        group.setTransformMatrix(part.getTransform().toFloatBuffer());
-                    }
-
-                    @Override
-                    public V3DElement getV3DElement() {
-                        return group;
-                    }
-
-                });
-
-                thrustLines.add(new ImmutablePair<LinearEngineCapacity, V3DLine>((LinearEngineCapacity) capacity, thrustLine));
-            }
-
-        }
     }
 
     protected GraphicalElement addObject(final WorldObject object) {

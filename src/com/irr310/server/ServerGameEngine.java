@@ -131,7 +131,7 @@ public class ServerGameEngine extends FramerateEngine {
                     Game.getInstance().getWorld().removeCelestialObject(object, Reason.LEAVE_OUT_WORLD);
                 } else if (part.getParentObject() instanceof Component) {
                     Component object = (Component) part.getParentObject();
-                    if(object.getShip().isDestructible()) {
+                    if(object.getShip().isDestructible() && object.getName().equals("kernel")) {
                         Game.getInstance().getWorld().removeShip(object.getShip());
                     }
                 }

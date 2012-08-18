@@ -76,4 +76,6 @@ public interface EngineEventVisitor {
     public abstract void visit(WorldShipRemovedEvent event);
 
     public abstract void visit(ExplosionFiredEvent event);
+
+    public abstract void visit(BindAIEvent event);
 }

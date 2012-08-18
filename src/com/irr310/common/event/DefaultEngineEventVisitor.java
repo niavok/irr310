@@ -141,4 +141,8 @@ public class DefaultEngineEventVisitor implements EngineEventVisitor {
     @Override
     public void visit(ExplosionFiredEvent event) {
     }
+    
+    @Override
+    public void visit(BindAIEvent event) {
+    }
 }

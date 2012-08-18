@@ -25,6 +25,7 @@ import com.irr310.server.Duration;
 import com.irr310.server.GameServer;
 import com.irr310.server.ParameterAnalyser;
 import com.irr310.server.ServerGameEngine;
+import com.irr310.server.ai.AIEngine;
 
 public class GameClient extends Game {
 
@@ -196,6 +197,11 @@ public class GameClient extends Game {
         ServerGameEngine serverGameEngine = new ServerGameEngine();
         engineList.add(serverGameEngine);
         worldEngineList.add(serverGameEngine);
+        
+        // AIEngine
+        AIEngine aiEngine = new AIEngine();
+        engineList.add(aiEngine);
+        worldEngineList.add(aiEngine);
 
         startAndWaitAllEngines();
 

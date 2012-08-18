@@ -4,6 +4,7 @@ import java.util.Queue;
 import java.util.Random;
 
 import com.irr310.common.Game;
+import com.irr310.common.event.BindAIEvent;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Asteroid;
@@ -20,31 +21,29 @@ public class WaveFactory {
     private Random random;
 
     public WaveFactory() {
-        
+
     }
-    
+
     public void createWaves(Queue<Wave> waveQueue) {
         enemies = new Player(GameServer.pickNewId(), "enemies");
         enemies.setColor(new V3DColor(50, 60, 60));
         Game.getInstance().getWorld().addPlayer(enemies);
         random = new Random();
-        
+
         // Create waves
         Wave wave1 = new Wave(1);
         wave1.setDuration(new Duration(20f));
         wave1.setActiveDuration(new Duration(2f));
         wave1.addWaveEvent(new WaveEvent(new Duration(2f)) {
 
-
             public void action() {
                 Game.getInstance().getWorld().setWorldSize(500);
-                
 
                 double size = 8 + random.nextDouble() * 3;
 
                 float angularSpeed = 1;
 
-                Vec3 position = new Vec3(Game.getInstance().getWorld().getWorldSize() -50, 0, 0);
+                Vec3 position = new Vec3(Game.getInstance().getWorld().getWorldSize() - 50, 0, 0);
                 Vec3 linearSpeed = new Vec3(-10 + random.nextDouble() * 1, 0, 0);
 
                 TransformMatrix rotation = TransformMatrix.identity();
@@ -65,7 +64,7 @@ public class WaveFactory {
                              random.nextFloat() * angularSpeed - angularSpeed / 2f);
 
                 Game.getInstance().getWorld().addCelestialObject(asteroid);
-                
+
                 createFighter();
             }
 
@@ -82,16 +81,14 @@ public class WaveFactory {
                 double baseRotationX = random.nextDouble() * 360;
                 double baseRotationY = random.nextDouble() * 360;
                 double baseRotationZ = random.nextDouble() * 360;
-                
-                for (int i = 0; i < 5; i++) {
 
-                    
+                for (int i = 0; i < 5; i++) {
 
                     double size = 8 + random.nextDouble() * 3;
 
                     float angularSpeed = 1;
 
-                    Vec3 position = new Vec3(Game.getInstance().getWorld().getWorldSize() -50, 0, 0);
+                    Vec3 position = new Vec3(Game.getInstance().getWorld().getWorldSize() - 50, 0, 0);
                     Vec3 linearSpeed = new Vec3(-10 + random.nextDouble() * 1, 0, 0);
 
                     TransformMatrix rotation = TransformMatrix.identity();
@@ -113,9 +110,9 @@ public class WaveFactory {
 
                     Game.getInstance().getWorld().addCelestialObject(asteroid);
                 }
-                
+
                 createFighter();
-                
+
             }
 
         });
@@ -131,23 +128,20 @@ public class WaveFactory {
                 double baseRotationX = random.nextDouble() * 360;
                 double baseRotationY = random.nextDouble() * 360;
                 double baseRotationZ = random.nextDouble() * 360;
-                
-                for (int i = 0; i < 10; i++) {
 
-                    
+                for (int i = 0; i < 10; i++) {
 
                     double size = 8 + random.nextDouble() * 3;
 
                     float angularSpeed = 1;
 
-                    Vec3 position = new Vec3(Game.getInstance().getWorld().getWorldSize() -50, 0, 0);
+                    Vec3 position = new Vec3(Game.getInstance().getWorld().getWorldSize() - 50, 0, 0);
                     Vec3 linearSpeed = new Vec3(-10 + random.nextDouble() * 1, 0, 0);
 
                     TransformMatrix rotation = TransformMatrix.identity();
                     rotation.rotateX(Math.toRadians(baseRotationX + random.nextDouble() * 10));
                     rotation.rotateY(Math.toRadians(baseRotationY + random.nextDouble() * 10));
                     rotation.rotateZ(Math.toRadians(baseRotationZ + random.nextDouble() * 10));
-
 
                     position = position.rotate(rotation);
                     linearSpeed = linearSpeed.rotate(rotation);
@@ -163,7 +157,7 @@ public class WaveFactory {
 
                     Game.getInstance().getWorld().addCelestialObject(asteroid);
                 }
-                
+
                 createFighter();
             }
 
@@ -179,26 +173,25 @@ public class WaveFactory {
             wave.addWaveEvent(new WaveEvent(new Duration(2f)) {
                 public void action() {
                     Game.getInstance().getWorld().setWorldSize(1200 + i * 100);
-                    
+
                     Random random = new Random();
                     double baseRotationX = random.nextDouble() * 360;
                     double baseRotationY = random.nextDouble() * 360;
                     double baseRotationZ = random.nextDouble() * 360;
-                    
+
                     for (int j = 0; j < 10 + i; j++) {
 
                         double size = 8 + random.nextDouble() * 3;
 
                         float angularSpeed = 1;
 
-                        Vec3 position = new Vec3(Game.getInstance().getWorld().getWorldSize() -50, 0, 0);
+                        Vec3 position = new Vec3(Game.getInstance().getWorld().getWorldSize() - 50, 0, 0);
                         Vec3 linearSpeed = new Vec3(-10 - i / 20 + random.nextDouble() * 1, 0, 0);
 
                         TransformMatrix rotation = TransformMatrix.identity();
                         rotation.rotateX(Math.toRadians(baseRotationX + random.nextDouble() * 10));
                         rotation.rotateY(Math.toRadians(baseRotationY + random.nextDouble() * 10));
                         rotation.rotateZ(Math.toRadians(baseRotationZ + random.nextDouble() * 10));
-
 
                         position = position.rotate(rotation);
                         linearSpeed = linearSpeed.rotate(rotation);
@@ -214,30 +207,40 @@ public class WaveFactory {
 
                         Game.getInstance().getWorld().addCelestialObject(asteroid);
                     }
-                    
+
                     createFighter();
                 }
             });
 
         }
-
     }
-    
+
     private void createFighter() {
-        
-        Ship ship = ShipFactory.createSimpleFighter();
-        ship.setOwner(enemies);
-        
-        Vec3 shipPosition = new Vec3(Game.getInstance().getWorld().getWorldSize() -50, 0, 0);
-        TransformMatrix shipRotation = TransformMatrix.identity();
-        shipRotation.rotateX(random.nextDouble() * 360);
-        shipRotation.rotateY(random.nextDouble() * 360);
-        shipRotation.rotateZ(random.nextDouble() * 360);
 
-        shipPosition = shipPosition.rotate(shipRotation);
-
-        shipRotation.translate(shipPosition);
-        Game.getInstance().getWorld().addShip(ship, shipRotation);
-    }
+        for(int i = 0; i < 20; i++) {
+            Ship ship = ShipFactory.createSimpleFighter();
+            ship.setOwner(enemies);
     
+            Vec3 shipPosition = new Vec3(Game.getInstance().getWorld().getWorldSize() - 50, 0, 0);
+            TransformMatrix shipTransform = TransformMatrix.identity();
+            shipTransform.rotateX(random.nextDouble() * 360);
+            shipTransform.rotateY(random.nextDouble() * 360);
+            shipTransform.rotateZ(random.nextDouble() * 360);
+            
+            TransformMatrix shipRotation = TransformMatrix.identity();
+            shipRotation.rotateX(random.nextDouble() * 360);
+            shipRotation.rotateY(random.nextDouble() * 360);
+            shipRotation.rotateZ(random.nextDouble() * 360);
+    
+            shipPosition = shipPosition.rotate(shipRotation);
+    
+            
+            
+            shipTransform.translate(shipPosition);
+            Game.getInstance().getWorld().addShip(ship, shipTransform);
+    
+            Game.getInstance().sendToAll(new BindAIEvent(ship));
+        }
+    }
+
 }

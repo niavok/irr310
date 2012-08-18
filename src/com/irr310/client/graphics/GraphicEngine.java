@@ -11,6 +11,7 @@ import com.irr310.common.Game;
 import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.event.AddGuiComponentEvent;
 import com.irr310.common.event.AddWorldObjectEvent;
+import com.irr310.common.event.BindAIEvent;
 import com.irr310.common.event.BulletFiredEvent;
 import com.irr310.common.event.BuyUpgradeRequestEvent;
 import com.irr310.common.event.CelestialObjectAddedEvent;
@@ -311,6 +312,11 @@ public class GraphicEngine extends FramerateEngine {
         
         @Override
         public void visit(ExplosionFiredEvent event) {
+            rendererVisitor.visit(event);
+        }
+        
+        @Override
+        public void visit(BindAIEvent event) {
             rendererVisitor.visit(event);
         }
     }

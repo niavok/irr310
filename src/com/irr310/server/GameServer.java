@@ -13,6 +13,7 @@ import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.World;
+import com.irr310.server.ai.AIEngine;
 import com.irr310.server.network.ServerNetworkEngine;
 
 public class GameServer extends Game {
@@ -38,6 +39,7 @@ public class GameServer extends Game {
     private static long nextId = 0;
 
     private PhysicEngine physicEngine;
+    private AIEngine aiEngine;
 
     public static synchronized long pickNewId() {
         return nextId++;
@@ -176,6 +178,10 @@ public class GameServer extends Game {
         return physicEngine;
     }
 
+    public AIEngine getAIEngine() {
+        return aiEngine;
+    }
+    
     public Map<Integer, Player> getPlayerMap() {
         return playerMap;
     }
@@ -185,4 +191,6 @@ public class GameServer extends Game {
         // TODO Auto-generated method stub
         
     }
+
+    
 }

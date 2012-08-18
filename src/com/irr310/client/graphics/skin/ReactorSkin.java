@@ -2,20 +2,26 @@ package com.irr310.client.graphics.skin;
 
 import java.io.File;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
+
+import com.irr310.client.graphics.AnimatedElement;
 import com.irr310.client.graphics.GraphicEngine;
 import com.irr310.client.graphics.WorldRenderer;
 import com.irr310.client.graphics.effects.AsteroidDust;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Component;
+import com.irr310.common.world.Part;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.server.Duration;
 import com.irr310.server.Time;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
+import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DGroupElement;
+import fr.def.iss.vd2.lib_v3d.element.V3DLine;
 import fr.def.iss.vd2.lib_v3d.element.V3DShaderElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DrawElement;
 
@@ -29,6 +35,7 @@ public class ReactorSkin extends Skin {
     private TransformMatrix transform;
     private final Component object;
     private Time lastDustEmission;
+    private V3DLine thrustLine;
 
     public ReactorSkin(WorldRenderer renderer, final Component object) {
         super(renderer);
@@ -46,9 +53,19 @@ public class ReactorSkin extends Skin {
         elementRotor = V3DrawElement.LoadFromFile(v3drawFileRotor, engine.getV3DContext());
         elements.add(new V3DColorElement(new V3DShaderElement(elementRotor, "propeller"), new V3DColor(135, 158, 169)));
 
+        // Flame
+        thrustLine = new V3DLine(engine.getV3DContext());
+        thrustLine.setThickness(3);
+        thrustLine.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, 0, 0));
+
+        final V3DColorElement group = new V3DColorElement(thrustLine, V3DColor.fushia);
+        elements.add(group);
+        
+        
         transform = object.getFirstPart().getTransform();
         elements.setTransformMatrix(transform.toFloatBuffer());
 
+        
         // Configure animation
         linearEngineCapacity = object.getCapacitiesByClass(LinearEngineCapacity.class).get(0);
         angle = 0;
@@ -92,6 +109,8 @@ public class ReactorSkin extends Skin {
             }
             
         }
+        
+        thrustLine.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, -(float) linearEngineCapacity.getCurrentThrust(), 0));
         
     }
     

@@ -52,6 +52,7 @@ public abstract class Game {
         
         
         Ship ship = ShipFactory.createSimpleFighter();
+        ship.setDestructible(false);
         ship.setOwner(newPlayer);
         ShipSchema shipShema = new ShipSchema();
         // Center slot

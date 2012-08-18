@@ -115,7 +115,6 @@ public class ShipFactory {
         World world = Game.getInstance().getWorld();
 
         Ship newShip = new Ship(GameServer.pickNewId());
-        newShip.setDestructible(false);
 
         // // Kernel
         // Component kernel = ComponentFactory.createKernel("kernel");
