@@ -94,23 +94,23 @@ public class SimpleShipDriver {
         //
         
         
-        Log.trace("shipPositon ="+ shipPosition);
+        //Log.trace("shipPositon ="+ shipPosition);
         //Log.trace("targetDirection ="+ targetDirection);
         Vec3 localTargetPosition = targetPosition.transform(shipTransform.inverse());
         
         Vec3 localTargetDirection  = localTargetPosition.normalize();
         
-        Log.trace("localTargetPosition ="+ localTargetPosition);
-        Log.trace("localTargetDirection ="+ localTargetDirection);
+       // Log.trace("localTargetPosition ="+ localTargetPosition);
+        //Log.trace("localTargetDirection ="+ localTargetDirection);
         
         
         Vec3 left = new Vec3(1, 0, 0);
         Vec3 top = new Vec3(0, 0, 1);
         Vec3 front = new Vec3(0, 1, 0);
         
-        Log.trace("top ="+ top);
+       /* Log.trace("top ="+ top);
         Log.trace("left ="+ left);
-        Log.trace("front ="+ front);
+        Log.trace("front ="+ front);*/
         
         
         double diffX = left.dot(localTargetDirection);
@@ -118,10 +118,10 @@ public class SimpleShipDriver {
         double diffZ = top.dot(localTargetDirection);
         double dir = front.dot(localTargetDirection);
         
-        Log.trace("diffX ="+ diffX);
+       /* Log.trace("diffX ="+ diffX);
         Log.trace("diffY ="+ diffY);
         Log.trace("diffZ ="+ diffZ);
-        Log.trace("dir ="+ dir);
+        Log.trace("dir ="+ dir);*/
 
         this.rotationSpeedTarget.x = 0;
         this.rotationSpeedTarget.z = 0;
@@ -148,8 +148,8 @@ public class SimpleShipDriver {
             //this.rotationSpeedTarget.z = - Math.abs(diffZ);
         }
         
-        Log.trace("this.rotationSpeedTarget.x ="+ this.rotationSpeedTarget.x);
-        Log.trace("this.rotationSpeedTarget.z ="+ this.rotationSpeedTarget.z);
+       /* Log.trace("this.rotationSpeedTarget.x ="+ this.rotationSpeedTarget.x);
+        Log.trace("this.rotationSpeedTarget.z ="+ this.rotationSpeedTarget.z);*/
 
         processEngines();
     }
@@ -175,7 +175,7 @@ public class SimpleShipDriver {
             phase = 0;
         }
 
-        Log.trace("leftEngine.getMaxThrust()" + maxThrustLeft);
+        //Log.trace("leftEngine.getMaxThrust()" + maxThrustLeft);
         double maxThrust = Math.min(maxThrustLeft, maxThrustRight);
         double minThrust = Math.min(-leftEngine.getMinThrust(), -rightEngine.getMinThrust());
         double maxRotationThrust = Math.min(minThrust, maxThrust);
@@ -316,7 +316,7 @@ public class SimpleShipDriver {
 
         }
 
-        Log.trace("this.leftThrustTarget =" + this.leftThrustTarget);
+        //Log.trace("this.leftThrustTarget =" + this.leftThrustTarget);
 
         leftEngine.setTargetThrust(this.leftThrustTarget + leftRotThrust);
         rightEngine.setTargetThrust(this.rightThrustTarget + rightRotThrust);

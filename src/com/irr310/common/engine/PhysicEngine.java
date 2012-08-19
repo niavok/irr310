@@ -225,7 +225,7 @@ public class PhysicEngine extends FramerateEngine {
                 // Log.trace("wing fiction: "+ wingCapacity.getFriction());
                 // Log.trace("wing vector: "+ conversionVector.length());
 
-                body.applyCentralForce(conversionVector.plus(oppositionVector).toVector3d());
+                body.applyCentralForce(conversionVector.plus(oppositionVector).multiply(4).toVector3d());
             }
             body.setActivationState(RigidBody.ACTIVE_TAG);
 
