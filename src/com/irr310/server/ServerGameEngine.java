@@ -138,7 +138,7 @@ public class ServerGameEngine extends FramerateEngine {
                 }
             }
         }
-
+        
         // Check loot gain
         for (CelestialObject object : Game.getInstance().getWorld().getCelestialsObjects()) {
             if (object instanceof Loot) {
@@ -194,14 +194,26 @@ public class ServerGameEngine extends FramerateEngine {
                 }
             }
 
+            // Check repair and decay
             for (Ship ship : Game.getInstance().getWorld().getShips()) {
-                if (ship.getComponentByName("kernel")
+                if(ship.getOwner().isHuman() && ship.getComponentByName("kernel")
                         .getFirstPart()
                         .getTransform()
                         .getTranslation()
                         .distanceTo(monolith.getFirstPart().getTransform().getTranslation()) < 80) {
 
-                    // Can build
+                    // Can build && repair
+                    
+                    
+                    
+                }
+                
+                for(Component component : ship.getComponents()) {
+                    if(!component.isAttached()) {
+                        DamageDescriptor damageDescriptor = new DamageDescriptor(DamageType.DECAY, 1,DamageCause.DECAY);
+                        damageDescriptor.setBaseDamage(0.05);
+                        applyDamage(component.getFirstPart(), damageDescriptor, component.getFirstPart().getTransform().getTranslation());
+                    }
                 }
 
             }
@@ -331,6 +343,11 @@ public class ServerGameEngine extends FramerateEngine {
             loot.getFirstPart().getLinearSpeed().set(event.getComponent().getFirstPart().getLinearSpeed());
             loot.getFirstPart().getTransform().setTranslation(event.getComponent().getFirstPart().getTransform().getTranslation());
             Game.getInstance().getWorld().addCelestialObject(loot);
+            
+            // Update attache state
+            AttachChecker checker = new AttachChecker(event.getShip());
+            checker.check();
+            
         }
 
         @Override
@@ -507,7 +524,8 @@ public class ServerGameEngine extends FramerateEngine {
             }
             if (parentObject instanceof Component) {
                 Component component = (Component) parentObject;
-                if (((Component) parentObject).getShip().isDestructible()) {
+                Ship ship = component.getShip();
+                if (ship != null && ship.isDestructible()) {
                     // Destroy component
 
                     List<ExplosiveCapacity> explosiveCapacities = component.getCapacitiesByClass(ExplosiveCapacity.class);
@@ -522,9 +540,10 @@ public class ServerGameEngine extends FramerateEngine {
                                                                                  explosiveCapacity.explosionDamage));
                         }
                     }
-                    Game.getInstance().getWorld().removeComponent(component, com.irr310.common.event.ComponentRemovedEvent.Reason.DESTROYED);
-                    if (component.getShip().getComponents().size() == 0) {
+                    if (component.getShip().getComponents().size() == 1) {
                         Game.getInstance().getWorld().removeShip(component.getShip());
+                    } else {
+                        Game.getInstance().getWorld().removeComponent(component, com.irr310.common.event.ComponentRemovedEvent.Reason.DESTROYED);
                     }
                 }
             }

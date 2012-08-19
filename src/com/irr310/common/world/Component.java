@@ -28,6 +28,7 @@ public final class  Component extends WorldObject {
 	private List<Slot> slots;
 	private List<Capacity> capacities;
 	private Map<String, Capacity> capacityNameMap;
+	private boolean attached;
 	
 	public Component(long id, String name) {
 	    super(id, name);
@@ -38,6 +39,7 @@ public final class  Component extends WorldObject {
 		shipPosition = Vec3.origin();
 		quality = 1;
 		computeEfficiency();
+		attached = true;
 	}
 	
 	public Slot getSlot(Vec3 position) {
@@ -249,6 +251,12 @@ public final class  Component extends WorldObject {
         return matchCapacities;
     }
 
-    
+    public boolean isAttached() {
+        return attached;
+    }
+
+    public void setAttached(boolean attached) {
+        this.attached = attached;        
+    }
 	
 }

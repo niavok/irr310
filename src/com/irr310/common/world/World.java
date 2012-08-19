@@ -43,7 +43,6 @@ public class World {
     private final Map<Long, Slot> slotIdMap;
     private final Map<Long, Part> partIdMap;
     private double worldSize;
-    
 
     ReentrantLock mutex;
 
@@ -80,7 +79,6 @@ public class World {
             Game.getInstance().sendToAll(new CelestialObjectRemovedEvent(o, reason));
         }
     }
-    
 
     public void addComponent(Component component) {
         addParts(component.getParts());
@@ -91,12 +89,14 @@ public class World {
         }
         Game.getInstance().sendToAll(new ComponentAddedEvent(component));
     }
-    
+
     public void removeComponent(Component component, com.irr310.common.event.ComponentRemovedEvent.Reason reason) {
         if (componentIdMap.containsKey(component.getId())) {
             removeParts(component.getParts());
             componentIdMap.remove(component.getId());
-            Game.getInstance().sendToAll(new ComponentRemovedEvent(component, reason));
+            Ship ship = component.getShip();
+            ship.remove(component);
+            Game.getInstance().sendToAll(new ComponentRemovedEvent(component, ship, reason));
         }
     }
 
@@ -260,22 +260,22 @@ public class World {
     public void addUpgrade(Upgrade upgrade) {
         availableUpgrades.add(upgrade);
     }
-    
+
     public List<Upgrade> getAvailableUpgrades() {
         return availableUpgrades;
     }
 
     public void setWorldSize(double worldSize) {
-        if(this.worldSize != worldSize) {
+        if (this.worldSize != worldSize) {
             double oldSize = this.worldSize;
             this.worldSize = worldSize;
-            if(oldSize > worldSize) {
-                Log.warn("World size pass from "+ oldSize+ " to "+worldSize+". Its dangerous to reduce the world size!");
+            if (oldSize > worldSize) {
+                Log.warn("World size pass from " + oldSize + " to " + worldSize + ". Its dangerous to reduce the world size!");
             }
             Game.getInstance().sendToAll(new WorldSizeChangedEvent(oldSize, worldSize));
         }
     }
-    
+
     public double getWorldSize() {
         return worldSize;
     }
@@ -284,10 +284,9 @@ public class World {
         ships.remove(ship);
         shipIdMap.remove(ship.getId());
         for (Component component : ship.getComponents()) {
-            removeComponent(component,com.irr310.common.event.ComponentRemovedEvent.Reason.SHIP);
+            removeComponent(component, com.irr310.common.event.ComponentRemovedEvent.Reason.SHIP);
         }
         Game.getInstance().sendToAll(new WorldShipRemovedEvent(ship));
     }
-    
 
 }

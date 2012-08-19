@@ -1,6 +1,7 @@
 package com.irr310.common.event;
 
 import com.irr310.common.world.Component;
+import com.irr310.common.world.Ship;
 
 
 public class ComponentRemovedEvent extends EngineEvent {
@@ -11,9 +12,11 @@ public class ComponentRemovedEvent extends EngineEvent {
     
 	final private Component component;
     private final Reason reason;
+    private final Ship ship;
 
-	public ComponentRemovedEvent(Component component, Reason reason) {
+	public ComponentRemovedEvent(Component component, Ship ship, Reason reason) {
 		this.component = component;
+        this.ship = ship;
         this.reason = reason;
 	}
 	
@@ -28,6 +31,10 @@ public class ComponentRemovedEvent extends EngineEvent {
 	
 	public Reason getReason() {
         return reason;
+    }
+	
+	public Ship getShip() {
+        return ship;
     }
 	
 	

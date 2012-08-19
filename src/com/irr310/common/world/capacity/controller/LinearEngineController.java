@@ -16,7 +16,12 @@ public class LinearEngineController extends CapacityController {
     @Override
     public void update(double duration) {
 
-        capacity.targetThrust = capacity.targetThrustInput;
+        if(component.isAttached()) {
+            // The component is attached, can change thrust
+            capacity.targetThrust = capacity.targetThrustInput;
+        }
+        
+        
 
         capacity.maxThrust = component.getEfficiency() * capacity.theoricalMaxThrust;
         capacity.minThrust = component.getEfficiency() * capacity.theoricalMinThrust;

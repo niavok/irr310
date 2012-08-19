@@ -37,6 +37,11 @@ public abstract class RocketWeaponController extends CapacityController {
         
         globalCooldown -= duration;
         
+        if(!component.isAttached()) {
+            // The component is detached, is cannot take order
+            return;
+        }
+        
         if(!capacity.fire) {
             // The player don't want to fire
             return;

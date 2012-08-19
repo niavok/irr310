@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.irr310.common.Game;
 import com.irr310.common.engine.PhysicEngine;
@@ -21,7 +22,7 @@ public class Ship extends GameEntity implements Container {
 
     private static final double MIN_LINK_DISTANCE = 0.1;
     List<Link> links = new ArrayList<Link>();
-    List<Component> components = new ArrayList<Component>();
+    List<Component> components = new CopyOnWriteArrayList<Component>();
     Map<String, Component> componentNamesMap = new HashMap<String, Component>();
     KernelCapacity kernel;
     private Player owner;
@@ -78,7 +79,6 @@ public class Ship extends GameEntity implements Container {
             }
         }
         components.remove(component);
-        component.setShip(null);
     }
 
     public Link link(Component component1, Component component2, Vec3 position) {

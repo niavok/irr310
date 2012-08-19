@@ -12,7 +12,7 @@ import com.irr310.common.tools.Vec3;
 public class Component {
 
     private com.irr310.common.world.Component component;
-
+    
     public Component(long id) {
         component = Game.getInstance().getWorld().getComponentBy(id);
     }
@@ -64,4 +64,5 @@ public class Component {
     public Vec3 getRotationSpeed() {
         return component.getFirstPart().getRotationSpeed();
     }
+    
 }

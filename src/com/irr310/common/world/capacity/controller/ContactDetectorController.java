@@ -22,9 +22,15 @@ public class ContactDetectorController extends CapacityController {
     @Override
     public void update(double duration) {
         time += duration;
+        
     }
     
     public  void contact(double impulse, Part target) {
+        if(!component.isAttached()) {
+            // The component is detached, cannot trigger
+            return;
+        }
+        
         if(impulse > capacity.minImpulse && time > capacity.minTime) {
             
             //Check auto kill

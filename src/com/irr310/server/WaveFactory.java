@@ -33,12 +33,12 @@ public class WaveFactory {
 
         // Create waves
         Wave wave1 = new Wave(1);
-        wave1.setDuration(new Duration(2000f));
+        wave1.setDuration(new Duration(20f));
         wave1.setActiveDuration(new Duration(2f));
         wave1.addWaveEvent(new WaveEvent(new Duration(2f)) {
 
             public void action() {
-                Game.getInstance().getWorld().setWorldSize(5000);
+                Game.getInstance().getWorld().setWorldSize(500);
 
                 double size = 8 + random.nextDouble() * 3;
 
@@ -66,7 +66,7 @@ public class WaveFactory {
 
                 Game.getInstance().getWorld().addCelestialObject(asteroid);
 
-                createFighter();
+                //createFighter();
             }
 
         });
@@ -112,7 +112,7 @@ public class WaveFactory {
                     Game.getInstance().getWorld().addCelestialObject(asteroid);
                 }
 
-                //createFighter();
+                createFighter();
                 
                 //createFighter();
             }
@@ -160,7 +160,7 @@ public class WaveFactory {
                     Game.getInstance().getWorld().addCelestialObject(asteroid);
                 }
 
-                //createFighter();
+                createFighter();
                 
                 //createFighter();
                 //createFighter();
@@ -213,8 +213,8 @@ public class WaveFactory {
                         Game.getInstance().getWorld().addCelestialObject(asteroid);
                     }
 
-                    //createFighter();
-                    //createFighter();
+                    createFighter();
+                    createFighter();
                     
                     //createFighter();
                     //createFighter();
@@ -232,18 +232,18 @@ public class WaveFactory {
             Ship ship = ShipFactory.createSimpleFighter();
             ship.setOwner(enemies);
     
-            //Vec3 shipPosition = new Vec3(Game.getInstance().getWorld().getWorldSize() - 50, 0, 0);
-            Vec3 shipPosition = new Vec3(100, 500, 0);
+            Vec3 shipPosition = new Vec3(Game.getInstance().getWorld().getWorldSize() - 50, 0, 0);
+            //Vec3 shipPosition = new Vec3(100, 500, 0);
             TransformMatrix shipTransform = TransformMatrix.identity();
-            /*shipTransform.rotateX(random.nextDouble() * 360);
+            shipTransform.rotateX(random.nextDouble() * 360);
             
             shipTransform.rotateZ(random.nextDouble() * 360);
-            shipTransform.rotateY(random.nextDouble() * 360);*/
+            shipTransform.rotateY(random.nextDouble() * 360);
             
             TransformMatrix shipRotation = TransformMatrix.identity();
-            /*shipRotation.rotateX(random.nextDouble() * 360);
+            shipRotation.rotateX(random.nextDouble() * 360);
             shipRotation.rotateY(random.nextDouble() * 360);
-            shipRotation.rotateZ(random.nextDouble() * 360);*/
+            shipRotation.rotateZ(random.nextDouble() * 360);
     
             shipPosition = shipPosition.rotate(shipRotation);
     

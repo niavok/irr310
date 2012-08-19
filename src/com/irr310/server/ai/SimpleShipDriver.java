@@ -14,10 +14,10 @@ public class SimpleShipDriver {
     private final Ship ship;
     private double targetSpeed;
     private Vec3 targetPosition;
-    private LinearEngineCapacity leftEngine;
-    private LinearEngineCapacity rightEngine;
-    private LinearEngineCapacity topEngine;
-    private LinearEngineCapacity bottomEngine;
+    private LinearEngineCapacity leftEngineCapacity;
+    private LinearEngineCapacity rightEngineCapacity;
+    private LinearEngineCapacity topEngineCapacity;
+    private LinearEngineCapacity bottomEngineCapacity;
     private Component kernel;
     private Time lastTime;
     private double lastSpeed;
@@ -41,14 +41,23 @@ public class SimpleShipDriver {
     private double lastMaxThrustRight;
     private double lastMaxThrustTop;
     private double lastMaxThrustBottom;
+    private Component leftEngine;
+    private Component rightEngine;
+    private Component topEngine;
+    private Component bottomEngine;
 
     public SimpleShipDriver(Ship ship) {
         this.ship = ship;
 
-        leftEngine = ship.getComponentByName("leftReactor").getCapacitiesByClass(LinearEngineCapacity.class).get(0);
-        rightEngine = ship.getComponentByName("rightReactor").getCapacitiesByClass(LinearEngineCapacity.class).get(0);
-        topEngine = ship.getComponentByName("topReactor").getCapacitiesByClass(LinearEngineCapacity.class).get(0);
-        bottomEngine = ship.getComponentByName("bottomReactor").getCapacitiesByClass(LinearEngineCapacity.class).get(0);
+        leftEngine = ship.getComponentByName("leftReactor");
+        rightEngine = ship.getComponentByName("rightReactor");
+        topEngine = ship.getComponentByName("topReactor");
+        bottomEngine = ship.getComponentByName("bottomReactor");
+        
+        leftEngineCapacity = leftEngine.getCapacitiesByClass(LinearEngineCapacity.class).get(0);
+        rightEngineCapacity = rightEngine.getCapacitiesByClass(LinearEngineCapacity.class).get(0);
+        topEngineCapacity = topEngine.getCapacitiesByClass(LinearEngineCapacity.class).get(0);
+        bottomEngineCapacity = bottomEngine.getCapacitiesByClass(LinearEngineCapacity.class).get(0);
         kernel = ship.getComponentByName("kernel");
 
         lastTime = Time.getGameTime();
@@ -164,10 +173,14 @@ public class SimpleShipDriver {
         double deltaSpeed = (currentSpeed - this.lastSpeed);
         double deltaAcc = (deltaSpeed - this.lastDeltaSpeed);
 
-        double maxThrustLeft = leftEngine.getMaxThrust();
-        double maxThrustRight = rightEngine.getMaxThrust();
-        double maxThrustTop = topEngine.getMaxThrust();
-        double maxThrustBottom = bottomEngine.getMaxThrust();
+        double maxThrustLeft = (leftEngine.isAttached() ?   leftEngineCapacity.getMaxThrust() : 0);
+        double maxThrustRight = (rightEngine.isAttached() ?   rightEngineCapacity.getMaxThrust() : 0);
+        double maxThrustTop = (topEngine.isAttached() ?   topEngineCapacity.getMaxThrust() : 0);
+        double maxThrustBottom = (bottomEngine.isAttached() ?   bottomEngineCapacity.getMaxThrust() : 0);
+        double minThrustLeft = (leftEngine.isAttached() ?   leftEngineCapacity.getMinThrust() : 0);
+        double minThrustRight = (rightEngine.isAttached() ?   rightEngineCapacity.getMinThrust() : 0);
+        double minThrustTop = (topEngine.isAttached() ?   topEngineCapacity.getMinThrust() : 0);
+        double minThrustBottom = (bottomEngine.isAttached() ?   bottomEngineCapacity.getMinThrust() : 0);
 
         if (maxThrustLeft != lastMaxThrustLeft || maxThrustRight != lastMaxThrustRight || maxThrustTop != lastMaxThrustTop
                 || maxThrustBottom != lastMaxThrustBottom) {
@@ -177,12 +190,12 @@ public class SimpleShipDriver {
 
         //Log.trace("leftEngine.getMaxThrust()" + maxThrustLeft);
         double maxThrust = Math.min(maxThrustLeft, maxThrustRight);
-        double minThrust = Math.min(-leftEngine.getMinThrust(), -rightEngine.getMinThrust());
+        double minThrust = Math.min(-minThrustLeft, -minThrustRight);
         double maxRotationThrust = Math.min(minThrust, maxThrust);
         double maxHorizontalThrust = Math.min(maxThrustLeft, maxThrustRight);
-        double minHorizontalThrust = Math.min(-leftEngine.getMinThrust(), -rightEngine.getMinThrust());
+        double minHorizontalThrust = Math.min(-minThrustLeft, -minThrustRight);
         double maxVerticalThrust = Math.min(maxThrustTop, maxThrustBottom);
-        double minVerticalThrust = Math.min(-topEngine.getMinThrust(), -bottomEngine.getMinThrust());
+        double minVerticalThrust = Math.min(-minThrustTop, -minThrustBottom);
         this.optimalPower = this.targetSpeed / theoricalMaxSpeed;
 
         if (Math.abs(this.targetSpeed - currentSpeed) > 0.1) {
@@ -257,8 +270,8 @@ public class SimpleShipDriver {
         double leftRotThrust = 0;
         double rightRotThrust = 0;
 
-        minHorizontalThrust = Math.max(-leftEngine.getMinThrust(), -rightEngine.getMinThrust());
-        minVerticalThrust = Math.max(-topEngine.getMinThrust(), -bottomEngine.getMinThrust());
+        minHorizontalThrust = Math.max(-leftEngineCapacity.getMinThrust(), -rightEngineCapacity.getMinThrust());
+        minVerticalThrust = Math.max(-minThrustTop, -minThrustBottom);
 
         if (Math.abs(localRotationSpeed.getX() - rotationSpeedTarget.getX()) > 0.001) {
             double deltaThrust = this.topThrustTarget - this.bottomThrustTarget;
@@ -318,10 +331,10 @@ public class SimpleShipDriver {
 
         //Log.trace("this.leftThrustTarget =" + this.leftThrustTarget);
 
-        leftEngine.setTargetThrust(this.leftThrustTarget + leftRotThrust);
-        rightEngine.setTargetThrust(this.rightThrustTarget + rightRotThrust);
-        topEngine.setTargetThrust(this.topThrustTarget + topRotThrust);
-        bottomEngine.setTargetThrust(this.bottomThrustTarget + bottomRotThrust);
+        leftEngineCapacity.setTargetThrust(this.leftThrustTarget + leftRotThrust);
+        rightEngineCapacity.setTargetThrust(this.rightThrustTarget + rightRotThrust);
+        topEngineCapacity.setTargetThrust(this.topThrustTarget + topRotThrust);
+        bottomEngineCapacity.setTargetThrust(this.bottomThrustTarget + bottomRotThrust);
 
         this.lastSpeed = currentSpeed;
         this.lastSpeedTarget = this.targetSpeed;

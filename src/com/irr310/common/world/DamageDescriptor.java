@@ -4,12 +4,14 @@ public class DamageDescriptor {
     public enum DamageType {
         PHYSICAL,
         HEAT,
+        DECAY,
     }
     
     public enum DamageCause {
         BULLET,
         EXPLOSION,
         COLLISION,
+        DECAY,
     }
 
     private double baseDamage;
