@@ -12,8 +12,6 @@ import com.irr310.common.event.PauseEngineEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
-import com.irr310.common.world.Component;
-import com.irr310.common.world.Ship;
 import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.common.world.capacity.BalisticWeaponCapacity;
@@ -21,6 +19,8 @@ import com.irr310.common.world.capacity.controller.CapacityController;
 import com.irr310.common.world.capacity.controller.GunController;
 import com.irr310.common.world.capacity.controller.LinearEngineController;
 import com.irr310.common.world.capacity.controller.ShotgunController;
+import com.irr310.common.world.zone.Component;
+import com.irr310.common.world.zone.Ship;
 import com.irr310.server.Duration;
 
 public class ClientGameEngine extends FramerateEngine {

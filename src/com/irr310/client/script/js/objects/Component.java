@@ -11,7 +11,7 @@ import com.irr310.common.tools.Vec3;
 
 public class Component {
 
-    private com.irr310.common.world.Component component;
+    private com.irr310.common.world.zone.Component component;
     
     public Component(long id) {
         component = Game.getInstance().getWorld().getComponentBy(id);

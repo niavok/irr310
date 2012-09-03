@@ -18,11 +18,11 @@ import com.irr310.common.event.PauseEngineEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.tools.Log;
-import com.irr310.common.world.CelestialObject;
-import com.irr310.common.world.Component;
-import com.irr310.common.world.Monolith;
-import com.irr310.common.world.Ship;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
+import com.irr310.common.world.zone.CelestialObject;
+import com.irr310.common.world.zone.Component;
+import com.irr310.common.world.zone.Monolith;
+import com.irr310.common.world.zone.Ship;
 import com.irr310.server.Duration;
 
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;

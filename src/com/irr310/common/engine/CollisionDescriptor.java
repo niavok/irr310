@@ -1,7 +1,7 @@
 package com.irr310.common.engine;
 
 import com.irr310.common.tools.Vec3;
-import com.irr310.common.world.Part;
+import com.irr310.common.world.zone.Part;
 
 public class CollisionDescriptor {
 

@@ -8,9 +8,9 @@ import com.irr310.common.event.BindAIEvent;
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
-import com.irr310.common.world.Asteroid;
 import com.irr310.common.world.Player;
-import com.irr310.common.world.Ship;
+import com.irr310.common.world.zone.Asteroid;
+import com.irr310.common.world.zone.Ship;
 import com.irr310.server.game.CelestialObjectFactory;
 import com.irr310.server.game.ShipFactory;
 

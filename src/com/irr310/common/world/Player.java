@@ -16,6 +16,8 @@ import com.irr310.common.world.item.ShipSchema;
 import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
 import com.irr310.common.world.view.PlayerView;
+import com.irr310.common.world.zone.GameEntity;
+import com.irr310.common.world.zone.Ship;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 

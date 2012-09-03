@@ -1,7 +1,7 @@
 package com.irr310.client.graphics.effects;
 
 import com.irr310.client.graphics.GenericGraphicalElement;
-import com.irr310.client.graphics.GraphicEngine;
+import com.irr310.client.graphics.UiEngine;
 import com.irr310.client.graphics.WorldRenderer;
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.Vec3;
@@ -24,7 +24,7 @@ public class RocketSteam extends GenericGraphicalElement{
     private Time creationTime;
     private float location = 0;
 
-    private final GraphicEngine engine;
+    private final UiEngine engine;
     private V3DLine element;
     private final V3DColor color;
     private final Vec3 baseSize;

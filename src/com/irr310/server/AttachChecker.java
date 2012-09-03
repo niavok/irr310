@@ -3,9 +3,9 @@ package com.irr310.server;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.irr310.common.world.Component;
-import com.irr310.common.world.Link;
-import com.irr310.common.world.Ship;
+import com.irr310.common.world.zone.Component;
+import com.irr310.common.world.zone.Link;
+import com.irr310.common.world.zone.Ship;
 
 public class AttachChecker {
 

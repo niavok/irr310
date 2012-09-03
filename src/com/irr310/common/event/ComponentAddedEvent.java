@@ -1,6 +1,6 @@
 package com.irr310.common.event;
 
-import com.irr310.common.world.Component;
+import com.irr310.common.world.zone.Component;
 
 
 public class ComponentAddedEvent extends EngineEvent {

@@ -19,14 +19,14 @@ import com.irr310.common.network.protocol.DamageNotificationMessage;
 import com.irr310.common.network.protocol.PartStateUpdateListMessage;
 import com.irr310.common.network.protocol.ShipListMessage;
 import com.irr310.common.network.protocol.WorldObjectListMessage;
-import com.irr310.common.world.CelestialObject;
-import com.irr310.common.world.DamageDescriptor;
-import com.irr310.common.world.Part;
-import com.irr310.common.world.Ship;
-import com.irr310.common.world.WorldObject;
 import com.irr310.common.world.view.CelestialObjectView;
 import com.irr310.common.world.view.PartStateView;
 import com.irr310.common.world.view.ShipView;
+import com.irr310.common.world.zone.CelestialObject;
+import com.irr310.common.world.zone.DamageDescriptor;
+import com.irr310.common.world.zone.Part;
+import com.irr310.common.world.zone.Ship;
+import com.irr310.common.world.zone.WorldObject;
 
 public class ClientNetworkEngine extends EventEngine {
 

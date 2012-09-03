@@ -1,7 +1,7 @@
 package com.irr310.common.event;
 
-import com.irr310.common.world.Component;
-import com.irr310.common.world.Ship;
+import com.irr310.common.world.zone.Component;
+import com.irr310.common.world.zone.Ship;
 
 
 public class ComponentRemovedEvent extends EngineEvent {

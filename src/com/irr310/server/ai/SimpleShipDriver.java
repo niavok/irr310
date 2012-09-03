@@ -3,9 +3,9 @@ package com.irr310.server.ai;
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
-import com.irr310.common.world.Component;
-import com.irr310.common.world.Ship;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
+import com.irr310.common.world.zone.Component;
+import com.irr310.common.world.zone.Ship;
 import com.irr310.server.Duration;
 import com.irr310.server.Time;
 
@@ -45,10 +45,18 @@ public class SimpleShipDriver {
     private Component rightEngine;
     private Component topEngine;
     private Component bottomEngine;
+    private ControlMode controlMode;
 
+    public enum ControlMode {
+        MANUAL,
+        AUTOMATIC,
+    }
+    
     public SimpleShipDriver(Ship ship) {
         this.ship = ship;
-
+        
+        controlMode = ControlMode.AUTOMATIC;
+        
         leftEngine = ship.getComponentByName("leftReactor");
         rightEngine = ship.getComponentByName("rightReactor");
         topEngine = ship.getComponentByName("topReactor");
@@ -80,46 +88,50 @@ public class SimpleShipDriver {
         this.maxRotationSpeed = 2;
     }
 
+    public void setControlMode(ControlMode controlMode) {
+        this.controlMode = controlMode;
+    }
+    
     public double getMaxSpeed() {
         return ship.getMaxSpeed(false);
     }
 
+    /**
+     * Only for manual control mode
+     * @param rotationSpeedTarget
+     */
+    public void setRotationSpeedTarget(Vec3 rotationSpeedTarget) {
+        this.rotationSpeedTarget = rotationSpeedTarget;
+    }
+    
     public void setTargetSpeed(double targetSpeed) {
         this.targetSpeed = targetSpeed;
     }
 
+    /**
+     * Only for automatic control mode
+     * @param targetPosition
+     */
     public void setPositionTarget(Vec3 targetPosition) {
         this.targetPosition = targetPosition;
 
     }
 
     public void processOrders() {
-        // TODO rotation
+
+        if(controlMode == ControlMode.AUTOMATIC) {
+        
         TransformMatrix shipTransform = kernel.getFirstPart().getTransform();
 
         Vec3 shipPosition = shipTransform.getTranslation();
-        //Vec3 targetDirection = shipPosition.minus(targetPosition).normalize();
-        
-        //
-        
-        
-        //Log.trace("shipPositon ="+ shipPosition);
-        //Log.trace("targetDirection ="+ targetDirection);
+       
         Vec3 localTargetPosition = targetPosition.transform(shipTransform.inverse());
         
         Vec3 localTargetDirection  = localTargetPosition.normalize();
         
-       // Log.trace("localTargetPosition ="+ localTargetPosition);
-        //Log.trace("localTargetDirection ="+ localTargetDirection);
-        
-        
         Vec3 left = new Vec3(1, 0, 0);
         Vec3 top = new Vec3(0, 0, 1);
         Vec3 front = new Vec3(0, 1, 0);
-        
-       /* Log.trace("top ="+ top);
-        Log.trace("left ="+ left);
-        Log.trace("front ="+ front);*/
         
         
         double diffX = left.dot(localTargetDirection);
@@ -127,42 +139,20 @@ public class SimpleShipDriver {
         double diffZ = top.dot(localTargetDirection);
         double dir = front.dot(localTargetDirection);
         
-       /* Log.trace("diffX ="+ diffX);
-        Log.trace("diffY ="+ diffY);
-        Log.trace("diffZ ="+ diffZ);
-        Log.trace("dir ="+ dir);*/
+       
 
         this.rotationSpeedTarget.x = 0;
         this.rotationSpeedTarget.z = 0;
         
-        /*if(dir < 0) {
-            this.rotationSpeedTarget.x = 1 * diffZ / Math.abs(diffZ);
-        } else {
-            this.rotationSpeedTarget.x = -diffZ/10;
-        }*/
-        
-        
-        
         this.rotationSpeedTarget.z = -diffX * maxRotationSpeed;
         this.rotationSpeedTarget.x = diffZ * maxRotationSpeed;
-        //this.rotationSpeedTarget.x = -diffY/1;
-        
-        //this.rotationSpeedTarget.x = -diffZ/10;
-        
-        if(dir < 0) {
-            //this.rotationSpeedTarget.x = -0.1;
-            //this.rotationSpeedTarget.z = Math.abs(diffZ);
-        } else {
-            //this.rotationSpeedTarget.x = - Math.abs(diffX);
-            //this.rotationSpeedTarget.z = - Math.abs(diffZ);
+       
         }
         
-       /* Log.trace("this.rotationSpeedTarget.x ="+ this.rotationSpeedTarget.x);
-        Log.trace("this.rotationSpeedTarget.z ="+ this.rotationSpeedTarget.z);*/
 
         processEngines();
     }
-
+    
     private void processEngines() {
 
         Time time = Time.getGameTime();

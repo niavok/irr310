@@ -3,7 +3,7 @@ package com.irr310.client;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.irr310.client.graphics.GraphicEngine;
+import com.irr310.client.graphics.UiEngine;
 import com.irr310.client.input.InputEngine;
 import com.irr310.client.navigation.LoginManager;
 import com.irr310.client.network.ClientNetworkEngine;
@@ -38,7 +38,7 @@ public class GameClient extends Game {
     private ClientNetworkEngine clientNetworkEngine;
     private PhysicEngine physicEngine;
     // private ClientScriptEngine scriptEngine;
-    private GraphicEngine graphicEngine;
+    private UiEngine uiEngine;
     // private ParameterAnalyser parameterAnalyser;
     // private boolean stillRunning;
     // private CommandManager commandManager;
@@ -60,16 +60,20 @@ public class GameClient extends Game {
 
         // clientNetworkEngine = new ClientNetworkEngine("127.0.0.10", 22310);
         // physicEngine = new PhysicEngine();
-        graphicEngine = new GraphicEngine();
+        uiEngine = new UiEngine();
 
-        engineList.add(new InputEngine());
-        if(ClientConfig.sound_isEnabled()) {
+        //engineList.add(new InputEngine());
+        /*if(ClientConfig.sound_isEnabled()) {
             engineList.add(new SoundEngine());
-        }
+        }*/
+        
+        
         // engineList.add(new ClientGameEngine());
         // engineList.add(physicEngine);
         // engineList.add(clientNetworkEngine);
-        engineList.add(graphicEngine);
+        engineList.add(uiEngine);
+        
+        
         // engineList.add(new ClientScriptEngine());
 
         // inputEngine = new InputEngine();
@@ -168,8 +172,8 @@ public class GameClient extends Game {
         return clientNetworkEngine;
     }
 
-    public GraphicEngine getGraphicEngine() {
-        return graphicEngine;
+    public UiEngine getGraphicEngine() {
+        return uiEngine;
     }
 
     public void playSoloGame() {

@@ -1,11 +1,11 @@
 package com.irr310.common.world.item;
 
 import com.irr310.common.Game;
-import com.irr310.common.world.Component;
-import com.irr310.common.world.GameEntity;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.World;
 import com.irr310.common.world.view.ItemView;
+import com.irr310.common.world.zone.Component;
+import com.irr310.common.world.zone.GameEntity;
 
 
 public class  Item extends GameEntity {

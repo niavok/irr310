@@ -31,19 +31,19 @@ public class MenuGraphicRenderer implements GraphicRenderer {
     private static final V3DColor irrRed = new V3DColor(108, 0, 0);
     private static final V3DColor irrRedHover = new V3DColor(118, 10, 10);
     private V3DSimple2DCamera camera;
-    private final GraphicEngine engine;
+    private final UiEngine engine;
     private V3DCameraBinding cameraBinding;
     private V3DLabel logoIRR;
     private V3DLabel logo310;
     private final String gameOverReason;
     private DefaultEngineEventVisitor eventVisitor;
 
-    public MenuGraphicRenderer(GraphicEngine engine) {
+    public MenuGraphicRenderer(UiEngine engine) {
         this.engine = engine;
         this.gameOverReason = null;
     }
 
-    public MenuGraphicRenderer(GraphicEngine engine, String gameOverReason) {
+    public MenuGraphicRenderer(UiEngine engine, String gameOverReason) {
         this.engine = engine;
         this.gameOverReason = gameOverReason;
     }

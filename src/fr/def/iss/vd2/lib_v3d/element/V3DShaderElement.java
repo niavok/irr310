@@ -44,7 +44,7 @@ public class V3DShaderElement extends V3DElement {
 
     }
 
-    public V3DShaderElement(V3DrawElement element, V3DShader v3dShader) {
+    public V3DShaderElement(V3DElement element, V3DShader v3dShader) {
         super(element.getContext());
         childElement = element;
         shader = getContext().createUniqueShader(v3dShader);

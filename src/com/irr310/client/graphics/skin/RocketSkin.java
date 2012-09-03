@@ -5,15 +5,15 @@ import java.util.List;
 
 import javax.swing.Renderer;
 
-import com.irr310.client.graphics.GraphicEngine;
+import com.irr310.client.graphics.UiEngine;
 import com.irr310.client.graphics.WorldRenderer;
 import com.irr310.client.graphics.effects.AsteroidDust;
 import com.irr310.client.graphics.effects.RocketSteam;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
-import com.irr310.common.world.CelestialObject;
-import com.irr310.common.world.Component;
 import com.irr310.common.world.capacity.RocketCapacity;
+import com.irr310.common.world.zone.CelestialObject;
+import com.irr310.common.world.zone.Component;
 import com.irr310.server.Duration;
 import com.irr310.server.Time;
 
@@ -38,7 +38,7 @@ public class RocketSkin extends Skin {
         super(renderer);
         this.renderer = renderer;
         this.object = object;
-        GraphicEngine engine = renderer.getEngine();
+        UiEngine engine = renderer.getEngine();
         elements = new V3DGroupElement(engine.getV3DContext());
 
         File v3drawFileStructure = new File("graphics/output/rocket_tube.v3draw");

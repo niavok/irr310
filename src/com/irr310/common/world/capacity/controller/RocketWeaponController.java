@@ -5,11 +5,11 @@ import com.irr310.common.event.BulletFiredEvent;
 import com.irr310.common.event.RocketFiredEvent;
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.TransformMatrix;
-import com.irr310.common.world.Component;
-import com.irr310.common.world.DamageDescriptor;
-import com.irr310.common.world.Part;
-import com.irr310.common.world.RocketDescriptor;
 import com.irr310.common.world.capacity.RocketWeaponCapacity;
+import com.irr310.common.world.zone.Component;
+import com.irr310.common.world.zone.DamageDescriptor;
+import com.irr310.common.world.zone.Part;
+import com.irr310.common.world.zone.RocketDescriptor;
 
 public abstract class RocketWeaponController extends CapacityController {
 

@@ -20,13 +20,13 @@ import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.common.tools.TransformMatrix;
-import com.irr310.common.world.CelestialObject;
-import com.irr310.common.world.Component;
-import com.irr310.common.world.Part;
-import com.irr310.common.world.Ship;
-import com.irr310.common.world.WorldObject;
 import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
+import com.irr310.common.world.zone.CelestialObject;
+import com.irr310.common.world.zone.Component;
+import com.irr310.common.world.zone.Part;
+import com.irr310.common.world.zone.Ship;
+import com.irr310.common.world.zone.WorldObject;
 import com.irr310.server.Duration;
 
 import fr.def.iss.vd2.lib_v3d.V3DCanvas;

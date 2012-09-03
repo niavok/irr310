@@ -1,7 +1,7 @@
 package com.irr310.common.world.capacity;
 
-import com.irr310.common.world.GameEntity;
 import com.irr310.common.world.view.CapacityView;
+import com.irr310.common.world.zone.GameEntity;
 
 public abstract class Capacity extends GameEntity{
 

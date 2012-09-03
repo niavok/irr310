@@ -11,10 +11,10 @@ import fr.def.iss.vd2.lib_v3d.gui.V3DGuiLayer;
 public class BlankGraphicRenderer implements GraphicRenderer {
 
     private V3DSimple2DCamera camera;
-    private final GraphicEngine engine;
+    private final UiEngine engine;
     private V3DCameraBinding cameraBinding;
 
-    public BlankGraphicRenderer(GraphicEngine engine) {
+    public BlankGraphicRenderer(UiEngine engine) {
         this.engine = engine;
     }
     

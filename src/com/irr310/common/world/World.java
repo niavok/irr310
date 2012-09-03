@@ -26,6 +26,12 @@ import com.irr310.common.world.view.ComponentView;
 import com.irr310.common.world.view.PartView;
 import com.irr310.common.world.view.PlayerView;
 import com.irr310.common.world.view.ShipView;
+import com.irr310.common.world.zone.CelestialObject;
+import com.irr310.common.world.zone.Component;
+import com.irr310.common.world.zone.Part;
+import com.irr310.common.world.zone.Ship;
+import com.irr310.common.world.zone.Slot;
+import com.irr310.common.world.zone.WorldObject;
 
 public class World {
 

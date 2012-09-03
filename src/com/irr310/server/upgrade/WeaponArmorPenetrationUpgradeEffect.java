@@ -2,13 +2,13 @@ package com.irr310.server.upgrade;
 
 import java.util.List;
 
-import com.irr310.common.world.Component;
 import com.irr310.common.world.Player;
-import com.irr310.common.world.Ship;
 import com.irr310.common.world.capacity.BalisticWeaponCapacity;
 import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.common.world.upgrade.Upgrade.UpgradeCategory;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
+import com.irr310.common.world.zone.Component;
+import com.irr310.common.world.zone.Ship;
 
 public class WeaponArmorPenetrationUpgradeEffect extends UpgradeEffect {
 

@@ -2,10 +2,10 @@ package com.irr310.client.graphics.skin;
 
 import java.io.File;
 
-import com.irr310.client.graphics.GraphicEngine;
+import com.irr310.client.graphics.UiEngine;
 import com.irr310.client.graphics.WorldRenderer;
 import com.irr310.common.tools.TransformMatrix;
-import com.irr310.common.world.CelestialObject;
+import com.irr310.common.world.zone.CelestialObject;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
@@ -21,7 +21,7 @@ public class MonolithSkin extends Skin {
 
     public MonolithSkin(WorldRenderer renderer, final CelestialObject object) {
         super(renderer);
-        GraphicEngine engine = renderer.getEngine();
+        UiEngine engine = renderer.getEngine();
         elements = new V3DGroupElement(engine.getV3DContext());
 
         File v3drawFileMonolith = new File("graphics/output/monolith_monolith.v3draw");

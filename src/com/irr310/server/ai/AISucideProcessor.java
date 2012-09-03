@@ -4,10 +4,10 @@ import com.irr310.common.Game;
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
-import com.irr310.common.world.Component;
-import com.irr310.common.world.Part;
-import com.irr310.common.world.Ship;
 import com.irr310.common.world.World;
+import com.irr310.common.world.zone.Component;
+import com.irr310.common.world.zone.Part;
+import com.irr310.common.world.zone.Ship;
 import com.irr310.server.GameServer;
 
 /**

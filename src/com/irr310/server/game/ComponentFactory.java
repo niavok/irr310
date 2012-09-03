@@ -1,12 +1,7 @@
 package com.irr310.server.game;
 
 import com.irr310.common.tools.Vec3;
-import com.irr310.common.world.Component;
-import com.irr310.common.world.DamageDescriptor;
-import com.irr310.common.world.Part;
 import com.irr310.common.world.Player;
-import com.irr310.common.world.RocketDescriptor;
-import com.irr310.common.world.Ship;
 import com.irr310.common.world.capacity.ContactDetectorCapacity;
 import com.irr310.common.world.capacity.ExplosiveCapacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
@@ -15,6 +10,11 @@ import com.irr310.common.world.capacity.RocketCapacity;
 import com.irr310.common.world.capacity.RocketWeaponCapacity;
 import com.irr310.common.world.capacity.WingCapacity;
 import com.irr310.common.world.item.Item;
+import com.irr310.common.world.zone.Component;
+import com.irr310.common.world.zone.DamageDescriptor;
+import com.irr310.common.world.zone.Part;
+import com.irr310.common.world.zone.RocketDescriptor;
+import com.irr310.common.world.zone.Ship;
 import com.irr310.server.GameServer;
 
 public class ComponentFactory {
@@ -147,6 +147,7 @@ public class ComponentFactory {
     public static Component createGun(String componentName, String capacityName, Player player) {
         Component component = createSimpleComponent(componentName);
         component.setSkin("gun");
+        component.initDurability(50);
         Part part = component.getFirstPart();
         part.setOwner(player);
         part.setMass(4d);
@@ -189,6 +190,7 @@ public class ComponentFactory {
     public static Component createThrusterBlock(String name) {
         Component component = createSimpleComponent(name);
         component.setSkin("thrusterBlock");
+        component.initDurability(100);
         Part part = component.getFirstPart();
         part.setMass(16d);
 
@@ -235,6 +237,7 @@ public class ComponentFactory {
     public static Component createLightHull(String name) {
         Component component = createSimpleComponent(name);
         component.setSkin("hull");
+        component.initDurability(150);
         Part part = component.getFirstPart();
         part.setMass(50d);
 
@@ -248,6 +251,7 @@ public class ComponentFactory {
     public static Component createWing(String name) {
         Component component = createSimpleComponent(name);
         component.setSkin("wing");
+        component.initDurability(50);
         Part part = component.getFirstPart();
         part.setMass(10d);
 
@@ -274,6 +278,7 @@ public class ComponentFactory {
 
     public static Component createReactor(String name) {
         Component component = createSimpleComponent(name);
+        component.initDurability(50);
         Part part = component.getFirstPart();
         part.setMass(8d);
         component.setSkin("reactor");
@@ -302,8 +307,7 @@ public class ComponentFactory {
         
         part.setShape(new Vec3(0.1, 1.5, 0.1));
         part.setLinearDamping(rocket.damping);
-        component.setDurabilityMax(rocket.hitPoint);
-        component.setDurability(rocket.hitPoint);
+        component.initDurability(rocket.hitPoint);
         
         ExplosiveCapacity explosiveCapacity = new ExplosiveCapacity(GameServer.pickNewId());
         explosiveCapacity.explosionRadius = rocket.explosionRadius;
@@ -312,7 +316,7 @@ public class ComponentFactory {
         explosiveCapacity.explosionDamage = rocket.explosionDamage;
         explosiveCapacity.disarmTimeout = rocket.disarmTimeout;
         explosiveCapacity.damageType = rocket.damageType;
-        
+     
         RocketCapacity rocketCapacity = new RocketCapacity(GameServer.pickNewId());
         rocketCapacity.explosive = explosiveCapacity;
         rocketCapacity.theoricalMaxThrust = rocket.thrust;

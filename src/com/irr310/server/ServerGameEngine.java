@@ -39,18 +39,7 @@ import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
-import com.irr310.common.world.Asteroid;
-import com.irr310.common.world.CelestialObject;
-import com.irr310.common.world.Component;
-import com.irr310.common.world.DamageDescriptor;
-import com.irr310.common.world.DamageDescriptor.DamageCause;
-import com.irr310.common.world.DamageDescriptor.DamageType;
-import com.irr310.common.world.Loot;
-import com.irr310.common.world.Monolith;
-import com.irr310.common.world.Part;
 import com.irr310.common.world.Player;
-import com.irr310.common.world.Ship;
-import com.irr310.common.world.WorldObject;
 import com.irr310.common.world.capacity.BalisticWeaponCapacity;
 import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.capacity.ContactDetectorCapacity;
@@ -67,6 +56,17 @@ import com.irr310.common.world.capacity.controller.RocketController;
 import com.irr310.common.world.capacity.controller.RocketPodController;
 import com.irr310.common.world.capacity.controller.ShotgunController;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
+import com.irr310.common.world.zone.Asteroid;
+import com.irr310.common.world.zone.CelestialObject;
+import com.irr310.common.world.zone.Component;
+import com.irr310.common.world.zone.DamageDescriptor;
+import com.irr310.common.world.zone.Loot;
+import com.irr310.common.world.zone.Monolith;
+import com.irr310.common.world.zone.Part;
+import com.irr310.common.world.zone.Ship;
+import com.irr310.common.world.zone.WorldObject;
+import com.irr310.common.world.zone.DamageDescriptor.DamageCause;
+import com.irr310.common.world.zone.DamageDescriptor.DamageType;
 import com.irr310.server.game.CelestialObjectFactory;
 import com.irr310.server.game.ShipFactory;
 import com.irr310.server.upgrade.UpgradeFactory;
@@ -418,6 +418,7 @@ public class ServerGameEngine extends FramerateEngine {
         @Override
         public void visit(WorldReadyEvent event) {
             createWaves();
+            inited = true;
         }
 
         @Override
@@ -585,7 +586,6 @@ public class ServerGameEngine extends FramerateEngine {
         initWorld();
         lastInterrestTime = Time.now(true);
 
-        inited = true;
     }
 
     void createWaves() {

@@ -1,7 +1,7 @@
 package com.irr310.client.graphics.effects;
 
 import com.irr310.client.graphics.GenericGraphicalElement;
-import com.irr310.client.graphics.GraphicEngine;
+import com.irr310.client.graphics.UiEngine;
 import com.irr310.client.graphics.WorldRenderer;
 import com.irr310.common.tools.Vec3;
 
@@ -22,7 +22,7 @@ public class BulletEffect extends GenericGraphicalElement{
     private double distance;
     private V3DLine bullet;
     private Vec3 bulletVector;
-    private final GraphicEngine engine;
+    private final UiEngine engine;
 
     public BulletEffect(WorldRenderer renderer, Vec3 from, Vec3 to) {
         super(renderer);

@@ -37,6 +37,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
+
 import com.irr310.common.Game;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.tools.Log;
@@ -65,6 +66,11 @@ public class V3DCanvas {
     private boolean showFps = false;
     private boolean polygonOffset = false;
     private boolean done=false;
+    
+    List<V3DCameraBinding> cameraList = new ArrayList<V3DCameraBinding>();
+    private JFrame frame;
+    
+    
     /**
      * A new mini starter.
      *
@@ -127,7 +133,7 @@ public class V3DCanvas {
             Display.create();
             canvas.requestFocus();
         }catch(Exception e){
-            System.out.println("Error setting up display");
+            System.out.println("Error setting up display" + e);
             System.exit(0);
         }
 
@@ -368,8 +374,7 @@ public class V3DCanvas {
     public void displayChanged( boolean modeChanged, boolean deviceChanged) {
         throw new UnsupportedOperationException("Changing display is not supported.");
     }
-    List<V3DCameraBinding> cameraList = new ArrayList<V3DCameraBinding>();
-    private JFrame frame;
+    
 
     public void addCamera(V3DCameraBinding camera) {
         cameraList.add(camera);
@@ -678,5 +683,4 @@ public class V3DCanvas {
         this.polygonOffset = polygonOffset;
     }
 
-    
 }

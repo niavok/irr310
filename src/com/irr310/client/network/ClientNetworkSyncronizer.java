@@ -5,8 +5,8 @@ import java.util.List;
 
 import com.irr310.common.Game;
 import com.irr310.common.network.protocol.PartStateUpdateListMessage;
-import com.irr310.common.world.Part;
 import com.irr310.common.world.view.PartStateView;
+import com.irr310.common.world.zone.Part;
 
 public class ClientNetworkSyncronizer extends Thread{
 

@@ -24,16 +24,16 @@ import com.irr310.common.network.protocol.ShipListMessage;
 import com.irr310.common.network.protocol.SignupRequestMessage;
 import com.irr310.common.network.protocol.SignupResponseMessage;
 import com.irr310.common.network.protocol.WorldObjectListMessage;
-import com.irr310.common.world.CelestialObject;
-import com.irr310.common.world.Part;
 import com.irr310.common.world.Player;
-import com.irr310.common.world.Ship;
 import com.irr310.common.world.World;
 import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.view.CapacityView;
 import com.irr310.common.world.view.CelestialObjectView;
 import com.irr310.common.world.view.PartStateView;
 import com.irr310.common.world.view.ShipView;
+import com.irr310.common.world.zone.CelestialObject;
+import com.irr310.common.world.zone.Part;
+import com.irr310.common.world.zone.Ship;
 import com.irr310.server.GameServer;
 
 public class ServerNetworkEngine extends EventEngine {

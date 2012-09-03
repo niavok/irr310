@@ -1,6 +1,6 @@
 package com.irr310.common.world.capacity.controller;
 
-import com.irr310.common.world.Component;
+import com.irr310.common.world.zone.Component;
 
 public abstract class CapacityController {
 

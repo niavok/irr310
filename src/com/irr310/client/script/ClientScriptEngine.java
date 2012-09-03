@@ -10,6 +10,8 @@ import com.irr310.common.event.KeyPressedEvent;
 import com.irr310.common.event.KeyReleasedEvent;
 import com.irr310.common.event.MouseEvent;
 import com.irr310.common.event.PauseEngineEvent;
+import com.irr310.common.event.PlayerAddedEvent;
+import com.irr310.common.event.PlayerLoggedEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.ReloadUiEvent;
 import com.irr310.common.event.StartEngineEvent;
@@ -21,18 +23,20 @@ import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 
 public class ClientScriptEngine extends FramerateEngine {
 
-    ScriptContext scriptContext;
-
+    //ScriptContext scriptContext;
+    ClientGuiDriver driver;
+    
     public ClientScriptEngine() {
         framerate = new Duration(15000000);
-
+        driver = new NoDriver();
     }
 
     @Override
     protected void frame() {
         Object[] args = new Object[1];
         args[0] = Time.now(true).getSeconds();
-        scriptContext.callFunction("onFrame", args);
+        //scriptContext.callFunction("onFrame", args);
+        driver.frame();
     }
 
     @Override
@@ -85,39 +89,53 @@ public class ClientScriptEngine extends FramerateEngine {
         public void visit(ReloadUiEvent event) {
             init();
         }
+        
+        @Override
+        public void visit(PlayerAddedEvent event) {
+            driver = new FighterDriver();
+            driver.init();
+            GameClient.getInstance().getGraphicEngine().getRenderer().resetGui();
+        }
 
     }
 
     private void transmitMouseEvent(V3DMouseEvent mouseEvent) {
-        Object[] args = new Object[4];
+        /*Object[] args = new Object[4];
         args[0] = mouseEvent.getAction().ordinal();
         args[1] = mouseEvent.getButton();
         args[2] = mouseEvent.getX();
         args[3] = mouseEvent.getY();
-        scriptContext.callFunction("onMouseEvent", args);
+        scriptContext.callFunction("onMouseEvent", args);*/
+        
+        driver.mouseEvent(mouseEvent);
     }
 
     private void transmitKeyPressed(int keyCode, String character) {
-        Object[] args = new Object[2];
+        /*Object[] args = new Object[2];
         args[0] = keyCode;
         args[1] = character;
-        scriptContext.callFunction("onKeyPressed", args);
+        scriptContext.callFunction("onKeyPressed", args);*/
+        driver.keyPressed(keyCode, character);
     }
 
     private void transmitKeyReleased(int keyCode, String character) {
-        Object[] args = new Object[2];
+        /*Object[] args = new Object[2];
         args[0] = keyCode;
         args[1] = character;
-        scriptContext.callFunction("onKeyReleased", args);
+        scriptContext.callFunction("onKeyReleased", args);*/
+        driver.keyRelease(keyCode, character);
     }
 
     @Override
     public void init() {
-        if (scriptContext != null) {
+        
+        
+        /*if (scriptContext != null) {
             scriptContext.close();
-            GameClient.getInstance().getGraphicEngine().getRenderer().resetGui();
+            
         }
-        scriptContext = new ScriptContext();
+        scriptContext = new ScriptContext();*/
+        
     }
 
     @Override

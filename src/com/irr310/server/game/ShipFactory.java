@@ -4,11 +4,11 @@ import java.util.List;
 
 import com.irr310.common.Game;
 import com.irr310.common.tools.Vec3;
-import com.irr310.common.world.Component;
 import com.irr310.common.world.Player;
-import com.irr310.common.world.RocketDescriptor;
-import com.irr310.common.world.Ship;
 import com.irr310.common.world.World;
+import com.irr310.common.world.zone.Component;
+import com.irr310.common.world.zone.RocketDescriptor;
+import com.irr310.common.world.zone.Ship;
 import com.irr310.server.GameServer;
 
 public class ShipFactory {

@@ -77,7 +77,6 @@ public class V3DShader {
                 ARBShaderObjects.glAttachObjectARB(shader, geoShader);
             }
             ARBShaderObjects.glAttachObjectARB(shader, fragShader);
-            // loadUniforms();
 
             ARBShaderObjects.glLinkProgramARB(shader);
             if (ARBShaderObjects.glGetObjectParameteriARB(shader, ARBShaderObjects.GL_OBJECT_LINK_STATUS_ARB) == GL11.GL_FALSE) {
@@ -85,6 +84,8 @@ public class V3DShader {
                 printLogInfo(shader, "link");
                 useShader = false;
             }
+            loadUniforms();
+            
             ARBShaderObjects.glValidateProgramARB(shader);
             if (ARBShaderObjects.glGetObjectParameteriARB(shader, ARBShaderObjects.GL_OBJECT_VALIDATE_STATUS_ARB) == GL11.GL_FALSE) {
                 Log.error("fail validate");
@@ -126,7 +127,7 @@ public class V3DShader {
         if (useShader) {
             try {
                 ARBShaderObjects.glUseProgramObjectARB(shader);
-                // setUniforms();
+                setUniforms();
             } catch (OpenGLException e) {
                 System.err.println("error using shader: " + e.getMessage());
                 e.printStackTrace();

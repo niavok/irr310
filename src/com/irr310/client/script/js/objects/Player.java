@@ -23,11 +23,11 @@ public class Player {
     }
 
     public ArrayList<Ship> getShips() {
-        List<com.irr310.common.world.Ship> shipList = player.getShipList();
+        List<com.irr310.common.world.zone.Ship> shipList = player.getShipList();
         //NativeArray ships = new NativeArray(shipList.toArray());
         ArrayList<Ship> ships = new ArrayList<Ship>();
         
-        for (com.irr310.common.world.Ship ship :shipList) {
+        for (com.irr310.common.world.zone.Ship ship :shipList) {
             ships.add(new Ship(ship.getId()));
         }
 

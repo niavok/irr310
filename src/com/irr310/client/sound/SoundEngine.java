@@ -22,7 +22,7 @@ import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.Vec3;
-import com.irr310.common.world.Component;
+import com.irr310.common.world.zone.Component;
 
 public class SoundEngine extends EventEngine {
 

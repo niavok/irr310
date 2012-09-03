@@ -12,7 +12,7 @@ import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.common.event.WorldShipRemovedEvent;
-import com.irr310.common.world.Ship;
+import com.irr310.common.world.zone.Ship;
 
 public class AIEngine extends FramerateEngine {
 

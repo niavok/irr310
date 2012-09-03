@@ -18,9 +18,9 @@ import org.lwjgl.opengl.ARBShaderObjects;
 
 import com.irr310.client.graphics.effects.BulletEffect;
 import com.irr310.client.graphics.effects.ExplosionEffect;
-import com.irr310.client.graphics.gui.GuiConstants;
-import com.irr310.client.graphics.gui.InventoryMenu;
-import com.irr310.client.graphics.gui.UpgradeMenu;
+import com.irr310.client.graphics.fragments.GuiConstants;
+import com.irr310.client.graphics.fragments.InventoryMenu;
+import com.irr310.client.graphics.fragments.UpgradeMenu;
 import com.irr310.client.graphics.skin.AsteroidSkin;
 import com.irr310.client.graphics.skin.CameraSkin;
 import com.irr310.client.graphics.skin.FactorySkin;
@@ -60,16 +60,16 @@ import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.common.event.WorldSizeChangedEvent;
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.Vec3;
-import com.irr310.common.world.CelestialObject;
-import com.irr310.common.world.Component;
-import com.irr310.common.world.DamageDescriptor.DamageCause;
-import com.irr310.common.world.Monolith;
-import com.irr310.common.world.Part;
-import com.irr310.common.world.Ship;
 import com.irr310.common.world.World;
-import com.irr310.common.world.WorldObject;
 import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
+import com.irr310.common.world.zone.CelestialObject;
+import com.irr310.common.world.zone.Component;
+import com.irr310.common.world.zone.Monolith;
+import com.irr310.common.world.zone.Part;
+import com.irr310.common.world.zone.Ship;
+import com.irr310.common.world.zone.WorldObject;
+import com.irr310.common.world.zone.DamageDescriptor.DamageCause;
 import com.irr310.server.Time;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
@@ -108,7 +108,7 @@ public class WorldRenderer implements GraphicRenderer {
     private Map<WorldObject, List<GraphicalElement>> worldObjectToV3DElementMap = new HashMap<WorldObject, List<GraphicalElement>>();
 
     V3DEye3DCamera activeCamera;
-    private final GraphicEngine engine;
+    private final UiEngine engine;
     private V3DGuiLayer interfaceLayer;
     private V3DGuiLayer hudLayer;
     private V3DGuiLayer mainMenuLayer;
@@ -136,7 +136,7 @@ public class WorldRenderer implements GraphicRenderer {
     boolean inventoryMenuEnabled = false;
     private V3DrawElement bubbleElement;
 
-    public WorldRenderer(GraphicEngine engine) {
+    public WorldRenderer(UiEngine engine) {
         this.engine = engine;
         currentGuiMode = GuiKeyMode.NO_MODE;
     }
@@ -1071,7 +1071,7 @@ public class WorldRenderer implements GraphicRenderer {
         return new WorldRendererEventVisitor();
     }
 
-    public GraphicEngine getEngine() {
+    public UiEngine getEngine() {
         return engine;
     }
 

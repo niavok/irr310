@@ -7,7 +7,7 @@ import com.irr310.common.Game;
 
 public class Ship {
 
-	private com.irr310.common.world.Ship ship;
+	private com.irr310.common.world.zone.Ship ship;
 	
 	public Ship(long id) {
 		ship = Game.getInstance().getWorld().getShipById(id);
@@ -27,7 +27,7 @@ public class Ship {
 	
 	public List<Component> getComponentsByName(String name) {
 	    List<Component> components = new ArrayList<Component>();
-	    for(com.irr310.common.world.Component component : ship.getComponents()) {
+	    for(com.irr310.common.world.zone.Component component : ship.getComponents()) {
 	        if(component.getName().equals(name)) {
 	            components.add(new Component(component.getId()));
 	        }

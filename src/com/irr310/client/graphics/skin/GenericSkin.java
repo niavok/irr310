@@ -4,11 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.irr310.client.graphics.GraphicEngine;
+import com.irr310.client.graphics.UiEngine;
 import com.irr310.client.graphics.WorldRenderer;
 import com.irr310.common.tools.TransformMatrix;
-import com.irr310.common.world.Part;
-import com.irr310.common.world.WorldObject;
+import com.irr310.common.world.zone.Part;
+import com.irr310.common.world.zone.WorldObject;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
@@ -28,7 +28,7 @@ public class GenericSkin extends Skin {
 
     public GenericSkin(WorldRenderer renderer, WorldObject object) {
         super(renderer);
-        GraphicEngine engine = renderer.getEngine();
+        UiEngine engine = renderer.getEngine();
         this.object = object;
         elements = new V3DGroupElement(engine.getV3DContext());
         

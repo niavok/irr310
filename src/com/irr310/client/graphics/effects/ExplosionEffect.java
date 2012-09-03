@@ -3,7 +3,7 @@ package com.irr310.client.graphics.effects;
 import java.io.File;
 
 import com.irr310.client.graphics.GenericGraphicalElement;
-import com.irr310.client.graphics.GraphicEngine;
+import com.irr310.client.graphics.UiEngine;
 import com.irr310.client.graphics.WorldRenderer;
 import com.irr310.common.Game;
 import com.irr310.common.tools.Vec3;
@@ -21,7 +21,7 @@ public class ExplosionEffect extends GenericGraphicalElement{
     private float speed;
     private float currentLocation;
 
-    private final GraphicEngine engine;
+    private final UiEngine engine;
     private final double radius;
     private V3DrawElement bubbleElement;
 

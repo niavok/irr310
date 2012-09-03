@@ -2,8 +2,8 @@ package com.irr310.common.world.capacity.controller;
 
 import com.irr310.common.Game;
 import com.irr310.common.event.ExplosionFiredEvent;
-import com.irr310.common.world.Component;
 import com.irr310.common.world.capacity.ExplosiveCapacity;
+import com.irr310.common.world.zone.Component;
 
 public class ExplosiveCapacityController extends CapacityController {
 

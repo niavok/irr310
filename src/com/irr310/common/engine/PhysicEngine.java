@@ -70,17 +70,17 @@ import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
-import com.irr310.common.world.Component;
-import com.irr310.common.world.Link;
-import com.irr310.common.world.Part;
-import com.irr310.common.world.Ship;
-import com.irr310.common.world.Slot;
 import com.irr310.common.world.World;
-import com.irr310.common.world.WorldObject;
 import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.common.world.capacity.RocketCapacity;
 import com.irr310.common.world.capacity.WingCapacity;
+import com.irr310.common.world.zone.Component;
+import com.irr310.common.world.zone.Link;
+import com.irr310.common.world.zone.Part;
+import com.irr310.common.world.zone.Ship;
+import com.irr310.common.world.zone.Slot;
+import com.irr310.common.world.zone.WorldObject;
 import com.irr310.server.Duration;
 
 public class PhysicEngine extends FramerateEngine {
@@ -641,7 +641,7 @@ public class PhysicEngine extends FramerateEngine {
             return partToBodyMap.get(part);
         }
 
-        com.irr310.common.world.Part.CollisionShape collisionShape = part.getCollisionShape();
+        com.irr310.common.world.zone.Part.CollisionShape collisionShape = part.getCollisionShape();
         CollisionShape colShape = null;
 
         switch (collisionShape) {

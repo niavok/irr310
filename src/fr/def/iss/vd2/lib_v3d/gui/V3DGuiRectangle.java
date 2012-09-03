@@ -30,8 +30,6 @@ public class V3DGuiRectangle extends V3DGuiComponent {
                     g.setColor(borderColor.toColor());
                     g.drawWireRectangle2(0,0, size.getWidth(), size.getHeight(),borderWidth);
                 }
-                
-                
             }
 
             @Override

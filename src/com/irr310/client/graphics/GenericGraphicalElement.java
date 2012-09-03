@@ -20,7 +20,7 @@ public abstract class GenericGraphicalElement implements GraphicalElement {
         renderer.destroyElement(this);
     }
     
-    public GraphicEngine getEngine() {
+    public UiEngine getEngine() {
         return renderer.getEngine();
     }
     
