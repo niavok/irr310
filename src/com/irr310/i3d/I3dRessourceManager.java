@@ -21,6 +21,8 @@ import org.xml.sax.SAXException;
 import com.irr310.common.tools.Log;
 import com.irr310.i3d.view.AbsoluteLayout;
 import com.irr310.i3d.view.Layer;
+import com.irr310.i3d.view.Layout.LayoutAlign;
+import com.irr310.i3d.view.Layout.LayoutMeasure;
 import com.irr310.i3d.view.Rect;
 import com.irr310.i3d.view.Triangle;
 import com.irr310.i3d.view.View;
@@ -206,6 +208,19 @@ public class I3dRessourceManager {
                 triangle.setId(attrValue);
             } else if(attrName.equals("i3d:backgroundColor")) {
                 triangle.setBackgroundColor(loadColor(attrValue));
+            } else if(attrName.equals("i3d:layout_width")) {
+                if(attrValue.equals("match_parent")) {
+                    triangle.getLayout().setLayoutWidthMeasure(LayoutMeasure.MATCH_PARENT);
+                } else {
+                    Log.error("Unsupported value '"+attrValue+"' for i3d:layout_width attribute");
+                }
+            } else if(attrName.equals("i3d:layout_height")) {
+                if(attrValue.equals("match_parent")) {
+                    triangle.getLayout().setLayoutHeightMeasure(LayoutMeasure.MATCH_PARENT);
+                } else {
+                    Log.error("Unsupported value '"+attrValue+"' for i3d:layout_height attribute");
+                }
+            } else if(attrName.equals("i3d:align_x")) {
             } else if(attrName.equals("i3d:points")) {
                 String[] pointsStrings = attrValue.split("\\|");
                 if(pointsStrings.length != 3) {
@@ -213,7 +228,7 @@ public class I3dRessourceManager {
                     break;
                 }
                 int index = 0;
-                I3dMesure[] points = new I3dMesure[6]; 
+                MeasurePoint[] points = new MeasurePoint[3]; 
                 for(String pointString: pointsStrings) {
                     String[] mesuresString = pointString.split(",");
                     if(mesuresString.length != 2) {
@@ -221,21 +236,25 @@ public class I3dRessourceManager {
                         break;
                     }
                     
-                    points[index++] =  parseMesure(mesuresString[0],mesuresString[1]);
+                    MeasurePoint point = new MeasurePoint();
+                    point.setX(parseMeasure(mesuresString[0]));
+                    point.setY(parseMeasure(mesuresString[1]));
+                    
+                    points[index++] =  point;
                 }
                 
                 triangle.setPoints(points);
                 
             } else {
-                Log.error("Unknown attrib '" + attrName+"="+attrValue+"' for Rect");
+                Log.error("Unknown attrib '" + attrName+"="+attrValue+"' for Triangle");
                 break;
             }
         }
         
         return triangle;
     }
-
-    private I3dMesure parseMesure(String mesureStringX, String mesureStringY) {
+/*
+    private Measure parseMeasure(String mesureStringX, String mesureStringY) {
         boolean relativeX = false;
         boolean relativeY = false;
         String stringValueX = "0";
@@ -263,9 +282,26 @@ public class I3dRessourceManager {
         int valueX = Integer.parseInt(stringValueX);
         int valueY = Integer.parseInt(stringValueY);
                 
-        return new I3dMesure(valueX, valueY, relativeX, relativeY);
+        return new Measure(valueX, valueY, relativeX, relativeY);
+    }*/
+    private Measure parseMeasure(String mesureString) {
+        boolean relative = false;
+        String stringValue = "0";
+        if(mesureString.endsWith("px")) {
+            relative = false;
+            stringValue = mesureString.substring(0, mesureString.length()-2);
+        } else if(mesureString.endsWith("%")) {
+            relative = true;
+            stringValue = mesureString.substring(0, mesureString.length()-1);
+        } else {
+            Log.error("Unknown unit for mesure '"+mesureString+"'");
+            return null;
+        }
+      
+        int value = Integer.parseInt(stringValue);
+                
+        return new Measure(value,  relative);
     }
-
 
     private Layer NewLayer(Element element) {
         return new Layer(g);
@@ -280,18 +316,13 @@ public class I3dRessourceManager {
             Attr attr = (Attr) item;
             String attrName = attr.getName();
             String attrValue= attr.getValue();
-            
-            if(attrName.equals("i3d:id")) {
-                absoluteLayout.setId(attrValue);
-            } else if(attrName.equals("i3d:layout_width")) {
-                //TODO
-            } else if(attrName.equals("i3d:layout_height")) {
-                //TODO
-            } else if(attrName.equals("i3d:i3d:align_x")) {
-                //TODO                
-            } else if(attrName.equals("i3d:i3d:align_y")) {
-                //TODO
-            } else {
+
+            if(checkId(attrName, attrValue, absoluteLayout));
+            else if(checkLayoutWidth(attrName, attrValue, absoluteLayout));
+            else if(checkLayoutHeight(attrName, attrValue, absoluteLayout));
+            else if(checkAlignX(attrName, attrValue, absoluteLayout));
+            else if(checkAlignY(attrName, attrValue, absoluteLayout));
+            else {
                 Log.error("Unknown attrib '" + attrName+"="+attrValue+"' for AbsoluteLayout");
             }
         }
@@ -299,6 +330,79 @@ public class I3dRessourceManager {
         return absoluteLayout;
     }
 
+    
+    private boolean checkId(String attrName, String attrValue, View view) {
+        boolean used = false;
+        if(attrName.equals("i3d:id")) {
+            view.setId(attrValue);
+            used = true;
+        }
+        return used;
+    }
+    
+    private boolean checkLayoutWidth(String attrName, String attrValue, View view) {
+        boolean used = false;
+        
+        if(attrName.equals("i3d:layout_width")) {
+            Measure measure = null;
+            if(attrValue.equals("match_parent")) {
+                view.getLayout().setLayoutWidthMeasure(LayoutMeasure.MATCH_PARENT);
+                used = true;
+            } else if((measure = parseMeasure(attrValue)) != null) {
+                view.getLayout().setLayoutWidthMeasure(LayoutMeasure.FIXED);
+                view.getLayout().setWidthMeasure(measure);
+                used = true;
+            }
+            else {
+                Log.error("Unsupported value '"+attrValue+"' for i3d:layout_width attribute");
+            }
+        }
+        return used;
+    }
+
+    private boolean checkLayoutHeight(String attrName, String attrValue, View view) {
+        boolean used = false;
+        if(attrName.equals("i3d:layout_height")) {
+            Measure measure = null;
+            if(attrValue.equals("match_parent")) {
+                view.getLayout().setLayoutHeightMeasure(LayoutMeasure.MATCH_PARENT);
+                used = true;
+            } else if((measure = parseMeasure(attrValue)) != null) {
+                view.getLayout().setLayoutHeightMeasure(LayoutMeasure.FIXED);
+                view.getLayout().setHeightMeasure(measure);
+                used = true;
+            } else {
+                Log.error("Unsupported value '"+attrValue+"' for i3d:layout_height attribute");
+            }
+        }
+        return used;
+    }
+    
+    private boolean checkAlignX(String attrName, String attrValue, View view) {
+        boolean used = false;
+        if(attrName.equals("i3d:align_x")) {
+            if(attrValue.equals("center")) {
+                view.getLayout().setLayoutAlignX(LayoutAlign.CENTER);
+                used = true;
+            } else {
+                Log.error("Unsupported value '"+attrValue+"' for i3d:align_x attribute");
+            }
+        }
+        return used;
+    }
+    
+    private boolean checkAlignY(String attrName, String attrValue, View view) {
+        boolean used = false;
+        if(attrName.equals("i3d:align_y")) {
+            if(attrValue.equals("center")) {
+                view.getLayout().setLayoutAlignY(LayoutAlign.CENTER);
+                used = true;
+            } else {
+                Log.error("Unsupported value '"+attrValue+"' for i3d:align_y attribute");
+            }
+        }
+        return used;
+    }
     
     private Color loadColor(String colorId) {
         

@@ -15,7 +15,7 @@ public class Rect extends View {
     }
 
     @Override
-    public void draw() {
+    public void doDraw() {
         g.setColor(backgroundColor);
         g.drawFilledRectangle(0, 0, size.getWidth(), size.getHeight());
     }
@@ -30,15 +30,15 @@ public class Rect extends View {
     
     @Override
     public View duplicate() {
-        Rect widget = new Rect(g);
-        widget.setBackgroundColor(backgroundColor);
-        widget.setSize(size);
-        return widget;
+        Rect view = new Rect(g);
+        view.setBackgroundColor(backgroundColor);
+        view.setSize(size);
+        view.setLayout(getLayout());
+        return view;
     }
     
     @Override
-    public boolean computeSize() {
-        // TODO Auto-generated method stub
+    public boolean doLayout(Layout parentLayout) {
         return false;
     }
 }

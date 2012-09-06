@@ -19,7 +19,13 @@ public abstract class Activity implements ViewParent {
     }
     
     public void assignSurface(Surface parentSurface) {
-        mLayout = new Layout(parentSurface.width, parentSurface.height);
+        mLayout = new Layout();
+        mLayout.setWidth(parentSurface.width);
+        mLayout.setHeight(parentSurface.height);
+        mLayout.setOffsetX(0);
+        mLayout.setOffsetY(0);
+        mLayout.setWidthDefined(true);
+        mLayout.setHeightDefined(true);
     }
     
     protected void setContentView(String string) {
@@ -34,7 +40,7 @@ public abstract class Activity implements ViewParent {
     public void update(Time absTime, Time gameTime) {
         if(!mLayoutUpdated) {
             mLayoutUpdated = true;
-            view.computeSize();
+            view.layout(mLayout);
         }
     }
     
@@ -45,11 +51,6 @@ public abstract class Activity implements ViewParent {
     @Override
     public ViewParent getParent() {
         return null;
-    }
-    
-    @Override
-    public Layout getLayout() {
-        return mLayout;
     }
     
     @Override

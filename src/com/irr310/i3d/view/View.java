@@ -1,11 +1,11 @@
 package com.irr310.i3d.view;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.lwjgl.opengl.GL11;
 
 import com.irr310.common.tools.Log;
 import com.irr310.i3d.Graphics;
-import com.irr310.i3d.I3dMesure;
+import com.irr310.i3d.Measure;
+import com.irr310.i3d.view.Layout.LayoutMeasure;
 
 public abstract class View {
 
@@ -16,18 +16,62 @@ public abstract class View {
      * @see #getParent()
      */
     protected ViewParent mParent;
+    protected Layout layout;
     
     Graphics g;
     private String id;
     
     public View(Graphics g) {
         this.g = g;
+        layout = new Layout();
     }
     
-    public abstract void draw();
+    public final void draw() {
+        GL11.glPushMatrix();
+        GL11.glTranslatef(layout.offset.x, layout.offset.y, 0);
+        
+        doDraw();
+        
+        GL11.glPopMatrix();
+    }
     
-    public abstract boolean computeSize(); 
-
+    public abstract void doDraw();
+    
+    public final boolean layout(Layout parentLayout) {
+        
+        if(layout.getLayoutWidthMeasure() == LayoutMeasure.MATCH_PARENT) {
+            if(parentLayout.widthDefined) {
+                layout.width = parentLayout.width;
+                layout.widthDefined = true;
+            } else {
+                Log.error("'match parent' width an undefined parent width");
+            }
+        } else if (layout.getLayoutWidthMeasure() == LayoutMeasure.FIXED) {
+            layout.width =  parentLayout.computeMesure(layout.getMeasurePoint().getX());
+            layout.widthDefined = true;
+        } else {
+            throw new RuntimeException("Not implemented");
+        }
+        
+        if(layout.getLayoutHeightMeasure() == LayoutMeasure.MATCH_PARENT) {
+            if(parentLayout.heightDefined) {
+                layout.height = parentLayout.height;
+                layout.heightDefined = true;
+            } else {
+                Log.error("'match parent' height an undefined parent height");
+            }
+        } else if (layout.getLayoutHeightMeasure() == LayoutMeasure.FIXED) {
+            layout.height =  parentLayout.computeMesure(layout.getMeasurePoint().getY());
+            layout.heightDefined = true;
+        } else {
+            throw new RuntimeException("Not implemented");
+        }
+        
+        
+        return doLayout(parentLayout);
+    }
+    
+    public abstract boolean doLayout(Layout parentLayout);
 
     public void setId(String id) {
         this.id = id;
@@ -39,36 +83,9 @@ public abstract class View {
 
     public abstract View duplicate();
 
-    
-    protected Point computeMesure(I3dMesure mesure) {
-        Point point = new Point();
-        if(mesure.isRelativeX()) {
-            Layout parentLayout = getParent().getLayout();
-            if(parentLayout.isWidthDefined()) {
-                point.x = parentLayout.getWidth() * 100 / mesure.getValueX();
-            } else {
-                Log.error("Relative width in undefined width parent");
-                point.x =  0;
-            }
-        } else {
-            point.x = mesure.getValueX();
-        }
-        
-        if(mesure.isRelativeY()) {
-            Layout parentLayout = getParent().getLayout();
-            if(parentLayout.isHeightDefined()) {
-                point.y = parentLayout.getHeight() * 100 / mesure.getValueY();
-            } else {
-                Log.error("Relative height in undefined height parent");
-                point.y =  0;
-            }
-        } else {
-            point.y = mesure.getValueY();
-        }
-        
-        return point;
+    public final Layout getLayout() {
+        return layout;
     }
-    
     
     void assignParent(ViewParent parent) {
         if (mParent == null) {
@@ -89,5 +106,9 @@ public abstract class View {
      */
     public final ViewParent getParent() {
         return mParent;
+    }
+    
+    protected void setLayout(Layout layout) {
+        this.layout = layout;
     }
 }

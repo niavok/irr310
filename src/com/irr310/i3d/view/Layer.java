@@ -14,7 +14,7 @@ public class Layer extends View implements ViewParent {
     }
 
     @Override
-    public void draw() {
+    public void doDraw() {
         for (View widget : children) {
             widget.draw();
         }
@@ -22,11 +22,12 @@ public class Layer extends View implements ViewParent {
     
     @Override
     public View duplicate() {
-        Layer absoluteLayout = new Layer(g);
+        Layer view = new Layer(g);
         for (View widget : children) {
-            absoluteLayout.addChild(widget.duplicate());
+            view.addChild(widget.duplicate());
         }
-        return absoluteLayout;
+        view.setLayout(getLayout().duplicate());
+        return view;
     }
     
     public void addChild(View widget) {
@@ -35,9 +36,9 @@ public class Layer extends View implements ViewParent {
     }
     
     @Override
-    public boolean computeSize() {
+    public boolean doLayout(Layout parentLayout) {
         for (View widget : children) {
-            widget.computeSize();
+            widget.layout(layout);
         }
         return true;
     }
@@ -46,12 +47,6 @@ public class Layer extends View implements ViewParent {
     public void requestLayout() {
         // TODO Auto-generated method stub
         
-    }
-
-    @Override
-    public Layout getLayout() {
-        // TODO Auto-generated method stub
-        return null;
     }
 
 }

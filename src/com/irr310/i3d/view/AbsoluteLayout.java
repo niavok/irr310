@@ -3,18 +3,20 @@ package com.irr310.i3d.view;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.irr310.common.tools.Log;
 import com.irr310.i3d.Graphics;
+import com.irr310.i3d.view.Layout.LayoutMeasure;
 
 public class AbsoluteLayout extends View implements ViewParent {
 
     List<View> children = new ArrayList<View>();
-    
+
     public AbsoluteLayout(Graphics g) {
         super(g);
     }
 
     @Override
-    public void draw() {
+    public void doDraw() {
         for (View widget : children) {
             widget.draw();
         }
@@ -22,17 +24,19 @@ public class AbsoluteLayout extends View implements ViewParent {
 
     @Override
     public View duplicate() {
-        AbsoluteLayout absoluteLayout = new AbsoluteLayout(g);
+        AbsoluteLayout view = new AbsoluteLayout(g);
         for (View widget : children) {
-            absoluteLayout.addChild(widget.duplicate());
+            view.addChild(widget.duplicate());
         }
-        return absoluteLayout;
+        view.setLayout(getLayout().duplicate());
+        return view;
     }
 
     @Override
-    public boolean computeSize() {
+    public boolean doLayout(Layout parentLayout) {
+        
         for (View view : children) {
-            view.computeSize();
+            view.layout(layout);
         }
         return true;
     }
@@ -46,11 +50,6 @@ public class AbsoluteLayout extends View implements ViewParent {
     public void requestLayout() {
         // TODO Auto-generated method stub
         
-    }
-
-    @Override
-    public Layout getLayout() {
-        return null;
     }
 
 }
