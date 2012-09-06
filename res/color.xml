@@ -1,0 +1,5 @@
+<resources>
+    <color name="white">#ffffff</color>
+    <color name="logoPrimary">#000000</color>
+    <color name="logoSecondary">#800000</color>
+</resources>

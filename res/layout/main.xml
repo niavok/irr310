@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AbsoluteLayout
+    i3d:id="main"
+    i3d:layout_width="match_parent"
+    i3d:layout_height="match_parent" >
+
+    <Layer
+        i3d:id="background"
+        i3d:layout_width="match_parent"
+        i3d:layout_height="match_parent" >
+
+        <AbsoluteLayout
+            i3d:id="logo"
+            i3d:layout_width="100px"
+            i3d:layout_height="100px"
+            i3d:align_x="center"
+            i3d:align_y="center" >
+
+            <Triangle
+                i3d:backgroundColor="logoPrimary@color"
+                i3d:layout_width="match_parent"
+            	i3d:layout_height="match_parent"
+                i3d:points="100%,0%|0%,100%|100%,100%" />
+
+            <Triangle
+                i3d:backgroundColor="logoSecondary@color"
+                i3d:points="0%,0%|0%,80%|80%,0%" />
+        </AbsoluteLayout>
+    </Layer>
+
+    <Layer
+        i3d:id="waiter"
+        i3d:layout_width="match_parent"
+        i3d:layout_height="match_parent" >
+
+        <Waiter />
+    </Layer>
+
+</AbsoluteLayout>
