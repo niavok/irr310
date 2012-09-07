@@ -1,7 +1,9 @@
 package com.irr310.i3d.view;
 
+import com.irr310.client.graphics.ether.activities.MainMenuActivity;
 import com.irr310.common.tools.Log;
 import com.irr310.i3d.I3dRessourceManager;
+import com.irr310.i3d.Intent;
 import com.irr310.i3d.Surface;
 import com.irr310.server.Time;
 
@@ -11,10 +13,12 @@ public abstract class Activity implements ViewParent {
     private Layout mLayout;
     private boolean mLayoutUpdated;
 	private Surface parentSurface;
+    private Intent intent;
 
     public abstract void onCreate(Object objectBundle);
-    public abstract void onStart();
+    public abstract void onResume();
     public abstract void onPause();
+    public abstract void onDestroy();
     
     public Activity() {
         mLayoutUpdated = false;
@@ -45,10 +49,6 @@ public abstract class Activity implements ViewParent {
 
     protected void onUpdate(Time absTime, Time gameTime) {
     }
-    
-    public void onResume() {
-    }
-    
     
     @Override
     public ViewParent getParent() {
@@ -82,5 +82,18 @@ public abstract class Activity implements ViewParent {
         mLayout.setWidthDefined(true);
         mLayout.setHeightDefined(true);
 	}
+
+	/**
+	 * Call by the activity to leave the hand to another activity
+	 * @param mainMenuActivity
+	 */
+	protected void startActivity(Intent intent) {
+        parentSurface.startActivity(intent);
+    }
+	
+    public void setIntent(Intent intent) {
+        this.intent = intent;
+    }
+
 
 }

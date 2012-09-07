@@ -48,6 +48,7 @@ import com.irr310.common.event.WorldSizeChangedEvent;
 import com.irr310.common.tools.Vec2;
 import com.irr310.i3d.Color;
 import com.irr310.i3d.I3dContext;
+import com.irr310.i3d.Intent;
 import com.irr310.i3d.Surface;
 import com.irr310.server.Duration;
 import com.irr310.server.Time;
@@ -60,7 +61,7 @@ public class UiEngine extends FramerateEngine {
     private I3dContext context;
     private GraphicEngineEventVisitor eventVisitor;
     private Surface mainSurface;
-    private Surface notificationSurface;
+    private Surface statusSurface;
 
     public UiEngine() {
         framerate = new Duration(16666666);
@@ -79,18 +80,18 @@ public class UiEngine extends FramerateEngine {
         //canvas = new V3DCanvas(context, 1664, 936);
         //canvas.setEnabled(true);
         
-        notificationSurface = SurfaceFactory.buildAbsoluteHeightRelativeWidthSurface(0, 0, 100, 25);
+        statusSurface = SurfaceFactory.buildAbsoluteHeightRelativeWidthSurface(0, 0, 100, 25);
         
         
         
-        notificationSurface.setBackgroundColor(Color.black);
+        statusSurface.setBackgroundColor(Color.black);
         mainSurface = SurfaceFactory.buildFullscreenSurface(25,0,0,0);
         mainSurface.setBackgroundColor(Color.white);
         context.addSurface(mainSurface);
-        context.addSurface(notificationSurface);
+        context.addSurface(statusSurface);
         
         
-        mainSurface.startActivity(new MainActivity());
+        mainSurface.startActivity(new Intent(MainActivity.class));
         
         eventVisitor = new GraphicEngineEventVisitor();
         //fpsIndicator = new GuiFpsIndicator(this);

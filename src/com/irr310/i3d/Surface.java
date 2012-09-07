@@ -1,6 +1,9 @@
 package com.irr310.i3d;
 
 import java.awt.Point;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Stack;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
@@ -11,20 +14,49 @@ import com.irr310.server.Time;
 public class Surface {
 
     private Activity currentActivity;
+    private Stack<Intent> intentStack = new Stack<Intent>();
+    private Map<Intent, Activity> activityMap = new HashMap<Intent, Activity>();
     private Color backgroundColor;
 
     public Surface() {
         backgroundColor = Color.black;
     }
 
-    public void startActivity(Activity activity) {
-        this.currentActivity = activity;
-        activity.assignSurface(this);
-        activity.onCreate(null);
-        activity.onStart();
-        activity.onResume();
+    public void startActivity(Intent intent) {
+        Activity activity = null;
         
+        if(!intentStack.contains(intent)) {
+            // New Activity
+            try {
+                activity = intent.getActivityClass().newInstance();
+                activityMap.put(intent, activity);
+                activity.assignSurface(this);
+                activity.setIntent(intent);
+                activity.onCreate(null);
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            
+        } else {
+            // Set existing activity on top
+            activity = activityMap.get(intent);
+            intentStack.remove(intent);
+        }
+
+        // Pause current activity
+        if(currentActivity != null) {
+            currentActivity.onPause();
+        }
         
+        currentActivity = activity;
+        
+        if(currentActivity != null) {
+            intentStack.push(intent);
+            currentActivity.forceLayout();
+            currentActivity.onResume();
+        }
     }
 
     public void update(Time absTime, Time gameTime) {
