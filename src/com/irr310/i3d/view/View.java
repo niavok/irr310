@@ -4,7 +4,6 @@ import org.lwjgl.opengl.GL11;
 
 import com.irr310.common.tools.Log;
 import com.irr310.i3d.Graphics;
-import com.irr310.i3d.Measure;
 import com.irr310.i3d.view.Layout.LayoutAlign;
 import com.irr310.i3d.view.Layout.LayoutMeasure;
 
@@ -127,4 +126,11 @@ public abstract class View {
     protected void setLayout(Layout layout) {
         this.layout = layout;
     }
+
+	public View findViewById(String id) {
+		if(id.equals(this.id)) {
+			return this;
+		}
+		return null;
+	}
 }

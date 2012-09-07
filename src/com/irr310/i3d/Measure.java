@@ -2,15 +2,19 @@ package com.irr310.i3d;
 
 public class Measure {
 
-    private final int value;
+    private float value;
     private final boolean relative;
 
-    public Measure(int value, boolean relative) {
+    public Measure(float value, boolean relative) {
         this.value = value;
         this.relative = relative;
     }
 
-    public int getValue() {
+    public void setValue(float value) {
+		this.value = value;
+	}
+
+    public float getValue() {
         return value;
     }
 

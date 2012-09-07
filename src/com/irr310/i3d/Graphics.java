@@ -51,7 +51,7 @@ public class Graphics {
      * @param y3 the y value of the third point
      * @param filled to fill the triangle or not
      */
-    public void drawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, boolean filled) {
+    public void drawTriangle(float x1, float y1, float x2, float y2, float x3, float y3, boolean filled) {
         GL11.glBegin(GL11.GL_TRIANGLES);
         GL11.glVertex2f(x3, y3);
         GL11.glVertex2f(x2, y2);

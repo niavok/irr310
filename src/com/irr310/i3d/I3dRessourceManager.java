@@ -75,7 +75,7 @@ public class I3dRessourceManager {
     }
 
     private void parseFile(String fileId) {
-        RessourceFileCache ressourceFileCache = new RessourceFileCache();
+        RessourceFileCache ressourceFileCache = new RessourceFileCache(fileId);
         try {
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
 
@@ -118,7 +118,7 @@ public class I3dRessourceManager {
         } else if (nodeName.equals("Rect")) {
             view = NewRect(element);
         } else if (nodeName.equals("Triangle")) {
-            view = NewTriangle(element);
+            view = NewTriangle(element, ressourceFileCache.getFileId());
         } else if (nodeName.equals("Waiter")) {
             view = NewWaiter(element);
         } else {
@@ -195,7 +195,7 @@ public class I3dRessourceManager {
         return rect;
     }
     
-    private Triangle NewTriangle(Element element) {
+    private Triangle NewTriangle(Element element, String fileId) {
         Triangle triangle = new Triangle(g);
         NamedNodeMap attributes = element.getAttributes();
         for(int i = 0; i < attributes.getLength(); i++) {
@@ -205,7 +205,7 @@ public class I3dRessourceManager {
             String attrValue= attr.getValue();
             
             if(attrName.equals("i3d:id")) {
-                triangle.setId(attrValue);
+                triangle.setId(attrValue+"@"+fileId);
             } else if(attrName.equals("i3d:backgroundColor")) {
                 triangle.setBackgroundColor(loadColor(attrValue));
             } else if(attrName.equals("i3d:layout_width")) {

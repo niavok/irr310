@@ -171,7 +171,9 @@ public class Surface {
         height = tempHeight - marginTop - marginBottom;
         
         
-        
+        if(currentActivity != null) {
+            currentActivity.forceLayout();
+        }
         
 
         //gui.repack();

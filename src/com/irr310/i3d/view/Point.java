@@ -1,15 +1,15 @@
 package com.irr310.i3d.view;
 
 public class Point {
-    public int x;
-    public int y;
+    public float x;
+    public float y;
     
     public Point() {
         x = 0;
         y = 0;
     }
     
-    public Point(int x, int y) {
+    public Point(float x, float y) {
         this.x = x;
         this.y = y;
     }

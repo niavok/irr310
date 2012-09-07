@@ -9,8 +9,8 @@ public class Layout {
     // Output
     boolean widthDefined;
     boolean heightDefined;
-    int width;
-    int height;
+    float width;
+    float height;
     public Point offset;
 
     // Input
@@ -61,7 +61,7 @@ public class Layout {
         this.heightDefined = heightDefined;
     }
 
-    public int getWidth() {
+    public float getWidth() {
         return width;
     }
 
@@ -69,11 +69,11 @@ public class Layout {
         this.width = width;
     }
 
-    public int getHeight() {
+    public float getHeight() {
         return height;
     }
 
-    public void setHeight(int height) {
+    public void setHeight(float height) {
         this.height = height;
     }
 
@@ -81,11 +81,11 @@ public class Layout {
         return offset;
     }
 
-    public void setOffsetX(int x) {
+    public void setOffsetX(float x) {
         offset.x = x;
     }
 
-    public void setOffsetY(int y) {
+    public void setOffsetY(float y) {
         offset.y = y;
     }
 
@@ -145,8 +145,8 @@ public class Layout {
     }
     
     
-    protected int computeMesure(Measure mesure) {
-        int value = 0;
+    public float computeMesure(Measure mesure) {
+    	float value = 0;
         if(mesure.isRelative()) {
             if(isWidthDefined()) {
                 value = getWidth() * mesure.getValue() / 100;
