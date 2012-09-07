@@ -24,7 +24,7 @@
 
             <Triangle
                 i3d:backgroundColor="logoSecondary@color"
-                i3d:points="0%,0%|0%,80%|80%,0%" />
+                i3d:points="0%,0%|0%,75%|75%,0%" />
         </AbsoluteLayout>
     </Layer>
 

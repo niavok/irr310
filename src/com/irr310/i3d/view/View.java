@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL11;
 import com.irr310.common.tools.Log;
 import com.irr310.i3d.Graphics;
 import com.irr310.i3d.Measure;
+import com.irr310.i3d.view.Layout.LayoutAlign;
 import com.irr310.i3d.view.Layout.LayoutMeasure;
 
 public abstract class View {
@@ -67,6 +68,21 @@ public abstract class View {
             throw new RuntimeException("Not implemented");
         }
         
+        if(layout.getLayoutAlignX() == LayoutAlign.CENTER) {
+            if(parentLayout.widthDefined && layout.widthDefined) {
+                layout.setOffsetX(parentLayout.width/2 - layout.width /2);
+            } else {
+                Log.error("'center' align with an undefined parent width or local width");
+            }
+        }
+
+        if(layout.getLayoutAlignY() == LayoutAlign.CENTER) {
+            if(parentLayout.heightDefined && layout.heightDefined) {
+                layout.setOffsetY(parentLayout.height/2 - layout.height /2);
+            } else {
+                Log.error("'center' align with an undefined parent height or local height");
+            }
+        }
         
         return doLayout(parentLayout);
     }
