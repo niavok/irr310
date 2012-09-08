@@ -24,8 +24,8 @@ public class Surface {
 
     public void startActivity(Intent intent) {
         Activity activity = null;
-        
-        if(!intentStack.contains(intent)) {
+
+        if (!intentStack.contains(intent)) {
             // New Activity
             try {
                 activity = intent.getActivityClass().newInstance();
@@ -38,7 +38,7 @@ public class Surface {
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
-            
+
         } else {
             // Set existing activity on top
             activity = activityMap.get(intent);
@@ -46,13 +46,13 @@ public class Surface {
         }
 
         // Pause current activity
-        if(currentActivity != null) {
+        if (currentActivity != null) {
             currentActivity.onPause();
         }
-        
+
         currentActivity = activity;
-        
-        if(currentActivity != null) {
+
+        if (currentActivity != null) {
             intentStack.push(intent);
             currentActivity.forceLayout();
             currentActivity.onResume();
@@ -60,7 +60,9 @@ public class Surface {
     }
 
     public void update(Time absTime, Time gameTime) {
-        if(currentActivity != null) {
+        Activity lastActivity = null;
+        while (currentActivity != lastActivity && currentActivity != null) {
+            lastActivity = currentActivity;
             currentActivity.update(absTime, gameTime);
         }
     }
@@ -68,56 +70,48 @@ public class Surface {
     public Color getBackgroundColor() {
         return backgroundColor;
     }
-    
+
     public void setBackgroundColor(Color backgroundColor) {
         this.backgroundColor = backgroundColor;
     }
-    
+
     public void draw() {
         GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
-        
-        
+
         GL11.glViewport(x, y, width, height);
         GL11.glScissor(x, y, width, height);
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
         GL11.glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-        
+
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
-        
-        //2D
+
+        // 2D
         GLU.gluOrtho2D(0, width, height, 0);
-        
-        
+
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glLoadIdentity();
-        
+
         GL11.glDisable(GL11.GL_DEPTH_TEST);
-        
-        if(currentActivity != null) {
+
+        if (currentActivity != null) {
             currentActivity.draw();
         }
-        
-        
+
         GL11.glPopAttrib();
     }
-    
-    
-    
+
     public enum LocationMode {
 
-        ABSOLUTE,
-        RELATIVE,
-        ABSOLUTE_INVERT,
-        RELATIVE_INVERT,
+        ABSOLUTE, RELATIVE, ABSOLUTE_INVERT, RELATIVE_INVERT,
     }
 
     //
-    //------------------
+    // ------------------
     // Private stuff
-    //------------------
+    // ------------------
     //
 
     public int preferredX;
@@ -141,16 +135,19 @@ public class Surface {
     public int mouseX = 0;
     public int mouseY = 0;
     private Point lastMousePosition = new Point();
-    
-    /**
-     * Internal private method
-     * @return
-     */
-    /*public boolean isFocused() {
-    }*/
 
     /**
      * Internal private method
+     * 
+     * @return
+     */
+    /*
+     * public boolean isFocused() { }
+     */
+
+    /**
+     * Internal private method
+     * 
      * @param parentWidth
      * @param parentHeight
      */
@@ -193,7 +190,6 @@ public class Surface {
             tempHeight = (preferredHeight * parentHeight) / 100;
         }
 
-
         mouseX = tempX;
         mouseY = tempY;
 
@@ -201,21 +197,20 @@ public class Surface {
         y = parentHeight - tempY - tempHeight - marginBottom;
         width = tempWidth - marginLeft - marginRight;
         height = tempHeight - marginTop - marginBottom;
-        
-        
-        if(currentActivity != null) {
+
+        if (currentActivity != null) {
             currentActivity.forceLayout();
         }
-        
 
-        //gui.repack();
-        //camera.setSize(width, height);
-        //gui.generate();
+        // gui.repack();
+        // camera.setSize(width, height);
+        // gui.generate();
 
     }
 
     /**
      * Internal private method
+     * 
      * @param mouseX
      * @param mouseY
      * @return
@@ -235,6 +230,7 @@ public class Surface {
 
     /**
      * Internal private method
+     * 
      * @param testMouseX
      * @param testMouseY
      * @return
@@ -254,6 +250,7 @@ public class Surface {
 
     /**
      * Internal private method
+     * 
      * @return
      */
     public Point getLastMousePosition() {
@@ -262,13 +259,11 @@ public class Surface {
 
     /**
      * Internal private method
+     * 
      * @param lastMousePosition
      */
     public void setLastMousePosition(Point lastMousePosition) {
         this.lastMousePosition = lastMousePosition;
     }
-    
-    
-    
-    
+
 }
