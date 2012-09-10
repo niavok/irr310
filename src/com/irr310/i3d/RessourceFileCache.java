@@ -3,12 +3,15 @@ package com.irr310.i3d;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.irr310.i3d.fonts.Font;
 import com.irr310.i3d.view.View;
 
 public class RessourceFileCache {
 
     Map<String, Color> colorCache = new HashMap<String, Color>();
-    Map<String, View> widgetCache = new HashMap<String, View>();
+    Map<String, Font> fontCache = new HashMap<String, Font>();
+    Map<String, View> viewCache = new HashMap<String, View>();
+    Map<String, String> stringCache = new HashMap<String, String>();
 	private String fileId;
 
     public RessourceFileCache(String fileId) {
@@ -16,7 +19,7 @@ public class RessourceFileCache {
 	}
     
     public View getView(String id) {
-        View widget = widgetCache.get(id);
+        View widget = viewCache.get(id);
         if(widget != null) {
             return widget.duplicate();
         }
@@ -32,13 +35,26 @@ public class RessourceFileCache {
     }
 
     public void addWidget(String id, View widget) {
-        widgetCache.put(id, widget);       
+        viewCache.put(id, widget);       
     }
 
 	public String getFileId() {
 		return fileId;
 	}
 
-   
+    public Font getFont(String id) {
+        return  fontCache.get(id);
+    }
 
+    public void addFont(String id, Font font) {
+        fontCache.put(id,font);
+    }
+
+    public void addString(String id, String string) {
+        stringCache.put(id,string);
+    }
+    
+    public String getString(String id) {
+        return stringCache.get(id);
+    }
 }

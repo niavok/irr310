@@ -135,6 +135,7 @@ public class Surface {
     public int mouseX = 0;
     public int mouseY = 0;
     private Point lastMousePosition = new Point();
+    private I3dContext context;
 
     /**
      * Internal private method
@@ -264,6 +265,10 @@ public class Surface {
      */
     public void setLastMousePosition(Point lastMousePosition) {
         this.lastMousePosition = lastMousePosition;
+    }
+
+    public void setContext(I3dContext context) {
+        this.context = context;
     }
 
 }

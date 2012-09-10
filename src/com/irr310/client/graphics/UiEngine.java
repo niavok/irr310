@@ -69,8 +69,7 @@ public class UiEngine extends FramerateEngine {
 
     @Override
     protected void init() {
-        context = new I3dContext();
-        
+        context = I3dContext.getInstance();
         context.initCanvas("IRR310", 1664, 936);
         
         context.start();
@@ -90,8 +89,6 @@ public class UiEngine extends FramerateEngine {
         context.addSurface(mainSurface);
         context.addSurface(statusSurface);
         
-        
-        mainSurface.startActivity(new Intent(MainActivity.class));
         
         eventVisitor = new GraphicEngineEventVisitor();
         //fpsIndicator = new GuiFpsIndicator(this);
@@ -145,6 +142,7 @@ public class UiEngine extends FramerateEngine {
         @Override
         public void visit(StartEngineEvent event) {
             pause(false);
+            mainSurface.startActivity(new Intent(MainActivity.class));
             context.show();
             //changeRenderer(new MenuGraphicRenderer(UiEngine.this));
         }

@@ -2,6 +2,8 @@ package com.irr310.i3d.view;
 
 import com.irr310.client.graphics.ether.activities.MainMenuActivity;
 import com.irr310.common.tools.Log;
+import com.irr310.i3d.Bundle;
+import com.irr310.i3d.I3dContext;
 import com.irr310.i3d.I3dRessourceManager;
 import com.irr310.i3d.Intent;
 import com.irr310.i3d.Surface;
@@ -15,7 +17,7 @@ public abstract class Activity implements ViewParent {
 	private Surface parentSurface;
     private Intent intent;
 
-    public abstract void onCreate(Object objectBundle);
+    public abstract void onCreate(Bundle bundle);
     public abstract void onResume();
     public abstract void onPause();
     public abstract void onDestroy();

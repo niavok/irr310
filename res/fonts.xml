@@ -1,3 +1,5 @@
 <resources>
-    <font name="default" font="Ubuntu" size="10" />
+    <font name="default" font="Ubuntu" size="58" />
+    <font name="default-bold" font="Ubuntu" size="12" style="bold"/>
+    <font name="title" font="Ubuntu" size="18" style="bold"/>
 </resources>

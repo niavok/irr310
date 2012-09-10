@@ -1,5 +1,8 @@
 package com.irr310.client.graphics.ether.activities;
 
+import com.irr310.common.tools.Log;
+import com.irr310.i3d.Bundle;
+import com.irr310.i3d.I3dContext;
 import com.irr310.i3d.Intent;
 import com.irr310.i3d.Measure;
 import com.irr310.i3d.view.Activity;
@@ -18,16 +21,18 @@ public class MainActivity extends Activity {
     private float lastLastOffset;
 
     @Override
-    public void onCreate(Object objectBundle) {
+    public void onCreate(Bundle bundle) {
         setContentView("main@layout/main");
-
+        Log.trace("onCreate");
         mobileLogoPart = (Triangle) findViewById("logoRedPart@layout/logo");
         animationMesure = new Measure(0, true);
+        I3dContext.getInstance().preload();
     }
 
     @Override
     public void onResume() {
         startTime = Time.now(false);
+        Log.trace("onResume "+startTime.getSeconds());
         axisX = true;
         lastOffset = 0;
         lastLastOffset = 0;
@@ -35,17 +40,19 @@ public class MainActivity extends Activity {
 
     @Override
     public void onPause() {
-
+        Log.trace("onPause");
     }
     
     @Override
     public void onDestroy() {
+        Log.trace("onDestroy");
     }
 
     @Override
     protected void onUpdate(Time absTime, Time gameTime) {
+        Log.trace("onUpdate "+absTime.getSeconds()+ " "+ Time.now(false).getSeconds()+ " "+gameTime.getSeconds());
         Duration duration = startTime.durationTo(absTime);
-
+        Log.trace("onUpdate duration "  +duration.getSeconds());
         // Log.trace("Update animatation after "+duration.getMilliseconds()+" ms ("+(1f/duration.getSeconds())+"fps)");
         //startTime = absTime;
 
@@ -54,7 +61,7 @@ public class MainActivity extends Activity {
 
         float offset = layout.computeMesure(animationMesure);
 
-        // Log.trace("Offset: "+offset);
+        Log.trace("Offset: "+offset);
         if (axisX) {
             layout.setOffsetX(offset);
         } else {

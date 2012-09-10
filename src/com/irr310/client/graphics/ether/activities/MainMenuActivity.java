@@ -1,6 +1,7 @@
 package com.irr310.client.graphics.ether.activities;
 
 import com.irr310.common.tools.Log;
+import com.irr310.i3d.Bundle;
 import com.irr310.i3d.Intent;
 import com.irr310.i3d.Measure;
 import com.irr310.i3d.view.Activity;
@@ -16,7 +17,7 @@ public class MainMenuActivity extends Activity {
     private Time startTime;
 
     @Override
-    public void onCreate(Object objectBundle) {
+    public void onCreate(Bundle bundle) {
         setContentView("main@layout/mainmenu");
 
       //  mobileLogoPart = (Triangle) findViewById("logoRedPart@layout/logo");

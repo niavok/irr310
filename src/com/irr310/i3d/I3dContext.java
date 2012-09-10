@@ -3,16 +3,29 @@ package com.irr310.i3d;
 import java.util.ArrayList;
 import java.util.List;
 
+
+import com.irr310.i3d.fonts.Font;
 import com.irr310.server.Time;
+
 
 
 public class I3dContext {
 
+    private static final I3dContext instance = new I3dContext();
     private I3dCanvas canvas;
     private Graphics graphics;
     private List<Surface> surfaceList = new ArrayList<Surface>();
+    private Font defaultFont;
+    private TextureManager textureManager;
     
+    public static I3dContext getInstance() {
+        return instance;
+    }
     
+    private I3dContext() {
+        textureManager = new TextureManager();
+    }
+
     public void initCanvas(String title, int width, int height) {
         canvas = new I3dCanvas(this, title, width, height);
         graphics = new Graphics();
@@ -50,5 +63,26 @@ public class I3dContext {
 
     public void destroy() {
         canvas.destroy();
+    }
+
+    public void preload() {
+        new Thread() {
+
+            public void run() {
+                //Generate font cache
+                defaultFont = I3dRessourceManager.getInstance().loadFont("default@fonts");
+                
+                
+                //Generate shaders
+            };
+        }.start();
+    }
+
+    public Font getDefaultFont() {
+        return defaultFont;
+    }
+
+    public TextureManager getTextureManager() {
+        return textureManager;
     }
 }

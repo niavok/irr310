@@ -1,5 +1,6 @@
 package com.irr310.client.graphics;
 
+import com.irr310.i3d.I3dContext;
 import com.irr310.i3d.Surface;
 
 public class SurfaceFactory {
@@ -9,8 +10,9 @@ public class SurfaceFactory {
      * @param camera
      * @return
      */
-    public static Surface buildFullscreenSurface() {
+    public static Surface buildFullscreenSurface(I3dContext context) {
         Surface surface = new Surface();
+        surface.setContext(context);
         surface.preferredX = 0;
         surface.preferredY = 0;
         surface.preferredWidth = 100;

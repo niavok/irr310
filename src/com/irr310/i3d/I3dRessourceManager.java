@@ -19,11 +19,14 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.irr310.common.tools.Log;
+import com.irr310.i3d.fonts.Font;
+import com.irr310.i3d.fonts.FontFactory;
 import com.irr310.i3d.view.AbsoluteLayout;
 import com.irr310.i3d.view.Layer;
 import com.irr310.i3d.view.Layout.LayoutAlign;
 import com.irr310.i3d.view.Layout.LayoutMeasure;
 import com.irr310.i3d.view.Rect;
+import com.irr310.i3d.view.TextView;
 import com.irr310.i3d.view.Triangle;
 import com.irr310.i3d.view.View;
 import com.irr310.i3d.view.ViewParent;
@@ -37,7 +40,12 @@ public class I3dRessourceManager {
     private final Map<String, RessourceFileCache> fileCache = new HashMap<String, RessourceFileCache>();
     
     Graphics g;
+    private FontFactory fontFactory;
 
+    public I3dRessourceManager() {
+        fontFactory = new FontFactory();
+    }
+    
     public static I3dRessourceManager getInstance() {
         return instance;
     }
@@ -103,7 +111,7 @@ public class I3dRessourceManager {
         }
 
         fileCache.put(fileId, ressourceFileCache);
-        
+        fontFactory.free();
     }
 
     private View ParseView(Element element, RessourceFileCache ressourceFileCache) {
@@ -123,6 +131,8 @@ public class I3dRessourceManager {
             view = NewTriangle(element, ressourceFileCache.getFileId());
         } else if (nodeName.equals("Waiter")) {
             view = NewWaiter(element);
+        } else if (nodeName.equals("TextView")) {
+            view = NewTextView(element);
         } else {
             // TODO error
             Log.trace("ERROR unknown nodeName=" + nodeName);
@@ -181,6 +191,16 @@ public class I3dRessourceManager {
                 String colorName = subElement.getAttribute("name");
                 Color color = new Color(subElement.getTextContent());
                 ressourceFileCache.addColor(colorName, color);
+            } else if(subElement.getNodeName().equals("string")) {
+                    String stringName = subElement.getAttribute("name");
+                    String string = subElement.getTextContent();
+                    ressourceFileCache.addString(stringName, string);
+            } else if(subElement.getNodeName().equals("font")) {
+                String fontName = subElement.getAttribute("name");
+                String fontCode = subElement.getAttribute("font");
+                int fontSize = Integer.parseInt(subElement.getAttribute("size"));
+                Font font = fontFactory.generateFont(fontCode, fontSize);
+                ressourceFileCache.addFont(fontName, font);
             } else {
                 Log.error("Unknonw resources: "+subElement.getNodeName());
             }
@@ -350,12 +370,52 @@ public class I3dRessourceManager {
         
         return absoluteLayout;
     }
+    
+    
+    private TextView NewTextView(Element element) {
+        TextView textView = new TextView(g);
+
+        NamedNodeMap attributes = element.getAttributes();
+        for(int i = 0; i < attributes.getLength(); i++) {
+            Node item = attributes.item(i);
+            Attr attr = (Attr) item;
+            String attrName = attr.getName();
+            String attrValue= attr.getValue();
+
+            if(checkId(attrName, attrValue, textView));
+            else if(checkColor(attrName, attrValue, textView));
+            else if(checkText(attrName, attrValue, textView));
+            else {
+                Log.error("Unknown attrib '" + attrName+"="+attrValue+"' for TextView");
+            }
+        }
+        
+        return textView;
+    }
 
     
     private boolean checkId(String attrName, String attrValue, View view) {
         boolean used = false;
         if(attrName.equals("i3d:id")) {
             view.setId(attrValue);
+            used = true;
+        }
+        return used;
+    }
+    
+    private boolean checkColor(String attrName, String attrValue, TextView view) {
+        boolean used = false;
+        if(attrName.equals("i3d:color")) {
+            view.setTextColor(loadColor(attrValue));
+            used = true;
+        }
+        return used;
+    }
+    
+    private boolean checkText(String attrName, String attrValue, TextView view) {
+        boolean used = false;
+        if(attrName.equals("i3d:text")) {
+            view.setText(loadString(attrValue));
             used = true;
         }
         return used;
@@ -449,4 +509,50 @@ public class I3dRessourceManager {
         return color;
     }
     
+private String loadString(String stringId) {
+        
+        String[] stringParts = stringId.split("@");
+        String localId = stringParts[0];
+        String fileId = stringParts[1];
+
+        String string = null;
+
+        if(fileCache.containsKey(fileId)) {
+            
+        } else {
+            parseFile(fileId);
+        }
+        
+        RessourceFileCache ressourceFileCache = fileCache.get(fileId);
+        string = ressourceFileCache.getString(localId);
+
+        if(string == null) {
+            Log.error("Unknown string '" + stringId);
+        }
+
+        return string;
+    }
+    
+    Font loadFont(String fontId) {
+        String[] fontParts = fontId.split("@");
+        String localId = fontParts[0];
+        String fileId = fontParts[1];
+
+        Font font = null;
+
+        if(fileCache.containsKey(fileId)) {
+            
+        } else {
+            parseFile(fileId);
+        }
+        
+        RessourceFileCache ressourceFileCache = fileCache.get(fileId);
+        font = ressourceFileCache.getFont(localId);
+
+        if(font == null) {
+            Log.error("Unknown font '" + fontId);
+        }
+
+        return font;
+    }
 }

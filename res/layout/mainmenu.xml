@@ -8,16 +8,16 @@
         i3d:id="background"
         i3d:layout_width="match_parent"
         i3d:layout_height="match_parent" >
-		<HorizontalLayout>
+		<!--  <HorizontalLayout>
 		<TextView
 			i3d:text="irr@strings"
 			i3d:color="logoSecondary@color"
-		/>
+		/>-->
 		<TextView
 			i3d:text="310@strings"
 			i3d:color="logoPrimary@color"
 		/>
-		</HorizontalLayout>
+		<!--  </HorizontalLayout>-->
 		
         
     </Layer>
