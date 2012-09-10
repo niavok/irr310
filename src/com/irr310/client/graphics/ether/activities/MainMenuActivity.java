@@ -11,15 +11,15 @@ import com.irr310.server.Time;
 
 public class MainMenuActivity extends Activity {
 
-    private Triangle mobileLogoPart;
+    //private Triangle mobileLogoPart;
     private Measure animationMesure;
     private Time startTime;
 
     @Override
     public void onCreate(Object objectBundle) {
-        setContentView("main@layout/main");
+        setContentView("main@layout/mainmenu");
 
-        mobileLogoPart = (Triangle) findViewById("logoRedPart@layout/main");
+      //  mobileLogoPart = (Triangle) findViewById("logoRedPart@layout/logo");
         animationMesure = new Measure(0, true);
 
     }
@@ -44,7 +44,7 @@ public class MainMenuActivity extends Activity {
         // Log.trace("Update animatation after "+duration.getMilliseconds()+" ms ("+(1f/duration.getSeconds())+"fps)");
         //startTime = absTime;
 
-        Layout layout = mobileLogoPart.getLayout();
+        /*Layout layout = mobileLogoPart.getLayout();
         animationMesure.setValue((float) (25f / 4.2f * (1 + Math.sin(absTime.getSeconds() * 4))));
 
         float offset = layout.computeMesure(animationMesure);
@@ -55,10 +55,10 @@ public class MainMenuActivity extends Activity {
 
         
         // layout.setOffsetY(offset);
-            
-        if(duration.getSeconds() > 2) {
+         */   
+        /*if(duration.getSeconds() > 2) {
             startActivity(new Intent(MainActivity.class));
-        }
+        }*/
     }
 
 }

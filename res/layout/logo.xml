@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AbsoluteLayout i3d:id="main" i3d:layout_width="match_parent"
+	i3d:layout_height="match_parent">
+
+	<Triangle i3d:backgroundColor="logoPrimary@color"
+		i3d:layout_width="match_parent" i3d:layout_height="match_parent"
+		i3d:points="100%,0%|0%,100%|100%,100%" />
+
+	<Triangle i3d:id="logoRedPart" i3d:backgroundColor="logoSecondary@color"
+		i3d:points="0%,0%|0%,75%|75%,0%" />
+
+</AbsoluteLayout>

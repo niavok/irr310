@@ -111,7 +111,9 @@ public class I3dRessourceManager {
         Log.trace("nodeName=" + nodeName);
 
         View view = null;
-        if (nodeName.equals("AbsoluteLayout")) {
+        if(nodeName.equals("View")) {
+            view = LinkView(element, ressourceFileCache.getFileId());
+        } else if (nodeName.equals("AbsoluteLayout")) {
             view = NewAbsoluteLayout(element);
         } else if (nodeName.equals("Layer")) {
             view = NewLayer(element);
@@ -142,6 +144,25 @@ public class I3dRessourceManager {
 
         if(view.getId() != null) {
             ressourceFileCache.addWidget(view.getId(), view);
+        }
+        
+        return view;
+    }
+
+    private View LinkView(Element element, String fileId) {
+        String ref = element.getAttribute("i3d:ref");
+        View view = loadView(ref).duplicate();
+        
+        NamedNodeMap attributes = element.getAttributes();
+        for(int i = 0; i < attributes.getLength(); i++) {
+            Node item = attributes.item(i);
+            Attr attr = (Attr) item;
+            String attrName = attr.getName();
+            String attrValue= attr.getValue();
+            
+            if(attrName.equals("i3d:id")) {
+                view.setId(attrValue+"@"+fileId);
+            }
         }
         
         return view;

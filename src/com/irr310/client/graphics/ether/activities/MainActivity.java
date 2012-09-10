@@ -21,7 +21,7 @@ public class MainActivity extends Activity {
     public void onCreate(Object objectBundle) {
         setContentView("main@layout/main");
 
-        mobileLogoPart = (Triangle) findViewById("logoRedPart@layout/main");
+        mobileLogoPart = (Triangle) findViewById("logoRedPart@layout/logo");
         animationMesure = new Measure(0, true);
     }
 
