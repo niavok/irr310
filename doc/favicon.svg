@@ -17,7 +17,7 @@
    inkscape:export-filename="/home/fred/projets/irr310/doc/favicon.png"
    inkscape:export-xdpi="54.529999"
    inkscape:export-ydpi="54.529999"
-   sodipodi:docname="Nouveau document 17">
+   sodipodi:docname="favicon.svg">
   <defs
      id="defs5716" />
   <sodipodi:namedview
@@ -27,9 +27,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4"
-     inkscape:cx="152.24171"
-     inkscape:cy="68.533518"
+     inkscape:zoom="3.959798"
+     inkscape:cx="41.586292"
+     inkscape:cy="29.833033"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -37,10 +37,10 @@
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     inkscape:window-width="1855"
-     inkscape:window-height="1176"
-     inkscape:window-x="65"
-     inkscape:window-y="24"
+     inkscape:window-width="1680"
+     inkscape:window-height="1026"
+     inkscape:window-x="1920"
+     inkscape:window-y="174"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata5719">
@@ -50,7 +50,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -66,7 +66,7 @@
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccc" />
     <path
-       style="fill:#6c0000;fill-opacity:1;stroke:none;stroke-width:0.16741180000000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="fill:#800000;fill-opacity:1;stroke:none;stroke-width:0.16741180000000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 348.87228,506.225 0,37.38309 37.39254,-37.48184 z"
        id="path5597"
        inkscape:connector-curvature="0"
