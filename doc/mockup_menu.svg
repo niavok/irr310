@@ -1223,6 +1223,30 @@
        y1="2521.614"
        x2="2777.6357"
        y2="2521.614" />
+    <filter
+       inkscape:collect="always"
+       id="filter17333"
+       x="-0.2280221"
+       width="1.4560442"
+       y="-0.25711475"
+       height="1.5142295">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="37.552209"
+         id="feGaussianBlur17335" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       id="filter17359"
+       x="-0.16668052"
+       width="1.333361"
+       y="-0.22311567"
+       height="1.4462313">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="18.50592"
+         id="feGaussianBlur17361" />
+    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -1231,9 +1255,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.5"
-     inkscape:cx="2960.411"
-     inkscape:cy="3078.8286"
+     inkscape:zoom="0.31899353"
+     inkscape:cx="2860.0554"
+     inkscape:cy="2759.0734"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
