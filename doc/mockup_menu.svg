@@ -1453,9 +1453,9 @@
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient8345"
-       id="linearGradient8540"
+       id="linearGradient8916"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(-85.940056,10253.578)"
+       gradientTransform="translate(-85.940056,10260.443)"
        x1="1755.4207"
        y1="3875.2996"
        x2="1755.4207"
@@ -1463,9 +1463,9 @@
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient8345"
-       id="linearGradient8542"
+       id="linearGradient8918"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(-88.122456,10323.578)"
+       gradientTransform="translate(-88.122456,10330.443)"
        x1="1755.4207"
        y1="3875.2996"
        x2="1755.4207"
@@ -1478,9 +1478,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.25"
-     inkscape:cx="457.63163"
-     inkscape:cy="-3459.8197"
+     inkscape:zoom="0.5"
+     inkscape:cx="1203.6797"
+     inkscape:cy="783.71643"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -7887,7 +7887,7 @@
          sodipodi:role="line"
          id="tspan15992"
          x="143.52353"
-         y="10617.878">3 stopped tasks</tspan></text>
+         y="10617.878">3 paused tasks</tspan></text>
     <path
        style="fill:#800000;fill-opacity:1;stroke:none"
        d="m 262.97334,10609.918 9.9295,0 -4.9648,7.549 z"
@@ -10665,7 +10665,7 @@
          y="12325.021"
          x="1757.6543"
          id="tspan7916"
-         sodipodi:role="line">Update</tspan></text>
+         sodipodi:role="line">Upgrate</tspan></text>
     <rect
        style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect7922"
@@ -11782,5 +11782,65 @@
        d="m 9.0292444,17363.044 0,15.226 15.1564996,-15.226 z"
        style="fill:#cccccc;fill-opacity:1;stroke:none"
        sodipodi:nodetypes="cccc" />
+    <path
+       style="fill:#f2f2f2;fill-opacity:0.78431373;stroke:none"
+       d="m 1461.7396,14063.093 415.1627,0 0,228.274 -13.4742,13.558 -414.6869,0 0,-228.439 z"
+       id="path8896"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccc" />
+    <path
+       style="fill:#800000;fill-opacity:1;stroke:#f2f2f2;stroke-opacity:1"
+       d="m 1538.1412,14229.142 271.6825,0 0,31.101 -13.4742,13.558 -271.2067,0 0,-31.266 z"
+       id="path8898"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccc" />
+    <path
+       sodipodi:nodetypes="ccccccc"
+       inkscape:connector-curvature="0"
+       id="path8900"
+       d="m 1539.0064,14086.263 272.4563,0 0,31.415 -13.219,13.744 -272.1144,0 0,-31.534 z"
+       style="fill:url(#linearGradient8916);fill-opacity:1;stroke:#5f5f5f;stroke-opacity:1" />
+    <text
+       xml:space="preserve"
+       style="font-size:37.51154327px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu;-inkscape-font-specification:Ubuntu"
+       x="1612.4318"
+       y="14118.387"
+       id="text8902"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan8904"
+         x="1612.4318"
+         y="14118.387"
+         style="font-size:32.15274811px;fill:#000000">Senators</tspan></text>
+    <path
+       style="fill:url(#linearGradient8918);fill-opacity:1;stroke:#5f5f5f;stroke-opacity:1"
+       d="m 1536.824,14156.263 272.4563,0 0,31.415 -13.219,13.744 -272.1144,0 0,-31.534 z"
+       id="path8906"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccc" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text8908"
+       y="14260.387"
+       x="1616.2169"
+       style="font-size:37.51154327px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Ubuntu;-inkscape-font-specification:Ubuntu"
+       xml:space="preserve"><tspan
+         style="font-size:32.15274811px;fill:#ffffff"
+         y="14260.387"
+         x="1616.2169"
+         id="tspan8910"
+         sodipodi:role="line">Design</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:37.51154327px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu;-inkscape-font-specification:Ubuntu"
+       x="1621.5944"
+       y="14190.387"
+       id="text8912"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan8914"
+         x="1621.5944"
+         y="14190.387"
+         style="font-size:32.15274811px;fill:#000000">Laws</tspan></text>
   </g>
 </svg>
