@@ -1,32 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<AbsoluteLayout
+<RelativeLayout
     i3d:id="main"
     i3d:layout_width="match_parent"
     i3d:layout_height="match_parent" >
 
-    <Layer
-        i3d:id="background"
-        i3d:layout_width="match_parent"
-        i3d:layout_height="match_parent" >
+    <View
+        i3d:id="logo"
+        i3d:layout_width="100px"
+        i3d:layout_height="100px"
+        i3d:layout_gravity_x="center"
+        i3d:layout_gravity_y="center"
+        i3d:ref="main@layout/logo" />
 
-        <AbsoluteLayout
-            i3d:layout_width="100px"
-            i3d:layout_height="100px"
-            i3d:align_x="center"
-            i3d:align_y="center" >
-            
-            <View
-            	i3d:id="logo"
-            	i3d:ref="main@layout/logo" />
-        </AbsoluteLayout>
-    </Layer>
-
-    <Layer
-        i3d:id="waiter"
-        i3d:layout_width="match_parent"
-        i3d:layout_height="match_parent" >
-
-        <Waiter />
-    </Layer>
-
-</AbsoluteLayout>
+</RelativeLayout>

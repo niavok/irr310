@@ -10,7 +10,6 @@ public class Waiter extends View {
 
     @Override
     public void doDraw() {
-        // TODO Auto-generated method stub
     }
     
     @Override
@@ -20,8 +19,10 @@ public class Waiter extends View {
     }
 
     @Override
-    public boolean doLayout(Layout parentLayout) {
-        // TODO Auto-generated method stub
-        return false;
+    public void onLayout(float l, float t, float r, float b) {
+    }
+
+    @Override
+    public void onMeasure() {
     }
 }

@@ -33,12 +33,15 @@ public class Rect extends View {
         Rect view = new Rect(g);
         view.setBackgroundColor(backgroundColor);
         view.setSize(size);
-        view.setLayout(getLayout());
+        view.setLayout(getLayoutParams());
         return view;
     }
-    
+
     @Override
-    public boolean doLayout(Layout parentLayout) {
-        return false;
+    public void onLayout(float l, float t, float r, float b) {
+    }
+
+    @Override
+    public void onMeasure() {
     }
 }

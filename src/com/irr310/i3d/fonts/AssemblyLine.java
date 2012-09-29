@@ -22,6 +22,7 @@ package com.irr310.i3d.fonts;
 import java.awt.FontMetrics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author Johannes Schaback, last edited by $Author: marcmenghin $, $Date: 2009-03-13 15:56:05 +0100 (Fr, 13 Mär 2009) $
@@ -29,7 +30,7 @@ import java.util.ArrayList;
  */
 public class AssemblyLine
 {
-  private ArrayList<RenderStage> stages = new ArrayList<RenderStage>();
+  private CopyOnWriteArrayList<RenderStage> stages = new CopyOnWriteArrayList<RenderStage>();
 
   public void execute(FontMetrics fontMetrics, BufferedImage image, char c, int safetyMargin)
   {

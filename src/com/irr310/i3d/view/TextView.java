@@ -2,12 +2,14 @@ package com.irr310.i3d.view;
 
 import org.lwjgl.opengl.GL11;
 
+import com.irr310.common.tools.Log;
 import com.irr310.i3d.Color;
 import com.irr310.i3d.Graphics;
 import com.irr310.i3d.I3dContext;
 import com.irr310.i3d.Texture;
 import com.irr310.i3d.fonts.CharacterPixmap;
 import com.irr310.i3d.fonts.Font;
+import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 
 public class TextView extends View {
 
@@ -15,115 +17,147 @@ public class TextView extends View {
     private Font font;
     String[] wrappedText;
     Color textColor = Color.darkblue;
-    
+
     public TextView(Graphics g) {
         super(g);
         font = I3dContext.getInstance().getDefaultFont();
-        
-        wrappedText = new String[2];
-        wrappedText[0] = "Bonjour ceci est un test de text assez long.";
-        wrappedText[1] = "plop";
+        wrappedText = new String[0];
+
+        // wrappedText[0] = "Bonjour ceci est un test de text assez long.";
+        // wrappedText[1] = "plop";
     }
 
     @Override
     public void doDraw() {
-        
-//          int localX = x + g.getTranslation().getX();
- //         int localXbase = localX;
-   //       int localY = y + g.getTranslation().getY() - getLineHeight();
 
-          int localX = 0;
-          int localXbase = localX;
-          int localY = 0;
-        
-          g.setColor(textColor);
-          GL11.glEnable(GL11.GL_TEXTURE_2D);
-          
-          CharacterPixmap pixmap;
+        // int localX = x + g.getTranslation().getX();
+        // int localXbase = localX;
+        // int localY = y + g.getTranslation().getY() - getLineHeight();
 
-          boolean init = true;
+        int localX = 0;
+        int localXbase = localX;
+        int localY = 0;
 
-          for (String text : wrappedText)
-          {
-            for (int i = 0; i < text.length(); i++)
-            {
-              final char c = text.charAt(i);
-              if (c == '\r' || c == '\f' || c == '\t')
-                continue;
-              else if (c == ' ')
-              {
-                localX += font.getWidth(' ');
-                continue;
-              }
-              pixmap = font.getCharPixMap(c);
+        g.setColor(textColor);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
 
-              if (init)
-              {
-                Texture tex = pixmap.getTexture();
+        CharacterPixmap pixmap;
 
-                if(tex != null) {
-                    if (tex.hasAlpha())
-                    {
-                        GL11.glTexEnvf( GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, GL11.GL_MODULATE );
-                    }
-          
-                    tex.bind();
+        boolean init = true;
+
+        for (String text : wrappedText) {
+            for (int i = 0; i < text.length(); i++) {
+                final char c = text.charAt(i);
+                if (c == '\r' || c == '\f' || c == '\t')
+                    continue;
+                else if (c == ' ') {
+                    localX += font.getWidth(' ');
+                    continue;
                 }
-                GL11.glBegin(GL11.GL_QUADS);
-                init = false;
-              }
+                pixmap = font.getCharPixMap(c);
 
-              final int imgWidth = pixmap.getWidth();
-              final int imgHeight = pixmap.getHeight();
+                if (init) {
+                    Texture tex = pixmap.getTexture();
 
-              final float endY = pixmap.getEndY();
-              final float endX = pixmap.getEndX();
+                    if (tex != null) {
+                        if (tex.hasAlpha()) {
+                            GL11.glTexEnvf(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, GL11.GL_MODULATE);
+                        }
 
-              final float startX = pixmap.getStartX();
-              final float startY = pixmap.getStartY();
+                        tex.bind();
+                    }
+                    GL11.glBegin(GL11.GL_QUADS);
+                    init = false;
+                }
 
-              GL11.glTexCoord2f(startX, startY);
-              GL11.glVertex2i(localX, localY);
+                final int imgWidth = pixmap.getWidth();
+                final int imgHeight = pixmap.getHeight();
 
-              GL11.glTexCoord2f(startX, endY);
-              GL11.glVertex2i(localX, imgHeight + localY);
+                final float endY = pixmap.getEndY();
+                final float endX = pixmap.getEndX();
 
-              GL11.glTexCoord2f(endX, endY);
-              GL11.glVertex2i(imgWidth + localX, imgHeight + localY);
+                final float startX = pixmap.getStartX();
+                final float startY = pixmap.getStartY();
 
-              GL11.glTexCoord2f(endX, startY);
-              GL11.glVertex2i(imgWidth + localX, localY);
+                GL11.glTexCoord2f(startX, startY);
+                GL11.glVertex2i(localX, localY);
 
-              localX += pixmap.getCharWidth();
+                GL11.glTexCoord2f(startX, endY);
+                GL11.glVertex2i(localX, imgHeight + localY);
+
+                GL11.glTexCoord2f(endX, endY);
+                GL11.glVertex2i(imgWidth + localX, imgHeight + localY);
+
+                GL11.glTexCoord2f(endX, startY);
+                GL11.glVertex2i(imgWidth + localX, localY);
+
+                localX += pixmap.getCharWidth();
             }
-            //move to start of next line
+            // move to start of next line
             localY += font.getHeight();
             localX = localXbase;
-          }
-          if (!init)
+        }
+        if (!init)
             GL11.glEnd();
-          GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
     }
 
     public void setTextColor(Color textColor) {
         this.textColor = textColor;
     }
-    
+
     @Override
     public View duplicate() {
         TextView view = new TextView(g);
         view.setId(getId());
         view.setTextColor(textColor);
-        view.setLayout(getLayout().duplicate());
-        
+        view.setLayout(getLayoutParams().duplicate());
+        view.setText(text);
+        view.setFont(font);
         return view;
-    }
-    
-    public boolean doLayout(Layout parentLayout) {
-        return true;
     }
 
     public void setText(String text) {
         this.text = text;
+        wrappedText = new String[1];
+        wrappedText[0] = text;
+    }
+
+    @Override
+    public void onLayout(float l, float t, float r, float b) {
+
+    }
+
+    public void setFont(Font font) {
+        if (font != null) {
+            this.font = font;
+        }
+    }
+
+    @Override
+    public void onMeasure() {
+        float measuredWidth = 0;
+        float measuredHeight = font.getHeight();
+
+        CharacterPixmap pixmap;
+
+        for (int i = 0; i < text.length(); i++) {
+            final char c = text.charAt(i);
+            if (c == '\r' || c == '\f' || c == '\t')
+                continue;
+            else if (c == ' ') {
+                measuredWidth += font.getWidth(' ');
+                continue;
+            }
+            pixmap = font.getCharPixMap(c);
+
+            measuredWidth += pixmap.getCharWidth();
+        }
+        Log.trace("TextView onMeasure "+ text);
+        Log.trace("measuredWidth "+measuredWidth);
+        Log.trace("measuredHeight "+measuredHeight);
+        
+        layoutParams.mContentWidth = measuredWidth;
+        layoutParams.mContentHeight = measuredHeight;
     }
 }

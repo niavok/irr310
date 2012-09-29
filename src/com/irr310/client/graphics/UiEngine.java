@@ -79,12 +79,12 @@ public class UiEngine extends FramerateEngine {
         //canvas = new V3DCanvas(context, 1664, 936);
         //canvas.setEnabled(true);
         
-        statusSurface = SurfaceFactory.buildAbsoluteHeightRelativeWidthSurface(0, 0, 100, 25);
+        statusSurface = SurfaceFactory.buildAbsoluteHeightRelativeWidthSurface(context, 0, 0, 100, 25);
         
         
         
         statusSurface.setBackgroundColor(Color.black);
-        mainSurface = SurfaceFactory.buildFullscreenSurface(25,0,0,0);
+        mainSurface = SurfaceFactory.buildFullscreenSurface(context, 25,0,0,0);
         mainSurface.setBackgroundColor(Color.white);
         context.addSurface(mainSurface);
         context.addSurface(statusSurface);

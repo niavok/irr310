@@ -1470,6 +1470,73 @@
        y1="3875.2996"
        x2="1755.4207"
        y2="3856.0308" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient7942"
+       id="linearGradient8972"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0,1,-1,0,2916.3854,10010.036)"
+       x1="1791.6318"
+       y1="2522.321"
+       x2="2777.6357"
+       y2="2521.614" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient7950"
+       id="linearGradient8974"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0,1,-1,0,2916.3854,10010.036)"
+       x1="1791.8389"
+       y1="2521.614"
+       x2="2777.6357"
+       y2="2521.614" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient8345"
+       id="linearGradient9110"
+       gradientUnits="userSpaceOnUse"
+       x1="1755.4207"
+       y1="3875.2996"
+       x2="1755.4207"
+       y2="3856.0308" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient8345"
+       id="linearGradient9112"
+       gradientUnits="userSpaceOnUse"
+       x1="1755.4207"
+       y1="3875.2996"
+       x2="1755.4207"
+       y2="3856.0308" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient8345"
+       id="linearGradient9114"
+       gradientUnits="userSpaceOnUse"
+       x1="1755.4207"
+       y1="3875.2996"
+       x2="1755.4207"
+       y2="3856.0308" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient7942"
+       id="linearGradient9116"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0,1,-1,0,2916.3854,11132.036)"
+       x1="1791.6318"
+       y1="2522.321"
+       x2="2777.6357"
+       y2="2521.614" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient7950"
+       id="linearGradient9118"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0,1,-1,0,2916.3854,11132.036)"
+       x1="1791.8389"
+       y1="2521.614"
+       x2="2777.6357"
+       y2="2521.614" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -1478,9 +1545,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.5"
-     inkscape:cx="1203.6797"
-     inkscape:cy="783.71643"
+     inkscape:zoom="0.35355339"
+     inkscape:cx="981.6849"
+     inkscape:cy="-1093.2697"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -11842,5 +11909,260 @@
          x="1621.5944"
          y="14190.387"
          style="font-size:32.15274811px;fill:#000000">Laws</tspan></text>
+    <path
+       style="fill:none;stroke:#9f9f9f;stroke-width:3;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 427.2987,13485.305 309.1627,0 0,79.947 -13.4742,13.558 -308.6869,0 0,-80.113 z"
+       id="path8920"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccc" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#4d4d4d;fill-opacity:1;stroke:none;font-family:Sans"
+       x="432.18127"
+       y="13478.222"
+       id="text8922"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan8924"
+         x="432.18127"
+         y="13478.222">Main engine</tspan></text>
+    <path
+       sodipodi:nodetypes="ccccccc"
+       inkscape:connector-curvature="0"
+       id="path8926"
+       d="m 427.2987,13345.298 309.1627,0 0,79.947 -13.4742,13.558 -308.6869,0 0,-80.113 z"
+       style="fill:none;stroke:#9f9f9f;stroke-width:3;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text8928"
+       y="13338.215"
+       x="432.18127"
+       style="font-size:14px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       xml:space="preserve"><tspan
+         y="13338.215"
+         x="432.18127"
+         id="tspan8930"
+         sodipodi:role="line">Hull</tspan></text>
+    <path
+       style="fill:none;stroke:#9f9f9f;stroke-width:3;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 764.42508,13345.298 309.16272,0 0,79.947 -13.4742,13.558 -308.68692,0 0,-80.113 z"
+       id="path8932"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccc" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="792.80566"
+       y="13338.215"
+       id="text8934"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan8936"
+         x="792.80566"
+         y="13338.215">Wings x4</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#4d4d4d;fill-opacity:1;stroke:none;font-family:Sans"
+       x="517.03412"
+       y="13399.026"
+       id="text8938"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan8940"
+         x="517.03412"
+         y="13399.026">Small Structure</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text8942"
+       y="13395.913"
+       x="873.41595"
+       style="font-size:14px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#4d4d4d;fill-opacity:1;stroke:none;font-family:Sans"
+       xml:space="preserve"><tspan
+         y="13395.913"
+         x="873.41595"
+         id="tspan8944"
+         sodipodi:role="line">Small Wing</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text8946"
+       y="13539.026"
+       x="531.94531"
+       style="font-size:14px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#4d4d4d;fill-opacity:1;stroke:none;font-family:Sans"
+       xml:space="preserve"><tspan
+         y="13539.026"
+         x="531.94531"
+         id="tspan8948"
+         sodipodi:role="line">Back engine</tspan></text>
+    <path
+       sodipodi:nodetypes="ccccccc"
+       inkscape:connector-curvature="0"
+       id="path8950"
+       d="m 764.42508,13218.019 309.16272,0 0,79.947 -13.4742,13.558 -308.68692,0 0,-80.113 z"
+       style="fill:none;stroke:#9f9f9f;stroke-width:3;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text8952"
+       y="13210.936"
+       x="792.80566"
+       style="font-size:14px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       xml:space="preserve"><tspan
+         y="13210.936"
+         x="792.80566"
+         id="tspan8954"
+         sodipodi:role="line">WingEngines x4</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#4d4d4d;fill-opacity:1;stroke:none;font-family:Sans"
+       x="864.63519"
+       y="13268.634"
+       id="text8956"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan8958"
+         x="864.63519"
+         y="13268.634">Small  engine</tspan></text>
+    <path
+       style="fill:none;stroke:#9f9f9f;stroke-width:3;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 427.2987,13219.298 309.1627,0 0,79.947 -13.4742,13.558 -308.6869,0 0,-80.113 z"
+       id="path8960"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccc" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="432.18127"
+       y="13212.215"
+       id="text8962"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan8964"
+         x="432.18127"
+         y="13212.215">Head weapon</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text8966"
+       y="13273.026"
+       x="517.03412"
+       style="font-size:14px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#4d4d4d;fill-opacity:1;stroke:none;font-family:Sans"
+       xml:space="preserve"><tspan
+         y="13273.026"
+         x="517.03412"
+         id="tspan8968"
+         sodipodi:role="line">Small Weapon</tspan></text>
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path8970"
+       d="m 394.77134,11802.375 0,981.068"
+       style="fill:url(#linearGradient8972);fill-opacity:1;stroke:url(#linearGradient8974);stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+    <path
+       sodipodi:nodetypes="ccccccc"
+       inkscape:connector-curvature="0"
+       id="path8976"
+       d="m 57.430744,12962.501 309.162696,0 0,31.947 -13.4742,13.559 -308.686896,0 0,-32.114 z"
+       style="fill:#f2f2f2;fill-opacity:1;stroke:#f0bd4e;stroke-opacity:1;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text8978"
+       y="12990.288"
+       x="83.594574"
+       style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       xml:space="preserve"><tspan
+         y="12990.288"
+         x="83.594574"
+         id="tspan8980"
+         sodipodi:role="line">Fighter X34</tspan></text>
+    <g
+       id="g9012"
+       transform="matrix(0.97721378,0,0,0.69365878,-1945.3057,10346.032)">
+      <rect
+         transform="translate(-1.8812816,2.3406696)"
+         y="3788.0864"
+         x="2052.0452"
+         height="6.0747342"
+         width="16.401783"
+         id="rect9014"
+         style="fill:#000000;fill-opacity:1;stroke:none" />
+      <rect
+         style="fill:#000000;fill-opacity:1;stroke:none"
+         id="rect9016"
+         width="16.401783"
+         height="6.0747342"
+         x="2050.1638"
+         y="3798.9431" />
+      <rect
+         y="3807.459"
+         x="2050.1638"
+         height="6.0747342"
+         width="16.401783"
+         id="rect9018"
+         style="fill:#000000;fill-opacity:1;stroke:none" />
+    </g>
+    <path
+       style="fill:#f2f2f2;fill-opacity:1;stroke:none;stroke-width:3;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 57.430744,13026.141 309.162696,0 0,27.947 -13.4742,13.558 -308.686896,0 0,-28.113 z"
+       id="path9070"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccc" />
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="83.594574"
+       y="13053.928"
+       id="text9072"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan9074"
+         x="83.594574"
+         y="13053.928">Machine gun</tspan></text>
+    <path
+       id="path9102"
+       style="fill:#0a0a0a;fill-opacity:1;stroke:none"
+       d="m 65.816844,13038.666 c 0,0 -18,16 0,16 18,0 0,-16 0,-16 z"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="csc" />
+    <path
+       style="fill:url(#linearGradient9116);fill-opacity:1;stroke:url(#linearGradient9118);stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 394.77134,12924.375 0,981.068"
+       id="path9108"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="449.59457"
+       y="12990.288"
+       id="text9120"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan9122"
+         x="449.59457"
+         y="12990.288">Fighter X34</tspan></text>
+    <g
+       transform="matrix(0.97721378,0,0,0.69365878,-1579.3057,10346.032)"
+       id="g9124">
+      <rect
+         style="fill:#000000;fill-opacity:1;stroke:none"
+         id="rect9126"
+         width="16.401783"
+         height="6.0747342"
+         x="2052.0452"
+         y="3788.0864"
+         transform="translate(-1.8812816,2.3406696)" />
+      <rect
+         y="3798.9431"
+         x="2050.1638"
+         height="6.0747342"
+         width="16.401783"
+         id="rect9128"
+         style="fill:#000000;fill-opacity:1;stroke:none" />
+      <rect
+         style="fill:#000000;fill-opacity:1;stroke:none"
+         id="rect9130"
+         width="16.401783"
+         height="6.0747342"
+         x="2050.1638"
+         y="3807.459" />
+    </g>
   </g>
 </svg>

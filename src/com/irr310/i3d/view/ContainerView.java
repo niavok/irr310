@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.irr310.i3d.Graphics;
 
-public class ContainerView extends View implements ViewParent {
+public abstract class ContainerView extends View implements ViewParent {
 
     List<View> children = new ArrayList<View>();
     
@@ -20,28 +20,31 @@ public class ContainerView extends View implements ViewParent {
         }
     }
     
-    @Override
-    public View duplicate() {
-        ContainerView view = new ContainerView(g);
-        for (View widget : children) {
-            view.addChild(widget.duplicate());
-        }
-        view.setLayout(getLayout().duplicate());
-        return view;
-    }
+//    @Override
+//    public View duplicate() {
+//        ContainerView view = new ContainerView(g);
+//        for (View widget : children) {
+//            view.addChild(widget.duplicate());
+//        }
+//        view.setLayout(getLayout().duplicate());
+//        return view;
+//    }
     
     public void addChild(View widget) {
         children.add(widget);
         widget.assignParent(this);
     }
     
-    @Override
-    public boolean doLayout(Layout parentLayout) {
-        for (View widget : children) {
-            widget.layout(layout);
-        }
-        return true;
-    }
+//    @Override
+//    public boolean doLayout(Layout parentLayout) {
+//        for (View widget : children) {
+//            widget.layout(layout);
+//        }
+//        return true;
+//    }
+    
+    
+    
 
     @Override
     public void requestLayout() {

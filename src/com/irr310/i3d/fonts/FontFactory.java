@@ -29,11 +29,15 @@ public class FontFactory {
 
     }
 
-    public Font generateFont(String fontCode, float fontSize) {
+    public Font generateFont(String fontCode, float fontSize, String fontStyle) {
 
         
         
         String style = "R";
+        
+        if(fontStyle.equals("bold")) {
+            style = "B";
+        }
         
         name = fontCode+"-"+style+"-"+fontSize;
         

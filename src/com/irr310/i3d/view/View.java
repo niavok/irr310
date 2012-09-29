@@ -5,8 +5,8 @@ import org.lwjgl.opengl.GL11;
 import com.irr310.common.tools.Log;
 import com.irr310.i3d.Graphics;
 import com.irr310.i3d.I3dContext;
-import com.irr310.i3d.view.Layout.LayoutAlign;
-import com.irr310.i3d.view.Layout.LayoutMeasure;
+import com.irr310.i3d.view.LayoutParams.LayoutAlign;
+import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 
 public abstract class View {
 
@@ -17,19 +17,20 @@ public abstract class View {
      * @see #getParent()
      */
     protected ViewParent mParent;
-    protected Layout layout;
+    protected LayoutParams layoutParams;
     
     Graphics g;
     private String id;
     
     public View(Graphics g) {
         this.g = g;
-        layout = new Layout();
+        layoutParams = new LayoutParams();
     }
     
     public final void draw() {
         GL11.glPushMatrix();
-        GL11.glTranslatef(layout.offset.x, layout.offset.y, 0);
+        //GL11.glTranslatef(layout.offset.x, layout.offset.y, 0);
+        GL11.glTranslatef(layoutParams.mLeft, layoutParams.mTop, 0);
         
         doDraw();
         
@@ -38,57 +39,46 @@ public abstract class View {
     
     public abstract void doDraw();
     
-    public final boolean layout(Layout parentLayout) {
-        
-        if(layout.getLayoutWidthMeasure() == LayoutMeasure.MATCH_PARENT) {
-            if(parentLayout.widthDefined) {
-                layout.width = parentLayout.width;
-                layout.widthDefined = true;
-            } else {
-                Log.error("'match parent' width an undefined parent width");
-            }
-        } else if (layout.getLayoutWidthMeasure() == LayoutMeasure.FIXED) {
-            layout.width =  parentLayout.computeMesure(layout.getMeasurePoint().getX());
-            layout.widthDefined = true;
-        } else {
-            throw new RuntimeException("Not implemented");
-        }
-        
-        if(layout.getLayoutHeightMeasure() == LayoutMeasure.MATCH_PARENT) {
-            if(parentLayout.heightDefined) {
-                layout.height = parentLayout.height;
-                layout.heightDefined = true;
-            } else {
-                Log.error("'match parent' height an undefined parent height");
-            }
-        } else if (layout.getLayoutHeightMeasure() == LayoutMeasure.FIXED) {
-            layout.height =  parentLayout.computeMesure(layout.getMeasurePoint().getY());
-            layout.heightDefined = true;
-        } else {
-            throw new RuntimeException("Not implemented");
-        }
-        
-        if(layout.getLayoutAlignX() == LayoutAlign.CENTER) {
-            if(parentLayout.widthDefined && layout.widthDefined) {
-                layout.setOffsetX(parentLayout.width/2 - layout.width /2);
-            } else {
-                Log.error("'center' align with an undefined parent width or local width");
-            }
-        }
-
-        if(layout.getLayoutAlignY() == LayoutAlign.CENTER) {
-            if(parentLayout.heightDefined && layout.heightDefined) {
-                layout.setOffsetY(parentLayout.height/2 - layout.height /2);
-            } else {
-                Log.error("'center' align with an undefined parent height or local height");
+    public void measure() {
+        if(layoutParams.getLayoutWidthMeasure() == LayoutMeasure.FIXED) {
+            if(!layoutParams.getMeasurePoint().getX().isRelative()) {
+                layoutParams.mContentWidth = layoutParams.computeMesure(layoutParams.getMeasurePoint().getX());
             }
         }
         
-        return doLayout(parentLayout);
+        if(layoutParams.getLayoutHeightMeasure() == LayoutMeasure.FIXED) {
+            if(!layoutParams.getMeasurePoint().getY().isRelative()) {
+                layoutParams.mContentHeight = layoutParams.computeMesure(layoutParams.getMeasurePoint().getY());
+            }
+        }
+        
+        // Set margin
+        if(!layoutParams.getLayoutMarginTop().isRelative()) {
+            layoutParams.mContentHeight +=   layoutParams.computeMesure(layoutParams.getLayoutMarginTop());  
+        }
+        if(!layoutParams.getLayoutMarginBottom().isRelative()) {
+            layoutParams.mContentHeight +=   layoutParams.computeMesure(layoutParams.getLayoutMarginBottom());  
+        }
+        if(!layoutParams.getLayoutMarginLeft().isRelative()) {
+            layoutParams.mContentWidth +=   layoutParams.computeMesure(layoutParams.getLayoutMarginLeft());  
+        }
+        if(!layoutParams.getLayoutMarginRight().isRelative()) {
+            layoutParams.mContentWidth +=   layoutParams.computeMesure(layoutParams.getLayoutMarginRight());  
+        }
+        onMeasure();
     }
     
-    public abstract boolean doLayout(Layout parentLayout);
+    public void layout(float l, float t, float r, float b) {
+        boolean changed = layoutParams.setFrame(l, t, r, b);
+        //if (changed) {
+            onLayout(l, t, r, b);
+        //}
+    }
 
+    public abstract void onLayout(float l, float t, float r, float b);
+    
+    public abstract void onMeasure();
+    
     public void setId(String id) {
         this.id = id;
     }
@@ -99,8 +89,8 @@ public abstract class View {
 
     public abstract View duplicate();
 
-    public final Layout getLayout() {
-        return layout;
+    public final LayoutParams getLayoutParams() {
+        return layoutParams;
     }
     
     void assignParent(ViewParent parent) {
@@ -124,8 +114,8 @@ public abstract class View {
         return mParent;
     }
     
-    protected void setLayout(Layout layout) {
-        this.layout = layout;
+    protected void setLayout(LayoutParams layout) {
+        this.layoutParams = layout;
     }
 
 	public View findViewById(String id) {

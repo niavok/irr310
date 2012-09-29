@@ -39,7 +39,7 @@ public class Triangle extends View {
             mesures[i] = this.mesures[i];
         }
         view.setPoints(mesures);
-        view.setLayout(getLayout().duplicate());
+        view.setLayout(getLayoutParams().duplicate());
         
         return view;
     }
@@ -49,12 +49,16 @@ public class Triangle extends View {
         /*size = new Dimension(Math.max(Math.max(x1, x2), x3) - Math.min(Math.min(x1, x2), x3), Math.max(Math.max(y1, y2), y3)
         - Math.min(Math.min(y1, y2), y3));*/
     }
-    
-    public boolean doLayout(Layout parentLayout) {
+
+    @Override
+    public void onLayout(float l, float t, float r, float b) {
         points = new Point[3];
-        points[0] = new Point(layout.computeMesure(mesures[0].getX()), layout.computeMesure(mesures[0].getY()));
-        points[1] = new Point(layout.computeMesure(mesures[1].getX()), layout.computeMesure(mesures[1].getY()));
-        points[2] = new Point(layout.computeMesure(mesures[2].getX()), layout.computeMesure(mesures[2].getY()));
-        return true;
+        points[0] = new Point(layoutParams.computeMesure(mesures[0].getX()), layoutParams.computeMesure(mesures[0].getY()));
+        points[1] = new Point(layoutParams.computeMesure(mesures[1].getX()), layoutParams.computeMesure(mesures[1].getY()));
+        points[2] = new Point(layoutParams.computeMesure(mesures[2].getX()), layoutParams.computeMesure(mesures[2].getY()));
+    }
+
+    @Override
+    public void onMeasure() {
     }
 }

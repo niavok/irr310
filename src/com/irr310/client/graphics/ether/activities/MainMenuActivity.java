@@ -5,7 +5,7 @@ import com.irr310.i3d.Bundle;
 import com.irr310.i3d.Intent;
 import com.irr310.i3d.Measure;
 import com.irr310.i3d.view.Activity;
-import com.irr310.i3d.view.Layout;
+import com.irr310.i3d.view.LayoutParams;
 import com.irr310.i3d.view.Triangle;
 import com.irr310.server.Duration;
 import com.irr310.server.Time;

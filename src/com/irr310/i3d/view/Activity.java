@@ -12,10 +12,11 @@ import com.irr310.server.Time;
 public abstract class Activity implements ViewParent {
 
     private View mview;
-    private Layout mLayout;
+    private LayoutParams mLayout;
     private boolean mLayoutUpdated;
 	private Surface parentSurface;
     private Intent intent;
+    private I3dContext context;
 
     public abstract void onCreate(Bundle bundle);
     public abstract void onResume();
@@ -28,8 +29,12 @@ public abstract class Activity implements ViewParent {
     
     public void assignSurface(Surface parentSurface) {
         this.parentSurface = parentSurface;
-		mLayout = new Layout();
+		mLayout = new LayoutParams();
         forceLayout();
+    }
+    
+    public void setContext(I3dContext context) {
+        this.context = context;
     }
     
     protected void setContentView(String string) {
@@ -44,7 +49,8 @@ public abstract class Activity implements ViewParent {
     public void update(Time absTime, Time gameTime) {
         if(!mLayoutUpdated) {
             mLayoutUpdated = true;
-            mview.layout(mLayout);
+            mview.measure();
+            mview.layout(mLayout.mLeft, mLayout.mTop, mLayout.mRight,mLayout.mBottom);
         }
         onUpdate(absTime, gameTime);
     }
@@ -77,12 +83,7 @@ public abstract class Activity implements ViewParent {
 	}
 	public void forceLayout() {
 		mLayoutUpdated = false;
-		mLayout.setWidth(parentSurface.width);
-        mLayout.setHeight(parentSurface.height);
-        mLayout.setOffsetX(0);
-        mLayout.setOffsetY(0);
-        mLayout.setWidthDefined(true);
-        mLayout.setHeightDefined(true);
+		mLayout.setFrame(0, 0, parentSurface.width, parentSurface.height);
 	}
 
 	/**
@@ -97,5 +98,8 @@ public abstract class Activity implements ViewParent {
         this.intent = intent;
     }
 
+    public I3dContext getContext() {
+        return context;
+    }
 
 }

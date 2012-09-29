@@ -11,8 +11,7 @@ public class SurfaceFactory {
      * @return
      */
     public static Surface buildFullscreenSurface(I3dContext context) {
-        Surface surface = new Surface();
-        surface.setContext(context);
+        Surface surface = new Surface(context);
         surface.preferredX = 0;
         surface.preferredY = 0;
         surface.preferredWidth = 100;
@@ -30,8 +29,8 @@ public class SurfaceFactory {
         return surface;
     }
     
-    public static Surface buildFullscreenSurface(int marginTop, int marginBottom, int marginLeft, int marginRight) {
-        Surface surface = new Surface();
+    public static Surface buildFullscreenSurface(I3dContext context, int marginTop, int marginBottom, int marginLeft, int marginRight) {
+        Surface surface = new Surface(context);
         surface.preferredX = 0;
         surface.preferredY = 0;
         surface.preferredWidth = 100;
@@ -60,8 +59,8 @@ public class SurfaceFactory {
      * @param height
      * @return
      */
-    public static Surface buildAbsoluteSurface(int x, int y, int width, int height) {
-        Surface surface = new Surface();
+    public static Surface buildAbsoluteSurface(I3dContext context, int x, int y, int width, int height) {
+        Surface surface = new Surface(context);
         surface.preferredX = x;
         surface.preferredY = y;
         surface.preferredWidth = width;
@@ -80,8 +79,8 @@ public class SurfaceFactory {
 
     }
 
-    public static Surface buildAbsoluteHeightRelativeWidthSurface(int x, int y, int width, int height) {
-        Surface surface = new Surface();
+    public static Surface buildAbsoluteHeightRelativeWidthSurface(I3dContext context, int x, int y, int width, int height) {
+        Surface surface = new Surface(context);
         surface.preferredX = x;
         surface.preferredY = y;
         surface.preferredWidth = width;

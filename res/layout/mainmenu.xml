@@ -1,26 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<AbsoluteLayout
+<RelativeLayout
     i3d:id="main"
     i3d:layout_width="match_parent"
     i3d:layout_height="match_parent" >
 
-    <Layer
-        i3d:id="background"
+    <LinearLayout
         i3d:layout_width="match_parent"
-        i3d:layout_height="match_parent" >
-		<!--  <HorizontalLayout>
-		<TextView
-			i3d:text="irr@strings"
-			i3d:color="logoSecondary@color"
-		/>-->
-		<TextView
-			i3d:text="310@strings"
-			i3d:color="logoPrimary@color"
-		/>
-		<!--  </HorizontalLayout>-->
-		
-        
-    </Layer>
+        i3d:layout_height="match_parent"
+        i3d:orientation="vertical" >
 
+        <View
+            i3d:id="logo"
+            i3d:ref="main@layout/logo_text" />
 
-</AbsoluteLayout>
+        <Button
+            i3d:id="newGameButton"
+            i3d:layout_height="90px"
+            i3d:text="newGameButton@strings" />
+
+        <Button
+            i3d:id="continueGameButton"
+            i3d:layout_height="90px"
+            i3d:text="continueGameButton@strings" />
+
+        <Button
+            i3d:id="joinGameButton"
+            i3d:layout_height="90px"
+            i3d:text="joinGameButton@strings" />
+    </LinearLayout>
+
+</RelativeLayout>

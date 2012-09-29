@@ -17,6 +17,7 @@ public class I3dContext {
     private List<Surface> surfaceList = new ArrayList<Surface>();
     private Font defaultFont;
     private TextureManager textureManager;
+    private boolean preloaded;
     
     public static I3dContext getInstance() {
         return instance;
@@ -24,6 +25,7 @@ public class I3dContext {
     
     private I3dContext() {
         textureManager = new TextureManager();
+        preloaded = false;
     }
 
     public void initCanvas(String title, int width, int height) {
@@ -74,6 +76,8 @@ public class I3dContext {
                 
                 
                 //Generate shaders
+                
+                preloaded = true;
             };
         }.start();
     }
@@ -85,4 +89,8 @@ public class I3dContext {
     public TextureManager getTextureManager() {
         return textureManager;
     }
+    
+    public boolean isPreloaded() {
+        return preloaded;
+    };
 }

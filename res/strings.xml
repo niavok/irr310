@@ -1,4 +1,7 @@
 <resources>
     <string name="irr">Irr</string>
     <string name="310">310</string>
+    <string name="newGameButton">New game</string>
+    <string name="continueGameButton">Continue</string>
+    <string name="joinGameButton">Join game</string>
 </resources>

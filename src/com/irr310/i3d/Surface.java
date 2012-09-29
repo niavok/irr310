@@ -18,7 +18,8 @@ public class Surface {
     private Map<Intent, Activity> activityMap = new HashMap<Intent, Activity>();
     private Color backgroundColor;
 
-    public Surface() {
+    public Surface(I3dContext context) {
+        this.context = context;
         backgroundColor = Color.black;
     }
 
@@ -30,6 +31,7 @@ public class Surface {
             try {
                 activity = intent.getActivityClass().newInstance();
                 activityMap.put(intent, activity);
+                activity.setContext(context);
                 activity.assignSurface(this);
                 activity.setIntent(intent);
                 activity.onCreate(null);
