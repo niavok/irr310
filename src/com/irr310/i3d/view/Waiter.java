@@ -9,7 +9,7 @@ public class Waiter extends View {
     }
 
     @Override
-    public void doDraw() {
+    public void onDraw() {
     }
     
     @Override

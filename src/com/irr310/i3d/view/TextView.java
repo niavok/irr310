@@ -13,10 +13,10 @@ import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 
 public class TextView extends View {
 
-    private String text = "plop";
-    private Font font;
+    protected String text = "plop";
+    protected Font font;
     String[] wrappedText;
-    Color textColor = Color.darkblue;
+    Color textColor = Color.black;
 
     public TextView(Graphics g) {
         super(g);
@@ -28,7 +28,7 @@ public class TextView extends View {
     }
 
     @Override
-    public void doDraw() {
+    public void onDraw() {
 
         // int localX = x + g.getTranslation().getX();
         // int localXbase = localX;
@@ -157,7 +157,25 @@ public class TextView extends View {
         Log.trace("measuredWidth "+measuredWidth);
         Log.trace("measuredHeight "+measuredHeight);
         
-        layoutParams.mContentWidth = measuredWidth;
-        layoutParams.mContentHeight = measuredHeight;
+        if(!layoutParams.getLayoutMarginTop().isRelative()) {
+            measuredHeight +=   layoutParams.computeMesure(layoutParams.getLayoutMarginTop());  
+        }
+        if(!layoutParams.getLayoutMarginBottom().isRelative()) {
+            measuredHeight +=   layoutParams.computeMesure(layoutParams.getLayoutMarginBottom());  
+        }
+        if(!layoutParams.getLayoutMarginLeft().isRelative()) {
+            measuredWidth +=   layoutParams.computeMesure(layoutParams.getLayoutMarginLeft());  
+        }
+        if(!layoutParams.getLayoutMarginRight().isRelative()) {
+            measuredWidth +=   layoutParams.computeMesure(layoutParams.getLayoutMarginRight());  
+        }
+        
+
+        if(layoutParams.getLayoutWidthMeasure() != LayoutMeasure.FIXED || layoutParams.getMeasurePoint().getX().isRelative()) {
+            layoutParams.mContentWidth = measuredWidth;
+        }
+        if(layoutParams.getLayoutHeightMeasure() != LayoutMeasure.FIXED || layoutParams.getMeasurePoint().getY().isRelative()) {
+            layoutParams.mContentHeight = measuredHeight;
+        }
     }
 }

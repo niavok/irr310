@@ -20,7 +20,7 @@ public class Triangle extends View {
     }
 
     @Override
-    public void doDraw() {
+    public void onDraw() {
         g.setColor(backgroundColor);
         g.drawTriangle(points[0].x, points[0].y, points[1].x, points[1].y, points[2].x, points[2].y, false);
     }

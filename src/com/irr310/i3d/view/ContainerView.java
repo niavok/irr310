@@ -14,7 +14,7 @@ public abstract class ContainerView extends View implements ViewParent {
     }
 
     @Override
-    public void doDraw() {
+    public void onDraw() {
         for (View widget : children) {
             widget.draw();
         }

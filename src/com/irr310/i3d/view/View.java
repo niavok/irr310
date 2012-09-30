@@ -32,12 +32,12 @@ public abstract class View {
         //GL11.glTranslatef(layout.offset.x, layout.offset.y, 0);
         GL11.glTranslatef(layoutParams.mLeft, layoutParams.mTop, 0);
         
-        doDraw();
+        onDraw();
         
         GL11.glPopMatrix();
     }
     
-    public abstract void doDraw();
+    public abstract void onDraw();
     
     public void measure() {
         if(layoutParams.getLayoutWidthMeasure() == LayoutMeasure.FIXED) {

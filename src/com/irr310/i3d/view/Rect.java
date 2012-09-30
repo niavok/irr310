@@ -15,7 +15,7 @@ public class Rect extends View {
     }
 
     @Override
-    public void doDraw() {
+    public void onDraw() {
         g.setColor(backgroundColor);
         g.drawFilledRectangle(0, 0, size.getWidth(), size.getHeight());
     }

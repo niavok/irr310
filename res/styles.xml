@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="bigButton" parent="buttonBase@styles">
+        <item name="i3d:paddingLe"></item>
+        <item name="i3d:font">bigButton@fonts</item>
+        <item name="i3d:layout_width">wrap_content</item>
+        <item name="i3d:layout_height">wrap_content</item>
+        <item name="i3d:paddingLeft">30px</item>
+        <item name="i3d:paddingRight">30px</item>
+        <item name="i3d:paddingTop">10px</item>
+        <item name="i3d:paddingBottom">10px</item>
+    </style>
+
+    <style name="buttonBase">
+        <item name="i3d:borderSize">1px</item>
+        <item name="i3d:borderColor">borderButtonBase@color</item>
+        <item name="i3d:cornerLeftTopStyle">bevel</item>
+        <item name="i3d:cornerLeftTopSize">10px</item>
+        <item name="i3d:cornerRightBottomStyle">bevel</item>
+        <item name="i3d:cornerRightBottomSize">10px</item>
+        <item name="i3d:background">buttonBaseBackground@backgrounds</item>
+    </style>
+
+</resources>
