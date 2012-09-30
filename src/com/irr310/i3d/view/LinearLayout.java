@@ -1,6 +1,7 @@
 package com.irr310.i3d.view;
 
 import com.irr310.i3d.Graphics;
+import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 
 public class LinearLayout extends ContainerView {
 
@@ -42,8 +43,27 @@ public class LinearLayout extends ContainerView {
                 }
             }
         }
-        layoutParams.mContentWidth = measuredWidth;
-        layoutParams.mContentHeight = measuredHeight;
+        
+        if(!layoutParams.getLayoutMarginTop().isRelative()) {
+            measuredHeight +=   layoutParams.computeMesure(layoutParams.getLayoutMarginTop());  
+        }
+        if(!layoutParams.getLayoutMarginBottom().isRelative()) {
+            measuredHeight +=   layoutParams.computeMesure(layoutParams.getLayoutMarginBottom());  
+        }
+        if(!layoutParams.getLayoutMarginLeft().isRelative()) {
+            measuredWidth +=   layoutParams.computeMesure(layoutParams.getLayoutMarginLeft());  
+        }
+        if(!layoutParams.getLayoutMarginRight().isRelative()) {
+            measuredWidth +=   layoutParams.computeMesure(layoutParams.getLayoutMarginRight());  
+        }
+        
+
+        if(layoutParams.getLayoutWidthMeasure() != LayoutMeasure.FIXED || layoutParams.getMeasurePoint().getX().isRelative()) {
+            layoutParams.mContentWidth = measuredWidth;
+        }
+        if(layoutParams.getLayoutHeightMeasure() != LayoutMeasure.FIXED || layoutParams.getMeasurePoint().getY().isRelative()) {
+            layoutParams.mContentHeight = measuredHeight;
+        }
     }
     
     @Override
@@ -65,7 +85,8 @@ public class LinearLayout extends ContainerView {
             
             float computedWidth = childLayoutParams.mComputedRight - childLayoutParams.mComputedLeft;
             
-            view.layout(currentLeft, childLayoutParams.mComputedTop, currentLeft + computedWidth, childLayoutParams.mComputedBottom);
+            view.layout(currentLeft + layoutParams.computeMesure(childLayoutParams.getLayoutMarginLeft())  , childLayoutParams.mComputedTop + layoutParams.computeMesure(childLayoutParams.getLayoutMarginTop()), currentLeft + computedWidth -  + layoutParams.computeMesure(childLayoutParams.getLayoutMarginRight()), childLayoutParams.mComputedBottom - layoutParams.computeMesure(childLayoutParams.getLayoutMarginBottom()));
+            
             currentLeft += computedWidth;
         }
     }
@@ -80,7 +101,7 @@ public class LinearLayout extends ContainerView {
             
             float computedHeight = childLayoutParams.mComputedBottom - childLayoutParams.mComputedTop;
             
-            view.layout(childLayoutParams.mComputedLeft, currentTop, childLayoutParams.mComputedRight, currentTop + computedHeight);
+            view.layout(childLayoutParams.mComputedLeft + layoutParams.computeMesure(childLayoutParams.getLayoutMarginLeft())  , currentTop + layoutParams.computeMesure(childLayoutParams.getLayoutMarginTop()), childLayoutParams.mComputedRight -  + layoutParams.computeMesure(childLayoutParams.getLayoutMarginRight()), currentTop + computedHeight - layoutParams.computeMesure(childLayoutParams.getLayoutMarginBottom()));
             currentTop += computedHeight;
         }
     }

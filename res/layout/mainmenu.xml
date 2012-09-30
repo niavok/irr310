@@ -11,6 +11,8 @@
 
         <View
             i3d:id="logo"
+            i3d:layout_marginLeft="70px"
+            i3d:layout_marginTop="40px"
             i3d:ref="main@layout/logo_text" />
 
         <Button

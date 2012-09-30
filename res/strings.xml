@@ -1,5 +1,5 @@
 <resources>
-    <string name="irr">Irr</string>
+    <string name="irr">IRR</string>
     <string name="310">310</string>
     <string name="newGameButton">New game</string>
     <string name="continueGameButton">Continue</string>

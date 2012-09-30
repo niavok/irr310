@@ -6,10 +6,10 @@
 
     <View
         i3d:id="logo"
-        i3d:layout_width="85px"
-        i3d:layout_height="85px"
+        i3d:layout_width="83px"
+        i3d:layout_height="83px"
         i3d:layout_gravity_y="bottom"
-        i3d:layout_marginBottom="10px"
+        i3d:layout_marginBottom="23px"
         i3d:ref="main@layout/logo" />
 
     <TextView

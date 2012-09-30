@@ -1,6 +1,7 @@
 package com.irr310.i3d.view;
 
 import com.irr310.i3d.Graphics;
+import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 
 public class RelativeLayout extends ContainerView {
 
@@ -15,6 +16,7 @@ public class RelativeLayout extends ContainerView {
             LayoutParams childLayoutParams = view.getLayoutParams();
             childLayoutParams.computeFrame(layoutParams);
             view.layout(childLayoutParams.mComputedLeft, childLayoutParams.mComputedTop, childLayoutParams.mComputedRight, childLayoutParams.mComputedBottom);
+            view.layout(childLayoutParams.mComputedLeft + layoutParams.computeMesure(childLayoutParams.getLayoutMarginLeft())  , childLayoutParams.mComputedTop + layoutParams.computeMesure(childLayoutParams.getLayoutMarginTop()), childLayoutParams.mComputedRight - layoutParams.computeMesure(childLayoutParams.getLayoutMarginRight()), childLayoutParams.mComputedBottom -  + layoutParams.computeMesure(childLayoutParams.getLayoutMarginBottom()));
         }
     }
 
@@ -33,6 +35,20 @@ public class RelativeLayout extends ContainerView {
         float measuredWidth = 0;
         float measuredHeight= 0;
         
+        if(!layoutParams.getLayoutMarginTop().isRelative()) {
+            measuredHeight +=   layoutParams.computeMesure(layoutParams.getLayoutMarginTop());  
+        }
+        if(!layoutParams.getLayoutMarginBottom().isRelative()) {
+            measuredHeight +=   layoutParams.computeMesure(layoutParams.getLayoutMarginBottom());  
+        }
+        if(!layoutParams.getLayoutMarginLeft().isRelative()) {
+            measuredWidth +=   layoutParams.computeMesure(layoutParams.getLayoutMarginLeft());  
+        }
+        if(!layoutParams.getLayoutMarginRight().isRelative()) {
+            measuredWidth +=   layoutParams.computeMesure(layoutParams.getLayoutMarginRight());  
+        }
+        
+        
         for (View view : children) {
             view.measure();
             if(view.getLayoutParams().mContentWidth > measuredWidth) {
@@ -44,8 +60,13 @@ public class RelativeLayout extends ContainerView {
             }
         }
         
-        layoutParams.mContentWidth = measuredWidth;
-        layoutParams.mContentHeight = measuredHeight;
+        
+        if(layoutParams.getLayoutWidthMeasure() != LayoutMeasure.FIXED || layoutParams.getMeasurePoint().getX().isRelative()) {
+            layoutParams.mContentWidth = measuredWidth;
+        }
+        if(layoutParams.getLayoutHeightMeasure() != LayoutMeasure.FIXED || layoutParams.getMeasurePoint().getY().isRelative()) {
+            layoutParams.mContentHeight = measuredHeight;
+        }
     }
     
 }
