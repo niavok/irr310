@@ -3,4 +3,7 @@
     <color name="white">#ffffff</color>
     <color name="logoPrimary">#000000</color>
     <color name="logoSecondary">#800000</color>
+    <color name="borderButtonBase">#5f5f5fff</color>
+    <color name="topButtonBase">#efefefff</color>
+    <color name="bottomButtonBase">#ccccccff</color>
 </resources>

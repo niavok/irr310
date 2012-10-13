@@ -28,18 +28,21 @@ public class LayoutParams {
     // Input
     private LayoutMeasure layoutWidthMeasure;
     private LayoutMeasure layoutHeightMeasure;
-    private LayoutAlign layoutAlignX;
-    private LayoutAlign layoutAlignY;
+    private LayoutAlign layoutGravityX;
+    private LayoutAlign layoutGravityY;
     private MeasurePoint measurePoint;
 
     private Measure layoutMarginLeftMeasure;
-
     private Measure layoutMarginRightMeasure;
-
     private Measure layoutMarginTopMeasure;
-
     private Measure layoutMarginBottomMeasure;
 
+    private Measure layoutPaddingLeftMeasure;
+    private Measure layoutPaddingRightMeasure;
+    private Measure layoutPaddingTopMeasure;
+    private Measure layoutPaddingBottomMeasure;
+
+    
     public enum LayoutMeasure {
         MATCH_PARENT, WRAP_CONTENT, FIXED,
     }
@@ -54,8 +57,8 @@ public class LayoutParams {
 
         layoutWidthMeasure = LayoutMeasure.WRAP_CONTENT;
         layoutHeightMeasure = LayoutMeasure.WRAP_CONTENT;
-        layoutAlignX = LayoutAlign.LEFT;
-        layoutAlignY = LayoutAlign.TOP;
+        layoutGravityX = LayoutAlign.LEFT;
+        layoutGravityY = LayoutAlign.TOP;
 
         // Output
 //        this.width = -1;
@@ -77,6 +80,11 @@ public class LayoutParams {
         layoutMarginBottomMeasure = new Measure(0, false);
         layoutMarginRightMeasure = new Measure(0, false);
         layoutMarginLeftMeasure = new Measure(0, false);
+        
+        layoutPaddingTopMeasure = new Measure(0, false);
+        layoutPaddingBottomMeasure = new Measure(0, false);
+        layoutPaddingRightMeasure = new Measure(0, false);
+        layoutPaddingLeftMeasure = new Measure(0, false);
     }
 
 //
@@ -151,20 +159,20 @@ public class LayoutParams {
         this.layoutHeightMeasure = layoutHeightMeasure;
     }
 
-    public LayoutAlign getLayoutAlignX() {
-        return layoutAlignX;
+    public LayoutAlign getLayoutGravityX() {
+        return layoutGravityX;
     }
 
-    public void setLayoutAlignX(LayoutAlign layoutAlignX) {
-        this.layoutAlignX = layoutAlignX;
+    public void setLayoutGravityX(LayoutAlign layoutAlignX) {
+        this.layoutGravityX = layoutAlignX;
     }
 
-    public LayoutAlign getLayoutAlignY() {
-        return layoutAlignY;
+    public LayoutAlign getLayoutGravityY() {
+        return layoutGravityY;
     }
 
-    public void setLayoutAlignY(LayoutAlign layoutAlignY) {
-        this.layoutAlignY = layoutAlignY;
+    public void setLayoutGravityY(LayoutAlign layoutAlignY) {
+        this.layoutGravityY = layoutAlignY;
     }
 
     public void setWidthMeasure(Measure measure) {
@@ -192,13 +200,28 @@ public class LayoutParams {
         this.layoutMarginBottomMeasure = measure;
     }
     
+    public void setPaddingLeftMeasure(Measure measure) {
+        this.layoutPaddingLeftMeasure = measure;
+    }
+    
+    public void setPaddingRightMeasure(Measure measure) {
+        this.layoutPaddingRightMeasure = measure;
+    }
+    
+    public void setPaddingTopMeasure(Measure measure) {
+        this.layoutPaddingTopMeasure = measure;
+    }
+    
+    public void setPaddingBottomMeasure(Measure measure) {
+        this.layoutPaddingBottomMeasure = measure;
+    }
 
     public LayoutParams duplicate() {
         LayoutParams layout = new LayoutParams();
         layout.layoutWidthMeasure = layoutWidthMeasure;
         layout.layoutHeightMeasure = layoutHeightMeasure;
-        layout.layoutAlignX = layoutAlignX;
-        layout.layoutAlignY = layoutAlignY;
+        layout.layoutGravityX = layoutGravityX;
+        layout.layoutGravityY = layoutGravityY;
         layout.measurePoint = measurePoint;
         layout.layoutMarginTopMeasure = layoutMarginTopMeasure;
         layout.layoutMarginBottomMeasure= layoutMarginBottomMeasure;
@@ -258,19 +281,19 @@ public class LayoutParams {
               throw new RuntimeException("Not implemented");
           }
           
-          if(getLayoutAlignX() == LayoutAlign.CENTER) {
+          if(getLayoutGravityX() == LayoutAlign.CENTER) {
               mComputedLeft = parentLayout.getWidth() /2 - width /2;
-          } else if (getLayoutAlignX() == LayoutAlign.LEFT) {
+          } else if (getLayoutGravityX() == LayoutAlign.LEFT) {
               mComputedLeft = 0;
-          } else if (getLayoutAlignX() == LayoutAlign.RIGHT) {
+          } else if (getLayoutGravityX() == LayoutAlign.RIGHT) {
               mComputedLeft = parentLayout.getWidth() - width;
           }
     
-          if(getLayoutAlignY() == LayoutAlign.CENTER) {
+          if(getLayoutGravityY() == LayoutAlign.CENTER) {
               mComputedTop = parentLayout.getHeight()/2 - height /2;
-          }else if (getLayoutAlignY() == LayoutAlign.TOP) {
+          }else if (getLayoutGravityY() == LayoutAlign.TOP) {
               mComputedTop = 0;
-          } else if (getLayoutAlignY() == LayoutAlign.BOTTOM) {
+          } else if (getLayoutGravityY() == LayoutAlign.BOTTOM) {
               mComputedTop = parentLayout.getHeight() - height;
           }
           
@@ -293,5 +316,21 @@ public class LayoutParams {
     
     public Measure getLayoutMarginTop() {
         return layoutMarginTopMeasure;
+    }
+    
+    public Measure getLayoutPaddingBottom() {
+        return layoutPaddingBottomMeasure;
+    }
+    
+    public Measure getLayoutPaddingLeft() {
+        return layoutPaddingLeftMeasure;
+    }
+    
+    public Measure getLayoutPaddingRight() {
+        return layoutPaddingRightMeasure;
+    }
+    
+    public Measure getLayoutPaddingTop() {
+        return layoutPaddingTopMeasure;
     }
 }

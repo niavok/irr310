@@ -18,6 +18,7 @@ public abstract class View {
      */
     protected ViewParent mParent;
     protected LayoutParams layoutParams;
+    protected BorderParams borderParams;
     
     Graphics g;
     private String id;
@@ -25,6 +26,7 @@ public abstract class View {
     public View(Graphics g) {
         this.g = g;
         layoutParams = new LayoutParams();
+        borderParams = new BorderParams();
     }
     
     public final void draw() {
@@ -124,4 +126,8 @@ public abstract class View {
 		}
 		return null;
 	}
+
+    public BorderParams getBorderParams() {
+        return borderParams;
+    }
 }

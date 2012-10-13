@@ -22,8 +22,10 @@ import com.irr310.common.tools.Log;
 import com.irr310.i3d.fonts.Font;
 import com.irr310.i3d.fonts.FontFactory;
 import com.irr310.i3d.view.Button;
+import com.irr310.i3d.view.Drawable;
 import com.irr310.i3d.view.LinearLayout;
 import com.irr310.i3d.view.RelativeLayout;
+import com.irr310.i3d.view.BorderParams.CornerStyle;
 import com.irr310.i3d.view.LayoutParams.LayoutAlign;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 import com.irr310.i3d.view.LinearLayout.LayoutOrientation;
@@ -40,6 +42,7 @@ public class I3dRessourceManager {
     private final DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
 
     private final Map<String, RessourceFileCache> fileCache = new HashMap<String, RessourceFileCache>();
+    Map<String, Drawable> drawableCache = new HashMap<String, Drawable>();
 
     Graphics g;
     private FontFactory fontFactory;
@@ -97,7 +100,7 @@ public class I3dRessourceManager {
             if (root.getNodeName().contains("Layout")) {
                 ParseView(root, ressourceFileCache);
             } else if (root.getNodeName().equals("resources")) {
-                ParseResources(root, ressourceFileCache);
+                parseResources(root, ressourceFileCache);
             }
 
         } catch (ParserConfigurationException e) {
@@ -121,7 +124,7 @@ public class I3dRessourceManager {
 
         View view = null;
         if (nodeName.equals("View")) {
-            view = LinkView(element, ressourceFileCache.getFileId());
+            view = linkView(element, ressourceFileCache.getFileId());
         } else if (nodeName.equals("RelativeLayout")) {
             view = NewRelativeLayout(element);
         } else if (nodeName.equals("LinearLayout")) {
@@ -162,7 +165,7 @@ public class I3dRessourceManager {
         return view;
     }
 
-    private View LinkView(Element element, String fileId) {
+    private View linkView(Element element, String fileId) {
         String ref = element.getAttribute("i3d:ref");
         View view = loadView(ref).duplicate();
 
@@ -184,7 +187,7 @@ public class I3dRessourceManager {
         return view;
     }
 
-    private void ParseResources(Element element, RessourceFileCache ressourceFileCache) {
+    private void parseResources(Element element, RessourceFileCache ressourceFileCache) {
         NodeList childNodes = element.getChildNodes();
         for (int i = 0; i < childNodes.getLength(); i++) {
             Node node = childNodes.item(i);
@@ -208,10 +211,55 @@ public class I3dRessourceManager {
                 int fontSize = Integer.parseInt(subElement.getAttribute("size"));
                 Font font = fontFactory.generateFont(fontCode, fontSize, fontStyle);
                 ressourceFileCache.addFont(fontName, font);
+            } else if (subElement.getNodeName().equals("style")) {
+                parseStyle(subElement, ressourceFileCache);
             } else {
                 Log.error("Unknonw resources: " + subElement.getNodeName());
             }
         }
+    }
+
+    private void parseStyle(Element element, RessourceFileCache ressourceFileCache) {
+        String name = element.getAttribute("name");
+
+        Style style = new Style();
+        style.setParent(element.getAttribute("parent"));
+
+        NodeList childNodes = element.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            Node node = childNodes.item(i);
+            if (node.getNodeType() != Node.ELEMENT_NODE) {
+                // TODO error
+                continue;
+            }
+            Element subElement = (Element) node;
+            if (!subElement.getNodeName().equals("item")) {
+                continue;
+            }
+
+            String attrName = subElement.getAttribute("name");
+            String attrValue = subElement.getTextContent();
+
+            if (checkViewAttrs(attrName, attrValue, style)) {
+            } else if (checkColor(attrName, attrValue, style)) {
+            } else if (checkFont(attrName, attrValue, style)) {
+            } else if (checkBorderColor(attrName, attrValue, style)) {
+            } else if (checkBorderSize(attrName, attrValue, style)) {
+            } else if (checkBackground(attrName, attrValue, style)) {
+            } else if (checkCornerLeftTopStyle(attrName, attrValue, style)) {
+            } else if (checkCornerRightTopStyle(attrName, attrValue, style)) {
+            } else if (checkCornerLeftBottomStyle(attrName, attrValue, style)) {
+            } else if (checkCornerRightBottomStyle(attrName, attrValue, style)) {
+            } else if (checkCornerLeftTopSize(attrName, attrValue, style)) {
+            } else if (checkCornerRightTopSize(attrName, attrValue, style)) {
+            } else if (checkCornerLeftBottomSize(attrName, attrValue, style)) {
+            } else if (checkCornerRightBottomSize(attrName, attrValue, style)) {
+            } else {
+                Log.error("Unknown attrib '" + attrName + "=" + attrValue + "' for Style");
+            }
+
+        }
+        ressourceFileCache.addStyle(name, style);
     }
 
     private Waiter NewWaiter(Element element) {
@@ -301,7 +349,7 @@ public class I3dRessourceManager {
 
         return triangle;
     }
-  
+
     private Measure parseMeasure(String mesureString) {
         boolean relative = false;
         String stringValue = "0";
@@ -407,6 +455,7 @@ public class I3dRessourceManager {
     private boolean checkViewAttrs(String attrName, String attrValue, View view) {
         boolean used = true;
         if (checkId(attrName, attrValue, view)) {
+        } else if (checkStyle(attrName, attrValue, view)) {
         } else if (checkLayoutWidth(attrName, attrValue, view)) {
         } else if (checkLayoutHeight(attrName, attrValue, view)) {
         } else if (checkGravityX(attrName, attrValue, view)) {
@@ -415,6 +464,10 @@ public class I3dRessourceManager {
         } else if (checkLayoutMarginBottom(attrName, attrValue, view)) {
         } else if (checkLayoutMarginLeft(attrName, attrValue, view)) {
         } else if (checkLayoutMarginRight(attrName, attrValue, view)) {
+        } else if (checkLayoutPaddingTop(attrName, attrValue, view)) {
+        } else if (checkLayoutPaddingBottom(attrName, attrValue, view)) {
+        } else if (checkLayoutPaddingLeft(attrName, attrValue, view)) {
+        } else if (checkLayoutPaddingRight(attrName, attrValue, view)) {
         } else {
             used = false;
         }
@@ -452,6 +505,16 @@ public class I3dRessourceManager {
         boolean used = false;
         if (attrName.equals("i3d:font")) {
             view.setFont(loadFont(attrValue));
+            used = true;
+        }
+        return used;
+    }
+
+    private boolean checkStyle(String attrName, String attrValue, View view) {
+        boolean used = false;
+        if (attrName.equals("i3d:style")) {
+            Style style = loadStyle(attrValue);
+            style.apply(view);
             used = true;
         }
         return used;
@@ -499,7 +562,63 @@ public class I3dRessourceManager {
         }
         return used;
     }
-    
+
+    private boolean checkLayoutPaddingTop(String attrName, String attrValue, View view) {
+        boolean used = false;
+        if (attrName.equals("i3d:layout_paddingTop")) {
+            Measure measure = null;
+            if ((measure = parseMeasure(attrValue)) != null) {
+                view.getLayoutParams().setPaddingTopMeasure(measure);
+                used = true;
+            } else {
+                Log.error("Unsupported value '" + attrValue + "' for i3d:layout_paddingTop attribute");
+            }
+        }
+        return used;
+    }
+
+    private boolean checkLayoutPaddingBottom(String attrName, String attrValue, View view) {
+        boolean used = false;
+        if (attrName.equals("i3d:layout_paddingBottom")) {
+            Measure measure = null;
+            if ((measure = parseMeasure(attrValue)) != null) {
+                view.getLayoutParams().setPaddingBottomMeasure(measure);
+                used = true;
+            } else {
+                Log.error("Unsupported value '" + attrValue + "' for i3d:layout_paddingBottom attribute");
+            }
+        }
+        return used;
+    }
+
+    private boolean checkLayoutPaddingLeft(String attrName, String attrValue, View view) {
+        boolean used = false;
+        if (attrName.equals("i3d:layout_paddingLeft")) {
+            Measure measure = null;
+            if ((measure = parseMeasure(attrValue)) != null) {
+                view.getLayoutParams().setPaddingLeftMeasure(measure);
+                used = true;
+            } else {
+                Log.error("Unsupported value '" + attrValue + "' for i3d:layout_paddingLeft attribute");
+            }
+        }
+        return used;
+    }
+
+    private boolean checkLayoutPaddingRight(String attrName, String attrValue, View view) {
+        boolean used = false;
+        if (attrName.equals("i3d:layout_paddingRight")) {
+            Measure measure = null;
+            if ((measure = parseMeasure(attrValue)) != null) {
+                view.getLayoutParams().setPaddingRightMeasure(measure);
+                used = true;
+            } else {
+                Log.error("Unsupported value '" + attrValue + "' for i3d:layout_paddingRight attribute");
+            }
+        }
+        return used;
+    }
+
     private boolean checkLayoutMarginTop(String attrName, String attrValue, View view) {
         boolean used = false;
         if (attrName.equals("i3d:layout_marginTop")) {
@@ -513,7 +632,7 @@ public class I3dRessourceManager {
         }
         return used;
     }
-    
+
     private boolean checkLayoutMarginBottom(String attrName, String attrValue, View view) {
         boolean used = false;
         if (attrName.equals("i3d:layout_marginBottom")) {
@@ -527,7 +646,7 @@ public class I3dRessourceManager {
         }
         return used;
     }
-    
+
     private boolean checkLayoutMarginLeft(String attrName, String attrValue, View view) {
         boolean used = false;
         if (attrName.equals("i3d:layout_marginLeft")) {
@@ -541,7 +660,7 @@ public class I3dRessourceManager {
         }
         return used;
     }
-    
+
     private boolean checkLayoutMarginRight(String attrName, String attrValue, View view) {
         boolean used = false;
         if (attrName.equals("i3d:layout_marginRight")) {
@@ -560,13 +679,13 @@ public class I3dRessourceManager {
         boolean used = false;
         if (attrName.equals("i3d:layout_gravity_x")) {
             if (attrValue.equals("center")) {
-                view.getLayoutParams().setLayoutAlignX(LayoutAlign.CENTER);
+                view.getLayoutParams().setLayoutGravityX(LayoutAlign.CENTER);
                 used = true;
             } else if (attrValue.equals("left")) {
-                view.getLayoutParams().setLayoutAlignY(LayoutAlign.LEFT);
+                view.getLayoutParams().setLayoutGravityY(LayoutAlign.LEFT);
                 used = true;
             } else if (attrValue.equals("right")) {
-                view.getLayoutParams().setLayoutAlignY(LayoutAlign.RIGHT);
+                view.getLayoutParams().setLayoutGravityY(LayoutAlign.RIGHT);
                 used = true;
             } else {
                 Log.error("Unsupported value '" + attrValue + "' for i3d:layout_gravity_x attribute");
@@ -579,13 +698,13 @@ public class I3dRessourceManager {
         boolean used = false;
         if (attrName.equals("i3d:layout_gravity_y")) {
             if (attrValue.equals("center")) {
-                view.getLayoutParams().setLayoutAlignY(LayoutAlign.CENTER);
+                view.getLayoutParams().setLayoutGravityY(LayoutAlign.CENTER);
                 used = true;
             } else if (attrValue.equals("top")) {
-                view.getLayoutParams().setLayoutAlignY(LayoutAlign.TOP);
+                view.getLayoutParams().setLayoutGravityY(LayoutAlign.TOP);
                 used = true;
             } else if (attrValue.equals("bottom")) {
-                view.getLayoutParams().setLayoutAlignY(LayoutAlign.BOTTOM);
+                view.getLayoutParams().setLayoutGravityY(LayoutAlign.BOTTOM);
                 used = true;
             } else {
                 Log.error("Unsupported value '" + attrValue + "' for i3d:layout_gravity_y attribute");
@@ -610,9 +729,166 @@ public class I3dRessourceManager {
         return used;
     }
 
+    private boolean checkBorderColor(String attrName, String attrValue, TextView view) {
+        boolean used = false;
+        if (attrName.equals("i3d:borderColor")) {
+            view.getBorderParams().setBorderColor(loadColor(attrValue));
+            used = true;
+        }
+        return used;
+    }
+
+    private boolean checkBorderSize(String attrName, String attrValue, View view) {
+        boolean used = false;
+        if (attrName.equals("i3d:borderSize")) {
+            Measure measure = null;
+            if ((measure = parseMeasure(attrValue)) != null) {
+                view.getBorderParams().setBorderSize(measure);
+                used = true;
+            } else {
+                Log.error("Unsupported value '" + attrValue + "' for i3d:borderSize attribute");
+            }
+        }
+        return used;
+    }
+
+    private boolean checkCornerLeftTopSize(String attrName, String attrValue, View view) {
+        boolean used = false;
+        if (attrName.equals("i3d:cornerLeftTopSize")) {
+            Measure measure = null;
+            if ((measure = parseMeasure(attrValue)) != null) {
+                view.getBorderParams().setCornerLeftTopSize(measure);
+                used = true;
+            } else {
+                Log.error("Unsupported value '" + attrValue + "' for i3d:cornerLeftTopSize attribute");
+            }
+        }
+        return used;
+    }
+
+    private boolean checkCornerRightTopSize(String attrName, String attrValue, View view) {
+        boolean used = false;
+        if (attrName.equals("i3d:cornerRightTopSize")) {
+            Measure measure = null;
+            if ((measure = parseMeasure(attrValue)) != null) {
+                view.getBorderParams().setCornerRightTopSize(measure);
+                used = true;
+            } else {
+                Log.error("Unsupported value '" + attrValue + "' for i3d:cornerRightTopSize attribute");
+            }
+        }
+        return used;
+    }
+
+    private boolean checkCornerLeftBottomSize(String attrName, String attrValue, View view) {
+        boolean used = false;
+        if (attrName.equals("i3d:cornerLeftBottomSize")) {
+            Measure measure = null;
+            if ((measure = parseMeasure(attrValue)) != null) {
+                view.getBorderParams().setCornerLeftBottomSize(measure);
+                used = true;
+            } else {
+                Log.error("Unsupported value '" + attrValue + "' for i3d:cornerLeftBottomSize attribute");
+            }
+        }
+        return used;
+    }
+
+    private boolean checkCornerRightBottomSize(String attrName, String attrValue, View view) {
+        boolean used = false;
+        if (attrName.equals("i3d:cornerRightBottomSize")) {
+            Measure measure = null;
+            if ((measure = parseMeasure(attrValue)) != null) {
+                view.getBorderParams().setCornerRightBottomSize(measure);
+                used = true;
+            } else {
+                Log.error("Unsupported value '" + attrValue + "' for i3d:cornerRightBottomSize attribute");
+            }
+        }
+        return used;
+    }
+
+    private boolean checkCornerLeftTopStyle(String attrName, String attrValue, View view) {
+        boolean used = false;
+        if (attrName.equals("i3d:cornerLeftTopStyle")) {
+            if (attrValue.equals("square")) {
+                view.getBorderParams().setCornerLeftTopStyle(CornerStyle.SQUARE);
+                used = true;
+            } else if (attrValue.equals("bevel")) {
+                view.getBorderParams().setCornerLeftTopStyle(CornerStyle.BEVEL);
+                used = true;
+            } else {
+                Log.error("Unsupported value '" + attrValue + "' for i3d:cornerLeftTopStyle attribute");
+            }
+        }
+        return used;
+    }
+
+    private boolean checkCornerRightTopStyle(String attrName, String attrValue, View view) {
+        boolean used = false;
+        if (attrName.equals("i3d:cornerRightTopStyle")) {
+            if (attrValue.equals("square")) {
+                view.getBorderParams().setCornerRightTopStyle(CornerStyle.SQUARE);
+                used = true;
+            } else if (attrValue.equals("bevel")) {
+                view.getBorderParams().setCornerRightTopStyle(CornerStyle.BEVEL);
+                used = true;
+            } else {
+                Log.error("Unsupported value '" + attrValue + "' for i3d:cornerRightTopStyle attribute");
+            }
+        }
+        return used;
+    }
+
+    private boolean checkCornerLeftBottomStyle(String attrName, String attrValue, View view) {
+        boolean used = false;
+        if (attrName.equals("i3d:cornerLeftBottomStyle")) {
+            if (attrValue.equals("square")) {
+                view.getBorderParams().setCornerLeftBottomStyle(CornerStyle.SQUARE);
+                used = true;
+            } else if (attrValue.equals("bevel")) {
+                view.getBorderParams().setCornerLeftBottomStyle(CornerStyle.BEVEL);
+                used = true;
+            } else {
+                Log.error("Unsupported value '" + attrValue + "' for i3d:cornerLeftBottomStyle attribute");
+            }
+        }
+        return used;
+    }
+
+    private boolean checkCornerRightBottomStyle(String attrName, String attrValue, View view) {
+        boolean used = false;
+        if (attrName.equals("i3d:cornerRightBottomStyle")) {
+            if (attrValue.equals("square")) {
+                view.getBorderParams().setCornerRightBottomStyle(CornerStyle.SQUARE);
+                used = true;
+            } else if (attrValue.equals("bevel")) {
+                view.getBorderParams().setCornerRightBottomStyle(CornerStyle.BEVEL);
+                used = true;
+            } else {
+                Log.error("Unsupported value '" + attrValue + "' for i3d:cornerRightBottomStyle attribute");
+            }
+        }
+        return used;
+    }
+
+    private boolean checkBackground(String attrName, String attrValue, TextView view) {
+        boolean used = false;
+        if (attrName.equals("i3d:background")) {
+            view.getBorderParams().setBackground(loadDrawable(attrValue));
+            used = true;
+        }
+        return used;
+    }
+
     private Color loadColor(String colorId) {
 
         String[] colorParts = colorId.split("@");
+        if (colorParts.length != 2) {
+            Log.error("Fail to load color '" + colorId + "' : no @ found");
+            return null;
+        }
+        
         String localId = colorParts[0];
         String fileId = colorParts[1];
 
@@ -632,6 +908,27 @@ public class I3dRessourceManager {
         }
 
         return color;
+    }
+
+    private Drawable loadDrawable(String drawableId) {
+        Drawable drawable = null;
+
+        drawable = getDrawable(drawableId);
+        if (drawable == null) {
+
+            String[] drawableParts = drawableId.split("@");
+            String fileId = drawableParts[1];
+
+            parseDrawableFile(fileId);
+
+            drawable = getDrawable(drawableId);
+        }
+
+        if (drawable == null) {
+            Log.error("Unknown drawable '" + drawableId);
+        }
+
+        return drawable;
     }
 
     private String loadString(String stringId) {
@@ -684,5 +981,96 @@ public class I3dRessourceManager {
         }
 
         return font;
+    }
+
+    Style loadStyle(String styleId) {
+        String[] styleParts = styleId.split("@");
+        if (styleParts.length != 2) {
+            Log.error("Fail to load style '" + styleId + "' : no @ found");
+            return null;
+        }
+
+        String localId = styleParts[0];
+        String fileId = styleParts[1];
+
+        Style style = null;
+
+        if (fileCache.containsKey(fileId)) {
+
+        } else {
+            parseFile(fileId);
+        }
+
+        RessourceFileCache ressourceFileCache = fileCache.get(fileId);
+        style = ressourceFileCache.getStyle(localId);
+
+        if (style == null) {
+            Log.error("Unknown style '" + styleId);
+        }
+
+        return style;
+    }
+
+    private void parseDrawableFile(String fileId) {
+        try {
+            DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+
+            Document doc;
+            doc = docBuilder.parse(new File("res/drawable/" + fileId + ".xml"));
+
+            Element root = doc.getDocumentElement();
+
+            if (root.getNodeName().contains("gradient")) {
+                parseGradientDrawable(root, fileId);
+            }
+
+        } catch (ParserConfigurationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (SAXException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    private void parseGradientDrawable(Element element, String fileId) {
+        String name = element.getAttribute("name");
+        
+        GradientDrawable drawable = new GradientDrawable();
+        
+        NamedNodeMap attributes = element.getAttributes();
+        for (int i = 0; i < attributes.getLength(); i++) {
+            Node item = attributes.item(i);
+            Attr attr = (Attr) item;
+            String attrName = attr.getName();
+            String attrValue = attr.getValue();
+
+            if (checkViewAttrs(attrName, attrValue, view)) {
+            } else if (attrName.equals("i3d:startColor")) {
+                // Already processed
+            } else if (attrName.equals("i3d:startColor")) {
+                drawable.setStartColor(loadColor(attrValue));
+            } else if (attrName.equals("i3d:stopColor")) {
+                drawable.setStopColor(loadColor(attrValue));
+            } else {
+                Log.error("Unknown attrib '" + attrName + "=" + attrValue + "' for GradientDrawable");
+            }
+        }
+        
+        Color startColor = loadColor(element.getAttribute("i3d:startColor"));
+        Color stopColor = loadColor(element.getAttribute("i3d:stopColor"));
+        
+        addDrawable(name + "@" + fileId, drawable);
+    }
+
+    public void addDrawable(String id, Drawable drawable) {
+        drawableCache.put(id, drawable);
+    }
+
+    public Drawable getDrawable(String id) {
+        return drawableCache.get(id);
     }
 }

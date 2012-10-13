@@ -15,8 +15,8 @@ public class TextView extends View {
 
     protected String text = "plop";
     protected Font font;
-    String[] wrappedText;
-    Color textColor = Color.black;
+    private String[] wrappedText;
+    protected Color textColor = Color.black;
 
     public TextView(Graphics g) {
         super(g);

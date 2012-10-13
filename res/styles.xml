@@ -2,14 +2,13 @@
 <resources>
 
     <style name="bigButton" parent="buttonBase@styles">
-        <item name="i3d:paddingLe"></item>
         <item name="i3d:font">bigButton@fonts</item>
         <item name="i3d:layout_width">wrap_content</item>
         <item name="i3d:layout_height">wrap_content</item>
-        <item name="i3d:paddingLeft">30px</item>
-        <item name="i3d:paddingRight">30px</item>
-        <item name="i3d:paddingTop">10px</item>
-        <item name="i3d:paddingBottom">10px</item>
+        <item name="i3d:layout_paddingLeft">30px</item>
+        <item name="i3d:layout_paddingRight">30px</item>
+        <item name="i3d:layout_paddingTop">10px</item>
+        <item name="i3d:layout_paddingBottom">10px</item>
     </style>
 
     <style name="buttonBase">

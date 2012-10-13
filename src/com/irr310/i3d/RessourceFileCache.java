@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.irr310.i3d.fonts.Font;
+import com.irr310.i3d.view.Drawable;
 import com.irr310.i3d.view.View;
 
 public class RessourceFileCache {
@@ -12,6 +13,8 @@ public class RessourceFileCache {
     Map<String, Font> fontCache = new HashMap<String, Font>();
     Map<String, View> viewCache = new HashMap<String, View>();
     Map<String, String> stringCache = new HashMap<String, String>();
+    Map<String, Style> styleCache = new HashMap<String, Style>();
+    
 	private String fileId;
 
     public RessourceFileCache(String fileId) {
@@ -56,5 +59,13 @@ public class RessourceFileCache {
     
     public String getString(String id) {
         return stringCache.get(id);
+    }
+
+    public void addStyle(String id, Style style) {
+        styleCache.put(id,style);
+    }
+    
+    public Style getStyle(String id) {
+        return styleCache.get(id);
     }
 }
