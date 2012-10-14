@@ -80,10 +80,11 @@ public class Style extends TextView {
         view.getBorderParams().setCornerLeftBottomSize(getBorderParams().getCornerLeftBottomSize());
         view.getBorderParams().setCornerRightBottomSize(getBorderParams().getCornerRightBottomSize());
         
-        if(view.getClass().isAssignableFrom(TextView.class)) {
+        if(view instanceof TextView) {
             TextView textView = (TextView) view;
             textView.setFont(font);
             textView.setTextColor(textColor);
+            textView.setGravity(gravity);
         }
     }
 

@@ -31,6 +31,7 @@ import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 import com.irr310.i3d.view.LinearLayout.LayoutOrientation;
 import com.irr310.i3d.view.Rect;
 import com.irr310.i3d.view.TextView;
+import com.irr310.i3d.view.TextView.Gravity;
 import com.irr310.i3d.view.Triangle;
 import com.irr310.i3d.view.View;
 import com.irr310.i3d.view.ViewParent;
@@ -246,6 +247,7 @@ public class I3dRessourceManager {
             if (checkViewAttrs(attrName, attrValue, style)) {
             } else if (checkColor(attrName, attrValue, style)) {
             } else if (checkFont(attrName, attrValue, style)) {
+            } else if (checkGravity(attrName, attrValue, style)) {
             } else if (checkBorderColor(attrName, attrValue, style)) {
             } else if (checkBorderSize(attrName, attrValue, style)) {
             } else if (checkBackground(attrName, attrValue, style)) {
@@ -434,6 +436,7 @@ public class I3dRessourceManager {
             } else if (checkColor(attrName, attrValue, textView)) {
             } else if (checkText(attrName, attrValue, textView)) {
             } else if (checkFont(attrName, attrValue, textView)) {
+            } else if (checkGravity(attrName, attrValue, textView)) {
             } else {
                 Log.error("Unknown attrib '" + attrName + "=" + attrValue + "' for TextView");
             }
@@ -730,6 +733,43 @@ public class I3dRessourceManager {
                 used = true;
             } else {
                 Log.error("Unsupported value '" + attrValue + "' for i3d:orientation attribute");
+            }
+        }
+        return used;
+    }
+    
+    private boolean checkGravity(String attrName, String attrValue, TextView view) {
+        boolean used = false;
+        if (attrName.equals("i3d:gravity")) {
+            if (attrValue.equals("top|left")) {
+                view.setGravity(Gravity.TOP_LEFT);
+                used = true;
+            } else if (attrValue.equals("top|center")) {
+                view.setGravity(Gravity.TOP_CENTER);
+                used = true;
+            } else if (attrValue.equals("top|right")) {
+                view.setGravity(Gravity.TOP_RIGHT);
+                used = true;
+            } else if (attrValue.equals("center|left")) {
+                view.setGravity(Gravity.CENTER_LEFT);
+                used = true;
+            } else if (attrValue.equals("center")) {
+                view.setGravity(Gravity.CENTER);
+                used = true;
+            } else if (attrValue.equals("center|right")) {
+                view.setGravity(Gravity.CENTER_RIGHT);
+                used = true;
+            } else if (attrValue.equals("bottom|left")) {
+                view.setGravity(Gravity.BOTTOM_LEFT);
+                used = true;
+            } else if (attrValue.equals("bottom|center")) {
+                view.setGravity(Gravity.BOTTOM_CENTER);
+                used = true;
+            } else if (attrValue.equals("bottom|right")) {
+                view.setGravity(Gravity.BOTTOM_RIGHT);
+                used = true;
+            } else {
+                Log.error("Unsupported value '" + attrValue + "' for i3d:gravity attribute");
             }
         }
         return used;

@@ -12,6 +12,7 @@
     </style>
 
     <style name="buttonBase">
+        <item name="i3d:gravity">center</item>
         <item name="i3d:borderSize">1px</item>
         <item name="i3d:borderColor">borderButtonBase@color</item>
         <item name="i3d:cornerLeftTopStyle">bevel</item>

@@ -17,7 +17,24 @@ public class TextView extends View {
     protected Font font;
     private String[] wrappedText;
     protected Color textColor = Color.black;
-
+    protected Gravity gravity = Gravity.TOP_LEFT;
+    private float offsetX;
+    private float offsetY;
+    private float innerWidth;
+    private float innerHeight;
+    
+    public enum Gravity {
+        TOP_LEFT,
+        TOP_CENTER,
+        TOP_RIGHT,
+        CENTER_LEFT,
+        CENTER,
+        CENTER_RIGHT,
+        BOTTOM_LEFT,
+        BOTTOM_CENTER,
+        BOTTOM_RIGHT,
+    }
+    
     public TextView(Graphics g) {
         super(g);
         font = I3dContext.getInstance().getDefaultFont();
@@ -34,9 +51,9 @@ public class TextView extends View {
         // int localXbase = localX;
         // int localY = y + g.getTranslation().getY() - getLineHeight();
 
-        int localX = 0;
-        int localXbase = localX;
-        int localY = 0;
+        float localX = offsetX;
+        float localXbase = offsetX;
+        float localY = offsetY;
 
         g.setColor(textColor);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
@@ -80,16 +97,16 @@ public class TextView extends View {
                 final float startY = pixmap.getStartY();
 
                 GL11.glTexCoord2f(startX, startY);
-                GL11.glVertex2i(localX, localY);
+                GL11.glVertex2f(localX, localY);
 
                 GL11.glTexCoord2f(startX, endY);
-                GL11.glVertex2i(localX, imgHeight + localY);
+                GL11.glVertex2f(localX, imgHeight + localY);
 
                 GL11.glTexCoord2f(endX, endY);
-                GL11.glVertex2i(imgWidth + localX, imgHeight + localY);
+                GL11.glVertex2f(imgWidth + localX, imgHeight + localY);
 
                 GL11.glTexCoord2f(endX, startY);
-                GL11.glVertex2i(imgWidth + localX, localY);
+                GL11.glVertex2f(imgWidth + localX, localY);
 
                 localX += pixmap.getCharWidth();
             }
@@ -105,6 +122,10 @@ public class TextView extends View {
     public void setTextColor(Color textColor) {
         this.textColor = textColor;
     }
+    
+    public void setGravity(Color textColor) {
+        this.textColor = textColor;
+    }
 
     @Override
     public View duplicate() {
@@ -118,6 +139,7 @@ public class TextView extends View {
         super.duplicateTo(view);
         TextView myView = (TextView) view;
         myView.setTextColor(textColor);
+        myView.setGravity(gravity);
         myView.setText(text);
         myView.setFont(font);
     }
@@ -130,6 +152,26 @@ public class TextView extends View {
 
     @Override
     public void onLayout(float l, float t, float r, float b) {
+        float height = layoutParams.getHeight();
+        float width = layoutParams.getWidth();
+        
+        // Horizontal gravity
+        if(gravity  == Gravity.TOP_LEFT || gravity  == Gravity.CENTER_LEFT ||  gravity  == Gravity.TOP_LEFT) {
+            offsetX = 0;
+        } else if(gravity  == Gravity.TOP_RIGHT || gravity  == Gravity.CENTER_RIGHT ||  gravity  == Gravity.TOP_RIGHT) {
+            offsetX = width - innerWidth;
+        } else { // Center
+            offsetX = (width - innerWidth) / 2;
+        }
+        
+        //Vertical gravity
+        if(gravity  == Gravity.TOP_LEFT || gravity  == Gravity.TOP_CENTER ||  gravity  == Gravity.TOP_RIGHT) {
+            offsetY = 0;
+        } else if(gravity  == Gravity.BOTTOM_LEFT || gravity  == Gravity.BOTTOM_CENTER ||  gravity  == Gravity.BOTTOM_RIGHT) {
+            offsetY = height - innerHeight;
+        } else { // Center
+            offsetY = (height - innerHeight) / 2;
+        }
         
     }
 
@@ -158,6 +200,9 @@ public class TextView extends View {
 
             measuredWidth += pixmap.getCharWidth();
         }
+        
+        innerHeight = measuredHeight;
+        innerWidth = measuredWidth;
 //        Log.trace("TextView onMeasure "+ text);
 //        Log.trace("measuredWidth "+measuredWidth);
 //        Log.trace("measuredHeight "+measuredHeight);
@@ -196,4 +241,9 @@ public class TextView extends View {
             layoutParams.mContentHeight = measuredHeight;
         }
     }
+    
+    public void setGravity(Gravity gravity) {
+        this.gravity = gravity;
+    }
+    
 }
