@@ -32,16 +32,20 @@ public class Triangle extends View {
     @Override
     public View duplicate() {
         Triangle view = new Triangle(g);
-        view.setId(getId());
-        view.setBackgroundColor(backgroundColor);
+        duplicateTo(view);
+        return view;
+    }
+    
+    @Override
+    protected void duplicateTo(View view) {
+        super.duplicateTo(view);
+        Triangle myView = (Triangle) view;
+        myView.setBackgroundColor(backgroundColor);
         MeasurePoint[] mesures = new MeasurePoint[3];
         for(int i=0; i < 3; i++) {
             mesures[i] = this.mesures[i];
         }
-        view.setPoints(mesures);
-        view.setLayout(getLayoutParams().duplicate());
-        
-        return view;
+        myView.setPoints(mesures);
     }
 
     public void setPoints(MeasurePoint[] mesures) {

@@ -21,6 +21,7 @@
             i3d:text="newGameButton@strings"
             i3d:layout_marginBottom="20px"
             i3d:style="bigButton@styles"
+            i3d:layout_paddingTop="10px"
              />	
 
         <Button

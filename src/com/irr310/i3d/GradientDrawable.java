@@ -10,7 +10,7 @@ public class GradientDrawable extends Drawable {
     public GradientDrawable() {
     }
 
-    public void setStartColor(Color loadColor) {
+    public void setStartColor(Color startColor) {
         this.startColor = startColor;
     }
     

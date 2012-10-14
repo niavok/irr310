@@ -128,4 +128,21 @@ public class BorderParams {
     public void setBackground(Drawable background) {
         this.background = background;
     }
+
+    public BorderParams duplicate() {
+        BorderParams border = new BorderParams();
+        border.borderSize = borderSize;
+        border.borderColor = borderColor;
+        border.cornerLeftTopStyle = cornerLeftTopStyle;
+        border.cornerRightTopStyle = cornerRightTopStyle;
+        border.cornerLeftBottomStyle = cornerLeftBottomStyle;
+        border.cornerRightBottomStyle = cornerRightBottomStyle;
+        border.cornerLeftTopSize= cornerLeftTopSize;
+        border.cornerRightTopSize = cornerRightTopSize;
+        border.cornerLeftBottomSize = cornerLeftBottomSize;
+        border.cornerRightBottomSize = cornerRightBottomSize;
+        border.background = background;
+        
+        return border;
+    }
 }

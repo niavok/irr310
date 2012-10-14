@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <gradient
     name="buttonBaseBackground"
-    i3d:endColor="bottomButtonBase@color"
-    i3d:startColor="topButtonBase@color" />
+    i3d:startColor="topButtonBase@color"
+    i3d:stopColor="bottomButtonBase@color" />

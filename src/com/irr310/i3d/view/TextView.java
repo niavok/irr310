@@ -109,12 +109,17 @@ public class TextView extends View {
     @Override
     public View duplicate() {
         TextView view = new TextView(g);
-        view.setId(getId());
-        view.setTextColor(textColor);
-        view.setLayout(getLayoutParams().duplicate());
-        view.setText(text);
-        view.setFont(font);
+        duplicateTo(view);
         return view;
+    }
+    
+    @Override
+    protected void duplicateTo(View view) {
+        super.duplicateTo(view);
+        TextView myView = (TextView) view;
+        myView.setTextColor(textColor);
+        myView.setText(text);
+        myView.setFont(font);
     }
 
     public void setText(String text) {
@@ -125,7 +130,7 @@ public class TextView extends View {
 
     @Override
     public void onLayout(float l, float t, float r, float b) {
-
+        
     }
 
     public void setFont(Font font) {
@@ -153,9 +158,9 @@ public class TextView extends View {
 
             measuredWidth += pixmap.getCharWidth();
         }
-        Log.trace("TextView onMeasure "+ text);
-        Log.trace("measuredWidth "+measuredWidth);
-        Log.trace("measuredHeight "+measuredHeight);
+//        Log.trace("TextView onMeasure "+ text);
+//        Log.trace("measuredWidth "+measuredWidth);
+//        Log.trace("measuredHeight "+measuredHeight);
         
         if(!layoutParams.getLayoutMarginTop().isRelative()) {
             measuredHeight +=   layoutParams.computeMesure(layoutParams.getLayoutMarginTop());  
@@ -168,6 +173,19 @@ public class TextView extends View {
         }
         if(!layoutParams.getLayoutMarginRight().isRelative()) {
             measuredWidth +=   layoutParams.computeMesure(layoutParams.getLayoutMarginRight());  
+        }
+        
+        if(!layoutParams.getLayoutPaddingTop().isRelative()) {
+            measuredHeight +=   layoutParams.computeMesure(layoutParams.getLayoutPaddingTop());  
+        }
+        if(!layoutParams.getLayoutPaddingBottom().isRelative()) {
+            measuredHeight +=   layoutParams.computeMesure(layoutParams.getLayoutPaddingBottom());  
+        }
+        if(!layoutParams.getLayoutPaddingLeft().isRelative()) {
+            measuredWidth +=   layoutParams.computeMesure(layoutParams.getLayoutPaddingLeft());  
+        }
+        if(!layoutParams.getLayoutPaddingRight().isRelative()) {
+            measuredWidth +=   layoutParams.computeMesure(layoutParams.getLayoutPaddingRight());  
         }
         
 

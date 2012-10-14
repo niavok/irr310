@@ -57,6 +57,19 @@ public class LinearLayout extends ContainerView {
             measuredWidth +=   layoutParams.computeMesure(layoutParams.getLayoutMarginRight());  
         }
         
+        if(!layoutParams.getLayoutPaddingTop().isRelative()) {
+            measuredHeight +=   layoutParams.computeMesure(layoutParams.getLayoutPaddingTop());  
+        }
+        if(!layoutParams.getLayoutPaddingBottom().isRelative()) {
+            measuredHeight +=   layoutParams.computeMesure(layoutParams.getLayoutPaddingBottom());  
+        }
+        if(!layoutParams.getLayoutPaddingLeft().isRelative()) {
+            measuredWidth +=   layoutParams.computeMesure(layoutParams.getLayoutPaddingLeft());  
+        }
+        if(!layoutParams.getLayoutPaddingRight().isRelative()) {
+            measuredWidth +=   layoutParams.computeMesure(layoutParams.getLayoutPaddingRight());  
+        }
+        
 
         if(layoutParams.getLayoutWidthMeasure() != LayoutMeasure.FIXED || layoutParams.getMeasurePoint().getX().isRelative()) {
             layoutParams.mContentWidth = measuredWidth;
@@ -85,7 +98,10 @@ public class LinearLayout extends ContainerView {
             
             float computedWidth = childLayoutParams.mComputedRight - childLayoutParams.mComputedLeft;
             
-            view.layout(currentLeft + layoutParams.computeMesure(childLayoutParams.getLayoutMarginLeft())  , childLayoutParams.mComputedTop + layoutParams.computeMesure(childLayoutParams.getLayoutMarginTop()), currentLeft + computedWidth -  + layoutParams.computeMesure(childLayoutParams.getLayoutMarginRight()), childLayoutParams.mComputedBottom - layoutParams.computeMesure(childLayoutParams.getLayoutMarginBottom()));
+            view.layout(currentLeft + layoutParams.computeMesure(childLayoutParams.getLayoutMarginLeft()) + layoutParams.computeMesure(childLayoutParams.getLayoutPaddingLeft()) ,
+                        childLayoutParams.mComputedTop + layoutParams.computeMesure(childLayoutParams.getLayoutMarginTop()) + layoutParams.computeMesure(childLayoutParams.getLayoutPaddingTop()) ,
+                        currentLeft + computedWidth - layoutParams.computeMesure(childLayoutParams.getLayoutMarginRight()) - layoutParams.computeMesure(childLayoutParams.getLayoutPaddingRight()),
+                        childLayoutParams.mComputedBottom - layoutParams.computeMesure(childLayoutParams.getLayoutMarginBottom()) - layoutParams.computeMesure(childLayoutParams.getLayoutPaddingBottom()));
             
             currentLeft += computedWidth;
         }
@@ -101,7 +117,10 @@ public class LinearLayout extends ContainerView {
             
             float computedHeight = childLayoutParams.mComputedBottom - childLayoutParams.mComputedTop;
             
-            view.layout(childLayoutParams.mComputedLeft + layoutParams.computeMesure(childLayoutParams.getLayoutMarginLeft())  , currentTop + layoutParams.computeMesure(childLayoutParams.getLayoutMarginTop()), childLayoutParams.mComputedRight -  + layoutParams.computeMesure(childLayoutParams.getLayoutMarginRight()), currentTop + computedHeight - layoutParams.computeMesure(childLayoutParams.getLayoutMarginBottom()));
+            view.layout(childLayoutParams.mComputedLeft + layoutParams.computeMesure(childLayoutParams.getLayoutMarginLeft()) + layoutParams.computeMesure(childLayoutParams.getLayoutPaddingLeft() ) ,
+                        currentTop + layoutParams.computeMesure(childLayoutParams.getLayoutMarginTop()) + layoutParams.computeMesure(childLayoutParams.getLayoutPaddingTop()),
+                        childLayoutParams.mComputedRight - layoutParams.computeMesure(childLayoutParams.getLayoutMarginRight()) - layoutParams.computeMesure(childLayoutParams.getLayoutPaddingRight()),
+                        currentTop + computedHeight - layoutParams.computeMesure(childLayoutParams.getLayoutMarginBottom()) - layoutParams.computeMesure(childLayoutParams.getLayoutPaddingBottom()));
             currentTop += computedHeight;
         }
     }
@@ -109,14 +128,20 @@ public class LinearLayout extends ContainerView {
     @Override
     public View duplicate() {
         LinearLayout view = new LinearLayout(g);
-        for (View widget : children) {
-            view.addChild(widget.duplicate());
-        }
-        view.setLayoutOrientation(orientation);
-        view.setLayout(getLayoutParams().duplicate());
+        duplicateTo(view);
         return view;
     }
 
+    
+    @Override
+    protected void duplicateTo(View view) {
+        super.duplicateTo(view);
+        LinearLayout myView = (LinearLayout) view;
+        for (View widget : children) {
+            myView.addChild(widget.duplicate());
+        }
+        myView.setLayoutOrientation(orientation);
+    }
     
 
     

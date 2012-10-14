@@ -34,6 +34,7 @@ public class Rect extends View {
         view.setBackgroundColor(backgroundColor);
         view.setSize(size);
         view.setLayout(getLayoutParams());
+        view.setBorder(getBorderParams().duplicate());
         return view;
     }
 

@@ -227,7 +227,11 @@ public class LayoutParams {
         layout.layoutMarginBottomMeasure= layoutMarginBottomMeasure;
         layout.layoutMarginLeftMeasure = layoutMarginLeftMeasure;
         layout.layoutMarginRightMeasure = layoutMarginRightMeasure;
-
+        layout.layoutPaddingLeftMeasure = layoutPaddingLeftMeasure;
+        layout.layoutPaddingRightMeasure = layoutPaddingRightMeasure;
+        layout.layoutPaddingTopMeasure = layoutPaddingTopMeasure;
+        layout.layoutPaddingBottomMeasure = layoutPaddingBottomMeasure;
+        
         return layout;
     }
     
@@ -263,6 +267,8 @@ public class LayoutParams {
               width = parentLayout.computeMesure(getMeasurePoint().getX());
               width += parentLayout.computeMesure(getLayoutMarginLeft());
               width += parentLayout.computeMesure(getLayoutMarginRight());
+              width += parentLayout.computeMesure(getLayoutPaddingLeft());
+              width += parentLayout.computeMesure(getLayoutPaddingRight());
           } else if (getLayoutWidthMeasure() == LayoutMeasure.WRAP_CONTENT) {
               width = mContentWidth;
           } else {
@@ -275,6 +281,8 @@ public class LayoutParams {
               height = parentLayout.computeMesure(getMeasurePoint().getY());
               height += parentLayout.computeMesure(getLayoutMarginTop());
               height += parentLayout.computeMesure(getLayoutMarginBottom());
+              height += parentLayout.computeMesure(getLayoutPaddingTop());
+              height += parentLayout.computeMesure(getLayoutPaddingBottom());
           } else if (getLayoutHeightMeasure() == LayoutMeasure.WRAP_CONTENT) {
               height = mContentHeight;
           } else {

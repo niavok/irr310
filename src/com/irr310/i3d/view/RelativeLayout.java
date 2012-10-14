@@ -1,6 +1,7 @@
 package com.irr310.i3d.view;
 
 import com.irr310.i3d.Graphics;
+import com.irr310.i3d.MeasurePoint;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 
 public class RelativeLayout extends ContainerView {
@@ -15,19 +16,28 @@ public class RelativeLayout extends ContainerView {
         for (View view : children) {
             LayoutParams childLayoutParams = view.getLayoutParams();
             childLayoutParams.computeFrame(layoutParams);
-            view.layout(childLayoutParams.mComputedLeft, childLayoutParams.mComputedTop, childLayoutParams.mComputedRight, childLayoutParams.mComputedBottom);
-            view.layout(childLayoutParams.mComputedLeft + layoutParams.computeMesure(childLayoutParams.getLayoutMarginLeft())  , childLayoutParams.mComputedTop + layoutParams.computeMesure(childLayoutParams.getLayoutMarginTop()), childLayoutParams.mComputedRight - layoutParams.computeMesure(childLayoutParams.getLayoutMarginRight()), childLayoutParams.mComputedBottom -  + layoutParams.computeMesure(childLayoutParams.getLayoutMarginBottom()));
+            //view.layout(childLayoutParams.mComputedLeft, childLayoutParams.mComputedTop, childLayoutParams.mComputedRight, childLayoutParams.mComputedBottom);
+            view.layout(childLayoutParams.mComputedLeft + layoutParams.computeMesure(childLayoutParams.getLayoutMarginLeft()) + layoutParams.computeMesure(childLayoutParams.getLayoutPaddingLeft())  ,
+                        childLayoutParams.mComputedTop + layoutParams.computeMesure(childLayoutParams.getLayoutMarginTop()) + layoutParams.computeMesure(childLayoutParams.getLayoutPaddingTop()),
+                        childLayoutParams.mComputedRight - layoutParams.computeMesure(childLayoutParams.getLayoutMarginRight()) - layoutParams.computeMesure(childLayoutParams.getLayoutPaddingRight()),
+                        childLayoutParams.mComputedBottom - layoutParams.computeMesure(childLayoutParams.getLayoutMarginBottom()) - layoutParams.computeMesure(childLayoutParams.getLayoutPaddingBottom()));
         }
     }
 
     @Override
     public View duplicate() {
         RelativeLayout view = new RelativeLayout(g);
-        for (View childView : children) {
-            view.addChild(childView.duplicate());
-        }
-        view.setLayout(getLayoutParams().duplicate());
+        duplicateTo(view);
         return view;
+    }
+    
+    @Override
+    protected void duplicateTo(View view) {
+        super.duplicateTo(view);
+        RelativeLayout myView = (RelativeLayout) view;
+        for (View childView : children) {
+            myView.addChild(childView.duplicate());
+        }
     }
 
     @Override
@@ -46,6 +56,19 @@ public class RelativeLayout extends ContainerView {
         }
         if(!layoutParams.getLayoutMarginRight().isRelative()) {
             measuredWidth +=   layoutParams.computeMesure(layoutParams.getLayoutMarginRight());  
+        }
+        
+        if(!layoutParams.getLayoutPaddingTop().isRelative()) {
+            measuredHeight +=   layoutParams.computeMesure(layoutParams.getLayoutPaddingTop());  
+        }
+        if(!layoutParams.getLayoutPaddingBottom().isRelative()) {
+            measuredHeight +=   layoutParams.computeMesure(layoutParams.getLayoutPaddingBottom());  
+        }
+        if(!layoutParams.getLayoutPaddingLeft().isRelative()) {
+            measuredWidth +=   layoutParams.computeMesure(layoutParams.getLayoutPaddingLeft());  
+        }
+        if(!layoutParams.getLayoutPaddingRight().isRelative()) {
+            measuredWidth +=   layoutParams.computeMesure(layoutParams.getLayoutPaddingRight());  
         }
         
         

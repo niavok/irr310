@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.irr310.i3d.Color;
 import com.irr310.i3d.Graphics;
+import com.irr310.i3d.MeasurePoint;
 
 public class Button extends TextView {
 
@@ -15,8 +16,10 @@ public class Button extends TextView {
     public void onDraw() {
         
         float bevel = 10;
-        float height = layoutParams.getHeight();
-        float width = layoutParams.getWidth();
+        float height = layoutParams.getHeight() + layoutParams.computeMesure(layoutParams.getLayoutPaddingTop()) + layoutParams.computeMesure(layoutParams.getLayoutPaddingBottom());
+        float width = layoutParams.getWidth() + layoutParams.computeMesure(layoutParams.getLayoutPaddingLeft()) + layoutParams.computeMesure(layoutParams.getLayoutPaddingRight());
+        float offsetX = - layoutParams.computeMesure(layoutParams.getLayoutPaddingLeft());
+        float offsetY = - layoutParams.computeMesure(layoutParams.getLayoutPaddingTop());
         
         Color color1 = new Color(239, 239, 239);
         Color color2 = new Color(214, 214, 214);
@@ -25,8 +28,10 @@ public class Button extends TextView {
         Color firstStepColor = Color.mix(color1, color2, bevel/height);
         Color secondStepColor = Color.mix(color1, color2, 1 - bevel/height);
         
+        GL11.glPushMatrix();
+        GL11.glTranslatef(offsetX, offsetY, 0);
         
-        
+      
         
         g.setColor(Color.emerald);
         
@@ -87,6 +92,10 @@ public class Button extends TextView {
         
         GL11.glEnd();
         
+        
+        GL11.glPopMatrix();
+        
+        
         super.onDraw();
     }
     
@@ -98,12 +107,7 @@ public class Button extends TextView {
     @Override
     public View duplicate() {
         Button view = new Button(g);
-        view.setId(getId());
-        view.setTextColor(textColor);
-        view.setLayout(getLayoutParams().duplicate());
-        view.setText(text);
-        view.setFont(font);
+        duplicateTo(view);
         return view;
     }
-
 }

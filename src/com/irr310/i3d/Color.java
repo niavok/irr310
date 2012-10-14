@@ -136,14 +136,23 @@ public class Color {
     public Color(String colorString) {
         
         // #ffeea2
-        Matcher matcher = rgbHexaPattern.matcher(colorString);
-        if(matcher.matches()) {
+        Matcher matcherRgbHexa = rgbHexaPattern.matcher(colorString);
+        if(matcherRgbHexa.matches()) {
             r = Integer.parseInt(colorString.substring(1, 3), 16) / 255f;
             g = Integer.parseInt(colorString.substring(3, 5), 16) / 255f;
             b = Integer.parseInt(colorString.substring(5, 7), 16) / 255f;
             a = 1;
             return;
         } 
+        
+        Matcher matcherRgbaHexa = rgbaHexaPattern.matcher(colorString);
+        if(matcherRgbaHexa.matches()) {
+            r = Integer.parseInt(colorString.substring(1, 3), 16) / 255f;
+            g = Integer.parseInt(colorString.substring(3, 5), 16) / 255f;
+            b = Integer.parseInt(colorString.substring(5, 7), 16) / 255f;
+            a = Integer.parseInt(colorString.substring(7, 9), 16) / 255f;
+            return;
+        }
 
         Log.error("Invalid color: "+colorString);
         

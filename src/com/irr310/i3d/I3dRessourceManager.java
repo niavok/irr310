@@ -169,6 +169,9 @@ public class I3dRessourceManager {
         String ref = element.getAttribute("i3d:ref");
         View view = loadView(ref).duplicate();
 
+        Style style = loadStyle(element.getAttribute("i3d:style"));
+        style.apply(view);
+        
         NamedNodeMap attributes = element.getAttributes();
         for (int i = 0; i < attributes.getLength(); i++) {
             Node item = attributes.item(i);
@@ -372,6 +375,9 @@ public class I3dRessourceManager {
     private RelativeLayout NewRelativeLayout(Element element) {
         RelativeLayout relativeLayout = new RelativeLayout(g);
 
+        Style style = loadStyle(element.getAttribute("i3d:style"));
+        style.apply(relativeLayout);
+        
         NamedNodeMap attributes = element.getAttributes();
         for (int i = 0; i < attributes.getLength(); i++) {
             Node item = attributes.item(i);
@@ -391,6 +397,9 @@ public class I3dRessourceManager {
     private LinearLayout NewLinearLayout(Element element) {
         LinearLayout linearLayout = new LinearLayout(g);
 
+        Style style = loadStyle(element.getAttribute("i3d:style"));
+        style.apply(linearLayout);
+        
         NamedNodeMap attributes = element.getAttributes();
         for (int i = 0; i < attributes.getLength(); i++) {
             Node item = attributes.item(i);
@@ -411,6 +420,9 @@ public class I3dRessourceManager {
     private TextView NewTextView(Element element) {
         TextView textView = new TextView(g);
 
+        Style style = loadStyle(element.getAttribute("i3d:style"));
+        style.apply(textView);
+        
         NamedNodeMap attributes = element.getAttributes();
         for (int i = 0; i < attributes.getLength(); i++) {
             Node item = attributes.item(i);
@@ -433,6 +445,9 @@ public class I3dRessourceManager {
     private Button NewButton(Element element) {
         Button button = new Button(g);
 
+        Style style = loadStyle(element.getAttribute("i3d:style"));
+        style.apply(button);
+        
         NamedNodeMap attributes = element.getAttributes();
         for (int i = 0; i < attributes.getLength(); i++) {
             Node item = attributes.item(i);
@@ -455,7 +470,8 @@ public class I3dRessourceManager {
     private boolean checkViewAttrs(String attrName, String attrValue, View view) {
         boolean used = true;
         if (checkId(attrName, attrValue, view)) {
-        } else if (checkStyle(attrName, attrValue, view)) {
+        } else if (attrName.equals("i3d:style")) {
+            // Already checked
         } else if (checkLayoutWidth(attrName, attrValue, view)) {
         } else if (checkLayoutHeight(attrName, attrValue, view)) {
         } else if (checkGravityX(attrName, attrValue, view)) {
@@ -505,16 +521,6 @@ public class I3dRessourceManager {
         boolean used = false;
         if (attrName.equals("i3d:font")) {
             view.setFont(loadFont(attrValue));
-            used = true;
-        }
-        return used;
-    }
-
-    private boolean checkStyle(String attrName, String attrValue, View view) {
-        boolean used = false;
-        if (attrName.equals("i3d:style")) {
-            Style style = loadStyle(attrValue);
-            style.apply(view);
             used = true;
         }
         return used;
@@ -984,6 +990,11 @@ public class I3dRessourceManager {
     }
 
     Style loadStyle(String styleId) {
+        
+        if(styleId == null || styleId.isEmpty()) {
+            return new Style();
+        }
+        
         String[] styleParts = styleId.split("@");
         if (styleParts.length != 2) {
             Log.error("Fail to load style '" + styleId + "' : no @ found");
@@ -1048,8 +1059,7 @@ public class I3dRessourceManager {
             String attrName = attr.getName();
             String attrValue = attr.getValue();
 
-            if (checkViewAttrs(attrName, attrValue, view)) {
-            } else if (attrName.equals("i3d:startColor")) {
+            if (attrName.equals("name")) {
                 // Already processed
             } else if (attrName.equals("i3d:startColor")) {
                 drawable.setStartColor(loadColor(attrValue));

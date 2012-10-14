@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL11;
 import com.irr310.common.tools.Log;
 import com.irr310.i3d.Graphics;
 import com.irr310.i3d.I3dContext;
+import com.irr310.i3d.Style;
 import com.irr310.i3d.view.LayoutParams.LayoutAlign;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 
@@ -20,8 +21,9 @@ public abstract class View {
     protected LayoutParams layoutParams;
     protected BorderParams borderParams;
     
-    Graphics g;
+    protected Graphics g;
     private String id;
+    private Style style;
     
     public View(Graphics g) {
         this.g = g;
@@ -67,6 +69,21 @@ public abstract class View {
         if(!layoutParams.getLayoutMarginRight().isRelative()) {
             layoutParams.mContentWidth +=   layoutParams.computeMesure(layoutParams.getLayoutMarginRight());  
         }
+        
+        // Set padding
+        if(!layoutParams.getLayoutPaddingTop().isRelative()) {
+            layoutParams.mContentHeight +=   layoutParams.computeMesure(layoutParams.getLayoutPaddingTop());  
+        }
+        if(!layoutParams.getLayoutPaddingBottom().isRelative()) {
+            layoutParams.mContentHeight +=   layoutParams.computeMesure(layoutParams.getLayoutPaddingBottom());  
+        }
+        if(!layoutParams.getLayoutPaddingLeft().isRelative()) {
+            layoutParams.mContentWidth +=   layoutParams.computeMesure(layoutParams.getLayoutPaddingLeft());  
+        }
+        if(!layoutParams.getLayoutPaddingRight().isRelative()) {
+            layoutParams.mContentWidth +=   layoutParams.computeMesure(layoutParams.getLayoutPaddingRight());  
+        }
+        
         onMeasure();
     }
     
@@ -120,6 +137,10 @@ public abstract class View {
         this.layoutParams = layout;
     }
 
+    protected void setBorder(BorderParams border) {
+        this.borderParams = border;
+    }
+    
 	public View findViewById(String id) {
 		if(id.equals(this.id)) {
 			return this;
@@ -129,5 +150,11 @@ public abstract class View {
 
     public BorderParams getBorderParams() {
         return borderParams;
+    }
+    
+    protected void duplicateTo(View view) {
+        view.setId(getId());
+        view.setLayout(getLayoutParams().duplicate());
+        view.setBorder(getBorderParams().duplicate());
     }
 }

@@ -40,7 +40,6 @@ public class Style extends TextView {
 
     public void setParent(String parentName) {
         this.parentName = parentName;
-        
     }
 
     public void apply(View view) {
@@ -89,7 +88,7 @@ public class Style extends TextView {
     }
 
     private void applyParentStyle(View view) {
-        if(parentName != null) {
+        if(parentName != null && !parentName.isEmpty()) {
             if(parent == null) {
                 parent = I3dRessourceManager.getInstance().loadStyle(parentName);
             }
@@ -100,5 +99,20 @@ public class Style extends TextView {
             
         }
     }
+    
+    @Override
+    public View duplicate() {
+        Style view = new Style();
+        duplicateTo(view);
+        return view;
+    }
+    
+    @Override
+    protected void duplicateTo(View view) {
+        super.duplicateTo(view);
+        Style myView = (Style) view;
+        myView.parentName = parentName;
+    }
+
    
 }
