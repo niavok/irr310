@@ -6,7 +6,7 @@ import com.irr310.common.tools.Log;
 import com.irr310.i3d.Graphics;
 import com.irr310.i3d.I3dContext;
 import com.irr310.i3d.Style;
-import com.irr310.i3d.view.LayoutParams.LayoutAlign;
+import com.irr310.i3d.view.LayoutParams.LayoutGravity;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 
 public abstract class View {

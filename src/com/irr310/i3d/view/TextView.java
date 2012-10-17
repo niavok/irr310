@@ -123,8 +123,8 @@ public class TextView extends View {
         this.textColor = textColor;
     }
     
-    public void setGravity(Color textColor) {
-        this.textColor = textColor;
+    public void setGravity(Gravity gravity) {
+        this.gravity = gravity;
     }
 
     @Override
@@ -242,8 +242,5 @@ public class TextView extends View {
         }
     }
     
-    public void setGravity(Gravity gravity) {
-        this.gravity = gravity;
-    }
-    
+   
 }

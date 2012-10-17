@@ -28,8 +28,8 @@ public class LayoutParams {
     // Input
     private LayoutMeasure layoutWidthMeasure;
     private LayoutMeasure layoutHeightMeasure;
-    private LayoutAlign layoutGravityX;
-    private LayoutAlign layoutGravityY;
+    private LayoutGravity layoutGravityX;
+    private LayoutGravity layoutGravityY;
     private MeasurePoint measurePoint;
 
     private Measure layoutMarginLeftMeasure;
@@ -47,7 +47,7 @@ public class LayoutParams {
         MATCH_PARENT, WRAP_CONTENT, FIXED,
     }
 
-    public enum LayoutAlign {
+    public enum LayoutGravity {
         CENTER, LEFT, TOP, BOTTOM, RIGHT
     }
 
@@ -57,8 +57,8 @@ public class LayoutParams {
 
         layoutWidthMeasure = LayoutMeasure.WRAP_CONTENT;
         layoutHeightMeasure = LayoutMeasure.WRAP_CONTENT;
-        layoutGravityX = LayoutAlign.LEFT;
-        layoutGravityY = LayoutAlign.TOP;
+        layoutGravityX = LayoutGravity.LEFT;
+        layoutGravityY = LayoutGravity.TOP;
 
         // Output
 //        this.width = -1;
@@ -159,19 +159,19 @@ public class LayoutParams {
         this.layoutHeightMeasure = layoutHeightMeasure;
     }
 
-    public LayoutAlign getLayoutGravityX() {
+    public LayoutGravity getLayoutGravityX() {
         return layoutGravityX;
     }
 
-    public void setLayoutGravityX(LayoutAlign layoutAlignX) {
+    public void setLayoutGravityX(LayoutGravity layoutAlignX) {
         this.layoutGravityX = layoutAlignX;
     }
 
-    public LayoutAlign getLayoutGravityY() {
+    public LayoutGravity getLayoutGravityY() {
         return layoutGravityY;
     }
 
-    public void setLayoutGravityY(LayoutAlign layoutAlignY) {
+    public void setLayoutGravityY(LayoutGravity layoutAlignY) {
         this.layoutGravityY = layoutAlignY;
     }
 
@@ -289,19 +289,19 @@ public class LayoutParams {
               throw new RuntimeException("Not implemented");
           }
           
-          if(getLayoutGravityX() == LayoutAlign.CENTER) {
+          if(getLayoutGravityX() == LayoutGravity.CENTER) {
               mComputedLeft = parentLayout.getWidth() /2 - width /2;
-          } else if (getLayoutGravityX() == LayoutAlign.LEFT) {
+          } else if (getLayoutGravityX() == LayoutGravity.LEFT) {
               mComputedLeft = 0;
-          } else if (getLayoutGravityX() == LayoutAlign.RIGHT) {
+          } else if (getLayoutGravityX() == LayoutGravity.RIGHT) {
               mComputedLeft = parentLayout.getWidth() - width;
           }
     
-          if(getLayoutGravityY() == LayoutAlign.CENTER) {
+          if(getLayoutGravityY() == LayoutGravity.CENTER) {
               mComputedTop = parentLayout.getHeight()/2 - height /2;
-          }else if (getLayoutGravityY() == LayoutAlign.TOP) {
+          }else if (getLayoutGravityY() == LayoutGravity.TOP) {
               mComputedTop = 0;
-          } else if (getLayoutGravityY() == LayoutAlign.BOTTOM) {
+          } else if (getLayoutGravityY() == LayoutGravity.BOTTOM) {
               mComputedTop = parentLayout.getHeight() - height;
           }
           
