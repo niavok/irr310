@@ -79,7 +79,7 @@ public class I3dRessourceManager {
         }
 
         RessourceFileCache ressourceFileCache = fileCache.get(fileId);
-        view = ressourceFileCache.getView(localId);
+        view = ressourceFileCache.getView(viewId);
 
         if (view == null) {
             Log.error("Unknown view '" + viewId);
@@ -111,8 +111,7 @@ public class I3dRessourceManager {
             // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            Log.error("Failed to parse file '"+fileId+"' : "+ e.getMessage());
         }
 
         fileCache.put(fileId, ressourceFileCache);
@@ -127,19 +126,19 @@ public class I3dRessourceManager {
         if (nodeName.equals("View")) {
             view = linkView(element, ressourceFileCache.getFileId());
         } else if (nodeName.equals("RelativeLayout")) {
-            view = NewRelativeLayout(element);
+            view = NewRelativeLayout(element, ressourceFileCache.getFileId());
         } else if (nodeName.equals("LinearLayout")) {
-            view = NewLinearLayout(element);
+            view = NewLinearLayout(element, ressourceFileCache.getFileId());
         } else if (nodeName.equals("Rect")) {
-            view = NewRect(element);
+            view = NewRect(element, ressourceFileCache.getFileId());
         } else if (nodeName.equals("Button")) {
-            view = NewButton(element);
+            view = NewButton(element, ressourceFileCache.getFileId());
         } else if (nodeName.equals("Triangle")) {
             view = NewTriangle(element, ressourceFileCache.getFileId());
         } else if (nodeName.equals("Waiter")) {
             view = NewWaiter(element);
         } else if (nodeName.equals("TextView")) {
-            view = NewTextView(element);
+            view = NewTextView(element, ressourceFileCache.getFileId());
         } else {
             // TODO error
             Log.trace("ERROR unknown nodeName=" + nodeName);
@@ -182,7 +181,7 @@ public class I3dRessourceManager {
 
             ViewFactory viewFactory = new ViewFactory(view);
             
-            if (checkViewAttrs(attrName, attrValue, viewFactory)) {
+            if (checkViewAttrs(attrName, attrValue, fileId, viewFactory)) {
             } else if (attrName.equals("i3d:ref")) {
                 // Already processed
             } else {
@@ -248,7 +247,7 @@ public class I3dRessourceManager {
 
             StyleFactory styleFactory = new StyleFactory(style);
             
-            if (checkViewAttrs(attrName, attrValue, styleFactory)) {
+            if (checkViewAttrs(attrName, attrValue, null, styleFactory)) {
             } else if (checkColor(attrName, attrValue, styleFactory)) {
             } else if (checkFont(attrName, attrValue, styleFactory)) {
             } else if (checkGravity(attrName, attrValue, styleFactory)) {
@@ -275,7 +274,7 @@ public class I3dRessourceManager {
         return new Waiter(g);
     }
 
-    private Rect NewRect(Element element) {
+    private Rect NewRect(Element element, String fileId) {
         Rect rect = new Rect(g);
         NamedNodeMap attributes = element.getAttributes();
         for (int i = 0; i < attributes.getLength(); i++) {
@@ -284,14 +283,12 @@ public class I3dRessourceManager {
             String attrName = attr.getName();
             String attrValue = attr.getValue();
 
-            if (attrName.equals("i3d:id")) {
-                rect.setId(attrValue);
+            ViewFactory viewFactory = new ViewFactory(rect);
+            
+            
+            if (checkViewAttrs(attrName, attrValue, fileId, viewFactory)) {
             } else if (attrName.equals("i3d:backgroundColor")) {
                 rect.setBackgroundColor(loadColor(attrValue));
-            } else if (attrName.equals("i3d:layout_width")) {
-
-            } else if (attrName.equals("i3d:layout_height")) {
-
             } else {
                 Log.error("Unknown attrib '" + attrName + "=" + attrValue + "' for Rect");
             }
@@ -309,23 +306,11 @@ public class I3dRessourceManager {
             String attrName = attr.getName();
             String attrValue = attr.getValue();
 
-            if (attrName.equals("i3d:id")) {
-                triangle.setId(attrValue + "@" + fileId);
+            ViewFactory viewFactory = new ViewFactory(triangle);
+            
+            if (checkViewAttrs(attrName, attrValue, fileId, viewFactory)) {
             } else if (attrName.equals("i3d:backgroundColor")) {
                 triangle.setBackgroundColor(loadColor(attrValue));
-            } else if (attrName.equals("i3d:layout_width")) {
-                if (attrValue.equals("match_parent")) {
-                    triangle.getLayoutParams().setLayoutWidthMeasure(LayoutMeasure.MATCH_PARENT);
-                } else {
-                    Log.error("Unsupported value '" + attrValue + "' for i3d:layout_width attribute");
-                }
-            } else if (attrName.equals("i3d:layout_height")) {
-                if (attrValue.equals("match_parent")) {
-                    triangle.getLayoutParams().setLayoutHeightMeasure(LayoutMeasure.MATCH_PARENT);
-                } else {
-                    Log.error("Unsupported value '" + attrValue + "' for i3d:layout_height attribute");
-                }
-            } else if (attrName.equals("i3d:align_x")) {
             } else if (attrName.equals("i3d:points")) {
                 String[] pointsStrings = attrValue.split("\\|");
                 if (pointsStrings.length != 3) {
@@ -378,7 +363,7 @@ public class I3dRessourceManager {
         return new Measure(value, relative);
     }
 
-    private RelativeLayout NewRelativeLayout(Element element) {
+    private RelativeLayout NewRelativeLayout(Element element, String fileId) {
         RelativeLayout relativeLayout = new RelativeLayout(g);
 
         Style style = loadStyle(element.getAttribute("i3d:style"));
@@ -393,7 +378,7 @@ public class I3dRessourceManager {
 
             ViewFactory viewFactory = new ViewFactory(relativeLayout);
             
-            if (checkViewAttrs(attrName, attrValue, viewFactory)) {
+            if (checkViewAttrs(attrName, attrValue, fileId, viewFactory)) {
             } else {
                 Log.error("Unknown attrib '" + attrName + "=" + attrValue + "' for RelativeLayout");
             }
@@ -402,7 +387,7 @@ public class I3dRessourceManager {
         return relativeLayout;
     }
 
-    private LinearLayout NewLinearLayout(Element element) {
+    private LinearLayout NewLinearLayout(Element element, String fileId) {
         LinearLayout linearLayout = new LinearLayout(g);
 
         Style style = loadStyle(element.getAttribute("i3d:style"));
@@ -417,7 +402,7 @@ public class I3dRessourceManager {
 
             ViewFactory viewFactory = new ViewFactory(linearLayout);
             
-            if (checkViewAttrs(attrName, attrValue, viewFactory)) {
+            if (checkViewAttrs(attrName, attrValue, fileId, viewFactory)) {
             } else if (checkOrientation(attrName, attrValue, linearLayout)) {
             } else {
                 Log.error("Unknown attrib '" + attrName + "=" + attrValue + "' for LinearLayout");
@@ -427,7 +412,7 @@ public class I3dRessourceManager {
         return linearLayout;
     }
 
-    private TextView NewTextView(Element element) {
+    private TextView NewTextView(Element element, String fileId) {
         TextView textView = new TextView(g);
 
         Style style = loadStyle(element.getAttribute("i3d:style"));
@@ -442,7 +427,7 @@ public class I3dRessourceManager {
 
             TextViewFactory textViewFactory = new TextViewFactory(textView);
             
-            if (checkViewAttrs(attrName, attrValue, textViewFactory)) {
+            if (checkViewAttrs(attrName, attrValue, fileId, textViewFactory)) {
             } else if (checkColor(attrName, attrValue, textViewFactory)) {
             } else if (checkText(attrName, attrValue, textViewFactory)) {
             } else if (checkFont(attrName, attrValue, textViewFactory)) {
@@ -455,7 +440,7 @@ public class I3dRessourceManager {
         return textView;
     }
 
-    private Button NewButton(Element element) {
+    private Button NewButton(Element element, String fileId) {
         Button button = new Button(g);
 
         Style style = loadStyle(element.getAttribute("i3d:style"));
@@ -470,7 +455,7 @@ public class I3dRessourceManager {
 
             TextViewFactory textViewFactory = new TextViewFactory(button);
             
-            if (checkViewAttrs(attrName, attrValue, textViewFactory)) {
+            if (checkViewAttrs(attrName, attrValue, fileId, textViewFactory)) {
             } else if (checkColor(attrName, attrValue, textViewFactory)) {
             } else if (checkText(attrName, attrValue, textViewFactory)) {
             } else if (checkFont(attrName, attrValue, textViewFactory)) {
@@ -482,11 +467,12 @@ public class I3dRessourceManager {
         return button;
     }
 
-    private boolean checkViewAttrs(String attrName, String attrValue, LayoutFactory view) {
+    private boolean checkViewAttrs(String attrName, String attrValue, String fileId , LayoutFactory view) {
         boolean used = true;
-        if (checkId(attrName, attrValue, view)) {
+        if (checkId(attrName, attrValue, fileId, view)) {
         } else if (attrName.equals("i3d:style")) {
             // Already checked
+        } else if (checkHelp(attrName, attrValue, view)) {
         } else if (checkLayoutWidth(attrName, attrValue, view)) {
         } else if (checkLayoutHeight(attrName, attrValue, view)) {
         } else if (checkGravityX(attrName, attrValue, view)) {
@@ -505,15 +491,24 @@ public class I3dRessourceManager {
         return used;
     }
 
-    private boolean checkId(String attrName, String attrValue, LayoutFactory view) {
+    private boolean checkId(String attrName, String attrValue, String fileId, LayoutFactory view) {
         boolean used = false;
         if (attrName.equals("i3d:id")) {
-            view.setId(attrValue);
+            view.setId(attrValue + "@" + fileId);
             used = true;
         }
         return used;
     }
-
+    
+    private boolean checkHelp(String attrName, String attrValue, LayoutFactory view) {
+        boolean used = false;
+        if (attrName.equals("i3d:help")) {
+            view.setHelp(loadString(attrValue));
+            used = true;
+        }
+        return used;
+    }
+    
     private boolean checkColor(String attrName, String attrValue, TextFactory view) {
         boolean used = false;
         if (attrName.equals("i3d:color")) {
@@ -1140,6 +1135,8 @@ public class I3dRessourceManager {
 
         void setId(String attrValue);
 
+        void setHelp(String help);
+
         void setLayoutGravityY(LayoutGravity left);
 
         void setLayoutGravityX(LayoutGravity center);
@@ -1340,6 +1337,11 @@ public class I3dRessourceManager {
         public void setLayoutWidthMeasure(LayoutMeasure measure) {
             view.getLayoutParams().setLayoutWidthMeasure(measure);            
         }
+
+        @Override
+        public void setHelp(String help) {
+            view.setHelp(help);
+        }
         
     }
     
@@ -1454,7 +1456,7 @@ public class I3dRessourceManager {
 
         @Override
         public void setText(String text) {
-         // Style cannot define text
+            // Style cannot define text
         }
 
         @Override
@@ -1530,6 +1532,11 @@ public class I3dRessourceManager {
         @Override
         public void setGravity(Gravity gravity) {
             style.setGravity(gravity);
+        }
+
+        @Override
+        public void setHelp(String help) {
+         // Style cannot define help
         }
         
     }

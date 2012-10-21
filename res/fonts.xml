@@ -3,8 +3,9 @@
     <font name="default" font="Ubuntu" size="12" />
     <font name="default-bold" font="Ubuntu" size="12" style="bold"/>
     <font name="medium" font="Ubuntu" size="14" />
-    <font name="bigButton" font="Ubuntu" size="24" />
+    <font name="bigButton" font="Ubuntu" size="18"  />
     <font name="title" font="Ubuntu" size="18" style="bold"/>
     <font name="title-bold" font="Ubuntu" size="18" style="bold"/>
-    <font name="logo" font="Ubuntu" size="120" style="bold"/>
+    <!--  <font name="logo" font="Ubuntu" size="120" style="bold"/>-->
+    <font name="logo" font="Ubuntu" size="12" style="bold"/>
 </resources>

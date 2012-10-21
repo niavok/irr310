@@ -23,7 +23,8 @@ public abstract class View {
     
     protected Graphics g;
     private String id;
-    private Style style;
+    private OnClickListener onClickListener = null;
+    private String help;
     
     public View(Graphics g) {
         this.g = g;
@@ -156,5 +157,25 @@ public abstract class View {
         view.setId(getId());
         view.setLayout(getLayoutParams().duplicate());
         view.setBorder(getBorderParams().duplicate());
+    }
+    
+    public void setOnClickListener(OnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
+    }
+    
+    public boolean performClick() {
+        if (onClickListener != null) {
+            onClickListener.onClick(this);
+            return true;
+        }
+        return false;
+    }
+    
+    public static interface OnClickListener {
+        void onClick(View view); 
+    }
+
+    public void setHelp(String help) {
+        this.help = help;
     }
 }

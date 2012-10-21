@@ -5,8 +5,11 @@ import com.irr310.i3d.Bundle;
 import com.irr310.i3d.Intent;
 import com.irr310.i3d.Measure;
 import com.irr310.i3d.view.Activity;
+import com.irr310.i3d.view.Button;
 import com.irr310.i3d.view.LayoutParams;
 import com.irr310.i3d.view.Triangle;
+import com.irr310.i3d.view.View;
+import com.irr310.i3d.view.View.OnClickListener;
 import com.irr310.server.Duration;
 import com.irr310.server.Time;
 
@@ -15,6 +18,7 @@ public class MainMenuActivity extends Activity {
     //private Triangle mobileLogoPart;
     private Measure animationMesure;
     private Time startTime;
+    private Button newGameMenu;
 
     @Override
     public void onCreate(Bundle bundle) {
@@ -23,6 +27,15 @@ public class MainMenuActivity extends Activity {
       //  mobileLogoPart = (Triangle) findViewById("logoRedPart@layout/logo");
         animationMesure = new Measure(0, true);
 
+        newGameMenu = (Button) findViewById("newGameButton@layout/mainmenu");
+        newGameMenu.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(NewGameActivity.class));
+            }
+        });
+        
     }
 
     @Override

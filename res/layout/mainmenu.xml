@@ -26,7 +26,9 @@
                 i3d:layout_width="match_parent"
                 i3d:layout_marginBottom="20px"
                 i3d:layout_marginTop="100px"
-                i3d:text="newGameButton@strings" />
+                i3d:text="newGameButton@strings"
+                i3d:help="newGameButtonHelp@help/mainmenu"
+                 />
 
             <Button
                 i3d:id="continueGameButton"
