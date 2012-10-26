@@ -102,5 +102,12 @@ public class Font {
       return tex;
     }
     
+    public BufferedImage getImage() {
+        return image;
+    }
+    
+    public Hashtable<Character, CharacterPixmap> getTexHashMap() {
+        return texHashMap;
+    }
     
 }

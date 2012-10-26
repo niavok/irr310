@@ -5,12 +5,27 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
+import java.util.Formatter;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Scanner;
+import java.util.Set;
 
 import javax.imageio.ImageIO;
+
+import com.irr310.client.ClientConfig;
+import com.irr310.common.tools.Log;
 
 public class FontFactory {
 
@@ -18,9 +33,34 @@ public class FontFactory {
     private AssemblyLine assemblyLine = new AssemblyLine();
     private Alphabet alphabet;
     private int squarePixel = 0;
-    final private int safetyMargin = 0;
+    private int safetyMargin = 1;
     private String name;
 
+    static final int FONTGL_MAGIC_NUMBER = 1649040;
+    static final int FONTGL_VERSION = 1;
+    
+    static public Map<String, Font> fontCache = new HashMap<String, Font>(); 
+    
+    /**
+     * GLFont file format
+     * 
+     * WARNING: change the version number is the format is changed !
+     * 
+     * int  (4 bytes) : magic number
+     * int  (4 bytes) : version
+     * int  (4 bytes) : height
+     * int  (4 bytes) : n char count
+     * 
+     * ... n times
+     * 
+     * int  (4 bytes) : pixmap x
+     * int  (4 bytes) : pixmap y
+     * int  (4 bytes) : pixmap width
+     * int  (4 bytes) : pixmap char width 
+     * char (1 byte) : pixmap character
+     */
+    
+    
     public FontFactory() {
     }
 
@@ -41,21 +81,98 @@ public class FontFactory {
         
         name = fontCode+"-"+style+"-"+fontSize;
         
-        /*
-         * if(labelstyle.getStyle() == "bold") { style = "B"; }
-         */
-        java.awt.Font font = null;
-        try {
-            font = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, new File("fonts/" + fontCode + "-" + style + ".ttf"));
-            font = font.deriveFont(fontSize);
-        } catch (FontFormatException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        Font font = null;
+        
+        font = loadCachedFont(name);
+        
+        if(font == null) {
+            /*
+             * if(labelstyle.getStyle() == "bold") { style = "B"; }
+             */
+            java.awt.Font awtFont = null;
+            try {
+                awtFont = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, new File("fonts/" + fontCode + "-" + style + ".ttf"));
+                awtFont = awtFont.deriveFont(fontSize);
+            } catch (FontFormatException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            font = renderStandardFont(awtFont);
         }
-        return renderStandardFont(font);
+        
+        return font;
     }
 
+    private Font loadCachedFont(String name) {
+        
+        if(fontCache.containsKey(name)) {
+            return fontCache.get(name);
+        }
+        
+        File cachedFontDescriptor = new File(ClientConfig.getCacheDirectoryPath("fonts/"+name+".glfont"));
+        File cachedFontImage = new File(ClientConfig.getCacheDirectoryPath("fonts/"+name+".png"));
+        
+        if(!cachedFontDescriptor.exists() || !cachedFontImage.exists()) {
+            return null;
+        }
+        
+        BufferedImage img = null;
+        Font font = null;
+        
+        try {
+            img = ImageIO.read(cachedFontImage);
+        } catch (IOException e) {
+            Log.error("Invalid image "+cachedFontImage.getAbsolutePath());
+            return null;
+        }
+        try {
+            
+            FileInputStream fileInputStream = new FileInputStream(cachedFontDescriptor);
+            FileChannel fileChannel = fileInputStream.getChannel();
+            ByteBuffer buffer = fileChannel.map(FileChannel.MapMode.READ_ONLY, 0, fileChannel.size());
+            
+            int magicNumber = buffer.getInt();
+            int version = buffer.getInt();
+            int height = buffer.getInt();
+            int count = buffer.getInt();
+            
+            if(magicNumber != FONTGL_MAGIC_NUMBER) {
+                Log.error("Failed to loadglfont file "+cachedFontDescriptor.getAbsolutePath()+" : magic number is '"+FONTGL_MAGIC_NUMBER+"' but '"+magicNumber+"' is expected.");
+            }
+            
+            if(version != FONTGL_VERSION) {
+                Log.error("Failed to loadglfont file "+cachedFontDescriptor.getAbsolutePath()+" : version is '"+FONTGL_VERSION+"' but '"+version+"' is expected.");
+            }
+            
+            Hashtable<Character, CharacterPixmap> hashtable = new Hashtable<Character, CharacterPixmap>();
+            
+            for(int i = 0; i < count; i++) {
+                int x = buffer.getInt();
+                int y = buffer.getInt();
+                int width = buffer.getInt();
+                int charWidth = buffer.getInt();
+                char character = buffer.getChar();
+                
+                CharacterPixmap cp = new CharacterPixmap(null, x, y, width, height, character, charWidth);
+                hashtable.put(cp.getCharacter(), cp);
+            }
+            
+            font = new Font(img, hashtable, height);
+            fontCache.put(name, font);
+        } catch (FileNotFoundException e) {
+            Log.error("Failed to initialize reader on glfont file "+cachedFontDescriptor.getAbsolutePath());
+            return null;
+        } catch (IOException e) {
+            Log.error("Failed to read on glfont file "+cachedFontDescriptor.getAbsolutePath());
+            return null;
+        }
+        
+        return font;
+    }
+
+    
+    
     public Font renderStandardFont(java.awt.Font awtFont) {
 
         BufferedImage baseImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
@@ -180,12 +297,54 @@ public class FontFactory {
         counter++;
       }
 
-      saveImageToDisk(bi, name+".png");
+      Font font = new Font(bi, hashtable, fontMetrics.getMaxAscent()
+               + fontMetrics.getMaxDescent());
+      
+      saveFontTo(font, name);
+      //saveImageToDisk(bi, name+".png");
 
-      return new Font(bi, hashtable, fontMetrics.getMaxAscent()
-          + fontMetrics.getMaxDescent());
+      return font;
 
     }
+    
+    public static void saveFontTo(Font font, String name) {
+        
+        File fontCacheDir = new File(ClientConfig.getCacheDirectoryPath("fonts/"));
+        if(!fontCacheDir.exists()) {
+            fontCacheDir.mkdirs();
+        }
+        
+        saveImageToDisk(font.getImage(), ClientConfig.getCacheDirectoryPath("fonts/"+name+".png"));
+        
+        try {
+            DataOutputStream output = new DataOutputStream(new FileOutputStream(ClientConfig.getCacheDirectoryPath("fonts/"+name+".glfont")));
+            
+            output.writeInt(FONTGL_MAGIC_NUMBER);
+            output.writeInt(FONTGL_VERSION);
+            output.writeInt(font.getHeight());
+            output.writeInt(font.getTexHashMap().size());
+            
+            
+            Set<Entry<Character,CharacterPixmap>> entrySet = font.getTexHashMap().entrySet();
+            
+            for (Entry<Character, CharacterPixmap> entry : entrySet) {
+                CharacterPixmap value = entry.getValue();
+                output.writeInt(value.getX());
+                output.writeInt(value.getY());
+                output.writeInt(value.getWidth());
+                output.writeInt(value.getCharWidth());
+                output.writeChar(value.getCharacter());
+            }
+            
+            output.close();
+            
+        } catch (FileNotFoundException e) {
+            Log.error("Failed open glfont cache file to write "+ClientConfig.getCacheDirectoryPath("fonts/"+name+".glfont"));
+        } catch (IOException e) {
+            Log.error("Failed to write cache glfont file "+ClientConfig.getCacheDirectoryPath("fonts/"+name+".glfont"));
+        }
+    }
+    
     
     /**
      * Saves the given image to a PNG file.
