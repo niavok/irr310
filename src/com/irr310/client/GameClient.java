@@ -62,7 +62,7 @@ public class GameClient extends Game {
         // physicEngine = new PhysicEngine();
         uiEngine = new UiEngine();
 
-        //engineList.add(new InputEngine());
+        engineList.add(new InputEngine());
         /*if(ClientConfig.sound_isEnabled()) {
             engineList.add(new SoundEngine());
         }*/
@@ -76,7 +76,7 @@ public class GameClient extends Game {
         
         // engineList.add(new ClientScriptEngine());
 
-        // inputEngine = new InputEngine();
+        //inputEngine = new InputEngine();
         // clientGameEngine = new ClientGameEngine();
         // scriptEngine = new ClientScriptEngine();
 

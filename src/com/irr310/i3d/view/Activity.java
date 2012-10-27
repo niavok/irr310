@@ -9,6 +9,8 @@ import com.irr310.i3d.Intent;
 import com.irr310.i3d.Surface;
 import com.irr310.server.Time;
 
+import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
+
 public abstract class Activity implements ViewParent {
 
     private View mview;
@@ -100,6 +102,10 @@ public abstract class Activity implements ViewParent {
 
     public I3dContext getContext() {
         return context;
+    }
+    
+    public void onMouseEvent(V3DMouseEvent mouseEvent) {
+        mview.onMouseEvent(mouseEvent);
     }
 
 }

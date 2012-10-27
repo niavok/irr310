@@ -5,6 +5,8 @@ import com.irr310.i3d.Color;
 import com.irr310.i3d.Measure;
 import com.irr310.i3d.MeasurePoint;
 
+import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
+
 public class Triangle extends View {
 
     private Color backgroundColor;
@@ -64,5 +66,10 @@ public class Triangle extends View {
 
     @Override
     public void onMeasure() {
+    }
+    
+    @Override
+    public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
+        return false;
     }
 }

@@ -4,6 +4,8 @@ import com.irr310.i3d.Graphics;
 import com.irr310.i3d.Color;
 import com.irr310.i3d.I3dVec2;
 
+import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
+
 public class Rect extends View {
 
     private I3dVec2 size = new I3dVec2(10,10);
@@ -44,5 +46,10 @@ public class Rect extends View {
 
     @Override
     public void onMeasure() {
+    }
+    
+    @Override
+    public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
+        return false;
     }
 }

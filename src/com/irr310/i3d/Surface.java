@@ -11,6 +11,8 @@ import org.lwjgl.util.glu.GLU;
 import com.irr310.i3d.view.Activity;
 import com.irr310.server.Time;
 
+import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
+
 public class Surface {
 
     private Activity currentActivity;
@@ -134,9 +136,9 @@ public class Surface {
     public int height;
     public int parentWidth;
     public int parentHeight;
-    public int mouseX = 0;
-    public int mouseY = 0;
-    private Point lastMousePosition = new Point();
+//    public int mouseX = 0;
+//    public int mouseY = 0;
+    //private Point lastMousePosition = new Point();
     private I3dContext context;
 
     /**
@@ -193,8 +195,8 @@ public class Surface {
             tempHeight = (preferredHeight * parentHeight) / 100;
         }
 
-        mouseX = tempX;
-        mouseY = tempY;
+//        mouseX = tempX;
+//        mouseY = tempY;
 
         x = tempX + marginLeft;
         y = parentHeight - tempY - tempHeight - marginBottom;
@@ -238,39 +240,45 @@ public class Surface {
      * @param testMouseY
      * @return
      */
-    public boolean containsMouse(int testMouseX, int testMouseY) {
-
-        if (testMouseX < mouseX || testMouseY < mouseY) {
-            return false;
-        }
-
-        if (testMouseX > mouseX + width || testMouseY > mouseY + height) {
-            return false;
-        }
-
-        return true;
-    }
+//    public boolean containsMouse(int testMouseX, int testMouseY) {
+//
+//        if (testMouseX < mouseX || testMouseY < mouseY) {
+//            return false;
+//        }
+//
+//        if (testMouseX > mouseX + width || testMouseY > mouseY + height) {
+//            return false;
+//        }
+//
+//        return true;
+//    }
 
     /**
      * Internal private method
      * 
      * @return
      */
-    public Point getLastMousePosition() {
-        return lastMousePosition;
-    }
+//    public Point getLastMousePosition() {
+//        return lastMousePosition;
+//    }
 
     /**
      * Internal private method
      * 
      * @param lastMousePosition
      */
-    public void setLastMousePosition(Point lastMousePosition) {
-        this.lastMousePosition = lastMousePosition;
-    }
+//    public void setLastMousePosition(Point lastMousePosition) {
+//        this.lastMousePosition = lastMousePosition;
+//    }
 
     public void setContext(I3dContext context) {
         this.context = context;
+    }
+    
+    public void onMouseEvent(V3DMouseEvent mouseEvent) {
+        if (currentActivity != null) {
+            currentActivity.onMouseEvent(mouseEvent);
+        }
     }
 
 }

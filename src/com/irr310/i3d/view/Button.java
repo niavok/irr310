@@ -6,6 +6,9 @@ import com.irr310.i3d.Color;
 import com.irr310.i3d.Graphics;
 import com.irr310.i3d.MeasurePoint;
 
+import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
+import fr.def.iss.vd2.lib_v3d.V3DMouseEvent.Action;
+
 public class Button extends TextView {
 
     public Button(Graphics g) {
@@ -109,5 +112,14 @@ public class Button extends TextView {
         Button view = new Button(g);
         duplicateTo(view);
         return view;
+    }
+    
+    @Override
+    public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
+        if(mouseEvent.getAction() == Action.MOUSE_CLICKED) {
+            performClick();
+            return true;
+        }
+        return false;
     }
 }

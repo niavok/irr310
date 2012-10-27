@@ -7,6 +7,9 @@ import java.util.List;
 import com.irr310.i3d.fonts.Font;
 import com.irr310.server.Time;
 
+import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
+import fr.def.iss.vd2.lib_v3d.V3DMouseEvent.Action;
+
 
 
 public class I3dContext {
@@ -92,5 +95,20 @@ public class I3dContext {
     
     public boolean isPreloaded() {
         return preloaded;
+    }
+
+    public void onMouseEvent(V3DMouseEvent mouseEvent) {
+        
+//        if(mouseEvent.getAction() != Action.MOUSE_CLICKED) {
+//            return;
+//        }
+        
+        for (Surface surface : surfaceList) {
+            if(surface.contains(mouseEvent.getX(), mouseEvent.getY())) {
+                V3DMouseEvent topLeftEvent = new V3DMouseEvent(mouseEvent.getAction(), mouseEvent.getX() - surface.x, (surface.y + surface.height) -  mouseEvent.getY(), mouseEvent.getButton());
+                surface.onMouseEvent(topLeftEvent);
+                break;
+            }
+        }
     };
 }

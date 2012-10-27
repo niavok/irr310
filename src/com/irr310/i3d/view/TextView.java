@@ -11,6 +11,8 @@ import com.irr310.i3d.fonts.CharacterPixmap;
 import com.irr310.i3d.fonts.Font;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 
+import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
+
 public class TextView extends View {
 
     protected String text = "plop";
@@ -240,6 +242,11 @@ public class TextView extends View {
         if(layoutParams.getLayoutHeightMeasure() != LayoutMeasure.FIXED || layoutParams.getMeasurePoint().getY().isRelative()) {
             layoutParams.mContentHeight = measuredHeight;
         }
+    }
+    
+    @Override
+    public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
+        return false;
     }
     
    

@@ -9,6 +9,8 @@ import com.irr310.i3d.Style;
 import com.irr310.i3d.view.LayoutParams.LayoutGravity;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 
+import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
+
 public abstract class View {
 
     /**
@@ -178,4 +180,6 @@ public abstract class View {
     public void setHelp(String help) {
         this.help = help;
     }
+
+    public abstract boolean onMouseEvent(V3DMouseEvent mouseEvent);
 }

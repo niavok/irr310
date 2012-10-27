@@ -18,6 +18,11 @@ public class LayoutParams {
     public float mTop;
     public float mBottom;
     
+    public float mLeftPadding;
+    public float mRightPadding;
+    public float mTopPadding;
+    public float mBottomPadding;
+    
     public float mComputedLeft;
     public float mComputedRight;
     public float mComputedTop;
@@ -76,6 +81,10 @@ public class LayoutParams {
         mComputedBottom = 0;
         mContentHeight = 0;
         mContentWidth = 0;
+        mLeftPadding = 0;
+        mRightPadding = 0;
+        mTopPadding = 0;
+        mBottomPadding = 0;
         layoutMarginTopMeasure = new Measure(0, false);
         layoutMarginBottomMeasure = new Measure(0, false);
         layoutMarginRightMeasure = new Measure(0, false);
@@ -111,6 +120,12 @@ public class LayoutParams {
             mRight = right;
             mBottom = bottom;
         }
+        
+        mTopPadding  = computeMesure(layoutPaddingTopMeasure);
+        mBottomPadding  = computeMesure(layoutPaddingBottomMeasure);
+        mLeftPadding  = computeMesure(layoutPaddingLeftMeasure);
+        mRightPadding  = computeMesure(layoutPaddingRightMeasure);
+        
         layouted = true;
         return changed;
     }

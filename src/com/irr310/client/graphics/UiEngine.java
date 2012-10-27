@@ -161,7 +161,7 @@ public class UiEngine extends FramerateEngine {
 
         @Override
         public void visit(MouseEvent event) {
-            /*canvas.onMouseEvent(event.getMouseEvent());*/
+            context.onMouseEvent(event.getMouseEvent());
         }
 
         @Override

@@ -3,6 +3,8 @@ package com.irr310.i3d.view;
 import com.irr310.i3d.Graphics;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 
+import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
+
 public class LinearLayout extends ContainerView {
 
     private LayoutOrientation orientation = LayoutOrientation.HORIZONTAL;
@@ -141,6 +143,29 @@ public class LinearLayout extends ContainerView {
             myView.addChild(widget.duplicate());
         }
         myView.setLayoutOrientation(orientation);
+    }
+    
+    @Override
+    public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
+        boolean used = false;
+        
+        for (View view : children) {
+            
+            if(mouseEvent.getX() < view.layoutParams.mLeft - view.layoutParams.mLeftPadding || mouseEvent.getX() > view.layoutParams.mRight + view.layoutParams.mRightPadding) {
+                continue;
+            }
+            
+            if(mouseEvent.getY() < view.layoutParams.mTop - view.layoutParams.mTopPadding || mouseEvent.getY() > view.layoutParams.mBottom + view.layoutParams.mBottomPadding) {
+                continue;
+            }
+            
+            if(view.onMouseEvent(mouseEvent.relativeTo((int) view.layoutParams.mLeft,(int)  view.layoutParams.mTop))) {
+                used = true;
+                break;
+            }
+        }
+        
+        return used;
     }
     
 

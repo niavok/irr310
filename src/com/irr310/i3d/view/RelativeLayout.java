@@ -1,8 +1,11 @@
 package com.irr310.i3d.view;
 
+import com.irr310.common.tools.Log;
 import com.irr310.i3d.Graphics;
 import com.irr310.i3d.MeasurePoint;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
+
+import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 
 public class RelativeLayout extends ContainerView {
 
@@ -91,5 +94,31 @@ public class RelativeLayout extends ContainerView {
             layoutParams.mContentHeight = measuredHeight;
         }
     }
+
+    
+    @Override
+    public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
+        boolean used = false;
+        
+        for (View view : children) {
+            
+            if(mouseEvent.getX() < view.layoutParams.mLeft - view.layoutParams.mLeftPadding || mouseEvent.getX() > view.layoutParams.mRight + view.layoutParams.mRightPadding) {
+                continue;
+            }
+            
+            if(mouseEvent.getY() < view.layoutParams.mTop - view.layoutParams.mTopPadding || mouseEvent.getY() > view.layoutParams.mBottom + view.layoutParams.mBottomPadding) {
+                continue;
+            }
+            
+            if(view.onMouseEvent(mouseEvent.relativeTo((int) view.layoutParams.mLeft,(int)  view.layoutParams.mTop))) {
+                used = true;
+                break;
+            }
+        }
+        
+        return used;
+    }
+    
+    
     
 }

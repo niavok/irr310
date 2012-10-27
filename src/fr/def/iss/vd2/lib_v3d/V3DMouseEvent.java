@@ -36,6 +36,10 @@ public class V3DMouseEvent extends V3DInputEvent {
         return button;
     }
 
+    public V3DMouseEvent relativeTo(int xOffset, int yOffset) {
+        return new V3DMouseEvent(action, x - xOffset, y - yOffset, button);
+    }
+
     // public MouseEvent toAwtEvent(Component component) {
     // return new MouseEvent(component, MouseEvent.MOUSE_PRESSED ,
     // System.currentTimeMillis(), 0, x, y, x, y, 0, false, button);
