@@ -94,7 +94,7 @@ public class ClientScriptEngine extends FramerateEngine {
         public void visit(PlayerAddedEvent event) {
             driver = new FighterDriver();
             driver.init();
-            GameClient.getInstance().getGraphicEngine().getRenderer().resetGui();
+//            GameClient.getInstance().getGraphicEngine().getRenderer().resetGui();
         }
 
     }

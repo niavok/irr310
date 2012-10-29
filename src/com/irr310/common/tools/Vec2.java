@@ -24,6 +24,10 @@ public class Vec2 {
         return y;
     }
 
+    public Vec2 diff(Vec2 v) {
+        return new Vec2(v.x - x, v.y - y);
+    }
+    
     public Vec2 minus(Vec2 v) {
         return new Vec2(x - v.x, y - v.y);
     }
@@ -67,6 +71,10 @@ public class Vec2 {
         }
     }
 
+    public double distanceTo(Vec2 vect) {
+        return this.diff(vect).length();
+    }
+    
     public Vec2 rotate(double angle) {
         return new Vec2(x* Math.cos(angle) - y * Math.sin(angle), x* Math.sin(angle) + y * Math.cos(angle));
     }

@@ -2,6 +2,10 @@ package com.irr310.client;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import org.apache.commons.lang3.SystemUtils;
 
 import com.irr310.client.graphics.UiEngine;
 import com.irr310.client.input.InputEngine;
@@ -19,8 +23,11 @@ import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.event.WorldReadyEvent;
 import com.irr310.common.network.protocol.CapacityUpdateMessage;
 import com.irr310.common.tools.Log;
+import com.irr310.common.tools.Vec2;
+import com.irr310.common.world.Map;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.World;
+import com.irr310.common.world.zone.Zone;
 import com.irr310.server.Duration;
 import com.irr310.server.GameServer;
 import com.irr310.server.ParameterAnalyser;
@@ -29,7 +36,7 @@ import com.irr310.server.ai.AIEngine;
 
 public class GameClient extends Game {
 
-    List<Engine> engineList = new ArrayList<Engine>();
+    List<Engine> engineList = new CopyOnWriteArrayList<Engine>();
 
     List<Engine> worldEngineList = new ArrayList<Engine>();
 
@@ -211,12 +218,69 @@ public class GameClient extends Game {
 
         sendToAll(new StartEngineEvent());
         
+        initWorld();
+        
         Player player = createPlayer("player", "");
         LoginManager.localPlayer = player;
 
         sendToAll(new WorldReadyEvent());
 
         System.out.println("Game begin");
+    }
+
+    private void initWorld() {
+        
+        Random random = new Random();
+        
+        Map map = getWorld().getMap();
+        
+        //Init map
+        int playerCount = 5;
+        int systemCount = 100;
+        double mapSize = 1000;
+        double mapMinDistance = mapSize/50;
+        
+        // Init zone positions
+        
+        int validSystem = 0;
+        while(validSystem < systemCount) {
+            
+            
+            
+            //double distance = (1 - Math.sqrt(random.nextDouble())) * mapSize;
+            double distance = (0.5 * (1 - Math.sqrt(random.nextDouble())) + 0.5 * random.nextDouble()) * mapSize;
+            double azimut = random.nextDouble() * 2 * Math.PI;
+            
+            Vec2 location = new Vec2(0, distance).rotate(azimut);
+            
+
+            if(map.getZones().size() > 0) {
+                
+                Zone nearestZone = map.nearestZoneTo(location);
+                
+                if(nearestZone.getLocation().distanceTo(location) < mapMinDistance) {
+                    // Too near to a existing system, retry
+                    Log.trace("Too near to a existing system, retry :"+ nearestZone.getLocation().distanceTo(location));
+                    mapMinDistance--;
+                    continue;
+                } else {
+                    Log.trace("Distance before :"+ nearestZone.getLocation().distanceTo(location));
+                    location = location.add(location.diff(nearestZone.getLocation()).normalize().multiply(mapMinDistance/2) );
+                    Log.trace("Distance after :"+ nearestZone.getLocation().distanceTo(location));
+                }
+            
+                
+                
+            }
+            
+            Zone zone = new Zone(location);
+            map.addZone(zone);
+            mapMinDistance++;
+            
+            validSystem++;
+        }
+        
+        map.dump();
     }
 
     private void startAndWaitAllEngines() {

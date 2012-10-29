@@ -51,6 +51,7 @@ public class World {
     private double worldSize;
 
     ReentrantLock mutex;
+    private com.irr310.common.world.Map map;
 
     public World() {
         celestialObjects = new CopyOnWriteArrayList<CelestialObject>();
@@ -68,6 +69,7 @@ public class World {
         availableUpgrades = new CopyOnWriteArrayList<Upgrade>();
         mutex = new ReentrantLock();
         worldSize = 200;
+        map = new com.irr310.common.world.Map();
     }
 
     public void addCelestialObject(CelestialObject o) {
@@ -293,6 +295,10 @@ public class World {
             removeComponent(component, com.irr310.common.event.ComponentRemovedEvent.Reason.SHIP);
         }
         Game.getInstance().sendToAll(new WorldShipRemovedEvent(ship));
+    }
+
+    public com.irr310.common.world.Map getMap() {
+        return map;
     }
 
 }

@@ -150,8 +150,8 @@ public class UiEngine extends FramerateEngine {
         @Override
         public void visit(LoadingGameEvent event) {
             LoadingGraphicRenderer loadingRenderer = new LoadingGraphicRenderer(UiEngine.this);
-            changeRenderer(loadingRenderer);
-            loadingRenderer.setMessage(event.getMessage());
+//            changeRenderer(loadingRenderer);
+//            loadingRenderer.setMessage(event.getMessage());
         }
 
         @Override
