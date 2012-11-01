@@ -1,8 +1,8 @@
 package com.irr310.server.game;
 
 import com.irr310.common.tools.Vec3;
-import com.irr310.common.world.zone.Asteroid;
-import com.irr310.common.world.zone.Loot;
+import com.irr310.common.world.system.Asteroid;
+import com.irr310.common.world.system.Loot;
 import com.irr310.server.GameServer;
 
 public class CelestialObjectFactory {

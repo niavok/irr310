@@ -2,7 +2,7 @@ package com.irr310.common.world.capacity.controller;
 
 import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.common.world.capacity.RocketCapacity;
-import com.irr310.common.world.zone.Component;
+import com.irr310.common.world.system.Component;
 import com.irr310.server.Duration;
 import com.irr310.server.Time;
 

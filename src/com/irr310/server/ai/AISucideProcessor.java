@@ -5,9 +5,9 @@ import com.irr310.common.tools.Log;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.World;
-import com.irr310.common.world.zone.Component;
-import com.irr310.common.world.zone.Part;
-import com.irr310.common.world.zone.Ship;
+import com.irr310.common.world.system.Component;
+import com.irr310.common.world.system.Part;
+import com.irr310.common.world.system.Ship;
 import com.irr310.server.GameServer;
 
 /**
@@ -40,7 +40,7 @@ public class AISucideProcessor extends AIProcessor {
         driver.setPositionTarget(new Vec3(0, 0, 0));
         double currentDist = shipPosition.length() * 2;
 
-        for (Ship ship : Game.getInstance().getWorld().getShips()) {
+        for (Ship ship :kernel.getSystem().getShips()) {
             if (ship.getOwner() != getShip().getOwner()) {
                 Part enemyKernel = ship.getComponentByName("kernel").getFirstPart();
                 TransformMatrix enemyShipTransform = enemyKernel.getTransform();

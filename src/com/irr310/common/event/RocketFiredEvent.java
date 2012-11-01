@@ -2,9 +2,9 @@ package com.irr310.common.event;
 
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
-import com.irr310.common.world.zone.DamageDescriptor;
-import com.irr310.common.world.zone.Part;
-import com.irr310.common.world.zone.RocketDescriptor;
+import com.irr310.common.world.system.DamageDescriptor;
+import com.irr310.common.world.system.Part;
+import com.irr310.common.world.system.RocketDescriptor;
 
 
 

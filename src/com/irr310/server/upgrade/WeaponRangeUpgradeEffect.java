@@ -5,11 +5,11 @@ import java.util.List;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.capacity.BalisticWeaponCapacity;
 import com.irr310.common.world.capacity.RocketWeaponCapacity;
+import com.irr310.common.world.system.Component;
+import com.irr310.common.world.system.Ship;
 import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.common.world.upgrade.Upgrade.UpgradeCategory;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
-import com.irr310.common.world.zone.Component;
-import com.irr310.common.world.zone.Ship;
 
 public class WeaponRangeUpgradeEffect extends UpgradeEffect {
 

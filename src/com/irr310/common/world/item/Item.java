@@ -1,73 +1,38 @@
 package com.irr310.common.world.item;
 
-import com.irr310.common.Game;
-import com.irr310.common.world.Player;
-import com.irr310.common.world.World;
-import com.irr310.common.world.view.ItemView;
-import com.irr310.common.world.zone.Component;
-import com.irr310.common.world.zone.GameEntity;
+import com.irr310.common.world.Faction;
+import com.irr310.common.world.system.GameEntity;
 
+public class Item extends GameEntity {
+    
+    enum ItemType {
+        BUILDING
+    }
+    
+    private final Faction owner;
+    private Faction usufruct;
 
-public class  Item extends GameEntity {
+    private boolean deployable;
+    private ItemType type;
 
-	
-	
-	private String name;
-    private boolean used;
-    private Component component;
-    private final Player owner;
-
-    public Item(long id, String name, Player owner) {
-	    super(id);
-        this.name = name;
+    
+    public Item(long id, Faction owner) {
+        super(id);
         this.owner = owner;
-        this.used = false;
-	}
+        setUsufruct(owner);
+    }
 
-    public ItemView toView() {
-        ItemView itemView = new ItemView();
+    private void setUsufruct(Faction usufruct) {
+        this.usufruct = usufruct;
+    }
+    
+    protected void setItemType(ItemType type) {
+        this.type = type;
         
-        itemView.id = getId();
-        itemView.name = getName();
-        itemView.used = used;
-        // WorldObject properties    
-        
-        return itemView;
     }
 
-    public void fromView(ItemView itemView) {
-        World world = Game.getInstance().getWorld();
-
-        // World objectProperties
-        used = itemView.used;
-    }
-    
-    
-    public String getName() {
-        return name;
-    }
-    
-    public void setName(String name) {
-        this.name = name;
-    }
-    
-    public void setUsed(boolean used) {
-        this.used = used;
+    protected void setDeployable(boolean deployable) {
+        this.deployable = deployable;
     }
 
-    public boolean isUsed() {
-        return used;
-    }
-
-    public void setComponent(Component component) {
-        this.component = component;
-    }
-    
-    public Component getComponent() {
-        return component;
-    }
-
-    public Player getOwner() {
-        return owner;
-    }
 }

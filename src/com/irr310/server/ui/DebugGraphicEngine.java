@@ -22,11 +22,11 @@ import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
-import com.irr310.common.world.zone.CelestialObject;
-import com.irr310.common.world.zone.Component;
-import com.irr310.common.world.zone.Part;
-import com.irr310.common.world.zone.Ship;
-import com.irr310.common.world.zone.WorldObject;
+import com.irr310.common.world.system.CelestialObject;
+import com.irr310.common.world.system.Component;
+import com.irr310.common.world.system.Part;
+import com.irr310.common.world.system.Ship;
+import com.irr310.common.world.system.WorldObject;
 import com.irr310.server.Duration;
 
 import fr.def.iss.vd2.lib_v3d.V3DCanvas;

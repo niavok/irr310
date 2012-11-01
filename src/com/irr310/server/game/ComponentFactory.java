@@ -9,12 +9,12 @@ import com.irr310.common.world.capacity.BalisticWeaponCapacity;
 import com.irr310.common.world.capacity.RocketCapacity;
 import com.irr310.common.world.capacity.RocketWeaponCapacity;
 import com.irr310.common.world.capacity.WingCapacity;
-import com.irr310.common.world.item.Item;
-import com.irr310.common.world.zone.Component;
-import com.irr310.common.world.zone.DamageDescriptor;
-import com.irr310.common.world.zone.Part;
-import com.irr310.common.world.zone.RocketDescriptor;
-import com.irr310.common.world.zone.Ship;
+import com.irr310.common.world.item.ItemOld;
+import com.irr310.common.world.system.Component;
+import com.irr310.common.world.system.DamageDescriptor;
+import com.irr310.common.world.system.Part;
+import com.irr310.common.world.system.RocketDescriptor;
+import com.irr310.common.world.system.Ship;
 import com.irr310.server.GameServer;
 
 public class ComponentFactory {
@@ -409,7 +409,7 @@ public class ComponentFactory {
 
     }
 
-    public static Component createByItem(Item content) {
+    public static Component createByItem(ItemOld content) {
         if (content.getName().equals("weapon.gun")) {
             return createGun("weapon.gun", "gun", content.getOwner());
         } else if (content.getName().equals("weapon.shotgun")) {

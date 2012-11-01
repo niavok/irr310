@@ -10,14 +10,14 @@ import com.irr310.common.event.InventoryChangedEvent;
 import com.irr310.common.event.InventoryChangedEvent.ChangeType;
 import com.irr310.common.event.MoneyChangedEvent;
 import com.irr310.common.tools.Hash;
-import com.irr310.common.world.item.Item;
+import com.irr310.common.world.item.ItemOld;
 import com.irr310.common.world.item.ItemSlot;
 import com.irr310.common.world.item.ShipSchema;
+import com.irr310.common.world.system.GameEntity;
+import com.irr310.common.world.system.Ship;
 import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
 import com.irr310.common.world.view.PlayerView;
-import com.irr310.common.world.zone.GameEntity;
-import com.irr310.common.world.zone.Ship;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 
@@ -29,7 +29,7 @@ public class Player extends GameEntity {
     private String password;
     private String passwordSalt;
     private List<Ship> shipList;
-    private List<Item> inventory;
+    private List<ItemOld> inventory;
     private List<UpgradeOwnership> upgrades;
     private int  money;
     private V3DColor color;
@@ -46,7 +46,7 @@ public class Player extends GameEntity {
         this.login = login;
         shipList = new ArrayList<Ship>();
         upgrades = new ArrayList<UpgradeOwnership>();
-        inventory = new ArrayList<Item>();
+        inventory = new ArrayList<ItemOld>();
         money = 0;
         lastInterrest = 0;
         color = V3DColor.grey;
@@ -144,16 +144,16 @@ public class Player extends GameEntity {
         giveMoney(realGain);
     }
     
-    public List<Item> getInventory() {
+    public List<ItemOld> getInventory() {
         return inventory;
     }
     
-    public void giveItem(Item item) {
+    public void giveItem(ItemOld item) {
         inventory.add(item);
         Game.getInstance().sendToAll(new InventoryChangedEvent(this, item, ChangeType.ADDED));
     }
     
-    public void retireItem(Item item) {
+    public void retireItem(ItemOld item) {
         if(item.isUsed()) {
             for (ItemSlot slot : shipShema.getItemSlots()) {
                 if(slot.getContent() == item) {
@@ -178,10 +178,10 @@ public class Player extends GameEntity {
     }
 
     public void removeItemByName(String string) {
-        Item itemToRemove = null;
+        ItemOld itemToRemove = null;
         
         //Look for a not used item
-        for (Item item : inventory) {
+        for (ItemOld item : inventory) {
             if(item.getName().equals(string) && !item.isUsed()) {
                 itemToRemove = item;
             }
@@ -192,7 +192,7 @@ public class Player extends GameEntity {
         }
         
         // Look an used item
-        for (Item item : inventory) {
+        for (ItemOld item : inventory) {
             if(item.getName().equals(string)) {
                 itemToRemove = item;
             }

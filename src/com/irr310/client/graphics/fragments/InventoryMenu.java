@@ -10,7 +10,7 @@ import org.fenggui.event.IButtonPressedListener;
 import com.irr310.client.graphics.UiEngine;
 import com.irr310.client.graphics.MenuContainer;
 import com.irr310.client.navigation.LoginManager;
-import com.irr310.common.world.item.Item;
+import com.irr310.common.world.item.ItemOld;
 import com.irr310.common.world.item.ItemSlot;
 import com.irr310.common.world.item.ShipSchema;
 
@@ -23,7 +23,7 @@ import fr.def.iss.vd2.lib_v3d.gui.V3DGuiSprite;
 
 public class InventoryMenu extends MenuContainer {
 
-    protected static Item activeItem;
+    protected static ItemOld activeItem;
     private final UiEngine engine;
     private final List<V3DGuiComponent> dynamicComponents = new ArrayList<V3DGuiComponent>();
 
@@ -163,7 +163,7 @@ public class InventoryMenu extends MenuContainer {
         
         int xInventoryOffset = 5;
         
-        for (final Item item : LoginManager.getLocalPlayer().getInventory()) {
+        for (final ItemOld item : LoginManager.getLocalPlayer().getInventory()) {
             if(item.isUsed()) {
                 continue;
             }
@@ -224,7 +224,7 @@ public class InventoryMenu extends MenuContainer {
             
             @Override
             public void buttonPressed(ButtonPressedEvent e) {
-                Item lastItem = itemSlot.getContent();
+                ItemOld lastItem = itemSlot.getContent();
                 itemSlot.setContent(InventoryMenu.activeItem);
                 InventoryMenu.activeItem = null;
                 System.err.println("setContent");
@@ -234,7 +234,7 @@ public class InventoryMenu extends MenuContainer {
     }
     private void addSlotContent(ItemSlot itemSlot) {  
         if(!itemSlot.isEmpty()) {
-            Item item = itemSlot.getContent();
+            ItemOld item = itemSlot.getContent();
             double scale = 41;
             int x2 = (int) (250-(int) (scale/2)+scale*itemSlot.getPosition().x);
             int y2 = 250-(int) (scale/2)+ (int)(scale * -1 * itemSlot.getPosition().z);

@@ -3,7 +3,7 @@ package com.irr310.client.graphics;
 import com.irr310.client.graphics.WorldRenderer.GuiLayer;
 import com.irr310.common.tools.Vec2;
 import com.irr310.common.tools.Vec3;
-import com.irr310.common.world.zone.Part;
+import com.irr310.common.world.system.Part;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.controller.V3DFollow3DCameraController;

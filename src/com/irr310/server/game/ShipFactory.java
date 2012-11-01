@@ -6,9 +6,9 @@ import com.irr310.common.Game;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.World;
-import com.irr310.common.world.zone.Component;
-import com.irr310.common.world.zone.RocketDescriptor;
-import com.irr310.common.world.zone.Ship;
+import com.irr310.common.world.system.Component;
+import com.irr310.common.world.system.RocketDescriptor;
+import com.irr310.common.world.system.Ship;
 import com.irr310.server.GameServer;
 
 public class ShipFactory {

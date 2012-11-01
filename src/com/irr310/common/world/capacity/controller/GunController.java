@@ -1,7 +1,7 @@
 package com.irr310.common.world.capacity.controller;
 
 import com.irr310.common.world.capacity.BalisticWeaponCapacity;
-import com.irr310.common.world.zone.Component;
+import com.irr310.common.world.system.Component;
 
 public class GunController extends BalisticWeaponController{
 

@@ -19,8 +19,8 @@ import com.irr310.common.world.capacity.controller.CapacityController;
 import com.irr310.common.world.capacity.controller.GunController;
 import com.irr310.common.world.capacity.controller.LinearEngineController;
 import com.irr310.common.world.capacity.controller.ShotgunController;
-import com.irr310.common.world.zone.Component;
-import com.irr310.common.world.zone.Ship;
+import com.irr310.common.world.system.Component;
+import com.irr310.common.world.system.Ship;
 import com.irr310.server.Duration;
 
 public class ClientGameEngine extends FramerateEngine {

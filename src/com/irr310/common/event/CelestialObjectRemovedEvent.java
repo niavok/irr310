@@ -1,6 +1,6 @@
 package com.irr310.common.event;
 
-import com.irr310.common.world.zone.CelestialObject;
+import com.irr310.common.world.system.CelestialObject;
 
 
 public class CelestialObjectRemovedEvent extends EngineEvent {

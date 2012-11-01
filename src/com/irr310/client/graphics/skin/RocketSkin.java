@@ -12,8 +12,8 @@ import com.irr310.client.graphics.effects.RocketSteam;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.capacity.RocketCapacity;
-import com.irr310.common.world.zone.CelestialObject;
-import com.irr310.common.world.zone.Component;
+import com.irr310.common.world.system.CelestialObject;
+import com.irr310.common.world.system.Component;
 import com.irr310.server.Duration;
 import com.irr310.server.Time;
 

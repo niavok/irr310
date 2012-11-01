@@ -1,7 +1,7 @@
 package com.irr310.server.upgrade;
 
 import com.irr310.common.world.Player;
-import com.irr310.common.world.item.Item;
+import com.irr310.common.world.item.ItemOld;
 import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.common.world.upgrade.Upgrade.UpgradeCategory;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
@@ -14,7 +14,7 @@ public class WeaponGunEffect extends UpgradeEffect {
     public void apply(UpgradeOwnership playerUpgrade) {
         Player player = playerUpgrade.getPlayer();
         int currentWeaponCount = 0;
-        for(Item item: player.getInventory()) {
+        for(ItemOld item: player.getInventory()) {
             if(item.getName().equals("weapon.gun")) {
                 currentWeaponCount ++;
             }
@@ -28,7 +28,7 @@ public class WeaponGunEffect extends UpgradeEffect {
                 
         } else {
             while(currentWeaponCount < playerUpgrade.getRank()){
-                player.giveItem(new Item(GameServer.pickNewId(), "weapon.gun",player));
+                player.giveItem(new ItemOld(GameServer.pickNewId(), "weapon.gun",player));
                 currentWeaponCount++;
             }
         }

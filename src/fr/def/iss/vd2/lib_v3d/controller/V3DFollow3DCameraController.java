@@ -26,7 +26,7 @@ import com.irr310.client.graphics.GraphicalElement;
 import com.irr310.client.graphics.WorldRenderer;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
-import com.irr310.common.world.zone.Part;
+import com.irr310.common.world.system.Part;
 
 import fr.def.iss.vd2.lib_v3d.V3DInputEvent;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;

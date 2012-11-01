@@ -3,7 +3,7 @@ package com.irr310.common.world.item;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.irr310.common.world.zone.Ship;
+import com.irr310.common.world.system.Ship;
 
 
 public class ShipSchema {

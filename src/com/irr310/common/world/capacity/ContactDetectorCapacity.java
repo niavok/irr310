@@ -1,7 +1,7 @@
 package com.irr310.common.world.capacity;
 
+import com.irr310.common.world.system.Ship;
 import com.irr310.common.world.view.CapacityView;
-import com.irr310.common.world.zone.Ship;
 
 public class ContactDetectorCapacity extends Capacity {
 

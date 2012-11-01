@@ -3,8 +3,8 @@ package com.irr310.common.network.protocol;
 import com.irr310.common.network.NetworkField;
 import com.irr310.common.network.NetworkMessage;
 import com.irr310.common.tools.Vec3;
-import com.irr310.common.world.zone.DamageDescriptor;
-import com.irr310.common.world.zone.Part;
+import com.irr310.common.world.system.DamageDescriptor;
+import com.irr310.common.world.system.Part;
 
 public class DamageNotificationMessage extends NetworkMessage {
 

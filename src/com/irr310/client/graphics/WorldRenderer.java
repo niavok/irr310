@@ -57,19 +57,18 @@ import com.irr310.common.event.NextWaveEvent;
 import com.irr310.common.event.RemoveGuiComponentEvent;
 import com.irr310.common.event.UpgradeStateChanged;
 import com.irr310.common.event.WorldShipAddedEvent;
-import com.irr310.common.event.WorldSizeChangedEvent;
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.World;
 import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
-import com.irr310.common.world.zone.CelestialObject;
-import com.irr310.common.world.zone.Component;
-import com.irr310.common.world.zone.Monolith;
-import com.irr310.common.world.zone.Part;
-import com.irr310.common.world.zone.Ship;
-import com.irr310.common.world.zone.WorldObject;
-import com.irr310.common.world.zone.DamageDescriptor.DamageCause;
+import com.irr310.common.world.system.CelestialObject;
+import com.irr310.common.world.system.Component;
+import com.irr310.common.world.system.Monolith;
+import com.irr310.common.world.system.Part;
+import com.irr310.common.world.system.Ship;
+import com.irr310.common.world.system.WorldObject;
+import com.irr310.common.world.system.DamageDescriptor.DamageCause;
 import com.irr310.server.Time;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
@@ -184,7 +183,7 @@ public class WorldRenderer implements GraphicRenderer {
 
         generateGuiStructure();
 
-        loadCurrentWorld();
+//        loadCurrentWorld();
 
         // activeCamera.setShowCenter(true);
 
@@ -580,16 +579,16 @@ public class WorldRenderer implements GraphicRenderer {
         }
     }
 
-    private void loadCurrentWorld() {
-        World world = Game.getInstance().getWorld();
-        for (CelestialObject celestialObject : world.getCelestialsObjects()) {
-            addCelestialObject(celestialObject);
-        }
-        
-        for (Ship ship : world.getShips()) {
-            addShip(ship);
-        }
-    }
+//    private void loadCurrentWorld() {
+//        World world = Game.getInstance().getWorld();
+//        for (CelestialObject celestialObject : world.getCelestialsObjects()) {
+//            addCelestialObject(celestialObject);
+//        }
+//        
+//        for (Ship ship : world.getShips()) {
+//            addShip(ship);
+//        }
+//    }
 
     public void frame() {
 
@@ -614,36 +613,36 @@ public class WorldRenderer implements GraphicRenderer {
 
     private void createBubble() {
 
-        File v3drawFileStructure = new File("graphics/output/bubble.v3draw");
-        bubbleElement = V3DrawElement.LoadFromFile(v3drawFileStructure, engine.getV3DContext());
-        // elementStructure.setShader("bubble");
-        bubbleElement.setScale((float)Game.getInstance().getWorld().getWorldSize());
-
-        V3DShader shader = new V3DShader("bubble") {
-            private int resolution;
-            private int time;
-            private long startTime;
-
-            protected void loadUniforms() {
-                resolution = ARBShaderObjects.glGetUniformLocationARB(shader, "resolution");
-                time = ARBShaderObjects.glGetUniformLocationARB(shader, "time");
-
-                startTime = new Date().getTime();
-            };
-
-            protected void setUniforms() {
-                // V3DVect3 rotation = camera.getRotation();
-                // ARBShaderObjects.glUniform3fARB(inputRotation, rotation.x,
-                // rotation.y, rotation.z);
-                ARBShaderObjects.glUniform2fARB(resolution, cameraController.getCamera().getCurrentWidth(), cameraController.getCamera()
-                                                                                                                            .getCurrentHeight());
-                float time2 = ((float) (new Date().getTime() - startTime)) / 10000.0f;
-                ARBShaderObjects.glUniform1fARB(time, time2);
-
-            }
-        };
-
-        scene.add(new V3DColorElement(new V3DShaderElement(bubbleElement, shader), new V3DColor(255, 255, 255)));
+//        File v3drawFileStructure = new File("graphics/output/bubble.v3draw");
+//        bubbleElement = V3DrawElement.LoadFromFile(v3drawFileStructure, engine.getV3DContext());
+//        // elementStructure.setShader("bubble");
+//        bubbleElement.setScale((float)Game.getInstance().getWorld().getWorldSize());
+//
+//        V3DShader shader = new V3DShader("bubble") {
+//            private int resolution;
+//            private int time;
+//            private long startTime;
+//
+//            protected void loadUniforms() {
+//                resolution = ARBShaderObjects.glGetUniformLocationARB(shader, "resolution");
+//                time = ARBShaderObjects.glGetUniformLocationARB(shader, "time");
+//
+//                startTime = new Date().getTime();
+//            };
+//
+//            protected void setUniforms() {
+//                // V3DVect3 rotation = camera.getRotation();
+//                // ARBShaderObjects.glUniform3fARB(inputRotation, rotation.x,
+//                // rotation.y, rotation.z);
+//                ARBShaderObjects.glUniform2fARB(resolution, cameraController.getCamera().getCurrentWidth(), cameraController.getCamera()
+//                                                                                                                            .getCurrentHeight());
+//                float time2 = ((float) (new Date().getTime() - startTime)) / 10000.0f;
+//                ARBShaderObjects.glUniform1fARB(time, time2);
+//
+//            }
+//        };
+//
+//        scene.add(new V3DColorElement(new V3DShaderElement(bubbleElement, shader), new V3DColor(255, 255, 255)));
     }
 
     private V3DElement generateReference() {
@@ -1053,11 +1052,6 @@ public class WorldRenderer implements GraphicRenderer {
             
             
 
-        }
-        
-        @Override
-        public void visit(WorldSizeChangedEvent event) {
-            bubbleElement.setScale((float)Game.getInstance().getWorld().getWorldSize());
         }
     }
 

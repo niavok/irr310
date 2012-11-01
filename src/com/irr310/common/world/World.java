@@ -6,134 +6,45 @@ import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.ReentrantLock;
 
-import com.irr310.client.navigation.LoginManager;
 import com.irr310.common.Game;
-import com.irr310.common.event.CelestialObjectAddedEvent;
-import com.irr310.common.event.CelestialObjectRemovedEvent;
-import com.irr310.common.event.CelestialObjectRemovedEvent.Reason;
-import com.irr310.common.event.ComponentAddedEvent;
-import com.irr310.common.event.ComponentRemovedEvent;
+import com.irr310.common.event.FactionAddedEvent;
 import com.irr310.common.event.PlayerAddedEvent;
-import com.irr310.common.event.WorldShipAddedEvent;
-import com.irr310.common.event.WorldShipRemovedEvent;
-import com.irr310.common.event.WorldSizeChangedEvent;
-import com.irr310.common.tools.Log;
-import com.irr310.common.tools.TransformMatrix;
-import com.irr310.common.world.capacity.Capacity;
+import com.irr310.common.world.item.Item;
 import com.irr310.common.world.upgrade.Upgrade;
-import com.irr310.common.world.view.CelestialObjectView;
-import com.irr310.common.world.view.ComponentView;
-import com.irr310.common.world.view.PartView;
 import com.irr310.common.world.view.PlayerView;
-import com.irr310.common.world.view.ShipView;
-import com.irr310.common.world.zone.CelestialObject;
-import com.irr310.common.world.zone.Component;
-import com.irr310.common.world.zone.Part;
-import com.irr310.common.world.zone.Ship;
-import com.irr310.common.world.zone.Slot;
-import com.irr310.common.world.zone.WorldObject;
 
 public class World {
 
-    private final List<CelestialObject> celestialObjects;
-    private final List<Ship> ships;
+    private final List<Item> items;
     private final List<Player> players;
-    private final List<Part> parts;
-    private final List<Part> myParts;
+    private final List<Faction> factions;
+    
     private final List<Upgrade> availableUpgrades;
     private final Map<Long, Player> playerIdMap;
-    private final Map<Long, Ship> shipIdMap;
-    private final Map<Long, CelestialObject> celestialObjectIdMap;
-    private final Map<Long, Capacity> capacityIdMap;
-    private final Map<Long, Component> componentIdMap;
-    private final Map<Long, Slot> slotIdMap;
-    private final Map<Long, Part> partIdMap;
-    private double worldSize;
+    private final Map<Long, Faction> factionIdMap;
+    private final Map<Long, Item> itemIdMap;
 
     ReentrantLock mutex;
     private com.irr310.common.world.Map map;
 
     public World() {
-        celestialObjects = new CopyOnWriteArrayList<CelestialObject>();
-        ships = new CopyOnWriteArrayList<Ship>();
+        
         players = new CopyOnWriteArrayList<Player>();
-        parts = new CopyOnWriteArrayList<Part>();
-        myParts = new CopyOnWriteArrayList<Part>();
+        factions= new CopyOnWriteArrayList<Faction>();
+        items = new CopyOnWriteArrayList<Item>();
+        
+        
         playerIdMap = new HashMap<Long, Player>();
-        shipIdMap = new HashMap<Long, Ship>();
-        celestialObjectIdMap = new HashMap<Long, CelestialObject>();
-        capacityIdMap = new HashMap<Long, Capacity>();
-        slotIdMap = new HashMap<Long, Slot>();
-        componentIdMap = new HashMap<Long, Component>();
-        partIdMap = new HashMap<Long, Part>();
+        factionIdMap = new HashMap<Long, Faction>();
+        
+        itemIdMap = new HashMap<Long, Item>();
         availableUpgrades = new CopyOnWriteArrayList<Upgrade>();
+
         mutex = new ReentrantLock();
-        worldSize = 200;
         map = new com.irr310.common.world.Map();
     }
 
-    public void addCelestialObject(CelestialObject o) {
-        addParts(o.getParts());
-        celestialObjects.add(o);
-        celestialObjectIdMap.put(o.getId(), o);
-        Game.getInstance().sendToAll(new CelestialObjectAddedEvent(o));
-    }
-
-    public void removeCelestialObject(CelestialObject o, Reason reason) {
-        if (celestialObjects.contains(o)) {
-            removeParts(o.getParts());
-            celestialObjects.remove(o);
-            celestialObjectIdMap.remove(o.getId());
-            Game.getInstance().sendToAll(new CelestialObjectRemovedEvent(o, reason));
-        }
-    }
-
-    public void addComponent(Component component) {
-        addParts(component.getParts());
-        componentIdMap.put(component.getId(), component);
-        List<Capacity> capacities = component.getCapacities();
-        for (Capacity capacity : capacities) {
-            capacityIdMap.put(capacity.getId(), capacity);
-        }
-        Game.getInstance().sendToAll(new ComponentAddedEvent(component));
-    }
-
-    public void removeComponent(Component component, com.irr310.common.event.ComponentRemovedEvent.Reason reason) {
-        if (componentIdMap.containsKey(component.getId())) {
-            removeParts(component.getParts());
-            componentIdMap.remove(component.getId());
-            Ship ship = component.getShip();
-            ship.remove(component);
-            Game.getInstance().sendToAll(new ComponentRemovedEvent(component, ship, reason));
-        }
-    }
-
-    private void addParts(List<Part> parts) {
-        for (Part part : parts) {
-            addPart(part);
-        }
-    }
-
-    private void removeParts(List<Part> parts) {
-        for (Part part : parts) {
-            removePart(part);
-        }
-    }
-
-    private void addPart(Part part) {
-        partIdMap.put(part.getId(), part);
-        parts.add(part);
-        if (part.getOwner() == LoginManager.localPlayer) {
-            myParts.add(part);
-        }
-    }
-
-    private void removePart(Part part) {
-        if (part.getOwner() == LoginManager.localPlayer) {
-            myParts.remove(part);
-        }
-        parts.remove(part);
-    }
+    
 
     public void addPlayer(Player player) {
         players.add(player);
@@ -141,19 +52,12 @@ public class World {
         Game.getInstance().sendToAll(new PlayerAddedEvent(player));
     }
 
-    public void addShip(Ship ship, TransformMatrix transform) {
-        ships.add(ship);
-        for (Component component : ship.getComponents()) {
-            addComponent(component);
-        }
-        shipIdMap.put(ship.getId(), ship);
-        Game.getInstance().sendToAll(new WorldShipAddedEvent(ship, transform));
+    public void addFaction(Faction faction) {
+        factions.add(faction);
+        factionIdMap.put(faction.getId(), faction);
+        Game.getInstance().sendToAll(new FactionAddedEvent(faction));
     }
-
-    public void addSlot(Slot slot) {
-        slotIdMap.put(slot.getId(), slot);
-    }
-
+    
     public Player loadPlayer(PlayerView playerView) {
         if (playerIdMap.containsKey(playerView.id)) {
             return playerIdMap.get(playerView.id);
@@ -165,89 +69,11 @@ public class World {
         return player;
     }
 
-    public CelestialObject loadCelestialObject(CelestialObjectView celestialObjectView) {
-        if (celestialObjectIdMap.containsKey(celestialObjectView.id)) {
-            return celestialObjectIdMap.get(celestialObjectView.id);
-        }
-
-        CelestialObject celestialObject = new CelestialObject(celestialObjectView.id, celestialObjectView.name);
-        celestialObject.fromView(celestialObjectView);
-        addCelestialObject(celestialObject);
-        return celestialObject;
-    }
-
-    public Ship loadShip(ShipView shipView) {
-        if (shipIdMap.containsKey(shipView.id)) {
-            return shipIdMap.get(shipView.id);
-        }
-
-        Ship ship = new Ship(shipView.id);
-        ship.fromView(shipView);
-        addShip(ship, null);
-        return ship;
-    }
-
-    public Slot getSlotById(long slotId) {
-        return slotIdMap.get(slotId);
-    }
-
-    public Part getPartById(long partId) {
-        return partIdMap.get(partId);
-    }
-
+    
     public Player getPlayerById(long playerId) {
         return playerIdMap.get(playerId);
     }
 
-    public Ship getShipById(long shipId) {
-        return shipIdMap.get(shipId);
-    }
-
-    public CelestialObject getCelestialObjectById(long celestialObjectId) {
-        return celestialObjectIdMap.get(celestialObjectId);
-    }
-
-    public Component getComponentBy(long componentId) {
-        return componentIdMap.get(componentId);
-    }
-
-    public Capacity getCapacityById(long capacityId) {
-        return capacityIdMap.get(capacityId);
-    }
-
-    public Component loadComponent(ComponentView componentView) {
-        if (componentIdMap.containsKey(componentView.id)) {
-            return componentIdMap.get(componentView.id);
-        }
-
-        Component component = new Component(componentView.id, componentView.name);
-        component.fromView(componentView);
-        addComponent(component);
-        return component;
-    }
-
-    public List<CelestialObject> getCelestialsObjects() {
-        return celestialObjects;
-    }
-
-    public Part loadPart(PartView partView, WorldObject parentObject) {
-        if (partIdMap.containsKey(partView.id)) {
-            return partIdMap.get(partView.id);
-        }
-
-        Part part = new Part(partView.id, parentObject);
-        part.fromView(partView);
-        addPart(part);
-        return part;
-    }
-
-    public List<Part> getParts() {
-        return parts;
-    }
-
-    public List<Part> getMyParts() {
-        return myParts;
-    }
 
     public void lock() {
         mutex.lock();
@@ -255,10 +81,6 @@ public class World {
 
     public void unlock() {
         mutex.unlock();
-    }
-
-    public List<Ship> getShips() {
-        return ships;
     }
 
     public List<Player> getPlayers() {
@@ -273,32 +95,13 @@ public class World {
         return availableUpgrades;
     }
 
-    public void setWorldSize(double worldSize) {
-        if (this.worldSize != worldSize) {
-            double oldSize = this.worldSize;
-            this.worldSize = worldSize;
-            if (oldSize > worldSize) {
-                Log.warn("World size pass from " + oldSize + " to " + worldSize + ". Its dangerous to reduce the world size!");
-            }
-            Game.getInstance().sendToAll(new WorldSizeChangedEvent(oldSize, worldSize));
-        }
-    }
-
-    public double getWorldSize() {
-        return worldSize;
-    }
-
-    public void removeShip(Ship ship) {
-        ships.remove(ship);
-        shipIdMap.remove(ship.getId());
-        for (Component component : ship.getComponents()) {
-            removeComponent(component, com.irr310.common.event.ComponentRemovedEvent.Reason.SHIP);
-        }
-        Game.getInstance().sendToAll(new WorldShipRemovedEvent(ship));
-    }
-
     public com.irr310.common.world.Map getMap() {
         return map;
+    }
+
+    public void addItem(Item item) {
+        items.add(item);
+        itemIdMap.put(item.getId(), item);
     }
 
 }

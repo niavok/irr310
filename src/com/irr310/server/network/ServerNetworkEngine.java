@@ -27,13 +27,13 @@ import com.irr310.common.network.protocol.WorldObjectListMessage;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.World;
 import com.irr310.common.world.capacity.Capacity;
+import com.irr310.common.world.system.CelestialObject;
+import com.irr310.common.world.system.Part;
+import com.irr310.common.world.system.Ship;
 import com.irr310.common.world.view.CapacityView;
 import com.irr310.common.world.view.CelestialObjectView;
 import com.irr310.common.world.view.PartStateView;
 import com.irr310.common.world.view.ShipView;
-import com.irr310.common.world.zone.CelestialObject;
-import com.irr310.common.world.zone.Part;
-import com.irr310.common.world.zone.Ship;
 import com.irr310.server.GameServer;
 
 public class ServerNetworkEngine extends EventEngine {
@@ -158,51 +158,51 @@ public class ServerNetworkEngine extends EventEngine {
                 }
                     break;
 
-                case CAMERA_VIEW_OBJECT_LIST_REQUEST: {
-                    if (!event.getClient().isLogged()) {
-                        break;
-                    }
-                    World world = Game.getInstance().getWorld();
-
-                    List<CelestialObjectView> objectList = new ArrayList<CelestialObjectView>();
-
-                    for (CelestialObject object : world.getCelestialsObjects()) {
-                        objectList.add(object.toView());
-                    }
-
-                    List<ShipView> shipList = new ArrayList<ShipView>();
-
-                    for (Ship ship : world.getShips()) {
-                        shipList.add(ship.toView());
-                    }
-                    
-                    event.getClient().send(new WorldObjectListMessage(message.getResponseIndex(), objectList, shipList));
-                }
-                    break;
-
-                case CAPACITY_UPDATE: {
-                    if (!event.getClient().isLogged()) {
-                        break;
-                    }
-                    CapacityUpdateMessage m = (CapacityUpdateMessage) message;
-                    CapacityView capacityView = m.capacity;
-                    Capacity capacity = GameServer.getInstance().getWorld().getCapacityById(capacityView.id);
-
-                    capacity.fromView(capacityView);
-                }
-                    break;
-                case PART_STATE_UPDATE_LIST: {
-                    PartStateUpdateListMessage m = (PartStateUpdateListMessage) message;
-                    for (PartStateView partStateView : m.partStateList) {
-                        Part part = GameServer.getInstance().getWorld().getPartById(partStateView.id);
-                        if (part != null) {
-                            // System.out.println("update part");
-                            part.fromStateView(partStateView);
-                        }
-                    }
-                    GameServer.getInstance().getPhysicEngine().reloadStates();
-                    break;
-                }
+//                case CAMERA_VIEW_OBJECT_LIST_REQUEST: {
+//                    if (!event.getClient().isLogged()) {
+//                        break;
+//                    }
+//                    World world = Game.getInstance().getWorld();
+//
+//                    List<CelestialObjectView> objectList = new ArrayList<CelestialObjectView>();
+//
+//                    for (CelestialObject object : world.getCelestialsObjects()) {
+//                        objectList.add(object.toView());
+//                    }
+//
+//                    List<ShipView> shipList = new ArrayList<ShipView>();
+//
+//                    for (Ship ship : world.getShips()) {
+//                        shipList.add(ship.toView());
+//                    }
+//                    
+//                    event.getClient().send(new WorldObjectListMessage(message.getResponseIndex(), objectList, shipList));
+//                }
+//                    break;
+//
+//                case CAPACITY_UPDATE: {
+//                    if (!event.getClient().isLogged()) {
+//                        break;
+//                    }
+//                    CapacityUpdateMessage m = (CapacityUpdateMessage) message;
+//                    CapacityView capacityView = m.capacity;
+//                    Capacity capacity = GameServer.getInstance().getWorld().getCapacityById(capacityView.id);
+//
+//                    capacity.fromView(capacityView);
+//                }
+//                    break;
+//                case PART_STATE_UPDATE_LIST: {
+//                    PartStateUpdateListMessage m = (PartStateUpdateListMessage) message;
+//                    for (PartStateView partStateView : m.partStateList) {
+//                        Part part = GameServer.getInstance().getWorld().getPartById(partStateView.id);
+//                        if (part != null) {
+//                            // System.out.println("update part");
+//                            part.fromStateView(partStateView);
+//                        }
+//                    }
+//                    GameServer.getInstance().getPhysicEngine().reloadStates();
+//                    break;
+//                }
                 default:
                     System.err.println("Unsupported network type " + event.getMessage().getType());
             }

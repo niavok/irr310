@@ -5,8 +5,8 @@ import java.util.List;
 
 import com.irr310.common.Game;
 import com.irr310.common.network.protocol.PartStateUpdateListMessage;
+import com.irr310.common.world.system.Part;
 import com.irr310.common.world.view.PartStateView;
-import com.irr310.common.world.zone.Part;
 
 public class ClientNetworkSyncronizer extends Thread{
 
@@ -21,22 +21,22 @@ public class ClientNetworkSyncronizer extends Thread{
     public void run() {
         
         
-        while(true) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-            }
-            
-            List<PartStateView> partStateList = new ArrayList<PartStateView>();
-            
-            for(Part part :  Game.getInstance().getWorld().getMyParts()) {
-                partStateList.add(part.toStateView());
-            }
-            
-            if(partStateList.size() > 0) {
-                clientNetworkEngine.send(new PartStateUpdateListMessage(partStateList));
-            }
-        }
+//        while(true) {
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException e) {
+//            }
+//            
+//            List<PartStateView> partStateList = new ArrayList<PartStateView>();
+//            
+//            for(Part part :  Game.getInstance().getWorld().getMyParts()) {
+//                partStateList.add(part.toStateView());
+//            }
+//            
+//            if(partStateList.size() > 0) {
+//                clientNetworkEngine.send(new PartStateUpdateListMessage(partStateList));
+//            }
+//        }
     }
 
 }

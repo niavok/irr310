@@ -7,8 +7,8 @@ import java.util.Map.Entry;
 import com.irr310.client.graphics.UiEngine;
 import com.irr310.client.graphics.WorldRenderer;
 import com.irr310.common.tools.TransformMatrix;
-import com.irr310.common.world.zone.Part;
-import com.irr310.common.world.zone.WorldObject;
+import com.irr310.common.world.system.Part;
+import com.irr310.common.world.system.WorldObject;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;

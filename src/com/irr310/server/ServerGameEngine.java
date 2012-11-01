@@ -55,18 +55,18 @@ import com.irr310.common.world.capacity.controller.LinearEngineController;
 import com.irr310.common.world.capacity.controller.RocketController;
 import com.irr310.common.world.capacity.controller.RocketPodController;
 import com.irr310.common.world.capacity.controller.ShotgunController;
+import com.irr310.common.world.system.Asteroid;
+import com.irr310.common.world.system.CelestialObject;
+import com.irr310.common.world.system.Component;
+import com.irr310.common.world.system.DamageDescriptor;
+import com.irr310.common.world.system.Loot;
+import com.irr310.common.world.system.Monolith;
+import com.irr310.common.world.system.Part;
+import com.irr310.common.world.system.Ship;
+import com.irr310.common.world.system.WorldObject;
+import com.irr310.common.world.system.DamageDescriptor.DamageCause;
+import com.irr310.common.world.system.DamageDescriptor.DamageType;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
-import com.irr310.common.world.zone.Asteroid;
-import com.irr310.common.world.zone.CelestialObject;
-import com.irr310.common.world.zone.Component;
-import com.irr310.common.world.zone.DamageDescriptor;
-import com.irr310.common.world.zone.Loot;
-import com.irr310.common.world.zone.Monolith;
-import com.irr310.common.world.zone.Part;
-import com.irr310.common.world.zone.Ship;
-import com.irr310.common.world.zone.WorldObject;
-import com.irr310.common.world.zone.DamageDescriptor.DamageCause;
-import com.irr310.common.world.zone.DamageDescriptor.DamageType;
 import com.irr310.server.game.CelestialObjectFactory;
 import com.irr310.server.game.ShipFactory;
 import com.irr310.server.upgrade.UpgradeFactory;
@@ -123,100 +123,100 @@ public class ServerGameEngine extends FramerateEngine {
         }
 
         // Check world leave
-        double worldSize = Game.getInstance().getWorld().getWorldSize();
-        for (Part part : Game.getInstance().getWorld().getParts()) {
-            if (part.getTransform().getTranslation().length() > worldSize) {
-
-                if (part.getParentObject() instanceof CelestialObject) {
-                    CelestialObject object = (CelestialObject) part.getParentObject();
-                    Game.getInstance().getWorld().removeCelestialObject(object, Reason.LEAVE_OUT_WORLD);
-                } else if (part.getParentObject() instanceof Component) {
-                    Component object = (Component) part.getParentObject();
-                    if(object.getShip().isDestructible() && object.getName().equals("kernel")) {
-                        Game.getInstance().getWorld().removeShip(object.getShip());
-                    }
-                }
-            }
-        }
+//        double worldSize = Game.getInstance().getWorld().getWorldSize();
+//        for (Part part : Game.getInstance().getWorld().getParts()) {
+//            if (part.getTransform().getTranslation().length() > worldSize) {
+//
+//                if (part.getParentObject() instanceof CelestialObject) {
+//                    CelestialObject object = (CelestialObject) part.getParentObject();
+//                    Game.getInstance().getWorld().removeCelestialObject(object, Reason.LEAVE_OUT_WORLD);
+//                } else if (part.getParentObject() instanceof Component) {
+//                    Component object = (Component) part.getParentObject();
+//                    if(object.getShip().isDestructible() && object.getName().equals("kernel")) {
+//                        Game.getInstance().getWorld().removeShip(object.getShip());
+//                    }
+//                }
+//            }
+//        }
         
-        // Check loot gain
-        for (CelestialObject object : Game.getInstance().getWorld().getCelestialsObjects()) {
-            if (object instanceof Loot) {
-                for (Ship ship : Game.getInstance().getWorld().getShips()) {
-                    if (ship.getOwner().isHuman() && ship.getComponentByName("kernel")
-                            .getFirstPart()
-                            .getTransform()
-                            .getTranslation()
-                            .distanceTo(object.getFirstPart().getTransform().getTranslation()) < 25) {
-                        Loot loot = (Loot) object;
-
-                        Game.getInstance().getWorld().removeCelestialObject(loot, Reason.LOOTED);
-                        distachRevenue(loot.getValue());
-                    }
-                }
-            }
-        }
+//        // Check loot gain
+//        for (CelestialObject object : Game.getInstance().getWorld().getCelestialsObjects()) {
+//            if (object instanceof Loot) {
+//                for (Ship ship : Game.getInstance().getWorld().getShips()) {
+//                    if (ship.getOwner().isHuman() && ship.getComponentByName("kernel")
+//                            .getFirstPart()
+//                            .getTransform()
+//                            .getTranslation()
+//                            .distanceTo(object.getFirstPart().getTransform().getTranslation()) < 25) {
+//                        Loot loot = (Loot) object;
+//
+//                        Game.getInstance().getWorld().removeCelestialObject(loot, Reason.LOOTED);
+//                        distachRevenue(loot.getValue());
+//                    }
+//                }
+//            }
+//        }
 
         // Check player distance to monolith
         Monolith monolith = null;
-        for (CelestialObject object : Game.getInstance().getWorld().getCelestialsObjects()) {
-            if (object instanceof Monolith) {
-                monolith = (Monolith) object;
-                break;
-            }
-        }
+//        for (CelestialObject object : Game.getInstance().getWorld().getCelestialsObjects()) {
+//            if (object instanceof Monolith) {
+//                monolith = (Monolith) object;
+//                break;
+//            }
+//        }
 
         if (monolith != null) {
-            for (CelestialObject object : Game.getInstance().getWorld().getCelestialsObjects()) {
-                if (object instanceof Loot) {
-                    double distanceTo = object.getFirstPart()
-                                              .getTransform()
-                                              .getTranslation()
-                                              .distanceTo(monolith.getFirstPart().getTransform().getTranslation());
-                    if (distanceTo < 25) {
-                        Loot loot = (Loot) object;
-                        Game.getInstance().getWorld().removeCelestialObject(loot, Reason.LOOTED);
-                        distachRevenue(loot.getValue());
-                    }
-
-                    // Send loot to monolith
-                    Game.getInstance().getWorld().lock();
-                    Vec3 lootSpeed = monolith.getFirstPart()
-                                             .getTransform()
-                                             .getTranslation()
-                                             .minus(object.getFirstPart().getTransform().getTranslation())
-                                             .normalize()
-                                             .multiply(1 + Math.log10(distanceTo) * 1);
-
-                    object.getFirstPart().getLinearSpeed().set(lootSpeed);
-                    Game.getInstance().getPhysicEngine().reloadStates(object.getFirstPart());
-                    Game.getInstance().getWorld().unlock();
-                }
-            }
+//            for (CelestialObject object : Game.getInstance().getWorld().getCelestialsObjects()) {
+//                if (object instanceof Loot) {
+//                    double distanceTo = object.getFirstPart()
+//                                              .getTransform()
+//                                              .getTranslation()
+//                                              .distanceTo(monolith.getFirstPart().getTransform().getTranslation());
+//                    if (distanceTo < 25) {
+//                        Loot loot = (Loot) object;
+//                        Game.getInstance().getWorld().removeCelestialObject(loot, Reason.LOOTED);
+//                        distachRevenue(loot.getValue());
+//                    }
+//
+//                    // Send loot to monolith
+//                    Game.getInstance().getWorld().lock();
+//                    Vec3 lootSpeed = monolith.getFirstPart()
+//                                             .getTransform()
+//                                             .getTranslation()
+//                                             .minus(object.getFirstPart().getTransform().getTranslation())
+//                                             .normalize()
+//                                             .multiply(1 + Math.log10(distanceTo) * 1);
+//
+//                    object.getFirstPart().getLinearSpeed().set(lootSpeed);
+//                    Game.getInstance().getPhysicEngine().reloadStates(object.getFirstPart());
+//                    Game.getInstance().getWorld().unlock();
+//                }
+//            }
 
             // Check repair and decay
-            for (Ship ship : Game.getInstance().getWorld().getShips()) {
-                if(ship.getOwner().isHuman() && ship.getComponentByName("kernel")
-                        .getFirstPart()
-                        .getTransform()
-                        .getTranslation()
-                        .distanceTo(monolith.getFirstPart().getTransform().getTranslation()) < 80) {
-
-                    // Can build && repair
-                    
-                    
-                    
-                }
-                
-                for(Component component : ship.getComponents()) {
-                    if(!component.isAttached()) {
-                        DamageDescriptor damageDescriptor = new DamageDescriptor(DamageType.DECAY, 1,DamageCause.DECAY);
-                        damageDescriptor.setBaseDamage(0.05);
-                        applyDamage(component.getFirstPart(), damageDescriptor, component.getFirstPart().getTransform().getTranslation());
-                    }
-                }
-
-            }
+//            for (Ship ship : Game.getInstance().getWorld().getShips()) {
+//                if(ship.getOwner().isHuman() && ship.getComponentByName("kernel")
+//                        .getFirstPart()
+//                        .getTransform()
+//                        .getTranslation()
+//                        .distanceTo(monolith.getFirstPart().getTransform().getTranslation()) < 80) {
+//
+//                    // Can build && repair
+//                    
+//                    
+//                    
+//                }
+//                
+//                for(Component component : ship.getComponents()) {
+//                    if(!component.isAttached()) {
+//                        DamageDescriptor damageDescriptor = new DamageDescriptor(DamageType.DECAY, 1,DamageCause.DECAY);
+//                        damageDescriptor.setBaseDamage(0.05);
+//                        applyDamage(component.getFirstPart(), damageDescriptor, component.getFirstPart().getTransform().getTranslation());
+//                    }
+//                }
+//
+//            }
         }
 
         if (stillPlaying) {
@@ -342,7 +342,7 @@ public class ServerGameEngine extends FramerateEngine {
             Loot loot = CelestialObjectFactory.createLoot(event.getComponent().getFirstPart().getMass().intValue());
             loot.getFirstPart().getLinearSpeed().set(event.getComponent().getFirstPart().getLinearSpeed());
             loot.getFirstPart().getTransform().setTranslation(event.getComponent().getFirstPart().getTransform().getTranslation());
-            Game.getInstance().getWorld().addCelestialObject(loot);
+//            Game.getInstance().getWorld().addCelestialObject(loot);
             
             // Update attache state
             AttachChecker checker = new AttachChecker(event.getShip());
@@ -360,37 +360,37 @@ public class ServerGameEngine extends FramerateEngine {
             pause(true);
         }
 
-        @Override
-        public void visit(CollisionEvent event) {
-            CollisionDescriptor collisionDescriptor = event.getCollisionDescriptor();
-            
-            processCollision(collisionDescriptor.getPartA(), collisionDescriptor.getPartB(), collisionDescriptor.getImpulse(), collisionDescriptor.getGlobalPosition());
-            processCollision(collisionDescriptor.getPartB(), collisionDescriptor.getPartA(), collisionDescriptor.getImpulse(), collisionDescriptor.getGlobalPosition());
-        }
-
-        @Override
-        public void visit(BulletFiredEvent event) {
-
-            List<RayResultDescriptor> rayTestResults = Game.getInstance().getPhysicEngine().rayTest(event.getFrom(), event.getTo());
-            for (RayResultDescriptor rayTest : rayTestResults) {
-
-                // Ignore it on the ship
-                if (event.getSource().getParentObject() instanceof Component) {
-                    Component component = (Component) event.getSource().getParentObject();
-                    if (component.getShip().getComponents().contains(rayTest.getPart().getParentObject())) {
-                        continue;
-                    }
-                }
-                
-                // damage = (1-rangePercent^3)
-                double attenuedDamage = event.getDamage().getWeaponBaseDamage() * (1 - Math.pow(rayTest.getHitFraction(), 3));
-                event.getDamage().setBaseDamage(attenuedDamage);
-                applyDamage(rayTest.getPart(), event.getDamage(), rayTest.getGlobalPosition());
-                impulse(rayTest.getPart(), attenuedDamage/10, rayTest.getLocalPosition(), event.getTo().minus(event.getFrom()).normalize());
-
-                break;
-            }
-        }
+//        @Override
+//        public void visit(CollisionEvent event) {
+//            CollisionDescriptor collisionDescriptor = event.getCollisionDescriptor();
+//            
+//            processCollision(collisionDescriptor.getPartA(), collisionDescriptor.getPartB(), collisionDescriptor.getImpulse(), collisionDescriptor.getGlobalPosition());
+//            processCollision(collisionDescriptor.getPartB(), collisionDescriptor.getPartA(), collisionDescriptor.getImpulse(), collisionDescriptor.getGlobalPosition());
+//        }
+//
+//        @Override
+//        public void visit(BulletFiredEvent event) {
+//
+//            List<RayResultDescriptor> rayTestResults = Game.getInstance().getPhysicEngine().rayTest(event.getFrom(), event.getTo());
+//            for (RayResultDescriptor rayTest : rayTestResults) {
+//
+//                // Ignore it on the ship
+//                if (event.getSource().getParentObject() instanceof Component) {
+//                    Component component = (Component) event.getSource().getParentObject();
+//                    if (component.getShip().getComponents().contains(rayTest.getPart().getParentObject())) {
+//                        continue;
+//                    }
+//                }
+//                
+//                // damage = (1-rangePercent^3)
+//                double attenuedDamage = event.getDamage().getWeaponBaseDamage() * (1 - Math.pow(rayTest.getHitFraction(), 3));
+//                event.getDamage().setBaseDamage(attenuedDamage);
+//                applyDamage(rayTest.getPart(), event.getDamage(), rayTest.getGlobalPosition());
+//                impulse(rayTest.getPart(), attenuedDamage/10, rayTest.getLocalPosition(), event.getTo().minus(event.getFrom()).normalize());
+//
+//                break;
+//            }
+//        }
 
         @Override
         public void visit(RocketFiredEvent event) {
@@ -400,7 +400,8 @@ public class ServerGameEngine extends FramerateEngine {
             
             TransformMatrix transformMatrix = new TransformMatrix(event.getFrom());
             
-            Game.getInstance().getWorld().addShip(rocket, transformMatrix);
+            
+            event.getSource().getParentObject().getSystem().addShip(rocket, transformMatrix);
         }
 
         @Override
@@ -408,10 +409,10 @@ public class ServerGameEngine extends FramerateEngine {
             if (event.getObject() instanceof Monolith) {
                 Game.getInstance().sendToAll(new GameOverEvent("The monolith is destroyed"));
             } else if (event.getObject() instanceof Asteroid) {
-                Loot loot = CelestialObjectFactory.createLoot(25);
-                loot.getFirstPart().getLinearSpeed().set(event.getObject().getFirstPart().getLinearSpeed());
-                loot.getFirstPart().getTransform().setTranslation(event.getObject().getFirstPart().getTransform().getTranslation());
-                Game.getInstance().getWorld().addCelestialObject(loot);
+//                Loot loot = CelestialObjectFactory.createLoot(25);
+//                loot.getFirstPart().getLinearSpeed().set(event.getObject().getFirstPart().getLinearSpeed());
+//                loot.getFirstPart().getTransform().setTranslation(event.getObject().getFirstPart().getTransform().getTranslation());
+//                Game.getInstance().getWorld().addCelestialObject(loot);
             }
         }
 
@@ -474,101 +475,101 @@ public class ServerGameEngine extends FramerateEngine {
             Game.getInstance().gameOver();
         }
 
-        @Override
-        public void visit(ExplosionFiredEvent event) {
-            applyExplosion(event.getLocation(),
-                           event.getExplosionDamage(),
-                           event.getExplosionRadius(),
-                           event.getExplosionBlast(),
-                           event.getArmorPenetration());
-        }
+//        @Override
+//        public void visit(ExplosionFiredEvent event) {
+//            applyExplosion(event.getLocation(),
+//                           event.getExplosionDamage(),
+//                           event.getExplosionRadius(),
+//                           event.getExplosionBlast(),
+//                           event.getArmorPenetration());
+//        }
 
     }
 
-    private void processCollision(Part part, Part collider, double impulse, Vec3 impact) {
-        DamageDescriptor damage = new DamageDescriptor(DamageDescriptor.DamageType.PHYSICAL, 0, DamageCause.COLLISION);
-        damage.setBaseDamage(impulse * 0.5);
-        applyDamage(part, damage, impact);
+//    private void processCollision(Part part, Part collider, double impulse, Vec3 impact) {
+//        DamageDescriptor damage = new DamageDescriptor(DamageDescriptor.DamageType.PHYSICAL, 0, DamageCause.COLLISION);
+//        damage.setBaseDamage(impulse * 0.5);
+//        applyDamage(part, damage, impact);
+//
+//        if (contactDetectorMap.containsKey(part.getParentObject())) {
+//            ContactDetectorController contactDetectorController = contactDetectorMap.get(part.getParentObject());
+//            contactDetectorController.contact(impulse, collider);
+//        }
+//
+//    }
 
-        if (contactDetectorMap.containsKey(part.getParentObject())) {
-            ContactDetectorController contactDetectorController = contactDetectorMap.get(part.getParentObject());
-            contactDetectorController.contact(impulse, collider);
-        }
+//    private void applyDamage(Part target, DamageDescriptor damage, Vec3 impact) {
+//        WorldObject parentObject = target.getParentObject();
+//
+//        double effectiveDamage = damage.getBaseDamage() * (1.0 - parentObject.getPhysicalResistance() * (1 - damage.armorPenetration));
+//
+//        if (effectiveDamage == 0) {
+//            return;
+//        }
+//
+//        double newDurablility = parentObject.getDurability();
+//        newDurablility -= effectiveDamage;
+//        if (newDurablility < 0) {
+//            newDurablility = 0;
+//        }
+//
+//        parentObject.setDurability(newDurablility);
+//
+//        damage.setEffectiveDamage(effectiveDamage);
+//        // TODO: extras damage transmission
+//
+//        Game.getInstance().sendToAll(new DamageEvent(target, damage, impact));
+//
+//        if (newDurablility == 0) {
+//            if (parentObject instanceof CelestialObject) {
+//                Game.getInstance().getWorld().removeCelestialObject((CelestialObject) parentObject, Reason.DESTROYED);
+//            }
+//            if (parentObject instanceof Component) {
+//                Component component = (Component) parentObject;
+//                Ship ship = component.getShip();
+//                if (ship != null && ship.isDestructible()) {
+//                    // Destroy component
+//
+//                    List<ExplosiveCapacity> explosiveCapacities = component.getCapacitiesByClass(ExplosiveCapacity.class);
+//                    for (ExplosiveCapacity explosiveCapacity : explosiveCapacities) {
+//                        if (!explosiveCapacity.consumed) {
+//                            explosiveCapacity.consumed = true;
+//                            Game.getInstance().sendToAll(new ExplosionFiredEvent(component.getFirstPart(),
+//                                                                                 component.getFirstPart().getTransform().getTranslation(),
+//                                                                                 explosiveCapacity.armorPenetration,
+//                                                                                 explosiveCapacity.explosionBlast,
+//                                                                                 explosiveCapacity.explosionRadius,
+//                                                                                 explosiveCapacity.explosionDamage));
+//                        }
+//                    }
+//                    if (component.getShip().getComponents().size() == 1) {
+//                        Game.getInstance().getWorld().removeShip(component.getShip());
+//                    } else {
+//                        Game.getInstance().getWorld().removeComponent(component, com.irr310.common.event.ComponentRemovedEvent.Reason.DESTROYED);
+//                    }
+//                }
+//            }
+//        }
+//
+//    }
 
-    }
-
-    private void applyDamage(Part target, DamageDescriptor damage, Vec3 impact) {
-        WorldObject parentObject = target.getParentObject();
-
-        double effectiveDamage = damage.getBaseDamage() * (1.0 - parentObject.getPhysicalResistance() * (1 - damage.armorPenetration));
-
-        if (effectiveDamage == 0) {
-            return;
-        }
-
-        double newDurablility = parentObject.getDurability();
-        newDurablility -= effectiveDamage;
-        if (newDurablility < 0) {
-            newDurablility = 0;
-        }
-
-        parentObject.setDurability(newDurablility);
-
-        damage.setEffectiveDamage(effectiveDamage);
-        // TODO: extras damage transmission
-
-        Game.getInstance().sendToAll(new DamageEvent(target, damage, impact));
-
-        if (newDurablility == 0) {
-            if (parentObject instanceof CelestialObject) {
-                Game.getInstance().getWorld().removeCelestialObject((CelestialObject) parentObject, Reason.DESTROYED);
-            }
-            if (parentObject instanceof Component) {
-                Component component = (Component) parentObject;
-                Ship ship = component.getShip();
-                if (ship != null && ship.isDestructible()) {
-                    // Destroy component
-
-                    List<ExplosiveCapacity> explosiveCapacities = component.getCapacitiesByClass(ExplosiveCapacity.class);
-                    for (ExplosiveCapacity explosiveCapacity : explosiveCapacities) {
-                        if (!explosiveCapacity.consumed) {
-                            explosiveCapacity.consumed = true;
-                            Game.getInstance().sendToAll(new ExplosionFiredEvent(component.getFirstPart(),
-                                                                                 component.getFirstPart().getTransform().getTranslation(),
-                                                                                 explosiveCapacity.armorPenetration,
-                                                                                 explosiveCapacity.explosionBlast,
-                                                                                 explosiveCapacity.explosionRadius,
-                                                                                 explosiveCapacity.explosionDamage));
-                        }
-                    }
-                    if (component.getShip().getComponents().size() == 1) {
-                        Game.getInstance().getWorld().removeShip(component.getShip());
-                    } else {
-                        Game.getInstance().getWorld().removeComponent(component, com.irr310.common.event.ComponentRemovedEvent.Reason.DESTROYED);
-                    }
-                }
-            }
-        }
-
-    }
-
-    private void applyExplosion(Vec3 location, double explosionDamage, double explosionRadius, double explosionBlast, double armorPenetration) {
-        List<SphereResultDescriptor> sphereTestResults = Game.getInstance().getPhysicEngine().sphereTest(location, explosionRadius);
-        for (SphereResultDescriptor rayTest : sphereTestResults) {
-            Log.trace("explosion result to" + rayTest.getPart().getParentObject().getName() + " at " + rayTest.getDistance().length());
-
-            DamageDescriptor damageDescriptor = new DamageDescriptor(DamageType.HEAT, armorPenetration, DamageCause.EXPLOSION);
-            damageDescriptor.setWeaponBaseDamage(explosionDamage);
-            damageDescriptor.setBaseDamage(explosionDamage * (1 - (rayTest.getDistance().length() / explosionRadius)));
-
-            applyDamage(rayTest.getPart(), damageDescriptor, rayTest.getGlobalPosition());
-            impulse(rayTest.getPart(),
-                    explosionBlast * (1 - (rayTest.getDistance().length() / explosionRadius)),
-                    rayTest.getLocalPosition(),
-                    rayTest.getDistance().normalize());
-
-        }
-    }
+//    private void applyExplosion(Vec3 location, double explosionDamage, double explosionRadius, double explosionBlast, double armorPenetration) {
+//        List<SphereResultDescriptor> sphereTestResults = Game.getInstance().getPhysicEngine().sphereTest(location, explosionRadius);
+//        for (SphereResultDescriptor rayTest : sphereTestResults) {
+//            Log.trace("explosion result to" + rayTest.getPart().getParentObject().getName() + " at " + rayTest.getDistance().length());
+//
+//            DamageDescriptor damageDescriptor = new DamageDescriptor(DamageType.HEAT, armorPenetration, DamageCause.EXPLOSION);
+//            damageDescriptor.setWeaponBaseDamage(explosionDamage);
+//            damageDescriptor.setBaseDamage(explosionDamage * (1 - (rayTest.getDistance().length() / explosionRadius)));
+//
+//            applyDamage(rayTest.getPart(), damageDescriptor, rayTest.getGlobalPosition());
+//            impulse(rayTest.getPart(),
+//                    explosionBlast * (1 - (rayTest.getDistance().length() / explosionRadius)),
+//                    rayTest.getLocalPosition(),
+//                    rayTest.getDistance().normalize());
+//
+//        }
+//    }
 
     private void impulse(Part part, double energy, Vec3 localPosition, Vec3 axis) {
         Game.getInstance().getPhysicEngine().impulse(part, energy, localPosition, axis);
@@ -590,7 +591,7 @@ public class ServerGameEngine extends FramerateEngine {
 
     void createWaves() {
         // Create waves
-        new WaveFactory().createWaves(waveQueue);
+//        new WaveFactory().createWaves(waveQueue);
         nextWaveTime = Time.now(true);
 
         nextWave();
@@ -610,7 +611,7 @@ public class ServerGameEngine extends FramerateEngine {
 
     private void initWorld() {
         Monolith monolith = new Monolith(GameServer.pickNewId(), "monolith");
-        Game.getInstance().getWorld().addCelestialObject(monolith);
+//        Game.getInstance().getWorld().addCelestialObject(monolith);
 
         /*
          * for (int i = 0; i < 100; i++) { Random random = new Random(); double

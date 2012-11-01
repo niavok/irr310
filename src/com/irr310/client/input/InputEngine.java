@@ -19,10 +19,10 @@ import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.tools.Log;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
-import com.irr310.common.world.zone.CelestialObject;
-import com.irr310.common.world.zone.Component;
-import com.irr310.common.world.zone.Monolith;
-import com.irr310.common.world.zone.Ship;
+import com.irr310.common.world.system.CelestialObject;
+import com.irr310.common.world.system.Component;
+import com.irr310.common.world.system.Monolith;
+import com.irr310.common.world.system.Ship;
 import com.irr310.server.Duration;
 
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
@@ -162,28 +162,28 @@ public class InputEngine extends FramerateEngine {
                     LoginManager.localPlayer.giveMoney(500000);
                     Log.log("Cheat - 500000 $");
                 }
-                if(cheatString.toLowerCase().equals("armor")) {
-                    Monolith monolith = null;
-                    for (CelestialObject object : Game.getInstance().getWorld().getCelestialsObjects()) {
-                        if (object instanceof Monolith) {
-                            monolith = (Monolith) object;
-                            break;
-                        }
-                    }
-                    if (monolith != null) {
-                        if(monolith.getPhysicalResistance() < 1) {
-                            Log.log("Cheat - Monolith invicibility activated");
-                            monolith.setPhysicalResistance(100);
-                            monolith.setHeatResistance(100);
-                        } else {
-                            Log.log("Cheat - Monolith invicibility desactivated");
-                            monolith.setPhysicalResistance(0.5);
-                            monolith.setHeatResistance(0);
-                        }
-                        
-                    }
-                    
-                }
+//                if(cheatString.toLowerCase().equals("armor")) {
+//                    Monolith monolith = null;
+//                    for (CelestialObject object : Game.getInstance().getWorld().getCelestialsObjects()) {
+//                        if (object instanceof Monolith) {
+//                            monolith = (Monolith) object;
+//                            break;
+//                        }
+//                    }
+//                    if (monolith != null) {
+//                        if(monolith.getPhysicalResistance() < 1) {
+//                            Log.log("Cheat - Monolith invicibility activated");
+//                            monolith.setPhysicalResistance(100);
+//                            monolith.setHeatResistance(100);
+//                        } else {
+//                            Log.log("Cheat - Monolith invicibility desactivated");
+//                            monolith.setPhysicalResistance(0.5);
+//                            monolith.setHeatResistance(0);
+//                        }
+//                        
+//                    }
+//                    
+//                }
                 if(cheatString.toLowerCase().equals("repair")) {
                     Ship ship = LoginManager.getLocalPlayer().getShipList().get(0);
                     for(Component component : ship.getComponents()) {

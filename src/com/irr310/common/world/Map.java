@@ -6,21 +6,21 @@ import java.util.List;
 import com.irr310.common.engine.Engine;
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.Vec2;
-import com.irr310.common.world.zone.Zone;
+import com.irr310.common.world.system.System;
 
 public class Map {
 
-    List<Zone> zones = new ArrayList<Zone>();
+    List<System> zones = new ArrayList<System>();
     
-    public void addZone(Zone zone) {
+    public void addZone(System zone) {
         zones.add(zone);
     }
 
-    public Zone nearestZoneTo(Vec2 location) {
-        Zone nearestZone = null;
+    public System nearestSystemTo(Vec2 location) {
+        System nearestZone = null;
         double nearestDistance = 0;
         
-        for(Zone zone : zones) {
+        for(System zone : zones) {
             double localDistance = zone.getLocation().distanceTo(location);
             if(nearestZone == null || localDistance < nearestDistance) {
                 nearestZone = zone;
@@ -33,13 +33,13 @@ public class Map {
 
     public void dump() {
         String points = "";
-        for(Zone zone : zones) {
+        for(System zone : zones) {
             points += "["+zone.getLocation().x+","+zone.getLocation().y+"],";
         }
         Log.trace(points);
     }
 
-    public List<Zone> getZones() {
+    public List<System> getZones() {
         return zones;
     }
 

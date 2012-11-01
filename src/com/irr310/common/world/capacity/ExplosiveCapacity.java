@@ -1,7 +1,7 @@
 package com.irr310.common.world.capacity;
 
+import com.irr310.common.world.system.DamageDescriptor.DamageType;
 import com.irr310.common.world.view.CapacityView;
-import com.irr310.common.world.zone.DamageDescriptor.DamageType;
 
 public class ExplosiveCapacity extends Capacity {
 

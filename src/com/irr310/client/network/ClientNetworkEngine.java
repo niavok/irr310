@@ -19,14 +19,14 @@ import com.irr310.common.network.protocol.DamageNotificationMessage;
 import com.irr310.common.network.protocol.PartStateUpdateListMessage;
 import com.irr310.common.network.protocol.ShipListMessage;
 import com.irr310.common.network.protocol.WorldObjectListMessage;
+import com.irr310.common.world.system.CelestialObject;
+import com.irr310.common.world.system.DamageDescriptor;
+import com.irr310.common.world.system.Part;
+import com.irr310.common.world.system.Ship;
+import com.irr310.common.world.system.WorldObject;
 import com.irr310.common.world.view.CelestialObjectView;
 import com.irr310.common.world.view.PartStateView;
 import com.irr310.common.world.view.ShipView;
-import com.irr310.common.world.zone.CelestialObject;
-import com.irr310.common.world.zone.DamageDescriptor;
-import com.irr310.common.world.zone.Part;
-import com.irr310.common.world.zone.Ship;
-import com.irr310.common.world.zone.WorldObject;
 
 public class ClientNetworkEngine extends EventEngine {
 
@@ -136,79 +136,79 @@ public class ClientNetworkEngine extends EventEngine {
     }
 
     private void shipListReceived(NetworkMessage message) {
-        ShipListMessage m = (ShipListMessage) message;
-        System.out.println("Ship list received");
-        for (ShipView shipView : m.shipsList) {
-            Ship ship = GameClient.getInstance().getWorld().loadShip(shipView);
-            System.out.println("Ship received: " + ship.getId());
-        }
+//        ShipListMessage m = (ShipListMessage) message;
+//        System.out.println("Ship list received");
+//        for (ShipView shipView : m.shipsList) {
+//            Ship ship = GameClient.getInstance().getWorld().loadShip(shipView);
+//            System.out.println("Ship received: " + ship.getId());
+//        }
 
     }
     
     private void celestialObjectRemovedNotificationReceived(CelestialObjectRemovedNotificationMessage message) {
-        CelestialObject celestialObject = GameClient.getInstance().getWorld().getCelestialObjectById(message.target);
-        if(celestialObject == null) {
-            return;
-        }
-        
-        GameClient.getInstance().getWorld().removeCelestialObject(celestialObject, Reason.values()[message.reason]);
+//        CelestialObject celestialObject = GameClient.getInstance().getWorld().getCelestialObjectById(message.target);
+//        if(celestialObject == null) {
+//            return;
+//        }
+//        
+//        GameClient.getInstance().getWorld().removeCelestialObject(celestialObject, Reason.values()[message.reason]);
     }
     
     private void damageNotificationReceived(DamageNotificationMessage message) {
-        Part partById = GameClient.getInstance().getWorld().getPartById(message.target);
-        if(partById == null) {
-            return;
-        }
-        WorldObject target = partById.getParentObject();
-        
-        System.out.println("Damage from server: "+target.getName()+" take "+message.damage+" damage.");
-        double newDurablility = target.getDurability();
-        newDurablility -= message.damage;
-        if(newDurablility < 0) {
-            newDurablility = 0;
-        }
-        
-        System.out.println("new state: "+newDurablility+"/"+target.getDurabilityMax());
-        
-        target.setDurability(newDurablility);
-        
-        //TODO: set right armor penetration
-        DamageDescriptor damageDescriptor = new DamageDescriptor(DamageDescriptor.DamageType.values()[message.damageType], 0, DamageDescriptor.DamageCause.values()[message.damageCause]);
-        damageDescriptor.setEffectiveDamage(message.damage);
-        
-        Game.getInstance().sendToAll(new DamageEvent(partById, damageDescriptor, message.impact));
-        
+//        Part partById = GameClient.getInstance().getWorld().getPartById(message.target);
+//        if(partById == null) {
+//            return;
+//        }
+//        WorldObject target = partById.getParentObject();
+//        
+//        System.out.println("Damage from server: "+target.getName()+" take "+message.damage+" damage.");
+//        double newDurablility = target.getDurability();
+//        newDurablility -= message.damage;
+//        if(newDurablility < 0) {
+//            newDurablility = 0;
+//        }
+//        
+//        System.out.println("new state: "+newDurablility+"/"+target.getDurabilityMax());
+//        
+//        target.setDurability(newDurablility);
+//        
+//        //TODO: set right armor penetration
+//        DamageDescriptor damageDescriptor = new DamageDescriptor(DamageDescriptor.DamageType.values()[message.damageType], 0, DamageDescriptor.DamageCause.values()[message.damageCause]);
+//        damageDescriptor.setEffectiveDamage(message.damage);
+//        
+//        Game.getInstance().sendToAll(new DamageEvent(partById, damageDescriptor, message.impact));
+//        
         
     }
 
     private void worldObjectListReceived(NetworkMessage message) {
-        WorldObjectListMessage m = (WorldObjectListMessage) message;
-        System.out.println("World object list received");
-        
-        for (CelestialObjectView celestialObjectView : m.celestialObjectList) {
-            CelestialObject object = GameClient.getInstance().getWorld().loadCelestialObject(celestialObjectView);
-            System.out.println("Celestial object received: " + object.getId());
-        }
-        
-        for (ShipView shipView : m.shipsList) {
-            Ship ship = GameClient.getInstance().getWorld().loadShip(shipView);
-            System.out.println("Ship received: " + ship.getId());
-        }
+//        WorldObjectListMessage m = (WorldObjectListMessage) message;
+//        System.out.println("World object list received");
+//        
+//        for (CelestialObjectView celestialObjectView : m.celestialObjectList) {
+//            CelestialObject object = GameClient.getInstance().getWorld().loadCelestialObject(celestialObjectView);
+//            System.out.println("Celestial object received: " + object.getId());
+//        }
+//        
+//        for (ShipView shipView : m.shipsList) {
+//            Ship ship = GameClient.getInstance().getWorld().loadShip(shipView);
+//            System.out.println("Ship received: " + ship.getId());
+//        }
 
     }
     
     private void partStateUpdateReceived(NetworkMessage message) {
-        PartStateUpdateListMessage m = (PartStateUpdateListMessage) message;
-        Game.getInstance().getWorld().lock();
-        for (PartStateView partStateView : m.partStateList) {
-            Part part = GameClient.getInstance().getWorld().getPartById(partStateView.id);
-            if (part != null) {
-//                System.out.println("update part: "+part.getParentObject().getName());
-                part.fromStateView(partStateView);
-            }
-        }
-        Game.getInstance().getWorld().unlock();
-        GameClient.getInstance().getPhysicEngine().reloadStates();
+//        PartStateUpdateListMessage m = (PartStateUpdateListMessage) message;
+//        Game.getInstance().getWorld().lock();
+//        for (PartStateView partStateView : m.partStateList) {
+//            Part part = GameClient.getInstance().getWorld().getPartById(partStateView.id);
+//            if (part != null) {
+////                System.out.println("update part: "+part.getParentObject().getName());
+//                part.fromStateView(partStateView);
+//            }
+//        }
+//        Game.getInstance().getWorld().unlock();
+//        GameClient.getInstance().getPhysicEngine().reloadStates();
 //        for (PartStateView partStateView : m.partStateList) {
 //            Part part = GameClient.getInstance().getWorld().getPartById(partStateView.id);
 //            if (part != null) {

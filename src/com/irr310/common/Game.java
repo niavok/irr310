@@ -11,7 +11,7 @@ import com.irr310.common.world.Player;
 import com.irr310.common.world.World;
 import com.irr310.common.world.item.ItemSlot;
 import com.irr310.common.world.item.ShipSchema;
-import com.irr310.common.world.zone.Ship;
+import com.irr310.common.world.system.Ship;
 import com.irr310.server.GameServer;
 import com.irr310.server.game.ShipFactory;
 import com.irr310.server.upgrade.UpgradeFactory;
@@ -87,7 +87,7 @@ public abstract class Game {
         shipShema.addItemSlot(new ItemSlot(ship, ship.getComponentByName("wingBottom"),new Vec3(-0.75, -2.75, -3.),new Vec3(-0.25, -3.0, -3.)));
 
         newPlayer.setShipShema(shipShema);
-        Game.getInstance().getWorld().addShip(ship, TransformMatrix.identity().translate(new Vec3(20, -50, 0)));
+//        Game.getInstance().getWorld().addShip(ship, TransformMatrix.identity().translate(new Vec3(20, -50, 0)));
         
         centerSlot.setContent(newPlayer.getInventory().get(0));
         

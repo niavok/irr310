@@ -75,12 +75,12 @@ import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.common.world.capacity.RocketCapacity;
 import com.irr310.common.world.capacity.WingCapacity;
-import com.irr310.common.world.zone.Component;
-import com.irr310.common.world.zone.Link;
-import com.irr310.common.world.zone.Part;
-import com.irr310.common.world.zone.Ship;
-import com.irr310.common.world.zone.Slot;
-import com.irr310.common.world.zone.WorldObject;
+import com.irr310.common.world.system.Component;
+import com.irr310.common.world.system.Link;
+import com.irr310.common.world.system.Part;
+import com.irr310.common.world.system.Ship;
+import com.irr310.common.world.system.Slot;
+import com.irr310.common.world.system.WorldObject;
 import com.irr310.server.Duration;
 
 public class PhysicEngine extends FramerateEngine {
@@ -641,7 +641,7 @@ public class PhysicEngine extends FramerateEngine {
             return partToBodyMap.get(part);
         }
 
-        com.irr310.common.world.zone.Part.CollisionShape collisionShape = part.getCollisionShape();
+        com.irr310.common.world.system.Part.CollisionShape collisionShape = part.getCollisionShape();
         CollisionShape colShape = null;
 
         switch (collisionShape) {

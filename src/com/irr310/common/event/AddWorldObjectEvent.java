@@ -1,7 +1,7 @@
 package com.irr310.common.event;
 
 import com.irr310.common.tools.Vec3;
-import com.irr310.common.world.zone.WorldObject;
+import com.irr310.common.world.system.WorldObject;
 
 
 public class AddWorldObjectEvent extends EngineEvent {

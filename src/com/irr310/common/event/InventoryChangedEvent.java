@@ -1,11 +1,11 @@
 package com.irr310.common.event;
 
 import com.irr310.common.world.Player;
-import com.irr310.common.world.item.Item;
+import com.irr310.common.world.item.ItemOld;
 
 public class InventoryChangedEvent extends EngineEvent {
 
-    private final Item item;
+    private final ItemOld item;
     private final Player player;
     
     public enum ChangeType {
@@ -17,7 +17,7 @@ public class InventoryChangedEvent extends EngineEvent {
     private final ChangeType change;
 
     
-    public InventoryChangedEvent(Player player, Item item, ChangeType change) {
+    public InventoryChangedEvent(Player player, ItemOld item, ChangeType change) {
         this.item = item;
         this.player = player;
         this.change = change;
@@ -32,7 +32,7 @@ public class InventoryChangedEvent extends EngineEvent {
         return player;
     }
 
-    public Item getItem() {
+    public ItemOld getItem() {
         return item;
     }
 

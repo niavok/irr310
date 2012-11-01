@@ -1,6 +1,6 @@
 package com.irr310.common.event;
 
-import com.irr310.common.world.zone.Ship;
+import com.irr310.common.world.system.Ship;
 
 public class WorldShipRemovedEvent extends EngineEvent {
 

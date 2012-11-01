@@ -1,6 +1,6 @@
 package com.irr310.server.ai;
 
-import com.irr310.common.world.zone.Ship;
+import com.irr310.common.world.system.Ship;
 
 public abstract class AIProcessor {
 

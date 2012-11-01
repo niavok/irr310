@@ -3,7 +3,7 @@ package com.irr310.common.network.protocol;
 import com.irr310.common.event.CelestialObjectRemovedEvent.Reason;
 import com.irr310.common.network.NetworkField;
 import com.irr310.common.network.NetworkMessage;
-import com.irr310.common.world.zone.CelestialObject;
+import com.irr310.common.world.system.CelestialObject;
 
 public class CelestialObjectRemovedNotificationMessage extends NetworkMessage {
     

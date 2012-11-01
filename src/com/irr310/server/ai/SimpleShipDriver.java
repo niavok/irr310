@@ -4,8 +4,8 @@ import com.irr310.common.tools.Log;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
-import com.irr310.common.world.zone.Component;
-import com.irr310.common.world.zone.Ship;
+import com.irr310.common.world.system.Component;
+import com.irr310.common.world.system.Ship;
 import com.irr310.server.Duration;
 import com.irr310.server.Time;
 

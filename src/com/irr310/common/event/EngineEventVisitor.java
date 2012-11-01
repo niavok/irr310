@@ -69,8 +69,6 @@ public interface EngineEventVisitor {
 
     public abstract void visit(ComponentAddedEvent event);
 
-    public abstract void visit(WorldSizeChangedEvent event);
-
     public abstract void visit(RocketFiredEvent event);
 
     public abstract void visit(WorldShipRemovedEvent event);
@@ -78,4 +76,6 @@ public interface EngineEventVisitor {
     public abstract void visit(ExplosionFiredEvent event);
 
     public abstract void visit(BindAIEvent event);
+
+    public abstract void visit(FactionAddedEvent event);
 }

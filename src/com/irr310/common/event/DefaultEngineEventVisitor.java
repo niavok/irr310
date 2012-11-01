@@ -5,21 +5,27 @@ public class DefaultEngineEventVisitor implements EngineEventVisitor {
     public void visit(QuitGameEvent event) {
     }
 
+    @Override
     public void visit(StartEngineEvent event) {
     }
 
+    @Override
     public void visit(InitEngineEvent event) {
     }
 
+    @Override
     public void visit(PauseEngineEvent event) {
     }
 
+    @Override
     public void visit(UseScriptEvent event) {
     }
 
+    @Override
     public void visit(AddWorldObjectEvent event) {
     }
 
+    @Override
     public void visit(CelestialObjectAddedEvent event) {
     }
 
@@ -127,10 +133,6 @@ public class DefaultEngineEventVisitor implements EngineEventVisitor {
     }
     
     @Override
-    public void visit(WorldSizeChangedEvent event) {
-    }
-    
-    @Override
     public void visit(RocketFiredEvent event) {
     }
     
@@ -144,5 +146,10 @@ public class DefaultEngineEventVisitor implements EngineEventVisitor {
     
     @Override
     public void visit(BindAIEvent event) {
+    }
+    
+    @Override
+    public void visit(FactionAddedEvent event) {
+        
     }
 }

@@ -5,14 +5,10 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.apache.commons.lang3.SystemUtils;
-
 import com.irr310.client.graphics.UiEngine;
 import com.irr310.client.input.InputEngine;
 import com.irr310.client.navigation.LoginManager;
 import com.irr310.client.network.ClientNetworkEngine;
-import com.irr310.client.script.ClientScriptEngine;
-import com.irr310.client.sound.SoundEngine;
 import com.irr310.common.Game;
 import com.irr310.common.engine.Engine;
 import com.irr310.common.engine.PhysicEngine;
@@ -24,10 +20,13 @@ import com.irr310.common.event.WorldReadyEvent;
 import com.irr310.common.network.protocol.CapacityUpdateMessage;
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.Vec2;
+import com.irr310.common.world.Faction;
 import com.irr310.common.world.Map;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.World;
-import com.irr310.common.world.zone.Zone;
+import com.irr310.common.world.item.BuildingItemFactory;
+import com.irr310.common.world.item.NexusItem;
+import com.irr310.common.world.system.System;
 import com.irr310.server.Duration;
 import com.irr310.server.GameServer;
 import com.irr310.server.ParameterAnalyser;
@@ -107,7 +106,7 @@ public class GameClient extends Game {
         Log.perfBegin("Finish Start");
         sendToAll(new StartEngineEvent());
 
-        System.out.println("Irr310 Client - v0.1a");
+        java.lang.System.out.println("Irr310 Client - v0.1a");
 
         // autologin();
         /*
@@ -142,7 +141,7 @@ public class GameClient extends Game {
             Duration.HUNDRED_MILLISECONDE.sleep();
         }
 
-        System.out.println("Game Client: Stopped");
+        java.lang.System.out.println("Game Client: Stopped");
 
     }
 
@@ -199,11 +198,6 @@ public class GameClient extends Game {
 //        engineList.add(clientGameEngine);
 //        worldEngineList.add(clientGameEngine);
 
-        // ClientScriptEngine
-        ClientScriptEngine clientScriptEngine = new ClientScriptEngine();
-        engineList.add(clientScriptEngine);
-        worldEngineList.add(clientScriptEngine);
-        
         // ServerGameEngine
         ServerGameEngine serverGameEngine = new ServerGameEngine();
         engineList.add(serverGameEngine);
@@ -225,7 +219,7 @@ public class GameClient extends Game {
 
         sendToAll(new WorldReadyEvent());
 
-        System.out.println("Game begin");
+        java.lang.System.out.println("Game begin");
     }
 
     private void initWorld() {
@@ -235,7 +229,7 @@ public class GameClient extends Game {
         Map map = getWorld().getMap();
         
         //Init map
-        int playerCount = 5;
+        int factionCount = 5;
         int systemCount = 100;
         double mapSize = 1000;
         double mapMinDistance = mapSize/50;
@@ -244,8 +238,6 @@ public class GameClient extends Game {
         
         int validSystem = 0;
         while(validSystem < systemCount) {
-            
-            
             
             //double distance = (1 - Math.sqrt(random.nextDouble())) * mapSize;
             double distance = (0.5 * (1 - Math.sqrt(random.nextDouble())) + 0.5 * random.nextDouble()) * mapSize;
@@ -256,29 +248,60 @@ public class GameClient extends Game {
 
             if(map.getZones().size() > 0) {
                 
-                Zone nearestZone = map.nearestZoneTo(location);
+                System nearestSystem = map.nearestSystemTo(location);
                 
-                if(nearestZone.getLocation().distanceTo(location) < mapMinDistance) {
+                if(nearestSystem.getLocation().distanceTo(location) < mapMinDistance) {
                     // Too near to a existing system, retry
-                    Log.trace("Too near to a existing system, retry :"+ nearestZone.getLocation().distanceTo(location));
+                    Log.trace("Too near to a existing system, retry :"+ nearestSystem.getLocation().distanceTo(location));
                     mapMinDistance--;
                     continue;
                 } else {
-                    Log.trace("Distance before :"+ nearestZone.getLocation().distanceTo(location));
-                    location = location.add(location.diff(nearestZone.getLocation()).normalize().multiply(mapMinDistance/2) );
-                    Log.trace("Distance after :"+ nearestZone.getLocation().distanceTo(location));
+                    Log.trace("Distance before :"+ nearestSystem.getLocation().distanceTo(location));
+                    location = location.add(location.diff(nearestSystem.getLocation()).normalize().multiply(mapMinDistance/2) );
+                    Log.trace("Distance after :"+ nearestSystem.getLocation().distanceTo(location));
                 }
-            
-                
-                
             }
             
-            Zone zone = new Zone(location);
-            map.addZone(zone);
+            System system = new System(GameServer.pickNewId(), location);
+            map.addZone(system);
             mapMinDistance++;
             
             validSystem++;
         }
+
+        // Find home system
+        double baseAzimut = random.nextDouble() * 2 * Math.PI;
+        
+        List<System> availableHome = new ArrayList<System>();
+        
+        for(int i = 0; i < factionCount; i++) {
+            Vec2 location = new Vec2(0, mapSize/2).rotate(baseAzimut + i * 2 * Math.PI / factionCount);
+            availableHome.add(map.nearestSystemTo(location));
+        }
+        
+        
+        // Init faction
+        for(int i = 0; i < factionCount; i++) {
+            // Pick home system
+            int homeIndex = random.nextInt(factionCount - i);
+            System system = availableHome.get(homeIndex);
+            availableHome.remove(homeIndex);
+            
+            Faction faction = new Faction(GameServer.pickNewId());
+            faction.setHomeSystem(system);
+            
+            getWorld().addFaction(faction);
+            
+            NexusItem nexus = BuildingItemFactory.createNexus(faction);
+            
+            
+            Game.getInstance().getWorld().addItem(nexus);
+            
+            nexus.forceDeploy(system, system.getRandomEmptySpace(nexus.getDeployedRadius()));
+        }
+        
+
+        
         
         map.dump();
     }
@@ -305,7 +328,7 @@ public class GameClient extends Game {
     }
 
     public void gameOver() {
-        System.err.println("Game over");
+        java.lang.System.err.println("Game over");
         
         for (Engine engine : worldEngineList) {
             engine.pushEvent(new QuitGameEvent());
@@ -330,7 +353,7 @@ public class GameClient extends Game {
         
         worldEngineList.clear();
         physicEngine = null;
-        System.err.println("Game cleaned");
+        java.lang.System.err.println("Game cleaned");
     }
 
 }

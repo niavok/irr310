@@ -19,6 +19,7 @@ import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.EngineEventVisitor;
 import com.irr310.common.event.ExplosionFiredEvent;
+import com.irr310.common.event.FactionAddedEvent;
 import com.irr310.common.event.GameOverEvent;
 import com.irr310.common.event.InitEngineEvent;
 import com.irr310.common.event.InventoryChangedEvent;
@@ -44,7 +45,6 @@ import com.irr310.common.event.UseScriptEvent;
 import com.irr310.common.event.WorldReadyEvent;
 import com.irr310.common.event.WorldShipAddedEvent;
 import com.irr310.common.event.WorldShipRemovedEvent;
-import com.irr310.common.event.WorldSizeChangedEvent;
 import com.irr310.common.tools.Vec2;
 import com.irr310.i3d.Color;
 import com.irr310.i3d.I3dContext;
@@ -308,11 +308,6 @@ public class UiEngine extends FramerateEngine {
         }
 
         @Override
-        public void visit(WorldSizeChangedEvent event) {
-            rendererVisitor.visit(event);
-        }
-
-        @Override
         public void visit(RocketFiredEvent event) {
             rendererVisitor.visit(event);
         }
@@ -330,6 +325,12 @@ public class UiEngine extends FramerateEngine {
         @Override
         public void visit(BindAIEvent event) {
             rendererVisitor.visit(event);
+        }
+
+        @Override
+        public void visit(FactionAddedEvent event) {
+            // TODO Auto-generated method stub
+            
         }
     }
 

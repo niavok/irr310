@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.irr310.common.tools.Vec3;
+import com.irr310.common.world.system.DamageDescriptor;
 import com.irr310.common.world.view.CapacityView;
-import com.irr310.common.world.zone.DamageDescriptor;
 
 public class BalisticWeaponCapacity extends Capacity {
 
