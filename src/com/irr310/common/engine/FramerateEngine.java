@@ -54,7 +54,7 @@ public abstract class FramerateEngine<T extends EngineEvent> extends Engine<T> {
                 }
 
             } else {
-                Duration.ONE_SECOND.sleep();
+                Duration.HUNDRED_MILLISECONDE.sleep();
             }
         }
 
