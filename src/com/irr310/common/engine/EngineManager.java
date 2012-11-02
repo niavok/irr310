@@ -60,7 +60,9 @@ public class EngineManager<T extends EngineEvent> implements EventDispatcher<T> 
                     break;
                 }
             }
-            Duration.HUNDRED_MILLISECONDE.sleep();
+            if(waitStop) {
+                Duration.HUNDRED_MILLISECONDE.sleep();
+            }
         }
     }
 
