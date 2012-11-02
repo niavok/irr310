@@ -7,6 +7,7 @@ import java.util.Random;
 import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.event.game.DefaultGameEventVisitor;
 import com.irr310.common.event.game.GameEvent;
+import com.irr310.common.event.game.QuitGameEvent;
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.Vec2;
 import com.irr310.common.world.Faction;
@@ -49,11 +50,11 @@ public class WorldEngine extends FramerateEngine<GameEvent> {
 
     private final class WorldEngineEventVisitor extends DefaultGameEventVisitor {
 
-//        @Override
-//        public void visit(QuitGameEvent event) {
-//            java.lang.System.out.println("stopping world engine");
-//            setRunning(false);
-//        }
+        @Override
+        public void visit(QuitGameEvent event) {
+            java.lang.System.out.println("stopping world engine");
+            setRunning(false);
+        }
 //        
 //        @Override
 //        public void visit(StartEngineEvent event) {
