@@ -12,8 +12,6 @@ public class ShipFactory {
 
     public static Ship createSimpleShip() {
 
-        World world = Game.getInstance().getWorld();
-
         Ship newShip = new Ship(GameServer.pickNewId());
 
         // Kernel

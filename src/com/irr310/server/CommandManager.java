@@ -4,14 +4,6 @@ import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.irr310.common.event.AddWorldObjectEvent;
-import com.irr310.common.event.InitEngineEvent;
-import com.irr310.common.event.PauseEngineEvent;
-import com.irr310.common.event.StartEngineEvent;
-import com.irr310.common.event.UseScriptEvent;
-import com.irr310.common.event.UseScriptEvent.Type;
-import com.irr310.common.tools.Vec3;
-
 public class CommandManager {
 
 	private Pattern exprComment;
@@ -51,11 +43,11 @@ public class CommandManager {
 			// quit
 			out = null;
 		} else if ((match = exprStart.matcher(command)).matches()) {
-			GameServer.getInstance().sendToAll(new StartEngineEvent());
+//			GameServer.getInstance().sendToAll(new StartEngineEvent());
 		} else if ((match = exprInit.matcher(command)).matches()) {
-			GameServer.getInstance().sendToAll(new InitEngineEvent());
+//			GameServer.getInstance().sendToAll(new InitEngineEvent());
 		} else if ((match = exprPause.matcher(command)).matches()) {
-			GameServer.getInstance().sendToAll(new PauseEngineEvent());
+//			GameServer.getInstance().sendToAll(new PauseEngineEvent());
 		} else if ((match = exprUse.matcher(command)).matches()) {
 			out = useScriptCommand(command);
 		} else if ((match = exprAddShip.matcher(command)).matches()) {
@@ -131,16 +123,16 @@ public class CommandManager {
 		}
 
 		String strType = typeMatch.group(4);
-		UseScriptEvent.Type type;
-
-		if (strType.equals("driver")) {
-			type = Type.DRIVER;
-		} else if (strType.equals("bind")) {
-			type = Type.BIND;
-		} else {
-			return "Invalid type '" + strType
-					+ "'. Valid type are 'driver' or 'bind' ";
-		}
+//		UseScriptEvent.Type type;
+//
+//		if (strType.equals("driver")) {
+//			type = Type.DRIVER;
+//		} else if (strType.equals("bind")) {
+//			type = Type.BIND;
+//		} else {
+//			return "Invalid type '" + strType
+//					+ "'. Valid type are 'driver' or 'bind' ";
+//		}
 
 		//GameServer.getInstance().getGameEngine()
 		//		.processEvent(new UseScriptEvent(type, script));
@@ -166,7 +158,7 @@ public class CommandManager {
 		Pattern exprAddLink = Pattern
 				.compile(".*((-l)|(--link)) ([A-Za-z_0-9]*).*");
 
-		AddWorldObjectEvent event = new AddWorldObjectEvent();
+//		AddWorldObjectEvent event = new AddWorldObjectEvent();
 
 		Matcher typeMatch = exprAddType.matcher(command);
 		if (!typeMatch.matches()) {
@@ -175,26 +167,26 @@ public class CommandManager {
 
 		// Type
 		String typeStr = typeMatch.group(4);
-		AddWorldObjectEvent.Type type;
+//		AddWorldObjectEvent.Type type;
 
-		if (typeStr.equals("camera")) {
-			type = AddWorldObjectEvent.Type.CAMERA;
-		} else if (typeStr.equals("linear_engine")) {
-			type = AddWorldObjectEvent.Type.LINEAR_ENGINE;
-		} else {
-			return "Invalid type '" + typeStr
-					+ "'. Valid type are  'camera', 'linear_engine' ";
-		}
+//		if (typeStr.equals("camera")) {
+//			type = AddWorldObjectEvent.Type.CAMERA;
+//		} else if (typeStr.equals("linear_engine")) {
+//			type = AddWorldObjectEvent.Type.LINEAR_ENGINE;
+//		} else {
+//			return "Invalid type '" + typeStr
+//					+ "'. Valid type are  'camera', 'linear_engine' ";
+//		}
 
-		event.setType(type);
+//		event.setType(type);
 
 		// Name
-		Matcher nameMatch = exprAddName.matcher(command);
-		if (nameMatch.matches()) {
-			event.setName(nameMatch.group(4));
-		} else {
-			event.setName("");
-		}
+//		Matcher nameMatch = exprAddName.matcher(command);
+//		if (nameMatch.matches()) {
+//			event.setName(nameMatch.group(4));
+//		} else {
+//			event.setName("");
+//		}
 
 		// Name
 		Matcher linkMatch = exprAddLink.matcher(command);
@@ -219,7 +211,7 @@ public class CommandManager {
 				Double x = Double.valueOf(xStr);
 				Double y = Double.valueOf(yStr);
 				Double z = Double.valueOf(zStr);
-				event.setPosition(new Vec3(x, y, z));
+//				event.setPosition(new Vec3(x, y, z));
 			} catch (NumberFormatException e) {
 				return "Bad number format for position in '" + xStr + "', '"
 						+ yStr + "' or '" + zStr + "'";
@@ -237,7 +229,7 @@ public class CommandManager {
 				Double x = Double.valueOf(xStr);
 				Double y = Double.valueOf(yStr);
 				Double z = Double.valueOf(zStr);
-				event.setRotation(new Vec3(x, y, z));
+//				event.setRotation(new Vec3(x, y, z));
 			} catch (NumberFormatException e) {
 				return "Bad number format for rotation in '" + xStr + "', '"
 						+ yStr + "' or '" + zStr + "'";
@@ -255,7 +247,7 @@ public class CommandManager {
 				Double x = Double.valueOf(xStr);
 				Double y = Double.valueOf(yStr);
 				Double z = Double.valueOf(zStr);
-				event.setLinearSpeed(new Vec3(x, y, z));
+//				event.setLinearSpeed(new Vec3(x, y, z));
 			} catch (NumberFormatException e) {
 				return "Bad number format for linear speed in '" + xStr
 						+ "', '" + yStr + "' or '" + zStr + "'";
@@ -273,7 +265,7 @@ public class CommandManager {
 				Double x = Double.valueOf(xStr);
 				Double y = Double.valueOf(yStr);
 				Double z = Double.valueOf(zStr);
-				event.setRotationSpeed(new Vec3(x, y, z));
+//				event.setRotationSpeed(new Vec3(x, y, z));
 			} catch (NumberFormatException e) {
 				return "Bad number format for rotation speed in '" + xStr
 						+ "', '" + yStr + "' or '" + zStr + "'";
@@ -287,13 +279,13 @@ public class CommandManager {
 
 			try {
 				Double mass = Double.valueOf(massStr);
-				event.setMass(mass);
+//				event.setMass(mass);
 			} catch (NumberFormatException e) {
 				return "Bad number format for mass:'" + massStr + "'";
 			}
 		}
 
-		GameServer.getInstance().sendToAll(event);
+//		GameServer.getInstance().sendToAll(event);
 		return "Game : Add object > " + typeStr;
 
 	}

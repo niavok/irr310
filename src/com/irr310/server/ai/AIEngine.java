@@ -4,17 +4,11 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.irr310.common.engine.FramerateEngine;
-import com.irr310.common.event.BindAIEvent;
-import com.irr310.common.event.DefaultEngineEventVisitor;
-import com.irr310.common.event.EngineEvent;
-import com.irr310.common.event.PauseEngineEvent;
-import com.irr310.common.event.QuitGameEvent;
-import com.irr310.common.event.StartEngineEvent;
-import com.irr310.common.event.WorldShipAddedEvent;
-import com.irr310.common.event.WorldShipRemovedEvent;
+import com.irr310.common.event.system.DefaultSystemEventVisitor;
+import com.irr310.common.event.system.SystemEvent;
 import com.irr310.common.world.system.Ship;
 
-public class AIEngine extends FramerateEngine {
+public class AIEngine extends FramerateEngine<SystemEvent> {
 
     List<AIProcessor> activeProcessors = new CopyOnWriteArrayList<AIProcessor>();
     List<Ship> activeShips = new CopyOnWriteArrayList<Ship>();
@@ -24,7 +18,7 @@ public class AIEngine extends FramerateEngine {
     }
 
     @Override
-    protected void processEvent(EngineEvent e) {
+    protected void processEvent(SystemEvent e) {
         e.accept(new AIEngineEventVisitor());
     }
 
@@ -46,49 +40,49 @@ public class AIEngine extends FramerateEngine {
         
     }
 
-    private final class AIEngineEventVisitor extends DefaultEngineEventVisitor {
+    private final class AIEngineEventVisitor extends DefaultSystemEventVisitor {
 
-        @Override
-        public void visit(QuitGameEvent event) {
-            System.out.println("stopping ai engine");
-            setRunning(false);
-        }
-        
-        @Override
-        public void visit(BindAIEvent event) {
-            createAI(event.getShip());
-        }
-        
-        @Override
-        public void visit(StartEngineEvent event) {
-            pause(false);
-        }
-
-        @Override
-        public void visit(PauseEngineEvent event) {
-            pause(true);
-        }
-        
-        @Override
-        public void visit(WorldShipAddedEvent event) {
-            activeShips.add(event.getShip());
-            for(AIProcessor processor: pendingProcessors) {
-                if(processor.getShip() == event.getShip()) {
-                    pendingProcessors.remove(processor);
-                    activeProcessors.add(processor);
-                }
-            }
-        }
-        
-        @Override
-        public void visit(WorldShipRemovedEvent event) {
-            activeShips.remove(event.getShip());
-            for(AIProcessor processor: activeProcessors) {
-                if(processor.getShip() == event.getShip()) {
-                    activeProcessors.remove(processor);
-                }
-            }
-        }
+//        @Override
+//        public void visit(QuitGameEvent event) {
+//            System.out.println("stopping ai engine");
+//            setRunning(false);
+//        }
+//        
+//        @Override
+//        public void visit(BindAIEvent event) {
+//            createAI(event.getShip());
+//        }
+//        
+//        @Override
+//        public void visit(StartEngineEvent event) {
+//            pause(false);
+//        }
+//
+//        @Override
+//        public void visit(PauseEngineEvent event) {
+//            pause(true);
+//        }
+//        
+//        @Override
+//        public void visit(WorldShipAddedEvent event) {
+//            activeShips.add(event.getShip());
+//            for(AIProcessor processor: pendingProcessors) {
+//                if(processor.getShip() == event.getShip()) {
+//                    pendingProcessors.remove(processor);
+//                    activeProcessors.add(processor);
+//                }
+//            }
+//        }
+//        
+//        @Override
+//        public void visit(WorldShipRemovedEvent event) {
+//            activeShips.remove(event.getShip());
+//            for(AIProcessor processor: activeProcessors) {
+//                if(processor.getShip() == event.getShip()) {
+//                    activeProcessors.remove(processor);
+//                }
+//            }
+//        }
     }
 
     private void createAI(Ship ship) {

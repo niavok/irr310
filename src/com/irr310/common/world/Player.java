@@ -5,12 +5,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
-import com.irr310.common.Game;
-import com.irr310.common.event.InventoryChangedEvent;
-import com.irr310.common.event.InventoryChangedEvent.ChangeType;
-import com.irr310.common.event.MoneyChangedEvent;
 import com.irr310.common.tools.Hash;
-import com.irr310.common.world.item.ItemOld;
 import com.irr310.common.world.item.ItemSlot;
 import com.irr310.common.world.item.ShipSchema;
 import com.irr310.common.world.system.GameEntity;
@@ -29,7 +24,7 @@ public class Player extends GameEntity {
     private String password;
     private String passwordSalt;
     private List<Ship> shipList;
-    private List<ItemOld> inventory;
+//    private List<ItemOld> inventory;
     private List<UpgradeOwnership> upgrades;
     private int  money;
     private V3DColor color;
@@ -46,7 +41,7 @@ public class Player extends GameEntity {
         this.login = login;
         shipList = new ArrayList<Ship>();
         upgrades = new ArrayList<UpgradeOwnership>();
-        inventory = new ArrayList<ItemOld>();
+//        inventory = new ArrayList<ItemOld>();
         money = 0;
         lastInterrest = 0;
         color = V3DColor.grey;
@@ -107,14 +102,14 @@ public class Player extends GameEntity {
     public void giveMoney(int amount) {
         if(amount > 0) {
             money += amount;
-            Game.getInstance().sendToAll(new MoneyChangedEvent(amount, this, true));
+//            Game.getInstance().sendToAll(new MoneyChangedEvent(amount, this, true));
         }
     }
     
     public void retireMoney(int amount) {
         if(amount > 0) {
             money -= amount;
-            Game.getInstance().sendToAll(new MoneyChangedEvent(amount, this, true));
+//            Game.getInstance().sendToAll(new MoneyChangedEvent(amount, this, true));
         }
     }
     
@@ -144,26 +139,26 @@ public class Player extends GameEntity {
         giveMoney(realGain);
     }
     
-    public List<ItemOld> getInventory() {
-        return inventory;
-    }
+//    public List<ItemOld> getInventory() {
+//        return inventory;
+//    }
     
-    public void giveItem(ItemOld item) {
-        inventory.add(item);
-        Game.getInstance().sendToAll(new InventoryChangedEvent(this, item, ChangeType.ADDED));
-    }
-    
-    public void retireItem(ItemOld item) {
-        if(item.isUsed()) {
-            for (ItemSlot slot : shipShema.getItemSlots()) {
-                if(slot.getContent() == item) {
-                    slot.setContent(null);
-                }
-            }
-        }
-        inventory.remove(item);
-        Game.getInstance().sendToAll(new InventoryChangedEvent(this, item, ChangeType.REMOVE));
-    }
+//    public void giveItem(ItemOld item) {
+//        inventory.add(item);
+////        Game.getInstance().sendToAll(new InventoryChangedEvent(this, item, ChangeType.ADDED));
+//    }
+//    
+//    public void retireItem(ItemOld item) {
+//        if(item.isUsed()) {
+//            for (ItemSlot slot : shipShema.getItemSlots()) {
+//                if(slot.getContent() == item) {
+//                    slot.setContent(null);
+//                }
+//            }
+//        }
+//        inventory.remove(item);
+////        Game.getInstance().sendToAll(new InventoryChangedEvent(this, item, ChangeType.REMOVE));
+//    }
 
     public Ship getPreferredShip() {
         return getShipList().get(0);
@@ -177,30 +172,30 @@ public class Player extends GameEntity {
         this.shipShema = shipShema;
     }
 
-    public void removeItemByName(String string) {
-        ItemOld itemToRemove = null;
-        
-        //Look for a not used item
-        for (ItemOld item : inventory) {
-            if(item.getName().equals(string) && !item.isUsed()) {
-                itemToRemove = item;
-            }
-        }
-        if(itemToRemove != null) {
-            retireItem(itemToRemove);
-            return;
-        }
-        
-        // Look an used item
-        for (ItemOld item : inventory) {
-            if(item.getName().equals(string)) {
-                itemToRemove = item;
-            }
-        }
-        if(itemToRemove != null) {
-            retireItem(itemToRemove);
-        }
-    }
+//    public void removeItemByName(String string) {
+//        ItemOld itemToRemove = null;
+//        
+//        //Look for a not used item
+//        for (ItemOld item : inventory) {
+//            if(item.getName().equals(string) && !item.isUsed()) {
+//                itemToRemove = item;
+//            }
+//        }
+//        if(itemToRemove != null) {
+//            retireItem(itemToRemove);
+//            return;
+//        }
+//        
+//        // Look an used item
+//        for (ItemOld item : inventory) {
+//            if(item.getName().equals(string)) {
+//                itemToRemove = item;
+//            }
+//        }
+//        if(itemToRemove != null) {
+//            retireItem(itemToRemove);
+//        }
+//    }
 
     public V3DColor getColor() {
         return color;

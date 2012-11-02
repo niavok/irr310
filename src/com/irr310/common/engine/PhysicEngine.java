@@ -3,7 +3,6 @@ package com.irr310.common.engine;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -46,18 +45,9 @@ import com.bulletphysics.linearmath.MatrixUtil;
 import com.bulletphysics.linearmath.MotionState;
 import com.bulletphysics.linearmath.Transform;
 import com.bulletphysics.util.ObjectArrayList;
-import com.irr310.common.Game;
-import com.irr310.common.event.CelestialObjectAddedEvent;
-import com.irr310.common.event.CelestialObjectRemovedEvent;
-import com.irr310.common.event.CollisionEvent;
-import com.irr310.common.event.ComponentAddedEvent;
-import com.irr310.common.event.ComponentRemovedEvent;
-import com.irr310.common.event.DefaultEngineEventVisitor;
-import com.irr310.common.event.EngineEvent;
-import com.irr310.common.event.PauseEngineEvent;
-import com.irr310.common.event.QuitGameEvent;
-import com.irr310.common.event.StartEngineEvent;
-import com.irr310.common.event.WorldShipAddedEvent;
+import com.irr310.common.event.system.CollisionEvent;
+import com.irr310.common.event.system.DefaultSystemEventVisitor;
+import com.irr310.common.event.system.SystemEvent;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.capacity.Capacity;
@@ -71,8 +61,9 @@ import com.irr310.common.world.system.Ship;
 import com.irr310.common.world.system.Slot;
 import com.irr310.common.world.system.WorldObject;
 import com.irr310.server.Duration;
+import com.irr310.server.SystemEngine;
 
-public class PhysicEngine extends FramerateEngine {
+public class PhysicEngine extends FramerateEngine<SystemEvent> {
 
     public static final int MASS_FACTOR = 10;
     public static final float PI_2 = 1.57079632679489661923f;
@@ -102,8 +93,10 @@ public class PhysicEngine extends FramerateEngine {
     private OverlapFilterCallback overlapFilterCallback;
     private NearCallback nearCallback;
     ReentrantLock mutex;
+    private final SystemEngine systemEngine;
 
-    public PhysicEngine() {
+    public PhysicEngine(SystemEngine systemEngine) {
+        this.systemEngine = systemEngine;
         framerate = new Duration(10000000); // 10 ms
 
         linearEngines = new ArrayList<Pair<LinearEngineCapacity, RigidBody>>();
@@ -221,7 +214,7 @@ public class PhysicEngine extends FramerateEngine {
         }
         mutex.unlock();
 
-        Game.getInstance().getWorld().lock();
+        systemEngine.getWorld().lock();
         mutex.lock();
 
         // step the simulation
@@ -229,7 +222,7 @@ public class PhysicEngine extends FramerateEngine {
             dynamicsWorld.stepSimulation(framerate.getSeconds());
         }
         mutex.unlock();
-        Game.getInstance().getWorld().unlock();
+        systemEngine.getWorld().unlock();
 
     }
 
@@ -738,7 +731,7 @@ public class PhysicEngine extends FramerateEngine {
 
                         collisionDescriptor.setImpulse(pt.appliedImpulse);
 
-                        Game.getInstance().sendToAll(new CollisionEvent(collisionDescriptor));
+                        systemEngine.sendToAll(new CollisionEvent(collisionDescriptor));
 
                     }
                 }
@@ -806,70 +799,70 @@ public class PhysicEngine extends FramerateEngine {
     }
 
     @Override
-    protected void processEvent(EngineEvent e) {
+    protected void processEvent(SystemEvent e) {
         mutex.lock();
         e.accept(eventVisitor);
         mutex.unlock();
     }
 
-    private final class PhysicEngineEventVisitor extends DefaultEngineEventVisitor {
-        @Override
-        public void visit(QuitGameEvent event) {
-            System.out.println("stopping physic engine");
-            setRunning(false);
-        }
-
-        @Override
-        public void visit(StartEngineEvent event) {
-            pause(false);
-        }
-
-        @Override
-        public void visit(PauseEngineEvent event) {
-            pause(true);
-
-        }
-
-        @Override
-        public void visit(CelestialObjectAddedEvent event) {
-            addObject(event.getObject());
-        }
-
-        @Override
-        public void visit(CelestialObjectRemovedEvent event) {
-            removeObject(event.getObject());
-        }
-
-        @Override
-        public void visit(ComponentAddedEvent event) {
-
-            Component component = event.getComponent();
-            Component kernel = component.getShip().getComponentByName("kernel");
-            addComponent(TransformMatrix.identity().translate(kernel.getShipPosition().negative()).preMultiply(kernel.getFirstPart().getTransform()),
-                         component);
-            if (components.contains(event.getComponent())) {
-                for (Link link : component.getShip().getLinks()) {
-                    addLink(link);
-                }
-            }
-        }
-
-        @Override
-        public void visit(ComponentRemovedEvent event) {
-            removeComponent(event.getComponent());
-
-            for (Iterator<Link> iterator = links.iterator(); iterator.hasNext();) {
-                Link link = iterator.next();
-                if (link.getSlot1().getComponent() == event.getComponent() || link.getSlot2().getComponent() == event.getComponent()) {
-                    iterator.remove();
-                }
-            }
-        }
-
-        @Override
-        public void visit(WorldShipAddedEvent event) {
-            addShip(event.getShip(), event.getTransform());
-        }
+    private final class PhysicEngineEventVisitor extends DefaultSystemEventVisitor {
+//        @Override
+//        public void visit(QuitGameEvent event) {
+//            System.out.println("stopping physic engine");
+//            setRunning(false);
+//        }
+//
+//        @Override
+//        public void visit(StartEngineEvent event) {
+//            pause(false);
+//        }
+//
+//        @Override
+//        public void visit(PauseEngineEvent event) {
+//            pause(true);
+//
+//        }
+//
+//        @Override
+//        public void visit(CelestialObjectAddedEvent event) {
+//            addObject(event.getObject());
+//        }
+//
+//        @Override
+//        public void visit(CelestialObjectRemovedEvent event) {
+//            removeObject(event.getObject());
+//        }
+//
+//        @Override
+//        public void visit(ComponentAddedEvent event) {
+//
+//            Component component = event.getComponent();
+//            Component kernel = component.getShip().getComponentByName("kernel");
+//            addComponent(TransformMatrix.identity().translate(kernel.getShipPosition().negative()).preMultiply(kernel.getFirstPart().getTransform()),
+//                         component);
+//            if (components.contains(event.getComponent())) {
+//                for (Link link : component.getShip().getLinks()) {
+//                    addLink(link);
+//                }
+//            }
+//        }
+//
+//        @Override
+//        public void visit(ComponentRemovedEvent event) {
+//            removeComponent(event.getComponent());
+//
+//            for (Iterator<Link> iterator = links.iterator(); iterator.hasNext();) {
+//                Link link = iterator.next();
+//                if (link.getSlot1().getComponent() == event.getComponent() || link.getSlot2().getComponent() == event.getComponent()) {
+//                    iterator.remove();
+//                }
+//            }
+//        }
+//
+//        @Override
+//        public void visit(WorldShipAddedEvent event) {
+//            addShip(event.getShip(), event.getTransform());
+//        }
 
     }
 

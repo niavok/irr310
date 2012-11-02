@@ -2,62 +2,24 @@ package com.irr310.server;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import com.irr310.common.Game;
 import com.irr310.common.engine.FramerateEngine;
-import com.irr310.common.event.AddWorldObjectEvent;
-import com.irr310.common.event.BuyUpgradeRequestEvent;
-import com.irr310.common.event.CelestialObjectRemovedEvent;
-import com.irr310.common.event.ComponentAddedEvent;
-import com.irr310.common.event.ComponentRemovedEvent;
-import com.irr310.common.event.DefaultEngineEventVisitor;
-import com.irr310.common.event.EngineEvent;
-import com.irr310.common.event.GameOverEvent;
-import com.irr310.common.event.InventoryChangedEvent;
-import com.irr310.common.event.NextWaveEvent;
-import com.irr310.common.event.PauseEngineEvent;
-import com.irr310.common.event.QuitGameEvent;
-import com.irr310.common.event.RocketFiredEvent;
-import com.irr310.common.event.SellUpgradeRequestEvent;
-import com.irr310.common.event.StartEngineEvent;
-import com.irr310.common.event.UpgradeStateChanged;
-import com.irr310.common.event.WorldReadyEvent;
-import com.irr310.common.event.WorldShipAddedEvent;
-import com.irr310.common.tools.TransformMatrix;
+import com.irr310.common.event.system.DefaultSystemEventVisitor;
+import com.irr310.common.event.system.SystemEvent;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Player;
-import com.irr310.common.world.capacity.BalisticWeaponCapacity;
-import com.irr310.common.world.capacity.Capacity;
-import com.irr310.common.world.capacity.ContactDetectorCapacity;
-import com.irr310.common.world.capacity.ExplosiveCapacity;
-import com.irr310.common.world.capacity.LinearEngineCapacity;
-import com.irr310.common.world.capacity.RocketCapacity;
-import com.irr310.common.world.capacity.RocketWeaponCapacity;
 import com.irr310.common.world.capacity.controller.CapacityController;
 import com.irr310.common.world.capacity.controller.ContactDetectorController;
-import com.irr310.common.world.capacity.controller.ExplosiveCapacityController;
-import com.irr310.common.world.capacity.controller.GunController;
-import com.irr310.common.world.capacity.controller.LinearEngineController;
-import com.irr310.common.world.capacity.controller.RocketController;
-import com.irr310.common.world.capacity.controller.RocketPodController;
-import com.irr310.common.world.capacity.controller.ShotgunController;
-import com.irr310.common.world.system.Asteroid;
 import com.irr310.common.world.system.Component;
-import com.irr310.common.world.system.Loot;
 import com.irr310.common.world.system.Monolith;
 import com.irr310.common.world.system.Part;
-import com.irr310.common.world.system.Ship;
-import com.irr310.common.world.upgrade.UpgradeOwnership;
-import com.irr310.server.game.CelestialObjectFactory;
-import com.irr310.server.game.ShipFactory;
 import com.irr310.server.upgrade.UpgradeFactory;
 
-public class ServerGameEngine extends FramerateEngine {
+public class ServerSystemGameEngine extends FramerateEngine<SystemEvent> {
 
     private List<CapacityController> capacityControllers;
     private Map<Component, ContactDetectorController> contactDetectorMap;
@@ -71,8 +33,10 @@ public class ServerGameEngine extends FramerateEngine {
     private Time lastInterrestTime;
     private Duration interrestInterval;
     private boolean inited;
+    private final SystemEngine systemEngine;
 
-    public ServerGameEngine() {
+    public ServerSystemGameEngine(SystemEngine systemEngine) {
+        this.systemEngine = systemEngine;
         capacityControllers = new ArrayList<CapacityController>();
         contactDetectorMap = new HashMap<Component, ContactDetectorController>();
         framerate = new Duration(15000000);
@@ -83,7 +47,7 @@ public class ServerGameEngine extends FramerateEngine {
     }
 
     @Override
-    protected void processEvent(EngineEvent e) {
+    protected void processEvent(SystemEvent e) {
         e.accept(new GameEngineEventVisitor());
     }
 
@@ -101,7 +65,7 @@ public class ServerGameEngine extends FramerateEngine {
 
         // Interrest
         if (lastInterrestTime.durationTo(currentTime).longer(interrestInterval)) {
-            for (Player player : Game.getInstance().getWorld().getPlayers()) {
+            for (Player player : systemEngine.getWorld().getPlayers()) {
                 // 1% per minute
                 player.giveInterrest(player.getMoney() * 0.01 / 6);
             }
@@ -204,24 +168,24 @@ public class ServerGameEngine extends FramerateEngine {
 //
 //            }
         }
-
-        if (stillPlaying) {
-            // Next Wave
-            if (currentTime.after(nextWaveTime)) {
-                nextWave();
-                beginWaveTime = currentTime;
-
-            }
-        }
-
-        if (stillPlaying) {
-            currentWave.update(beginWaveTime.durationTo(currentTime));
-        }
+//
+//        if (stillPlaying) {
+//            // Next Wave
+//            if (currentTime.after(nextWaveTime)) {
+//                nextWave();
+//                beginWaveTime = currentTime;
+//
+//            }
+//        }
+//
+//        if (stillPlaying) {
+//            currentWave.update(beginWaveTime.durationTo(currentTime));
+//        }
 
     }
 
     private int distachRevenue(int amount) {
-        List<Player> players = Game.getInstance().getWorld().getPlayers();
+        List<Player> players = systemEngine.getWorld().getPlayers();
 
         // Be generious, round to ceil
         int amountPerPlayer = (int) Math.ceil((float) amount / (float) players.size());
@@ -232,119 +196,119 @@ public class ServerGameEngine extends FramerateEngine {
         return amountPerPlayer * players.size();
     }
 
-    private final class GameEngineEventVisitor extends DefaultEngineEventVisitor {
+    private final class GameEngineEventVisitor extends DefaultSystemEventVisitor {
 
-        @Override
-        public void visit(QuitGameEvent event) {
-            System.out.println("stopping game engine");
-            setRunning(false);
-        }
-
-        @Override
-        public void visit(AddWorldObjectEvent event) {
-            Component o = null;
-
-            switch (event.getType()) {
-                case CAMERA:
-                    o = new Component(GameServer.pickNewId(), "camera");
-                    break;
-                case LINEAR_ENGINE:
-                    o = new Component(GameServer.pickNewId(), "camera");
-                    break;
-            }
-
-            if (event.getPosition() != null) {
-                o.changeTranslation(event.getPosition());
-            }
-
-            /*
-             * if(event.getRotation() != null) {
-             * o.getRotation().set(event.getRotation()); }
-             */
-
-            if (event.getLinearSpeed() != null) {
-                o.changeLinearSpeed(event.getLinearSpeed());
-            }
-
-            if (event.getRotationSpeed() != null) {
-                o.changeRotationSpeed(event.getRotationSpeed());
-            }
-
-            o.setName(event.getName());
-
-            // Game.getInstance().getWorld().addObject(o);
-        }
-
-        @Override
-        public void visit(WorldShipAddedEvent event) {
-
-        }
-
-        @Override
-        public void visit(ComponentAddedEvent event) {
-
-            Component component = event.getComponent();
-            for (Capacity capacity : component.getCapacities()) {
-                if (capacity instanceof LinearEngineCapacity) {
-                    addCapacityController(new LinearEngineController(component, (LinearEngineCapacity) capacity));
-                }
-                if (capacity instanceof BalisticWeaponCapacity) {
-                    if (capacity.getName().equals("gun")) {
-                        addCapacityController(new GunController(component, (BalisticWeaponCapacity) capacity));
-                    } else if (capacity.getName().equals("shotgun")) {
-                        addCapacityController(new ShotgunController(component, (BalisticWeaponCapacity) capacity));
-                    }
-                } else if (capacity instanceof RocketWeaponCapacity) {
-                    if (capacity.getName().equals("rocketpod")) {
-                        addCapacityController(new RocketPodController(component, (RocketWeaponCapacity) capacity));
-                    }
-                } else if (capacity instanceof ExplosiveCapacity) {
-                    addCapacityController(new ExplosiveCapacityController(component, (ExplosiveCapacity) capacity));
-                } else if (capacity instanceof ContactDetectorCapacity) {
-                    ContactDetectorController contactDetectorController = new ContactDetectorController(component, (ContactDetectorCapacity) capacity);
-                    contactDetectorMap.put(component, contactDetectorController);
-                    addCapacityController(contactDetectorController);
-                } else if (capacity instanceof RocketCapacity) {
-                    addCapacityController(new RocketController(component, (RocketCapacity) capacity));
-                }
-            }
-            UpgradeFactory.refresh(component.getShip().getOwner());
-        }
-
-        @Override
-        public void visit(ComponentRemovedEvent event) {
-            for (Iterator<CapacityController> iterator = capacityControllers.iterator(); iterator.hasNext();) {
-                CapacityController capacityController = iterator.next();
-                if (capacityController.getComponent() == event.getComponent()) {
-                    iterator.remove();
-                }
-                if (capacityController instanceof ContactDetectorController) {
-                    ContactDetectorController contactController = (ContactDetectorController) capacityController;
-                    contactDetectorMap.remove(contactController);
-                }
-
-            }
-
-            Loot loot = CelestialObjectFactory.createLoot(event.getComponent().getFirstPart().getMass().intValue());
-            loot.getFirstPart().getLinearSpeed().set(event.getComponent().getFirstPart().getLinearSpeed());
-            loot.getFirstPart().getTransform().setTranslation(event.getComponent().getFirstPart().getTransform().getTranslation());
-//            Game.getInstance().getWorld().addCelestialObject(loot);
-            
-            // Update attache state
-            AttachChecker checker = new AttachChecker(event.getShip());
-            checker.check();
-            
-        }
-
-        @Override
-        public void visit(StartEngineEvent event) {
-            pause(false);
-        }
-
-        @Override
-        public void visit(PauseEngineEvent event) {
-            pause(true);
-        }
+//        @Override
+//        public void visit(QuitGameEvent event) {
+//            System.out.println("stopping game engine");
+//            setRunning(false);
+//        }
+//
+//        @Override
+//        public void visit(AddWorldObjectEvent event) {
+//            Component o = null;
+//
+//            switch (event.getType()) {
+//                case CAMERA:
+//                    o = new Component(GameServer.pickNewId(), "camera");
+//                    break;
+//                case LINEAR_ENGINE:
+//                    o = new Component(GameServer.pickNewId(), "camera");
+//                    break;
+//            }
+//
+//            if (event.getPosition() != null) {
+//                o.changeTranslation(event.getPosition());
+//            }
+//
+//            /*
+//             * if(event.getRotation() != null) {
+//             * o.getRotation().set(event.getRotation()); }
+//             */
+//
+//            if (event.getLinearSpeed() != null) {
+//                o.changeLinearSpeed(event.getLinearSpeed());
+//            }
+//
+//            if (event.getRotationSpeed() != null) {
+//                o.changeRotationSpeed(event.getRotationSpeed());
+//            }
+//
+//            o.setName(event.getName());
+//
+//            // Game.getInstance().getWorld().addObject(o);
+//        }
+//
+//        @Override
+//        public void visit(WorldShipAddedEvent event) {
+//
+//        }
+//
+//        @Override
+//        public void visit(ComponentAddedEvent event) {
+//
+//            Component component = event.getComponent();
+//            for (Capacity capacity : component.getCapacities()) {
+//                if (capacity instanceof LinearEngineCapacity) {
+//                    addCapacityController(new LinearEngineController(component, (LinearEngineCapacity) capacity));
+//                }
+//                if (capacity instanceof BalisticWeaponCapacity) {
+//                    if (capacity.getName().equals("gun")) {
+//                        addCapacityController(new GunController(component, (BalisticWeaponCapacity) capacity));
+//                    } else if (capacity.getName().equals("shotgun")) {
+//                        addCapacityController(new ShotgunController(component, (BalisticWeaponCapacity) capacity));
+//                    }
+//                } else if (capacity instanceof RocketWeaponCapacity) {
+//                    if (capacity.getName().equals("rocketpod")) {
+//                        addCapacityController(new RocketPodController(component, (RocketWeaponCapacity) capacity));
+//                    }
+//                } else if (capacity instanceof ExplosiveCapacity) {
+//                    addCapacityController(new ExplosiveCapacityController(component, (ExplosiveCapacity) capacity));
+//                } else if (capacity instanceof ContactDetectorCapacity) {
+//                    ContactDetectorController contactDetectorController = new ContactDetectorController(component, (ContactDetectorCapacity) capacity);
+//                    contactDetectorMap.put(component, contactDetectorController);
+//                    addCapacityController(contactDetectorController);
+//                } else if (capacity instanceof RocketCapacity) {
+//                    addCapacityController(new RocketController(component, (RocketCapacity) capacity));
+//                }
+//            }
+//            UpgradeFactory.refresh(component.getShip().getOwner());
+//        }
+//
+//        @Override
+//        public void visit(ComponentRemovedEvent event) {
+//            for (Iterator<CapacityController> iterator = capacityControllers.iterator(); iterator.hasNext();) {
+//                CapacityController capacityController = iterator.next();
+//                if (capacityController.getComponent() == event.getComponent()) {
+//                    iterator.remove();
+//                }
+//                if (capacityController instanceof ContactDetectorController) {
+//                    ContactDetectorController contactController = (ContactDetectorController) capacityController;
+//                    contactDetectorMap.remove(contactController);
+//                }
+//
+//            }
+//
+//            Loot loot = CelestialObjectFactory.createLoot(event.getComponent().getFirstPart().getMass().intValue());
+//            loot.getFirstPart().getLinearSpeed().set(event.getComponent().getFirstPart().getLinearSpeed());
+//            loot.getFirstPart().getTransform().setTranslation(event.getComponent().getFirstPart().getTransform().getTranslation());
+////            Game.getInstance().getWorld().addCelestialObject(loot);
+//            
+//            // Update attache state
+//            AttachChecker checker = new AttachChecker(event.getShip());
+//            checker.check();
+//            
+//        }
+//
+//        @Override
+//        public void visit(StartEngineEvent event) {
+//            pause(false);
+//        }
+//
+//        @Override
+//        public void visit(PauseEngineEvent event) {
+//            pause(true);
+//        }
 
 //        @Override
 //        public void visit(CollisionEvent event) {
@@ -378,88 +342,88 @@ public class ServerGameEngine extends FramerateEngine {
 //            }
 //        }
 
-        @Override
-        public void visit(RocketFiredEvent event) {
-            Ship rocket = ShipFactory.createRocket(event.getRocket(), event.getInitialSpeed(), ((Component)event.getSource().getParentObject()).getShip());
-
-            rocket.getComponentByName("kernel").getFirstPart().addCollisionExclusion(event.getSource());
-            
-            TransformMatrix transformMatrix = new TransformMatrix(event.getFrom());
-            
-            
-            event.getSource().getParentObject().getSystem().addShip(rocket, transformMatrix);
-        }
-
-        @Override
-        public void visit(CelestialObjectRemovedEvent event) {
-            if (event.getObject() instanceof Monolith) {
-                Game.getInstance().sendToAll(new GameOverEvent("The monolith is destroyed"));
-            } else if (event.getObject() instanceof Asteroid) {
-//                Loot loot = CelestialObjectFactory.createLoot(25);
-//                loot.getFirstPart().getLinearSpeed().set(event.getObject().getFirstPart().getLinearSpeed());
-//                loot.getFirstPart().getTransform().setTranslation(event.getObject().getFirstPart().getTransform().getTranslation());
-//                Game.getInstance().getWorld().addCelestialObject(loot);
-            }
-        }
-
-        @Override
-        public void visit(WorldReadyEvent event) {
-            createWaves();
-            inited = true;
-        }
-
-        @Override
-        public void visit(BuyUpgradeRequestEvent event) {
-
-            int currentRank = 0;
-
-            UpgradeOwnership playerUpgrade = event.getPlayer().getUpgradeState(event.getUpgrade());
-            currentRank = playerUpgrade.getRank();
-
-            // Check max rank
-            if (currentRank >= event.getUpgrade().getMaxRank()) {
-                return;
-            }
-
-            // Check cost
-            if (event.getPlayer().getMoney() < event.getUpgrade().getPrices().get(currentRank)) {
-                return;
-            }
-
-            event.getPlayer().retireMoney(event.getUpgrade().getPrices().get(currentRank));
-            playerUpgrade.setRank(currentRank + 1);
-            Game.getInstance().sendToAll(new UpgradeStateChanged(playerUpgrade, event.getPlayer()));
-            UpgradeFactory.refresh(event.getPlayer());
-        }
-
-        @Override
-        public void visit(SellUpgradeRequestEvent event) {
-
-            int currentRank = 0;
-
-            UpgradeOwnership playerUpgrade = event.getPlayer().getUpgradeState(event.getUpgrade());
-            currentRank = playerUpgrade.getRank();
-
-            // Check min rank
-            if (currentRank <= 0) {
-                return;
-            }
-
-            event.getPlayer().giveMoney(event.getUpgrade().getPrices().get(currentRank - 1));
-            playerUpgrade.setRank(currentRank - 1);
-            Game.getInstance().sendToAll(new UpgradeStateChanged(playerUpgrade, event.getPlayer()));
-            UpgradeFactory.refresh(event.getPlayer());
-        }
-
-        @Override
-        public void visit(InventoryChangedEvent event) {
-            UpgradeFactory.refresh(event.getPlayer());
-        }
-
-        @Override
-        public void visit(GameOverEvent event) {
-            Game.getInstance().gameOver();
-        }
+//        @Override
+//        public void visit(RocketFiredEvent event) {
+//            Ship rocket = ShipFactory.createRocket(event.getRocket(), event.getInitialSpeed(), ((Component)event.getSource().getParentObject()).getShip());
+//
+//            rocket.getComponentByName("kernel").getFirstPart().addCollisionExclusion(event.getSource());
+//            
+//            TransformMatrix transformMatrix = new TransformMatrix(event.getFrom());
+//            
+//            
+//            event.getSource().getParentObject().getSystem().addShip(rocket, transformMatrix);
+//        }
+//
+//        @Override
+//        public void visit(CelestialObjectRemovedEvent event) {
+//            if (event.getObject() instanceof Monolith) {
+//                Game.getInstance().sendToAll(new GameOverEvent("The monolith is destroyed"));
+//            } else if (event.getObject() instanceof Asteroid) {
+////                Loot loot = CelestialObjectFactory.createLoot(25);
+////                loot.getFirstPart().getLinearSpeed().set(event.getObject().getFirstPart().getLinearSpeed());
+////                loot.getFirstPart().getTransform().setTranslation(event.getObject().getFirstPart().getTransform().getTranslation());
+////                Game.getInstance().getWorld().addCelestialObject(loot);
+//            }
+//        }
+//
+//        @Override
+//        public void visit(WorldReadyEvent event) {
+//            createWaves();
+//            inited = true;
+//        }
+//
+//        @Override
+//        public void visit(BuyUpgradeRequestEvent event) {
+//
+//            int currentRank = 0;
+//
+//            UpgradeOwnership playerUpgrade = event.getPlayer().getUpgradeState(event.getUpgrade());
+//            currentRank = playerUpgrade.getRank();
+//
+//            // Check max rank
+//            if (currentRank >= event.getUpgrade().getMaxRank()) {
+//                return;
+//            }
+//
+//            // Check cost
+//            if (event.getPlayer().getMoney() < event.getUpgrade().getPrices().get(currentRank)) {
+//                return;
+//            }
+//
+//            event.getPlayer().retireMoney(event.getUpgrade().getPrices().get(currentRank));
+//            playerUpgrade.setRank(currentRank + 1);
+//            Game.getInstance().sendToAll(new UpgradeStateChanged(playerUpgrade, event.getPlayer()));
+//            UpgradeFactory.refresh(event.getPlayer());
+//        }
+//
+//        @Override
+//        public void visit(SellUpgradeRequestEvent event) {
+//
+//            int currentRank = 0;
+//
+//            UpgradeOwnership playerUpgrade = event.getPlayer().getUpgradeState(event.getUpgrade());
+//            currentRank = playerUpgrade.getRank();
+//
+//            // Check min rank
+//            if (currentRank <= 0) {
+//                return;
+//            }
+//
+//            event.getPlayer().giveMoney(event.getUpgrade().getPrices().get(currentRank - 1));
+//            playerUpgrade.setRank(currentRank - 1);
+//            Game.getInstance().sendToAll(new UpgradeStateChanged(playerUpgrade, event.getPlayer()));
+//            UpgradeFactory.refresh(event.getPlayer());
+//        }
+//
+//        @Override
+//        public void visit(InventoryChangedEvent event) {
+//            UpgradeFactory.refresh(event.getPlayer());
+//        }
+//
+//        @Override
+//        public void visit(GameOverEvent event) {
+////            Game.getInstance().gameOver();
+//        }
 
 //        @Override
 //        public void visit(ExplosionFiredEvent event) {
@@ -558,7 +522,7 @@ public class ServerGameEngine extends FramerateEngine {
 //    }
 
     private void impulse(Part part, double energy, Vec3 localPosition, Vec3 axis) {
-        Game.getInstance().getPhysicEngine().impulse(part, energy, localPosition, axis);
+        systemEngine.getPhysicEngine().impulse(part, energy, localPosition, axis);
     }
 
     private void addCapacityController(CapacityController controller) {
@@ -575,25 +539,25 @@ public class ServerGameEngine extends FramerateEngine {
 
     }
 
-    void createWaves() {
-        // Create waves
-//        new WaveFactory().createWaves(waveQueue);
-        nextWaveTime = Time.now(true);
-
-        nextWave();
-    }
-
-    private void nextWave() {
-        currentWave = waveQueue.poll();
-        if (currentWave == null) {
-            stillPlaying = false;
-            Game.getInstance().sendToAll(new GameOverEvent("You win !"));
-            return;
-        }
-        Game.getInstance().sendToAll(new NextWaveEvent(currentWave.getId(), currentWave.getDuration(), currentWave.getActiveDuration()));
-        beginWaveTime = nextWaveTime;
-        nextWaveTime = Time.now(true).add(currentWave.getDuration());
-    }
+//    void createWaves() {
+//        // Create waves
+////        new WaveFactory().createWaves(waveQueue);
+//        nextWaveTime = Time.now(true);
+//
+//        nextWave();
+//    }
+//
+//    private void nextWave() {
+//        currentWave = waveQueue.poll();
+//        if (currentWave == null) {
+//            stillPlaying = false;
+//            systemEngine.sendToAll(new GameOverEvent("You win !"));
+//            return;
+//        }
+//        systemEngine.sendToAll(new NextWaveEvent(currentWave.getId(), currentWave.getDuration(), currentWave.getActiveDuration()));
+//        beginWaveTime = nextWaveTime;
+//        nextWaveTime = Time.now(true).add(currentWave.getDuration());
+//    }
 
     private void initWorld() {
         Monolith monolith = new Monolith(GameServer.pickNewId(), "monolith");

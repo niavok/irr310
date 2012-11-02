@@ -9,7 +9,6 @@ import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.common.world.capacity.RocketCapacity;
 import com.irr310.common.world.capacity.RocketWeaponCapacity;
 import com.irr310.common.world.capacity.WingCapacity;
-import com.irr310.common.world.item.ItemOld;
 import com.irr310.common.world.system.Component;
 import com.irr310.common.world.system.Part;
 import com.irr310.common.world.system.RocketDescriptor;
@@ -408,16 +407,16 @@ public class ComponentFactory {
 
     }
 
-    public static Component createByItem(ItemOld content) {
-        if (content.getName().equals("weapon.gun")) {
-            return createGun("weapon.gun", "gun", content.getOwner());
-        } else if (content.getName().equals("weapon.shotgun")) {
-            return createGun("weapon.gun", "shotgun", content.getOwner());
-        } else if (content.getName().equals("weapon.rocketpod")) {
-            return createGun("weapon.gun", "rocketpod", content.getOwner());
-        }
-        
-        throw new RuntimeException("No component found to " + content.getName());
-    }
+//    public static Component createByItem(ItemOld content) {
+//        if (content.getName().equals("weapon.gun")) {
+//            return createGun("weapon.gun", "gun", content.getOwner());
+//        } else if (content.getName().equals("weapon.shotgun")) {
+//            return createGun("weapon.gun", "shotgun", content.getOwner());
+//        } else if (content.getName().equals("weapon.rocketpod")) {
+//            return createGun("weapon.gun", "rocketpod", content.getOwner());
+//        }
+//        
+//        throw new RuntimeException("No component found to " + content.getName());
+//    }
 
 }

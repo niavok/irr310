@@ -36,8 +36,6 @@ import org.fenggui.layout.StaticLayout;
 import org.fenggui.util.Alphabet;
 import org.fenggui.util.fonttoolkit.FontFactory;
 
-import com.irr310.common.tools.Log;
-
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
 

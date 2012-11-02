@@ -3,7 +3,6 @@ package com.irr310.client.network;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.irr310.common.event.NetworkEvent;
 import com.irr310.common.network.MessageParser;
 import com.irr310.common.network.NetworkMessage;
 
@@ -16,7 +15,7 @@ public class ClientNetworkWorker implements Runnable {
 
             @Override
             public void processMessage(NetworkMessage message) {
-                engine.pushEvent(new NetworkEvent(message, null));
+//                engine.pushEvent(new NetworkEvent(message, null));
             }
         };
 

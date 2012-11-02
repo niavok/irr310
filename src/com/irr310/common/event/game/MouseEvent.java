@@ -1,9 +1,9 @@
-package com.irr310.common.event;
+package com.irr310.common.event.game;
 
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 
 
-public class MouseEvent extends EngineEvent {
+public class MouseEvent extends GameEvent {
 
 
     private final V3DMouseEvent mouseEvent;
@@ -13,7 +13,7 @@ public class MouseEvent extends EngineEvent {
     }
 
     @Override
-    public void accept(EngineEventVisitor visitor) {
+    public void accept(GameEventVisitor visitor) {
         visitor.visit(this);
     }
 

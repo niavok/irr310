@@ -1,18 +1,12 @@
 package com.irr310.client.graphics.fragments;
 
-import java.util.List;
-
 import org.fenggui.event.mouse.MouseAdapter;
-import org.fenggui.event.mouse.MouseButton;
 import org.fenggui.event.mouse.MouseClickedEvent;
 import org.fenggui.event.mouse.MouseEnteredEvent;
 import org.fenggui.event.mouse.MouseExitedEvent;
 
 import com.irr310.client.graphics.UiEngine;
 import com.irr310.client.navigation.LoginManager;
-import com.irr310.common.Game;
-import com.irr310.common.event.BuyUpgradeRequestEvent;
-import com.irr310.common.event.SellUpgradeRequestEvent;
 import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.common.world.upgrade.Upgrade.UpgradeCategory;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
@@ -44,27 +38,27 @@ public class ClassicalUpgradeTab extends UpgradeTab{
     }
 
     private void generate() {
-        List<Upgrade> availableUpgrades = Game.getInstance().getWorld().getAvailableUpgrades();
-        
-        int y = 10;
-        int x = 10;
-        int blockWidth = 70;
-        int blockHeight = 70;
-        
-        for(Upgrade upgrade: availableUpgrades) {
-            
-            if(upgrade.getCategory() != categorie) {
-                continue;
-            }
-            V3DGuiComponent upgradePane = generateUpgradePane(upgrade);
-            upgradePane.setPosition(x, y);
-            root.add(upgradePane);
-            x += blockWidth;
-            if(x + blockWidth >  width  ) {
-               x = 10;
-               y += blockHeight;
-            } 
-        }
+//        List<Upgrade> availableUpgrades = Game.getInstance().getWorld().getAvailableUpgrades();
+//        
+//        int y = 10;
+//        int x = 10;
+//        int blockWidth = 70;
+//        int blockHeight = 70;
+//        
+//        for(Upgrade upgrade: availableUpgrades) {
+//            
+//            if(upgrade.getCategory() != categorie) {
+//                continue;
+//            }
+//            V3DGuiComponent upgradePane = generateUpgradePane(upgrade);
+//            upgradePane.setPosition(x, y);
+//            root.add(upgradePane);
+//            x += blockWidth;
+//            if(x + blockWidth >  width  ) {
+//               x = 10;
+//               y += blockHeight;
+//            } 
+//        }
     }
     
     private V3DGuiComponent generateUpgradePane(final Upgrade upgrade) {
@@ -109,11 +103,11 @@ public class ClassicalUpgradeTab extends UpgradeTab{
             @Override
             public void mouseClicked(MouseClickedEvent mouseClickedEvent) {
                 
-                if(mouseClickedEvent.getButton() == MouseButton.LEFT) {
-                    Game.getInstance().sendToAll(new BuyUpgradeRequestEvent(upgrade, LoginManager.localPlayer));
-                } else if (mouseClickedEvent.getButton() == MouseButton.RIGHT) {
-                    Game.getInstance().sendToAll(new SellUpgradeRequestEvent(upgrade, LoginManager.localPlayer));    
-                }
+//                if(mouseClickedEvent.getButton() == MouseButton.LEFT) {
+//                    Game.getInstance().sendToAll(new BuyUpgradeRequestEvent(upgrade, LoginManager.localPlayer));
+//                } else if (mouseClickedEvent.getButton() == MouseButton.RIGHT) {
+//                    Game.getInstance().sendToAll(new SellUpgradeRequestEvent(upgrade, LoginManager.localPlayer));    
+//                }
             }
             
             @Override

@@ -70,7 +70,7 @@ public class UpgradeFactory {
 
     private static void addUpgrade(UpgradeEffect upgradeEffect) {
         Upgrade upgrade = upgradeEffect.generateUpgrade();
-        Game.getInstance().getWorld().addUpgrade(upgrade);
+//        Game.getInstance().getWorld().addUpgrade(upgrade);
         effectMap.put(upgrade.getTag(), upgradeEffect);
 
     }
@@ -83,9 +83,9 @@ public class UpgradeFactory {
 
     public static void refresh(Player player) {
         initWorldUpgradables(player);
-        for (Upgrade upgrade : Game.getInstance().getWorld().getAvailableUpgrades()) {
-            apply(player.getUpgradeState(upgrade));
-        }
+//        for (Upgrade upgrade : Game.getInstance().getWorld().getAvailableUpgrades()) {
+//            apply(player.getUpgradeState(upgrade));
+//        }
 
     }
 
@@ -142,8 +142,8 @@ public class UpgradeFactory {
     }
 
     public static void refresh() {
-        for (Player player : Game.getInstance().getWorld().getPlayers()) {
-            refresh(player);
-        }
+//        for (Player player : Game.getInstance().getWorld().getPlayers()) {
+//            refresh(player);
+//        }
     }
 }

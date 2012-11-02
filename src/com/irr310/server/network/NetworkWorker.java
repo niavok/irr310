@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import com.irr310.common.event.NetworkEvent;
 import com.irr310.common.network.MessageParser;
 import com.irr310.common.network.NetworkClient;
 import com.irr310.common.network.NetworkMessage;
@@ -65,7 +64,7 @@ public class NetworkWorker implements Runnable {
              
             @Override
             public void processMessage(NetworkMessage message) {
-                client.getEngine().pushEvent(new NetworkEvent(message, client));
+//                client.getEngine().pushEvent(new NetworkEvent(message, client));
             }
             
         }); 

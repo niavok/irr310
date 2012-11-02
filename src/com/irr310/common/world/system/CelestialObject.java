@@ -35,7 +35,6 @@ public class  CelestialObject extends WorldObject {
     }
 
     public void fromView(CelestialObjectView celestialObjectView) {
-        World world = Game.getInstance().getWorld();
 
         // World objectProperties
         setSkin(celestialObjectView.skin);

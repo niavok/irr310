@@ -1,16 +1,11 @@
 package com.irr310.client.graphics.fragments;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.fenggui.event.ButtonPressedEvent;
-import org.fenggui.event.IButtonPressedListener;
 
 import com.irr310.client.graphics.MenuContainer;
 import com.irr310.client.graphics.UiEngine;
 import com.irr310.client.navigation.LoginManager;
-import com.irr310.common.world.item.ItemOld;
 import com.irr310.common.world.item.ItemSlot;
 import com.irr310.common.world.item.ShipSchema;
 
@@ -19,17 +14,16 @@ import fr.def.iss.vd2.lib_v3d.gui.V3DButton;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiCircle;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiRectangle;
-import fr.def.iss.vd2.lib_v3d.gui.V3DGuiSprite;
 
 public class InventoryMenu extends MenuContainer {
 
-    protected static ItemOld activeItem;
+//    protected static ItemOld activeItem;
     private final UiEngine engine;
     private final List<V3DGuiComponent> dynamicComponents = new ArrayList<V3DGuiComponent>();
 
     public InventoryMenu(UiEngine engine) {
         this.engine = engine;
-        activeItem = null;
+//        activeItem = null;
         setPosition(-2, 123);
         setSize(500, 600);
         setyAlignment(GuiYAlignment.BOTTOM);
@@ -163,41 +157,41 @@ public class InventoryMenu extends MenuContainer {
         
         int xInventoryOffset = 5;
         
-        for (final ItemOld item : LoginManager.getLocalPlayer().getInventory()) {
-            if(item.isUsed()) {
-                continue;
-            }
-            String path = item.getName().replace(".", "-");
-            try {
-                
-                V3DGuiSprite icon = new V3DGuiSprite(engine.getV3DContext(),"graphics/icons/"+path+"_item_icon_64.png");
-                icon.setPosition(xInventoryOffset, 500);
-                icon.setSize(64,64);
-                add(icon);
-                
-                dynamicComponents.add(icon);
-                
-                V3DButton button = new V3DButton("");
-                button.setPadding(64, 64, 0, 0);
-                button.setPosition(xInventoryOffset, 500);
-                button.getFenGUIWidget().addButtonPressedListener(new IButtonPressedListener() {
-                    
-                    @Override
-                    public void buttonPressed(ButtonPressedEvent e) {
-                        InventoryMenu.activeItem = item;
-                    }
-                });
-                add(button);
-                dynamicComponents.add(button);
-                
-                xInventoryOffset += 70;
-                
-                
-            } catch (IOException e) {
-                System.err.println("Fail to load sprite: graphics/icons/"+path+"_item_icon_64.png");
-            }
-            
-        }
+//        for (final ItemOld item : LoginManager.getLocalPlayer().getInventory()) {
+//            if(item.isUsed()) {
+//                continue;
+//            }
+//            String path = item.getName().replace(".", "-");
+//            try {
+//                
+//                V3DGuiSprite icon = new V3DGuiSprite(engine.getV3DContext(),"graphics/icons/"+path+"_item_icon_64.png");
+//                icon.setPosition(xInventoryOffset, 500);
+//                icon.setSize(64,64);
+//                add(icon);
+//                
+//                dynamicComponents.add(icon);
+//                
+//                V3DButton button = new V3DButton("");
+//                button.setPadding(64, 64, 0, 0);
+//                button.setPosition(xInventoryOffset, 500);
+//                button.getFenGUIWidget().addButtonPressedListener(new IButtonPressedListener() {
+//                    
+//                    @Override
+//                    public void buttonPressed(ButtonPressedEvent e) {
+//                        InventoryMenu.activeItem = item;
+//                    }
+//                });
+//                add(button);
+//                dynamicComponents.add(button);
+//                
+//                xInventoryOffset += 70;
+//                
+//                
+//            } catch (IOException e) {
+//                System.err.println("Fail to load sprite: graphics/icons/"+path+"_item_icon_64.png");
+//            }
+//            
+//        }
         
         for (ItemSlot itemSlot : shipSchema.getItemSlots()) {
             addSlotContent(itemSlot);
@@ -220,37 +214,37 @@ public class InventoryMenu extends MenuContainer {
         V3DButton button = new V3DButton("");
         button.setPadding((int)scale-3,(int)scale-3, 0, 0);
         button.setPosition(x2, y2);
-        button.getFenGUIWidget().addButtonPressedListener(new IButtonPressedListener() {
-            
-            @Override
-            public void buttonPressed(ButtonPressedEvent e) {
-                ItemOld lastItem = itemSlot.getContent();
-                itemSlot.setContent(InventoryMenu.activeItem);
-                InventoryMenu.activeItem = null;
-                System.err.println("setContent");
-            }
-        });
+//        button.getFenGUIWidget().addButtonPressedListener(new IButtonPressedListener() {
+//            
+//            @Override
+//            public void buttonPressed(ButtonPressedEvent e) {
+//                ItemOld lastItem = itemSlot.getContent();
+//                itemSlot.setContent(InventoryMenu.activeItem);
+//                InventoryMenu.activeItem = null;
+//                System.err.println("setContent");
+//            }
+//        });
         add(button);
     }
     private void addSlotContent(ItemSlot itemSlot) {  
-        if(!itemSlot.isEmpty()) {
-            ItemOld item = itemSlot.getContent();
+//        if(!itemSlot.isEmpty()) {
+//            ItemOld item = itemSlot.getContent();
             double scale = 41;
             int x2 = (int) (250-(int) (scale/2)+scale*itemSlot.getPosition().x);
             int y2 = 250-(int) (scale/2)+ (int)(scale * -1 * itemSlot.getPosition().z);
-            String path = item.getName().replace(".", "-");
-            try {
-                V3DGuiSprite icon = new V3DGuiSprite(engine.getV3DContext(),"graphics/icons/"+path+"_item_icon_64.png");
-                icon.setPosition(x2+1, y2+1);
-                icon.setSize((int)scale-4,(int)scale-4);
-                add(icon);
-                dynamicComponents.add(icon);
-                
-            } catch (IOException e) {
-                System.err.println("Fail to load sprite: graphics/icons/"+path+"_item_icon_64.png");
-            }
-            
-        }
+//            String path = item.getName().replace(".", "-");
+//            try {
+//                V3DGuiSprite icon = new V3DGuiSprite(engine.getV3DContext(),"graphics/icons/"+path+"_item_icon_64.png");
+//                icon.setPosition(x2+1, y2+1);
+//                icon.setSize((int)scale-4,(int)scale-4);
+//                add(icon);
+//                dynamicComponents.add(icon);
+//                
+//            } catch (IOException e) {
+//                System.err.println("Fail to load sprite: graphics/icons/"+path+"_item_icon_64.png");
+//            }
+//            
+//        }
     }
 
     @Override
@@ -261,7 +255,7 @@ public class InventoryMenu extends MenuContainer {
         }
         dynamicComponents.clear();
         generateInventory();
-        InventoryMenu.activeItem = null;
+//        InventoryMenu.activeItem = null;
     }
 
 }

@@ -1,11 +1,9 @@
 package com.irr310.server.upgrade;
 
 import com.irr310.common.world.Player;
-import com.irr310.common.world.item.ItemOld;
 import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.common.world.upgrade.Upgrade.UpgradeCategory;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
-import com.irr310.server.GameServer;
 
 public class WeaponShotgunEffect extends UpgradeEffect {
 
@@ -14,24 +12,24 @@ public class WeaponShotgunEffect extends UpgradeEffect {
     public void apply(UpgradeOwnership playerUpgrade) {
         Player player = playerUpgrade.getPlayer();
         int currentWeaponCount = 0;
-        for(ItemOld item: player.getInventory()) {
-            if(item.getName().equals("weapon.shotgun")) {
-                currentWeaponCount ++;
-            }
-        }
-
-        if(currentWeaponCount > playerUpgrade.getRank()) {
-            while(currentWeaponCount > playerUpgrade.getRank()){
-                player.removeItemByName("weapon.shotgun");
-                currentWeaponCount--;
-            }
-                
-        } else {
-            while(currentWeaponCount < playerUpgrade.getRank()){
-                player.giveItem(new ItemOld(GameServer.pickNewId(), "weapon.shotgun",player));
-                currentWeaponCount++;
-            }
-        }
+//        for(ItemOld item: player.getInventory()) {
+//            if(item.getName().equals("weapon.shotgun")) {
+//                currentWeaponCount ++;
+//            }
+//        }
+//
+//        if(currentWeaponCount > playerUpgrade.getRank()) {
+//            while(currentWeaponCount > playerUpgrade.getRank()){
+//                player.removeItemByName("weapon.shotgun");
+//                currentWeaponCount--;
+//            }
+//                
+//        } else {
+//            while(currentWeaponCount < playerUpgrade.getRank()){
+//                player.giveItem(new ItemOld(GameServer.pickNewId(), "weapon.shotgun",player));
+//                currentWeaponCount++;
+//            }
+//        }
         
     }
 

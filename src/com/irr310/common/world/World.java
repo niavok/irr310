@@ -6,9 +6,6 @@ import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.ReentrantLock;
 
-import com.irr310.common.Game;
-import com.irr310.common.event.FactionAddedEvent;
-import com.irr310.common.event.PlayerAddedEvent;
 import com.irr310.common.world.item.Item;
 import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.common.world.view.PlayerView;
@@ -49,13 +46,13 @@ public class World {
     public void addPlayer(Player player) {
         players.add(player);
         playerIdMap.put(player.getId(), player);
-        Game.getInstance().sendToAll(new PlayerAddedEvent(player));
+//        Game.getInstance().sendToAll(new PlayerAddedEvent(player));
     }
 
     public void addFaction(Faction faction) {
         factions.add(faction);
         factionIdMap.put(faction.getId(), faction);
-        Game.getInstance().sendToAll(new FactionAddedEvent(faction));
+//        Game.getInstance().sendToAll(new FactionAddedEvent(faction));
     }
     
     public Player loadPlayer(PlayerView playerView) {

@@ -1,7 +1,8 @@
-package com.irr310.common.event;
+package com.irr310.common.event.game;
 
 
-public class KeyReleasedEvent extends EngineEvent {
+
+public class KeyReleasedEvent extends GameEvent {
 
     private final int keyCode;
     private final String character;
@@ -12,7 +13,7 @@ public class KeyReleasedEvent extends EngineEvent {
     }
 
     @Override
-    public void accept(EngineEventVisitor visitor) {
+    public void accept(GameEventVisitor visitor) {
         visitor.visit(this);
     }
 

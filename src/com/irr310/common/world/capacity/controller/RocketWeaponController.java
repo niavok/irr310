@@ -1,7 +1,5 @@
 package com.irr310.common.world.capacity.controller;
 
-import com.irr310.common.Game;
-import com.irr310.common.event.RocketFiredEvent;
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.world.capacity.RocketWeaponCapacity;
@@ -102,7 +100,7 @@ public abstract class RocketWeaponController extends CapacityController {
         transformMatrix.preMultiply(part.getTransform());
         Log.trace("fire barrel "+barrel+" at "+xoffset+"/"+yoffset);
         
-        Game.getInstance().sendToAll(new RocketFiredEvent(part, rocket , transformMatrix, part.getLinearSpeed()));
+//        Game.getInstance().sendToAll(new RocketFiredEvent(part, rocket , transformMatrix, part.getLinearSpeed()));
     }
 
     @Override

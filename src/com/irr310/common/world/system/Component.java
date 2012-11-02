@@ -201,7 +201,6 @@ public final class  Component extends WorldObject {
     }
 
     public void fromView(ComponentView componentView) {
-        World world = Game.getInstance().getWorld();
         shipPosition = componentView.shipPosition;
         shipRotation = componentView.shipRotation;
         quality = componentView.quality;

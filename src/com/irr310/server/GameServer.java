@@ -7,10 +7,8 @@ import java.util.Map;
 
 import com.irr310.common.Game;
 import com.irr310.common.engine.Engine;
-import com.irr310.common.engine.PhysicEngine;
 import com.irr310.common.event.EngineEvent;
-import com.irr310.common.event.QuitGameEvent;
-import com.irr310.common.event.StartEngineEvent;
+import com.irr310.common.event.game.QuitGameEvent;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.World;
 import com.irr310.server.ai.AIEngine;
@@ -38,7 +36,7 @@ public class GameServer extends Game {
 
     private static long nextId = 0;
 
-    private PhysicEngine physicEngine;
+//    private PhysicEngine physicEngine;
     private AIEngine aiEngine;
 
     public static synchronized long pickNewId() {
@@ -57,9 +55,9 @@ public class GameServer extends Game {
 
         world = new World();
 
-        engineList.add(new ServerGameEngine());
-        physicEngine = new PhysicEngine();
-        engineList.add(physicEngine);
+//        engineList.add(new ServerSystemGameEngine());
+//        physicEngine = new PhysicEngine();
+//        engineList.add(physicEngine);
         engineList.add(new ServerNetworkEngine());
         //engineList.add(new DebugGraphicEngine());
 
@@ -105,7 +103,7 @@ public class GameServer extends Game {
         // new Duration(100000000).sleep();
         // }
 
-        sendToAll(new StartEngineEvent());
+//        sendToAll(new StartEngineEvent());
         /*
          * AddShipEvent addShipEvent = new AddShipEvent();
          * addShipEvent.setType(AddShipEvent.Type.SIMPLE);
@@ -174,9 +172,9 @@ public class GameServer extends Game {
     }
 
     
-    public PhysicEngine getPhysicEngine() {
-        return physicEngine;
-    }
+//    public PhysicEngine getPhysicEngine() {
+//        return physicEngine;
+//    }
 
     public AIEngine getAIEngine() {
         return aiEngine;
@@ -185,12 +183,12 @@ public class GameServer extends Game {
     public Map<Integer, Player> getPlayerMap() {
         return playerMap;
     }
-
-    @Override
-    public void gameOver() {
-        // TODO Auto-generated method stub
-        
-    }
+//
+//    @Override
+//    public void gameOver() {
+//        // TODO Auto-generated method stub
+//        
+//    }
 
     
 }

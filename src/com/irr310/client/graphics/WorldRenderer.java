@@ -9,10 +9,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.fenggui.event.ButtonPressedEvent;
 import org.fenggui.event.IButtonPressedListener;
-import org.lwjgl.input.Keyboard;
 
 import com.irr310.client.graphics.effects.BulletEffect;
-import com.irr310.client.graphics.effects.ExplosionEffect;
 import com.irr310.client.graphics.fragments.GuiConstants;
 import com.irr310.client.graphics.fragments.InventoryMenu;
 import com.irr310.client.graphics.fragments.UpgradeMenu;
@@ -33,30 +31,12 @@ import com.irr310.client.graphics.skin.ThrusterBlockSkin;
 import com.irr310.client.graphics.skin.WeaponSkin;
 import com.irr310.client.graphics.skin.WingSkin;
 import com.irr310.client.navigation.LoginManager;
-import com.irr310.common.Game;
-import com.irr310.common.event.AddGuiComponentEvent;
-import com.irr310.common.event.BulletFiredEvent;
-import com.irr310.common.event.CelestialObjectAddedEvent;
-import com.irr310.common.event.CelestialObjectRemovedEvent;
-import com.irr310.common.event.CollisionEvent;
-import com.irr310.common.event.ComponentAddedEvent;
-import com.irr310.common.event.ComponentRemovedEvent;
-import com.irr310.common.event.DamageEvent;
-import com.irr310.common.event.DefaultEngineEventVisitor;
-import com.irr310.common.event.EngineEventVisitor;
-import com.irr310.common.event.ExplosionFiredEvent;
-import com.irr310.common.event.InventoryChangedEvent;
-import com.irr310.common.event.KeyPressedEvent;
-import com.irr310.common.event.MoneyChangedEvent;
-import com.irr310.common.event.NextWaveEvent;
-import com.irr310.common.event.RemoveGuiComponentEvent;
-import com.irr310.common.event.UpgradeStateChanged;
-import com.irr310.common.event.WorldShipAddedEvent;
+import com.irr310.common.event.system.DefaultSystemEventVisitor;
+import com.irr310.common.event.system.SystemEventVisitor;
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.system.CelestialObject;
 import com.irr310.common.world.system.Component;
-import com.irr310.common.world.system.DamageDescriptor.DamageCause;
 import com.irr310.common.world.system.Monolith;
 import com.irr310.common.world.system.Ship;
 import com.irr310.common.world.system.WorldObject;
@@ -113,7 +93,6 @@ public class WorldRenderer implements GraphicRenderer {
 
     // Game
     private V3DLabel waveCountText;
-    private NextWaveEvent lastWaveEvent = null;
     private Monolith monolith;
     private V3DGuiRectangle monolithStatus;
     private V3DLabel monolithStatusText;
@@ -450,7 +429,7 @@ public class WorldRenderer implements GraphicRenderer {
         upgradeBase.setBorderColor(GuiConstants.irrRed);
         container.add(upgradeBase);
 
-        waveCountText = new V3DLabel("Wave " + (lastWaveEvent == null ? "--" : lastWaveEvent.getWaveId()));
+//        waveCountText = new V3DLabel("Wave " + (lastWaveEvent == null ? "--" : lastWaveEvent.getWaveId()));
         waveCountText.setyAlignment(GuiYAlignment.BOTTOM);
         waveCountText.setPosition(25, 32);
         waveCountText.setFontStyle("Ubuntu", "bold", 45);
@@ -581,7 +560,7 @@ public class WorldRenderer implements GraphicRenderer {
 
     public void frame() {
 
-        Game.getInstance().getWorld().lock();
+//        Game.getInstance().getWorld().lock();
 
         Log.perfBegin("amination");
 
@@ -597,7 +576,7 @@ public class WorldRenderer implements GraphicRenderer {
          * Log.perfEnd();
          */
 
-        Game.getInstance().getWorld().unlock();
+//        Game.getInstance().getWorld().unlock();
     }
 
     private void createBubble() {
@@ -877,171 +856,171 @@ public class WorldRenderer implements GraphicRenderer {
         reloadGui();
     }
 
-    private final class WorldRendererEventVisitor extends DefaultEngineEventVisitor {
+    private final class WorldRendererEventVisitor extends DefaultSystemEventVisitor {
 
-        @Override
-        public void visit(CelestialObjectAddedEvent event) {
-
-            addCelestialObject(event.getObject());
-        }
-
-        @Override
-        public void visit(CelestialObjectRemovedEvent event) {
-            removeCelestialObject(event.getObject());
-        }
-        
-        @Override
-        public void visit(ComponentAddedEvent event ) {
-            addComponent(event.getComponent());
-        }
-
-        
-        @Override
-        public void visit(ComponentRemovedEvent event ) {
-            removeComponent(event.getComponent());
-        }
-
-        @Override
-        public void visit(WorldShipAddedEvent event) {
-            addShip(event.getShip());
-        }
-
-        @Override
-        public void visit(CollisionEvent event) {
-//            V3DPoint point = new V3DPoint(engine.getV3DContext());
-//            point.setPosition(event.getCollisionDescriptor().getGlobalPosition().toV3DVect3());
-//            point.setSize(5f);
-//            scene.add(new V3DColorElement(point, new V3DColor((int) event.getCollisionDescriptor().getImpulse() * 10,
-//                                                              50,
-//                                                              255 - (int) event.getCollisionDescriptor().getImpulse() * 10)));
-        }
-
-        @Override
-        public void visit(BulletFiredEvent event) {
-            addBullet(event.getFrom(), event.getTo());
-        }
-        
-        @Override
-        public void visit(ExplosionFiredEvent event) {
-            addElement(new ExplosionEffect(WorldRenderer.this, event.getLocation(), event.getExplosionRadius()));
-        }
-        
-
-        @Override
-        public void visit(AddGuiComponentEvent event) {
-            hudLayer.add(event.getComponent());
-        }
-
-        @Override
-        public void visit(RemoveGuiComponentEvent event) {
-            hudLayer.remove(event.getComponent());
-        }
-
-        @Override
-        public void visit(NextWaveEvent event) {
-            lastWaveEvent = event;
-            if (waveCountText != null) {
-                waveCountText.setText("Wave " + event.getWaveId());
-            }
-        }
-
-        @Override
-        public void visit(DamageEvent event) {
-            if(event.getDamage().getCause() == DamageCause.BULLET) {
-                addElement(new ExplosionEffect(WorldRenderer.this, event.getImpact(), event.getDamage().getEffectiveDamage()/50));
-            }
-            
-            if (event.getTarget().getParentObject() instanceof Monolith) {
-                updateMonolithStatus();
-            }
-
-        }
-
-        @Override
-        public void visit(MoneyChangedEvent event) {
-            if (moneyText != null) {
-                moneyText.setText(LoginManager.localPlayer.getMoney() + " $");
-            }
-        }
-
-        @Override
-        public void visit(UpgradeStateChanged event) {
-            if (upgradeMenu != null) {
-                upgradeMenu.refresh();
-            }
-        }
-
-        @Override
-        public void visit(InventoryChangedEvent event) {
-            if (inventoryMenu != null) {
-                inventoryMenu.refresh();
-            }
-        }
-
-        @Override
-        public void visit(KeyPressedEvent event) {
-
-            if (currentGuiMode == GuiKeyMode.NO_MODE) {
-                if (event.getKeyCode() == Keyboard.KEY_ESCAPE) {
-
-                    disableInventoryMenu();
-                    disableUpgradeMenu();
-
-                } else if (event.getKeyCode() == Keyboard.KEY_TAB) {
-                    if (upgradeMenuEnabled || inventoryMenuEnabled) {
-                        disableInventoryMenu();
-                        disableUpgradeMenu();
-                    } else {
-                        enabledInventoryMenu();
-                        enabledUpgradeMenu();
-                    }
-
-                } else if (event.getKeyCode() == Keyboard.KEY_I) {
-                    toogleInventoryMenu();
-                } else if (event.getKeyCode() == Keyboard.KEY_U) {
-                    toogleUpgradeMenu();
-                } else if (event.getKeyCode() == Keyboard.KEY_U) {
-                    toogleUpgradeMenu();
-                } else if (event.getKeyCode() == Keyboard.KEY_C) {
-                    currentGuiMode = GuiKeyMode.CAMERA_MODE;
-                }
-            } else {
-                if (event.getKeyCode() == Keyboard.KEY_ESCAPE) {
-                    currentGuiMode = GuiKeyMode.NO_MODE;
-                }
-
-                if (currentGuiMode == GuiKeyMode.CAMERA_MODE) {
-                    if (event.getKeyCode() == Keyboard.KEY_NUMPAD0) {
-                        configureDefaultCamera();
-                        currentGuiMode = GuiKeyMode.NO_MODE;
-                    }
-                    if (event.getKeyCode() == Keyboard.KEY_NUMPAD2) {
-                        configureBackCamera();
-                        currentGuiMode = GuiKeyMode.NO_MODE;
-                    }
-                    if (event.getKeyCode() == Keyboard.KEY_NUMPAD8) {
-                        configureFrontCamera();
-                        currentGuiMode = GuiKeyMode.NO_MODE;
-                    }
-                    if (event.getKeyCode() == Keyboard.KEY_NUMPAD4) {
-                        configureLeftCamera();
-                        currentGuiMode = GuiKeyMode.NO_MODE;
-                    }
-                    if (event.getKeyCode() == Keyboard.KEY_NUMPAD6) {
-                        configureRightCamera();
-                        currentGuiMode = GuiKeyMode.NO_MODE;
-                    }
-                    if (event.getKeyCode() == Keyboard.KEY_NUMPAD5) {
-                        configureHeadCamera();
-                        currentGuiMode = GuiKeyMode.NO_MODE;
-                    }
-                }
-
-            }
-            
-            
-
-        }
+//        @Override
+//        public void visit(CelestialObjectAddedEvent event) {
+//
+//            addCelestialObject(event.getObject());
+//        }
+//
+//        @Override
+//        public void visit(CelestialObjectRemovedEvent event) {
+//            removeCelestialObject(event.getObject());
+//        }
+//        
+//        @Override
+//        public void visit(ComponentAddedEvent event ) {
+//            addComponent(event.getComponent());
+//        }
+//
+//        
+//        @Override
+//        public void visit(ComponentRemovedEvent event ) {
+//            removeComponent(event.getComponent());
+//        }
+//
+//        @Override
+//        public void visit(WorldShipAddedEvent event) {
+//            addShip(event.getShip());
+//        }
+//
+//        @Override
+//        public void visit(CollisionEvent event) {
+////            V3DPoint point = new V3DPoint(engine.getV3DContext());
+////            point.setPosition(event.getCollisionDescriptor().getGlobalPosition().toV3DVect3());
+////            point.setSize(5f);
+////            scene.add(new V3DColorElement(point, new V3DColor((int) event.getCollisionDescriptor().getImpulse() * 10,
+////                                                              50,
+////                                                              255 - (int) event.getCollisionDescriptor().getImpulse() * 10)));
+//        }
+//
+//        @Override
+//        public void visit(BulletFiredEvent event) {
+//            addBullet(event.getFrom(), event.getTo());
+//        }
+//        
+//        @Override
+//        public void visit(ExplosionFiredEvent event) {
+//            addElement(new ExplosionEffect(WorldRenderer.this, event.getLocation(), event.getExplosionRadius()));
+//        }
+//        
+//
+//        @Override
+//        public void visit(AddGuiComponentEvent event) {
+//            hudLayer.add(event.getComponent());
+//        }
+//
+//        @Override
+//        public void visit(RemoveGuiComponentEvent event) {
+//            hudLayer.remove(event.getComponent());
+//        }
+//
+//        @Override
+//        public void visit(NextWaveEvent event) {
+//            lastWaveEvent = event;
+//            if (waveCountText != null) {
+//                waveCountText.setText("Wave " + event.getWaveId());
+//            }
+//        }
+//
+//        @Override
+//        public void visit(DamageEvent event) {
+//            if(event.getDamage().getCause() == DamageCause.BULLET) {
+//                addElement(new ExplosionEffect(WorldRenderer.this, event.getImpact(), event.getDamage().getEffectiveDamage()/50));
+//            }
+//            
+//            if (event.getTarget().getParentObject() instanceof Monolith) {
+//                updateMonolithStatus();
+//            }
+//
+//        }
+//
+//        @Override
+//        public void visit(MoneyChangedEvent event) {
+//            if (moneyText != null) {
+//                moneyText.setText(LoginManager.localPlayer.getMoney() + " $");
+//            }
+//        }
+//
+//        @Override
+//        public void visit(UpgradeStateChanged event) {
+//            if (upgradeMenu != null) {
+//                upgradeMenu.refresh();
+//            }
+//        }
+//
+//        @Override
+//        public void visit(InventoryChangedEvent event) {
+//            if (inventoryMenu != null) {
+//                inventoryMenu.refresh();
+//            }
+//        }
+//
+//        @Override
+//        public void visit(KeyPressedEvent event) {
+//
+//            if (currentGuiMode == GuiKeyMode.NO_MODE) {
+//                if (event.getKeyCode() == Keyboard.KEY_ESCAPE) {
+//
+//                    disableInventoryMenu();
+//                    disableUpgradeMenu();
+//
+//                } else if (event.getKeyCode() == Keyboard.KEY_TAB) {
+//                    if (upgradeMenuEnabled || inventoryMenuEnabled) {
+//                        disableInventoryMenu();
+//                        disableUpgradeMenu();
+//                    } else {
+//                        enabledInventoryMenu();
+//                        enabledUpgradeMenu();
+//                    }
+//
+//                } else if (event.getKeyCode() == Keyboard.KEY_I) {
+//                    toogleInventoryMenu();
+//                } else if (event.getKeyCode() == Keyboard.KEY_U) {
+//                    toogleUpgradeMenu();
+//                } else if (event.getKeyCode() == Keyboard.KEY_U) {
+//                    toogleUpgradeMenu();
+//                } else if (event.getKeyCode() == Keyboard.KEY_C) {
+//                    currentGuiMode = GuiKeyMode.CAMERA_MODE;
+//                }
+//            } else {
+//                if (event.getKeyCode() == Keyboard.KEY_ESCAPE) {
+//                    currentGuiMode = GuiKeyMode.NO_MODE;
+//                }
+//
+//                if (currentGuiMode == GuiKeyMode.CAMERA_MODE) {
+//                    if (event.getKeyCode() == Keyboard.KEY_NUMPAD0) {
+//                        configureDefaultCamera();
+//                        currentGuiMode = GuiKeyMode.NO_MODE;
+//                    }
+//                    if (event.getKeyCode() == Keyboard.KEY_NUMPAD2) {
+//                        configureBackCamera();
+//                        currentGuiMode = GuiKeyMode.NO_MODE;
+//                    }
+//                    if (event.getKeyCode() == Keyboard.KEY_NUMPAD8) {
+//                        configureFrontCamera();
+//                        currentGuiMode = GuiKeyMode.NO_MODE;
+//                    }
+//                    if (event.getKeyCode() == Keyboard.KEY_NUMPAD4) {
+//                        configureLeftCamera();
+//                        currentGuiMode = GuiKeyMode.NO_MODE;
+//                    }
+//                    if (event.getKeyCode() == Keyboard.KEY_NUMPAD6) {
+//                        configureRightCamera();
+//                        currentGuiMode = GuiKeyMode.NO_MODE;
+//                    }
+//                    if (event.getKeyCode() == Keyboard.KEY_NUMPAD5) {
+//                        configureHeadCamera();
+//                        currentGuiMode = GuiKeyMode.NO_MODE;
+//                    }
+//                }
+//
+//            }
+//            
+//            
+//
+//        }
     }
 
     @Override
@@ -1050,7 +1029,7 @@ public class WorldRenderer implements GraphicRenderer {
     }
 
     @Override
-    public EngineEventVisitor getEventVisitor() {
+    public SystemEventVisitor getEventVisitor() {
         return new WorldRendererEventVisitor();
     }
 

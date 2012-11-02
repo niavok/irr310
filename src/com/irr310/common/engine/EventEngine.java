@@ -1,8 +1,10 @@
 package com.irr310.common.engine;
 
+import com.irr310.common.event.EngineEvent;
 
 
-public abstract class EventEngine extends Engine {
+
+public abstract class EventEngine<T extends EngineEvent> extends Engine<T> {
 
 
     @Override

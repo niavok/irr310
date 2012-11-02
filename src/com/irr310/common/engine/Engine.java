@@ -5,27 +5,27 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import com.irr310.common.event.EngineEvent;
 
-public abstract class Engine extends Thread {
+public abstract class Engine<T extends EngineEvent> extends Thread {
 
     private boolean isRunning;
     private boolean isStopped;
-    protected Queue<EngineEvent> eventsQueue;
+    protected Queue<T> eventsQueue;
     // private Time nextTime;
 
     
     
     public Engine() {
-        eventsQueue = new LinkedBlockingQueue<EngineEvent>();
+        eventsQueue = new LinkedBlockingQueue<T>();
         isStopped = false;
     }
 
-    protected abstract void processEvent(EngineEvent e);
+    protected abstract void processEvent(T e);
 
     protected abstract void init();
 
     protected abstract void end();
 
-    public void pushEvent(EngineEvent event) {
+    public void pushEvent(T event) {
         synchronized (eventsQueue) {
             eventsQueue.add(event);
             eventsQueue.notify();
@@ -34,7 +34,7 @@ public abstract class Engine extends Thread {
 
     protected void processQueue() {
         while (!eventsQueue.isEmpty()) {
-            EngineEvent e = eventsQueue.poll();
+            T e = eventsQueue.poll();
             processEvent(e);
         }
     }

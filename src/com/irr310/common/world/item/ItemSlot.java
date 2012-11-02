@@ -7,7 +7,7 @@ import com.irr310.common.world.system.Ship;
 public class ItemSlot {
 
     private final Vec3 position;
-    private ItemOld content;
+//    private ItemOld content;
     private final Ship ship;
     private final Component slotComponent;
     private final Vec3 connectionPosition;
@@ -19,14 +19,14 @@ public class ItemSlot {
         this.slotComponent = slotComponent;
         this.position = position;
         this.connectionPosition = connectionPosition;
-        this.content = null;
+//        this.content = null;
     }
 
     public Vec3 getPosition() {
         return position;
     }
 
-    public void setContent(ItemOld content) {
+//    public void setContent(ItemOld content) {
 //        if (this.content == content) {
 //            return;
 //        }
@@ -50,14 +50,14 @@ public class ItemSlot {
 //            content.setComponent(component);
 //            Game.getInstance().sendToAll(new InventoryChangedEvent(ship.getOwner(), content, ChangeType.ACTIVATED));
 //        }
-    }
+//    }
 
-    public ItemOld getContent() {
-        return content;
-    }
-
-    public boolean isEmpty() {
-        return content == null;
-    }
+//    public ItemOld getContent() {
+//        return content;
+//    }
+//
+//    public boolean isEmpty() {
+//        return content == null;
+//    }
 
 }

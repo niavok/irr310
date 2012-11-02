@@ -1,5 +1,6 @@
 package com.irr310.common.world.system;
 
+import java.security.cert.CertPathValidatorException.Reason;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,14 +8,6 @@ import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.irr310.client.navigation.LoginManager;
-import com.irr310.common.Game;
-import com.irr310.common.event.CelestialObjectAddedEvent;
-import com.irr310.common.event.CelestialObjectRemovedEvent;
-import com.irr310.common.event.CelestialObjectRemovedEvent.Reason;
-import com.irr310.common.event.ComponentAddedEvent;
-import com.irr310.common.event.ComponentRemovedEvent;
-import com.irr310.common.event.WorldShipAddedEvent;
-import com.irr310.common.event.WorldShipRemovedEvent;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec2;
 import com.irr310.common.tools.Vec3;
@@ -23,6 +16,7 @@ import com.irr310.common.world.view.CelestialObjectView;
 import com.irr310.common.world.view.ComponentView;
 import com.irr310.common.world.view.PartView;
 import com.irr310.common.world.view.ShipView;
+import com.irr310.server.SystemEngine;
 
 public class System extends GameEntity {
 
@@ -39,9 +33,7 @@ public class System extends GameEntity {
     private final Map<Long, Slot> slotIdMap;
     private final Map<Long, Part> partIdMap;
     private final Map<Long, Ship> shipIdMap;
-    
-    
-    
+    private SystemEngine systemEngine;
     
     public System(long id, Vec2 location) {
         super(id);
@@ -90,7 +82,7 @@ public class System extends GameEntity {
         addParts(o.getParts());
         celestialObjects.add(o);
         celestialObjectIdMap.put(o.getId(), o);
-        Game.getInstance().sendToAll(new CelestialObjectAddedEvent(o));
+//        systemEngine.sendToAll(new CelestialObjectAddedEvent(o));
     }
 
     public void removeCelestialObject(CelestialObject o, Reason reason) {
@@ -98,7 +90,7 @@ public class System extends GameEntity {
             removeParts(o.getParts());
             celestialObjects.remove(o);
             celestialObjectIdMap.remove(o.getId());
-            Game.getInstance().sendToAll(new CelestialObjectRemovedEvent(o, reason));
+//            systemEngine.sendToAll(new CelestialObjectRemovedEvent(o, reason));
         }
     }
 
@@ -109,18 +101,18 @@ public class System extends GameEntity {
         for (Capacity capacity : capacities) {
             capacityIdMap.put(capacity.getId(), capacity);
         }
-        Game.getInstance().sendToAll(new ComponentAddedEvent(component));
+//        systemEngine.sendToAll(new ComponentAddedEvent(component));
     }
 
-    public void removeComponent(Component component, com.irr310.common.event.ComponentRemovedEvent.Reason reason) {
-        if (componentIdMap.containsKey(component.getId())) {
-            removeParts(component.getParts());
-            componentIdMap.remove(component.getId());
-            Ship ship = component.getShip();
-            ship.remove(component);
-            Game.getInstance().sendToAll(new ComponentRemovedEvent(component, ship, reason));
-        }
-    }
+//    public void removeComponent(Component component, com.irr310.common.event.ComponentRemovedEvent.Reason reason) {
+//        if (componentIdMap.containsKey(component.getId())) {
+//            removeParts(component.getParts());
+//            componentIdMap.remove(component.getId());
+//            Ship ship = component.getShip();
+//            ship.remove(component);
+////            systemEngine.sendToAll(new ComponentRemovedEvent(component, ship, reason));
+//        }
+//    }
 
     private void addParts(List<Part> parts) {
         for (Part part : parts) {
@@ -177,7 +169,7 @@ public class System extends GameEntity {
             addComponent(component);
         }
         shipIdMap.put(ship.getId(), ship);
-        Game.getInstance().sendToAll(new WorldShipAddedEvent(ship, transform));
+//        systemEngine.sendToAll(new WorldShipAddedEvent(ship, transform));
     }
 
     public List<Ship> getShips() {
@@ -246,13 +238,13 @@ public class System extends GameEntity {
         return myParts;
     }
 
-    public void removeShip(Ship ship) {
-        ships.remove(ship);
-        shipIdMap.remove(ship.getId());
-        for (Component component : ship.getComponents()) {
-            removeComponent(component, com.irr310.common.event.ComponentRemovedEvent.Reason.SHIP);
-        }
-        Game.getInstance().sendToAll(new WorldShipRemovedEvent(ship));
-    }
+//    public void removeShip(Ship ship) {
+//        ships.remove(ship);
+//        shipIdMap.remove(ship.getId());
+//        for (Component component : ship.getComponents()) {
+//            removeComponent(component, com.irr310.common.event.ComponentRemovedEvent.Reason.SHIP);
+//        }
+////        systemEngine.sendToAll(new WorldShipRemovedEvent(ship));
+//    }
     
 }

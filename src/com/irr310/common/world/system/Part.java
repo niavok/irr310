@@ -114,7 +114,7 @@ public class Part extends GameEntity {
         shape = partView.shape;
         collisionShape = CollisionShape.values()[partView.collisionShape];
         transform.set(partView.transform.getData());
-        owner = (partView.ownerId == -1 ? null : Game.getInstance().getWorld().getPlayerById(partView.ownerId));
+//        owner = (partView.ownerId == -1 ? null : Game.getInstance().getWorld().getPlayerById(partView.ownerId));
     }
 
     public PartStateView toStateView() {

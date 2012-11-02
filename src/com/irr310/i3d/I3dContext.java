@@ -3,6 +3,8 @@ package com.irr310.i3d;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.irr310.common.Game;
+import com.irr310.common.event.game.QuitGameEvent;
 import com.irr310.i3d.fonts.Font;
 import com.irr310.server.Time;
 
@@ -19,6 +21,7 @@ public class I3dContext {
     private Font defaultFont;
     private TextureManager textureManager;
     private boolean preloaded;
+    private ContextListener listener;
     
     public static I3dContext getInstance() {
         return instance;
@@ -108,5 +111,17 @@ public class I3dContext {
                 break;
             }
         }
+    }
+
+    public void notifyQuit() {
+        listener.onQuit();
     };
+    
+    public void setContextListener(ContextListener listener) {
+        this.listener = listener;
+    }
+    
+    public interface ContextListener {
+        void onQuit();
+    }
 }

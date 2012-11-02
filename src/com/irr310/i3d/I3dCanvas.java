@@ -15,7 +15,7 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
 import com.irr310.common.Game;
-import com.irr310.common.event.QuitGameEvent;
+import com.irr310.common.event.game.QuitGameEvent;
 
 import fr.def.iss.vd2.lib_v3d.element.TextureManager;
 
@@ -142,7 +142,7 @@ public class I3dCanvas {
             @Override
             public void windowClosing(WindowEvent e) {
                 //TODO put this out of here
-                Game.getInstance().sendToAll(new QuitGameEvent());
+                context.notifyQuit();
             }
             
             @Override

@@ -15,6 +15,7 @@ import com.irr310.common.world.World;
 import com.irr310.common.world.capacity.KernelCapacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.common.world.view.ShipView;
+import com.irr310.server.SystemEngine;
 
 public class Ship extends GameEntity implements Container {
 
@@ -25,6 +26,7 @@ public class Ship extends GameEntity implements Container {
     KernelCapacity kernel;
     private Player owner;
     private boolean destructible;
+    private SystemEngine systemEngine;
 
     public Ship(long id) {
         super(id);
@@ -135,7 +137,7 @@ public class Ship extends GameEntity implements Container {
     }
 
     public void fromView(ShipView shipView) {
-        World world = Game.getInstance().getWorld();
+        World world = systemEngine.getWorld();
         setOwner(world.loadPlayer(shipView.owner));
 //
 //        for (ComponentView component : shipView.components) {
@@ -165,7 +167,7 @@ public class Ship extends GameEntity implements Container {
         double totalMassWithDamping = 0;
         double totalForce = 0;
 
-        double timeStep = Game.getInstance().getPhysicEngine().getFramerate().getSeconds();
+        double timeStep = systemEngine.getPhysicEngine().getFramerate().getSeconds();
 
         for (Component component : components) {
             for (Part part : component.getParts()) {
