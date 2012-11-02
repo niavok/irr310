@@ -26,6 +26,10 @@ public class ServerNetworkEngine extends EventEngine<GameEvent> {
     }
 
     @Override
+    protected void onStart() {
+    }
+    
+    @Override
     protected void processEvent(GameEvent e) {
         e.accept(new NetworkEngineEventVisitor());
     }
@@ -181,11 +185,11 @@ public class ServerNetworkEngine extends EventEngine<GameEvent> {
     }
 
     @Override
-    protected void init() {
+    protected void onInit() {
     }
 
     @Override
-    protected void end() {
+    protected void onEnd() {
     }
 
     public NetworkWorker getWorker() {

@@ -10,7 +10,6 @@ public abstract class EventEngine<T extends EngineEvent> extends Engine<T> {
     @Override
     public void run() {
         System.out.println("Start engine " + this.getClass().getSimpleName());
-        init();
         setRunning(true);
         
         while (isRunning()) {
@@ -25,7 +24,7 @@ public abstract class EventEngine<T extends EngineEvent> extends Engine<T> {
             }
         }
 
-        end();
+        onEnd();
         setStopped(true);
 
     }

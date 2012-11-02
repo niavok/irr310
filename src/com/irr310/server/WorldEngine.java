@@ -33,12 +33,17 @@ public class WorldEngine extends FramerateEngine<GameEvent> {
     }
 
     @Override
-    protected void init() {
+    protected void onInit() {
         initWorld();
     }
 
     @Override
-    protected void end() {
+    protected void onStart() {
+        pause(false);
+    }
+    
+    @Override
+    protected void onEnd() {
         
     }
 

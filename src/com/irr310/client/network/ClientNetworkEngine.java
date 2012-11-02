@@ -39,6 +39,12 @@ public class ClientNetworkEngine extends EventEngine<GameEvent> {
             e.printStackTrace();
         }
     }
+    
+    @Override
+    protected void onStart() {
+        // TODO Auto-generated method stub
+        
+    }
 
     private synchronized long pickResponseIndex() {
         return responseIndex++;
@@ -110,11 +116,11 @@ public class ClientNetworkEngine extends EventEngine<GameEvent> {
     }
 
     @Override
-    protected void init() {
+    protected void onInit() {
     }
 
     @Override
-    protected void end() {
+    protected void onEnd() {
     }
 
 //    private void shipListReceived(NetworkMessage message) {

@@ -29,14 +29,20 @@ public class AIEngine extends FramerateEngine<SystemEvent> {
             processor.process();
         }
     }
-
+    
     @Override
-    protected void init() {
+    protected void onStart() {
+        // TODO Auto-generated method stub
         
     }
 
     @Override
-    protected void end() {
+    protected void onInit() {
+        
+    }
+
+    @Override
+    protected void onEnd() {
         
     }
 

@@ -19,6 +19,12 @@ public class ClientSystemEngine extends FramerateEngine<SystemEvent> {
     }
 
     @Override
+    protected void onStart() {
+        // TODO Auto-generated method stub
+        
+    }
+    
+    @Override
     protected void frame() {
         for (CapacityController controller : capacityControllers) {
             controller.update(framerate.getSeconds());
@@ -82,11 +88,11 @@ public class ClientSystemEngine extends FramerateEngine<SystemEvent> {
 //    }
 
     @Override
-    protected void init() {
+    protected void onInit() {
     }
 
     @Override
-    protected void end() {
+    protected void onEnd() {
     }
 
 }

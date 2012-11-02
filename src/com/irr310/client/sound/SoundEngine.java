@@ -26,6 +26,9 @@ public class SoundEngine extends EventEngine<GameEvent> {
      
     }
   
+    @Override
+    protected void onStart() {
+    }
 
     @Override
     protected void processEvent(GameEvent e) {
@@ -65,7 +68,7 @@ public class SoundEngine extends EventEngine<GameEvent> {
     }
 
     @Override
-    protected void init() {
+    protected void onInit() {
         try {
             oggEffect = AudioLoader.getAudio("OGG", ResourceLoader.getResourceAsStream("sounds/gun1.ogg"));
             explosionEffect = AudioLoader.getAudio("OGG", ResourceLoader.getResourceAsStream("sounds/explosion1.ogg"));
@@ -96,7 +99,7 @@ public class SoundEngine extends EventEngine<GameEvent> {
     }
 
     @Override
-    protected void end() {
+    protected void onEnd() {
         //killALData();
         AL.destroy();
     }

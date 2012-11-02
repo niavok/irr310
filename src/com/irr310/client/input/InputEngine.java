@@ -33,6 +33,11 @@ public class InputEngine extends FramerateEngine<GameEvent> {
     }
 
     @Override
+    protected void onStart() {
+        pause(false);        
+    }
+    
+    @Override
     protected void frame() {
         
         try { 
@@ -124,11 +129,11 @@ public class InputEngine extends FramerateEngine<GameEvent> {
     }
 
     private final class InputEngineEventVisitor extends DefaultGameEventVisitor {
-//        @Override
-//        public void visit(QuitGameEvent event) {
-//            System.out.println("stopping input engine");
-//            setRunning(false);
-//        }
+        @Override
+        public void visit(QuitGameEvent event) {
+            System.out.println("stopping input engine");
+            setRunning(false);
+        }
 //
 //        @Override
 //        public void visit(StartEngineEvent event) {
@@ -205,12 +210,12 @@ public class InputEngine extends FramerateEngine<GameEvent> {
     }
 
     @Override
-    protected void init() {
+    protected void onInit() {
         Mouse.setGrabbed(false);
     }
 
     @Override
-    protected void end() {
+    protected void onEnd() {
     }
 
 }

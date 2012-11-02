@@ -22,9 +22,15 @@ public class EngineManager<T extends EngineEvent> implements EventDispatcher<T> 
 
     public void startAndWaitAllEngines() {
         for (Engine<T> engine : engineList) {
-            if (!engine.isAlive()) {
-                engine.start();
-            }
+            engine.init();
+        }
+        
+        for (Engine<T> engine : engineList) {
+            engine.waitInitEnd();
+        }
+        
+        for (Engine<T> engine : engineList) {
+            engine.start();
         }
 
         // Wait engines started

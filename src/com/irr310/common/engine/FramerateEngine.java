@@ -11,6 +11,7 @@ public abstract class FramerateEngine<T extends EngineEvent> extends Engine<T> {
 
     public FramerateEngine() {
         framerate = new Duration(20000000); // 20ms or 50fps
+        isPaused = true;
     }
 
     public Duration getFramerate() {
@@ -23,10 +24,9 @@ public abstract class FramerateEngine<T extends EngineEvent> extends Engine<T> {
     public void run() {
         System.out.println("Start engine " + this.getClass().getSimpleName());
 
-        isPaused = true;
+        
         Time lastTime = Time.now(false);
 
-        init();
         setRunning(true);
 
         while (isRunning()) {
@@ -58,7 +58,7 @@ public abstract class FramerateEngine<T extends EngineEvent> extends Engine<T> {
             }
         }
 
-        end();
+        onEnd();
         setStopped(true);
     }
 

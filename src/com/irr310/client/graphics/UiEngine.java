@@ -2,6 +2,7 @@ package com.irr310.client.graphics;
 
 import org.lwjgl.opengl.Display;
 
+import com.irr310.client.graphics.ether.activities.MainActivity;
 import com.irr310.common.Game;
 import com.irr310.common.engine.EventDispatcher;
 import com.irr310.common.engine.FramerateEngine;
@@ -15,6 +16,7 @@ import com.irr310.common.tools.Vec2;
 import com.irr310.i3d.Color;
 import com.irr310.i3d.I3dContext;
 import com.irr310.i3d.I3dContext.ContextListener;
+import com.irr310.i3d.Intent;
 import com.irr310.i3d.Surface;
 import com.irr310.server.Duration;
 import com.irr310.server.Time;
@@ -36,7 +38,7 @@ public class UiEngine extends FramerateEngine<GameEvent> {
     }
 
     @Override
-    protected void init() {
+    protected void onInit() {
         context = I3dContext.getInstance();
         context.initCanvas("IRR310", 1664, 936);
         context.setContextListener(new UiContextListener());
@@ -72,10 +74,17 @@ public class UiEngine extends FramerateEngine<GameEvent> {
         
         context.update(Time.now(false), Time.now(true));
     }
+    
+    @Override
+    protected void onStart() {
+        pause(false);
+        mainSurface.startActivity(new Intent(MainActivity.class));
+        context.show();
+    }
 
 
     @Override
-    protected void end() {
+    protected void onEnd() {
         Display.destroy();
     }
 

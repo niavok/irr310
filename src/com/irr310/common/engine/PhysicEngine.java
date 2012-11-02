@@ -112,6 +112,11 @@ public class PhysicEngine extends FramerateEngine<SystemEvent> {
     }
 
     @Override
+    protected void onStart() {
+        pause(false);        
+    }
+    
+    @Override
     protected void frame() {
 
         mutex.lock();
@@ -866,14 +871,15 @@ public class PhysicEngine extends FramerateEngine<SystemEvent> {
 
     }
 
+    
     @Override
-    protected void init() {
+    protected void onInit() {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    protected void end() {
+    protected void onEnd() {
         // TODO Auto-generated method stub
 
     }

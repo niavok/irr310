@@ -26,11 +26,16 @@ public class SystemEngine extends FramerateEngine<WorldEvent> implements EventDi
     }
 
     @Override
-    protected void init() {
+    protected void onStart() {
+        pause(false);
+    }
+    
+    @Override
+    protected void onInit() {
     }
 
     @Override
-    protected void end() {
+    protected void onEnd() {
         
     }
 

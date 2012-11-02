@@ -47,6 +47,10 @@ public class ServerSystemGameEngine extends FramerateEngine<SystemEvent> {
     }
 
     @Override
+    protected void onStart() {
+    }
+    
+    @Override
     protected void processEvent(SystemEvent e) {
         e.accept(new GameEngineEventVisitor());
     }
@@ -530,7 +534,7 @@ public class ServerSystemGameEngine extends FramerateEngine<SystemEvent> {
     }
 
     @Override
-    protected void init() {
+    protected void onInit() {
         // World
         UpgradeFactory.initUpgrades();
         UpgradeFactory.refresh();
@@ -584,7 +588,7 @@ public class ServerSystemGameEngine extends FramerateEngine<SystemEvent> {
     }
 
     @Override
-    protected void end() {
+    protected void onEnd() {
     }
 
 }
