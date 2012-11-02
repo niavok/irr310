@@ -99,10 +99,6 @@ public class SubsimplexConvexCast extends ConvexCast {
 
 		Vector3d n = new Vector3d();
 		n.set(0f, 0f, 0f);
-		boolean hasResult = false;
-		Vector3d c = new Vector3d();
-
-		double lastLambda = lambda;
 
 		double dist2 = v.lengthSquared();
 		//#ifdef BT_USE_DOUBLE_PRECISION
@@ -110,7 +106,7 @@ public class SubsimplexConvexCast extends ConvexCast {
 		//#else
 		double epsilon = 0.0001f;
 		//#endif
-		Vector3d w = new Vector3d(), p = new Vector3d();
+		Vector3d w = new Vector3d();
 		double VdotR;
 
 		while ((dist2 > epsilon) && (maxIter--) != 0) {
@@ -147,15 +143,12 @@ public class SubsimplexConvexCast extends ConvexCast {
 					//m_simplexSolver->reset();
 					// check next line
 					w.sub(supVertexA, supVertexB);
-					lastLambda = lambda;
 					n.set(v);
-					hasResult = true;
 				}
 			}
 			simplexSolver.addVertex(w, supVertexA , supVertexB);
 			if (simplexSolver.closest(v)) {
 				dist2 = v.lengthSquared();
-				hasResult = true;
 				// todo: check this normal for validity
 				//n.set(v);
 				//printf("V=%f , %f, %f\n",v[0],v[1],v[2]);

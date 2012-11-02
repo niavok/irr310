@@ -80,8 +80,6 @@ public class StaticPlaneShape extends ConcaveShape {
 		// tangentDir0/tangentDir1 can be precalculated
 		TransformUtil.planeSpace1(planeNormal, tangentDir0, tangentDir1);
 
-		Vector3d supVertex0 = new Vector3d(), supVertex1 = new Vector3d();
-
 		Vector3d projectedCenter = new Vector3d();
 		tmp.scale(planeNormal.dot(center) - planeConstant, planeNormal);
 		projectedCenter.sub(center, tmp);

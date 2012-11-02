@@ -45,7 +45,6 @@ public class VoronoiSimplexSolver extends SimplexSolverInterface {
 	private static final int VERTA = 0;
 	private static final int VERTB = 1;
 	private static final int VERTC = 2;
-	private static final int VERTD = 3;
 
 	public int numVertices;
 

@@ -3,12 +3,10 @@ package com.irr310.i3d;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import com.irr310.i3d.fonts.Font;
 import com.irr310.server.Time;
 
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
-import fr.def.iss.vd2.lib_v3d.V3DMouseEvent.Action;
 
 
 

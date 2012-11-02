@@ -1,20 +1,8 @@
 package com.irr310.server;
 
-import java.util.Queue;
 import java.util.Random;
 
-import com.irr310.common.Game;
-import com.irr310.common.event.BindAIEvent;
-import com.irr310.common.tools.Log;
-import com.irr310.common.tools.TransformMatrix;
-import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Player;
-import com.irr310.common.world.system.Asteroid;
-import com.irr310.common.world.system.Ship;
-import com.irr310.server.game.CelestialObjectFactory;
-import com.irr310.server.game.ShipFactory;
-
-import fr.def.iss.vd2.lib_v3d.V3DColor;
 
 public class WaveFactory {
 

@@ -1,6 +1,5 @@
 package com.irr310.i3d;
 
-import java.awt.Point;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;

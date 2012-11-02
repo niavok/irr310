@@ -2,7 +2,6 @@ package com.irr310.i3d.view;
 
 import org.lwjgl.opengl.GL11;
 
-import com.irr310.common.tools.Log;
 import com.irr310.i3d.Color;
 import com.irr310.i3d.Graphics;
 import com.irr310.i3d.I3dContext;

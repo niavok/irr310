@@ -4,8 +4,6 @@ import com.irr310.common.tools.Log;
 import com.irr310.common.world.capacity.ContactDetectorCapacity;
 import com.irr310.common.world.system.Component;
 import com.irr310.common.world.system.Part;
-import com.irr310.server.Duration;
-import com.irr310.server.Time;
 
 public class ContactDetectorController extends CapacityController {
 

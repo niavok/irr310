@@ -4,11 +4,7 @@ import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.irr310.client.GameClient;
-import com.irr310.common.Game;
 import com.irr310.common.engine.EventEngine;
-import com.irr310.common.event.CelestialObjectRemovedEvent.Reason;
-import com.irr310.common.event.DamageEvent;
 import com.irr310.common.event.DefaultEngineEventVisitor;
 import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.NetworkEvent;
@@ -16,17 +12,6 @@ import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.network.NetworkMessage;
 import com.irr310.common.network.protocol.CelestialObjectRemovedNotificationMessage;
 import com.irr310.common.network.protocol.DamageNotificationMessage;
-import com.irr310.common.network.protocol.PartStateUpdateListMessage;
-import com.irr310.common.network.protocol.ShipListMessage;
-import com.irr310.common.network.protocol.WorldObjectListMessage;
-import com.irr310.common.world.system.CelestialObject;
-import com.irr310.common.world.system.DamageDescriptor;
-import com.irr310.common.world.system.Part;
-import com.irr310.common.world.system.Ship;
-import com.irr310.common.world.system.WorldObject;
-import com.irr310.common.world.view.CelestialObjectView;
-import com.irr310.common.world.view.PartStateView;
-import com.irr310.common.world.view.ShipView;
 
 public class ClientNetworkEngine extends EventEngine {
 

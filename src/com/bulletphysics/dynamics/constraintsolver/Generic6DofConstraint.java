@@ -288,8 +288,6 @@ public class Generic6DofConstraint extends TypedConstraint {
 		// calculates transform
 		calculateTransforms();
 		
-		Vector3d tmpVec = new Vector3d();
-
 		//  const btVector3& pivotAInW = m_calculatedTransformA.getOrigin();
 		//  const btVector3& pivotBInW = m_calculatedTransformB.getOrigin();
 		calcAnchorPos();

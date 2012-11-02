@@ -20,11 +20,11 @@ package com.irr310.i3d;
 import com.irr310.i3d.fonts.Font;
 import com.irr310.i3d.view.BorderParams.CornerStyle;
 import com.irr310.i3d.view.Drawable;
+import com.irr310.i3d.view.LayoutParams.LayoutGravity;
+import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 import com.irr310.i3d.view.TextView;
 import com.irr310.i3d.view.TextView.Gravity;
 import com.irr310.i3d.view.View;
-import com.irr310.i3d.view.LayoutParams.LayoutGravity;
-import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 
 /**
  * Class representing a color with alpha channel

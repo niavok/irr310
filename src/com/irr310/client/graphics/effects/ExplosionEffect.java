@@ -5,14 +5,12 @@ import java.io.File;
 import com.irr310.client.graphics.GenericGraphicalElement;
 import com.irr310.client.graphics.UiEngine;
 import com.irr310.client.graphics.WorldRenderer;
-import com.irr310.common.Game;
 import com.irr310.common.tools.Vec3;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DGroupElement;
-import fr.def.iss.vd2.lib_v3d.element.V3DLine;
 import fr.def.iss.vd2.lib_v3d.element.V3DrawElement;
 
 public class ExplosionEffect extends GenericGraphicalElement{

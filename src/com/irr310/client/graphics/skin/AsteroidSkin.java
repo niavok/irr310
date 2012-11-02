@@ -2,8 +2,6 @@ package com.irr310.client.graphics.skin;
 
 import java.io.File;
 
-import javax.swing.Renderer;
-
 import com.irr310.client.graphics.UiEngine;
 import com.irr310.client.graphics.WorldRenderer;
 import com.irr310.client.graphics.effects.AsteroidDust;

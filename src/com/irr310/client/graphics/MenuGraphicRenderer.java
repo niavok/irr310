@@ -14,17 +14,14 @@ import com.irr310.common.event.QuitGameEvent;
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
 import fr.def.iss.vd2.lib_v3d.camera.V3DSimple2DCamera;
-import fr.def.iss.vd2.lib_v3d.element.V3DGroupElement;
-import fr.def.iss.vd2.lib_v3d.element.V3DRectangle;
 import fr.def.iss.vd2.lib_v3d.gui.V3DButton;
 import fr.def.iss.vd2.lib_v3d.gui.V3DContainer;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent;
-import fr.def.iss.vd2.lib_v3d.gui.V3DGuiLayer;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent.GuiXAlignment;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent.GuiYAlignment;
+import fr.def.iss.vd2.lib_v3d.gui.V3DGuiLayer;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiTriangle;
 import fr.def.iss.vd2.lib_v3d.gui.V3DLabel;
-import fr.def.iss.vd2.lib_v3d.v3draw.V3DrawTriangle;
 
 public class MenuGraphicRenderer implements GraphicRenderer {
 

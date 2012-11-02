@@ -178,7 +178,6 @@ public class SimpleDynamicsWorld extends DynamicsWorld {
 	@Override
 	public void updateAabbs() {
 		Transform tmpTrans = new Transform();
-		Transform predictedTrans = new Transform();
 		Vector3d minAabb = new Vector3d(), maxAabb = new Vector3d();
 
 		for (int i = 0; i < collisionObjects.size(); i++) {

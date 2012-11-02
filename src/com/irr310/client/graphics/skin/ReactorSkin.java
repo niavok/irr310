@@ -2,9 +2,6 @@ package com.irr310.client.graphics.skin;
 
 import java.io.File;
 
-import org.apache.commons.lang3.tuple.ImmutablePair;
-
-import com.irr310.client.graphics.AnimatedElement;
 import com.irr310.client.graphics.UiEngine;
 import com.irr310.client.graphics.WorldRenderer;
 import com.irr310.client.graphics.effects.AsteroidDust;
@@ -12,17 +9,13 @@ import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.common.world.system.Component;
-import com.irr310.common.world.system.Part;
 import com.irr310.server.Duration;
 import com.irr310.server.Time;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
-import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DGroupElement;
-import fr.def.iss.vd2.lib_v3d.element.V3DLine;
-import fr.def.iss.vd2.lib_v3d.element.V3DRectangle;
 import fr.def.iss.vd2.lib_v3d.element.V3DShaderElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DTriangle;
 import fr.def.iss.vd2.lib_v3d.element.V3DTriangle.RenderMode;

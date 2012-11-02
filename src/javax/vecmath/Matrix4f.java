@@ -1719,7 +1719,7 @@ public class Matrix4f implements java.io.Serializable, Cloneable {
 	double temp[] = new double[16];
 	double result[] = new double[16];
 	int row_perm[] = new int[4];
-	int i, r, c;
+	int i;
 
 	// Use LU decomposition and backsubstitution code specifically
 	// for floating-point 4x4 matrices.

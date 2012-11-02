@@ -58,7 +58,6 @@ public abstract class TriangleConvexcastCallback extends TriangleCallback {
 		triangleShape.setMargin(triangleCollisionMargin);
 
 		VoronoiSimplexSolver simplexSolver = new VoronoiSimplexSolver();
-		GjkEpaPenetrationDepthSolver gjkEpaPenetrationSolver = new GjkEpaPenetrationDepthSolver();
 
 		//#define  USE_SUBSIMPLEX_CONVEX_CAST 1
 		//if you reenable USE_SUBSIMPLEX_CONVEX_CAST see commented out code below

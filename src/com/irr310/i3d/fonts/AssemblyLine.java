@@ -21,7 +21,6 @@ package com.irr310.i3d.fonts;
 
 import java.awt.FontMetrics;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**

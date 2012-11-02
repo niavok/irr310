@@ -19,9 +19,7 @@ import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.event.StartEngineEvent;
 import com.irr310.common.tools.Log;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
-import com.irr310.common.world.system.CelestialObject;
 import com.irr310.common.world.system.Component;
-import com.irr310.common.world.system.Monolith;
 import com.irr310.common.world.system.Ship;
 import com.irr310.server.Duration;
 

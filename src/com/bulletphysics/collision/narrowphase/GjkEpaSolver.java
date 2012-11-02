@@ -87,7 +87,8 @@ public class GjkEpaSolver {
 	////////////////////////////////////////////////////////////////////////////
 	
 	private static final double cstInf = BulletGlobals.SIMD_INFINITY;
-	private static final double cstPi = BulletGlobals.SIMD_PI;
+	@SuppressWarnings("unused")
+    private static final double cstPi = BulletGlobals.SIMD_PI;
 	private static final double cst2Pi = BulletGlobals.SIMD_2_PI;
 	private static final int GJK_maxiterations = 128;
 	private static final int GJK_hashsize = 1 << 6;

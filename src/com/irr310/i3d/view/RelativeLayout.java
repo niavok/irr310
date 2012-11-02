@@ -1,8 +1,6 @@
 package com.irr310.i3d.view;
 
-import com.irr310.common.tools.Log;
 import com.irr310.i3d.Graphics;
-import com.irr310.i3d.MeasurePoint;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;

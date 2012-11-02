@@ -32,26 +32,30 @@
 package javax.vecmath;
 
 /**
- * Indicates that an operation cannot be completed properly because
- * of a mismatch in the sizes of object attributes.
+ * Indicates that an operation cannot be completed properly because of a
+ * mismatch in the sizes of object attributes.
  */
-public class MismatchedSizeException extends RuntimeException{
+public class MismatchedSizeException extends RuntimeException {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -3120676266516282296L;
 
-/**
- * Create the exception object with default values.
- */
-  public MismatchedSizeException(){
-  }
+    /**
+     * Create the exception object with default values.
+     */
+    public MismatchedSizeException() {
+    }
 
-/**
- * Create the exception object that outputs a message.
- * @param str the message string to be output.
- */
-  public MismatchedSizeException(String str){
+    /**
+     * Create the exception object that outputs a message.
+     * 
+     * @param str the message string to be output.
+     */
+    public MismatchedSizeException(String str) {
 
-    super(str);
-  }
+        super(str);
+    }
 
 }
-

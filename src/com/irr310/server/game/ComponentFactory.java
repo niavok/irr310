@@ -2,16 +2,15 @@ package com.irr310.server.game;
 
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Player;
+import com.irr310.common.world.capacity.BalisticWeaponCapacity;
 import com.irr310.common.world.capacity.ContactDetectorCapacity;
 import com.irr310.common.world.capacity.ExplosiveCapacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
-import com.irr310.common.world.capacity.BalisticWeaponCapacity;
 import com.irr310.common.world.capacity.RocketCapacity;
 import com.irr310.common.world.capacity.RocketWeaponCapacity;
 import com.irr310.common.world.capacity.WingCapacity;
 import com.irr310.common.world.item.ItemOld;
 import com.irr310.common.world.system.Component;
-import com.irr310.common.world.system.DamageDescriptor;
 import com.irr310.common.world.system.Part;
 import com.irr310.common.world.system.RocketDescriptor;
 import com.irr310.common.world.system.Ship;

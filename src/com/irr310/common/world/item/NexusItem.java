@@ -1,12 +1,9 @@
 package com.irr310.common.world.item;
 
-import com.irr310.common.Game;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Faction;
-import com.irr310.common.world.system.Asteroid;
 import com.irr310.common.world.system.Nexus;
 import com.irr310.server.game.BuildingFactory;
-import com.irr310.server.game.CelestialObjectFactory;
 
 public class NexusItem extends DeployableItem {
 

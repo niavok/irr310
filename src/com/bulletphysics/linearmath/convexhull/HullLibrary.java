@@ -345,7 +345,6 @@ public class HullLibrary {
 		Tri te;
 		vlimit -= 4;
 		while (vlimit > 0 && ((te = extrudable(epsilon)) != null)) {
-			Int3 ti = te;
 			int v = te.vmax;
 			assert (v != -1);
 			assert (isextreme.get(v) == 0);  // wtf we've already done this vertex

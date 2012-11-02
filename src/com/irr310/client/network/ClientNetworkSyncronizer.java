@@ -1,12 +1,5 @@
 package com.irr310.client.network;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.irr310.common.Game;
-import com.irr310.common.network.protocol.PartStateUpdateListMessage;
-import com.irr310.common.world.system.Part;
-import com.irr310.common.world.view.PartStateView;
 
 public class ClientNetworkSyncronizer extends Thread{
 

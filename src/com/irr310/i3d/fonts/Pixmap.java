@@ -18,8 +18,6 @@
  */
 package com.irr310.i3d.fonts;
 
-import java.io.IOException;
-
 import com.irr310.i3d.Texture;
 
 /**

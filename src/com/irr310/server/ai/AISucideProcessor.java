@@ -1,14 +1,10 @@
 package com.irr310.server.ai;
 
-import com.irr310.common.Game;
-import com.irr310.common.tools.Log;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
-import com.irr310.common.world.World;
 import com.irr310.common.world.system.Component;
 import com.irr310.common.world.system.Part;
 import com.irr310.common.world.system.Ship;
-import com.irr310.server.GameServer;
 
 /**
  * Very basic AI: jsut rush on the monolith

@@ -810,14 +810,11 @@ public class OptimizedBvh implements Serializable {
 		boolean boxBoxOverlap = false;
 		boolean rayBoxOverlap = false;
 
-		double lambda_max = 1f;
 		//#define RAYAABB2
 		//#ifdef RAYAABB2
-		Vector3d rayFrom = new Vector3d(raySource);
 		Vector3d rayDirection = new Vector3d();
 		tmp.sub(rayTarget, raySource);
 		rayDirection.normalize(tmp);
-		lambda_max = rayDirection.dot(tmp);
 		rayDirection.x = 1f / rayDirection.x;
 		rayDirection.y = 1f / rayDirection.y;
 		rayDirection.z = 1f / rayDirection.z;

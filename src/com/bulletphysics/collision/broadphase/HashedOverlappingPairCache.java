@@ -27,7 +27,6 @@ import com.bulletphysics.BulletStats;
 import com.bulletphysics.linearmath.MiscUtil;
 import com.bulletphysics.util.IntArrayList;
 import com.bulletphysics.util.ObjectArrayList;
-import com.bulletphysics.util.ObjectPool;
 
 /**
  * Hash-space based {@link OverlappingPairCache}.
@@ -36,21 +35,16 @@ import com.bulletphysics.util.ObjectPool;
  */
 public class HashedOverlappingPairCache extends OverlappingPairCache {
 
-	private final ObjectPool<BroadphasePair> pairsPool = ObjectPool.get(BroadphasePair.class);
-	
 	private static final int NULL_PAIR = 0xffffffff;
 	
 	private ObjectArrayList<BroadphasePair> overlappingPairArray = new ObjectArrayList<BroadphasePair>();
 	private OverlapFilterCallback overlapFilterCallback;
-	private boolean blockedForChanges = false;
 	
 	private IntArrayList hashTable = new IntArrayList();
 	private IntArrayList next = new IntArrayList();
 	protected OverlappingPairCallback ghostPairCallback;
 
 	public HashedOverlappingPairCache() {
-		int initialAllocatedSize = 2;
-		// JAVA TODO: overlappingPairArray.ensureCapacity(initialAllocatedSize);
 		growTables();
 	}
 
@@ -225,7 +219,6 @@ public class HashedOverlappingPairCache extends OverlappingPairCache {
 	public BroadphasePair findPair(BroadphaseProxy proxy0, BroadphaseProxy proxy1) {
 		BulletStats.gFindPairs++;
 		if (proxy0.getUid() > proxy1.getUid()) {
-			BroadphaseProxy tmp = proxy0;
 			proxy0 = proxy1;
 			proxy1 = proxy0;
 		}

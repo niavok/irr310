@@ -18,7 +18,11 @@ import javax.swing.WindowConstants;
 
 public class LoginForm extends JFrame {
 
-	// Login
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 4821191614136942743L;
+    // Login
 	private JTextField email;
 	private JPasswordField password;
 	private JButton loginButton;
@@ -39,7 +43,6 @@ public class LoginForm extends JFrame {
 		JComponent panel = buildPanel();
 		getContentPane().add(panel);
 		pack();
-
 	}
 
 	private void initComponents() {

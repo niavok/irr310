@@ -5,7 +5,6 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 
-import org.fenggui.binding.render.lwjgl.LWJGLTexture;
 import org.fenggui.util.ImageConverter;
 import org.lwjgl.opengl.GL11;
 

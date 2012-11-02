@@ -92,7 +92,6 @@ public class CompoundCollisionAlgorithm extends CollisionAlgorithm {
 		// then use each overlapping node AABB against Tree0
 		// and vise versa.
 
-		Transform tmpTrans = new Transform();
 		Transform orgTrans = new Transform();
 		Transform childTrans = new Transform();
 		Transform orgInterpolationTrans = new Transform();

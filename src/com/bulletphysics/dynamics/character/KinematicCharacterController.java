@@ -632,26 +632,6 @@ public class KinematicCharacterController extends ActionInterface {
 
 	////////////////////////////////////////////////////////////////////////////
 
-	private static class KinematicClosestNotMeRayResultCallback extends CollisionWorld.ClosestRayResultCallback {
-		protected CollisionObject me;
-
-		public KinematicClosestNotMeRayResultCallback(CollisionObject me) {
-			super(new Vector3d(), new Vector3d());
-			this.me = me;
-		}
-
-		@Override
-		public double addSingleResult(CollisionWorld.LocalRayResult rayResult, boolean normalInWorldSpace) {
-			if (rayResult.collisionObject == me) {
-				return 1.0f;
-			}
-
-			return super.addSingleResult(rayResult, normalInWorldSpace);
-		}
-	}
-
-	////////////////////////////////////////////////////////////////////////////
-
 	private static class KinematicClosestNotMeConvexResultCallback extends CollisionWorld.ClosestConvexResultCallback {
 		protected CollisionObject me;
 		protected final Vector3d up;

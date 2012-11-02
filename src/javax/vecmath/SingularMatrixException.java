@@ -37,6 +37,11 @@ package javax.vecmath;
 public class SingularMatrixException extends RuntimeException{
 
 /**
+     * 
+     */
+    private static final long serialVersionUID = -8109834755597440680L;
+
+/**
  * Create the exception object with default values.
  */
   public SingularMatrixException(){

@@ -1,7 +1,6 @@
 package com.irr310.common.event;
 
 import com.irr310.common.world.Faction;
-import com.irr310.common.world.Player;
 
 public class FactionAddedEvent extends EngineEvent {
 

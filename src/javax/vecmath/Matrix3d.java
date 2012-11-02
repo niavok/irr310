@@ -1080,7 +1080,7 @@ public class Matrix3d implements java.io.Serializable, Cloneable {
     private final void invertGeneral(Matrix3d  m1) {
 	double result[] = new double[9];
 	int row_perm[] = new int[3];
-	int i, r, c;
+	int i;
 	double[]    tmp = new double[9];  // scratch matrix
 
 	// Use LU decomposition and backsubstitution code specifically
@@ -2075,7 +2075,7 @@ public class Matrix3d implements java.io.Serializable, Cloneable {
      * @param result  the tuple into which the product is placed
      */
     public final void transform(Tuple3d t, Tuple3d result) {
-     double x,y,z;
+     double x,y;
         x = m00* t.x + m01*t.y + m02*t.z;
         y = m10* t.x + m11*t.y + m12*t.z;
         result.z = m20* t.x + m21*t.y + m22*t.z;
@@ -2107,8 +2107,8 @@ public class Matrix3d implements java.io.Serializable, Cloneable {
     }
 
     static void compute_svd( double[] m, double[] outScale, double[] outRot) {
-	int i,j;
-	double g,scale;
+	int i;
+	double g;
 	double[] u1 = new double[9];
 	double[] v1 = new double[9];
 	double[] t1 = new double[9];
@@ -2121,13 +2121,9 @@ public class Matrix3d implements java.io.Serializable, Cloneable {
 	double[] e = new double[3];
 	double[] scales = new double[3];
 
-	int converged, negCnt=0;
-	double cs,sn;
+	int negCnt=0;
 	double c1,c2,c3,c4;
 	double s1,s2,s3,s4;
-	double cl1,cl2,cl3;
-
-
 	for(i=0; i<9; i++)
 	    rot[i] = m[i];
 
@@ -2383,7 +2379,6 @@ public class Matrix3d implements java.io.Serializable, Cloneable {
 			    double[] outRot, double[] outScale) {
 
 	int[] out = new int[3];
-	int[] in = new int[3];
 	int in0, in1, in2, index, i;
 	double[] mag = new double[3];
 	double[] rot = new double[9];
@@ -2528,9 +2523,9 @@ public class Matrix3d implements java.io.Serializable, Cloneable {
 
     static  int compute_qr( double[] s, double[] e, double[] u, double[] v) {
 
-	int i,j,k;
+	int k;
 	boolean converged;
-	double shift,ssmin,ssmax,r;
+	double shift,r;
 	double[]   cosl  = new double[2];
 	double[]   cosr  = new double[2];
 	double[]   sinl  = new double[2];
@@ -2544,7 +2539,6 @@ public class Matrix3d implements java.io.Serializable, Cloneable {
 	final double CONVERGE_TOL = 4.89E-15;
 
 	double c_b48 = 1.;
-	double c_b71 = -1.;
 	int first;
 	converged = false;
 
@@ -2941,8 +2935,6 @@ static int compute_2X2( double f, double g, double h, double[] single_values,
     return 0;
  }
   static double compute_rot( double f, double g, double[] sin, double[] cos, int index, int first) {
-    int i__1;
-    double d__1, d__2;
     double cs,sn;
     int i;
     double scale;
@@ -2975,7 +2967,6 @@ static int compute_2X2( double f, double g, double h, double[] single_values,
             r = Math.sqrt(f1*f1 + g1*g1);
             cs = f1 / r;
             sn = g1 / r;
-            i__1 = count;
             for (i = 1; i <= count; ++i) {
                 r *= safmx2;
             }
@@ -2990,7 +2981,6 @@ static int compute_2X2( double f, double g, double h, double[] single_values,
             r = Math.sqrt(f1*f1 + g1*g1);
             cs = f1 / r;
             sn = g1 / r;
-            i__1 = count;
             for (i = 1; i <= count; ++i) {
                 r *= safmn2;
             }

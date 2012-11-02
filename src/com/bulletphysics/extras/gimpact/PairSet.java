@@ -56,7 +56,6 @@ class PairSet {
 		return array[index];
 	}
 	
-	@SuppressWarnings("unchecked")
 	private void expand() {
 		Pair[] newArray = new Pair[array.length << 1];
 		for (int i=array.length; i<newArray.length; i++) {

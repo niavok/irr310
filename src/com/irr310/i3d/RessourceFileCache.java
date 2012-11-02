@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.irr310.i3d.fonts.Font;
-import com.irr310.i3d.view.Drawable;
 import com.irr310.i3d.view.View;
 
 public class RessourceFileCache {

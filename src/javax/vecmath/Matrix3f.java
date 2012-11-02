@@ -1089,7 +1089,7 @@ public class Matrix3f implements java.io.Serializable, Cloneable {
 	double temp[] = new double[9];
 	double result[] = new double[9];
 	int row_perm[] = new int[3];
-	int i, r, c;
+	int i;
 
 	// Use LU decomposition and backsubstitution code specifically
 	// for floating-point 3x3 matrices.
@@ -2063,7 +2063,7 @@ public class Matrix3f implements java.io.Serializable, Cloneable {
     * @param result  the tuple into which the product is placed
     */
     public final void transform(Tuple3f t, Tuple3f result) { 
-     float x,y,z;
+     float x,y;
      x = m00* t.x + m01*t.y + m02*t.z; 
      y = m10* t.x + m11*t.y + m12*t.z;
      result.z = m20* t.x + m21*t.y + m22*t.z; 

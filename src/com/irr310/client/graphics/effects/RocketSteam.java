@@ -3,19 +3,16 @@ package com.irr310.client.graphics.effects;
 import com.irr310.client.graphics.GenericGraphicalElement;
 import com.irr310.client.graphics.UiEngine;
 import com.irr310.client.graphics.WorldRenderer;
-import com.irr310.common.tools.Log;
 import com.irr310.common.tools.Vec3;
 import com.irr310.server.Duration;
 import com.irr310.server.Time;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
-import fr.def.iss.vd2.lib_v3d.element.V3DBox;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DGroupElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DLine;
-import fr.def.iss.vd2.lib_v3d.element.V3DRectangle;
 
 public class RocketSteam extends GenericGraphicalElement{
 

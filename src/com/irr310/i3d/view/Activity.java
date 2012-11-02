@@ -1,6 +1,5 @@
 package com.irr310.i3d.view;
 
-import com.irr310.client.graphics.ether.activities.MainMenuActivity;
 import com.irr310.common.tools.Log;
 import com.irr310.i3d.Bundle;
 import com.irr310.i3d.I3dContext;

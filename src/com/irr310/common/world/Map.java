@@ -3,7 +3,6 @@ package com.irr310.common.world;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.irr310.common.engine.Engine;
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.Vec2;
 import com.irr310.common.world.system.System;

@@ -48,11 +48,8 @@ public class CollisionDispatcher extends Dispatcher {
 	protected final ObjectPool<PersistentManifold> manifoldsPool = ObjectPool.get(PersistentManifold.class);
 
 	private static final int MAX_BROADPHASE_COLLISION_TYPES = BroadphaseNativeType.MAX_BROADPHASE_COLLISION_TYPES.ordinal();
-	private int count = 0;
 	private final ObjectArrayList<PersistentManifold> manifoldsPtr = new ObjectArrayList<PersistentManifold>();
-	private boolean useIslands = true;
 	private boolean staticWarningReported = false;
-	private ManifoldResult defaultManifoldResult;
 	private NearCallback nearCallback;
 	//private PoolAllocator*	m_collisionAlgorithmPoolAllocator;
 	//private PoolAllocator*	m_persistentManifoldPoolAllocator;

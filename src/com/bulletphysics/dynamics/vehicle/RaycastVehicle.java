@@ -56,11 +56,7 @@ public class RaycastVehicle extends TypedConstraint {
 	protected FloatArrayList forwardImpulse = new FloatArrayList();
 	protected FloatArrayList sideImpulse = new FloatArrayList();
 
-	private double tau;
-	private double damping;
 	private VehicleRaycaster vehicleRaycaster;
-	private double pitchControl = 0f;
-	private double steeringValue; 
 	private double currentVehicleSpeedKmHour;
 
 	private RigidBody chassisBody;
@@ -81,7 +77,6 @@ public class RaycastVehicle extends TypedConstraint {
 	
 	private void defaultInit(VehicleTuning tuning) {
 		currentVehicleSpeedKmHour = 0f;
-		steeringValue = 0f;
 	}
 
 	/**
@@ -311,15 +306,9 @@ public class RaycastVehicle extends TypedConstraint {
 		// simulate suspension
 		//
 
-		int i = 0;
-		for (i = 0; i < wheelInfo.size(); i++) {
-			double depth;
-			depth = rayCast(wheelInfo.getQuick(i));
-		}
-
 		updateSuspension(step);
 
-		for (i = 0; i < wheelInfo.size(); i++) {
+		for (int i = 0; i < wheelInfo.size(); i++) {
 			// apply suspension force
 			WheelInfo wheel = wheelInfo.getQuick(i);
 
@@ -339,7 +328,7 @@ public class RaycastVehicle extends TypedConstraint {
 
 		updateFriction(step);
 
-		for (i = 0; i < wheelInfo.size(); i++) {
+		for (int i = 0; i < wheelInfo.size(); i++) {
 			WheelInfo wheel = wheelInfo.getQuick(i);
 			Vector3d relpos = new Vector3d();
 			relpos.sub(wheel.raycastInfo.hardPointWS, getRigidBody().getCenterOfMassPosition(tmp));
@@ -488,15 +477,8 @@ public class RaycastVehicle extends TypedConstraint {
 
 		Vector3d tmp = new Vector3d();
 
-		int numWheelsOnGround = 0;
-
 		// collapse all those loops into one!
 		for (int i = 0; i < getNumWheels(); i++) {
-			WheelInfo wheel_info = wheelInfo.getQuick(i);
-			RigidBody groundObject = (RigidBody) wheel_info.raycastInfo.groundObject;
-			if (groundObject != null) {
-				numWheelsOnGround++;
-			}
 			sideImpulse.set(i, 0f);
 			forwardImpulse.set(i, 0f);
 		}
@@ -652,7 +634,6 @@ public class RaycastVehicle extends TypedConstraint {
 	}
 
 	public void setPitchControl(double pitch) {
-		this.pitchControl = pitch;
 	}
 
 	public RigidBody getRigidBody() {

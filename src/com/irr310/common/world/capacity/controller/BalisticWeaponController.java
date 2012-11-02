@@ -8,8 +8,8 @@ import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.capacity.BalisticWeaponCapacity;
 import com.irr310.common.world.system.Component;
 import com.irr310.common.world.system.DamageDescriptor;
-import com.irr310.common.world.system.Part;
 import com.irr310.common.world.system.DamageDescriptor.DamageCause;
+import com.irr310.common.world.system.Part;
 
 public abstract class BalisticWeaponController extends CapacityController {
 

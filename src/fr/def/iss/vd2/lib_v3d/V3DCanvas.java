@@ -37,7 +37,6 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
-
 import com.irr310.common.Game;
 import com.irr310.common.event.QuitGameEvent;
 import com.irr310.common.tools.Log;

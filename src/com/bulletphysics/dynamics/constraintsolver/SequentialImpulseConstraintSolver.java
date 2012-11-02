@@ -60,8 +60,6 @@ public class SequentialImpulseConstraintSolver extends ConstraintSolver {
 	private static final int SEQUENTIAL_IMPULSE_MAX_SOLVER_POINTS = 16384;
 	private OrderIndex[] gOrder = new OrderIndex[SEQUENTIAL_IMPULSE_MAX_SOLVER_POINTS];
 	
-	private int totalCpd = 0;
-	
 	{
 		for (int i=0; i<gOrder.length; i++) {
 			gOrder[i] = new OrderIndex();
@@ -90,9 +88,6 @@ public class SequentialImpulseConstraintSolver extends ConstraintSolver {
 		BulletGlobals.setContactDestroyedCallback(new ContactDestroyedCallback() {
 			public boolean contactDestroyed(Object userPersistentData) {
 				assert (userPersistentData != null);
-				ConstraintPersistentData cpd = (ConstraintPersistentData) userPersistentData;
-				//btAlignedFree(cpd);
-				totalCpd--;
 				//printf("totalCpd = %i. DELETED Ptr %x\n",totalCpd,userPersistentData);
 				return true;
 			}
@@ -495,8 +490,6 @@ public class SequentialImpulseConstraintSolver extends ConstraintSolver {
 					Vector3d torqueAxis1 = new Vector3d();
 					Vector3d vel1 = new Vector3d();
 					Vector3d vel2 = new Vector3d();
-					Vector3d frictionDir1 = new Vector3d();
-					Vector3d frictionDir2 = new Vector3d();
 					Vector3d vec = new Vector3d();
 
 					Matrix3d tmpMat = new Matrix3d();
@@ -1104,7 +1097,6 @@ public class SequentialImpulseConstraintSolver extends ConstraintSolver {
 						cpd = new ConstraintPersistentData();
 						//assert(cpd != null);
 
-						totalCpd++;
 						//printf("totalCpd = %i Created Ptr %x\n",totalCpd,cpd);
 						cp.userPersistentData = cpd;
 						cpd.persistentLifeTime = cp.getLifeTime();

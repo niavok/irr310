@@ -1,13 +1,8 @@
 package com.irr310.common.world.item;
 
-import com.irr310.common.Game;
-import com.irr310.common.event.ComponentRemovedEvent.Reason;
-import com.irr310.common.event.InventoryChangedEvent;
-import com.irr310.common.event.InventoryChangedEvent.ChangeType;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.system.Component;
 import com.irr310.common.world.system.Ship;
-import com.irr310.server.game.ComponentFactory;
 
 public class ItemSlot {
 

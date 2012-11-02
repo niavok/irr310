@@ -149,7 +149,8 @@ public final class ObjectArrayList<T> extends AbstractList<T> implements RandomA
 		}
 	}
 
-	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+	@SuppressWarnings("unchecked")
+    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
 		size = in.readInt();
 		int cap = 16;
 		while (cap < size) cap <<= 1;
