@@ -5,4 +5,7 @@
     <string name="newGameButton">New game</string>
     <string name="continueGameButton">Continue</string>
     <string name="joinGameButton">Join game</string>
+    <string name="worldMapButton">World map</string>
+    <string name="inspectSystemButton">Inspect system</string>
+    <string name="connectSystemButton">Connect system</string>
 </resources>

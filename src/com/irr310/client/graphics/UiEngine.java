@@ -40,7 +40,7 @@ public class UiEngine extends FramerateEngine<GameEvent> {
     @Override
     protected void onInit() {
         context = I3dContext.getInstance();
-        context.initCanvas("IRR310", 1664, 936);
+        context.initCanvas("IRR310", 1280, 768);
         context.setContextListener(new UiContextListener());
         
         context.start();

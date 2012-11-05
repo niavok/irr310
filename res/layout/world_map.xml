@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout i3d:id="main" i3d:layout_width="match_parent"
+	i3d:layout_height="match_parent">
+
+	<ScrollView i3d:layout_width="match_parent"
+		i3d:layout_height="match_parent">
+		<!-- <RelativeLayout i3d:id="map" />-->
+		 <Triangle
+        i3d:id="logoRedPart"
+        i3d:layout_width="1000"
+        i3d:layout_height="1000"
+        i3d:backgroundColor="logoSecondary@color"
+        i3d:points="0%,0%|0%,100%|100%,50%" />
+	</ScrollView>
+
+	<LinearLayout i3d:layout_width="wrap_content"
+		i3d:layout_height="wrap_content" i3d:orientation="vertical">
+
+
+		<Button i3d:id="inspectSystemButton" i3d:style="bigButton@styles"
+			i3d:layout_width="match_parent" i3d:layout_marginBottom="20px"
+			i3d:layout_marginTop="100px" i3d:text="inspectButton@strings"
+			i3d:help="newGameButtonHelp@help/mainmenu" />
+
+
+		<Button i3d:id="connectSystemButton" i3d:style="bigButton@styles"
+			i3d:layout_width="match_parent" i3d:layout_marginBottom="20px"
+			i3d:layout_marginTop="100px" i3d:text="connectSystemButton@strings"
+			i3d:help="newGameButtonHelp@help/mainmenu" />
+
+	</LinearLayout>
+
+</RelativeLayout>

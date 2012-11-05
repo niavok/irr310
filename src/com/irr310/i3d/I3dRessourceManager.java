@@ -29,6 +29,7 @@ import com.irr310.i3d.view.LinearLayout;
 import com.irr310.i3d.view.LinearLayout.LayoutOrientation;
 import com.irr310.i3d.view.Rect;
 import com.irr310.i3d.view.RelativeLayout;
+import com.irr310.i3d.view.ScrollView;
 import com.irr310.i3d.view.TextView;
 import com.irr310.i3d.view.TextView.Gravity;
 import com.irr310.i3d.view.Triangle;
@@ -138,9 +139,10 @@ public class I3dRessourceManager {
             view = NewWaiter(element);
         } else if (nodeName.equals("TextView")) {
             view = NewTextView(element, ressourceFileCache.getFileId());
+        } else if (nodeName.equals("ScrollView")) {
+            view = NewScrollView(element, ressourceFileCache.getFileId());
         } else {
-            // TODO error
-            Log.trace("ERROR unknown nodeName=" + nodeName);
+            Log.error("ERROR unknown nodeName=" + nodeName);
         }
 
         if (view != null && view instanceof ViewParent) {
@@ -437,6 +439,30 @@ public class I3dRessourceManager {
         }
 
         return textView;
+    }
+    
+    private ScrollView NewScrollView(Element element, String fileId) {
+        ScrollView view = new ScrollView(g);
+
+        Style style = loadStyle(element.getAttribute("i3d:style"));
+        style.apply(view);
+        
+        NamedNodeMap attributes = element.getAttributes();
+        for (int i = 0; i < attributes.getLength(); i++) {
+            Node item = attributes.item(i);
+            Attr attr = (Attr) item;
+            String attrName = attr.getName();
+            String attrValue = attr.getValue();
+
+            ViewFactory viewFactory = new ViewFactory(view);
+            
+            if (checkViewAttrs(attrName, attrValue, fileId, viewFactory)) {
+            } else {
+                Log.error("Unknown attrib '" + attrName + "=" + attrValue + "' for ScrollView");
+            }
+        }
+
+        return view;
     }
 
     private Button NewButton(Element element, String fileId) {

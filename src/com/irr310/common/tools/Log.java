@@ -107,6 +107,7 @@ public class Log {
 
     public static void error(String string) {
         System.err.println(string);
+        throw new RuntimeException(string);
     }
     
     public static void warn(String string) {
