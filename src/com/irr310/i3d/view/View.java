@@ -6,6 +6,7 @@ import com.irr310.i3d.Graphics;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
+import fr.def.iss.vd2.lib_v3d.V3DMouseEvent.Action;
 
 public abstract class View {
 
@@ -22,6 +23,7 @@ public abstract class View {
     private String id;
     private OnClickListener onClickListener = null;
     private String help;
+    private OnMouseEventListener onMouseEventListener;
     
     public View() {
         layoutParams = new LayoutParams();
@@ -159,6 +161,10 @@ public abstract class View {
         this.onClickListener = onClickListener;
     }
     
+    public void setOnMouseListener(OnMouseEventListener onMouseEventListener) {
+        this.onMouseEventListener = onMouseEventListener;
+    }
+    
     public boolean performClick() {
         if (onClickListener != null) {
             onClickListener.onClick(this);
@@ -170,10 +176,31 @@ public abstract class View {
     public static interface OnClickListener {
         void onClick(View view); 
     }
+    
+    public static interface OnMouseEventListener {
+        boolean onMouseEvent(V3DMouseEvent mouseEvent); 
+    }
 
     public void setHelp(String help) {
         this.help = help;
     }
 
-    public abstract boolean onMouseEvent(V3DMouseEvent mouseEvent);
+//    public abstract boolean onMouseEvent(V3DMouseEvent mouseEvent);
+    
+    
+    public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
+        if(mouseEvent.getAction() == Action.MOUSE_CLICKED) {
+            if(performClick()) {
+                return true;
+            }
+        }
+        
+        if(onMouseEventListener != null) {
+            return onMouseEventListener.onMouseEvent(mouseEvent);
+        }
+        
+        return false;
+    }
+    
+    
 }

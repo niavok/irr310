@@ -3,7 +3,7 @@ package fr.def.iss.vd2.lib_v3d;
 public class V3DMouseEvent extends V3DInputEvent {
 
     public enum Action {
-        MOUSE_DRAGGED, MOUSE_MOVED, MOUSE_CLICKED, MOUSE_PRESSED, MOUSE_RELEASED,
+        MOUSE_DRAGGED, MOUSE_MOVED, MOUSE_CLICKED, MOUSE_PRESSED, MOUSE_RELEASED, MOUSE_WHEEL_DOWN, MOUSE_WHEEL_UP,
     }
 
     private Action action;
@@ -17,7 +17,6 @@ public class V3DMouseEvent extends V3DInputEvent {
         this.x = x;
         this.y = y;
         this.button = button;
-
     }
 
     public Action getAction() {
@@ -35,7 +34,7 @@ public class V3DMouseEvent extends V3DInputEvent {
     public int getButton() {
         return button;
     }
-
+    
     public V3DMouseEvent relativeTo(int xOffset, int yOffset) {
         return new V3DMouseEvent(action, x - xOffset, y - yOffset, button);
     }

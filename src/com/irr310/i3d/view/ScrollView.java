@@ -166,6 +166,10 @@ public class ScrollView extends View implements ViewParent {
             }
         }
 
+        if(!used) {
+            used = super.onMouseEvent(mouseEvent);
+        }
+        
         return used;
     }
 

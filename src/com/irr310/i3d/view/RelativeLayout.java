@@ -113,6 +113,10 @@ public class RelativeLayout extends ContainerView {
             }
         }
         
+        if(!used) {
+            used = super.onMouseEvent(mouseEvent);
+        }
+        
         return used;
     }
     

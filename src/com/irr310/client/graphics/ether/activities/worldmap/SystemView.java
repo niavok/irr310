@@ -21,12 +21,12 @@ public class SystemView extends View {
         this.system = system;
         
         layoutParams.setLayoutWidthMeasure(LayoutMeasure.FIXED);
-        layoutParams.setWidthMeasure(new Measure(50, false));
+        layoutParams.setWidthMeasure(new Measure(150, false));
         layoutParams.setLayoutHeightMeasure(LayoutMeasure.FIXED);
-        layoutParams.setHeightMeasure(new Measure(50, false));
+        layoutParams.setHeightMeasure(new Measure(150, false));
         
-        layoutParams.setMarginLeftMeasure(new Measure((float) (system.getLocation().x * 1.), false));
-        layoutParams.setMarginTopMeasure(new Measure((float) (system.getLocation().y * 1.), false));
+        layoutParams.setMarginLeftMeasure(new Measure((float) (system.getLocation().x * 3.), false));
+        layoutParams.setMarginTopMeasure(new Measure((float) (system.getLocation().y * 3.), false));
     }
 
     @Override
@@ -39,7 +39,7 @@ public class SystemView extends View {
         }
             
         g.setColor(color);
-        g.drawFilledRectangle(0, 0, 50, 50);
+        g.drawFilledRectangle(0, 0, 150, 150);
     }
 
     @Override
@@ -56,11 +56,4 @@ public class SystemView extends View {
         // TODO Auto-generated method stub
         return null;
     }
-
-    @Override
-    public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
 }

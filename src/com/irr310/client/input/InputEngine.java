@@ -2,6 +2,7 @@ package com.irr310.client.input;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.newdawn.slick.util.Log;
 
 import com.irr310.common.engine.EventDispatcher;
 import com.irr310.common.engine.FramerateEngine;
@@ -67,9 +68,16 @@ public class InputEngine extends FramerateEngine<GameEvent> {
         
 
         while (Mouse.next()) {
-          
 
-            if (Mouse.getEventButton() == -1) {
+            int dWheel = Mouse.getDWheel();
+            
+            if(dWheel > 0) {
+                V3DMouseEvent mouseEvent = new V3DMouseEvent(Action.MOUSE_WHEEL_UP, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1);
+                dispatcher.sendToAll(new MouseEvent(mouseEvent));
+            } else if(dWheel < 0) {
+                V3DMouseEvent mouseEvent = new V3DMouseEvent(Action.MOUSE_WHEEL_DOWN, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1);
+                dispatcher.sendToAll(new MouseEvent(mouseEvent));
+            } else if (Mouse.getEventButton() == -1) {
                 if (dragging) {
                     // Drag
                     V3DMouseEvent mouseEvent = new V3DMouseEvent(Action.MOUSE_DRAGGED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1);

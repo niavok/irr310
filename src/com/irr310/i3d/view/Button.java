@@ -112,12 +112,4 @@ public class Button extends TextView {
         return view;
     }
     
-    @Override
-    public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
-        if(mouseEvent.getAction() == Action.MOUSE_CLICKED) {
-            performClick();
-            return true;
-        }
-        return false;
-    }
 }

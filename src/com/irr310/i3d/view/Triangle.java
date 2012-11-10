@@ -65,9 +65,4 @@ public class Triangle extends View {
     @Override
     public void onMeasure() {
     }
-    
-    @Override
-    public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
-        return false;
-    }
 }

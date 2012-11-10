@@ -241,11 +241,4 @@ public class TextView extends View {
             layoutParams.mContentHeight = measuredHeight;
         }
     }
-    
-    @Override
-    public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
-        return false;
-    }
-    
-   
 }

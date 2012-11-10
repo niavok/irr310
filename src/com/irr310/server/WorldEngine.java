@@ -106,7 +106,7 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements EventDisp
         int factionCount = 5;
         int systemCount = 100;
         double mapSize = 1000;
-        double mapMinDistance = mapSize/50;
+        double mapMinDistance = 100;
         
         // Init zone positions
         

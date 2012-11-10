@@ -164,6 +164,10 @@ public class LinearLayout extends ContainerView {
             }
         }
         
+        if(!used) {
+            used = super.onMouseEvent(mouseEvent);
+        }
+        
         return used;
     }
     
