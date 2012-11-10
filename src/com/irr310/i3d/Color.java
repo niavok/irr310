@@ -22,6 +22,8 @@ import java.util.regex.Pattern;
 
 import com.irr310.common.tools.Log;
 
+import fr.def.iss.vd2.lib_v3d.V3DColor;
+
 
 /**
  * Class representing a color with alpha channel
@@ -38,6 +40,20 @@ public class Color {
 
         if (r + g + b < 0.3) {
             return randomLightOpaqueColor();
+        } else {
+            return new Color(r, g, b);
+        }
+
+    }
+    
+    public static Color randomDarkOpaqueColor() {
+
+        float r = (float) Math.random();
+        float g = (float) Math.random();
+        float b = (float) Math.random();
+
+        if (r + g + b > 0.7) {
+            return randomDarkOpaqueColor();
         } else {
             return new Color(r, g, b);
         }

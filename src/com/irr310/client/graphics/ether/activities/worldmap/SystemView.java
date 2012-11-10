@@ -1,7 +1,14 @@
 package com.irr310.client.graphics.ether.activities.worldmap;
 
+
+import org.newdawn.slick.util.Log;
+
+import com.irr310.common.world.Faction;
 import com.irr310.common.world.system.WorldSystem;
+import com.irr310.i3d.Color;
 import com.irr310.i3d.Graphics;
+import com.irr310.i3d.Measure;
+import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 import com.irr310.i3d.view.View;
 
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
@@ -12,24 +19,36 @@ public class SystemView extends View {
 
     public SystemView(WorldSystem system) {
         this.system = system;
+        
+        layoutParams.setLayoutWidthMeasure(LayoutMeasure.FIXED);
+        layoutParams.setWidthMeasure(new Measure(50, false));
+        layoutParams.setLayoutHeightMeasure(LayoutMeasure.FIXED);
+        layoutParams.setHeightMeasure(new Measure(50, false));
+        
+        layoutParams.setMarginLeftMeasure(new Measure((float) (system.getLocation().x * 1.), false));
+        layoutParams.setMarginTopMeasure(new Measure((float) (system.getLocation().y * 1.), false));
     }
 
     @Override
     public void onDraw(Graphics g) {
-        // TODO Auto-generated method stub
-
+        Faction faction = system.getOwner();
+        
+        Color color = Color.grey;
+        if(faction != null) {
+            color = faction.getColor();
+        }
+            
+        g.setColor(color);
+        g.drawFilledRectangle(0, 0, 50, 50);
     }
 
     @Override
     public void onLayout(float l, float t, float r, float b) {
-        // TODO Auto-generated method stub
-
+       Log.debug("SystemView onLayout"); 
     }
 
     @Override
     public void onMeasure() {
-        // TODO Auto-generated method stub
-
     }
 
     @Override

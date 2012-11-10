@@ -1,6 +1,7 @@
 package com.irr310.server.game;
 
 import com.irr310.common.tools.Vec3;
+import com.irr310.common.world.Faction;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.capacity.BalisticWeaponCapacity;
 import com.irr310.common.world.capacity.ContactDetectorCapacity;
@@ -142,12 +143,12 @@ public class ComponentFactory {
         return component;
     }
 
-    public static Component createGun(String componentName, String capacityName, Player player) {
+    public static Component createGun(String componentName, String capacityName, Faction faction) {
         Component component = createSimpleComponent(componentName);
         component.setSkin("gun");
         component.initDurability(50);
         Part part = component.getFirstPart();
-        part.setOwner(player);
+        part.setOwner(faction);
         part.setMass(4d);
         part.setShape(new Vec3(1, 2, 1));
         Vec3 shape = part.getShape();

@@ -1,6 +1,7 @@
 package com.irr310.i3d.view;
 
 import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.util.Log;
 
 import com.irr310.i3d.Color;
 import com.irr310.i3d.Graphics;
@@ -26,6 +27,8 @@ public class ScrollView extends View implements ViewParent {
     float scrollingBaseY = 0;
     float scrollingBaseOffsetX = 0;
     float scrollingBaseOffsetY = 0;
+    private float oldWidth = 0;
+    private float oldHeight = 0;
 
     public ScrollView() {
         super();
@@ -64,6 +67,8 @@ public class ScrollView extends View implements ViewParent {
 
     @Override
     public void onLayout(float l, float t, float r, float b) {
+        
+        
         LayoutParams childLayoutParams = child.getLayoutParams();
         childLayoutParams.computeFrame(layoutParams);
         child.layout(childLayoutParams.mComputedLeft + layoutParams.computeMesure(childLayoutParams.getLayoutMarginLeft())
@@ -74,6 +79,15 @@ public class ScrollView extends View implements ViewParent {
                              - layoutParams.computeMesure(childLayoutParams.getLayoutPaddingRight()),
                      childLayoutParams.mComputedBottom - layoutParams.computeMesure(childLayoutParams.getLayoutMarginBottom())
                              - layoutParams.computeMesure(childLayoutParams.getLayoutPaddingBottom()));
+        
+        float oldCenterX = oldWidth / 2 - scrollOffsetX;
+        float oldCenterY = oldHeight / 2 - scrollOffsetY;
+        
+        setCenterScroll(oldCenterX, oldCenterY);
+        
+        
+        oldWidth = layoutParams.getWidth();
+        oldHeight = layoutParams.getHeight();
     }
 
     @Override
@@ -130,6 +144,9 @@ public class ScrollView extends View implements ViewParent {
             } else if (mouseEvent.getAction() == Action.MOUSE_DRAGGED) {
                 scrollOffsetX = scrollingBaseOffsetX + (mouseEvent.getX() - scrollingBaseX);
                 scrollOffsetY = scrollingBaseOffsetY + (mouseEvent.getY() - scrollingBaseY);
+                Log.debug("scrollOffsetX="+scrollOffsetX);
+                Log.debug("scrollOffsetY="+scrollOffsetY);
+                
             }
             used = true;
         } else {
@@ -166,6 +183,13 @@ public class ScrollView extends View implements ViewParent {
             outputView = child.findViewById(id);
         }
         return outputView;
+    }
+
+    public void setCenterScroll(float x, float y) {
+        Log.debug("setCenterScroll at "+x+";"+y);
+        Log.debug("setCenterScroll width="+layoutParams.getWidth()+" height="+layoutParams.getHeight());
+        scrollOffsetX = layoutParams.getWidth()/2 - x;
+        scrollOffsetY = layoutParams.getHeight()/2 - y;
     }
 
 }

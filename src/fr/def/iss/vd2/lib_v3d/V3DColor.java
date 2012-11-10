@@ -176,4 +176,8 @@ public class V3DColor {
                             baseColor.b * (1 - mix) + targetColor.b * mix, //
                             baseColor.a * (1 - mix) + targetColor.a * mix); //
     }
+
+    public static V3DColor fromI3d(com.irr310.i3d.Color color) {
+        return new V3DColor(color.r, color.g, color.b, color.a);
+    }
 }

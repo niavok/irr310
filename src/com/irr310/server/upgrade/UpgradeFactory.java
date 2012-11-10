@@ -91,53 +91,53 @@ public class UpgradeFactory {
 
     private static void initWorldUpgradables(Player player) {
 
-        List<Ship> shipList = player.getShipList();
-        for (Ship ship : shipList) {
-            for (Component component : ship.getComponents()) {
-                List<BalisticWeaponCapacity> capacities = component.getCapacitiesByClass(BalisticWeaponCapacity.class);
-                for (BalisticWeaponCapacity gunCapacity : capacities) {
-                    if (gunCapacity.getName().equals("gun")) {
-                        gunCapacity.damage = GUN_BASE_DAMAGE;
-                        gunCapacity.accuracy = GUN_BASE_ACCURACY;
-                        gunCapacity.coolingSpeed = GUN_BASE_COOLINGSPEED;
-                        gunCapacity.firerate = GUN_BASE_FIRERATE;
-                        gunCapacity.heatingSpeed = GUN_BASE_HEATINGSPEED;
-                        gunCapacity.range = GUN_BASE_RANGE;
-                        gunCapacity.armorPenetration = GUN_BASE_ARMOR_PENETRATION;
-                    } else if (gunCapacity.getName().equals("shotgun")) {
-                        gunCapacity.damage = SHOTGUN_BASE_DAMAGE;
-                        gunCapacity.accuracy = SHOTGUN_BASE_ACCURACY;
-                        gunCapacity.coolingSpeed = SHOTGUN_BASE_COOLINGSPEED;
-                        gunCapacity.firerate = SHOTGUN_BASE_FIRERATE;
-                        gunCapacity.heatingSpeed = SHOTGUN_BASE_HEATINGSPEED;
-                        gunCapacity.range = SHOTGUN_BASE_RANGE;
-                        gunCapacity.armorPenetration = SHOTGUN_BASE_ARMOR_PENETRATION;
-                    }
-                }
-                
-                List<RocketWeaponCapacity> rocketCapacities = component.getCapacitiesByClass(RocketWeaponCapacity.class);
-                for (RocketWeaponCapacity rocketCapacity : rocketCapacities) {
-                    rocketCapacity.explosionDamage = ROCKETPOD_BASE_DAMAGE;
-                    rocketCapacity.explosionRadius = ROCKETPOD_BASE_RADIUS;
-                    rocketCapacity.explosionBlast = ROCKETPOD_BASE_BLAST;
-                    rocketCapacity.cooldown = ROCKETPOD_BASE_COOLDOWN;
-                    rocketCapacity.thrust = ROCKETPOD_BASE_THRUST;
-                    rocketCapacity.thrustDuration = ROCKETPOD_BASE_THRUST_DURATION;
-                    rocketCapacity.stability = ROCKETPOD_BASE_STABILITY;
-                    rocketCapacity.armorPenetration = ROCKETPOD_BASE_ARMOR_PENETRATION;
-                    rocketCapacity.firerate = ROCKETPOD_BASE_FIRERATE;
-                }
-                
-                List<LinearEngineCapacity> engineCapacities = component.getCapacitiesByClass(LinearEngineCapacity.class);
-                for (LinearEngineCapacity engineCapacity : engineCapacities) {
-                    if(engineCapacity.getName().equals("reactor")) {
-                        engineCapacity.theoricalMaxThrust = REACTOR_BASE_MAX_THRUST;
-                        engineCapacity.theoricalMinThrust = REACTOR_BASE_MIN_THRUST;
-                        engineCapacity.theoricalVariationSpeed = REACTOR_BASE_VARIATION_SPEED;
-                    }
-                }
-            }
-        }
+//        List<Ship> shipList = player.getShipList();
+//        for (Ship ship : shipList) {
+//            for (Component component : ship.getComponents()) {
+//                List<BalisticWeaponCapacity> capacities = component.getCapacitiesByClass(BalisticWeaponCapacity.class);
+//                for (BalisticWeaponCapacity gunCapacity : capacities) {
+//                    if (gunCapacity.getName().equals("gun")) {
+//                        gunCapacity.damage = GUN_BASE_DAMAGE;
+//                        gunCapacity.accuracy = GUN_BASE_ACCURACY;
+//                        gunCapacity.coolingSpeed = GUN_BASE_COOLINGSPEED;
+//                        gunCapacity.firerate = GUN_BASE_FIRERATE;
+//                        gunCapacity.heatingSpeed = GUN_BASE_HEATINGSPEED;
+//                        gunCapacity.range = GUN_BASE_RANGE;
+//                        gunCapacity.armorPenetration = GUN_BASE_ARMOR_PENETRATION;
+//                    } else if (gunCapacity.getName().equals("shotgun")) {
+//                        gunCapacity.damage = SHOTGUN_BASE_DAMAGE;
+//                        gunCapacity.accuracy = SHOTGUN_BASE_ACCURACY;
+//                        gunCapacity.coolingSpeed = SHOTGUN_BASE_COOLINGSPEED;
+//                        gunCapacity.firerate = SHOTGUN_BASE_FIRERATE;
+//                        gunCapacity.heatingSpeed = SHOTGUN_BASE_HEATINGSPEED;
+//                        gunCapacity.range = SHOTGUN_BASE_RANGE;
+//                        gunCapacity.armorPenetration = SHOTGUN_BASE_ARMOR_PENETRATION;
+//                    }
+//                }
+//                
+//                List<RocketWeaponCapacity> rocketCapacities = component.getCapacitiesByClass(RocketWeaponCapacity.class);
+//                for (RocketWeaponCapacity rocketCapacity : rocketCapacities) {
+//                    rocketCapacity.explosionDamage = ROCKETPOD_BASE_DAMAGE;
+//                    rocketCapacity.explosionRadius = ROCKETPOD_BASE_RADIUS;
+//                    rocketCapacity.explosionBlast = ROCKETPOD_BASE_BLAST;
+//                    rocketCapacity.cooldown = ROCKETPOD_BASE_COOLDOWN;
+//                    rocketCapacity.thrust = ROCKETPOD_BASE_THRUST;
+//                    rocketCapacity.thrustDuration = ROCKETPOD_BASE_THRUST_DURATION;
+//                    rocketCapacity.stability = ROCKETPOD_BASE_STABILITY;
+//                    rocketCapacity.armorPenetration = ROCKETPOD_BASE_ARMOR_PENETRATION;
+//                    rocketCapacity.firerate = ROCKETPOD_BASE_FIRERATE;
+//                }
+//                
+//                List<LinearEngineCapacity> engineCapacities = component.getCapacitiesByClass(LinearEngineCapacity.class);
+//                for (LinearEngineCapacity engineCapacity : engineCapacities) {
+//                    if(engineCapacity.getName().equals("reactor")) {
+//                        engineCapacity.theoricalMaxThrust = REACTOR_BASE_MAX_THRUST;
+//                        engineCapacity.theoricalMinThrust = REACTOR_BASE_MIN_THRUST;
+//                        engineCapacity.theoricalVariationSpeed = REACTOR_BASE_VARIATION_SPEED;
+//                    }
+//                }
+//            }
+//        }
 
     }
 

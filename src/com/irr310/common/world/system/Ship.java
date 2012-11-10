@@ -10,6 +10,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import com.irr310.common.Game;
 import com.irr310.common.engine.PhysicEngine;
 import com.irr310.common.tools.Vec3;
+import com.irr310.common.world.Faction;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.World;
 import com.irr310.common.world.capacity.KernelCapacity;
@@ -24,7 +25,7 @@ public class Ship extends GameEntity implements Container {
     List<Component> components = new CopyOnWriteArrayList<Component>();
     Map<String, Component> componentNamesMap = new HashMap<String, Component>();
     KernelCapacity kernel;
-    private Player owner;
+    private Faction owner;
     private boolean destructible;
     private SystemEngine systemEngine;
 
@@ -102,7 +103,7 @@ public class Ship extends GameEntity implements Container {
         return kernel;
     }
 
-    public void setOwner(Player owner) {
+    public void setOwner(Faction owner) {
         if (this.owner != null) {
             this.owner.removeShip(this);
         }
@@ -116,14 +117,14 @@ public class Ship extends GameEntity implements Container {
         this.owner.giveShip(this);
     }
 
-    public Player getOwner() {
+    public Faction getOwner() {
         return owner;
     }
 
     public ShipView toView() {
         ShipView shipView = new ShipView();
         shipView.id = getId();
-        shipView.owner = owner.toView();
+//        shipView.owner = owner.toView();
 
         for (Link link : links) {
             shipView.links.add(link.toView());
@@ -138,7 +139,7 @@ public class Ship extends GameEntity implements Container {
 
     public void fromView(ShipView shipView) {
         World world = systemEngine.getWorld();
-        setOwner(world.loadPlayer(shipView.owner));
+//        setOwner(world.loadPlayer(shipView.owner));
 //
 //        for (ComponentView component : shipView.components) {
 //            assign(world.loadComponent(component));

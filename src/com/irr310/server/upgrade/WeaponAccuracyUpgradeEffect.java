@@ -17,38 +17,38 @@ public class WeaponAccuracyUpgradeEffect extends UpgradeEffect {
     @Override
     public void apply(UpgradeOwnership playerUpgrade) {
         Player player = playerUpgrade.getPlayer();
-        List<Ship> shipList = player.getShipList();
-        for(Ship ship: shipList) {
-            for(Component component: ship.getComponents()) {
-                List<BalisticWeaponCapacity> capacities = component.getCapacitiesByClass(BalisticWeaponCapacity.class);
-                for (BalisticWeaponCapacity gunCapacity : capacities) {
-                    
-                    double lastAccuracy = gunCapacity.accuracy;
-                    
-                    if(playerUpgrade.getRank() > 0) {
-                        gunCapacity.accuracy /=  (1 + 0.1 * Math.pow(2,playerUpgrade.getRank()));
-                    }
-                    if(gunCapacity.accuracy != lastAccuracy) {
-                        //TODO: network !
-                    }
-                    
-                }
-                
-                List<RocketWeaponCapacity> rocketCapacities = component.getCapacitiesByClass(RocketWeaponCapacity.class);
-                for (RocketWeaponCapacity rocketCapacity : rocketCapacities) {
-                    double lastAccuracy = rocketCapacity.stability;
-                    
-                    if(playerUpgrade.getRank() > 0) {
-                        rocketCapacity.stability /=  (1 + 10* 0.1 * Math.pow(2,playerUpgrade.getRank()));
-                        Log.trace("new stability "+rocketCapacity.stability);
-                    }
-                    if(rocketCapacity.stability != lastAccuracy) {
-                        //TODO: network !
-                    }
-                }
-                
-            }
-        }
+//        List<Ship> shipList = player.getShipList();
+//        for(Ship ship: shipList) {
+//            for(Component component: ship.getComponents()) {
+//                List<BalisticWeaponCapacity> capacities = component.getCapacitiesByClass(BalisticWeaponCapacity.class);
+//                for (BalisticWeaponCapacity gunCapacity : capacities) {
+//                    
+//                    double lastAccuracy = gunCapacity.accuracy;
+//                    
+//                    if(playerUpgrade.getRank() > 0) {
+//                        gunCapacity.accuracy /=  (1 + 0.1 * Math.pow(2,playerUpgrade.getRank()));
+//                    }
+//                    if(gunCapacity.accuracy != lastAccuracy) {
+//                        //TODO: network !
+//                    }
+//                    
+//                }
+//                
+//                List<RocketWeaponCapacity> rocketCapacities = component.getCapacitiesByClass(RocketWeaponCapacity.class);
+//                for (RocketWeaponCapacity rocketCapacity : rocketCapacities) {
+//                    double lastAccuracy = rocketCapacity.stability;
+//                    
+//                    if(playerUpgrade.getRank() > 0) {
+//                        rocketCapacity.stability /=  (1 + 10* 0.1 * Math.pow(2,playerUpgrade.getRank()));
+//                        Log.trace("new stability "+rocketCapacity.stability);
+//                    }
+//                    if(rocketCapacity.stability != lastAccuracy) {
+//                        //TODO: network !
+//                    }
+//                }
+//                
+//            }
+//        }
     }
 
     @Override

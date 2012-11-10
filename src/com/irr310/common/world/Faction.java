@@ -7,16 +7,24 @@ import java.util.List;
 import java.util.ListIterator;
 
 import com.irr310.common.world.system.GameEntity;
+import com.irr310.common.world.system.Ship;
 import com.irr310.common.world.system.WorldSystem;
+import com.irr310.i3d.Color;
+
+import fr.def.iss.vd2.lib_v3d.V3DColor;
 
 public class Faction extends GameEntity{
 
     private WorldSystem homeSystem;
     private List<WorldSystem> knownSystems = new ArrayList<WorldSystem>();
     private List<Player> players = new ArrayList<Player>();
+    private Color color;
+    private List<Ship> shipList = new ArrayList<Ship>();;
+    
     
     public Faction(long id) {
         super(id);
+        color = Color.randomDarkOpaqueColor();
     }
 
     public void setHomeSystem(WorldSystem system) {
@@ -41,4 +49,24 @@ public class Faction extends GameEntity{
         player.setFaction(this);
     }
 
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+    
+    public void giveShip(Ship ship) {
+        shipList.add(ship);
+    }
+    
+    public void removeShip(Ship ship) {
+        shipList.remove(ship);
+    }
+    
+    public List<Ship> getShipList() {
+        return shipList;
+    }
+    
 }

@@ -38,7 +38,7 @@ public class Map {
         Log.trace(points);
     }
 
-    public List<WorldSystem> getZones() {
+    public List<WorldSystem> getSystems() {
         return zones;
     }
 

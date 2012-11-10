@@ -11,6 +11,7 @@ import com.irr310.client.navigation.LoginManager;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec2;
 import com.irr310.common.tools.Vec3;
+import com.irr310.common.world.Faction;
 import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.view.CelestialObjectView;
 import com.irr310.common.world.view.ComponentView;
@@ -34,6 +35,7 @@ public class WorldSystem extends GameEntity {
     private final Map<Long, Part> partIdMap;
     private final Map<Long, Ship> shipIdMap;
     private SystemEngine systemEngine;
+    private Faction owner;
     
     public WorldSystem(long id, Vec2 location) {
         super(id);
@@ -129,13 +131,13 @@ public class WorldSystem extends GameEntity {
     private void addPart(Part part) {
         partIdMap.put(part.getId(), part);
         parts.add(part);
-        if (part.getOwner() == LoginManager.localPlayer) {
-            myParts.add(part);
-        }
+//        if (part.getOwner() == LoginManager.localPlayer.getFaction()) {
+//            myParts.add(part);
+//        }
     }
 
     private void removePart(Part part) {
-        if (part.getOwner() == LoginManager.localPlayer) {
+        if (part.getOwner() == LoginManager.localPlayer.getFaction()) {
             myParts.remove(part);
         }
         parts.remove(part);
@@ -236,6 +238,14 @@ public class WorldSystem extends GameEntity {
 
     public List<Part> getMyParts() {
         return myParts;
+    }
+
+    public void setOwner(Faction faction) {
+        this.owner = faction;
+    }
+    
+    public Faction getOwner() {
+        return owner;
     }
 
 //    public void removeShip(Ship ship) {

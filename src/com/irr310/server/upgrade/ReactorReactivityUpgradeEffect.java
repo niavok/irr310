@@ -15,26 +15,26 @@ public class ReactorReactivityUpgradeEffect extends UpgradeEffect {
     @Override
     public void apply(UpgradeOwnership playerUpgrade) {
         Player player = playerUpgrade.getPlayer();
-        List<Ship> shipList = player.getShipList();
-
-        for (Ship ship : shipList) {
-            for (Component component : ship.getComponents()) {
-                List<LinearEngineCapacity> engineCapacities = component.getCapacitiesByClass(LinearEngineCapacity.class);
-                for (LinearEngineCapacity engineCapacity : engineCapacities) {
-                    if(engineCapacity.getName().equals("reactor")) {
-                        double lastTheoricalMinThrust = engineCapacity.theoricalVariationSpeed;
-    
-                        if (playerUpgrade.getRank() > 0) {
-                            engineCapacity.theoricalVariationSpeed *= (1 + 3 * 0.1 * Math.pow(2, playerUpgrade.getRank()));
-                        }
-                        if (engineCapacity.theoricalVariationSpeed != lastTheoricalMinThrust) {
-                            // TODO: network !
-                        }
-                    }
-
-                }
-            }
-        }
+//        List<Ship> shipList = player.getShipList();
+//
+//        for (Ship ship : shipList) {
+//            for (Component component : ship.getComponents()) {
+//                List<LinearEngineCapacity> engineCapacities = component.getCapacitiesByClass(LinearEngineCapacity.class);
+//                for (LinearEngineCapacity engineCapacity : engineCapacities) {
+//                    if(engineCapacity.getName().equals("reactor")) {
+//                        double lastTheoricalMinThrust = engineCapacity.theoricalVariationSpeed;
+//    
+//                        if (playerUpgrade.getRank() > 0) {
+//                            engineCapacity.theoricalVariationSpeed *= (1 + 3 * 0.1 * Math.pow(2, playerUpgrade.getRank()));
+//                        }
+//                        if (engineCapacity.theoricalVariationSpeed != lastTheoricalMinThrust) {
+//                            // TODO: network !
+//                        }
+//                    }
+//
+//                }
+//            }
+//        }
     }
 
     @Override

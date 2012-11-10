@@ -6,6 +6,7 @@ import java.util.List;
 import com.irr310.common.Game;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
+import com.irr310.common.world.Faction;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.view.PartStateView;
 import com.irr310.common.world.view.PartView;
@@ -20,7 +21,7 @@ public class Part extends GameEntity {
     private final Vec3 linearSpeed;
     private final TransformMatrix transform;
     private Vec3 shape;
-    private Player owner;
+    private Faction owner;
     private final WorldObject parentObject;
     private CollisionShape collisionShape;
     private List<Part> collisionExcludeList;
@@ -156,11 +157,11 @@ public class Part extends GameEntity {
 
     }
 
-    public Player getOwner() {
+    public Faction getOwner() {
         return owner;
     }
 
-    public void setOwner(Player owner) {
+    public void setOwner(Faction owner) {
         this.owner = owner;
     }
 

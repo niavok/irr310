@@ -120,7 +120,7 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements EventDisp
             Vec2 location = new Vec2(0, distance).rotate(azimut);
             
 
-            if(map.getZones().size() > 0) {
+            if(map.getSystems().size() > 0) {
                 
                 WorldSystem nearestSystem = map.nearestSystemTo(location);
                 
@@ -170,6 +170,8 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements EventDisp
             
             
             getWorld().addItem(nexus);
+            
+            system.setOwner(faction);
             
             nexus.forceDeploy(system, system.getRandomEmptySpace(nexus.getDeployedRadius()));
         }

@@ -2,7 +2,7 @@
 <RelativeLayout i3d:id="main" i3d:layout_width="match_parent"
 	i3d:layout_height="match_parent">
 
-	<ScrollView i3d:layout_width="match_parent"
+	<ScrollView i3d:id="mapScrollView" i3d:layout_width="match_parent"
 		i3d:layout_height="match_parent">
 		<RelativeLayout i3d:id="map" />
 		 <!-- <Triangle

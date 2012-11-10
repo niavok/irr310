@@ -15,24 +15,24 @@ public class WeaponCoolingUpgradeEffect extends UpgradeEffect {
     @Override
     public void apply(UpgradeOwnership playerUpgrade) {
         Player player = playerUpgrade.getPlayer();
-        List<Ship> shipList = player.getShipList();
-        
-        for(Ship ship: shipList) {
-            for(Component component: ship.getComponents()) {
-                List<BalisticWeaponCapacity> capacities = component.getCapacitiesByClass(BalisticWeaponCapacity.class);
-                for (BalisticWeaponCapacity gunCapacity : capacities) {
-                    
-                    double lastCoolingspeed = gunCapacity.coolingSpeed;
-                    
-                    if(playerUpgrade.getRank() > 0) {
-                        gunCapacity.coolingSpeed /=  (1 + 0.1 * Math.pow(2,playerUpgrade.getRank()));
-                    }
-                    if(gunCapacity.coolingSpeed != lastCoolingspeed) {
-                        //TODO: network !
-                    }
-                }
-            }
-        }
+//        List<Ship> shipList = player.getShipList();
+//        
+//        for(Ship ship: shipList) {
+//            for(Component component: ship.getComponents()) {
+//                List<BalisticWeaponCapacity> capacities = component.getCapacitiesByClass(BalisticWeaponCapacity.class);
+//                for (BalisticWeaponCapacity gunCapacity : capacities) {
+//                    
+//                    double lastCoolingspeed = gunCapacity.coolingSpeed;
+//                    
+//                    if(playerUpgrade.getRank() > 0) {
+//                        gunCapacity.coolingSpeed /=  (1 + 0.1 * Math.pow(2,playerUpgrade.getRank()));
+//                    }
+//                    if(gunCapacity.coolingSpeed != lastCoolingspeed) {
+//                        //TODO: network !
+//                    }
+//                }
+//            }
+//        }
     }
 
     @Override

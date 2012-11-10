@@ -15,29 +15,29 @@ public class ReactorReverseThrustUpgradeEffect extends UpgradeEffect {
     @Override
     public void apply(UpgradeOwnership playerUpgrade) {
         Player player = playerUpgrade.getPlayer();
-        List<Ship> shipList = player.getShipList();
-
-        for (Ship ship : shipList) {
-            for (Component component : ship.getComponents()) {
-                List<LinearEngineCapacity> engineCapacities = component.getCapacitiesByClass(LinearEngineCapacity.class);
-                for (LinearEngineCapacity engineCapacity : engineCapacities) {
-                    if(engineCapacity.getName().equals("reactor")) {
-                        double lastTheoricalMinThrust = engineCapacity.theoricalMinThrust;
-    
-                        if (playerUpgrade.getRank() > 0) {
-                            engineCapacity.theoricalMinThrust *= (1 + 0.1 * Math.pow(2, playerUpgrade.getRank()));
-                            engineCapacity.theoricalVariationSpeed *= (1 + 0.25 * 0.1 * Math.pow(2, playerUpgrade.getRank()));
-                        }
-                        if (engineCapacity.theoricalMinThrust != lastTheoricalMinThrust) {
-                            // TODO: network !
-                        }
-                    }
-
-                }
-
-
-            }
-        }
+//        List<Ship> shipList = player.getShipList();
+//
+//        for (Ship ship : shipList) {
+//            for (Component component : ship.getComponents()) {
+//                List<LinearEngineCapacity> engineCapacities = component.getCapacitiesByClass(LinearEngineCapacity.class);
+//                for (LinearEngineCapacity engineCapacity : engineCapacities) {
+//                    if(engineCapacity.getName().equals("reactor")) {
+//                        double lastTheoricalMinThrust = engineCapacity.theoricalMinThrust;
+//    
+//                        if (playerUpgrade.getRank() > 0) {
+//                            engineCapacity.theoricalMinThrust *= (1 + 0.1 * Math.pow(2, playerUpgrade.getRank()));
+//                            engineCapacity.theoricalVariationSpeed *= (1 + 0.25 * 0.1 * Math.pow(2, playerUpgrade.getRank()));
+//                        }
+//                        if (engineCapacity.theoricalMinThrust != lastTheoricalMinThrust) {
+//                            // TODO: network !
+//                        }
+//                    }
+//
+//                }
+//
+//
+//            }
+//        }
     }
 
     @Override

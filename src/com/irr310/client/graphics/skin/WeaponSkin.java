@@ -31,7 +31,7 @@ public class WeaponSkin extends Skin {
 
         File v3drawFileStructure = new File("graphics/output/gun.v3draw");
         final V3DrawElement elementStructure = V3DrawElement.LoadFromFile(v3drawFileStructure, engine.getV3DContext());
-        elements.add(new V3DColorElement(new V3DShaderElement(elementStructure, "propeller"), object.getShip().getOwner().getColor()));
+        elements.add(new V3DColorElement(new V3DShaderElement(elementStructure, "propeller"), V3DColor.fromI3d(object.getShip().getOwner().getColor())));
         
         transform = object.getFirstPart().getTransform();
         elements.setTransformMatrix(transform.toFloatBuffer());

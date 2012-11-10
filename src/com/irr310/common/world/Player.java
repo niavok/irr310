@@ -23,11 +23,9 @@ public class Player extends GameEntity {
     private String login;
     private String password;
     private String passwordSalt;
-    private List<Ship> shipList;
 //    private List<ItemOld> inventory;
     private List<UpgradeOwnership> upgrades;
     private int  money;
-    private V3DColor color;
 
     private double lastInterrest;
 
@@ -41,12 +39,11 @@ public class Player extends GameEntity {
 	public Player(long id, String login) {
 	    super(id);
         this.login = login;
-        shipList = new ArrayList<Ship>();
+        
         upgrades = new ArrayList<UpgradeOwnership>();
 //        inventory = new ArrayList<ItemOld>();
         money = 0;
         lastInterrest = 0;
-        color = V3DColor.grey;
         human = false;
 	}
 	
@@ -63,18 +60,6 @@ public class Player extends GameEntity {
         return Hash.calculateHash(password, this.passwordSalt).equals(this.password);
     }
 
-    public void giveShip(Ship ship) {
-        shipList.add(ship);
-    }
-    
-    public void removeShip(Ship ship) {
-        shipList.remove(ship);
-    }
-    
-    public List<Ship> getShipList() {
-        return shipList;
-    }
-    
     public void setHuman(boolean human) {
         this.human = human;
     }
@@ -162,9 +147,9 @@ public class Player extends GameEntity {
 ////        Game.getInstance().sendToAll(new InventoryChangedEvent(this, item, ChangeType.REMOVE));
 //    }
 
-    public Ship getPreferredShip() {
-        return getShipList().get(0);
-    }
+//    public Ship getPreferredShip() {
+//        return getShipList().get(0);
+//    }
     
     public ShipSchema getShipSchema() {
         return shipShema;
@@ -198,14 +183,6 @@ public class Player extends GameEntity {
 //            retireItem(itemToRemove);
 //        }
 //    }
-
-    public V3DColor getColor() {
-        return color;
-    }
-
-    public void setColor(V3DColor color) {
-        this.color = color;
-    }
 
     public boolean isHuman() {
         return human;

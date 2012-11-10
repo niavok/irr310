@@ -15,28 +15,28 @@ public class WeaponArmorPenetrationUpgradeEffect extends UpgradeEffect {
     @Override
     public void apply(UpgradeOwnership playerUpgrade) {
         Player player = playerUpgrade.getPlayer();
-        List<Ship> shipList = player.getShipList();
-        
-        for(Ship ship: shipList) {
-            for(Component component: ship.getComponents()) {
-                List<BalisticWeaponCapacity> capacities = component.getCapacitiesByClass(BalisticWeaponCapacity.class);
-                for (BalisticWeaponCapacity gunCapacity : capacities) {
-                    
-                    double lastAccuracy = gunCapacity.accuracy;
-                    
-                    if(playerUpgrade.getRank() > 0) {
-                        gunCapacity.armorPenetration *=  (1 + 0.25* 0.1 * Math.pow(2,playerUpgrade.getRank()));
-                        if(gunCapacity.armorPenetration > 1) {
-                            gunCapacity.armorPenetration = 1;
-                        }
-                    }
-                    if(gunCapacity.armorPenetration != lastAccuracy) {
-                        //TODO: network !
-                    }
-                    
-                }
-            }
-        }
+//        List<Ship> shipList = player.getShipList();
+//        
+//        for(Ship ship: shipList) {
+//            for(Component component: ship.getComponents()) {
+//                List<BalisticWeaponCapacity> capacities = component.getCapacitiesByClass(BalisticWeaponCapacity.class);
+//                for (BalisticWeaponCapacity gunCapacity : capacities) {
+//                    
+//                    double lastAccuracy = gunCapacity.accuracy;
+//                    
+//                    if(playerUpgrade.getRank() > 0) {
+//                        gunCapacity.armorPenetration *=  (1 + 0.25* 0.1 * Math.pow(2,playerUpgrade.getRank()));
+//                        if(gunCapacity.armorPenetration > 1) {
+//                            gunCapacity.armorPenetration = 1;
+//                        }
+//                    }
+//                    if(gunCapacity.armorPenetration != lastAccuracy) {
+//                        //TODO: network !
+//                    }
+//                    
+//                }
+//            }
+//        }
     }
 
     @Override

@@ -16,38 +16,38 @@ public class WeaponRangeUpgradeEffect extends UpgradeEffect {
     @Override
     public void apply(UpgradeOwnership playerUpgrade) {
         Player player = playerUpgrade.getPlayer();
-        List<Ship> shipList = player.getShipList();
-
-        for (Ship ship : shipList) {
-            for (Component component : ship.getComponents()) {
-                List<BalisticWeaponCapacity> capacities = component.getCapacitiesByClass(BalisticWeaponCapacity.class);
-                for (BalisticWeaponCapacity gunCapacity : capacities) {
-
-                    double lastRange = gunCapacity.range;
-
-                    if (playerUpgrade.getRank() > 0) {
-                        gunCapacity.range *= (1 + 0.1 * 3 * Math.pow(2, playerUpgrade.getRank()));
-                    }
-                    if (gunCapacity.range != lastRange) {
-                        // TODO: network !
-                    }
-
-                }
-
-                List<RocketWeaponCapacity> rocketCapacities = component.getCapacitiesByClass(RocketWeaponCapacity.class);
-                for (RocketWeaponCapacity rocketCapacity : rocketCapacities) {
-                    double lastRange = rocketCapacity.thrustDuration;
-
-                    if (playerUpgrade.getRank() > 0) {
-                        rocketCapacity.thrustDuration *= (1 + 0.1 * 3 * Math.pow(2, playerUpgrade.getRank()));
-                        rocketCapacity.securityTimeout *= (1 + 0.1 * 3 * Math.pow(2, playerUpgrade.getRank()));
-                    }
-                    if (rocketCapacity.thrustDuration != lastRange) {
-                        // TODO: network !
-                    }
-                }
-            }
-        }
+//        List<Ship> shipList = player.getShipList();
+//
+//        for (Ship ship : shipList) {
+//            for (Component component : ship.getComponents()) {
+//                List<BalisticWeaponCapacity> capacities = component.getCapacitiesByClass(BalisticWeaponCapacity.class);
+//                for (BalisticWeaponCapacity gunCapacity : capacities) {
+//
+//                    double lastRange = gunCapacity.range;
+//
+//                    if (playerUpgrade.getRank() > 0) {
+//                        gunCapacity.range *= (1 + 0.1 * 3 * Math.pow(2, playerUpgrade.getRank()));
+//                    }
+//                    if (gunCapacity.range != lastRange) {
+//                        // TODO: network !
+//                    }
+//
+//                }
+//
+//                List<RocketWeaponCapacity> rocketCapacities = component.getCapacitiesByClass(RocketWeaponCapacity.class);
+//                for (RocketWeaponCapacity rocketCapacity : rocketCapacities) {
+//                    double lastRange = rocketCapacity.thrustDuration;
+//
+//                    if (playerUpgrade.getRank() > 0) {
+//                        rocketCapacity.thrustDuration *= (1 + 0.1 * 3 * Math.pow(2, playerUpgrade.getRank()));
+//                        rocketCapacity.securityTimeout *= (1 + 0.1 * 3 * Math.pow(2, playerUpgrade.getRank()));
+//                    }
+//                    if (rocketCapacity.thrustDuration != lastRange) {
+//                        // TODO: network !
+//                    }
+//                }
+//            }
+//        }
     }
 
     @Override
