@@ -1,5 +1,7 @@
 package com.irr310.common.event.game;
 
+import com.irr310.common.tools.Log;
+
 public class DefaultGameEventVisitor implements GameEventVisitor {
 
     @Override

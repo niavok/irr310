@@ -1,19 +1,25 @@
 package com.irr310.server;
 
+import com.irr310.common.engine.EngineManager;
 import com.irr310.common.engine.EventDispatcher;
 import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.engine.PhysicEngine;
+import com.irr310.common.event.EngineEventVisitor;
+import com.irr310.common.event.game.GameEventVisitor;
 import com.irr310.common.event.system.SystemEvent;
+import com.irr310.common.event.system.SystemEventVisitor;
 import com.irr310.common.event.world.DefaultWorldEventVisitor;
 import com.irr310.common.event.world.WorldEvent;
 import com.irr310.common.world.World;
 
-public class SystemEngine extends FramerateEngine<WorldEvent> implements EventDispatcher<SystemEvent> {
+public class SystemEngine extends FramerateEngine<WorldEvent> implements EventDispatcher<SystemEventVisitor, SystemEvent> {
 
     private World world;
+    private EngineManager<SystemEventVisitor, SystemEvent> engineManager;
 
     public SystemEngine(WorldEngine worldEngine) {
         world = worldEngine.getWorld();
+        engineManager = new EngineManager<SystemEventVisitor, SystemEvent>();
     }
 
     @Override
@@ -70,8 +76,15 @@ public class SystemEngine extends FramerateEngine<WorldEvent> implements EventDi
 
     @Override
     public void sendToAll(SystemEvent event) {
-        // TODO Auto-generated method stub
-        
+        engineManager.sendToAll(event);
+    }
+    
+    public void registerEventVisitor(SystemEventVisitor visitor) {
+        engineManager.registerEventVisitor(visitor);
+    }
+
+    public void unregisterEventVisitor(SystemEventVisitor visitor) {
+        engineManager.unregisterEventVisitor(visitor);
     }
 
 }

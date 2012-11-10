@@ -2,12 +2,12 @@ package com.irr310.common.world.item;
 
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Faction;
-import com.irr310.common.world.system.System;
+import com.irr310.common.world.system.WorldSystem;
 
 public abstract class DeployableItem extends Item {
     
     private double deployedRadius;
-    protected System currentSystem;
+    protected WorldSystem currentSystem;
 
     public DeployableItem(long id, Faction owner) {
         super(id, owner);
@@ -23,7 +23,7 @@ public abstract class DeployableItem extends Item {
         return deployedRadius;
     }
     
-    public void forceDeploy(System system, Vec3 position) {
+    public void forceDeploy(WorldSystem system, Vec3 position) {
         
         this.currentSystem = system;
         doDeploy(position);

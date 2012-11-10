@@ -11,6 +11,11 @@ public class Intent {
         activityClass = activityclass;
         bundle = null;
     }
+    
+    public Intent(Class<? extends Activity> activityclass, Bundle bundle) {
+        activityClass = activityclass;
+        this.bundle = bundle;
+    }
 
     public Class<? extends Activity> getActivityClass() {
         return activityClass;

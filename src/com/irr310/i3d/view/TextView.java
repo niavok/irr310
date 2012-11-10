@@ -36,8 +36,7 @@ public class TextView extends View {
         BOTTOM_RIGHT,
     }
     
-    public TextView(Graphics g) {
-        super(g);
+    public TextView() {
         font = I3dContext.getInstance().getDefaultFont();
         wrappedText = new String[0];
 
@@ -46,7 +45,7 @@ public class TextView extends View {
     }
 
     @Override
-    public void onDraw() {
+    public void onDraw(Graphics g) {
 
         // int localX = x + g.getTranslation().getX();
         // int localXbase = localX;
@@ -130,7 +129,7 @@ public class TextView extends View {
 
     @Override
     public View duplicate() {
-        TextView view = new TextView(g);
+        TextView view = new TextView();
         duplicateTo(view);
         return view;
     }

@@ -4,7 +4,7 @@ import com.irr310.common.event.EngineEventVisitor;
 
 
 
-public interface GameEventVisitor extends EngineEventVisitor<GameEvent> {
+public interface GameEventVisitor extends EngineEventVisitor {
 
 	public abstract void visit(QuitGameEvent event);
 //
@@ -24,7 +24,6 @@ public interface GameEventVisitor extends EngineEventVisitor<GameEvent> {
 //
 //    public abstract void visit(NetworkEvent event);
 //
-//    public abstract void visit(PlayerAddedEvent event);
 //
     public abstract void visit(KeyPressedEvent event);
 //    

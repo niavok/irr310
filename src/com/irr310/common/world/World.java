@@ -55,6 +55,10 @@ public class World {
 //        Game.getInstance().sendToAll(new FactionAddedEvent(faction));
     }
     
+    public List<Faction> getFactions() {
+        return factions;
+    }
+    
     public Player loadPlayer(PlayerView playerView) {
         if (playerIdMap.containsKey(playerView.id)) {
             return playerIdMap.get(playerView.id);

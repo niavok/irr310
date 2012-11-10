@@ -7,8 +7,7 @@ import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 
 public class RelativeLayout extends ContainerView {
 
-	public RelativeLayout(Graphics g) {
-		super(g);
+	public RelativeLayout() {
 	}
 	
 	@Override
@@ -27,7 +26,7 @@ public class RelativeLayout extends ContainerView {
 
     @Override
     public View duplicate() {
-        RelativeLayout view = new RelativeLayout(g);
+        RelativeLayout view = new RelativeLayout();
         duplicateTo(view);
         return view;
     }

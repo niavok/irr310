@@ -6,17 +6,16 @@ import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 
 public class Waiter extends View {
 
-    public Waiter(Graphics g) {
-        super(g);
+    public Waiter() {
     }
 
     @Override
-    public void onDraw() {
+    public void onDraw(Graphics g) {
     }
     
     @Override
     public View duplicate() {
-        View widget = new Waiter(g);
+        View widget = new Waiter();
         return widget;
     }
 

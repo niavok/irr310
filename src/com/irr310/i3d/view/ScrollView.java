@@ -27,17 +27,17 @@ public class ScrollView extends View implements ViewParent {
     float scrollingBaseOffsetX = 0;
     float scrollingBaseOffsetY = 0;
 
-    public ScrollView(Graphics g) {
-        super(g);
+    public ScrollView() {
+        super();
     }
 
     @Override
-    public void onDraw() {
+    public void onDraw(Graphics g) {
 
         GL11.glPushMatrix();
         GL11.glTranslatef(scrollOffsetX, scrollOffsetY, 0);
 
-        child.draw();
+        child.draw(g);
 
         GL11.glPopMatrix();
 
@@ -45,7 +45,7 @@ public class ScrollView extends View implements ViewParent {
 
     @Override
     public View duplicate() {
-        ScrollView view = new ScrollView(g);
+        ScrollView view = new ScrollView();
         duplicateTo(view);
         return view;
     }
@@ -156,6 +156,16 @@ public class ScrollView extends View implements ViewParent {
     public void requestLayout() {
         // TODO Auto-generated method stub
 
+    }
+    
+    @Override
+    public View findViewById(String id) {
+        View outputView = null;
+        outputView = super.findViewById(id); 
+        if(outputView == null) {
+            outputView = child.findViewById(id);
+        }
+        return outputView;
     }
 
 }

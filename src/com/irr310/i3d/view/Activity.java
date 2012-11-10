@@ -2,6 +2,7 @@ package com.irr310.i3d.view;
 
 import com.irr310.common.tools.Log;
 import com.irr310.i3d.Bundle;
+import com.irr310.i3d.Graphics;
 import com.irr310.i3d.I3dContext;
 import com.irr310.i3d.I3dRessourceManager;
 import com.irr310.i3d.Intent;
@@ -43,8 +44,8 @@ public abstract class Activity implements ViewParent {
         mview.assignParent(this);
     }
     
-    public void draw() {
-        mview.draw();
+    public void draw(Graphics g) {
+        mview.draw(g);
     }
     
     public void update(Time absTime, Time gameTime) {

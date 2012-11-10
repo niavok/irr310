@@ -10,12 +10,11 @@ import fr.def.iss.vd2.lib_v3d.V3DMouseEvent.Action;
 
 public class Button extends TextView {
 
-    public Button(Graphics g) {
-        super(g);
+    public Button() {
     }
     
     @Override
-    public void onDraw() {
+    public void onDraw(Graphics g) {
         
         float bevel = 10;
         float height = layoutParams.getHeight() + layoutParams.computeMesure(layoutParams.getLayoutPaddingTop()) + layoutParams.computeMesure(layoutParams.getLayoutPaddingBottom());
@@ -98,7 +97,7 @@ public class Button extends TextView {
         GL11.glPopMatrix();
         
         
-        super.onDraw();
+        super.onDraw(g);
     }
     
     @Override
@@ -108,7 +107,7 @@ public class Button extends TextView {
     
     @Override
     public View duplicate() {
-        Button view = new Button(g);
+        Button view = new Button();
         duplicateTo(view);
         return view;
     }

@@ -14,8 +14,7 @@ public class LinearLayout extends ContainerView {
         VERTICAL,
     }
     
-	public LinearLayout(Graphics g) {
-		super(g);
+	public LinearLayout() {
 	}
 
     public void setLayoutOrientation(LayoutOrientation orientation) {
@@ -129,7 +128,7 @@ public class LinearLayout extends ContainerView {
 
     @Override
     public View duplicate() {
-        LinearLayout view = new LinearLayout(g);
+        LinearLayout view = new LinearLayout();
         duplicateTo(view);
         return view;
     }

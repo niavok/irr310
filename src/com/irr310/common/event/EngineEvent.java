@@ -1,8 +1,8 @@
 package com.irr310.common.event;
 
 
-public interface EngineEvent  {
+public interface EngineEvent<T extends EngineEventVisitor>  {
 	
 	
-//	public abstract void accept(EngineEventVisitor visitor);
+	public void accept(T visitor);
 }

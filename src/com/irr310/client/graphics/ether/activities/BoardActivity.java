@@ -1,5 +1,7 @@
 package com.irr310.client.graphics.ether.activities;
 
+import com.irr310.client.graphics.ether.activities.worldmap.WorldMapActivity;
+import com.irr310.common.world.World;
 import com.irr310.i3d.Bundle;
 import com.irr310.i3d.Intent;
 import com.irr310.i3d.view.Activity;
@@ -12,10 +14,13 @@ public class BoardActivity extends Activity {
 
     
     private Button worldMapButton;
+    private World world;
 
     @Override
     public void onCreate(Bundle bundle) {
         setContentView("main@layout/board");
+        world = ((BoardActivityBundle) bundle).getWorld();
+        
         
         worldMapButton = (Button) findViewById("worldMapButton@layout/board");
         
@@ -23,7 +28,8 @@ public class BoardActivity extends Activity {
             
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(WorldMapActivity.class));
+                Bundle bundle = new Bundle(world);
+                startActivity(new Intent(WorldMapActivity.class, bundle));
             }
         });
     }
@@ -42,6 +48,17 @@ public class BoardActivity extends Activity {
 
     @Override
     protected void onUpdate(Time absTime, Time gameTime) {
+    }
+    
+    public static class BoardActivityBundle extends Bundle {
+
+        public BoardActivityBundle(World world) {
+            super(world);
+        }
+        
+        public World getWorld() {
+            return (World) getObject();
+        }
     }
 
 }

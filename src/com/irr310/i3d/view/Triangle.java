@@ -15,13 +15,12 @@ public class Triangle extends View {
     private Point[] points;
     
     
-    public Triangle(Graphics g) {
-        super(g);
+    public Triangle() {
         backgroundColor = Color.pink;
     }
 
     @Override
-    public void onDraw() {
+    public void onDraw(Graphics g) {
         g.setColor(backgroundColor);
         g.drawTriangle(points[0].x, points[0].y, points[1].x, points[1].y, points[2].x, points[2].y, false);
     }
@@ -32,7 +31,7 @@ public class Triangle extends View {
     
     @Override
     public View duplicate() {
-        Triangle view = new Triangle(g);
+        Triangle view = new Triangle();
         duplicateTo(view);
         return view;
     }

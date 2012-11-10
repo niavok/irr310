@@ -6,6 +6,7 @@ import com.irr310.client.graphics.ether.activities.MainActivity;
 import com.irr310.common.Game;
 import com.irr310.common.engine.EventDispatcher;
 import com.irr310.common.engine.FramerateEngine;
+import com.irr310.common.event.game.DefaultGameEventVisitor;
 import com.irr310.common.event.game.GameEvent;
 import com.irr310.common.event.game.GameEventVisitor;
 import com.irr310.common.event.game.KeyPressedEvent;
@@ -30,9 +31,9 @@ public class UiEngine extends FramerateEngine<GameEvent> {
     private GraphicEngineEventVisitor eventVisitor;
     private Surface mainSurface;
     private Surface statusSurface;
-    private final EventDispatcher<GameEvent> dispatcher;
+    private final EventDispatcher<GameEventVisitor, GameEvent> dispatcher;
 
-    public UiEngine(EventDispatcher<GameEvent> dispatcher) {
+    public UiEngine(EventDispatcher<GameEventVisitor, GameEvent> dispatcher) {
         this.dispatcher = dispatcher;
         framerate = new Duration(16666666);
     }
@@ -109,7 +110,7 @@ public class UiEngine extends FramerateEngine<GameEvent> {
         }
     }
 
-    private final class GraphicEngineEventVisitor implements GameEventVisitor {
+    private final class GraphicEngineEventVisitor extends DefaultGameEventVisitor {
 
 //        EngineEventVisitor rendererVisitor = new DefaultEngineEventVisitor();
 //

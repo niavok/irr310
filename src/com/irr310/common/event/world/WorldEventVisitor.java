@@ -1,8 +1,15 @@
 package com.irr310.common.event.world;
 
+import com.irr310.common.event.EngineEventVisitor;
 
-public interface WorldEventVisitor {
 
+
+public interface WorldEventVisitor extends EngineEventVisitor {
+
+    public abstract void visit(ConnectPlayerEvent event);
+    
+    public abstract void visit(PlayerConnectedEvent event);
+    
 //	public abstract void visit(QuitGameEvent event);
 //
 //	public abstract void visit(StartEngineEvent event);

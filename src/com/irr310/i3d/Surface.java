@@ -35,7 +35,7 @@ public class Surface {
                 activity.setContext(context);
                 activity.assignSurface(this);
                 activity.setIntent(intent);
-                activity.onCreate(null);
+                activity.onCreate(intent.getBundle());
             } catch (InstantiationException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {
@@ -78,7 +78,7 @@ public class Surface {
         this.backgroundColor = backgroundColor;
     }
 
-    public void draw() {
+    public void draw(Graphics g) {
         GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
 
@@ -100,7 +100,7 @@ public class Surface {
         GL11.glDisable(GL11.GL_DEPTH_TEST);
 
         if (currentActivity != null) {
-            currentActivity.draw();
+            currentActivity.draw(g);
         }
 
         GL11.glPopAttrib();

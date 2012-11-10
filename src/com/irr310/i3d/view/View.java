@@ -19,28 +19,26 @@ public abstract class View {
     protected LayoutParams layoutParams;
     protected BorderParams borderParams;
     
-    protected Graphics g;
     private String id;
     private OnClickListener onClickListener = null;
     private String help;
     
-    public View(Graphics g) {
-        this.g = g;
+    public View() {
         layoutParams = new LayoutParams();
         borderParams = new BorderParams();
     }
     
-    public final void draw() {
+    public final void draw(Graphics g) {
         GL11.glPushMatrix();
         //GL11.glTranslatef(layout.offset.x, layout.offset.y, 0);
         GL11.glTranslatef(layoutParams.mLeft, layoutParams.mTop, 0);
         
-        onDraw();
+        onDraw(g);
         
         GL11.glPopMatrix();
     }
     
-    public abstract void onDraw();
+    public abstract void onDraw(Graphics g);
     
     public void measure() {
         if(layoutParams.getLayoutWidthMeasure() == LayoutMeasure.FIXED) {

@@ -35,6 +35,8 @@ public class Player extends GameEntity {
 
     private boolean human;
 
+    private Faction faction;
+
     
 	public Player(long id, String login) {
 	    super(id);
@@ -207,5 +209,13 @@ public class Player extends GameEntity {
 
     public boolean isHuman() {
         return human;
+    }
+
+    public Faction getFaction() {
+        return faction;
+    }
+
+    public void setFaction(Faction faction) {
+        this.faction = faction;
     }
 }

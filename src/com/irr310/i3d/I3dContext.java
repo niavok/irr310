@@ -56,7 +56,7 @@ public class I3dContext {
             surface.update(absTime, gameTime);
         }
         
-        canvas.draw();
+        canvas.draw(graphics);
     }
     
     public List<Surface> getSurfaceList() {

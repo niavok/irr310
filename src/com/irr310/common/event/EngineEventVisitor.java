@@ -1,8 +1,10 @@
 package com.irr310.common.event;
 
 
-public interface EngineEventVisitor<T extends EngineEvent> {
+public interface EngineEventVisitor {
 
+//    public abstract void visit(T event);
+    
 //	public abstract void visit(QuitGameEvent event);
 //
 //	public abstract void visit(StartEngineEvent event);

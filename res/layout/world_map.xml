@@ -4,13 +4,13 @@
 
 	<ScrollView i3d:layout_width="match_parent"
 		i3d:layout_height="match_parent">
-		<!-- <RelativeLayout i3d:id="map" />-->
-		 <Triangle
+		<RelativeLayout i3d:id="map" />
+		 <!-- <Triangle
         i3d:id="logoRedPart"
         i3d:layout_width="1000px"
         i3d:layout_height="1000px"
         i3d:backgroundColor="logoSecondary@color"
-        i3d:points="0%,0%|0%,100%|100%,50%" />
+        i3d:points="0%,0%|0%,100%|100%,50%" />-->
 	</ScrollView>
 
 	<LinearLayout i3d:layout_width="wrap_content"

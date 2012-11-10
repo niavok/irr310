@@ -18,7 +18,7 @@ import com.irr310.common.world.view.PartView;
 import com.irr310.common.world.view.ShipView;
 import com.irr310.server.SystemEngine;
 
-public class System extends GameEntity {
+public class WorldSystem extends GameEntity {
 
     private  Vec2 location;
     private double radius;
@@ -35,7 +35,7 @@ public class System extends GameEntity {
     private final Map<Long, Ship> shipIdMap;
     private SystemEngine systemEngine;
     
-    public System(long id, Vec2 location) {
+    public WorldSystem(long id, Vec2 location) {
         super(id);
         this.location = location;
         this.radius = 1000;

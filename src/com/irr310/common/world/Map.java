@@ -5,21 +5,21 @@ import java.util.List;
 
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.Vec2;
-import com.irr310.common.world.system.System;
+import com.irr310.common.world.system.WorldSystem;
 
 public class Map {
 
-    List<System> zones = new ArrayList<System>();
+    List<WorldSystem> zones = new ArrayList<WorldSystem>();
     
-    public void addZone(System zone) {
+    public void addZone(WorldSystem zone) {
         zones.add(zone);
     }
 
-    public System nearestSystemTo(Vec2 location) {
-        System nearestZone = null;
+    public WorldSystem nearestSystemTo(Vec2 location) {
+        WorldSystem nearestZone = null;
         double nearestDistance = 0;
         
-        for(System zone : zones) {
+        for(WorldSystem zone : zones) {
             double localDistance = zone.getLocation().distanceTo(location);
             if(nearestZone == null || localDistance < nearestDistance) {
                 nearestZone = zone;
@@ -32,13 +32,13 @@ public class Map {
 
     public void dump() {
         String points = "";
-        for(System zone : zones) {
+        for(WorldSystem zone : zones) {
             points += "["+zone.getLocation().x+","+zone.getLocation().y+"],";
         }
         Log.trace(points);
     }
 
-    public List<System> getZones() {
+    public List<WorldSystem> getZones() {
         return zones;
     }
 

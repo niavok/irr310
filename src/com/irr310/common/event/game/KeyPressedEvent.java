@@ -1,6 +1,5 @@
 package com.irr310.common.event.game;
 
-import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.EngineEventVisitor;
 
 

@@ -8,6 +8,7 @@ import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.game.DefaultGameEventVisitor;
 import com.irr310.common.event.game.GameEvent;
+import com.irr310.common.event.game.GameEventVisitor;
 import com.irr310.common.event.game.KeyPressedEvent;
 import com.irr310.common.event.game.KeyReleasedEvent;
 import com.irr310.common.event.game.MouseEvent;
@@ -22,9 +23,9 @@ public class InputEngine extends FramerateEngine<GameEvent> {
     private boolean dragging;
     private long[] pressTime;
     private String cheatString = "";
-    private final EventDispatcher<GameEvent> dispatcher;
+    private final EventDispatcher<GameEventVisitor, GameEvent> dispatcher;
     
-    public InputEngine(EventDispatcher<GameEvent> dispatcher) {
+    public InputEngine(EventDispatcher<GameEventVisitor, GameEvent> dispatcher) {
         this.dispatcher = dispatcher;
         framerate = new Duration(15000000);
         dragging = false;

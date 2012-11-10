@@ -1,7 +1,9 @@
 package com.irr310.common.event.system;
 
+import com.irr310.common.event.EngineEventVisitor;
 
-public interface SystemEventVisitor {
+
+public interface SystemEventVisitor extends EngineEventVisitor  {
 
 //	public abstract void visit(QuitGameEvent event);
 //

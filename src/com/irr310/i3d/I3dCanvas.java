@@ -169,22 +169,22 @@ public class I3dCanvas {
     }
 
     
-    public boolean draw() {
+    public boolean draw(Graphics g) {
         if(Display.isCloseRequested()) {
             return false;
         }
         
-        display();
+        display(g);
         Display.update();
         return true;
     }
 
-    public void display() {
+    public void display(Graphics g) {
 
         GL11.glClear(GL11.GL_ACCUM_BUFFER_BIT);
 
         for (Surface surface: context.getSurfaceList()) {
-            surface.draw();
+            surface.draw(g);
         }
         GL11.glFlush();
     }

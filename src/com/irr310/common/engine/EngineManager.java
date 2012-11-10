@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.irr310.common.event.EngineEvent;
+import com.irr310.common.event.EngineEventVisitor;
 import com.irr310.server.Duration;
 
-public class EngineManager<T extends EngineEvent> implements EventDispatcher<T> {
+public class EngineManager<V extends EngineEventVisitor , T extends EngineEvent<V>> implements EventDispatcher<V,T> {
 
     List<Engine<T>> engineList = new CopyOnWriteArrayList<Engine<T>>();
+    List<V> visitorList = new CopyOnWriteArrayList<V>();
 
     public void add(Engine<T> engine) {
         engineList.add(engine);
@@ -17,6 +19,10 @@ public class EngineManager<T extends EngineEvent> implements EventDispatcher<T> 
     public void sendToAll(T e) {
         for (Engine<T> engine : engineList) {
             engine.pushEvent(e);
+        }
+        
+        for (V visitor : visitorList) {
+            e.accept(visitor);
         }
     }
 
@@ -80,4 +86,11 @@ public class EngineManager<T extends EngineEvent> implements EventDispatcher<T> 
 //        engine.pushEvent(new StartEngineEvent());
     }
 
+    public void registerEventVisitor(V visitor) {
+        visitorList.add(visitor);
+    }
+
+    public void unregisterEventVisitor(V visitor) {
+        visitorList.remove(visitor);
+    }
 }

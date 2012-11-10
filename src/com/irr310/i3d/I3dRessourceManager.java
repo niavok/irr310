@@ -272,11 +272,11 @@ public class I3dRessourceManager {
     }
 
     private Waiter NewWaiter(Element element) {
-        return new Waiter(g);
+        return new Waiter();
     }
 
     private Rect NewRect(Element element, String fileId) {
-        Rect rect = new Rect(g);
+        Rect rect = new Rect();
         NamedNodeMap attributes = element.getAttributes();
         for (int i = 0; i < attributes.getLength(); i++) {
             Node item = attributes.item(i);
@@ -299,7 +299,7 @@ public class I3dRessourceManager {
     }
 
     private Triangle NewTriangle(Element element, String fileId) {
-        Triangle triangle = new Triangle(g);
+        Triangle triangle = new Triangle();
         NamedNodeMap attributes = element.getAttributes();
         for (int i = 0; i < attributes.getLength(); i++) {
             Node item = attributes.item(i);
@@ -365,7 +365,7 @@ public class I3dRessourceManager {
     }
 
     private RelativeLayout NewRelativeLayout(Element element, String fileId) {
-        RelativeLayout relativeLayout = new RelativeLayout(g);
+        RelativeLayout relativeLayout = new RelativeLayout();
 
         Style style = loadStyle(element.getAttribute("i3d:style"));
         style.apply(relativeLayout);
@@ -389,7 +389,7 @@ public class I3dRessourceManager {
     }
 
     private LinearLayout NewLinearLayout(Element element, String fileId) {
-        LinearLayout linearLayout = new LinearLayout(g);
+        LinearLayout linearLayout = new LinearLayout();
 
         Style style = loadStyle(element.getAttribute("i3d:style"));
         style.apply(linearLayout);
@@ -414,7 +414,7 @@ public class I3dRessourceManager {
     }
 
     private TextView NewTextView(Element element, String fileId) {
-        TextView textView = new TextView(g);
+        TextView textView = new TextView();
 
         Style style = loadStyle(element.getAttribute("i3d:style"));
         style.apply(textView);
@@ -442,7 +442,7 @@ public class I3dRessourceManager {
     }
     
     private ScrollView NewScrollView(Element element, String fileId) {
-        ScrollView view = new ScrollView(g);
+        ScrollView view = new ScrollView();
 
         Style style = loadStyle(element.getAttribute("i3d:style"));
         style.apply(view);
@@ -466,7 +466,7 @@ public class I3dRessourceManager {
     }
 
     private Button NewButton(Element element, String fileId) {
-        Button button = new Button(g);
+        Button button = new Button();
 
         Style style = loadStyle(element.getAttribute("i3d:style"));
         style.apply(button);

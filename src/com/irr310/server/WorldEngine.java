@@ -4,29 +4,40 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.irr310.common.engine.EngineManager;
+import com.irr310.common.engine.EventDispatcher;
 import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.event.game.DefaultGameEventVisitor;
 import com.irr310.common.event.game.GameEvent;
 import com.irr310.common.event.game.QuitGameEvent;
+import com.irr310.common.event.world.ConnectPlayerEvent;
+import com.irr310.common.event.world.DefaultWorldEventVisitor;
+import com.irr310.common.event.world.PlayerConnectedEvent;
+import com.irr310.common.event.world.WorldEvent;
+import com.irr310.common.event.world.WorldEventVisitor;
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.Vec2;
 import com.irr310.common.world.Faction;
 import com.irr310.common.world.Map;
+import com.irr310.common.world.Player;
 import com.irr310.common.world.World;
 import com.irr310.common.world.item.BuildingItemFactory;
 import com.irr310.common.world.item.NexusItem;
-import com.irr310.common.world.system.System;
+import com.irr310.common.world.system.WorldSystem;
 
-public class WorldEngine extends FramerateEngine<GameEvent> {
+public class WorldEngine extends FramerateEngine<GameEvent> implements EventDispatcher<WorldEventVisitor, WorldEvent>  {
 
     private World world;
+    private EngineManager<WorldEventVisitor, WorldEvent> engineManager;
 
     public WorldEngine(Object object) {
+        engineManager = new EngineManager<WorldEventVisitor, WorldEvent>();
+        engineManager.registerEventVisitor(new WorldEngineWorldEventVisitor());
     }
 
     @Override
     protected void processEvent(GameEvent e) {
-        e.accept(new WorldEngineEventVisitor());
+        e.accept(new WorldEngineGameEventVisitor());
     }
 
     @Override
@@ -48,7 +59,7 @@ public class WorldEngine extends FramerateEngine<GameEvent> {
         
     }
 
-    private final class WorldEngineEventVisitor extends DefaultGameEventVisitor {
+    private final class WorldEngineGameEventVisitor extends DefaultGameEventVisitor {
 
         @Override
         public void visit(QuitGameEvent event) {
@@ -66,6 +77,22 @@ public class WorldEngine extends FramerateEngine<GameEvent> {
 //            pause(true);
 //        }
        
+    }
+    
+    private final class WorldEngineWorldEventVisitor extends DefaultWorldEventVisitor {
+
+        @Override
+        public void visit(ConnectPlayerEvent event) {
+            Player newPlayer = new Player(GameServer.pickNewId(), event.getPlayerLogin());
+            newPlayer.setHuman(true);
+            //Find faction
+            Faction faction = world.getFactions().get(0);
+            
+            faction.assignPlayer(newPlayer);
+            
+            world.addPlayer(newPlayer);
+            engineManager.sendToAll(new PlayerConnectedEvent(newPlayer));
+        }
     }
     
     private void initWorld() {
@@ -95,7 +122,7 @@ public class WorldEngine extends FramerateEngine<GameEvent> {
 
             if(map.getZones().size() > 0) {
                 
-                System nearestSystem = map.nearestSystemTo(location);
+                WorldSystem nearestSystem = map.nearestSystemTo(location);
                 
                 if(nearestSystem.getLocation().distanceTo(location) < mapMinDistance) {
                     // Too near to a existing system, retry
@@ -109,7 +136,7 @@ public class WorldEngine extends FramerateEngine<GameEvent> {
                 }
             }
             
-            System system = new System(GameServer.pickNewId(), location);
+            WorldSystem system = new WorldSystem(GameServer.pickNewId(), location);
             map.addZone(system);
             mapMinDistance++;
             
@@ -119,7 +146,7 @@ public class WorldEngine extends FramerateEngine<GameEvent> {
         // Find home system
         double baseAzimut = random.nextDouble() * 2 * Math.PI;
         
-        List<System> availableHome = new ArrayList<System>();
+        List<WorldSystem> availableHome = new ArrayList<WorldSystem>();
         
         for(int i = 0; i < factionCount; i++) {
             Vec2 location = new Vec2(0, mapSize/2).rotate(baseAzimut + i * 2 * Math.PI / factionCount);
@@ -131,7 +158,7 @@ public class WorldEngine extends FramerateEngine<GameEvent> {
         for(int i = 0; i < factionCount; i++) {
             // Pick home system
             int homeIndex = random.nextInt(factionCount - i);
-            System system = availableHome.get(homeIndex);
+            WorldSystem system = availableHome.get(homeIndex);
             availableHome.remove(homeIndex);
             
             Faction faction = new Faction(GameServer.pickNewId());
@@ -155,6 +182,19 @@ public class WorldEngine extends FramerateEngine<GameEvent> {
     
     public World getWorld() {
         return world;
+    }
+
+    @Override
+    public void sendToAll(WorldEvent event) {
+        engineManager.sendToAll(event);
+    }
+    
+    public void registerEventVisitor(WorldEventVisitor visitor) {
+        engineManager.registerEventVisitor(visitor);
+    }
+
+    public void unregisterEventVisitor(WorldEventVisitor visitor) {
+        engineManager.unregisterEventVisitor(visitor);
     }
 
 }

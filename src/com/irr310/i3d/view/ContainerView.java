@@ -9,14 +9,13 @@ public abstract class ContainerView extends View implements ViewParent {
 
     List<View> children = new ArrayList<View>();
     
-    public ContainerView(Graphics g) {
-        super(g);
+    public ContainerView() {
     }
 
     @Override
-    public void onDraw() {
+    public void onDraw(Graphics g) {
         for (View widget : children) {
-            widget.draw();
+            widget.draw(g);
         }
     }
     

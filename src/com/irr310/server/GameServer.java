@@ -7,7 +7,7 @@ import java.util.Map;
 
 import com.irr310.common.Game;
 import com.irr310.common.engine.Engine;
-import com.irr310.common.event.EngineEvent;
+import com.irr310.common.event.game.GameEvent;
 import com.irr310.common.event.game.QuitGameEvent;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.World;
@@ -21,7 +21,7 @@ public class GameServer extends Game {
      */
     // private ParameterAnalyser parameterAnalyser;
 
-    List<Engine> engineList = new ArrayList<Engine>();
+    List<Engine<GameEvent>> engineList = new ArrayList<Engine<GameEvent>>();
 
     // private boolean stillRunning;
     // private CommandManager commandManager;
@@ -78,7 +78,7 @@ public class GameServer extends Game {
         // physicEngine.start();
         // networkEngine.start();
         // debugGraphicEngine.start();
-        for (Engine engine : engineList) {
+        for (Engine<GameEvent> engine : engineList) {
             engine.start();
         }
 
@@ -90,7 +90,7 @@ public class GameServer extends Game {
         boolean waitStart = true;
         while (waitStart) {
             waitStart = false;
-            for (Engine engine : engineList) {
+            for (Engine<GameEvent> engine : engineList) {
                 if (!engine.isRunning()) {
                     waitStart = true;
                     break;
@@ -126,7 +126,7 @@ public class GameServer extends Game {
 
         while (waitStop) {
             waitStop = false;
-            for (Engine engine : engineList) {
+            for (Engine<GameEvent> engine : engineList) {
                 if (!engine.isStopped()) {
                     waitStop = true;
                     break;
@@ -142,8 +142,8 @@ public class GameServer extends Game {
         sendToAll(new QuitGameEvent());
     }
 
-    public void sendToAll(EngineEvent e) {
-        for (Engine engine : engineList) {
+    public void sendToAll(GameEvent e) {
+        for (Engine<GameEvent> engine : engineList) {
             engine.pushEvent(e);
         }
         /*

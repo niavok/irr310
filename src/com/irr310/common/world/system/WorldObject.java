@@ -13,7 +13,7 @@ public abstract class WorldObject extends GameEntity {
     private double durability;
     private double physicalResistance;
     private double heatResistance;
-    protected System system;
+    protected WorldSystem system;
 
     public WorldObject(long id, String name) {
         super(id);
@@ -28,7 +28,7 @@ public abstract class WorldObject extends GameEntity {
         heatResistance = 0;
     }
     
-    public void setSystem(System system) {
+    public void setSystem(WorldSystem system) {
         this.system = system;
     }
 
@@ -103,7 +103,7 @@ public abstract class WorldObject extends GameEntity {
         return this.durability <= 0;
     }
 
-    public System getSystem() {
+    public WorldSystem getSystem() {
         return system;
     }
 

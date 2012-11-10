@@ -5,7 +5,9 @@ import com.irr310.client.input.InputEngine;
 import com.irr310.common.Game;
 import com.irr310.common.engine.EngineManager;
 import com.irr310.common.event.game.GameEvent;
+import com.irr310.common.event.game.GameEventVisitor;
 import com.irr310.common.tools.Log;
+import com.irr310.common.world.World;
 import com.irr310.server.ParameterAnalyser;
 import com.irr310.server.WorldEngine;
 
@@ -23,7 +25,7 @@ public class GameClient extends Game {
     // private CommandManager commandManager;
 
    
-    private EngineManager<GameEvent> engineManager;
+    private EngineManager<GameEventVisitor, GameEvent> engineManager;
 
     public static GameClient instance = null;
 
@@ -38,7 +40,7 @@ public class GameClient extends Game {
         // stillRunning = true;
 
 
-        engineManager = new EngineManager<GameEvent>();
+        engineManager = new EngineManager<GameEventVisitor, GameEvent>();
         
         // clientNetworkEngine = new ClientNetworkEngine("127.0.0.10", 22310);
         // physicEngine = new PhysicEngine();
@@ -118,6 +120,10 @@ public class GameClient extends Game {
 
     }
 
+    public EngineManager<GameEventVisitor, GameEvent> getEngineManager() {
+        return engineManager;
+    }
+
 
     /*private void autologin() {
         SignupTask signupTask = new SignupTask("default", "");
@@ -146,15 +152,15 @@ public class GameClient extends Game {
 //        return uiEngine;
 //    }
 
-    public void playSoloGame() {
+//    public World playSoloGame() {
 //        engineManager.sendToAll(new LoadingGameEvent("Create new game ..."));
 
 
         
         
         // World Engine
-        WorldEngine worldEngine = new WorldEngine(null);
-        engineManager.startAndWait(worldEngine);
+//        WorldEngine worldEngine = new WorldEngine(null);
+//        engineManager.startAndWait(worldEngine);
         // Physic
 //        physicEngine = new PhysicEngine();
 //        engineList.add(physicEngine);
@@ -187,9 +193,17 @@ public class GameClient extends Game {
 //          engineManager.sendToAll(new CreatePlayerEvent());                                 
                                                
 //        sendToAll(new WorldReadyEvent());
-
-        java.lang.System.out.println("Game begin");
-    }
+        
+//        java.lang.System.out.println("Game begin");
+        
+        
+//        engineManager.sendToAll(new CreatePlayerEvent("fredb219"));
+        
+//        Player player = createPlayer("player", "");
+//        LoginManager.localPlayer = player;
+        
+//        return worldEngine.getWorld();
+//    }
 
     
 
