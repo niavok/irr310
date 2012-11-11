@@ -58,4 +58,45 @@ public class Graphics {
         GL11.glVertex2f(x1, y1);
         GL11.glEnd();
     }
+    
+    
+    public void drawRing(float x, float y, float radius, float innerRadius,  Color innerColor, Color outerColor,  int quality) {
+        
+        float step = 2f*(float) Math.PI / (float) quality;
+
+        boolean  customColor = (innerColor != null && outerColor != null); 
+        
+        if(customColor) {
+            GL11.glPushAttrib(GL11.GL_CURRENT_BIT);
+//            GL11.glEnable(GL11.GL_ALPHA_TEST);
+//            GL11.glBlendFunc (GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        }
+        
+
+        GL11.glBegin(GL11.GL_TRIANGLE_STRIP);
+
+
+        for(int i = 0; i <= quality; i++) {
+            if(customColor) {
+                GL11.glColor4f(innerColor.r, innerColor.g, innerColor.b, innerColor.a);
+            }
+            GL11.glVertex3f((float) (innerRadius * Math.cos(step*i)), (float) (innerRadius * Math.sin(step*i)), 0f);
+            
+            if(customColor) {
+                GL11.glColor4f(outerColor.r, outerColor.g, outerColor.b, outerColor.a);
+            }
+            GL11.glVertex3f((float) (radius * Math.cos(step*i)), (float) (radius * Math.sin(step*i)), 0f);
+        }
+
+        GL11.glEnd();
+
+        if(customColor) {
+            GL11.glDisable(GL11.GL_ALPHA_TEST);
+            GL11.glPopAttrib();
+        }
+
+        
+
+    }
+    
 }

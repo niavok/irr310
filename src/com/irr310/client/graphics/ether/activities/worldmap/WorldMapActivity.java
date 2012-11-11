@@ -44,7 +44,7 @@ public class WorldMapActivity extends Activity {
         faction = player.getFaction();
         List<WorldSystem> knownSystems = faction.getKnownSystems();
         
-        zoom = 1f;
+        zoom = 5f;
         
         List<WorldSystem> allSystems = world.getMap().getSystems();
         for (WorldSystem system : allSystems) {
@@ -106,7 +106,8 @@ public class WorldMapActivity extends Activity {
         Log.debug("mousePoint=" + mousePoint);
         Log.debug("staticPointBase=" + staticPointBase);
         
-        zoom *= zoomFactor; 
+        zoom *= zoomFactor;
+        Log.debug("zoom=" + zoom);
         
         for (View child : map.getChildren()) {
             if(child instanceof SystemView) {

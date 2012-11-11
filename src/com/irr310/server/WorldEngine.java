@@ -163,6 +163,7 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements EventDisp
             
             Faction faction = new Faction(GameServer.pickNewId());
             faction.setHomeSystem(system);
+            system.setHomeSystem(true);
             
             getWorld().addFaction(faction);
             

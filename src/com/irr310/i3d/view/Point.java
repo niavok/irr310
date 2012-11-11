@@ -38,4 +38,8 @@ public class Point {
     public String toString() {
         return "[x=" + x + ", y=" + y + "]";
     }
+    
+    public Point rotate(double angle) {
+        return new Point((float)(x* Math.cos(angle) - y * Math.sin(angle)),(float) (x* Math.sin(angle) + y * Math.cos(angle)));
+    }
 }
