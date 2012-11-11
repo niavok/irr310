@@ -73,10 +73,12 @@ public class InputEngine extends FramerateEngine<GameEvent> {
             
             if(dWheel > 0) {
                 V3DMouseEvent mouseEvent = new V3DMouseEvent(Action.MOUSE_WHEEL_UP, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1);
+                Log.debug("MOUSE_WHEEL_UP: x="+mouseEvent.getX()+" y="+mouseEvent.getY());
                 dispatcher.sendToAll(new MouseEvent(mouseEvent));
             } else if(dWheel < 0) {
                 V3DMouseEvent mouseEvent = new V3DMouseEvent(Action.MOUSE_WHEEL_DOWN, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1);
                 dispatcher.sendToAll(new MouseEvent(mouseEvent));
+                Log.debug("MOUSE_WHEEL_DOWN: x="+mouseEvent.getX()+" y="+mouseEvent.getY());
             } else if (Mouse.getEventButton() == -1) {
                 if (dragging) {
                     // Drag

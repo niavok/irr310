@@ -12,6 +12,7 @@ import com.irr310.i3d.fonts.Font;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 import com.irr310.i3d.view.LinearLayout.LayoutOrientation;
 import com.irr310.i3d.view.TextView.Gravity;
+import com.irr310.server.Time;
 
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent.Action;
@@ -83,7 +84,7 @@ public class ScrollView extends View implements ViewParent {
         float oldCenterX = oldWidth / 2 - scrollOffsetX;
         float oldCenterY = oldHeight / 2 - scrollOffsetY;
         
-        setCenterScroll(oldCenterX, oldCenterY);
+        setScrollCenter(new Point(oldCenterX, oldCenterY));
         
         
         oldWidth = layoutParams.getWidth();
@@ -151,8 +152,8 @@ public class ScrollView extends View implements ViewParent {
             used = true;
         } else {
 
-            if (child.onMouseEvent(mouseEvent.relativeTo((int) (child.layoutParams.mLeft + scrollOffsetX),
-                                                         (int) (child.layoutParams.mTop + scrollOffsetY)))) {
+            if (child.onMouseEvent(mouseEvent.relativeTo((int) (child.layoutParams.mLeft - scrollOffsetX),
+                                                         (int) (child.layoutParams.mTop - scrollOffsetY)))) {
                 used = true;
             } else {
                 if (mouseEvent.getAction() == Action.MOUSE_PRESSED) {
@@ -175,8 +176,7 @@ public class ScrollView extends View implements ViewParent {
 
     @Override
     public void requestLayout() {
-        // TODO Auto-generated method stub
-
+        getParent().requestLayout();
     }
     
     @Override
@@ -189,11 +189,26 @@ public class ScrollView extends View implements ViewParent {
         return outputView;
     }
 
-    public void setCenterScroll(float x, float y) {
-        Log.debug("setCenterScroll at "+x+";"+y);
-        Log.debug("setCenterScroll width="+layoutParams.getWidth()+" height="+layoutParams.getHeight());
-        scrollOffsetX = layoutParams.getWidth()/2 - x;
-        scrollOffsetY = layoutParams.getHeight()/2 - y;
+    public Point getScrollCenter() {
+        return new Point(layoutParams.getWidth()/2 - scrollOffsetX, layoutParams.getHeight()/2 - scrollOffsetY);
+    }
+    
+    public void setScrollCenter(Point point) {
+        Log.debug("setScrollCenter at "+point.x+";"+point.y);
+        Log.debug("setScrollCenter width="+layoutParams.getWidth()+" height="+layoutParams.getHeight());
+        scrollOffsetX = layoutParams.getWidth()/2 - point.x;
+        scrollOffsetY = layoutParams.getHeight()/2 - point.y;
+        Log.debug("setScrollCenter scrollOffset at "+scrollOffsetX+";"+scrollOffsetY);
+    }
+
+    public Point getScrollOffset() {
+        return new Point(scrollOffsetX, scrollOffsetY);
+    }
+    
+    public void setScrollOffset(Point point) {
+        scrollOffsetX = point.x;
+        scrollOffsetY = point.y;
+        Log.debug("setScrollOffset at "+scrollOffsetX+";"+scrollOffsetY);
     }
 
 }

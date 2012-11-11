@@ -30,7 +30,7 @@ public class Graphics {
      * @param width The width of the rectangle
      * @param height The height of the rectangle
      */
-    public void drawFilledRectangle(int x, int y, int width, int height) {
+    public void drawFilledRectangle(float x, float y, float width, float height) {
         GL11.glBegin(GL11.GL_QUADS);
         GL11.glVertex2f(x, y);
         GL11.glVertex2f(x, y + height);

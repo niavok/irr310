@@ -34,6 +34,10 @@ public abstract class ContainerView extends View implements ViewParent {
         widget.assignParent(this);
     }
     
+    public List<View> getChildren() {
+        return children;
+    }
+    
 //    @Override
 //    public boolean doLayout(Layout parentLayout) {
 //        for (View widget : children) {
@@ -47,8 +51,7 @@ public abstract class ContainerView extends View implements ViewParent {
 
     @Override
     public void requestLayout() {
-        // TODO Auto-generated method stub
-        
+        getParent().requestLayout();
     }
     
     @Override

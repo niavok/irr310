@@ -67,7 +67,7 @@ public abstract class Activity implements ViewParent {
     
     @Override
     public void requestLayout() {
-        
+        mLayoutUpdated = false;
     }
   
     @Override

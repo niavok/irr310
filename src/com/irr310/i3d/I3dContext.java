@@ -3,6 +3,8 @@ package com.irr310.i3d;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.newdawn.slick.util.Log;
+
 import com.irr310.common.Game;
 import com.irr310.common.event.game.QuitGameEvent;
 import com.irr310.i3d.fonts.Font;
@@ -107,6 +109,8 @@ public class I3dContext {
         for (Surface surface : surfaceList) {
             if(surface.contains(mouseEvent.getX(), mouseEvent.getY())) {
                 V3DMouseEvent topLeftEvent = new V3DMouseEvent(mouseEvent.getAction(), mouseEvent.getX() - surface.x, (surface.y + surface.height) -  mouseEvent.getY(), mouseEvent.getButton());
+//                Log.debug("topLeftEvent: x="+topLeftEvent.getX()+" y="+topLeftEvent.getY());
+                
                 surface.onMouseEvent(topLeftEvent);
                 break;
             }
