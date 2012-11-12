@@ -2,34 +2,45 @@ package com.irr310.client.graphics.ether.activities.worldmap;
 
 
 
-import org.lwjgl.opengl.GL11;
-
-import com.irr310.common.world.Faction;
 import com.irr310.common.world.system.WorldSystem;
-import com.irr310.i3d.Color;
-import com.irr310.i3d.Graphics;
+import com.irr310.i3d.I3dRessourceManager;
 import com.irr310.i3d.Measure;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
-import com.irr310.i3d.view.Point;
-import com.irr310.i3d.view.View;
+import com.irr310.i3d.view.RelativeLayout;
+import com.irr310.i3d.view.TextView;
+import com.irr310.i3d.view.TextView.Gravity;
 
-public class SystemView extends View {
+public class SystemView extends RelativeLayout {
 
     private final WorldSystem system;
     private float size;
     private float zoom;
     private float zoomedSize;
+    private SystemCircleView systemCircleView;
+    private TextView textView;
 
     public SystemView(WorldSystem system) {
         this.system = system;
         
         size = 20;
         zoom = 1;
-        reshape();
+
         
+        systemCircleView = new SystemCircleView(system);
+        
+        textView = new TextView();
+        textView.setText(system.getName());
+        textView.setFont(I3dRessourceManager.getInstance().loadFont("systemNameWorldMap@fonts"));
+        textView.setTextColor(I3dRessourceManager.getInstance().loadColor("systemNameWorldMap@color")); 
+        addChild(systemCircleView);
+        addChild(textView);
+        
+        reshape();
     }
     
     private void reshape() {
+        
+        systemCircleView.reshape();
         
         zoomedSize = size * zoom;
         
@@ -40,76 +51,26 @@ public class SystemView extends View {
         
         layoutParams.setMarginLeftMeasure(new Measure((float) (system.getLocation().x * zoom) - zoomedSize/2, false));
         layoutParams.setMarginTopMeasure(new Measure((float) (system.getLocation().y * zoom) - zoomedSize/2, false));
+        
+        textView.getLayoutParams().setMarginTopMeasure(new Measure(-15 - zoomedSize/20 , false));
+        textView.getLayoutParams().setLayoutWidthMeasure(LayoutMeasure.FIXED);
+        textView.getLayoutParams().setWidthMeasure(new Measure(zoomedSize, false));
+        textView.setGravity(Gravity.CENTER);
+        
+        
+        
     }
     
     
     public void setZoom(float zoom) {
+        systemCircleView.setZoom(zoom);
         this.zoom = zoom;
+        
+        
         reshape();
         if(getParent() != null) {
             getParent().requestLayout();
         }
     }
-    
 
-    @Override
-    public void onDraw(Graphics g) {
-        Faction faction = system.getOwner();
-        
-        Color color = Color.grey;
-        if(faction != null) {
-            color = faction.getColor();
-        }
-        
-        Color centerColor = color.copy().setAlpha(0.2f);
-        
-        
-        g.setColor(color);
-        //g.drawFilledRectangle(0, 0, zoomedSize, zoomedSize);
-        g.drawRing(0,0, zoomedSize, zoomedSize * 0.90f - 1.5f, color, color, 64);
-        g.drawRing(0,0, zoomedSize * 0.90f - 1.5f, 0 , centerColor, centerColor, 64);
-        
-        if(system.isHomeSystem()) {
-        
-            // Optimize allocation
-            Point point1_1 = new Point(zoomedSize, 0).rotate(Math.PI /15);
-            Point point1_2 = new Point(zoomedSize, 0).rotate(-Math.PI /15);
-            Point point1_3 = new Point(zoomedSize * 1.3f + 5, 0);
-            
-            point1_1 = point1_1.rotate(Math.PI /4);
-            point1_2 = point1_2.rotate(Math.PI /4);
-            point1_3 = point1_3.rotate(Math.PI /4);
-            g.drawTriangle(point1_1.x, point1_1.y, point1_2.x, point1_2.y, point1_3.x, point1_3.y, true);
-            
-            point1_1 = point1_1.rotate(Math.PI /2);
-            point1_2 = point1_2.rotate(Math.PI /2);
-            point1_3 = point1_3.rotate(Math.PI /2);
-            g.drawTriangle(point1_1.x, point1_1.y, point1_2.x, point1_2.y, point1_3.x, point1_3.y, true);
-            
-            point1_1 = point1_1.rotate(Math.PI /2);
-            point1_2 = point1_2.rotate(Math.PI /2);
-            point1_3 = point1_3.rotate(Math.PI /2);
-            g.drawTriangle(point1_1.x, point1_1.y, point1_2.x, point1_2.y, point1_3.x, point1_3.y, true);
-            
-            point1_1 = point1_1.rotate(Math.PI /2);
-            point1_2 = point1_2.rotate(Math.PI /2);
-            point1_3 = point1_3.rotate(Math.PI /2);
-            g.drawTriangle(point1_1.x, point1_1.y, point1_2.x, point1_2.y, point1_3.x, point1_3.y, true);
-        
-        }
-    }
-
-    @Override
-    public void onLayout(float l, float t, float r, float b) {
-    }
-
-    @Override
-    public void onMeasure() {
-    }
-
-    @Override
-    public View duplicate() {
-        // TODO Auto-generated method stub
-        return null;
-    }
 }

@@ -6,4 +6,5 @@
     <color name="borderButtonBase">#5f5f5fff</color>
     <color name="topButtonBase">#efefefff</color>
     <color name="bottomButtonBase">#ccccccff</color>
+    <color name="systemNameWorldMap">#646464ff</color>
 </resources>

@@ -80,12 +80,12 @@ public class Graphics {
             if(customColor) {
                 GL11.glColor4f(innerColor.r, innerColor.g, innerColor.b, innerColor.a);
             }
-            GL11.glVertex3f((float) (innerRadius * Math.cos(step*i)), (float) (innerRadius * Math.sin(step*i)), 0f);
+            GL11.glVertex3f((float) (innerRadius * Math.cos(step*i)) + x, (float) (innerRadius * Math.sin(step*i)) +y, 0f);
             
             if(customColor) {
                 GL11.glColor4f(outerColor.r, outerColor.g, outerColor.b, outerColor.a);
             }
-            GL11.glVertex3f((float) (radius * Math.cos(step*i)), (float) (radius * Math.sin(step*i)), 0f);
+            GL11.glVertex3f((float) (radius * Math.cos(step*i)) +x, (float) (radius * Math.sin(step*i)) +y, 0f);
         }
 
         GL11.glEnd();

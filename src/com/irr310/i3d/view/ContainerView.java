@@ -51,7 +51,9 @@ public abstract class ContainerView extends View implements ViewParent {
 
     @Override
     public void requestLayout() {
-        getParent().requestLayout();
+        if(getParent() != null) {
+            getParent().requestLayout();
+        }
     }
     
     @Override

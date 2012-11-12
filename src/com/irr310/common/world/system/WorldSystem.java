@@ -37,6 +37,7 @@ public class WorldSystem extends GameEntity {
     private SystemEngine systemEngine;
     private Faction owner;
     private boolean homeSystem;
+    private String name;
     
     public WorldSystem(long id, Vec2 location) {
         super(id);
@@ -255,6 +256,14 @@ public class WorldSystem extends GameEntity {
 
     public boolean isHomeSystem() {
         return homeSystem;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public String getName() {
+        return name;
     }
 
 //    public void removeShip(Ship ship) {

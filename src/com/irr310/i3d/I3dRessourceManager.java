@@ -959,7 +959,7 @@ public class I3dRessourceManager {
         return used;
     }
 
-    private Color loadColor(String colorId) {
+    public Color loadColor(String colorId) {
 
         String[] colorParts = colorId.split("@");
         if (colorParts.length != 2) {
@@ -1033,7 +1033,7 @@ public class I3dRessourceManager {
         return string;
     }
 
-    Font loadFont(String fontId) {
+    public Font loadFont(String fontId) {
         String[] fontParts = fontId.split("@");
         if (fontParts.length != 2) {
             Log.error("Fail to load font '" + fontId + "' : no @ found");

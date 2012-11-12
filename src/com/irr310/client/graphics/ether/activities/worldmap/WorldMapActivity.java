@@ -44,7 +44,7 @@ public class WorldMapActivity extends Activity {
         faction = player.getFaction();
         List<WorldSystem> knownSystems = faction.getKnownSystems();
         
-        zoom = 5f;
+        zoom = 10f;
         
         List<WorldSystem> allSystems = world.getMap().getSystems();
         for (WorldSystem system : allSystems) {
