@@ -111,17 +111,11 @@ public class WorldMapActivity extends Activity {
     
     private void zoom(Point point, float zoomFactor) {
         
-        Log.debug("Zoom mouse=" + point +" zoomFactor="+zoomFactor);
-        
         Point mousePoint =  point.add(mapScrollView.getScrollOffset());
         
         Point staticPointBase = mousePoint.minus(mapScrollView.getScrollOffset()).divide(zoom);
         
-        Log.debug("mousePoint=" + mousePoint);
-        Log.debug("staticPointBase=" + staticPointBase);
-        
         zoom *= zoomFactor;
-        Log.debug("zoom=" + zoom);
         
         for (View child : map.getChildren()) {
             if(child instanceof SystemView) {

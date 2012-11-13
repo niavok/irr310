@@ -100,12 +100,6 @@ public class RelativeLayout extends ContainerView {
     public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
         boolean used = false;
         
-        Log.debug("onMouseEvent "+ mouseEvent.getAction());
-        
-        if(mouseEvent.getAction() == Action.MOUSE_CLICKED) {
-            Log.debug("MOUSE_CLICKED");
-        }
-        
         for (View view : children) {
             
             if(mouseEvent.getX() < view.layoutParams.mLeft - view.layoutParams.mLeftPadding || mouseEvent.getX() > view.layoutParams.mRight + view.layoutParams.mRightPadding) {

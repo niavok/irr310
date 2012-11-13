@@ -68,8 +68,7 @@ public class ScrollView extends View implements ViewParent {
 
     @Override
     public void onLayout(float l, float t, float r, float b) {
-        
-        
+
         LayoutParams childLayoutParams = child.getLayoutParams();
         childLayoutParams.computeFrame(layoutParams);
         child.layout(childLayoutParams.mComputedLeft + layoutParams.computeMesure(childLayoutParams.getLayoutMarginLeft())
@@ -80,13 +79,12 @@ public class ScrollView extends View implements ViewParent {
                              - layoutParams.computeMesure(childLayoutParams.getLayoutPaddingRight()),
                      childLayoutParams.mComputedBottom - layoutParams.computeMesure(childLayoutParams.getLayoutMarginBottom())
                              - layoutParams.computeMesure(childLayoutParams.getLayoutPaddingBottom()));
-        
+
         float oldCenterX = oldWidth / 2 - scrollOffsetX;
         float oldCenterY = oldHeight / 2 - scrollOffsetY;
-        
+
         setScrollCenter(new Point(oldCenterX, oldCenterY));
-        
-        
+
         oldWidth = layoutParams.getWidth();
         oldHeight = layoutParams.getHeight();
     }
@@ -139,15 +137,11 @@ public class ScrollView extends View implements ViewParent {
         boolean used = false;
 
         if (scrolling) {
-
             if (mouseEvent.getAction() == Action.MOUSE_RELEASED) {
                 scrolling = false;
             } else if (mouseEvent.getAction() == Action.MOUSE_DRAGGED) {
                 scrollOffsetX = scrollingBaseOffsetX + (mouseEvent.getX() - scrollingBaseX);
                 scrollOffsetY = scrollingBaseOffsetY + (mouseEvent.getY() - scrollingBaseY);
-                Log.debug("scrollOffsetX="+scrollOffsetX);
-                Log.debug("scrollOffsetY="+scrollOffsetY);
-                
             }
             used = true;
         } else {
@@ -167,10 +161,10 @@ public class ScrollView extends View implements ViewParent {
             }
         }
 
-        if(!used) {
+        if (!used) {
             used = super.onMouseEvent(mouseEvent);
         }
-        
+
         return used;
     }
 
@@ -178,37 +172,33 @@ public class ScrollView extends View implements ViewParent {
     public void requestLayout() {
         getParent().requestLayout();
     }
-    
+
     @Override
     public View findViewById(String id) {
         View outputView = null;
-        outputView = super.findViewById(id); 
-        if(outputView == null) {
+        outputView = super.findViewById(id);
+        if (outputView == null) {
             outputView = child.findViewById(id);
         }
         return outputView;
     }
 
     public Point getScrollCenter() {
-        return new Point(layoutParams.getWidth()/2 - scrollOffsetX, layoutParams.getHeight()/2 - scrollOffsetY);
+        return new Point(layoutParams.getWidth() / 2 - scrollOffsetX, layoutParams.getHeight() / 2 - scrollOffsetY);
     }
-    
+
     public void setScrollCenter(Point point) {
-        Log.debug("setScrollCenter at "+point.x+";"+point.y);
-        Log.debug("setScrollCenter width="+layoutParams.getWidth()+" height="+layoutParams.getHeight());
-        scrollOffsetX = layoutParams.getWidth()/2 - point.x;
-        scrollOffsetY = layoutParams.getHeight()/2 - point.y;
-        Log.debug("setScrollCenter scrollOffset at "+scrollOffsetX+";"+scrollOffsetY);
+        scrollOffsetX = layoutParams.getWidth() / 2 - point.x;
+        scrollOffsetY = layoutParams.getHeight() / 2 - point.y;
     }
 
     public Point getScrollOffset() {
         return new Point(scrollOffsetX, scrollOffsetY);
     }
-    
+
     public void setScrollOffset(Point point) {
         scrollOffsetX = point.x;
         scrollOffsetY = point.y;
-        Log.debug("setScrollOffset at "+scrollOffsetX+";"+scrollOffsetY);
     }
 
 }
