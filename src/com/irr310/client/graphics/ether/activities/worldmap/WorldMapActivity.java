@@ -16,6 +16,7 @@ import com.irr310.i3d.view.Point;
 import com.irr310.i3d.view.RelativeLayout;
 import com.irr310.i3d.view.ScrollView;
 import com.irr310.i3d.view.View;
+import com.irr310.i3d.view.View.OnClickListener;
 import com.irr310.i3d.view.View.OnMouseEventListener;
 import com.irr310.server.Time;
 
@@ -30,6 +31,7 @@ public class WorldMapActivity extends Activity {
     private ScrollView mapScrollView;
     private boolean firstUpdate = true;
     private float zoom;
+    private SystemView selection;
 
     @Override
     public void onCreate(Bundle bundle) {
@@ -48,9 +50,20 @@ public class WorldMapActivity extends Activity {
         
         List<WorldSystem> allSystems = world.getMap().getSystems();
         for (WorldSystem system : allSystems) {
-            SystemView view = new SystemView(system);
-            view.setZoom(zoom);
-            map.addChild(view);
+            final SystemView systemView = new SystemView(system);
+            systemView.setZoom(zoom);
+            map.addChild(systemView);
+            systemView.setOnClickListener(new OnClickListener() {
+                
+                @Override
+                public void onClick(View view) {
+                    if(selection != null) {
+                        selection.setSelected(false);
+                    }
+                    selection = systemView;
+                    systemView.setSelected(true);
+                }
+            });
         }
         
         
@@ -58,6 +71,7 @@ public class WorldMapActivity extends Activity {
             
             @Override
             public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
+                
                 
                 Point point = new Point(mouseEvent.getX(), mouseEvent.getY());
                 
@@ -99,7 +113,7 @@ public class WorldMapActivity extends Activity {
         
         Log.debug("Zoom mouse=" + point +" zoomFactor="+zoomFactor);
         
-        Point mousePoint =  point.minus(mapScrollView.getScrollOffset());
+        Point mousePoint =  point.add(mapScrollView.getScrollOffset());
         
         Point staticPointBase = mousePoint.minus(mapScrollView.getScrollOffset()).divide(zoom);
         

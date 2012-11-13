@@ -14,6 +14,7 @@ import com.irr310.common.event.game.KeyPressedEvent;
 import com.irr310.common.event.game.KeyReleasedEvent;
 import com.irr310.common.event.game.MouseEvent;
 import com.irr310.common.event.game.QuitGameEvent;
+import com.irr310.i3d.view.Point;
 import com.irr310.server.Duration;
 
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
@@ -23,6 +24,7 @@ public class InputEngine extends FramerateEngine<GameEvent> {
 
     private boolean dragging;
     private long[] pressTime;
+    private Point[] pressLocation;
     private String cheatString = "";
     private final EventDispatcher<GameEventVisitor, GameEvent> dispatcher;
     
@@ -31,6 +33,7 @@ public class InputEngine extends FramerateEngine<GameEvent> {
         framerate = new Duration(15000000);
         dragging = false;
         pressTime = new long[10];
+        pressLocation = new Point[10];
         
     }
 
@@ -95,6 +98,7 @@ public class InputEngine extends FramerateEngine<GameEvent> {
                     // Pressed
                     dragging = true;
                     pressTime[Mouse.getEventButton()] = Mouse.getEventNanoseconds();
+                    pressLocation[Mouse.getEventButton()] = new Point(Mouse.getX(), Mouse.getY());
                     V3DMouseEvent mouseEvent = new V3DMouseEvent(Action.MOUSE_PRESSED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1);
                     dispatcher.sendToAll(new MouseEvent(mouseEvent));
                 } else {
@@ -102,7 +106,7 @@ public class InputEngine extends FramerateEngine<GameEvent> {
                     dragging = false;
                     V3DMouseEvent mouseEvent = new V3DMouseEvent(Action.MOUSE_RELEASED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1);
                     dispatcher.sendToAll(new MouseEvent(mouseEvent));
-                    if( Mouse.getEventNanoseconds()  - pressTime[Mouse.getEventButton()] < 500000000 ) {
+                    if( Mouse.getEventNanoseconds()  - pressTime[Mouse.getEventButton()] < 500000000 && new Point(Mouse.getX(), Mouse.getY()).distanceTo(pressLocation[Mouse.getEventButton()])  < 10) {
                         mouseEvent = new V3DMouseEvent(Action.MOUSE_CLICKED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1);
                         dispatcher.sendToAll(new MouseEvent(mouseEvent));
                     }

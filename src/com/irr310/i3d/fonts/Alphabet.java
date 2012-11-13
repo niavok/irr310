@@ -84,7 +84,7 @@ public class Alphabet
   }
 
   private char[] alphabet = ("abcdefghijklmnopqrstuvwxyz" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "`1234567890-="
-                              + "~!@#€µ$%^&*()_+" + "[]{}\\|" + ":;\"'" + "<>,.?/ "+ "èéÉÈ").toCharArray();
+                              + "~!@#€µ$%^&*()_+" + "[]{}\\|" + ":;\"'" + "<>,.?/ "+ "èéÉÈï").toCharArray();
 
   /**
    * Creates a standard character set (English) and adds the

@@ -73,4 +73,8 @@ public class SystemView extends RelativeLayout {
         }
     }
 
+    public void setSelected(boolean selected) {
+        systemCircleView.setSelected(selected);
+    }
+
 }

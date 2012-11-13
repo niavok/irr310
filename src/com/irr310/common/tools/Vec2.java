@@ -35,6 +35,7 @@ public class Vec2 {
     public double length() {
         return Math.sqrt(x * x + y * y);
     }
+    
     public Vec2 divide(double d) {
         return new Vec2(x / d, y / d);
     }

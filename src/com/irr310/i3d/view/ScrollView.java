@@ -152,8 +152,8 @@ public class ScrollView extends View implements ViewParent {
             used = true;
         } else {
 
-            if (child.onMouseEvent(mouseEvent.relativeTo((int) (child.layoutParams.mLeft - scrollOffsetX),
-                                                         (int) (child.layoutParams.mTop - scrollOffsetY)))) {
+            if (child.onMouseEvent(mouseEvent.relativeTo((int) (child.layoutParams.mLeft + scrollOffsetX),
+                                                         (int) (child.layoutParams.mTop + scrollOffsetY)))) {
                 used = true;
             } else {
                 if (mouseEvent.getAction() == Action.MOUSE_PRESSED) {

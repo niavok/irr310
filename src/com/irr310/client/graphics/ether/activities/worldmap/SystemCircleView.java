@@ -8,6 +8,7 @@ import com.irr310.common.world.Faction;
 import com.irr310.common.world.system.WorldSystem;
 import com.irr310.i3d.Color;
 import com.irr310.i3d.Graphics;
+import com.irr310.i3d.I3dRessourceManager;
 import com.irr310.i3d.Measure;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 import com.irr310.i3d.view.Point;
@@ -19,6 +20,8 @@ public class SystemCircleView extends View {
     private float size;
     private float zoom;
     private float zoomedSize;
+    private boolean selected;
+    private Color selectionColor;
 
     public SystemCircleView(WorldSystem system) {
         this.system = system;
@@ -26,7 +29,8 @@ public class SystemCircleView extends View {
         size = 20;
         zoom = 1;
         reshape();
-        
+        selected = false;
+        selectionColor = I3dRessourceManager.getInstance().loadColor("selection@color");
     }
     
     void reshape() {
@@ -66,8 +70,14 @@ public class SystemCircleView extends View {
         
         g.setColor(color);
         //g.drawFilledRectangle(0, 0, zoomedSize, zoomedSize);
-        g.drawRing(zoomedSize / 2f,zoomedSize / 2f, zoomedSize / 2f, (zoomedSize * 0.90f - 1.5f) / 2f, color, color, 64);
-        g.drawRing(zoomedSize / 2f,zoomedSize / 2f, (zoomedSize * 0.90f - 1.5f)/2, 0 , centerColor, centerColor, 64);
+        
+        float radius = zoomedSize / 2f;
+        if(selected) {
+            g.drawRing(radius,radius, radius * 1.04f + 2f, radius, selectionColor, selectionColor, 64);
+        }
+        
+        g.drawRing(radius,radius, radius, radius * 0.90f - 3f, color, color, 64);
+        g.drawRing(radius,radius, radius * 0.90f - 3f, 0 , centerColor, centerColor, 64);
         
         if(system.isHomeSystem()) {
         
@@ -79,22 +89,22 @@ public class SystemCircleView extends View {
             point1_1 = point1_1.rotate(Math.PI /4);
             point1_2 = point1_2.rotate(Math.PI /4);
             point1_3 = point1_3.rotate(Math.PI /4);
-            g.drawTriangle(point1_1.x + zoomedSize / 2f, point1_1.y + zoomedSize / 2f, point1_2.x + zoomedSize / 2f, point1_2.y + zoomedSize / 2f, point1_3.x + zoomedSize / 2f, point1_3.y + zoomedSize / 2f, true);
+            g.drawTriangle(point1_1.x + radius, point1_1.y + radius, point1_2.x + radius, point1_2.y + radius, point1_3.x + radius, point1_3.y + radius, true);
             
             point1_1 = point1_1.rotate(Math.PI /2);
             point1_2 = point1_2.rotate(Math.PI /2);
             point1_3 = point1_3.rotate(Math.PI /2);
-            g.drawTriangle(point1_1.x + zoomedSize / 2f, point1_1.y + zoomedSize / 2f, point1_2.x + zoomedSize / 2f, point1_2.y + zoomedSize / 2f, point1_3.x + zoomedSize / 2f, point1_3.y + zoomedSize / 2f, true);
+            g.drawTriangle(point1_1.x + radius, point1_1.y + radius, point1_2.x + radius, point1_2.y + radius, point1_3.x + radius, point1_3.y + radius, true);
             
             point1_1 = point1_1.rotate(Math.PI /2);
             point1_2 = point1_2.rotate(Math.PI /2);
             point1_3 = point1_3.rotate(Math.PI /2);
-            g.drawTriangle(point1_1.x + zoomedSize / 2f, point1_1.y + zoomedSize / 2f, point1_2.x + zoomedSize / 2f, point1_2.y + zoomedSize / 2f, point1_3.x + zoomedSize / 2f, point1_3.y + zoomedSize / 2f, true);
+            g.drawTriangle(point1_1.x + radius, point1_1.y + radius, point1_2.x + radius, point1_2.y + radius, point1_3.x + radius, point1_3.y + radius, true);
             
             point1_1 = point1_1.rotate(Math.PI /2);
             point1_2 = point1_2.rotate(Math.PI /2);
             point1_3 = point1_3.rotate(Math.PI /2);
-            g.drawTriangle(point1_1.x + zoomedSize / 2f, point1_1.y + zoomedSize / 2f, point1_2.x + zoomedSize / 2f, point1_2.y + zoomedSize / 2f, point1_3.x + zoomedSize / 2f, point1_3.y + zoomedSize / 2f, true);
+            g.drawTriangle(point1_1.x + radius, point1_1.y + radius, point1_2.x + radius, point1_2.y + radius, point1_3.x + radius, point1_3.y + radius, true);
         
         }
     }
@@ -111,5 +121,9 @@ public class SystemCircleView extends View {
     public View duplicate() {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 }

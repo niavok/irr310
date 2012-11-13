@@ -1,9 +1,12 @@
 package com.irr310.i3d.view;
 
+import org.newdawn.slick.util.Log;
+
 import com.irr310.i3d.Graphics;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
+import fr.def.iss.vd2.lib_v3d.V3DMouseEvent.Action;
 
 public class RelativeLayout extends ContainerView {
 
@@ -96,6 +99,12 @@ public class RelativeLayout extends ContainerView {
     @Override
     public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
         boolean used = false;
+        
+        Log.debug("onMouseEvent "+ mouseEvent.getAction());
+        
+        if(mouseEvent.getAction() == Action.MOUSE_CLICKED) {
+            Log.debug("MOUSE_CLICKED");
+        }
         
         for (View view : children) {
             
