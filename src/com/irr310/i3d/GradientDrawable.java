@@ -17,5 +17,17 @@ public class GradientDrawable extends Drawable {
     public void setStopColor(Color stopColor) {
         this.stopColor = stopColor;
     }
+    
+    @Override
+    public void setBounds(float left, float top, float right, float bottom) {
+        super.setBounds(left, top, right, bottom);
+        g.setColor(stopColor);
+    }
+
+    
+    @Override
+    public void close() {
+        
+    }
 
 }

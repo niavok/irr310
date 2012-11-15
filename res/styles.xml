@@ -21,5 +21,13 @@
         <item name="i3d:cornerRightBottomSize">10px</item>
         <item name="i3d:background">buttonBaseBackground@backgrounds</item>
     </style>
+    
+    <style name="lightBlock">
+        <item name="i3d:cornerLeftTopStyle">bevel</item>
+        <item name="i3d:cornerLeftTopSize">10px</item>
+        <item name="i3d:cornerRightBottomStyle">bevel</item>
+        <item name="i3d:cornerRightBottomSize">10px</item>
+        <item name="i3d:background">lightBlock@backgrounds</item>
+    </style>
 
 </resources>

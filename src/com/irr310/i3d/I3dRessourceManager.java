@@ -193,6 +193,25 @@ public class I3dRessourceManager {
         return view;
     }
 
+    private void parseDrawables(Element element, String fileId) {
+        NodeList childNodes = element.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            Node node = childNodes.item(i);
+            if (node.getNodeType() != Node.ELEMENT_NODE) {
+                // TODO error
+                continue;
+            }
+            Element subElement = (Element) node;
+            if (subElement.getNodeName().equals("gradient")) {
+                parseGradientDrawable(subElement, fileId);
+            } else if (subElement.getNodeName().equals("solid")) {
+                parseSolidDrawable(subElement, fileId);
+            } else {
+                Log.error("Unknown drawable: " + subElement.getNodeName());
+            }
+        }
+    }
+    
     private void parseResources(Element element, RessourceFileCache ressourceFileCache) {
         NodeList childNodes = element.getChildNodes();
         for (int i = 0; i < childNodes.getLength(); i++) {
@@ -1103,10 +1122,11 @@ public class I3dRessourceManager {
 
             Element root = doc.getDocumentElement();
 
-            if (root.getNodeName().contains("gradient")) {
-                parseGradientDrawable(root, fileId);
+            if (root.getNodeName().contains("drawables")) {
+                parseDrawables(root, fileId);
             }
-
+            
+            
         } catch (ParserConfigurationException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -1142,8 +1162,30 @@ public class I3dRessourceManager {
             }
         }
         
-        Color startColor = loadColor(element.getAttribute("i3d:startColor"));
-        Color stopColor = loadColor(element.getAttribute("i3d:stopColor"));
+        addDrawable(name + "@" + fileId, drawable);
+    }
+    
+    
+    private void parseSolidDrawable(Element element, String fileId) {
+        String name = element.getAttribute("name");
+        
+        SolidDrawable drawable = new SolidDrawable();
+        
+        NamedNodeMap attributes = element.getAttributes();
+        for (int i = 0; i < attributes.getLength(); i++) {
+            Node item = attributes.item(i);
+            Attr attr = (Attr) item;
+            String attrName = attr.getName();
+            String attrValue = attr.getValue();
+
+            if (attrName.equals("name")) {
+                // Already processed
+            } else if (attrName.equals("i3d:color")) {
+                drawable.setColor(loadColor(attrValue));
+            } else {
+                Log.error("Unknown attrib '" + attrName + "=" + attrValue + "' for SolidDrawable");
+            }
+        }
         
         addDrawable(name + "@" + fileId, drawable);
     }

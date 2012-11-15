@@ -38,6 +38,10 @@ public class SystemView extends RelativeLayout {
         reshape();
     }
     
+    public WorldSystem getSystem() {
+        return system;
+    }
+    
     private void reshape() {
         
         systemCircleView.reshape();
