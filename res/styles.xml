@@ -11,6 +11,17 @@
         <item name="i3d:layout_paddingBottom">10px</item>
     </style>
 
+    <style name="buttonBase2">
+        <item name="i3d:gravity">center</item>
+        <item name="i3d:borderSize">1px</item>
+        <item name="i3d:borderColor">borderButtonBase@color</item>
+        <item name="i3d:cornerLeftTopStyle">bevel</item>
+        <item name="i3d:cornerLeftTopSize">10px</item>
+        <item name="i3d:cornerRightBottomStyle">bevel</item>
+        <item name="i3d:cornerRightBottomSize">10px</item>
+        <item name="i3d:background">buttonBaseBackground@backgrounds</item>
+    </style>
+    
     <style name="buttonBase">
         <item name="i3d:gravity">center</item>
         <item name="i3d:borderSize">1px</item>
@@ -19,6 +30,10 @@
         <item name="i3d:cornerLeftTopSize">10px</item>
         <item name="i3d:cornerRightBottomStyle">bevel</item>
         <item name="i3d:cornerRightBottomSize">10px</item>
+        <item name="i3d:cornerRightTopStyle">bevel</item>
+        <item name="i3d:cornerRightTopSize">10px</item>
+        <item name="i3d:cornerLeftBottomStyle">bevel</item>
+        <item name="i3d:cornerLeftBottomSize">10px</item>
         <item name="i3d:background">buttonBaseBackground@backgrounds</item>
     </style>
     

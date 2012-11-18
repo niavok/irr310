@@ -26,10 +26,12 @@ public abstract class View {
     private String help;
     private OnMouseEventListener onMouseEventListener;
     private boolean visible = true;
+    private StyleRenderer styleRenderer;
 
     public View() {
         layoutParams = new LayoutParams();
         borderParams = new BorderParams();
+        styleRenderer = new StyleRenderer(this);
     }
 
     public final void draw(Graphics g) {
@@ -41,166 +43,10 @@ public abstract class View {
         // GL11.glTranslatef(layout.offset.x, layout.offset.y, 0);
         GL11.glTranslatef(layoutParams.mLeft, layoutParams.mTop, 0);
 
-        drawDecorations(g);
+        styleRenderer.draw(g);
         onDraw(g);
 
         GL11.glPopMatrix();
-    }
-
-    private void drawDecorations(Graphics g) {
-        GL11.glColor3f(1, 0, 0);
-        GL11.glBegin(GL11.GL_LINE_LOOP);
-
-        float height = layoutParams.getHeight() + layoutParams.computeMesure(layoutParams.getLayoutPaddingTop())
-                + layoutParams.computeMesure(layoutParams.getLayoutPaddingBottom());
-        float width = layoutParams.getWidth() + layoutParams.computeMesure(layoutParams.getLayoutPaddingLeft())
-                + layoutParams.computeMesure(layoutParams.getLayoutPaddingRight());
-        float left = -layoutParams.computeMesure(layoutParams.getLayoutPaddingLeft());
-        float top = -layoutParams.computeMesure(layoutParams.getLayoutPaddingTop());
-        float right = left + width;
-        float bottom = top + height;
-
-        GL11.glVertex2d(left, top);
-        GL11.glVertex2d(right, top);
-        GL11.glVertex2d(right, top + height);
-        GL11.glVertex2d(left, top + height);
-        GL11.glEnd();
-
-        if (borderParams.getBackground() != null) {
-
-            Drawable background = borderParams.getBackground();
-            background.setGraphics(g);
-            background.setBounds(left, top, right, bottom);
-            float cornerLeftTopSize = layoutParams.computeMesure(borderParams.getCornerLeftTopSize());
-            float cornerLeftBottomSize = layoutParams.computeMesure(borderParams.getCornerLeftBottomSize());
-            float cornerRightTopSize = layoutParams.computeMesure(borderParams.getCornerRightTopSize());
-            float cornerRightBottomSize = layoutParams.computeMesure(borderParams.getCornerRightBottomSize());
-
-            // Top left
-            background.begin(GL11.GL_QUADS);
-
-            if (borderParams.getCornerLeftTopStyle() == CornerStyle.SQUARE) {
-                background.vertex(left, top);
-                background.vertex(left + cornerLeftTopSize, top);
-                background.vertex(left + cornerLeftTopSize, top + cornerLeftTopSize);
-                background.vertex(left, top + cornerLeftTopSize);
-            }
-
-            background.vertex(left + cornerLeftTopSize, top);
-            background.vertex(left + width / 2, top);
-            background.vertex(left + width / 2, top + height / 2);
-            background.vertex(left + cornerLeftTopSize, top + height / 2);
-
-            background.vertex(left, top + cornerLeftTopSize);
-            background.vertex(left + cornerLeftTopSize, top + cornerLeftTopSize);
-            background.vertex(left + cornerLeftTopSize, top + height / 2);
-            background.vertex(left, top + height / 2);
-
-            background.end();
-
-            if (borderParams.getCornerLeftTopStyle() == CornerStyle.BEVEL) {
-                background.begin(GL11.GL_TRIANGLES);
-                background.vertex(left + cornerLeftTopSize, top);
-                background.vertex(left + cornerLeftTopSize, top + cornerLeftTopSize);
-                background.vertex(left, top + cornerLeftTopSize);
-                background.end();
-            }
-
-            // Top right
-
-            background.begin(GL11.GL_QUADS);
-
-            if (borderParams.getCornerRightTopStyle() == CornerStyle.SQUARE) {
-                background.vertex(right, top);
-                background.vertex(right - cornerRightTopSize, top);
-                background.vertex(right - cornerRightTopSize, top + cornerRightTopSize);
-                background.vertex(right, top + cornerRightTopSize);
-            }
-
-            background.vertex(right - cornerRightTopSize, top);
-            background.vertex(right - width / 2, top);
-            background.vertex(right - width / 2, top + height / 2);
-            background.vertex(right - cornerRightTopSize, top + height / 2);
-
-            background.vertex(right, top + cornerLeftTopSize);
-            background.vertex(right - cornerRightTopSize, top + cornerRightTopSize);
-            background.vertex(right - cornerRightTopSize, top + height / 2);
-            background.vertex(right, top + height / 2);
-
-            background.end();
-
-            if (borderParams.getCornerRightTopStyle() == CornerStyle.BEVEL) {
-                background.begin(GL11.GL_TRIANGLES);
-                background.vertex(right - cornerRightTopSize, top);
-                background.vertex(right - cornerRightTopSize, top + cornerRightTopSize);
-                background.vertex(right, top + cornerRightTopSize);
-                background.end();
-            }
-
-            // Bottom left
-            background.begin(GL11.GL_QUADS);
-
-            if (borderParams.getCornerLeftBottomStyle() == CornerStyle.SQUARE) {
-                background.vertex(left, bottom);
-                background.vertex(left + cornerLeftBottomSize, bottom);
-                background.vertex(left + cornerLeftBottomSize, bottom - cornerLeftBottomSize);
-                background.vertex(left, bottom - cornerLeftBottomSize);
-            }
-
-            background.vertex(left + cornerLeftBottomSize, bottom);
-            background.vertex(left + width / 2, bottom);
-            background.vertex(left + width / 2, bottom - height / 2);
-            background.vertex(left + cornerLeftBottomSize, bottom - height / 2);
-
-            background.vertex(left, bottom - cornerLeftBottomSize);
-            background.vertex(left + cornerLeftBottomSize, bottom - cornerLeftBottomSize);
-            background.vertex(left + cornerLeftBottomSize, bottom - height / 2);
-            background.vertex(left, bottom - height / 2);
-
-            background.end();
-
-            if (borderParams.getCornerLeftBottomStyle() == CornerStyle.BEVEL) {
-                background.begin(GL11.GL_TRIANGLES);
-                background.vertex(left + cornerLeftBottomSize, bottom);
-                background.vertex(left + cornerLeftBottomSize, bottom - cornerLeftBottomSize);
-                background.vertex(left, bottom - cornerLeftBottomSize);
-                background.end();
-            }
-
-            // Bottom right
-            background.begin(GL11.GL_QUADS);
-
-            if (borderParams.getCornerRightBottomStyle() == CornerStyle.SQUARE) {
-                background.vertex(right, bottom);
-                background.vertex(right - cornerRightBottomSize, bottom);
-                background.vertex(right - cornerRightBottomSize, bottom - cornerRightBottomSize);
-                background.vertex(right, bottom - cornerLeftBottomSize);
-            }
-
-            background.vertex(right - cornerRightBottomSize, bottom);
-            background.vertex(right - width / 2, bottom);
-            background.vertex(right - width / 2, bottom - height / 2);
-            background.vertex(right - cornerRightBottomSize, bottom - height / 2);
-
-            background.vertex(right, bottom - cornerRightBottomSize);
-            background.vertex(right - cornerRightBottomSize, bottom - cornerRightBottomSize);
-            background.vertex(right - cornerRightBottomSize, bottom - height / 2);
-            background.vertex(right, bottom - height / 2);
-
-            background.end();
-
-            if (borderParams.getCornerRightBottomStyle() == CornerStyle.BEVEL) {
-                background.begin(GL11.GL_TRIANGLES);
-                background.vertex(right - cornerRightBottomSize, bottom);
-                background.vertex(right - cornerRightBottomSize, bottom - cornerRightBottomSize);
-                background.vertex(right, bottom - cornerRightBottomSize);
-                background.end();
-            }
-
-            
-            background.close();
-        }
-
     }
 
     public abstract void onDraw(Graphics g);
