@@ -8,9 +8,6 @@ import com.irr310.i3d.view.BorderParams.CornerStyle;
 
 public class StyleRenderer {
 
-    
-    
-    
     private final View view;
     private LayoutParams layoutParams;
     private BorderParams borderParams;
@@ -27,100 +24,139 @@ public class StyleRenderer {
     private float cornerRightTopSize;
     private float cornerRightBottomSize;
 
+    private static final float bevelRound = (float) Math.tan(Math.PI / 8);
+
     public StyleRenderer(View view) {
         this.view = view;
         debugColor = Color.randomLightOpaqueColor();
-        
+
     }
 
     public void draw(Graphics g) {
-            this.g = g;
-            initDraw();
+        this.g = g;
+        initDraw();
 
-            //drawDebugBox();
-            drawBackground(g);
-            drawBorder(g);
+        // drawDebugBox();
+        drawBackground(g);
+        drawBorder(g);
     }
 
     private void drawBorder(Graphics g) {
-        float borderSize = layoutParams.computeMesure(borderParams.getBorderSize());
-        if(borderSize > 0) {
+        float borderSize = layoutParams.computeMesure(borderParams.getBorderSize()) / 2f;
+        if (borderSize > 0) {
             g.setColor(borderParams.getBorderColor());
-            
+
             GL11.glBegin(GL11.GL_QUADS);
-            
+
             // all except corners
             GL11.glVertex2d(left - borderSize, top + cornerLeftTopSize);
             GL11.glVertex2d(left + borderSize, top + cornerLeftTopSize);
             GL11.glVertex2d(left + borderSize, bottom - cornerLeftBottomSize);
             GL11.glVertex2d(left - borderSize, bottom - cornerLeftBottomSize);
-            
+
             GL11.glVertex2d(right - borderSize, top + cornerRightTopSize);
             GL11.glVertex2d(right + borderSize, top + cornerRightTopSize);
             GL11.glVertex2d(right + borderSize, bottom - cornerRightBottomSize);
             GL11.glVertex2d(right - borderSize, bottom - cornerRightBottomSize);
-            
-            
+
             GL11.glVertex2d(left + cornerLeftTopSize, top + borderSize);
             GL11.glVertex2d(left + cornerLeftTopSize, top - borderSize);
             GL11.glVertex2d(right - cornerRightTopSize, top - borderSize);
             GL11.glVertex2d(right - cornerRightTopSize, top + borderSize);
-            
+
             GL11.glVertex2d(left + cornerLeftBottomSize, bottom + borderSize);
             GL11.glVertex2d(left + cornerLeftBottomSize, bottom - borderSize);
             GL11.glVertex2d(right - cornerRightBottomSize, bottom - borderSize);
             GL11.glVertex2d(right - cornerRightBottomSize, bottom + borderSize);
-            
+
             if (borderParams.getCornerLeftTopStyle() == CornerStyle.SQUARE) {
                 GL11.glVertex2d(left - borderSize, top - borderSize);
                 GL11.glVertex2d(left + cornerLeftTopSize, top - borderSize);
                 GL11.glVertex2d(left + cornerLeftTopSize, top + borderSize);
                 GL11.glVertex2d(left + borderSize, top + borderSize);
-                
+
                 GL11.glVertex2d(left - borderSize, top - borderSize);
                 GL11.glVertex2d(left - borderSize, top + cornerLeftTopSize);
                 GL11.glVertex2d(left + borderSize, top + cornerLeftTopSize);
                 GL11.glVertex2d(left + borderSize, top + borderSize);
-            } else if(borderParams.getCornerLeftTopStyle() == CornerStyle.BEVEL) {
-                
+            } else if (borderParams.getCornerLeftTopStyle() == CornerStyle.BEVEL) {
+                GL11.glVertex2d(left - borderSize, top + cornerLeftTopSize);
+                GL11.glVertex2d(left + borderSize, top + cornerLeftTopSize);
+                GL11.glVertex2d(left + cornerLeftTopSize, top + borderSize);
+                GL11.glVertex2d(left + cornerLeftTopSize, top - borderSize);
+
+                GL11.glVertex2d(left - borderSize, top + cornerLeftTopSize);
+                GL11.glVertex2d(left - borderSize, top + cornerLeftTopSize - bevelRound * borderSize * 2);
+                GL11.glVertex2d(left + cornerLeftTopSize - bevelRound * borderSize * 2, top - borderSize);
+                GL11.glVertex2d(left + cornerLeftTopSize, top - borderSize);
             }
-            
+
             if (borderParams.getCornerLeftBottomStyle() == CornerStyle.SQUARE) {
                 GL11.glVertex2d(left - borderSize, bottom + borderSize);
                 GL11.glVertex2d(left + cornerLeftBottomSize, bottom + borderSize);
                 GL11.glVertex2d(left + cornerLeftBottomSize, bottom - borderSize);
                 GL11.glVertex2d(left + borderSize, bottom - borderSize);
-                
+
                 GL11.glVertex2d(left - borderSize, bottom + borderSize);
                 GL11.glVertex2d(left - borderSize, bottom - cornerLeftTopSize);
                 GL11.glVertex2d(left + borderSize, bottom - cornerLeftTopSize);
                 GL11.glVertex2d(left + borderSize, bottom - borderSize);
+            } else if (borderParams.getCornerLeftBottomStyle() == CornerStyle.BEVEL) {
+                GL11.glVertex2d(left - borderSize, bottom - cornerLeftBottomSize);
+                GL11.glVertex2d(left + borderSize, bottom - cornerLeftBottomSize);
+                GL11.glVertex2d(left + cornerLeftBottomSize, bottom - borderSize);
+                GL11.glVertex2d(left + cornerLeftBottomSize, bottom + borderSize);
+
+                GL11.glVertex2d(left - borderSize, bottom - cornerLeftBottomSize);
+                GL11.glVertex2d(left - borderSize, bottom - cornerLeftBottomSize + bevelRound * borderSize * 2);
+                GL11.glVertex2d(left + cornerLeftBottomSize - bevelRound * borderSize * 2, bottom + borderSize);
+                GL11.glVertex2d(left + cornerLeftBottomSize, bottom + borderSize);
             }
-            
+
             if (borderParams.getCornerRightBottomStyle() == CornerStyle.SQUARE) {
                 GL11.glVertex2d(right + borderSize, bottom + borderSize);
                 GL11.glVertex2d(right - cornerRightBottomSize, bottom + borderSize);
                 GL11.glVertex2d(right - cornerRightBottomSize, bottom - borderSize);
                 GL11.glVertex2d(right - borderSize, bottom - borderSize);
-                
+
                 GL11.glVertex2d(right + borderSize, bottom + borderSize);
                 GL11.glVertex2d(right + borderSize, bottom - cornerLeftTopSize);
                 GL11.glVertex2d(right - borderSize, bottom - cornerLeftTopSize);
                 GL11.glVertex2d(right - borderSize, bottom - borderSize);
+            } else if (borderParams.getCornerRightBottomStyle() == CornerStyle.BEVEL) {
+                GL11.glVertex2d(right + borderSize, bottom - cornerRightBottomSize);
+                GL11.glVertex2d(right - borderSize, bottom - cornerRightBottomSize);
+                GL11.glVertex2d(right - cornerRightBottomSize, bottom - borderSize);
+                GL11.glVertex2d(right - cornerRightBottomSize, bottom + borderSize);
+
+                GL11.glVertex2d(right + borderSize, bottom - cornerRightBottomSize);
+                GL11.glVertex2d(right + borderSize, bottom - cornerRightBottomSize + bevelRound * borderSize * 2);
+                GL11.glVertex2d(right - cornerRightBottomSize + bevelRound * borderSize * 2, bottom + borderSize);
+                GL11.glVertex2d(right - cornerRightBottomSize, bottom + borderSize);
             }
-            
+
             if (borderParams.getCornerRightTopStyle() == CornerStyle.SQUARE) {
                 GL11.glVertex2d(right + borderSize, top - borderSize);
                 GL11.glVertex2d(right - cornerRightTopSize, top - borderSize);
                 GL11.glVertex2d(right - cornerRightTopSize, top + borderSize);
                 GL11.glVertex2d(right - borderSize, top + borderSize);
-                
+
                 GL11.glVertex2d(right + borderSize, top - borderSize);
                 GL11.glVertex2d(right + borderSize, top + cornerLeftTopSize);
                 GL11.glVertex2d(right - borderSize, top + cornerLeftTopSize);
                 GL11.glVertex2d(right - borderSize, top + borderSize);
+            } else if (borderParams.getCornerRightTopStyle() == CornerStyle.BEVEL) {
+                GL11.glVertex2d(right + borderSize, top + cornerRightTopSize);
+                GL11.glVertex2d(right - borderSize, top + cornerRightTopSize);
+                GL11.glVertex2d(right - cornerRightTopSize, top + borderSize);
+                GL11.glVertex2d(right - cornerRightTopSize, top - borderSize);
+
+                GL11.glVertex2d(right + borderSize, top + cornerRightTopSize);
+                GL11.glVertex2d(right + borderSize, top + cornerRightTopSize - bevelRound * borderSize * 2);
+                GL11.glVertex2d(right - cornerRightTopSize + bevelRound * borderSize * 2, top - borderSize);
+                GL11.glVertex2d(right - cornerRightTopSize, top - borderSize);
             }
-            
+
             GL11.glEnd();
         }
     }
@@ -131,7 +167,6 @@ public class StyleRenderer {
             Drawable background = borderParams.getBackground();
             background.setGraphics(g);
             background.setBounds(left, top, right, bottom);
-            
 
             // Top left
             background.begin(GL11.GL_QUADS);
@@ -222,6 +257,8 @@ public class StyleRenderer {
                 background.vertex(left + cornerLeftBottomSize, bottom - cornerLeftBottomSize);
                 background.vertex(left, bottom - cornerLeftBottomSize);
                 background.end();
+            } else {
+
             }
 
             // Bottom right
@@ -254,7 +291,6 @@ public class StyleRenderer {
                 background.end();
             }
 
-            
             background.close();
         }
     }
@@ -262,7 +298,7 @@ public class StyleRenderer {
     private void initDraw() {
         layoutParams = view.layoutParams;
         borderParams = view.borderParams;
-        
+
         height = layoutParams.getHeight() + layoutParams.computeMesure(layoutParams.getLayoutPaddingTop())
                 + layoutParams.computeMesure(layoutParams.getLayoutPaddingBottom());
         width = layoutParams.getWidth() + layoutParams.computeMesure(layoutParams.getLayoutPaddingLeft())
@@ -271,7 +307,7 @@ public class StyleRenderer {
         top = -layoutParams.computeMesure(layoutParams.getLayoutPaddingTop());
         right = left + width;
         bottom = top + height;
-        
+
         cornerLeftTopSize = layoutParams.computeMesure(borderParams.getCornerLeftTopSize());
         cornerLeftBottomSize = layoutParams.computeMesure(borderParams.getCornerLeftBottomSize());
         cornerRightTopSize = layoutParams.computeMesure(borderParams.getCornerRightTopSize());
@@ -282,7 +318,6 @@ public class StyleRenderer {
         g.setColor(debugColor);
         GL11.glBegin(GL11.GL_LINE_LOOP);
 
-        
         GL11.glVertex2d(left, top);
         GL11.glVertex2d(right, top);
         GL11.glVertex2d(right, top + height);
