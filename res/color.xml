@@ -9,6 +9,6 @@
     <color name="bottomButtonBase">#ccccccff</color>
     <color name="systemNameWorldMap">#646464ff</color>
     <color name="blockTitle">#000000</color>
-    <color name="lightBlock">#f2f2f2ff</color>
+    <color name="lightBlock">#f2f2f2c8</color>
     
 </resources>

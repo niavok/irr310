@@ -267,8 +267,8 @@ public class FontFactory {
       Graphics2D g = bi.createGraphics();
       Clear.clear(g, bi.getWidth(), bi.getHeight());
 
-      int x = 0;
-      int y = 0;
+      int x = safetyMargin;
+      int y = safetyMargin;
 
       int counter = 0;
 
@@ -276,7 +276,7 @@ public class FontFactory {
       {
         if (charImage.getWidth() + x > bi.getWidth())
         {
-          y += fontMetrics.getMaxAscent() + fontMetrics.getMaxDescent();
+          y += fontMetrics.getMaxAscent() + fontMetrics.getMaxDescent() + safetyMargin;
           x = 0;
         }
 
@@ -291,7 +291,7 @@ public class FontFactory {
 
         g.drawImage(charImage, xValue, yValue, null);
 
-        x += charImage.getWidth();
+        x += charImage.getWidth() + safetyMargin;
         counter++;
       }
 

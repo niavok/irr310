@@ -21,7 +21,15 @@ public class GradientDrawable extends Drawable {
     @Override
     public void setBounds(float left, float top, float right, float bottom) {
         super.setBounds(left, top, right, bottom);
-        g.setColor(stopColor);
+    }
+    
+    @Override
+    public void vertex(float x, float y) {
+        
+        float mix = (y - top) / (bottom - top);
+        
+        g.setColor(Color.mix(startColor, stopColor, mix));
+        super.vertex(x, y);
     }
 
     
