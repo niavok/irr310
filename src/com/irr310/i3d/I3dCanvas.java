@@ -13,9 +13,7 @@ import org.fenggui.binding.render.lwjgl.LWJGLBinding;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
-
-import com.irr310.common.Game;
-import com.irr310.common.event.game.QuitGameEvent;
+import org.lwjgl.opengl.PixelFormat;
 
 import fr.def.iss.vd2.lib_v3d.element.TextureManager;
 
@@ -70,7 +68,7 @@ public class I3dCanvas {
             Display.setVSyncEnabled(false);
             Display.setTitle("Irr310");
             Display.setParent(canvas);
-            Display.create();
+            Display.create(new PixelFormat(8, 24, 0, 4));
             canvas.requestFocus();
         }catch(Exception e){
             System.out.println("Error setting up display" + e);

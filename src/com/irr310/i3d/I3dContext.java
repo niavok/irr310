@@ -36,7 +36,7 @@ public class I3dContext {
 
     public void initCanvas(String title, int width, int height) {
         canvas = new I3dCanvas(this, title, width, height);
-        graphics = new Graphics();
+        graphics = Graphics.getInstance();
         I3dRessourceManager.getInstance().setGraphics(graphics);
     }
 
