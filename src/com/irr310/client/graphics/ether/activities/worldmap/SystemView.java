@@ -22,7 +22,7 @@ public class SystemView extends RelativeLayout {
     public SystemView(WorldSystem system) {
         this.system = system;
         
-        size = 20;
+        size = 30;
         zoom = 1;
 
         

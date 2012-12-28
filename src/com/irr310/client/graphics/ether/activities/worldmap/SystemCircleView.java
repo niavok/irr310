@@ -26,7 +26,7 @@ public class SystemCircleView extends View {
     public SystemCircleView(WorldSystem system) {
         this.system = system;
         
-        size = 20;
+        size = 30;
         zoom = 1;
         reshape();
         selected = false;
