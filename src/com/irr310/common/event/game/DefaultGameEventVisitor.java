@@ -9,11 +9,7 @@ public class DefaultGameEventVisitor implements GameEventVisitor {
     }
 
     @Override
-    public void visit(KeyPressedEvent event) {
-    }
-
-    @Override
-    public void visit(KeyReleasedEvent event) {
+    public void visit(KeyEvent event) {
     }
 
     @Override

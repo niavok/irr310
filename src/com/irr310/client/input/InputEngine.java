@@ -2,21 +2,20 @@ package com.irr310.client.input;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.newdawn.slick.util.Log;
 
 import com.irr310.common.engine.EventDispatcher;
 import com.irr310.common.engine.FramerateEngine;
-import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.game.DefaultGameEventVisitor;
 import com.irr310.common.event.game.GameEvent;
 import com.irr310.common.event.game.GameEventVisitor;
-import com.irr310.common.event.game.KeyPressedEvent;
-import com.irr310.common.event.game.KeyReleasedEvent;
+import com.irr310.common.event.game.KeyEvent;
 import com.irr310.common.event.game.MouseEvent;
 import com.irr310.common.event.game.QuitGameEvent;
 import com.irr310.i3d.view.Point;
 import com.irr310.server.Duration;
 
+import fr.def.iss.vd2.lib_v3d.V3DKeyEvent;
+import fr.def.iss.vd2.lib_v3d.V3DKeyEvent.KeyAction;
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent.Action;
 
@@ -25,7 +24,7 @@ public class InputEngine extends FramerateEngine<GameEvent> {
     private boolean dragging;
     private long[] pressTime;
     private Point[] pressLocation;
-    private String cheatString = "";
+    // private String cheatString = "";
     private final EventDispatcher<GameEventVisitor, GameEvent> dispatcher;
     
     public InputEngine(EventDispatcher<GameEventVisitor, GameEvent> dispatcher) {
@@ -55,16 +54,16 @@ public class InputEngine extends FramerateEngine<GameEvent> {
             
             if (Keyboard.getEventKeyState()) {
                 if (Keyboard.getEventCharacter() == 0) {
-                    dispatcher.sendToAll(new KeyPressedEvent(Keyboard.getEventKey(), ""));
+                    dispatcher.sendToAll(new KeyEvent(new  V3DKeyEvent(KeyAction.KEY_PRESSED, Keyboard.getEventKey(), "")));
                 } else {
-                    dispatcher.sendToAll(new KeyPressedEvent(Keyboard.getEventKey(), Character.toString(Keyboard.getEventCharacter())));
+                    dispatcher.sendToAll(new KeyEvent(new  V3DKeyEvent(KeyAction.KEY_PRESSED,Keyboard.getEventKey(), Character.toString(Keyboard.getEventCharacter()))));
                 }
 
             } else {
                 if (Keyboard.getEventCharacter() == 0) {
-                    dispatcher.sendToAll(new KeyReleasedEvent(Keyboard.getEventKey(), ""));
+                    dispatcher.sendToAll(new KeyEvent(new  V3DKeyEvent(KeyAction.KEY_RELEASED, Keyboard.getEventKey(), "")));
                 } else {
-                    dispatcher.sendToAll(new KeyReleasedEvent(Keyboard.getEventKey(), Character.toString(Keyboard.getEventCharacter())));
+                    dispatcher.sendToAll(new KeyEvent(new  V3DKeyEvent(KeyAction.KEY_RELEASED,Keyboard.getEventKey(), Character.toString(Keyboard.getEventCharacter()))));
                 }
             }
         }

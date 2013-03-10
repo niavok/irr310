@@ -3,14 +3,12 @@ package com.irr310.client.graphics;
 import org.lwjgl.opengl.Display;
 
 import com.irr310.client.graphics.ether.activities.MainActivity;
-import com.irr310.common.Game;
 import com.irr310.common.engine.EventDispatcher;
 import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.event.game.DefaultGameEventVisitor;
 import com.irr310.common.event.game.GameEvent;
 import com.irr310.common.event.game.GameEventVisitor;
-import com.irr310.common.event.game.KeyPressedEvent;
-import com.irr310.common.event.game.KeyReleasedEvent;
+import com.irr310.common.event.game.KeyEvent;
 import com.irr310.common.event.game.MouseEvent;
 import com.irr310.common.event.game.QuitGameEvent;
 import com.irr310.common.tools.Vec2;
@@ -161,7 +159,8 @@ public class UiEngine extends FramerateEngine<GameEvent> {
 //        }
 //
         @Override
-        public void visit(KeyPressedEvent event) {
+        public void visit(KeyEvent event) {
+            context.onKeyEvent(event.getKeyEvent());
             /*if (event.getKeyCode() == Keyboard.KEY_F11 && Keyboard.isKeyDown(Keyboard.KEY_RCONTROL)) {
                 System.out.println("Reload shaders");
                 context.reloadShader();
@@ -267,11 +266,6 @@ public class UiEngine extends FramerateEngine<GameEvent> {
 //        public void visit(PlayerAddedEvent event) {
 //            rendererVisitor.visit(event);
 //        }
-//
-        @Override
-        public void visit(KeyReleasedEvent event) {
-//            rendererVisitor.visit(event);
-        }
 //
 //        @Override
 //        public void visit(PlayerLoggedEvent event) {

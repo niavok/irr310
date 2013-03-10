@@ -25,10 +25,8 @@ public interface GameEventVisitor extends EngineEventVisitor {
 //    public abstract void visit(NetworkEvent event);
 //
 //
-    public abstract void visit(KeyPressedEvent event);
+    public abstract void visit(KeyEvent event);
 //    
-    public abstract void visit(KeyReleasedEvent event);
-//
 //    public abstract void visit(PlayerLoggedEvent event);
 //
 //    public abstract void visit(MinimizeWindowEvent event);

@@ -10,9 +10,8 @@ import com.irr310.common.event.game.QuitGameEvent;
 import com.irr310.i3d.fonts.Font;
 import com.irr310.server.Time;
 
+import fr.def.iss.vd2.lib_v3d.V3DKeyEvent;
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
-
-
 
 public class I3dContext {
 
@@ -24,11 +23,11 @@ public class I3dContext {
     private TextureManager textureManager;
     private boolean preloaded;
     private ContextListener listener;
-    
+
     public static I3dContext getInstance() {
         return instance;
     }
-    
+
     private I3dContext() {
         textureManager = new TextureManager();
         preloaded = false;
@@ -43,24 +42,24 @@ public class I3dContext {
     public void start() {
         canvas.init();
     }
-    
+
     public I3dCanvas getCanvas() {
         return canvas;
     }
-    
+
     public void addSurface(Surface surface) {
         surfaceList.add(surface);
         surface.configure(canvas.getWidth(), canvas.getHeight());
     }
-    
+
     public void update(Time absTime, Time gameTime) {
-        for(Surface surface: surfaceList) {
+        for (Surface surface : surfaceList) {
             surface.update(absTime, gameTime);
         }
-        
+
         canvas.draw(graphics);
     }
-    
+
     public List<Surface> getSurfaceList() {
         return surfaceList;
     }
@@ -77,12 +76,11 @@ public class I3dContext {
         new Thread() {
 
             public void run() {
-                //Generate font cache
+                // Generate font cache
                 defaultFont = I3dRessourceManager.getInstance().loadFont("default@fonts");
-                
-                
-                //Generate shaders
-                
+
+                // Generate shaders
+
                 preloaded = true;
             };
         }.start();
@@ -95,36 +93,58 @@ public class I3dContext {
     public TextureManager getTextureManager() {
         return textureManager;
     }
-    
+
     public boolean isPreloaded() {
         return preloaded;
     }
 
     public void onMouseEvent(V3DMouseEvent mouseEvent) {
-        
-//        if(mouseEvent.getAction() != Action.MOUSE_CLICKED) {
-//            return;
-//        }
-        
+
+        // if(mouseEvent.getAction() != Action.MOUSE_CLICKED) {
+        // return;
+        // }
+
         for (Surface surface : surfaceList) {
-            if(surface.contains(mouseEvent.getX(), mouseEvent.getY())) {
-                V3DMouseEvent topLeftEvent = new V3DMouseEvent(mouseEvent.getAction(), mouseEvent.getX() - surface.x, (surface.y + surface.height) -  mouseEvent.getY(), mouseEvent.getButton());
-//                Log.debug("topLeftEvent: x="+topLeftEvent.getX()+" y="+topLeftEvent.getY());
-                
+            if (surface.contains(mouseEvent.getX(), mouseEvent.getY())) {
+                V3DMouseEvent topLeftEvent = new V3DMouseEvent(mouseEvent.getAction(), mouseEvent.getX() - surface.x, (surface.y + surface.height)
+                        - mouseEvent.getY(), mouseEvent.getButton());
+                // Log.debug("topLeftEvent: x="+topLeftEvent.getX()+" y="+topLeftEvent.getY());
+
                 surface.onMouseEvent(topLeftEvent);
                 break;
             }
         }
     }
 
+    public void onKeyEvent(V3DKeyEvent mouseEvent) {
+
+        // if(mouseEvent.getAction() != Action.MOUSE_CLICKED) {
+        // return;
+        // }
+
+        // for (Surface surface : surfaceList) {
+        // if(surface.contains(mouseEvent.getX(), mouseEvent.getY())) {
+        // V3DMouseEvent topLeftEvent = new
+        // V3DMouseEvent(mouseEvent.getAction(), mouseEvent.getX() - surface.x,
+        // (surface.y + surface.height) - mouseEvent.getY(),
+        // mouseEvent.getButton());
+        // //
+        // Log.debug("topLeftEvent: x="+topLeftEvent.getX()+" y="+topLeftEvent.getY());
+        //
+        // surface.onMouseEvent(topLeftEvent);
+        // break;
+        // }
+        // }
+    }
+
     public void notifyQuit() {
         listener.onQuit();
     };
-    
+
     public void setContextListener(ContextListener listener) {
         this.listener = listener;
     }
-    
+
     public interface ContextListener {
         void onQuit();
     }
