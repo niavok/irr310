@@ -5,7 +5,22 @@
     <string name="newGameButton">New game</string>
     <string name="continueGameButton">Continue</string>
     <string name="joinGameButton">Join game</string>
-    <string name="worldMapButton">World map</string>
+    
     <string name="inspectSystemButton">Inspect system</string>
     <string name="connectSystemButton">Connect system</string>
+    
+    
+    <!-- Board -->
+    <string name="boardBoardTitle">Board</string>
+    <string name="mapBoardTitle">Map</string>
+    <string name="victoryBoardTitle">Victory</string>
+    <string name="eventsBoardTitle">Events</string>
+    <string name="tradeBoardTitle">Trade</string>
+    <string name="sciencesBoardTitle">Sciences</string>
+    <string name="productionBoardTitle">Production</string>
+    <string name="politicsBoardTitle">Politics</string>
+    
+    <string name="seeWorldMapButton">See World map</string>
+    <string name="manageProductionButton">Manage production</string>
+    
 </resources>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    i3d:id="main"
+    i3d:layout_width="match_parent"
+    i3d:layout_height="match_parent" >
+
+    <ScrollView
+        i3d:id="productionQueueScrollView"
+        i3d:layout_width="match_parent"
+        i3d:layout_height="match_parent" >
+
+        <RelativeLayout i3d:id="productionQueue" />
+        <!--
+        <Triangle
+        i3d:id="logoRedPart"
+        i3d:layout_width="1000px"
+        i3d:layout_height="1000px"
+        i3d:backgroundColor="logoSecondary@color"
+        i3d:points="0%,0%|0%,100%|100%,50%" />
+        -->
+    </ScrollView>
+
+    <ScrollView
+        i3d:id="productionDetailsScrollView"
+        i3d:layout_width="match_parent"
+        i3d:layout_height="match_parent" >
+
+        <RelativeLayout i3d:id="productionDetails" />
+        <!--
+        <Triangle
+        i3d:id="logoRedPart"
+        i3d:layout_width="1000px"
+        i3d:layout_height="1000px"
+        i3d:backgroundColor="logoSecondary@color"
+        i3d:points="0%,0%|0%,100%|100%,50%" />
+        -->
+    </ScrollView>
+    
+    <ScrollView
+        i3d:id="producableListView"
+        i3d:layout_width="match_parent"
+        i3d:layout_height="match_parent" >
+
+        <RelativeLayout i3d:id="producableList" />
+        <!--
+        <Triangle
+        i3d:id="logoRedPart"
+        i3d:layout_width="1000px"
+        i3d:layout_height="1000px"
+        i3d:backgroundColor="logoSecondary@color"
+        i3d:points="0%,0%|0%,100%|100%,50%" />
+        -->
+    </ScrollView>
+    
+    <LinearLayout
+        i3d:id="productionCategoriesPanel"
+        i3d:style="lightBlock@styles"
+        i3d:layout_width="wrap_content"
+        i3d:layout_height="wrap_content"
+        i3d:layout_gravity_x="right"
+        i3d:layout_marginRight="30px"
+        i3d:layout_marginTop="30px"
+        i3d:orientation="vertical" >
+      
+        <Button
+            i3d:id="productionCategoryFactoryButton"
+            i3d:style="bigButton@styles"
+            i3d:layout_width="match_parent"
+            i3d:layout_marginBottom="10px"
+            i3d:layout_marginTop="10px"
+            i3d:help="newGameButtonHelp@help/mainmenu"
+            i3d:text="productionCategoryFactoryButton@strings" />
+
+        <Button
+            i3d:id="productionCategoryStocksButton"
+            i3d:style="bigButton@styles"
+            i3d:layout_width="match_parent"
+            i3d:layout_marginBottom="10px"
+            i3d:layout_marginTop="10px"
+            i3d:help="newGameButtonHelp@help/mainmenu"
+            i3d:text="productionCategoryStocksButton@strings" />
+        
+        <Button
+            i3d:id="productionCategoryDesignButton"
+            i3d:style="bigButton@styles"
+            i3d:layout_width="match_parent"
+            i3d:layout_marginBottom="10px"
+            i3d:layout_marginTop="10px"
+            i3d:help="newGameButtonHelp@help/mainmenu"
+            i3d:text="productionCategoryDesignButton@strings" />
+        
+    </LinearLayout>
+
+</RelativeLayout>

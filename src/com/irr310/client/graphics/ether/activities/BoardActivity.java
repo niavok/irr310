@@ -1,5 +1,6 @@
 package com.irr310.client.graphics.ether.activities;
 
+import com.irr310.client.graphics.ether.activities.production.ProductionActivity;
 import com.irr310.client.graphics.ether.activities.worldmap.WorldMapActivity;
 import com.irr310.common.world.World;
 import com.irr310.i3d.Bundle;
@@ -13,8 +14,9 @@ import com.irr310.server.Time;
 public class BoardActivity extends Activity {
 
     
-    private Button worldMapButton;
     private World world;
+    private Button productionButton;
+    private Button worldMapButton;
 
     @Override
     public void onCreate(Bundle bundle) {
@@ -22,7 +24,8 @@ public class BoardActivity extends Activity {
         world = ((BoardActivityBundle) bundle).getWorld();
         
         
-        worldMapButton = (Button) findViewById("worldMapButton@layout/board");
+        worldMapButton = (Button) findViewById("seeWorldMapButton@layout/board");
+        productionButton = (Button) findViewById("manageProductionButton@layout/board");
         
         worldMapButton.setOnClickListener(new OnClickListener() {
             
@@ -30,6 +33,15 @@ public class BoardActivity extends Activity {
             public void onClick(View view) {
                 Bundle bundle = new Bundle(world);
                 startActivity(new Intent(WorldMapActivity.class, bundle));
+            }
+        });
+        
+        productionButton.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle(world);
+                startActivity(new Intent(ProductionActivity.class, bundle));
             }
         });
     }

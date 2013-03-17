@@ -1,31 +1,234 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     i3d:id="main"
     i3d:layout_width="match_parent"
-    i3d:layout_height="match_parent" >
+    i3d:layout_height="match_parent"
+    i3d:orientation="vertical" >
 
     <LinearLayout
+        i3d:id="topBoardLine"
         i3d:layout_width="match_parent"
-        i3d:layout_height="match_parent"
-        i3d:layout_marginLeft="70px"
-        i3d:orientation="vertical" >
-
-        <LinearLayout
-            i3d:layout_width="wrap_content"
-            i3d:layout_height="wrap_content"
-            i3d:orientation="vertical" >
-
-            <Button
-                i3d:id="worldMapButton"
-                i3d:style="bigButton@styles"
-                i3d:layout_width="match_parent"
-                i3d:layout_marginBottom="20px"
-                i3d:layout_marginTop="100px"
-                i3d:text="worldMapButton@strings"
-                i3d:help="newGameButtonHelp@help/mainmenu"
+        i3d:layout_height="50%"
+        i3d:orientation="horizontal"
+        >
+        
+        <RelativeLayout
+            i3d:layout_width="25%"
+            i3d:layout_height="match_parent"
+            i3d:layout_paddingLeft="20px"
+	        i3d:layout_paddingTop="20px"
+	        i3d:layout_paddingBottom="10px"
+	        i3d:layout_paddingRight="10px"
+            >
+	        <LinearLayout
+		        i3d:id="boardPanel"
+		        i3d:style="lightBlock@styles"
+		        i3d:layout_width="match_parent"
+		        i3d:layout_height="match_parent"
+		        i3d:orientation="vertical" >
+	
+	             <TextView
+	                i3d:text="boardBoardTitle@strings"
+	       			i3d:color="blockTitle@color"
+	        		i3d:font="title@fonts" />
+	            
+	        </LinearLayout>
+        </RelativeLayout>
+        
+        <RelativeLayout
+            i3d:layout_width="25%"
+            i3d:layout_height="match_parent"
+            i3d:layout_paddingLeft="10px"
+	        i3d:layout_paddingTop="20px"
+	        i3d:layout_paddingBottom="10px"
+	        i3d:layout_paddingRight="10px"
+            >
+	        <LinearLayout
+		        i3d:id="boardPanel"
+		        i3d:style="lightBlock@styles"
+		        i3d:layout_width="match_parent"
+		        i3d:layout_height="match_parent"
+		        i3d:orientation="vertical" >
+	
+	             <TextView
+	                i3d:text="mapBoardTitle@strings"
+	       			i3d:color="blockTitle@color"
+	        		i3d:font="title@fonts" />
+	            
+	             <Button
+	                i3d:id="seeWorldMapButton"
+	                i3d:style="bigButton@styles"
+	                i3d:layout_width="match_parent"
+	                i3d:layout_marginBottom="20px"
+	                i3d:layout_marginTop="100px"
+	                i3d:text="seeWorldMapButton@strings"
+	                i3d:help="newGameButtonHelp@help/mainmenu"
                  />
-
-   </LinearLayout>
+	             
+	        </LinearLayout>
+        </RelativeLayout>
+            
+        <RelativeLayout
+            i3d:layout_width="25%"
+            i3d:layout_height="match_parent"
+            i3d:layout_paddingLeft="10px"
+	        i3d:layout_paddingTop="20px"
+	        i3d:layout_paddingBottom="10px"
+	        i3d:layout_paddingRight="10px"
+            >
+	        <LinearLayout
+		        i3d:id="boardPanel"
+		        i3d:style="lightBlock@styles"
+		        i3d:layout_width="match_parent"
+		        i3d:layout_height="match_parent"
+		        i3d:orientation="vertical" >
+	
+	             <TextView
+	                i3d:text="victoryBoardTitle@strings"
+	       			i3d:color="blockTitle@color"
+	        		i3d:font="title@fonts" />
+	            
+	        </LinearLayout>
+        </RelativeLayout>
+            
+        <RelativeLayout
+            i3d:layout_width="25%"
+            i3d:layout_height="match_parent"
+            i3d:layout_paddingLeft="10px"
+	        i3d:layout_paddingTop="20px"
+	        i3d:layout_paddingBottom="10px"
+	        i3d:layout_paddingRight="20px"
+            >
+	        <LinearLayout
+		        i3d:id="boardPanel"
+		        i3d:style="lightBlock@styles"
+		        i3d:layout_width="match_parent"
+		        i3d:layout_height="match_parent"
+		        i3d:orientation="vertical" >
+	
+	             <TextView
+	                i3d:text="eventsBoardTitle@strings"
+	       			i3d:color="blockTitle@color"
+	        		i3d:font="title@fonts" />
+	            
+	        </LinearLayout>
+        </RelativeLayout>
+            
+        
+      
+         
     </LinearLayout>
-
-</RelativeLayout>
+    
+   <LinearLayout
+        i3d:id="bottomBoardLine"
+        i3d:layout_width="match_parent"
+        i3d:layout_height="50%"
+        i3d:orientation="horizontal"
+        >
+        
+       <RelativeLayout
+            i3d:layout_width="25%"
+            i3d:layout_height="match_parent"
+            i3d:layout_paddingLeft="20px"
+	        i3d:layout_paddingTop="10px"
+	        i3d:layout_paddingBottom="20px"
+	        i3d:layout_paddingRight="10px"
+            >
+	        <LinearLayout
+		        i3d:id="boardPanel"
+		        i3d:style="lightBlock@styles"
+		        i3d:layout_width="match_parent"
+		        i3d:layout_height="match_parent"
+		        i3d:orientation="vertical" >
+	
+	             <TextView
+	                i3d:text="tradeBoardTitle@strings"
+	       			i3d:color="blockTitle@color"
+	        		i3d:font="title@fonts" />
+	            
+	        </LinearLayout>
+        </RelativeLayout>
+        
+       <RelativeLayout
+            i3d:layout_width="25%"
+            i3d:layout_height="match_parent"
+            i3d:layout_paddingLeft="10px"
+	        i3d:layout_paddingTop="10px"
+	        i3d:layout_paddingBottom="20px"
+	        i3d:layout_paddingRight="10px"
+            >
+	        <LinearLayout
+		        i3d:id="boardPanel"
+		        i3d:style="lightBlock@styles"
+		        i3d:layout_width="match_parent"
+		        i3d:layout_height="match_parent"
+		        i3d:orientation="vertical" >
+	
+	             <TextView
+	                i3d:text="sciencesBoardTitle@strings"
+	       			i3d:color="blockTitle@color"
+	        		i3d:font="title@fonts" />
+	            
+	        </LinearLayout>
+        </RelativeLayout>
+        
+       
+       <RelativeLayout
+            i3d:layout_width="25%"
+            i3d:layout_height="match_parent"
+            i3d:layout_paddingLeft="10px"
+	        i3d:layout_paddingTop="10px"
+	        i3d:layout_paddingBottom="20px"
+	        i3d:layout_paddingRight="10px"
+            >
+	        <LinearLayout
+		        i3d:id="boardPanel"
+		        i3d:style="lightBlock@styles"
+		        i3d:layout_width="match_parent"
+		        i3d:layout_height="match_parent"
+		        i3d:orientation="vertical" >
+	
+	             <TextView
+	                i3d:text="productionBoardTitle@strings"
+	       			i3d:color="blockTitle@color"
+	        		i3d:font="title@fonts" />
+	            
+	             <Button
+	                i3d:id="manageProductionButton"
+	                i3d:style="bigButton@styles"
+	                i3d:layout_width="match_parent"
+	                i3d:layout_marginBottom="20px"
+	                i3d:layout_marginTop="100px"
+	                i3d:text="manageProductionButton@strings"
+	                i3d:help="newGameButtonHelp@help/mainmenu"
+                 />
+	             
+	        </LinearLayout>
+        </RelativeLayout>
+        
+       <RelativeLayout
+            i3d:layout_width="25%"
+            i3d:layout_height="match_parent"
+            i3d:layout_paddingLeft="10px"
+	        i3d:layout_paddingTop="10px"
+	        i3d:layout_paddingBottom="20px"
+	        i3d:layout_paddingRight="20px"
+            >
+	        <LinearLayout
+		        i3d:id="boardPanel"
+		        i3d:style="lightBlock@styles"
+		        i3d:layout_width="match_parent"
+		        i3d:layout_height="match_parent"
+		        i3d:orientation="vertical" >
+	
+	             <TextView
+	                i3d:text="politicsBoardTitle@strings"
+	       			i3d:color="blockTitle@color"
+	        		i3d:font="title@fonts" />
+	            
+	        </LinearLayout>
+        </RelativeLayout>
+       
+         
+    </LinearLayout>
+</LinearLayout>

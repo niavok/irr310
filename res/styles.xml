@@ -34,4 +34,19 @@
         <item name="i3d:background">lightBlock@backgrounds</item>
     </style>
 
+    <style name="debugRed">
+        <item name="i3d:borderSize">5px</item>
+        <item name="i3d:borderColor">debugRed@color</item>
+    </style>
+    
+    <style name="debugGreen">
+        <item name="i3d:borderSize">5px</item>
+        <item name="i3d:borderColor">debugGreen@color</item>
+    </style>
+    
+    <style name="debugBlue">
+        <item name="i3d:borderSize">5px</item>
+        <item name="i3d:borderColor">debugBlue@color</item>
+    </style>
+    
 </resources>
