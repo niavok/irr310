@@ -18,6 +18,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.irr310.common.tools.Log;
+import com.irr310.i3d.Measure.Axis;
 import com.irr310.i3d.fonts.Font;
 import com.irr310.i3d.fonts.FontFactory;
 import com.irr310.i3d.view.BorderParams.CornerStyle;
@@ -347,8 +348,8 @@ public class I3dRessourceManager {
                     }
 
                     MeasurePoint point = new MeasurePoint();
-                    point.setX(parseMeasure(mesuresString[0]));
-                    point.setY(parseMeasure(mesuresString[1]));
+                    point.setX(parseMeasure(mesuresString[0], Axis.HORIZONTAL));
+                    point.setY(parseMeasure(mesuresString[1], Axis.VERTICAL));
 
                     points[index++] = point;
                 }
@@ -364,7 +365,7 @@ public class I3dRessourceManager {
         return triangle;
     }
 
-    private Measure parseMeasure(String mesureString) {
+    private Measure parseMeasure(String mesureString, Axis axis) {
         boolean relative = false;
         String stringValue = "0";
         if (mesureString.endsWith("px")) {
@@ -380,7 +381,7 @@ public class I3dRessourceManager {
 
         int value = Integer.parseInt(stringValue);
 
-        return new Measure(value, relative);
+        return new Measure(value, relative, axis);
     }
 
     private RelativeLayout NewRelativeLayout(Element element, String fileId) {
@@ -591,7 +592,7 @@ public class I3dRessourceManager {
             } else if (attrValue.equals("wrap_content")) {
                 view.setLayoutWidthMeasure(LayoutMeasure.WRAP_CONTENT);
                 used = true;
-            } else if ((measure = parseMeasure(attrValue)) != null) {
+            } else if ((measure = parseMeasure(attrValue, Axis.HORIZONTAL)) != null) {
                 view.setLayoutWidthMeasure(LayoutMeasure.FIXED);
                 view.setWidthMeasure(measure);
                 used = true;
@@ -612,7 +613,7 @@ public class I3dRessourceManager {
             } else if (attrValue.equals("wrap_content")) {
                 view.setLayoutHeightMeasure(LayoutMeasure.WRAP_CONTENT);
                 used = true;
-            } else if ((measure = parseMeasure(attrValue)) != null) {
+            } else if ((measure = parseMeasure(attrValue, Axis.VERTICAL)) != null) {
                 view.setLayoutHeightMeasure(LayoutMeasure.FIXED);
                 view.setHeightMeasure(measure);
                 used = true;
@@ -627,7 +628,7 @@ public class I3dRessourceManager {
         boolean used = false;
         if (attrName.equals("i3d:layout_paddingTop")) {
             Measure measure = null;
-            if ((measure = parseMeasure(attrValue)) != null) {
+            if ((measure = parseMeasure(attrValue, Axis.VERTICAL)) != null) {
                 view.setPaddingTopMeasure(measure);
                 used = true;
             } else {
@@ -641,7 +642,7 @@ public class I3dRessourceManager {
         boolean used = false;
         if (attrName.equals("i3d:layout_paddingBottom")) {
             Measure measure = null;
-            if ((measure = parseMeasure(attrValue)) != null) {
+            if ((measure = parseMeasure(attrValue, Axis.VERTICAL)) != null) {
                 view.setPaddingBottomMeasure(measure);
                 used = true;
             } else {
@@ -655,7 +656,7 @@ public class I3dRessourceManager {
         boolean used = false;
         if (attrName.equals("i3d:layout_paddingLeft")) {
             Measure measure = null;
-            if ((measure = parseMeasure(attrValue)) != null) {
+            if ((measure = parseMeasure(attrValue, Axis.HORIZONTAL)) != null) {
                 view.setPaddingLeftMeasure(measure);
                 used = true;
             } else {
@@ -669,7 +670,7 @@ public class I3dRessourceManager {
         boolean used = false;
         if (attrName.equals("i3d:layout_paddingRight")) {
             Measure measure = null;
-            if ((measure = parseMeasure(attrValue)) != null) {
+            if ((measure = parseMeasure(attrValue, Axis.HORIZONTAL)) != null) {
                 view.setPaddingRightMeasure(measure);
                 used = true;
             } else {
@@ -683,7 +684,7 @@ public class I3dRessourceManager {
         boolean used = false;
         if (attrName.equals("i3d:layout_marginTop")) {
             Measure measure = null;
-            if ((measure = parseMeasure(attrValue)) != null) {
+            if ((measure = parseMeasure(attrValue, Axis.VERTICAL)) != null) {
                 view.setMarginTopMeasure(measure);
                 used = true;
             } else {
@@ -697,7 +698,7 @@ public class I3dRessourceManager {
         boolean used = false;
         if (attrName.equals("i3d:layout_marginBottom")) {
             Measure measure = null;
-            if ((measure = parseMeasure(attrValue)) != null) {
+            if ((measure = parseMeasure(attrValue, Axis.VERTICAL)) != null) {
                 view.setMarginBottomMeasure(measure);
                 used = true;
             } else {
@@ -711,7 +712,7 @@ public class I3dRessourceManager {
         boolean used = false;
         if (attrName.equals("i3d:layout_marginLeft")) {
             Measure measure = null;
-            if ((measure = parseMeasure(attrValue)) != null) {
+            if ((measure = parseMeasure(attrValue, Axis.HORIZONTAL)) != null) {
                 view.setMarginLeftMeasure(measure);
                 used = true;
             } else {
@@ -725,7 +726,7 @@ public class I3dRessourceManager {
         boolean used = false;
         if (attrName.equals("i3d:layout_marginRight")) {
             Measure measure = null;
-            if ((measure = parseMeasure(attrValue)) != null) {
+            if ((measure = parseMeasure(attrValue, Axis.HORIZONTAL)) != null) {
                 view.setMarginRightMeasure(measure);
                 used = true;
             } else {
@@ -839,7 +840,7 @@ public class I3dRessourceManager {
         boolean used = false;
         if (attrName.equals("i3d:borderSize")) {
             Measure measure = null;
-            if ((measure = parseMeasure(attrValue)) != null) {
+            if ((measure = parseMeasure(attrValue, Axis.VERTICAL)) != null) {
                 view.setBorderSize(measure);
                 used = true;
             } else {
@@ -853,7 +854,7 @@ public class I3dRessourceManager {
         boolean used = false;
         if (attrName.equals("i3d:cornerLeftTopSize")) {
             Measure measure = null;
-            if ((measure = parseMeasure(attrValue)) != null) {
+            if ((measure = parseMeasure(attrValue, Axis.VERTICAL)) != null) {
                 view.setCornerLeftTopSize(measure);
                 used = true;
             } else {
@@ -867,7 +868,7 @@ public class I3dRessourceManager {
         boolean used = false;
         if (attrName.equals("i3d:cornerRightTopSize")) {
             Measure measure = null;
-            if ((measure = parseMeasure(attrValue)) != null) {
+            if ((measure = parseMeasure(attrValue, Axis.VERTICAL)) != null) {
                 view.setCornerRightTopSize(measure);
                 used = true;
             } else {
@@ -881,7 +882,7 @@ public class I3dRessourceManager {
         boolean used = false;
         if (attrName.equals("i3d:cornerLeftBottomSize")) {
             Measure measure = null;
-            if ((measure = parseMeasure(attrValue)) != null) {
+            if ((measure = parseMeasure(attrValue, Axis.VERTICAL)) != null) {
                 view.setCornerLeftBottomSize(measure);
                 used = true;
             } else {
@@ -895,7 +896,7 @@ public class I3dRessourceManager {
         boolean used = false;
         if (attrName.equals("i3d:cornerRightBottomSize")) {
             Measure measure = null;
-            if ((measure = parseMeasure(attrValue)) != null) {
+            if ((measure = parseMeasure(attrValue, Axis.VERTICAL)) != null) {
                 view.setCornerRightBottomSize(measure);
                 used = true;
             } else {
@@ -1046,7 +1047,8 @@ public class I3dRessourceManager {
         string = ressourceFileCache.getString(localId);
 
         if (string == null) {
-            Log.error("Unknown string '" + stringId);
+            Log.warn("Unknown string '" + stringId);
+            string = stringId;
         }
 
         return string;

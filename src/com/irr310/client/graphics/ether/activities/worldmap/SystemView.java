@@ -5,6 +5,7 @@ package com.irr310.client.graphics.ether.activities.worldmap;
 import com.irr310.common.world.system.WorldSystem;
 import com.irr310.i3d.I3dRessourceManager;
 import com.irr310.i3d.Measure;
+import com.irr310.i3d.Measure.Axis;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 import com.irr310.i3d.view.RelativeLayout;
 import com.irr310.i3d.view.TextView;
@@ -49,16 +50,16 @@ public class SystemView extends RelativeLayout {
         zoomedSize = size * zoom;
         
         layoutParams.setLayoutWidthMeasure(LayoutMeasure.FIXED);
-        layoutParams.setWidthMeasure(new Measure(zoomedSize, false));
+        layoutParams.setWidthMeasure(new Measure(zoomedSize, false, Axis.HORIZONTAL));
         layoutParams.setLayoutHeightMeasure(LayoutMeasure.FIXED);
-        layoutParams.setHeightMeasure(new Measure(zoomedSize, false));
+        layoutParams.setHeightMeasure(new Measure(zoomedSize, false, Axis.VERTICAL));
         
-        layoutParams.setMarginLeftMeasure(new Measure((float) (system.getLocation().x * zoom) - zoomedSize/2, false));
-        layoutParams.setMarginTopMeasure(new Measure((float) (system.getLocation().y * zoom) - zoomedSize/2, false));
+        layoutParams.setMarginLeftMeasure(new Measure((float) (system.getLocation().x * zoom) - zoomedSize/2, false, Axis.HORIZONTAL));
+        layoutParams.setMarginTopMeasure(new Measure((float) (system.getLocation().y * zoom) - zoomedSize/2, false, Axis.VERTICAL));
         
-        textView.getLayoutParams().setMarginTopMeasure(new Measure(-15 - zoomedSize/20 , false));
+        textView.getLayoutParams().setMarginTopMeasure(new Measure(-15 - zoomedSize/20 , false, Axis.VERTICAL));
         textView.getLayoutParams().setLayoutWidthMeasure(LayoutMeasure.FIXED);
-        textView.getLayoutParams().setWidthMeasure(new Measure(zoomedSize, false));
+        textView.getLayoutParams().setWidthMeasure(new Measure(zoomedSize, false, Axis.HORIZONTAL));
         textView.setGravity(Gravity.CENTER);
         
         

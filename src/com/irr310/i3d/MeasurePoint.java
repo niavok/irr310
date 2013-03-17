@@ -1,5 +1,7 @@
 package com.irr310.i3d;
 
+import com.irr310.i3d.Measure.Axis;
+
 public class MeasurePoint {
 
     private Measure x;
@@ -11,8 +13,8 @@ public class MeasurePoint {
     }
 
     public MeasurePoint() {
-        x = new Measure(0, false);
-        y = new Measure(0, false);
+        x = new Measure(0, false, Axis.HORIZONTAL);
+        y = new Measure(0, false, Axis.VERTICAL);
     }
 
     public Measure getX() {

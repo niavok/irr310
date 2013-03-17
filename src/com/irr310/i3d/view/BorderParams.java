@@ -2,6 +2,7 @@ package com.irr310.i3d.view;
 
 import com.irr310.i3d.Color;
 import com.irr310.i3d.Measure;
+import com.irr310.i3d.Measure.Axis;
 
 public class BorderParams {
 
@@ -24,7 +25,7 @@ public class BorderParams {
     private Drawable background;
 
     public BorderParams() {
-        borderSize = new Measure(0, false);
+        borderSize = new Measure(0, false, Axis.VERTICAL);
         borderColor = Color.black;
         
         
@@ -33,10 +34,10 @@ public class BorderParams {
         cornerLeftBottomStyle = CornerStyle.SQUARE;
         cornerRightBottomStyle = CornerStyle.SQUARE;
         
-        cornerLeftTopSize = new Measure(0, false);
-        cornerRightTopSize = new Measure(0, false);
-        cornerLeftBottomSize = new Measure(0, false);
-        cornerRightBottomSize = new Measure(0, false);
+        cornerLeftTopSize = new Measure(0, false, Axis.VERTICAL);
+        cornerRightTopSize = new Measure(0, false, Axis.VERTICAL);
+        cornerLeftBottomSize = new Measure(0, false, Axis.VERTICAL);
+        cornerRightBottomSize = new Measure(0, false, Axis.VERTICAL);
         
         background = null;
     }

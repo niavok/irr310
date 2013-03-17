@@ -3,6 +3,7 @@ package com.irr310.client.graphics.ether.activities;
 import com.irr310.i3d.Bundle;
 import com.irr310.i3d.Intent;
 import com.irr310.i3d.Measure;
+import com.irr310.i3d.Measure.Axis;
 import com.irr310.i3d.view.Activity;
 import com.irr310.i3d.view.Button;
 import com.irr310.i3d.view.View;
@@ -22,7 +23,7 @@ public class MainMenuActivity extends Activity {
         setContentView("main@layout/mainmenu");
 
       //  mobileLogoPart = (Triangle) findViewById("logoRedPart@layout/logo");
-        animationMesure = new Measure(0, true);
+        animationMesure = new Measure(0, true, Axis.VERTICAL);
 
         newGameMenu = (Button) findViewById("newGameButton@layout/mainmenu");
         newGameMenu.setOnClickListener(new OnClickListener() {

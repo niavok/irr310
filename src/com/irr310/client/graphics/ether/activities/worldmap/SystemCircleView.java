@@ -10,6 +10,7 @@ import com.irr310.i3d.Color;
 import com.irr310.i3d.Graphics;
 import com.irr310.i3d.I3dRessourceManager;
 import com.irr310.i3d.Measure;
+import com.irr310.i3d.Measure.Axis;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 import com.irr310.i3d.view.Point;
 import com.irr310.i3d.view.View;
@@ -38,9 +39,9 @@ public class SystemCircleView extends View {
         zoomedSize = size * zoom;
         
         layoutParams.setLayoutWidthMeasure(LayoutMeasure.FIXED);
-        layoutParams.setWidthMeasure(new Measure(zoomedSize, false));
+        layoutParams.setWidthMeasure(new Measure(zoomedSize, false, Axis.HORIZONTAL));
         layoutParams.setLayoutHeightMeasure(LayoutMeasure.FIXED);
-        layoutParams.setHeightMeasure(new Measure(zoomedSize, false));
+        layoutParams.setHeightMeasure(new Measure(zoomedSize, false, Axis.VERTICAL));
         
 //        layoutParams.setMarginLeftMeasure(new Measure((float) (system.getLocation().x * zoom) - zoomedSize/2, false));
 //        layoutParams.setMarginTopMeasure(new Measure((float) (system.getLocation().y * zoom) - zoomedSize/2, false));

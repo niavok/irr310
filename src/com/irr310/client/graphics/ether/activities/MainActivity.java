@@ -5,6 +5,7 @@ import com.irr310.i3d.Bundle;
 import com.irr310.i3d.I3dContext;
 import com.irr310.i3d.Intent;
 import com.irr310.i3d.Measure;
+import com.irr310.i3d.Measure.Axis;
 import com.irr310.i3d.view.Activity;
 import com.irr310.i3d.view.LayoutParams;
 import com.irr310.i3d.view.Triangle;
@@ -26,7 +27,7 @@ public class MainActivity extends Activity {
         setStackable(false);
         //Log.trace("onCreate");
         mobileLogoPart = (Triangle) findViewById("logoRedPart@layout/logo");
-        animationMesure = new Measure(0, true);
+        animationMesure = new Measure(0, true, Axis.VERTICAL);
         I3dContext.getInstance().preload();
     }
 

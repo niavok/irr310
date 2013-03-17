@@ -2,6 +2,7 @@ package com.irr310.i3d.view;
 
 import com.irr310.common.tools.Log;
 import com.irr310.i3d.Measure;
+import com.irr310.i3d.Measure.Axis;
 import com.irr310.i3d.MeasurePoint;
 
 public class LayoutParams {
@@ -85,15 +86,15 @@ public class LayoutParams {
         mRightPadding = 0;
         mTopPadding = 0;
         mBottomPadding = 0;
-        layoutMarginTopMeasure = new Measure(0, false);
-        layoutMarginBottomMeasure = new Measure(0, false);
-        layoutMarginRightMeasure = new Measure(0, false);
-        layoutMarginLeftMeasure = new Measure(0, false);
+        layoutMarginTopMeasure = new Measure(0, false, Axis.VERTICAL);
+        layoutMarginBottomMeasure = new Measure(0, false, Axis.VERTICAL);
+        layoutMarginRightMeasure = new Measure(0, false, Axis.HORIZONTAL);
+        layoutMarginLeftMeasure = new Measure(0, false, Axis.HORIZONTAL);
         
-        layoutPaddingTopMeasure = new Measure(0, false);
-        layoutPaddingBottomMeasure = new Measure(0, false);
-        layoutPaddingRightMeasure = new Measure(0, false);
-        layoutPaddingLeftMeasure = new Measure(0, false);
+        layoutPaddingTopMeasure = new Measure(0, false, Axis.VERTICAL);
+        layoutPaddingBottomMeasure = new Measure(0, false, Axis.VERTICAL);
+        layoutPaddingRightMeasure = new Measure(0, false, Axis.HORIZONTAL);
+        layoutPaddingLeftMeasure = new Measure(0, false, Axis.HORIZONTAL);
     }
 
 //
@@ -259,7 +260,11 @@ public class LayoutParams {
     	float value = 0;
         if(mesure.isRelative()) {
             if(isLayouted()) {
-                value = getWidth() * mesure.getValue() / 100;
+                if(mesure.getAxis() == Axis.HORIZONTAL) {
+                    value = getWidth() * mesure.getValue() / 100;
+                } else {
+                    value = getHeight() * mesure.getValue() / 100;
+                }
             } else {
                 Log.error("Relative width in undefined width parent");
                 value =  0;
