@@ -112,5 +112,6 @@ public class Log {
     
     public static void warn(String string) {
         System.err.println(string);
+        Thread.dumpStack();
     }
 }
