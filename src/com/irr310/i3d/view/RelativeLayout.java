@@ -102,12 +102,14 @@ public class RelativeLayout extends ContainerView {
         
         for (View view : children) {
             
-            if(mouseEvent.getX() < view.layoutParams.mLeft - view.layoutParams.mLeftPadding || mouseEvent.getX() > view.layoutParams.mRight + view.layoutParams.mRightPadding) {
-                continue;
-            }
-            
-            if(mouseEvent.getY() < view.layoutParams.mTop - view.layoutParams.mTopPadding || mouseEvent.getY() > view.layoutParams.mBottom + view.layoutParams.mBottomPadding) {
-                continue;
+            if(mouseEvent.getAction() != Action.MOUSE_DRAGGED) {
+                if(mouseEvent.getX() < view.layoutParams.mLeft - view.layoutParams.mLeftPadding || mouseEvent.getX() > view.layoutParams.mRight + view.layoutParams.mRightPadding) {
+                    continue;
+                }
+                
+                if(mouseEvent.getY() < view.layoutParams.mTop - view.layoutParams.mTopPadding || mouseEvent.getY() > view.layoutParams.mBottom + view.layoutParams.mBottomPadding) {
+                    continue;
+                }
             }
             
             if(view.onMouseEvent(mouseEvent.relativeTo((int) view.layoutParams.mLeft,(int)  view.layoutParams.mTop))) {

@@ -4,6 +4,7 @@ import com.irr310.i3d.Graphics;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
+import fr.def.iss.vd2.lib_v3d.V3DMouseEvent.Action;
 
 public class LinearLayout extends ContainerView {
 
@@ -150,12 +151,14 @@ public class LinearLayout extends ContainerView {
         
         for (View view : children) {
             
-            if(mouseEvent.getX() < view.layoutParams.mLeft - view.layoutParams.mLeftPadding || mouseEvent.getX() > view.layoutParams.mRight + view.layoutParams.mRightPadding) {
-                continue;
-            }
-            
-            if(mouseEvent.getY() < view.layoutParams.mTop - view.layoutParams.mTopPadding || mouseEvent.getY() > view.layoutParams.mBottom + view.layoutParams.mBottomPadding) {
-                continue;
+            if(mouseEvent.getAction() != Action.MOUSE_DRAGGED) {
+                if(mouseEvent.getX() < view.layoutParams.mLeft - view.layoutParams.mLeftPadding || mouseEvent.getX() > view.layoutParams.mRight + view.layoutParams.mRightPadding) {
+                    continue;
+                }
+                
+                if(mouseEvent.getY() < view.layoutParams.mTop - view.layoutParams.mTopPadding || mouseEvent.getY() > view.layoutParams.mBottom + view.layoutParams.mBottomPadding) {
+                    continue;
+                }
             }
             
             if(view.onMouseEvent(mouseEvent.relativeTo((int) view.layoutParams.mLeft,(int)  view.layoutParams.mTop))) {
