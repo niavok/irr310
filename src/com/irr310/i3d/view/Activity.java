@@ -19,6 +19,7 @@ public abstract class Activity implements ViewParent {
 	private Surface parentSurface;
     private Intent intent;
     private I3dContext context;
+    private boolean stackable;
 
     public abstract void onCreate(Bundle bundle);
     public abstract void onResume();
@@ -27,6 +28,7 @@ public abstract class Activity implements ViewParent {
     
     public Activity() {
         mLayoutUpdated = false;
+        stackable = true;
     }
     
     public void assignSurface(Surface parentSurface) {
@@ -76,6 +78,15 @@ public abstract class Activity implements ViewParent {
         
     }
     
+    public void setStackable(boolean stackable) {
+        this.stackable = stackable;
+        
+    }
+    
+    public boolean isStackable() {
+        return stackable;
+    }
+    
     protected View findViewById(String id) {
 		View view = mview.findViewById(id);
 		if(view == null) {
@@ -98,6 +109,10 @@ public abstract class Activity implements ViewParent {
 	
     public void setIntent(Intent intent) {
         this.intent = intent;
+    }
+    
+    public Intent getIntent() {
+        return intent;
     }
 
     public I3dContext getContext() {

@@ -23,6 +23,7 @@ public class MainActivity extends Activity {
     @Override
     public void onCreate(Bundle bundle) {
         setContentView("main@layout/main");
+        setStackable(false);
         //Log.trace("onCreate");
         mobileLogoPart = (Triangle) findViewById("logoRedPart@layout/logo");
         animationMesure = new Measure(0, true);

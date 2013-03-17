@@ -31,6 +31,7 @@ public class NewGameActivity extends Activity {
     @Override
     public void onCreate(Bundle bundle) {
         setContentView("main@layout/main");
+        setStackable(false);
         
         engineManager = GameClient.getInstance().getEngineManager();
         

@@ -46,27 +46,7 @@ public class InputEngine extends FramerateEngine<GameEvent> {
         
         try { 
         
-        while (Keyboard.next()) {
-            if(interceptSpecialKeys()) {
-                continue;
-            }
-            
-            
-            if (Keyboard.getEventKeyState()) {
-                if (Keyboard.getEventCharacter() == 0) {
-                    dispatcher.sendToAll(new KeyEvent(new  V3DKeyEvent(KeyAction.KEY_PRESSED, Keyboard.getEventKey(), "")));
-                } else {
-                    dispatcher.sendToAll(new KeyEvent(new  V3DKeyEvent(KeyAction.KEY_PRESSED,Keyboard.getEventKey(), Character.toString(Keyboard.getEventCharacter()))));
-                }
-
-            } else {
-                if (Keyboard.getEventCharacter() == 0) {
-                    dispatcher.sendToAll(new KeyEvent(new  V3DKeyEvent(KeyAction.KEY_RELEASED, Keyboard.getEventKey(), "")));
-                } else {
-                    dispatcher.sendToAll(new KeyEvent(new  V3DKeyEvent(KeyAction.KEY_RELEASED,Keyboard.getEventKey(), Character.toString(Keyboard.getEventCharacter()))));
-                }
-            }
-        }
+        
         
 
         while (Mouse.next()) {
@@ -111,6 +91,31 @@ public class InputEngine extends FramerateEngine<GameEvent> {
 
             }
 
+        }
+        
+        while (Keyboard.next()) {
+            if(interceptSpecialKeys()) {
+                continue;
+            }
+            
+            if (Keyboard.getEventKeyState()) {
+                if (Keyboard.getEventCharacter() == 0) {
+                    V3DKeyEvent keyEvent = new  V3DKeyEvent(KeyAction.KEY_PRESSED, Keyboard.getEventKey(), "", Mouse.getEventX(), Mouse.getEventY());
+                    dispatcher.sendToAll(new KeyEvent(keyEvent));
+                } else {
+                    V3DKeyEvent keyEvent = new  V3DKeyEvent(KeyAction.KEY_PRESSED,Keyboard.getEventKey(), Character.toString(Keyboard.getEventCharacter()), Mouse.getEventX(), Mouse.getEventY());
+                    dispatcher.sendToAll(new KeyEvent(keyEvent));
+                }
+
+            } else {
+                if (Keyboard.getEventCharacter() == 0) {
+                    V3DKeyEvent keyEvent = new  V3DKeyEvent(KeyAction.KEY_RELEASED, Keyboard.getEventKey(), "", Mouse.getEventX(), Mouse.getEventY());
+                    dispatcher.sendToAll(new KeyEvent(keyEvent));
+                } else {
+                    V3DKeyEvent keyEvent = new  V3DKeyEvent(KeyAction.KEY_RELEASED,Keyboard.getEventKey(), Character.toString(Keyboard.getEventCharacter()), Mouse.getEventX(), Mouse.getEventY());
+                    dispatcher.sendToAll(new KeyEvent(keyEvent));
+                }
+            }
         }
         
         } catch(IllegalStateException e) {

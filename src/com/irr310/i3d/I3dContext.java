@@ -12,6 +12,7 @@ import com.irr310.server.Time;
 
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent;
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
+import fr.def.iss.vd2.lib_v3d.V3DKeyEvent.KeyAction;
 
 public class I3dContext {
 
@@ -116,25 +117,18 @@ public class I3dContext {
         }
     }
 
-    public void onKeyEvent(V3DKeyEvent mouseEvent) {
+    public void onKeyEvent(V3DKeyEvent keyEvent) {
+        for (Surface surface : surfaceList) {
+            if (surface.contains(keyEvent.getMouseX(), keyEvent.getMouseY())) {
+                V3DKeyEvent topLeftEvent = new V3DKeyEvent(keyEvent.getAction(), keyEvent.getKeyCode(), keyEvent.getCharacter(), keyEvent.getMouseX() - surface.x, (surface.y + surface.height)
+                        - keyEvent.getMouseY());
+                //
+                Log.debug("onkeyevent topLeftEvent: x=" + topLeftEvent.getMouseX() + " y=" + topLeftEvent.getMouseY());
 
-        // if(mouseEvent.getAction() != Action.MOUSE_CLICKED) {
-        // return;
-        // }
-
-        // for (Surface surface : surfaceList) {
-        // if(surface.contains(mouseEvent.getX(), mouseEvent.getY())) {
-        // V3DMouseEvent topLeftEvent = new
-        // V3DMouseEvent(mouseEvent.getAction(), mouseEvent.getX() - surface.x,
-        // (surface.y + surface.height) - mouseEvent.getY(),
-        // mouseEvent.getButton());
-        // //
-        // Log.debug("topLeftEvent: x="+topLeftEvent.getX()+" y="+topLeftEvent.getY());
-        //
-        // surface.onMouseEvent(topLeftEvent);
-        // break;
-        // }
-        // }
+                surface.onKeyEvent(topLeftEvent);
+                break;
+            }
+        }
     }
 
     public void notifyQuit() {

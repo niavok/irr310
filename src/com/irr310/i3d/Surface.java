@@ -10,6 +10,7 @@ import org.lwjgl.util.glu.GLU;
 import com.irr310.i3d.view.Activity;
 import com.irr310.server.Time;
 
+import fr.def.iss.vd2.lib_v3d.V3DKeyEvent;
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 
 public class Surface {
@@ -56,9 +57,29 @@ public class Surface {
         currentActivity = activity;
 
         if (currentActivity != null) {
-            intentStack.push(intent);
+            if(currentActivity.isStackable()) {
+                intentStack.push(intent);
+            }
             currentActivity.forceLayout();
             currentActivity.onResume();
+        }
+    }
+    
+    public void unstackActivity() {
+        
+        
+        
+        // Drop current intent
+        Intent dropedIntent = currentActivity.getIntent();
+        intentStack.remove(dropedIntent);
+        activityMap.remove(dropedIntent);
+        
+        if(intentStack.size() == 0) {
+            // No activity yo unstack, restart the current one
+            startActivity(currentActivity.getIntent());
+        } else {
+            // Restart new top intent 
+            startActivity(intentStack.peek());
         }
     }
 
@@ -279,5 +300,10 @@ public class Surface {
             currentActivity.onMouseEvent(mouseEvent);
         }
     }
-
+    
+    public void onKeyEvent(V3DKeyEvent keyEvent) {
+        if(keyEvent.getAction() == V3DKeyEvent.KeyAction.KEY_PRESSED &&  keyEvent.getKeyCode() == V3DKeyEvent.KEY_ESCAPE) {
+            unstackActivity();
+        }
+    }
 }
