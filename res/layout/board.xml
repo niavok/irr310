@@ -48,25 +48,25 @@
 			        	<TextView
 			                i3d:text="boardStaters@strings"
 			       			i3d:color="defaultFont@color"
-			        		i3d:font="medium@fonts"
+			        		i3d:font="big@fonts"
 			        		i3d:layout_paddingBottom="5px"
 			        		/>
 			        	<TextView
 			                i3d:text="boardOres@strings"
 			       			i3d:color="defaultFont@color"
-			        		i3d:font="medium@fonts"
+			        		i3d:font="big@fonts"
 			        		i3d:layout_paddingBottom="5px"
 			        		/>
 			        	<TextView
 			                i3d:text="boardKolium@strings"
 			       			i3d:color="defaultFont@color"
-			        		i3d:font="medium@fonts"
+			        		i3d:font="big@fonts"
 			        		i3d:layout_paddingBottom="5px"
 			        		/>
 			        	<TextView
 			                i3d:text="boardNeuridium@strings"
 			       			i3d:color="defaultFont@color"
-			        		i3d:font="medium@fonts"
+			        		i3d:font="big@fonts"
 			        		i3d:layout_paddingBottom="5px"
 			        		/>
 		        	</LinearLayout>
@@ -80,28 +80,28 @@
 			                i3d:id="boardStatersAmountTextView"
 			                i3d:layout_width="match_parent"
 			       			i3d:color="defaultFont@color"
-			        		i3d:font="medium@fonts"
+			        		i3d:font="big@fonts"
 			        		i3d:gravity="center|right"
 			        		i3d:layout_paddingBottom="5px" />
 			        	<TextView
 			                i3d:id="boardOresAmountTextView"
 			                i3d:layout_width="match_parent"
 			       			i3d:color="defaultFont@color"
-			        		i3d:font="medium@fonts"
+			        		i3d:font="big@fonts"
 			        		i3d:gravity="center|right"
 			        		i3d:layout_paddingBottom="5px" />
 			        	<TextView
 			                i3d:id="boardKoliumAmountTextView"
 			                i3d:layout_width="match_parent"
 			       			i3d:color="defaultFont@color"
-			        		i3d:font="medium@fonts"
+			        		i3d:font="big@fonts"
 			        		i3d:gravity="center|right"
 			        		i3d:layout_paddingBottom="5px" />
 			        	<TextView
 			                i3d:id="boardNeuridiumAmountTextView"
 			                i3d:layout_width="match_parent"
 			       			i3d:color="defaultFont@color"
-			        		i3d:font="medium@fonts"
+			        		i3d:font="big@fonts"
 			        		i3d:gravity="center|right"
 			        		i3d:layout_paddingBottom="5px" />
 		        	</LinearLayout>
