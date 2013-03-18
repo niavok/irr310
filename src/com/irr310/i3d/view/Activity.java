@@ -51,12 +51,12 @@ public abstract class Activity implements ViewParent {
     }
     
     public void update(Time absTime, Time gameTime) {
+        onUpdate(absTime, gameTime);
         if(!mLayoutUpdated) {
             mLayoutUpdated = true;
             mview.measure();
             mview.layout(mLayout.mLeft, mLayout.mTop, mLayout.mRight,mLayout.mBottom);
         }
-        onUpdate(absTime, gameTime);
     }
 
     protected void onUpdate(Time absTime, Time gameTime) {

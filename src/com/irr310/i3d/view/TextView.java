@@ -179,9 +179,14 @@ public class TextView extends View {
     }
 
     public void setText(String text) {
-        this.text = text;
-        wrappedText = new String[1];
-        wrappedText[0] = text;
+        if(!this.text.equals(text)) {
+            this.text = text;
+            wrappedText = new String[1];
+            wrappedText[0] = text;
+            if(mParent != null) {
+                mParent.requestLayout();
+            }
+        }
     }
 
     @Override
