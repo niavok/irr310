@@ -14,6 +14,10 @@ public abstract class FramerateEngine<T extends EngineEvent> extends Engine<T> {
         isPaused = true;
     }
 
+    public void setFramerate(Duration framerate) {
+        this.framerate = framerate;
+    }
+    
     public Duration getFramerate() {
         return framerate;
     }

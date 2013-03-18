@@ -41,6 +41,7 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements EventDisp
     private EngineManager<WorldEventVisitor, WorldEvent> engineManager;
 
     public WorldEngine(Object object) {
+        setFramerate(new Duration(1000000000l)); // 1s 
         engineManager = new EngineManager<WorldEventVisitor, WorldEvent>();
         engineManager.registerEventVisitor(new WorldEngineWorldEventVisitor());
     }
@@ -185,6 +186,11 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements EventDisp
             Faction faction = new Faction(world, GameServer.pickNewId());
             faction.setHomeSystem(system);
             system.setHomeSystem(true);
+            
+            faction.getStatersAmount().set(2000);
+            faction.getOresAmount().set(200);
+            faction.getKoliumAmount().set(300);
+            faction.getNeuridiumAmount().set(0);
             
             getWorld().addFaction(faction);
             

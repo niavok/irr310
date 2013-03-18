@@ -63,17 +63,32 @@ public class BoardActivity extends Activity {
     private void initBinders() {
         binder = new BinderClient();
         binder.bind(world.getLocalPlayer().getFaction().getStatersAmount(), new BinderListener<Integer>() {
-
             @Override
             public void onChange(BindVariable<Integer> variable) {
                 boardStatersAmountTextView.setText(variable.get()+" [staters@icons]");
             }
-            
         });
         
-        boardOresAmountTextView.setText("4658 [ores@icons]");
-        boardKoliumAmountTextView.setText("2468 [kolium@icons]");
-        boardNeuridiumAmountTextView.setText("569 [neuridium@icons]");
+        binder.bind(world.getLocalPlayer().getFaction().getOresAmount(), new BinderListener<Integer>() {
+            @Override
+            public void onChange(BindVariable<Integer> variable) {
+                boardOresAmountTextView.setText(variable.get()+" [ores@icons]");
+            }
+        });
+        
+        binder.bind(world.getLocalPlayer().getFaction().getKoliumAmount(), new BinderListener<Integer>() {
+            @Override
+            public void onChange(BindVariable<Integer> variable) {
+                boardKoliumAmountTextView.setText(variable.get()+" [kolium@icons]");
+            }
+        });
+        
+        binder.bind(world.getLocalPlayer().getFaction().getNeuridiumAmount(), new BinderListener<Integer>() {
+            @Override
+            public void onChange(BindVariable<Integer> variable) {
+                boardNeuridiumAmountTextView.setText(variable.get()+" [neuridium@icons]");
+            }
+        });
         
         binder.forceProcess();
     }

@@ -22,12 +22,18 @@ public class Faction extends WorldEntity{
     private Color color;
     private List<Ship> shipList = new ArrayList<Ship>();
     private BindVariable<Integer> statersAmount;
+    private BindVariable<Integer> oresAmount;
+    private BindVariable<Integer> koliumAmount;
+    private BindVariable<Integer> neuridiumAmount;
     
     
     public Faction(World world, long id) {
         super(world, id);
         color = Color.randomDarkOpaqueColor();
         statersAmount = new BindVariable<Integer>(world.getBinderServer(), 0);
+        oresAmount = new BindVariable<Integer>(world.getBinderServer(), 0);
+        koliumAmount = new BindVariable<Integer>(world.getBinderServer(), 0);
+        neuridiumAmount = new BindVariable<Integer>(world.getBinderServer(), 0);
     }
 
     public void setHomeSystem(WorldSystem system) {
@@ -74,6 +80,18 @@ public class Faction extends WorldEntity{
 
     public BindVariable<Integer> getStatersAmount() {
         return statersAmount;
+    }
+    
+    public BindVariable<Integer> getKoliumAmount() {
+        return koliumAmount;
+    }
+    
+    public BindVariable<Integer> getNeuridiumAmount() {
+        return neuridiumAmount;
+    }
+    
+    public BindVariable<Integer> getOresAmount() {
+        return oresAmount;
     }
     
 }
