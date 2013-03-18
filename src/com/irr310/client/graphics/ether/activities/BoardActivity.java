@@ -2,6 +2,9 @@ package com.irr310.client.graphics.ether.activities;
 
 import com.irr310.client.graphics.ether.activities.production.ProductionActivity;
 import com.irr310.client.graphics.ether.activities.worldmap.WorldMapActivity;
+import com.irr310.common.binder.BindVariable;
+import com.irr310.common.binder.BinderClient;
+import com.irr310.common.binder.BinderListener;
 import com.irr310.common.world.World;
 import com.irr310.i3d.Bundle;
 import com.irr310.i3d.Intent;
@@ -22,6 +25,7 @@ public class BoardActivity extends Activity {
     private TextView boardOresAmountTextView;
     private TextView boardKoliumAmountTextView;
     private TextView boardNeuridiumAmountTextView;
+    private BinderClient binder;
 
     @Override
     public void onCreate(Bundle bundle) {
@@ -54,23 +58,34 @@ public class BoardActivity extends Activity {
                 startActivity(new Intent(ProductionActivity.class, bundle));
             }
         });
-        
-        updateRessources();
     }
 
-    private void updateRessources() {
-        boardStatersAmountTextView.setText("123 [staters@icons]");
+    private void initBinders() {
+        binder = new BinderClient();
+        binder.bind(world.getLocalPlayer().getFaction().getStatersAmount(), new BinderListener<Integer>() {
+
+            @Override
+            public void onChange(BindVariable<Integer> variable) {
+                boardStatersAmountTextView.setText(variable.get()+" [staters@icons]");
+            }
+            
+        });
+        
         boardOresAmountTextView.setText("4658 [ores@icons]");
         boardKoliumAmountTextView.setText("2468 [kolium@icons]");
         boardNeuridiumAmountTextView.setText("569 [neuridium@icons]");
+        
+        binder.forceProcess();
     }
 
     @Override
     public void onResume() {
+        initBinders();
     }
 
     @Override
     public void onPause() {
+        binder.clear();
     }
     
     @Override
@@ -79,6 +94,7 @@ public class BoardActivity extends Activity {
 
     @Override
     protected void onUpdate(Time absTime, Time gameTime) {
+        binder.process();
     }
     
     public static class BoardActivityBundle extends Bundle {

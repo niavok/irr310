@@ -1,6 +1,5 @@
 package com.irr310.common.world.system;
 
-import com.irr310.common.Game;
 import com.irr310.common.world.World;
 import com.irr310.common.world.view.CelestialObjectView;
 import com.irr310.common.world.view.PartView;
@@ -10,8 +9,8 @@ public class  CelestialObject extends WorldObject {
 
 	
 	
-	public CelestialObject(long id, String name) {
-	    super(id, name);
+	public CelestialObject(World world, long id, String name) {
+	    super(world, id, name);
 	}
 
     public CelestialObjectView toView() {

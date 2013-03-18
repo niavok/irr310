@@ -1,13 +1,14 @@
 package com.irr310.common.world.system;
 
 import com.irr310.common.tools.Vec3;
+import com.irr310.common.world.World;
 import com.irr310.common.world.system.Part.CollisionShape;
 import com.irr310.server.GameServer;
 
 public class Asteroid extends CelestialObject {
 
-    public Asteroid(long id, String name) {
-        super(id, name);
+    public Asteroid(World world, long id, String name) {
+        super(world, id, name);
         setPhysicalResistance(0.6);
         setDurabilityMax(250);
         setDurability(250);

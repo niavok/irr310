@@ -3,6 +3,7 @@ package com.irr310.server.game;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Faction;
 import com.irr310.common.world.Player;
+import com.irr310.common.world.World;
 import com.irr310.common.world.capacity.BalisticWeaponCapacity;
 import com.irr310.common.world.capacity.ContactDetectorCapacity;
 import com.irr310.common.world.capacity.ExplosiveCapacity;
@@ -17,8 +18,14 @@ import com.irr310.common.world.system.Ship;
 import com.irr310.server.GameServer;
 
 public class ComponentFactory {
+    
+    private final World world;
 
-    public static Component createBigPropeller(String name) {
+    public ComponentFactory(World world) {
+        this.world = world;
+    }
+
+    public Component createBigPropeller(String name) {
         Component component = createSimpleComponent(name);
         Part part = component.getFirstPart();
         part.setMass(48d);
@@ -28,7 +35,7 @@ public class ComponentFactory {
 
         generateRectangeSlots(component, part);
 
-        LinearEngineCapacity engineCapacity = new LinearEngineCapacity(GameServer.pickNewId());
+        LinearEngineCapacity engineCapacity = new LinearEngineCapacity(world, GameServer.pickNewId());
         engineCapacity.theoricalMaxThrust = 10;
         engineCapacity.theoricalMinThrust = -4;
         engineCapacity.theoricalVariationSpeed = 5;
@@ -39,7 +46,7 @@ public class ComponentFactory {
         return component;
     }
 
-    public static Component createCamera(String name) {
+    public Component createCamera(String name) {
         Component component = createSimpleComponent(name);
         component.setSkin("camera");
         Part part = component.getFirstPart();
@@ -52,7 +59,7 @@ public class ComponentFactory {
         return component;
     }
 
-    public static Component createFactory(String name) {
+    public Component createFactory(String name) {
         Component component = createSimpleComponent(name);
         component.setSkin("factory");
         Part part = component.getFirstPart();
@@ -65,7 +72,7 @@ public class ComponentFactory {
         return component;
     }
 
-    public static Component createPVCell(String name) {
+    public Component createPVCell(String name) {
         Component component = createSimpleComponent(name);
         component.setSkin("pvcell");
         Part part = component.getFirstPart();
@@ -78,7 +85,7 @@ public class ComponentFactory {
         return component;
     }
 
-    public static Component createHangar(String name) {
+    public Component createHangar(String name) {
         Component component = createSimpleComponent(name);
         component.setSkin("hangar");
         Part part = component.getFirstPart();
@@ -91,7 +98,7 @@ public class ComponentFactory {
         return component;
     }
 
-    public static Component createRefinery(String name) {
+    public Component createRefinery(String name) {
         Component component = createSimpleComponent(name);
         component.setSkin("refinery");
         Part part = component.getFirstPart();
@@ -104,7 +111,7 @@ public class ComponentFactory {
         return component;
     }
 
-    public static Component createTank(String name) {
+    public Component createTank(String name) {
         Component component = createSimpleComponent(name);
         component.setSkin("tank");
         Part part = component.getFirstPart();
@@ -117,7 +124,7 @@ public class ComponentFactory {
         return component;
     }
 
-    public static Component createHarvester(String name) {
+    public Component createHarvester(String name) {
         Component component = createSimpleComponent(name);
         component.setSkin("harvester");
         Part part = component.getFirstPart();
@@ -130,7 +137,7 @@ public class ComponentFactory {
         return component;
     }
 
-    public static Component createKernel(String name) {
+    public Component createKernel(String name) {
         Component component = createSimpleComponent(name);
         component.setSkin("kernel");
         Part part = component.getFirstPart();
@@ -143,7 +150,7 @@ public class ComponentFactory {
         return component;
     }
 
-    public static Component createGun(String componentName, String capacityName, Faction faction) {
+    public Component createGun(String componentName, String capacityName, Faction faction) {
         Component component = createSimpleComponent(componentName);
         component.setSkin("gun");
         component.initDurability(50);
@@ -159,7 +166,7 @@ public class ComponentFactory {
         component.addSlot(GameServer.pickNewId(), part, new Vec3(0, -shape.y / 4, -shape.z / 2));
 
         if(capacityName.equals("gun")) {
-            BalisticWeaponCapacity gunCapacity = new BalisticWeaponCapacity(GameServer.pickNewId());
+            BalisticWeaponCapacity gunCapacity = new BalisticWeaponCapacity(world, GameServer.pickNewId());
             gunCapacity.setName(capacityName);
             gunCapacity.barrels.add(new Vec3(0.14,0,0.14));
             gunCapacity.barrels.add(new Vec3(-0.14,0,0.14));
@@ -167,12 +174,12 @@ public class ComponentFactory {
             gunCapacity.barrels.add(new Vec3(0.14,0,-0.14));
             component.addCapacity(gunCapacity);
         } else if(capacityName.equals("shotgun")) {
-            BalisticWeaponCapacity gunCapacity = new BalisticWeaponCapacity(GameServer.pickNewId());
+            BalisticWeaponCapacity gunCapacity = new BalisticWeaponCapacity(world, GameServer.pickNewId());
             gunCapacity.setName(capacityName);
             gunCapacity.barrels.add(new Vec3(0.0,0,0.0));
             component.addCapacity(gunCapacity);
         } else if(capacityName.equals("rocketpod")) {
-            RocketWeaponCapacity gunCapacity = new RocketWeaponCapacity(GameServer.pickNewId());
+            RocketWeaponCapacity gunCapacity = new RocketWeaponCapacity(world, GameServer.pickNewId());
             gunCapacity.setName(capacityName);
             component.addCapacity(gunCapacity);
             for(int i = 0; i <  9; i++) {
@@ -186,7 +193,7 @@ public class ComponentFactory {
         return component;
     }
 
-    public static Component createThrusterBlock(String name) {
+    public Component createThrusterBlock(String name) {
         Component component = createSimpleComponent(name);
         component.setSkin("thrusterBlock");
         component.initDurability(100);
@@ -233,7 +240,7 @@ public class ComponentFactory {
         return component;
     }
 
-    public static Component createLightHull(String name) {
+    public Component createLightHull(String name) {
         Component component = createSimpleComponent(name);
         component.setSkin("hull");
         component.initDurability(150);
@@ -247,7 +254,7 @@ public class ComponentFactory {
         return component;
     }
 
-    public static Component createWing(String name) {
+    public Component createWing(String name) {
         Component component = createSimpleComponent(name);
         component.setSkin("wing");
         component.initDurability(50);
@@ -266,7 +273,7 @@ public class ComponentFactory {
         component.addSlot(GameServer.pickNewId(), part, new Vec3(shape.x / 6, 0.25, shape.z / 2));
         component.addSlot(GameServer.pickNewId(), part, new Vec3(shape.x / 6, 0.25, -shape.z / 2));
 
-        WingCapacity wingCapacity = new WingCapacity(GameServer.pickNewId());
+        WingCapacity wingCapacity = new WingCapacity(world, GameServer.pickNewId());
         wingCapacity.yield =0.4;
         wingCapacity.friction = 1.5;
         wingCapacity.setName("wing");
@@ -275,7 +282,7 @@ public class ComponentFactory {
         return component;
     }
 
-    public static Component createReactor(String name) {
+    public Component createReactor(String name) {
         Component component = createSimpleComponent(name);
         component.initDurability(50);
         Part part = component.getFirstPart();
@@ -286,7 +293,7 @@ public class ComponentFactory {
 
         generateVerticalRectangeSlots(component, part);
 
-        LinearEngineCapacity engineCapacity = new LinearEngineCapacity(GameServer.pickNewId());
+        LinearEngineCapacity engineCapacity = new LinearEngineCapacity(world, GameServer.pickNewId());
         engineCapacity.theoricalMaxThrust = 10;
         engineCapacity.theoricalMinThrust = -4;
         engineCapacity.theoricalVariationSpeed = 8;
@@ -297,7 +304,7 @@ public class ComponentFactory {
         return component;
     }
 
-    public static Component createRocket(String name, RocketDescriptor rocket, Ship sourceShip) {
+    public Component createRocket(String name, RocketDescriptor rocket, Ship sourceShip) {
         Component component = createSimpleComponent(name);
         Part part = component.getFirstPart();
         part.setOwner(sourceShip.getOwner());
@@ -308,7 +315,7 @@ public class ComponentFactory {
         part.setLinearDamping(rocket.damping);
         component.initDurability(rocket.hitPoint);
         
-        ExplosiveCapacity explosiveCapacity = new ExplosiveCapacity(GameServer.pickNewId());
+        ExplosiveCapacity explosiveCapacity = new ExplosiveCapacity(world, GameServer.pickNewId());
         explosiveCapacity.explosionRadius = rocket.explosionRadius;
         explosiveCapacity.explosionBlast = rocket.explosionBlast;
         explosiveCapacity.armorPenetration = rocket.armorPenetration;
@@ -316,20 +323,20 @@ public class ComponentFactory {
         explosiveCapacity.disarmTimeout = rocket.disarmTimeout;
         explosiveCapacity.damageType = rocket.damageType;
      
-        RocketCapacity rocketCapacity = new RocketCapacity(GameServer.pickNewId());
+        RocketCapacity rocketCapacity = new RocketCapacity(world, GameServer.pickNewId());
         rocketCapacity.explosive = explosiveCapacity;
         rocketCapacity.theoricalMaxThrust = rocket.thrust;
         rocketCapacity.thrustDuration = rocket.thrustDuration;
         rocketCapacity.stability = rocket.stability;
         
-        ContactDetectorCapacity contactDetectorCapacity = new ContactDetectorCapacity(GameServer.pickNewId());
+        ContactDetectorCapacity contactDetectorCapacity = new ContactDetectorCapacity(world, GameServer.pickNewId());
         contactDetectorCapacity.minImpulse = 0.001;
         contactDetectorCapacity.minTime = 0.1;
         contactDetectorCapacity.triggerTarget = explosiveCapacity;
         contactDetectorCapacity.triggerCode = "fire";
         contactDetectorCapacity.sourceShip = sourceShip;
 
-        WingCapacity wingCapacity = new WingCapacity(GameServer.pickNewId());
+        WingCapacity wingCapacity = new WingCapacity(world, GameServer.pickNewId());
         wingCapacity.yield =0;
         wingCapacity.friction = 0.5;
         wingCapacity.setName("wing");
@@ -343,37 +350,37 @@ public class ComponentFactory {
         return component;
     }
     
-    public static Component createGate(String name) {
+    public Component createGate(String name) {
         Component component = createSimpleComponent(name);
         return component;
     }
 
-    public static Component createBeam(String name) {
+    public Component createBeam(String name) {
         Component component = createSimpleComponent(name);
         return component;
     }
 
-    public static Component createPiston(String name) {
+    public Component createPiston(String name) {
         Component component = createSimpleComponent(name);
         return component;
     }
 
-    public static Component createTorqueEngine(String name) {
+    public Component createTorqueEngine(String name) {
         Component component = createSimpleComponent(name);
         return component;
     }
 
     // Tools
 
-    private static Component createSimpleComponent(String name) {
-        Component component = new Component(GameServer.pickNewId(), name);
+    private Component createSimpleComponent(String name) {
+        Component component = new Component(world, GameServer.pickNewId(), name);
 
         Part part = new Part(GameServer.pickNewId(), component);
         component.addPart(part);
         return component;
     }
 
-    private static void generateBoxSlots(Component component, Part part) {
+    private void generateBoxSlots(Component component, Part part) {
 
         Vec3 shape = part.getShape();
 
@@ -386,7 +393,7 @@ public class ComponentFactory {
 
     }
 
-    private static void generateRectangeSlots(Component component, Part part) {
+    private void generateRectangeSlots(Component component, Part part) {
 
         Vec3 shape = part.getShape();
 
@@ -397,7 +404,7 @@ public class ComponentFactory {
 
     }
 
-    private static void generateVerticalRectangeSlots(Component component, Part part) {
+    private void generateVerticalRectangeSlots(Component component, Part part) {
 
         Vec3 shape = part.getShape();
 

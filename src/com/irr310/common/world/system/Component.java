@@ -31,8 +31,8 @@ public final class  Component extends WorldObject {
 	private Map<String, Capacity> capacityNameMap;
 	private boolean attached;
 	
-	public Component(long id, String name) {
-	    super(id, name);
+	public Component(World world, long id, String name) {
+	    super(world, id, name);
 		slots = new ArrayList<Slot>();
 		capacities = new ArrayList<Capacity>();
 		capacityNameMap = new HashMap<String, Capacity>();
@@ -224,7 +224,7 @@ public final class  Component extends WorldObject {
         }
         
         for(CapacityView capacityView: componentView.capacities) {
-            Capacity capacity = Capacity.createFromType(capacityView.id,  CapacityType.values()[capacityView.type]);
+            Capacity capacity = Capacity.createFromType(getWorld(), capacityView.id,  CapacityType.values()[capacityView.type]);
             capacity.fromView(capacityView);
             addCapacity(capacity);
         }

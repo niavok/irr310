@@ -1,5 +1,6 @@
 package com.irr310.common.world.capacity;
 
+import com.irr310.common.world.World;
 import com.irr310.common.world.system.DamageDescriptor.DamageType;
 import com.irr310.common.world.view.CapacityView;
 
@@ -15,8 +16,8 @@ public class ExplosiveCapacity extends Capacity {
     public DamageType damageType;
 
 
-    public ExplosiveCapacity(long id) {
-        super(id);
+    public ExplosiveCapacity(World world, long id) {
+        super(world, id);
         fire = false;
         consumed = false;
     }

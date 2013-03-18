@@ -11,7 +11,7 @@ import com.irr310.common.world.Player;
 import com.irr310.common.world.view.PartStateView;
 import com.irr310.common.world.view.PartView;
 
-public class Part extends GameEntity {
+public class Part extends WorldEntity {
 
     // private final Vect3 position;
     private Double mass;
@@ -32,7 +32,7 @@ public class Part extends GameEntity {
     }
 
     public Part(long id, WorldObject parentObject) {
-        super(id);
+        super(parentObject.getWorld(), id);
         this.parentObject = parentObject;
         rotationSpeed = Vec3.origin();
         linearSpeed = Vec3.origin();

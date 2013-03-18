@@ -18,7 +18,7 @@ import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.common.world.view.ShipView;
 import com.irr310.server.SystemEngine;
 
-public class Ship extends GameEntity implements Container {
+public class Ship extends WorldEntity implements Container {
 
     private static final double MIN_LINK_DISTANCE = 0.1;
     List<Link> links = new ArrayList<Link>();
@@ -29,8 +29,8 @@ public class Ship extends GameEntity implements Container {
     private boolean destructible;
     private SystemEngine systemEngine;
 
-    public Ship(long id) {
-        super(id);
+    public Ship(World world, long id) {
+        super(world, id);
         owner = null;
         destructible = true;
     }

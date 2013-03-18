@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.ReentrantLock;
 
+import com.irr310.common.binder.BinderServer;
 import com.irr310.common.world.item.Item;
 import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.common.world.view.PlayerView;
@@ -23,8 +24,10 @@ public class World {
 
     ReentrantLock mutex;
     private com.irr310.common.world.Map map;
+    private BinderServer binderServer;
 
     public World() {
+        binderServer = new BinderServer();
         
         players = new CopyOnWriteArrayList<Player>();
         factions= new CopyOnWriteArrayList<Faction>();
@@ -64,7 +67,7 @@ public class World {
             return playerIdMap.get(playerView.id);
         }
 
-        Player player = new Player(playerView.id, playerView.login);
+        Player player = new Player(this, playerView.id, playerView.login);
         player.fromView(playerView);
         addPlayer(player);
         return player;
@@ -103,6 +106,23 @@ public class World {
     public void addItem(Item item) {
         items.add(item);
         itemIdMap.put(item.getId(), item);
+    }
+
+    public Player getLocalPlayer() {
+        for(Player player: players) {
+            if(player.isLocal()) {
+                return player;
+            }
+        }
+        return null;
+    }
+
+    public BinderServer getBinderServer() {
+        return binderServer;
+    }
+
+    public void flush() {
+        binderServer.flush();
     }
 
 }

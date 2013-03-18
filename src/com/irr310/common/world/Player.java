@@ -8,7 +8,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import com.irr310.common.tools.Hash;
 import com.irr310.common.world.item.ItemSlot;
 import com.irr310.common.world.item.ShipSchema;
-import com.irr310.common.world.system.GameEntity;
+import com.irr310.common.world.system.WorldEntity;
 import com.irr310.common.world.system.Ship;
 import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
@@ -16,7 +16,7 @@ import com.irr310.common.world.view.PlayerView;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 
-public class Player extends GameEntity {
+public class Player extends WorldEntity {
 
     private static final int PASSWORD_SALT_LENGTH = 32;
     
@@ -35,9 +35,11 @@ public class Player extends GameEntity {
 
     private Faction faction;
 
+    private boolean local;
+
     
-	public Player(long id, String login) {
-	    super(id);
+	public Player(World world, long id, String login) {
+	    super(world, id);
         this.login = login;
         
         upgrades = new ArrayList<UpgradeOwnership>();
@@ -194,5 +196,13 @@ public class Player extends GameEntity {
 
     public void setFaction(Faction faction) {
         this.faction = faction;
+    }
+
+    public void setLocal(boolean local) {
+        this.local = local;
+    }
+    
+    public boolean isLocal() {
+        return local;
     }
 }

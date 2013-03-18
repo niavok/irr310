@@ -1,14 +1,15 @@
 package com.irr310.common.world.capacity;
 
-import com.irr310.common.world.system.GameEntity;
+import com.irr310.common.world.World;
+import com.irr310.common.world.system.WorldEntity;
 import com.irr310.common.world.view.CapacityView;
 
-public abstract class Capacity extends GameEntity{
+public abstract class Capacity extends WorldEntity{
 
     private String name;
 
-    public Capacity(long id) {
-        super(id);
+    public Capacity(World world, long id) {
+        super(world, id);
         this.name = "undefined";
     }
 
@@ -23,14 +24,14 @@ public abstract class Capacity extends GameEntity{
 
     public abstract void fromView(CapacityView view);
 
-    public static Capacity createFromType(long id, CapacityType type) {
+    public static Capacity createFromType(World world, long id, CapacityType type) {
         switch (type) {
             case LINEAR_ENGINE:
-                return new LinearEngineCapacity(id);
+                return new LinearEngineCapacity(world, id);
             case WING:
-                return new WingCapacity(id);
+                return new WingCapacity(world, id);
             case GUN:
-                return new BalisticWeaponCapacity(id);
+                return new BalisticWeaponCapacity(world, id);
             default:
                 System.err.println("Not implemented capacity type: "+type.toString());
         }

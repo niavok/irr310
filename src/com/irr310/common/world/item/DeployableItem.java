@@ -2,6 +2,7 @@ package com.irr310.common.world.item;
 
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Faction;
+import com.irr310.common.world.World;
 import com.irr310.common.world.system.WorldSystem;
 
 public abstract class DeployableItem extends Item {
@@ -9,8 +10,8 @@ public abstract class DeployableItem extends Item {
     private double deployedRadius;
     protected WorldSystem currentSystem;
 
-    public DeployableItem(long id, Faction owner) {
-        super(id, owner);
+    public DeployableItem(World world, long id, Faction owner) {
+        super(world, id, owner);
         setDeployable(true);
     }
     

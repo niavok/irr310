@@ -6,25 +6,28 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import com.irr310.common.world.system.GameEntity;
+import com.irr310.common.binder.BindVariable;
+import com.irr310.common.world.system.WorldEntity;
 import com.irr310.common.world.system.Ship;
 import com.irr310.common.world.system.WorldSystem;
 import com.irr310.i3d.Color;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 
-public class Faction extends GameEntity{
+public class Faction extends WorldEntity{
 
     private WorldSystem homeSystem;
     private List<WorldSystem> knownSystems = new ArrayList<WorldSystem>();
     private List<Player> players = new ArrayList<Player>();
     private Color color;
-    private List<Ship> shipList = new ArrayList<Ship>();;
+    private List<Ship> shipList = new ArrayList<Ship>();
+    private BindVariable<Integer> statersAmount;
     
     
-    public Faction(long id) {
-        super(id);
+    public Faction(World world, long id) {
+        super(world, id);
         color = Color.randomDarkOpaqueColor();
+        statersAmount = new BindVariable<Integer>(world.getBinderServer(), 0);
     }
 
     public void setHomeSystem(WorldSystem system) {
@@ -67,6 +70,10 @@ public class Faction extends GameEntity{
     
     public List<Ship> getShipList() {
         return shipList;
+    }
+
+    public BindVariable<Integer> getStatersAmount() {
+        return statersAmount;
     }
     
 }

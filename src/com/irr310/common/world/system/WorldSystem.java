@@ -12,6 +12,7 @@ import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec2;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Faction;
+import com.irr310.common.world.World;
 import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.view.CelestialObjectView;
 import com.irr310.common.world.view.ComponentView;
@@ -19,7 +20,7 @@ import com.irr310.common.world.view.PartView;
 import com.irr310.common.world.view.ShipView;
 import com.irr310.server.SystemEngine;
 
-public class WorldSystem extends GameEntity {
+public class WorldSystem extends WorldEntity {
 
     private  Vec2 location;
     private double radius;
@@ -39,8 +40,8 @@ public class WorldSystem extends GameEntity {
     private boolean homeSystem;
     private String name;
     
-    public WorldSystem(long id, Vec2 location) {
-        super(id);
+    public WorldSystem(World world, long id, Vec2 location) {
+        super(world, id);
         this.location = location;
         this.radius = 1000;
         
@@ -150,7 +151,7 @@ public class WorldSystem extends GameEntity {
             return celestialObjectIdMap.get(celestialObjectView.id);
         }
 
-        CelestialObject celestialObject = new CelestialObject(celestialObjectView.id, celestialObjectView.name);
+        CelestialObject celestialObject = new CelestialObject(getWorld(), celestialObjectView.id, celestialObjectView.name);
         celestialObject.fromView(celestialObjectView);
         addCelestialObject(celestialObject);
         return celestialObject;
@@ -161,7 +162,7 @@ public class WorldSystem extends GameEntity {
             return shipIdMap.get(shipView.id);
         }
 
-        Ship ship = new Ship(shipView.id);
+        Ship ship = new Ship(getWorld(), shipView.id);
         ship.fromView(shipView);
         addShip(ship, null);
         return ship;
@@ -213,7 +214,7 @@ public class WorldSystem extends GameEntity {
             return componentIdMap.get(componentView.id);
         }
 
-        Component component = new Component(componentView.id, componentView.name);
+        Component component = new Component(getWorld(), componentView.id, componentView.name);
         component.fromView(componentView);
         addComponent(component);
         return component;

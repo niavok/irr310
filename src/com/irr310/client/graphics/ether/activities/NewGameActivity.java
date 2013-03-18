@@ -44,7 +44,7 @@ public class NewGameActivity extends Activity {
                 worldEngine.registerEventVisitor(new NewGameEventVisitor());
                 engineManager.startAndWait(worldEngine);
                 
-                worldEngine.sendToAll(new ConnectPlayerEvent("fredb219"));
+                worldEngine.sendToAll(new ConnectPlayerEvent("fredb219", true));
             };
         }.start();
     }

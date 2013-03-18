@@ -1,9 +1,10 @@
 package com.irr310.common.world.item;
 
 import com.irr310.common.world.Faction;
-import com.irr310.common.world.system.GameEntity;
+import com.irr310.common.world.World;
+import com.irr310.common.world.system.WorldEntity;
 
-public class Item extends GameEntity {
+public class Item extends WorldEntity {
     
     enum ItemType {
         BUILDING
@@ -16,8 +17,8 @@ public class Item extends GameEntity {
     private ItemType type;
 
     
-    public Item(long id, Faction owner) {
-        super(id);
+    public Item(World world, long id, Faction owner) {
+        super(world, id);
         this.owner = owner;
         setUsufruct(owner);
     }

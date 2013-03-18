@@ -1,6 +1,7 @@
 package com.irr310.common.world.system;
 
 import com.irr310.common.tools.Vec3;
+import com.irr310.common.world.World;
 import com.irr310.common.world.system.Part.CollisionShape;
 import com.irr310.server.GameServer;
 
@@ -8,8 +9,8 @@ public class Loot extends CelestialObject {
 
     int value;
     
-    public Loot(long id, String name) {
-        super(id, name);
+    public Loot(World world, long id, String name) {
+        super(world, id, name);
         setPhysicalResistance(100);
         setHeatResistance(100);
         setDurabilityMax(250);

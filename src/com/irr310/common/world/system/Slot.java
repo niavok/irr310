@@ -3,14 +3,14 @@ package com.irr310.common.world.system;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.view.SlotView;
 
-public class Slot extends GameEntity {
+public class Slot extends WorldEntity {
 
 	private final Vec3 position;
 	private final Component parentComponent;
 	private final Part part;
 
 	public Slot(long id, Component parentComponent, Part part,  Vec3 position) {
-	    super(id);
+	    super(parentComponent.getWorld(), id);
 		this.parentComponent = parentComponent;
 		this.part = part;
 		this.position = position;

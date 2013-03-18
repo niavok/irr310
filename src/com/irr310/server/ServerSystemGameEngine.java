@@ -564,7 +564,7 @@ public class ServerSystemGameEngine extends FramerateEngine<SystemEvent> {
 //    }
 
     private void initWorld() {
-        Monolith monolith = new Monolith(GameServer.pickNewId(), "monolith");
+//        Monolith monolith = new Monolith( GameServer.pickNewId(), "monolith");
 //        Game.getInstance().getWorld().addCelestialObject(monolith);
 
         /*

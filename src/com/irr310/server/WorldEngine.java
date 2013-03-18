@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.irr310.common.binder.BindVariable;
 import com.irr310.common.engine.EngineManager;
 import com.irr310.common.engine.EventDispatcher;
 import com.irr310.common.engine.FramerateEngine;
@@ -51,6 +52,9 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements EventDisp
 
     @Override
     protected void frame() {
+        BindVariable<Integer> statersAmount = world.getFactions().get(0).getStatersAmount();
+        statersAmount.set(statersAmount.getCurrent()+1);
+        world.flush();
     }
 
     @Override
@@ -92,8 +96,9 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements EventDisp
 
         @Override
         public void visit(ConnectPlayerEvent event) {
-            Player newPlayer = new Player(GameServer.pickNewId(), event.getPlayerLogin());
+            Player newPlayer = new Player(world, GameServer.pickNewId(), event.getPlayerLogin());
             newPlayer.setHuman(true);
+            newPlayer.setLocal(event.isLocal());
             //Find faction
             Faction faction = world.getFactions().get(0);
             
@@ -147,7 +152,7 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements EventDisp
                 }
             }
             
-            WorldSystem system = new WorldSystem(GameServer.pickNewId(), location);
+            WorldSystem system = new WorldSystem(world, GameServer.pickNewId(), location);
             
             int nameIndex = random.nextInt(availableNames.size());
             String name = availableNames.remove(nameIndex);
@@ -177,13 +182,13 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements EventDisp
             WorldSystem system = availableHome.get(homeIndex);
             availableHome.remove(homeIndex);
             
-            Faction faction = new Faction(GameServer.pickNewId());
+            Faction faction = new Faction(world, GameServer.pickNewId());
             faction.setHomeSystem(system);
             system.setHomeSystem(true);
             
             getWorld().addFaction(faction);
             
-            NexusItem nexus = BuildingItemFactory.createNexus(faction);
+            NexusItem nexus = new BuildingItemFactory(world).createNexus(faction);
             
             
             getWorld().addItem(nexus);
@@ -193,10 +198,12 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements EventDisp
             nexus.forceDeploy(system, system.getRandomEmptySpace(nexus.getDeployedRadius()));
         }
         
-
+        getWorld().flush();
         
         
         map.dump();
+        
+        
     }
     
     private List<String> loadSystemNameList() {

@@ -3,7 +3,9 @@ package com.irr310.common.world.system;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class WorldObject extends GameEntity {
+import com.irr310.common.world.World;
+
+public abstract class WorldObject extends WorldEntity {
 
     private String name;
     protected List<Part> parts;
@@ -15,8 +17,8 @@ public abstract class WorldObject extends GameEntity {
     private double heatResistance;
     protected WorldSystem system;
 
-    public WorldObject(long id, String name) {
-        super(id);
+    public WorldObject(World world, long id, String name) {
+        super(world, id);
         this.name = name;
         this.system = null;
         firstPart = null;
