@@ -51,7 +51,13 @@ public abstract class Activity implements ViewParent {
     }
     
     public void update(Time absTime, Time gameTime) {
+        updateLayout();
         onUpdate(absTime, gameTime);
+        //The update may have changed the layout. Check that
+        updateLayout();
+    }
+
+    private void updateLayout() {
         if(!mLayoutUpdated) {
             mLayoutUpdated = true;
             mview.measure();
