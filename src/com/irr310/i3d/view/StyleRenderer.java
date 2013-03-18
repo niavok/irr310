@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL11;
 import com.irr310.i3d.Color;
 import com.irr310.i3d.Graphics;
 import com.irr310.i3d.view.BorderParams.CornerStyle;
+import com.irr310.i3d.view.drawable.Drawable;
 
 public class StyleRenderer {
 

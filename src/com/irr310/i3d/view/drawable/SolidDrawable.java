@@ -1,6 +1,6 @@
-package com.irr310.i3d;
+package com.irr310.i3d.view.drawable;
 
-import com.irr310.i3d.view.Drawable;
+import com.irr310.i3d.Color;
 
 public class SolidDrawable extends Drawable {
 
@@ -21,6 +21,16 @@ public class SolidDrawable extends Drawable {
     
     @Override
     public void close() {
+    }
+    
+    @Override
+    public int getIntrinsicWidth() {
+        return -1;
+    }
+
+    @Override
+    public int getIntrinsicHeight() {
+        return -1;
     }
 
 }

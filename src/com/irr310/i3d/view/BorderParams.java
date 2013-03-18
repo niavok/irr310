@@ -3,6 +3,7 @@ package com.irr310.i3d.view;
 import com.irr310.i3d.Color;
 import com.irr310.i3d.Measure;
 import com.irr310.i3d.Measure.Axis;
+import com.irr310.i3d.view.drawable.Drawable;
 
 public class BorderParams {
 

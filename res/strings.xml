@@ -21,11 +21,16 @@
     <string name="seeWorldMapButton">See World map</string>
     <string name="manageProductionButton">Manage production</string>
     
+    <string name="boardStaters">Staters</string>
+    <string name="boardOres">Ores</string>
+    <string name="boardKolium">Kolium</string>
+    <string name="boardNeuridium">Neuridium</string>
+    
     <!-- Map -->
     <string name="inspectSystemButton">Inspect system</string>
     <string name="connectSystemButton">Connect system</string>
     
-    <!-- Map -->
+    <!-- Production -->
     <string name="productionCategoryFactoryButton">Factory</string>
     <string name="productionCategoryStocksButton">Stocks</string>
     <string name="productionCategoryDesignButton">Design</string>

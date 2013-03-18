@@ -137,13 +137,13 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements EventDisp
                 
                 if(nearestSystem.getLocation().distanceTo(location) < mapMinDistance) {
                     // Too near to a existing system, retry
-                    Log.trace("Too near to a existing system, retry :"+ nearestSystem.getLocation().distanceTo(location));
+                    //Log.trace("Too near to a existing system, retry :"+ nearestSystem.getLocation().distanceTo(location));
                     mapMinDistance--;
                     continue;
                 } else {
-                    Log.trace("Distance before :"+ nearestSystem.getLocation().distanceTo(location));
+                    //Log.trace("Distance before :"+ nearestSystem.getLocation().distanceTo(location));
                     location = location.add(location.diff(nearestSystem.getLocation()).normalize().multiply(mapMinDistance/2) );
-                    Log.trace("Distance after :"+ nearestSystem.getLocation().distanceTo(location));
+                    //Log.trace("Distance after :"+ nearestSystem.getLocation().distanceTo(location));
                 }
             }
             

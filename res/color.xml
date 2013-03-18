@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="defaultFont">#000000</color>
     <color name="debugRed">#ff0000</color>
     <color name="debugGreen">#00ff00</color>
     <color name="debugBlue">#0000ff</color>
@@ -13,5 +14,12 @@
     <color name="systemNameWorldMap">#646464ff</color>
     <color name="blockTitle">#000000</color>
     <color name="lightBlock">#f2f2f2c8</color>
+    
+    <!-- Ressources colors -->
+    
+    <color name="staters">#f1ce11ff</color>
+    <color name="ores">#976a33ff</color>
+    <color name="kolium">#00526cff</color>
+    <color name="neuridium">#036c00ff</color>
     
 </resources>

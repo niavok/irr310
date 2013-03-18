@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<drawables>
+<circle
+    name="staters"
+    i3d:color="staters@color"
+    i3d:quality="16" />
+<circle
+    name="ores"
+    i3d:color="ores@color"
+    i3d:quality="16" />
+<circle
+    name="kolium"
+    i3d:color="kolium@color"
+    i3d:quality="16" />
+<circle
+    name="neuridium"
+    i3d:color="neuridium@color"
+    i3d:quality="16" />
+</drawables>

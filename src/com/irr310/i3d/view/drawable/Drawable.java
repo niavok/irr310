@@ -1,4 +1,4 @@
-package com.irr310.i3d.view;
+package com.irr310.i3d.view.drawable;
 
 import org.lwjgl.opengl.GL11;
 
@@ -36,4 +36,17 @@ public abstract class Drawable {
     }
 
     public  abstract void close();
+
+    public void draw() {
+        begin(GL11.GL_QUADS);
+        vertex(left, top);
+        vertex(right, top);
+        vertex(right, bottom);
+        vertex(left, bottom);
+        end();
+    }
+
+    public abstract int getIntrinsicWidth();
+
+    public abstract int getIntrinsicHeight();
 }

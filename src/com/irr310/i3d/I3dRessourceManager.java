@@ -23,7 +23,6 @@ import com.irr310.i3d.fonts.Font;
 import com.irr310.i3d.fonts.FontFactory;
 import com.irr310.i3d.view.BorderParams.CornerStyle;
 import com.irr310.i3d.view.Button;
-import com.irr310.i3d.view.Drawable;
 import com.irr310.i3d.view.LayoutParams.LayoutGravity;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 import com.irr310.i3d.view.LinearLayout;
@@ -33,6 +32,10 @@ import com.irr310.i3d.view.RelativeLayout;
 import com.irr310.i3d.view.ScrollView;
 import com.irr310.i3d.view.TextView;
 import com.irr310.i3d.view.TextView.Gravity;
+import com.irr310.i3d.view.drawable.CircleDrawable;
+import com.irr310.i3d.view.drawable.Drawable;
+import com.irr310.i3d.view.drawable.GradientDrawable;
+import com.irr310.i3d.view.drawable.SolidDrawable;
 import com.irr310.i3d.view.Triangle;
 import com.irr310.i3d.view.View;
 import com.irr310.i3d.view.ViewParent;
@@ -207,6 +210,8 @@ public class I3dRessourceManager {
                 parseGradientDrawable(subElement, fileId);
             } else if (subElement.getNodeName().equals("solid")) {
                 parseSolidDrawable(subElement, fileId);
+            } else if (subElement.getNodeName().equals("circle")) {
+                parseCircleDrawable(subElement, fileId);
             } else {
                 Log.error("Unknown drawable: " + subElement.getNodeName());
             }
@@ -1008,7 +1013,7 @@ public class I3dRessourceManager {
         return color;
     }
 
-    private Drawable loadDrawable(String drawableId) {
+    public Drawable loadDrawable(String drawableId) {
         Drawable drawable = null;
 
         drawable = getDrawable(drawableId);
@@ -1186,6 +1191,32 @@ public class I3dRessourceManager {
                 drawable.setColor(loadColor(attrValue));
             } else {
                 Log.error("Unknown attrib '" + attrName + "=" + attrValue + "' for SolidDrawable");
+            }
+        }
+        
+        addDrawable(name + "@" + fileId, drawable);
+    }
+    
+    private void parseCircleDrawable(Element element, String fileId) {
+        String name = element.getAttribute("name");
+        
+        CircleDrawable drawable = new CircleDrawable();
+        
+        NamedNodeMap attributes = element.getAttributes();
+        for (int i = 0; i < attributes.getLength(); i++) {
+            Node item = attributes.item(i);
+            Attr attr = (Attr) item;
+            String attrName = attr.getName();
+            String attrValue = attr.getValue();
+
+            if (attrName.equals("name")) {
+                // Already processed
+            } else if (attrName.equals("i3d:color")) {
+                drawable.setColor(loadColor(attrValue));
+            } else if (attrName.equals("i3d:quality")) {
+                drawable.setQuality(Integer.parseInt(attrValue));
+            } else {
+                Log.error("Unknown attrib '" + attrName + "=" + attrValue + "' for CircleDrawable");
             }
         }
         
