@@ -47,8 +47,6 @@ public class ScrollView extends View implements ViewParent {
         GL11.glTranslatef(scrollOffsetX, scrollOffsetY, 0);
 
         child.draw(g);
-        g.setColor(Color.black);
-        g.drawLine((int)minscrollZone.x, (int)minscrollZone.y,(int) maxscrollZone.x, (int)maxscrollZone.y);
 
         GL11.glPopMatrix();
         

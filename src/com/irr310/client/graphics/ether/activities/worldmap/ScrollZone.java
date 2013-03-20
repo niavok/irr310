@@ -33,4 +33,24 @@ public class ScrollZone
 	{
 		return max.multiply(zoom);
 	}
+	
+	// return min zoom for width/2
+	public float getxMin(float width)
+	{
+	    // if there is no max and min define...
+	    if ( max.x == min.x ) { return 0.01f; }
+	    // bug if max < 0 or min > 0 ...
+	    float diff = (float) (max.x - min.x);
+	    return width / ( 2 * diff ) ;
+	}
+	
+	// return min zoom for height/2
+	public float getyMin(float height)
+    {
+        // if there is no max and min define...
+        if ( max.y == min.y ) { return 0.01f; }
+        // bug if max < 0 or min > 0 ...
+        float diff = (float) (max.y - min.y);
+        return height / ( 2 * diff ) ;
+    }
 }
