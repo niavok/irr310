@@ -226,10 +226,10 @@ public class ScrollView extends View implements ViewParent {
     
     public void setScrollZone(Point min, Point max) {
     	// define min and max for scrollzone
-    	minscrollZone.x = min.x - layoutParams.getWidth()/2;
-    	minscrollZone.y = min.y - layoutParams.getHeight()/2;
-    	maxscrollZone.x = max.x ;
-    	maxscrollZone.y = max.y ;
+        minscrollZone.x =  - max.x;
+        maxscrollZone.x = layoutParams.getWidth() - min.x ;
+        minscrollZone.y = - max.y;
+        maxscrollZone.y = layoutParams.getHeight() - min.y ;
     }
 
 }
