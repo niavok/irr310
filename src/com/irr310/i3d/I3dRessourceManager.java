@@ -1121,30 +1121,54 @@ public class I3dRessourceManager {
     }
 
     private void parseDrawableFile(String fileId) {
-        try {
-            DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-
-            Document doc;
-            doc = docBuilder.parse(new File("res/drawable/" + fileId + ".xml"));
-
-            Element root = doc.getDocumentElement();
-
-            if (root.getNodeName().contains("drawables")) {
-                parseDrawables(root, fileId);
+        
+        boolean found = false;
+        // The file id can represent a xml file or a directory with images
+        
+        // Check the file
+        File xmlFile = new File("res/drawable/" + fileId + ".xml");
+        if(xmlFile.isFile()) {
+        
+            try {
+                DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+                
+                Document doc;
+                doc = docBuilder.parse(xmlFile);
+    
+                Element root = doc.getDocumentElement();
+    
+                if (root.getNodeName().contains("drawables")) {
+                    parseDrawables(root, fileId);
+                }
+                found = true;
+                
+            } catch (ParserConfigurationException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (SAXException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
-            
-            
-        } catch (ParserConfigurationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (SAXException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        }
+
+        // Check the directory
+        File dirFile = new File("res/drawable/" + fileId);
+        if(dirFile.isDirectory()) {
+            File[] listFiles = dirFile.listFiles();
+            for(File file: listFiles) {
+                String extension = ".png";
+                String fileName = file.getName();
+                if(fileName.endsWith(extension)) {
+                    loadPngImage(file.getName().substring(0, fileName.length() - extension.length()), fileId, file);
+                }
+            }
         }
     }
+
+    
 
     private void parseGradientDrawable(Element element, String fileId) {
         String name = element.getAttribute("name");
@@ -1223,6 +1247,12 @@ public class I3dRessourceManager {
         addDrawable(name + "@" + fileId, drawable);
     }
 
+    
+    private void loadPngImage(String name, String fileId, File file) {
+        
+    }
+    
+    
     public void addDrawable(String id, Drawable drawable) {
         drawableCache.put(id, drawable);
     }

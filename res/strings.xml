@@ -13,7 +13,7 @@
     <string name="mapBoardTitle">Map</string>
     <string name="victoryBoardTitle">Victory</string>
     <string name="eventsBoardTitle">Events</string>
-    <string name="tradeBoardTitle">Trade</string>
+    <string name="tradeBoardTitle">[trade@icons2] Trade</string>
     <string name="sciencesBoardTitle">Sciences</string>
     <string name="productionBoardTitle">Production</string>
     <string name="politicsBoardTitle">Politics</string>
