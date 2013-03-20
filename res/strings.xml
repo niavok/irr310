@@ -9,14 +9,14 @@
     
     
     <!-- Board -->
-    <string name="boardBoardTitle">Board</string>
-    <string name="mapBoardTitle">Map</string>
-    <string name="victoryBoardTitle">Victory</string>
-    <string name="eventsBoardTitle">Events</string>
-    <string name="tradeBoardTitle">Trade</string>
-    <string name="sciencesBoardTitle">Sciences</string>
-    <string name="productionBoardTitle">Production</string>
-    <string name="politicsBoardTitle">Politics</string>
+    <string name="boardBoardTitle">[board@icons] Board</string>
+    <string name="mapBoardTitle">[map@icons] Map</string>
+    <string name="victoryBoardTitle">[victory@icons] Victory</string>
+    <string name="eventsBoardTitle">[events@icons] Events</string>
+    <string name="tradeBoardTitle">[trade@icons] Trade</string>
+    <string name="sciencesBoardTitle">[sciences@icons] Sciences</string>
+    <string name="productionBoardTitle">[production@icons] Production</string>
+    <string name="politicsBoardTitle">[politics@icons] Politics</string>
     
     <string name="seeWorldMapButton">See World map</string>
     <string name="manageProductionButton">Manage production</string>

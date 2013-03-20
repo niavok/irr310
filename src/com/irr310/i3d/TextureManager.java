@@ -4,12 +4,17 @@ import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.fenggui.util.ImageConverter;
 import org.lwjgl.opengl.GL11;
 
+
 public class TextureManager {
 
+    static Map<BufferedImage, Texture> textureCache = new HashMap<BufferedImage, Texture>();
+    
     /**
      * Creates an integer buffer to hold specified ints
      * - strictly a utility method
@@ -24,7 +29,6 @@ public class TextureManager {
 
       return temp.asIntBuffer();
     }
-
     
     private static int createTextureID()
     {
@@ -32,8 +36,6 @@ public class TextureManager {
       GL11.glGenTextures(tmp);
       return tmp.get(0);
     }
-    
-    
     
     private static Texture uploadTextureToVideoRAM(BufferedImage awtImage)
     {
@@ -61,9 +63,13 @@ public class TextureManager {
       return new Texture(textureID, awtImage.getWidth(), awtImage.getHeight(), texWidth, texHeight);
     }
 
-
-    public Texture getTexture(BufferedImage image) {
-        return uploadTextureToVideoRAM(image);
+    public static Texture getTexture(BufferedImage image) {
+        Texture texture = textureCache.get(image);
+        if(texture == null) {
+            texture = uploadTextureToVideoRAM(image);
+            textureCache.put(image, texture);
+        }
+        return texture;
     }
     
 }

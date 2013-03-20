@@ -32,9 +32,12 @@ import com.irr310.i3d.view.RelativeLayout;
 import com.irr310.i3d.view.ScrollView;
 import com.irr310.i3d.view.TextView;
 import com.irr310.i3d.view.TextView.Gravity;
+import com.irr310.i3d.view.drawable.BitmapDrawable;
+import com.irr310.i3d.view.drawable.BitmapFactory;
 import com.irr310.i3d.view.drawable.CircleDrawable;
 import com.irr310.i3d.view.drawable.Drawable;
 import com.irr310.i3d.view.drawable.GradientDrawable;
+import com.irr310.i3d.view.drawable.InsetDrawable;
 import com.irr310.i3d.view.drawable.SolidDrawable;
 import com.irr310.i3d.view.Triangle;
 import com.irr310.i3d.view.View;
@@ -115,7 +118,7 @@ public class I3dRessourceManager {
             // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            Log.error("Failed to parse file '"+fileId+"' : "+ e.getMessage());
+            Log.error("Failed to parse file '" + fileId + "' : " + e.getMessage());
         }
 
         fileCache.put(fileId, ressourceFileCache);
@@ -176,7 +179,7 @@ public class I3dRessourceManager {
 
         Style style = loadStyle(element.getAttribute("i3d:style"));
         style.apply(view);
-        
+
         NamedNodeMap attributes = element.getAttributes();
         for (int i = 0; i < attributes.getLength(); i++) {
             Node item = attributes.item(i);
@@ -185,7 +188,7 @@ public class I3dRessourceManager {
             String attrValue = attr.getValue();
 
             ViewFactory viewFactory = new ViewFactory(view);
-            
+
             if (checkViewAttrs(attrName, attrValue, fileId, viewFactory)) {
             } else if (attrName.equals("i3d:ref")) {
                 // Already processed
@@ -212,12 +215,14 @@ public class I3dRessourceManager {
                 parseSolidDrawable(subElement, fileId);
             } else if (subElement.getNodeName().equals("circle")) {
                 parseCircleDrawable(subElement, fileId);
+            } else if (subElement.getNodeName().equals("inset")) {
+                parseInsetDrawable(subElement, fileId);
             } else {
                 Log.error("Unknown drawable: " + subElement.getNodeName());
             }
         }
     }
-    
+
     private void parseResources(Element element, RessourceFileCache ressourceFileCache) {
         NodeList childNodes = element.getChildNodes();
         for (int i = 0; i < childNodes.getLength(); i++) {
@@ -272,7 +277,7 @@ public class I3dRessourceManager {
             String attrValue = subElement.getTextContent();
 
             StyleFactory styleFactory = new StyleFactory(style);
-            
+
             if (checkViewAttrs(attrName, attrValue, null, styleFactory)) {
             } else if (checkColor(attrName, attrValue, styleFactory)) {
             } else if (checkFont(attrName, attrValue, styleFactory)) {
@@ -310,8 +315,7 @@ public class I3dRessourceManager {
             String attrValue = attr.getValue();
 
             ViewFactory viewFactory = new ViewFactory(rect);
-            
-            
+
             if (checkViewAttrs(attrName, attrValue, fileId, viewFactory)) {
             } else if (attrName.equals("i3d:backgroundColor")) {
                 rect.setBackgroundColor(loadColor(attrValue));
@@ -333,7 +337,7 @@ public class I3dRessourceManager {
             String attrValue = attr.getValue();
 
             ViewFactory viewFactory = new ViewFactory(triangle);
-            
+
             if (checkViewAttrs(attrName, attrValue, fileId, viewFactory)) {
             } else if (attrName.equals("i3d:backgroundColor")) {
                 triangle.setBackgroundColor(loadColor(attrValue));
@@ -394,7 +398,7 @@ public class I3dRessourceManager {
 
         Style style = loadStyle(element.getAttribute("i3d:style"));
         style.apply(relativeLayout);
-        
+
         NamedNodeMap attributes = element.getAttributes();
         for (int i = 0; i < attributes.getLength(); i++) {
             Node item = attributes.item(i);
@@ -403,7 +407,7 @@ public class I3dRessourceManager {
             String attrValue = attr.getValue();
 
             ViewFactory viewFactory = new ViewFactory(relativeLayout);
-            
+
             if (checkViewAttrs(attrName, attrValue, fileId, viewFactory)) {
             } else {
                 Log.error("Unknown attrib '" + attrName + "=" + attrValue + "' for RelativeLayout");
@@ -418,7 +422,7 @@ public class I3dRessourceManager {
 
         Style style = loadStyle(element.getAttribute("i3d:style"));
         style.apply(linearLayout);
-        
+
         NamedNodeMap attributes = element.getAttributes();
         for (int i = 0; i < attributes.getLength(); i++) {
             Node item = attributes.item(i);
@@ -427,7 +431,7 @@ public class I3dRessourceManager {
             String attrValue = attr.getValue();
 
             ViewFactory viewFactory = new ViewFactory(linearLayout);
-            
+
             if (checkViewAttrs(attrName, attrValue, fileId, viewFactory)) {
             } else if (checkOrientation(attrName, attrValue, linearLayout)) {
             } else {
@@ -443,7 +447,7 @@ public class I3dRessourceManager {
 
         Style style = loadStyle(element.getAttribute("i3d:style"));
         style.apply(textView);
-        
+
         NamedNodeMap attributes = element.getAttributes();
         for (int i = 0; i < attributes.getLength(); i++) {
             Node item = attributes.item(i);
@@ -452,7 +456,7 @@ public class I3dRessourceManager {
             String attrValue = attr.getValue();
 
             TextViewFactory textViewFactory = new TextViewFactory(textView);
-            
+
             if (checkViewAttrs(attrName, attrValue, fileId, textViewFactory)) {
             } else if (checkColor(attrName, attrValue, textViewFactory)) {
             } else if (checkText(attrName, attrValue, textViewFactory)) {
@@ -465,13 +469,13 @@ public class I3dRessourceManager {
 
         return textView;
     }
-    
+
     private ScrollView NewScrollView(Element element, String fileId) {
         ScrollView view = new ScrollView();
 
         Style style = loadStyle(element.getAttribute("i3d:style"));
         style.apply(view);
-        
+
         NamedNodeMap attributes = element.getAttributes();
         for (int i = 0; i < attributes.getLength(); i++) {
             Node item = attributes.item(i);
@@ -480,7 +484,7 @@ public class I3dRessourceManager {
             String attrValue = attr.getValue();
 
             ViewFactory viewFactory = new ViewFactory(view);
-            
+
             if (checkViewAttrs(attrName, attrValue, fileId, viewFactory)) {
             } else {
                 Log.error("Unknown attrib '" + attrName + "=" + attrValue + "' for ScrollView");
@@ -495,7 +499,7 @@ public class I3dRessourceManager {
 
         Style style = loadStyle(element.getAttribute("i3d:style"));
         style.apply(button);
-        
+
         NamedNodeMap attributes = element.getAttributes();
         for (int i = 0; i < attributes.getLength(); i++) {
             Node item = attributes.item(i);
@@ -504,7 +508,7 @@ public class I3dRessourceManager {
             String attrValue = attr.getValue();
 
             TextViewFactory textViewFactory = new TextViewFactory(button);
-            
+
             if (checkViewAttrs(attrName, attrValue, fileId, textViewFactory)) {
             } else if (checkColor(attrName, attrValue, textViewFactory)) {
             } else if (checkText(attrName, attrValue, textViewFactory)) {
@@ -517,7 +521,7 @@ public class I3dRessourceManager {
         return button;
     }
 
-    private boolean checkViewAttrs(String attrName, String attrValue, String fileId , LayoutFactory view) {
+    private boolean checkViewAttrs(String attrName, String attrValue, String fileId, LayoutFactory view) {
         boolean used = true;
         if (checkId(attrName, attrValue, fileId, view)) {
         } else if (attrName.equals("i3d:style")) {
@@ -549,7 +553,7 @@ public class I3dRessourceManager {
         }
         return used;
     }
-    
+
     private boolean checkHelp(String attrName, String attrValue, LayoutFactory view) {
         boolean used = false;
         if (attrName.equals("i3d:help")) {
@@ -558,7 +562,7 @@ public class I3dRessourceManager {
         }
         return used;
     }
-    
+
     private boolean checkColor(String attrName, String attrValue, TextFactory view) {
         boolean used = false;
         if (attrName.equals("i3d:color")) {
@@ -794,7 +798,7 @@ public class I3dRessourceManager {
         }
         return used;
     }
-    
+
     private boolean checkGravity(String attrName, String attrValue, TextFactory view) {
         boolean used = false;
         if (attrName.equals("i3d:gravity")) {
@@ -991,7 +995,7 @@ public class I3dRessourceManager {
             Log.error("Fail to load color '" + colorId + "' : no @ found");
             return null;
         }
-        
+
         String localId = colorParts[0];
         String fileId = colorParts[1];
 
@@ -1088,11 +1092,11 @@ public class I3dRessourceManager {
     }
 
     Style loadStyle(String styleId) {
-        
-        if(styleId == null || styleId.isEmpty()) {
+
+        if (styleId == null || styleId.isEmpty()) {
             return new Style();
         }
-        
+
         String[] styleParts = styleId.split("@");
         if (styleParts.length != 2) {
             Log.error("Fail to load style '" + styleId + "' : no @ found");
@@ -1121,36 +1125,58 @@ public class I3dRessourceManager {
     }
 
     private void parseDrawableFile(String fileId) {
-        try {
-            DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
 
-            Document doc;
-            doc = docBuilder.parse(new File("res/drawable/" + fileId + ".xml"));
+        boolean found = false;
+        // The file id can represent a xml file or a directory with images
 
-            Element root = doc.getDocumentElement();
+        // Check the file
+        File xmlFile = new File("res/drawable/" + fileId + ".xml");
+        if (xmlFile.isFile()) {
 
-            if (root.getNodeName().contains("drawables")) {
-                parseDrawables(root, fileId);
+            try {
+                DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+
+                Document doc;
+                doc = docBuilder.parse(xmlFile);
+
+                Element root = doc.getDocumentElement();
+
+                if (root.getNodeName().contains("drawables")) {
+                    parseDrawables(root, fileId);
+                }
+                found = true;
+
+            } catch (ParserConfigurationException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (SAXException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
-            
-            
-        } catch (ParserConfigurationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (SAXException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        }
+
+        // Check the directory
+        File dirFile = new File("res/drawable/" + fileId);
+        if (dirFile.isDirectory()) {
+            File[] listFiles = dirFile.listFiles();
+            for (File file : listFiles) {
+                String extension = ".png";
+                String fileName = file.getName();
+                if (fileName.endsWith(extension)) {
+                    loadPngImage(file.getName().substring(0, fileName.length() - extension.length()), fileId, file);
+                }
+            }
         }
     }
 
     private void parseGradientDrawable(Element element, String fileId) {
         String name = element.getAttribute("name");
-        
+
         GradientDrawable drawable = new GradientDrawable();
-        
+
         NamedNodeMap attributes = element.getAttributes();
         for (int i = 0; i < attributes.getLength(); i++) {
             Node item = attributes.item(i);
@@ -1168,16 +1194,15 @@ public class I3dRessourceManager {
                 Log.error("Unknown attrib '" + attrName + "=" + attrValue + "' for GradientDrawable");
             }
         }
-        
+
         addDrawable(name + "@" + fileId, drawable);
     }
-    
-    
+
     private void parseSolidDrawable(Element element, String fileId) {
         String name = element.getAttribute("name");
-        
+
         SolidDrawable drawable = new SolidDrawable();
-        
+
         NamedNodeMap attributes = element.getAttributes();
         for (int i = 0; i < attributes.getLength(); i++) {
             Node item = attributes.item(i);
@@ -1193,15 +1218,15 @@ public class I3dRessourceManager {
                 Log.error("Unknown attrib '" + attrName + "=" + attrValue + "' for SolidDrawable");
             }
         }
-        
+
         addDrawable(name + "@" + fileId, drawable);
     }
-    
+
     private void parseCircleDrawable(Element element, String fileId) {
         String name = element.getAttribute("name");
-        
+
         CircleDrawable drawable = new CircleDrawable();
-        
+
         NamedNodeMap attributes = element.getAttributes();
         for (int i = 0; i < attributes.getLength(); i++) {
             Node item = attributes.item(i);
@@ -1219,7 +1244,50 @@ public class I3dRessourceManager {
                 Log.error("Unknown attrib '" + attrName + "=" + attrValue + "' for CircleDrawable");
             }
         }
-        
+
+        addDrawable(name + "@" + fileId, drawable);
+    }
+
+    private void parseInsetDrawable(Element element, String fileId) {
+        String name = element.getAttribute("name");
+
+        InsetDrawable drawable = new InsetDrawable();
+
+        NamedNodeMap attributes = element.getAttributes();
+        for (int i = 0; i < attributes.getLength(); i++) {
+            Node item = attributes.item(i);
+            Attr attr = (Attr) item;
+            String attrName = attr.getName();
+            String attrValue = attr.getValue();
+
+            if (attrName.equals("name")) {
+                // Already processed
+            } else if (attrName.equals("i3d:drawable")) {
+                drawable.setDrawableName(attrValue);
+            } else if (attrName.equals("i3d:insetTop")) {
+                drawable.setInsetTop(Integer.parseInt(attrValue));
+            } else if (attrName.equals("i3d:insetLeft")) {
+                drawable.setInsetLeft(Integer.parseInt(attrValue));
+            } else if (attrName.equals("i3d:insetBottom")) {
+                drawable.setInsetBottom(Integer.parseInt(attrValue));
+            } else if (attrName.equals("i3d:insetRight")) {
+                drawable.setInsetRight(Integer.parseInt(attrValue));
+            } else if (attrName.equals("i3d:width")) {
+                drawable.setWidth(Integer.parseInt(attrValue));
+            } else if (attrName.equals("i3d:height")) {
+                drawable.setHeight(Integer.parseInt(attrValue));
+            } else {
+                Log.error("Unknown attrib '" + attrName + "=" + attrValue + "' for InsetDrawable");
+            }
+        }
+
+        addDrawable(name + "@" + fileId, drawable);
+    }
+
+    private void loadPngImage(String name, String fileId, File file) {
+
+        BitmapDrawable drawable = new BitmapFactory().loadPngDrawable(file);
+
         addDrawable(name + "@" + fileId, drawable);
     }
 
@@ -1230,7 +1298,7 @@ public class I3dRessourceManager {
     public Drawable getDrawable(String id) {
         return drawableCache.get(id);
     }
-    
+
     private interface LayoutFactory {
 
         void setId(String attrValue);
@@ -1287,7 +1355,7 @@ public class I3dRessourceManager {
 
         void setBorderColor(Color loadColor);
     }
-    
+
     private interface TextFactory {
 
         void setTextColor(Color loadColor);
@@ -1299,7 +1367,7 @@ public class I3dRessourceManager {
         void setText(String loadString);
 
     }
-    
+
     private static class ViewFactory implements LayoutFactory {
 
         private final View view;
@@ -1345,22 +1413,22 @@ public class I3dRessourceManager {
 
         @Override
         public void setCornerLeftBottomSize(Measure measure) {
-            view.getBorderParams().setCornerLeftBottomSize(measure);            
+            view.getBorderParams().setCornerLeftBottomSize(measure);
         }
 
         @Override
         public void setCornerRightTopSize(Measure measure) {
-            view.getBorderParams().setCornerRightTopSize(measure);            
+            view.getBorderParams().setCornerRightTopSize(measure);
         }
 
         @Override
         public void setCornerLeftTopSize(Measure measure) {
-            view.getBorderParams().setCornerLeftTopSize(measure);            
+            view.getBorderParams().setCornerLeftTopSize(measure);
         }
 
         @Override
         public void setBorderSize(Measure measure) {
-            view.getBorderParams().setBorderSize(measure);            
+            view.getBorderParams().setBorderSize(measure);
         }
 
         @Override
@@ -1375,57 +1443,57 @@ public class I3dRessourceManager {
 
         @Override
         public void setLayoutGravityX(LayoutGravity align) {
-            view.getLayoutParams().setLayoutGravityX(align);            
+            view.getLayoutParams().setLayoutGravityX(align);
         }
 
         @Override
         public void setMarginRightMeasure(Measure measure) {
-            view.getLayoutParams().setMarginRightMeasure(measure);            
+            view.getLayoutParams().setMarginRightMeasure(measure);
         }
 
         @Override
         public void setMarginLeftMeasure(Measure measure) {
-            view.getLayoutParams().setMarginLeftMeasure(measure);            
+            view.getLayoutParams().setMarginLeftMeasure(measure);
         }
 
         @Override
         public void setMarginBottomMeasure(Measure measure) {
-            view.getLayoutParams().setMarginBottomMeasure(measure);            
+            view.getLayoutParams().setMarginBottomMeasure(measure);
         }
 
         @Override
         public void setMarginTopMeasure(Measure measure) {
-            view.getLayoutParams().setMarginTopMeasure(measure);            
+            view.getLayoutParams().setMarginTopMeasure(measure);
         }
 
         @Override
         public void setPaddingRightMeasure(Measure measure) {
-            view.getLayoutParams().setPaddingRightMeasure(measure);            
+            view.getLayoutParams().setPaddingRightMeasure(measure);
         }
 
         @Override
         public void setPaddingLeftMeasure(Measure measure) {
-            view.getLayoutParams().setPaddingLeftMeasure(measure);            
+            view.getLayoutParams().setPaddingLeftMeasure(measure);
         }
 
         @Override
         public void setPaddingBottomMeasure(Measure measure) {
-            view.getLayoutParams().setPaddingBottomMeasure(measure);            
+            view.getLayoutParams().setPaddingBottomMeasure(measure);
         }
 
         @Override
         public void setPaddingTopMeasure(Measure measure) {
-            view.getLayoutParams().setPaddingTopMeasure(measure);            
+            view.getLayoutParams().setPaddingTopMeasure(measure);
         }
 
         @Override
         public void setHeightMeasure(Measure measure) {
-            view.getLayoutParams().setHeightMeasure(measure);            
+            view.getLayoutParams().setHeightMeasure(measure);
         }
 
         @Override
         public void setLayoutHeightMeasure(LayoutMeasure measure) {
-            view.getLayoutParams().setLayoutHeightMeasure(measure);            
+            view.getLayoutParams().setLayoutHeightMeasure(measure);
         }
 
         @Override
@@ -1435,16 +1503,16 @@ public class I3dRessourceManager {
 
         @Override
         public void setLayoutWidthMeasure(LayoutMeasure measure) {
-            view.getLayoutParams().setLayoutWidthMeasure(measure);            
+            view.getLayoutParams().setLayoutWidthMeasure(measure);
         }
 
         @Override
         public void setHelp(String help) {
             view.setHelp(help);
         }
-        
+
     }
-    
+
     private static class TextViewFactory extends ViewFactory implements TextFactory {
 
         private final TextView textView;
@@ -1461,7 +1529,7 @@ public class I3dRessourceManager {
 
         @Override
         public void setFont(Font font) {
-            textView.setFont(font);            
+            textView.setFont(font);
         }
 
         @Override
@@ -1471,11 +1539,11 @@ public class I3dRessourceManager {
 
         @Override
         public void setGravity(Gravity gravity) {
-            textView.setGravity(gravity);            
+            textView.setGravity(gravity);
         }
-        
+
     }
-    
+
     private static class StyleFactory implements LayoutFactory, TextFactory {
 
         private final Style style;
@@ -1566,7 +1634,7 @@ public class I3dRessourceManager {
 
         @Override
         public void setLayoutGravityX(LayoutGravity align) {
-            style.setLayoutGravityX(align);        
+            style.setLayoutGravityX(align);
         }
 
         @Override
@@ -1611,17 +1679,17 @@ public class I3dRessourceManager {
 
         @Override
         public void setHeightMeasure(Measure measure) {
-            style.setHeightMeasure(measure);            
+            style.setHeightMeasure(measure);
         }
 
         @Override
         public void setLayoutHeightMeasure(LayoutMeasure layoutMeasure) {
-            style.setLayoutHeightMeasure(layoutMeasure);            
+            style.setLayoutHeightMeasure(layoutMeasure);
         }
 
         @Override
         public void setWidthMeasure(Measure measure) {
-            style.setWidthMeasure(measure);            
+            style.setWidthMeasure(measure);
         }
 
         @Override
@@ -1636,8 +1704,8 @@ public class I3dRessourceManager {
 
         @Override
         public void setHelp(String help) {
-         // Style cannot define help
+            // Style cannot define help
         }
-        
+
     }
 }

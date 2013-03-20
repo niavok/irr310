@@ -1,19 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <drawables>
-<circle
-    name="staters"
-    i3d:color="staters@color"
-    i3d:quality="16" />
-<circle
-    name="ores"
-    i3d:color="ores@color"
-    i3d:quality="16" />
-<circle
-    name="kolium"
-    i3d:color="kolium@color"
-    i3d:quality="16" />
-<circle
-    name="neuridium"
-    i3d:color="neuridium@color"
-    i3d:quality="16" />
+
+    <circle
+        name="staters"
+        i3d:quality="16"
+        i3d:color="staters@color" />
+    <circle
+        name="ores"
+        i3d:quality="16"
+        i3d:color="ores@color" />
+    <circle
+        name="kolium"
+        i3d:quality="16"
+        i3d:color="kolium@color" />
+    <circle
+        name="neuridium"
+        i3d:quality="16"
+        i3d:color="neuridium@color" />
+
+    <inset
+        name="trade"
+        i3d:drawable="texture@icons"
+        i3d:height="32"
+        i3d:insetLeft="0"
+        i3d:insetTop="0"
+        i3d:width="32" />
+    <inset
+        name="board"
+        i3d:drawable="texture@icons"
+        i3d:height="32"
+        i3d:insetLeft="0"
+        i3d:insetTop="0"
+        i3d:width="32" />
+    <inset
+        name="map"
+        i3d:drawable="texture@icons"
+        i3d:height="32"
+        i3d:insetLeft="32"
+        i3d:insetTop="0"
+        i3d:width="32" />
+    <inset
+        name="victory"
+        i3d:drawable="texture@icons"
+        i3d:height="32"
+        i3d:insetLeft="64"
+        i3d:insetTop="0"
+        i3d:width="32" />
+    <inset
+        name="events"
+        i3d:drawable="texture@icons"
+        i3d:height="32"
+        i3d:insetLeft="96"
+        i3d:insetTop="0"
+        i3d:width="32" />
+    <inset
+        name="trade"
+        i3d:drawable="texture@icons"
+        i3d:height="32"
+        i3d:insetLeft="0"
+        i3d:insetTop="32"
+        i3d:width="32" />
+    <inset
+        name="politics"
+        i3d:drawable="texture@icons"
+        i3d:height="32"
+        i3d:insetLeft="32"
+        i3d:insetTop="32"
+        i3d:width="32" />
+    <inset
+        name="production"
+        i3d:drawable="texture@icons"
+        i3d:height="32"
+        i3d:insetLeft="64"
+        i3d:insetTop="32"
+        i3d:width="32" />
+    <inset
+        name="sciences"
+        i3d:drawable="texture@icons"
+        i3d:height="32"
+        i3d:insetLeft="96"
+        i3d:insetTop="32"
+        i3d:width="32" />
+
 </drawables>
