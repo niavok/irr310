@@ -142,14 +142,12 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements EventDisp
                 WorldSystem nearestSystem = map.nearestSystemTo(location);
                 
                 if(nearestSystem.getLocation().distanceTo(location) < mapMinDistance) {
-                    // Too near to a existing system, retry
-                    //Log.trace("Too near to a existing system, retry :"+ nearestSystem.getLocation().distanceTo(location));
+                    // Too near to a existing system, retry and reduce the min distance requierement.
                     mapMinDistance--;
                     continue;
                 } else {
-                    //Log.trace("Distance before :"+ nearestSystem.getLocation().distanceTo(location));
+                    // Reduce the distance to the nearest system to create small cluster of system
                     location = location.add(location.diff(nearestSystem.getLocation()).normalize().multiply(mapMinDistance/2) );
-                    //Log.trace("Distance after :"+ nearestSystem.getLocation().distanceTo(location));
                 }
             }
             
