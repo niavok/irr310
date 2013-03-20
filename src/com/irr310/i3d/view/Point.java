@@ -18,6 +18,11 @@ public class Point {
         this.y = y;
     }
     
+    public Point(Vec2 vec){
+    	this.x = (float) vec.x;
+    	this.y = (float) vec.y;
+    }
+    
     public Point divide(float d) {
         return new Point(this.x / d, this.y / d);
     }

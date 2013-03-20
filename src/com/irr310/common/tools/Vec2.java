@@ -32,6 +32,14 @@ public class Vec2 {
         return new Vec2(x - v.x, y - v.y);
     }
     
+    public Vec2 min(Vec2 v) {
+        return new Vec2(Math.min(x,v.x), Math.min(y,v.y));
+    }
+    
+    public Vec2 max(Vec2 v) {
+        return new Vec2(Math.max(x,v.x), Math.max(y,v.y));
+    }
+    
     public double length() {
         return Math.sqrt(x * x + y * y);
     }

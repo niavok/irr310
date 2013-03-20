@@ -28,9 +28,14 @@ public class ScrollView extends View implements ViewParent {
     float scrollingBaseY = 0;
     float scrollingBaseOffsetX = 0;
     float scrollingBaseOffsetY = 0;
+    // contains old width and height of user screen view
+    // use when resizing windows
     private float oldWidth = 0;
     private float oldHeight = 0;
-
+    
+    Point minscrollZone = new Point(0,0);
+    Point maxscrollZone = new Point(0,0);
+    
     public ScrollView() {
         super();
     }
@@ -42,9 +47,11 @@ public class ScrollView extends View implements ViewParent {
         GL11.glTranslatef(scrollOffsetX, scrollOffsetY, 0);
 
         child.draw(g);
+        g.setColor(Color.black);
+        g.drawLine((int)minscrollZone.x, (int)minscrollZone.y,(int) maxscrollZone.x, (int)maxscrollZone.y);
 
         GL11.glPopMatrix();
-
+        
     }
 
     @Override
@@ -83,6 +90,7 @@ public class ScrollView extends View implements ViewParent {
         float oldCenterX = oldWidth / 2 - scrollOffsetX;
         float oldCenterY = oldHeight / 2 - scrollOffsetY;
 
+        // scroll center is recompute when user change layout of the screen
         setScrollCenter(new Point(oldCenterX, oldCenterY));
 
         oldWidth = layoutParams.getWidth();
@@ -140,8 +148,9 @@ public class ScrollView extends View implements ViewParent {
             if (mouseEvent.getAction() == Action.MOUSE_RELEASED) {
                 scrolling = false;
             } else if (mouseEvent.getAction() == Action.MOUSE_DRAGGED) {
-                scrollOffsetX = scrollingBaseOffsetX + (mouseEvent.getX() - scrollingBaseX);
-                scrollOffsetY = scrollingBaseOffsetY + (mouseEvent.getY() - scrollingBaseY);
+            	this.setScrollOffset(new Point(scrollingBaseOffsetX + (mouseEvent.getX() - scrollingBaseX),
+            			scrollingBaseOffsetY + (mouseEvent.getY() - scrollingBaseY)));
+                
             }
             used = true;
         } else {
@@ -184,12 +193,17 @@ public class ScrollView extends View implements ViewParent {
     }
 
     public Point getScrollCenter() {
-        return new Point(layoutParams.getWidth() / 2 - scrollOffsetX, layoutParams.getHeight() / 2 - scrollOffsetY);
+    	// create a new point for scroll center
+    	Point scrollcenter_point = new Point(layoutParams.getWidth() / 2 - scrollOffsetX, layoutParams.getHeight() / 2 - scrollOffsetY);
+    	// return this point
+        return scrollcenter_point;
     }
 
     public void setScrollCenter(Point point) {
-        scrollOffsetX = layoutParams.getWidth() / 2 - point.x;
-        scrollOffsetY = layoutParams.getHeight() / 2 - point.y;
+    	// create a new point for scroll center
+    	Point scrollcenter_point = new Point(layoutParams.getWidth() / 2 - point.x, layoutParams.getHeight() / 2 - point.y);
+    	// set scroll offset for this point (into scrollzone)
+    	setScrollOffset(scrollcenter_point);
     }
 
     public Point getScrollOffset() {
@@ -197,8 +211,25 @@ public class ScrollView extends View implements ViewParent {
     }
 
     public void setScrollOffset(Point point) {
-        scrollOffsetX = point.x;
+        // do not go out of the scroll zone
+    	scrollOffsetX = point.x;
+        if (scrollOffsetX < minscrollZone.x) {scrollOffsetX = minscrollZone.x;}
+        if (scrollOffsetX > maxscrollZone.x) {scrollOffsetX = maxscrollZone.x;}
+        
         scrollOffsetY = point.y;
+        if (scrollOffsetY < minscrollZone.y) {scrollOffsetY = minscrollZone.y;}
+        if (scrollOffsetY > maxscrollZone.y) {scrollOffsetY = maxscrollZone.y;}
+        
+        System.out.println("scrollOffsetX = "+scrollOffsetX);
+        System.out.println("scrollOffsetY = "+scrollOffsetY);
+    }
+    
+    public void setScrollZone(Point min, Point max) {
+    	// define min and max for scrollzone
+    	minscrollZone.x = min.x - layoutParams.getWidth()/2;
+    	minscrollZone.y = min.y - layoutParams.getHeight()/2;
+    	maxscrollZone.x = max.x ;
+    	maxscrollZone.y = max.y ;
     }
 
 }

@@ -32,9 +32,11 @@ public class WorldMapActivity extends Activity {
     private ScrollView mapScrollView;
     private boolean firstUpdate = true;
     private float zoom;
+    private float defzoom = 8f;
     private SystemView selection;
     private TextView selectedSystemTitle;
     private LinearLayout selectedSystemPanel;
+    private ScrollZone zone;
 
     @Override
     public void onCreate(Bundle bundle) {
@@ -51,12 +53,13 @@ public class WorldMapActivity extends Activity {
         faction = player.getFaction();
         List<WorldSystem> knownSystems = faction.getKnownSystems();
 
-        zoom = 8f;
+        zoom = defzoom;
+        zone = new ScrollZone();
 
         List<WorldSystem> allSystems = world.getMap().getSystems();
         for (WorldSystem system : allSystems) {
-            final SystemView systemView = new SystemView(system);
-            systemView.setZoom(zoom);
+            final SystemView systemView = new SystemView(system);            
+            //systemView.setZoom(zoom);
             map.addChild(systemView);
             systemView.setOnClickListener(new OnClickListener() {
 
@@ -66,7 +69,11 @@ public class WorldMapActivity extends Activity {
                 }
 
             });
+            zone.setZone(system.getLocation());
         }
+        // call zoom function in order to initialize zoom on each system
+        // zoom factor will be 1.0
+        this.zoom(new Point(0,0), 1.0f);
 
         map.setOnMouseListener(new OnMouseEventListener() {
 
@@ -131,6 +138,8 @@ public class WorldMapActivity extends Activity {
         Point staticPointBase = mousePoint.minus(mapScrollView.getScrollOffset()).divide(zoom);
 
         zoom *= zoomFactor;
+        if ( zoom > defzoom ) { zoom = defzoom; }
+        if ( zoom < 0.5f ) { zoom = 0.5f; }
 
         for (View child : map.getChildren()) {
             if (child instanceof SystemView) {
@@ -138,7 +147,8 @@ public class WorldMapActivity extends Activity {
                 systemView.setZoom(zoom);
             }
         }
-
+        // define min and max for scrollzone (min = bot/right corner, max = top/left corner)
+        mapScrollView.setScrollZone(new Point(zone.getMin(zoom)), new Point(zone.getMax(zoom)));
         mapScrollView.setScrollOffset(mousePoint.minus(staticPointBase.multiply(zoom)));
     }
 

@@ -41,7 +41,14 @@ public class Graphics {
         GL11.glVertex2f(x + width, y);
         GL11.glEnd();
     }
-
+    
+    public void drawLine(int x1, int y1, int x2, int y2) {
+        GL11.glBegin(GL11.GL_LINES);
+        GL11.glVertex2f(x1, y1);
+        GL11.glVertex2f(x2, y2);
+        GL11.glEnd();
+    }
+    
     /**
      * Draws a Triangle.
      * 
