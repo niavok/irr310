@@ -24,6 +24,7 @@ import javax.imageio.ImageIO;
 
 import com.irr310.client.ClientConfig;
 import com.irr310.common.tools.Log;
+import com.irr310.i3d.view.drawable.BitmapFactory;
 
 public class FontFactory {
 
@@ -115,15 +116,15 @@ public class FontFactory {
             return null;
         }
         
-        BufferedImage img = null;
-        Font font = null;
-        
-        try {
-            img = ImageIO.read(cachedFontImage);
-        } catch (IOException e) {
-            Log.error("Invalid image "+cachedFontImage.getAbsolutePath());
+        BufferedImage img = BitmapFactory.loadImage(cachedFontImage);
+        if(img == null) {
             return null;
         }
+        
+        Font font = null;
+        
+        
+        
         try {
             
             FileInputStream fileInputStream = new FileInputStream(cachedFontDescriptor);

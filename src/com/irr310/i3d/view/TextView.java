@@ -72,12 +72,12 @@ public class TextView extends View {
                     if(tagEndIndex == -1) {
                         Log.warn("Non terminated tag at index "+i+" in TextView '"+text+"'");
                     } else {
-                        String tagName = text.substring(i+1, tagEndIndex);
-                        Drawable drawable = I3dRessourceManager.getInstance().loadDrawable(tagName);
-                        int intrinsicWidth = drawable.getIntrinsicWidth();
-                        int intrinsicHeight = drawable.getIntrinsicHeight();
-                        float height = font.getHeight();
-                        float width = height;
+                          String tagName = text.substring(i+1, tagEndIndex);
+                          Drawable drawable = I3dRessourceManager.getInstance().loadDrawable(tagName);
+                          int intrinsicWidth = drawable.getIntrinsicWidth();
+                          int intrinsicHeight = drawable.getIntrinsicHeight();
+                          float height = font.getHeight();
+                          float width = height;
                         
                         if(intrinsicHeight != -1 && intrinsicWidth != -1) {
                             width = (float) intrinsicWidth * height / (float) intrinsicHeight;
@@ -85,13 +85,16 @@ public class TextView extends View {
                         
                         drawable.setGraphics(g);
                         drawable.setBounds(localX, localY, localX+width, localY + height);
-                        
-                        GL11.glEnd();
+                      
+                        if(!init) {
+                            GL11.glEnd();
+                        }
                         GL11.glDisable(GL11.GL_TEXTURE_2D);
                         drawable.draw();
                         GL11.glEnable(GL11.GL_TEXTURE_2D);
-                        GL11.glBegin(GL11.GL_QUADS);
-                        init = false;
+                        if(!init) {
+                            GL11.glBegin(GL11.GL_QUADS);
+                        }
                         localX += width;
                         // Skip all tag
                         i = tagEndIndex;

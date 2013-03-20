@@ -32,6 +32,8 @@ import com.irr310.i3d.view.RelativeLayout;
 import com.irr310.i3d.view.ScrollView;
 import com.irr310.i3d.view.TextView;
 import com.irr310.i3d.view.TextView.Gravity;
+import com.irr310.i3d.view.drawable.BitmapDrawable;
+import com.irr310.i3d.view.drawable.BitmapFactory;
 import com.irr310.i3d.view.drawable.CircleDrawable;
 import com.irr310.i3d.view.drawable.Drawable;
 import com.irr310.i3d.view.drawable.GradientDrawable;
@@ -1250,6 +1252,9 @@ public class I3dRessourceManager {
     
     private void loadPngImage(String name, String fileId, File file) {
         
+        BitmapDrawable drawable = new BitmapFactory().loadPngDrawable(file);
+        
+        addDrawable(name + "@" + fileId, drawable);
     }
     
     
