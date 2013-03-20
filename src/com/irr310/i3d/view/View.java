@@ -23,6 +23,7 @@ public abstract class View {
 
     private String id;
     private OnClickListener onClickListener = null;
+    private OnLayoutListener onLayoutListener = null;
     private String help;
     private OnMouseEventListener onMouseEventListener;
     private boolean visible = true;
@@ -100,6 +101,9 @@ public abstract class View {
         // if (changed) {
         onLayout(l, t, r, b);
         // }
+        if (onLayoutListener != null) {
+            onLayoutListener.onLayout(this);
+        }
     }
 
     public abstract void onLayout(float l, float t, float r, float b);
@@ -165,6 +169,10 @@ public abstract class View {
         view.setBorder(getBorderParams().duplicate());
     }
 
+    public void setOnLayoutListener(OnLayoutListener onLayoutListener) {
+        this.onLayoutListener = onLayoutListener;
+    }
+    
     public void setOnClickListener(OnClickListener onClickListener) {
         this.onClickListener = onClickListener;
     }
@@ -179,6 +187,10 @@ public abstract class View {
             return true;
         }
         return false;
+    }
+    
+    public static interface OnLayoutListener {
+        void onLayout(View view);
     }
 
     public static interface OnClickListener {
