@@ -81,4 +81,9 @@ public class Texture {
     {
       return true;
     }
+
+    public void free() {
+        GL11.glDeleteTextures(textureID);
+        textureID = -1;
+    }
 }

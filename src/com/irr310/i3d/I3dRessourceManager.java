@@ -1708,4 +1708,9 @@ public class I3dRessourceManager {
         }
 
     }
+
+    public void clearCache() {
+        fileCache.clear();
+        drawableCache.clear();
+    }
 }

@@ -36,7 +36,7 @@ public class Surface {
                 activity.setContext(context);
                 activity.assignSurface(this);
                 activity.setIntent(intent);
-                activity.onCreate(intent.getBundle());
+                activity.create();
             } catch (InstantiationException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {
@@ -51,7 +51,7 @@ public class Surface {
 
         // Pause current activity
         if (currentActivity != null) {
-            currentActivity.onPause();
+            currentActivity.pause();
         }
 
         currentActivity = activity;
@@ -61,7 +61,7 @@ public class Surface {
                 intentStack.push(intent);
             }
             currentActivity.forceLayout();
-            currentActivity.onResume();
+            currentActivity.resume();
         }
     }
     
@@ -304,6 +304,16 @@ public class Surface {
     public void onKeyEvent(V3DKeyEvent keyEvent) {
         if(keyEvent.getAction() == V3DKeyEvent.KeyAction.KEY_PRESSED &&  keyEvent.getKeyCode() == V3DKeyEvent.KEY_ESCAPE) {
             unstackActivity();
+        }
+    }
+
+    public void reloadUi() {
+        for(Activity activity : activityMap.values()) {
+            activity.destroy();
+        }
+        
+        if(currentActivity != null) {
+            startActivity(currentActivity.getIntent());
         }
     }
 }

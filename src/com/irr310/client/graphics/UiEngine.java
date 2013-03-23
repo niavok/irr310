@@ -1,5 +1,6 @@
 package com.irr310.client.graphics;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
 import com.irr310.client.graphics.ether.activities.MainActivity;
@@ -11,6 +12,7 @@ import com.irr310.common.event.game.GameEventVisitor;
 import com.irr310.common.event.game.KeyEvent;
 import com.irr310.common.event.game.MouseEvent;
 import com.irr310.common.event.game.QuitGameEvent;
+import com.irr310.common.tools.Log;
 import com.irr310.common.tools.Vec2;
 import com.irr310.i3d.Color;
 import com.irr310.i3d.I3dContext;
@@ -160,14 +162,17 @@ public class UiEngine extends FramerateEngine<GameEvent> {
 //
         @Override
         public void visit(KeyEvent event) {
-            context.onKeyEvent(event.getKeyEvent());
-            /*if (event.getKeyCode() == Keyboard.KEY_F11 && Keyboard.isKeyDown(Keyboard.KEY_RCONTROL)) {
-                System.out.println("Reload shaders");
-                context.reloadShader();
+            
+            if (event.getKeyEvent().getKeyCode() == Keyboard.KEY_F11 && Keyboard.isKeyDown(Keyboard.KEY_RCONTROL)) {
+                Log.console("Reload ui");
+                context.clearCaches();
+                context.reloadUi();
+                //System.out.println("Reload shaders");
+                //context.reloadShader();
                 return;
             } else {
-                rendererVisitor.visit(event);
-            }*/
+                context.onKeyEvent(event.getKeyEvent());
+            }
         }
 //
 //        @Override

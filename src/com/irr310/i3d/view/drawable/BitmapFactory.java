@@ -37,4 +37,8 @@ public class BitmapFactory {
         return new BitmapDrawable(loadImage(file));
     }
 
+    public static void clearCache() {
+        imageCache.clear();
+    }
+
 }

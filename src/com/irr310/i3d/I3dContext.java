@@ -8,6 +8,8 @@ import org.newdawn.slick.util.Log;
 import com.irr310.common.Game;
 import com.irr310.common.event.game.QuitGameEvent;
 import com.irr310.i3d.fonts.Font;
+import com.irr310.i3d.fonts.FontFactory;
+import com.irr310.i3d.view.drawable.BitmapFactory;
 import com.irr310.server.Time;
 
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent;
@@ -134,5 +136,18 @@ public class I3dContext {
 
     public interface ContextListener {
         void onQuit();
+    }
+
+    public void clearCaches() {
+        I3dRessourceManager.getInstance().clearCache();
+        textureManager.clearCache();
+        FontFactory.clearCache();
+        BitmapFactory.clearCache();
+    }
+
+    public void reloadUi() {
+        for (Surface surface : surfaceList) {
+            surface.reloadUi();
+        }
     }
 }

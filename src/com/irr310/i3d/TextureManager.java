@@ -71,5 +71,12 @@ public class TextureManager {
         }
         return texture;
     }
+
+    public void clearCache() {
+        for(Texture texture: textureCache.values()) {
+            texture.free();
+        }
+        textureCache.clear();
+    }
     
 }

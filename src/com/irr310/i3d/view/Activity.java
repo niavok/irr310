@@ -13,22 +13,58 @@ import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 
 public abstract class Activity implements ViewParent {
 
-    private View mview;
-    private LayoutParams mLayout;
-    private boolean mLayoutUpdated;
-	private Surface parentSurface;
-    private Intent intent;
-    private I3dContext context;
-    private boolean stackable;
+    private View mview = null;
+    private LayoutParams mLayout= null;
+    private boolean mLayoutUpdated = false;
+	private Surface parentSurface = null;
+    private Intent intent = null;
+    private I3dContext context = null;
+    private boolean stackable = true;
+    private State state = State.STOPPED;
 
-    public abstract void onCreate(Bundle bundle);
-    public abstract void onResume();
-    public abstract void onPause();
-    public abstract void onDestroy();
+    protected abstract void onCreate(Bundle bundle);
+    protected abstract void onResume();
+    protected abstract void onPause();
+    protected abstract void onDestroy();
+    
+    private enum State {
+        STOPPED,
+        PAUSED,
+        STARTED,
+    }
+    
     
     public Activity() {
+    }
+    
+    public void resume() {
+        if(state == State.STOPPED) {
+            create();
+        }
+        if(state == State.PAUSED) {
+            state = State.STARTED;
+            onResume();
+        }
+    }
+    
+    public void create() {
+        state = State.PAUSED;
+        onCreate(intent.getBundle());
+    }
+    
+    public void pause() {
+        if(state == State.STARTED) {
+            onPause();
+            state = State.PAUSED;
+        }
+    }
+    
+    public void destroy() {
+        onDestroy();
+        mview = null;
         mLayoutUpdated = false;
         stackable = true;
+        state = State.STOPPED;
     }
     
     public void assignSurface(Surface parentSurface) {
@@ -128,5 +164,7 @@ public abstract class Activity implements ViewParent {
     public void onMouseEvent(V3DMouseEvent mouseEvent) {
         mview.onMouseEvent(mouseEvent);
     }
+   
+
 
 }

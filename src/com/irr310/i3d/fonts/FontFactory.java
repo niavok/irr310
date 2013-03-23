@@ -362,6 +362,10 @@ public class FontFactory {
         e.printStackTrace();
       }
     }
+
+    public static void clearCache() {
+        fontCache.clear();        
+    }
     
 
 }
