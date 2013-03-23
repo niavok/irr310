@@ -5,6 +5,7 @@
     <font name="medium" font="Ubuntu" size="14" />
     <font name="big" font="Ubuntu" size="16" />
     <font name="bigButton" font="Ubuntu" size="18" style="bold"/>
+    <font name="smallButton" font="Ubuntu" size="14" style=""/>
     <font name="title" font="Ubuntu" size="18" style="bold"/>
     <font name="title-bold" font="Ubuntu" size="18" style="bold"/>
     <font name="logo" font="Ubuntu" size="120" style="bold"/>

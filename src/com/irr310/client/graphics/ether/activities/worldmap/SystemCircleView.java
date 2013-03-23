@@ -66,7 +66,7 @@ public class SystemCircleView extends View {
             color = faction.getColor();
         }
         
-        Color centerColor = color.copy().setAlpha(0.2f);
+        Color centerColor = color.setAlpha(0.2f);
         
         
         g.setColor(color);

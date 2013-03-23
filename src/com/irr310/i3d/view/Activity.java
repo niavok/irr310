@@ -60,11 +60,16 @@ public abstract class Activity implements ViewParent {
     }
     
     public void destroy() {
-        onDestroy();
-        mview = null;
-        mLayoutUpdated = false;
-        stackable = true;
-        state = State.STOPPED;
+        if(state == State.STARTED) {
+            pause();
+        }
+        if(state == State.PAUSED) {
+            onDestroy();
+            mview = null;
+            mLayoutUpdated = false;
+            stackable = true;
+            state = State.STOPPED;
+        }
     }
     
     public void assignSurface(Surface parentSurface) {

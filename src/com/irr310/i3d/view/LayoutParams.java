@@ -238,15 +238,15 @@ public class LayoutParams {
         layout.layoutHeightMeasure = layoutHeightMeasure;
         layout.layoutGravityX = layoutGravityX;
         layout.layoutGravityY = layoutGravityY;
-        layout.measurePoint = measurePoint;
-        layout.layoutMarginTopMeasure = layoutMarginTopMeasure;
-        layout.layoutMarginBottomMeasure= layoutMarginBottomMeasure;
-        layout.layoutMarginLeftMeasure = layoutMarginLeftMeasure;
-        layout.layoutMarginRightMeasure = layoutMarginRightMeasure;
-        layout.layoutPaddingLeftMeasure = layoutPaddingLeftMeasure;
-        layout.layoutPaddingRightMeasure = layoutPaddingRightMeasure;
-        layout.layoutPaddingTopMeasure = layoutPaddingTopMeasure;
-        layout.layoutPaddingBottomMeasure = layoutPaddingBottomMeasure;
+        layout.measurePoint = new MeasurePoint(measurePoint);
+        layout.layoutMarginTopMeasure = new Measure(layoutMarginTopMeasure);
+        layout.layoutMarginBottomMeasure= new Measure(layoutMarginBottomMeasure);
+        layout.layoutMarginLeftMeasure = new Measure(layoutMarginLeftMeasure);
+        layout.layoutMarginRightMeasure = new Measure(layoutMarginRightMeasure);
+        layout.layoutPaddingLeftMeasure = new Measure(layoutPaddingLeftMeasure);
+        layout.layoutPaddingRightMeasure = new Measure(layoutPaddingRightMeasure);
+        layout.layoutPaddingTopMeasure = new Measure(layoutPaddingTopMeasure);
+        layout.layoutPaddingBottomMeasure = new Measure(layoutPaddingBottomMeasure);
         
         return layout;
     }

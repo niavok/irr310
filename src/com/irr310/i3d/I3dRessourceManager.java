@@ -23,6 +23,7 @@ import com.irr310.i3d.fonts.Font;
 import com.irr310.i3d.fonts.FontFactory;
 import com.irr310.i3d.view.BorderParams.CornerStyle;
 import com.irr310.i3d.view.Button;
+import com.irr310.i3d.view.DrawableView;
 import com.irr310.i3d.view.LayoutParams.LayoutGravity;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 import com.irr310.i3d.view.LinearLayout;
@@ -115,10 +116,9 @@ public class I3dRessourceManager {
             // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (SAXException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new RessourceLoadingException("Failed to parse file '" + fileId, e);
         } catch (IOException e) {
-            Log.error("Failed to parse file '" + fileId + "' : " + e.getMessage());
+            throw new RessourceLoadingException("Failed to load file '" + fileId, e);
         }
 
         fileCache.put(fileId, ressourceFileCache);
@@ -148,8 +148,10 @@ public class I3dRessourceManager {
             view = NewTextView(element, ressourceFileCache.getFileId());
         } else if (nodeName.equals("ScrollView")) {
             view = NewScrollView(element, ressourceFileCache.getFileId());
+        } else if (nodeName.equals("Drawable")) {
+            view = NewDrawableView(element, ressourceFileCache.getFileId());
         } else {
-            Log.error("ERROR unknown nodeName=" + nodeName);
+            throw new RessourceLoadingException("Unknown nodeName=" + nodeName);
         }
 
         if (view != null && view instanceof ViewParent) {
@@ -388,7 +390,13 @@ public class I3dRessourceManager {
             return null;
         }
 
-        int value = Integer.parseInt(stringValue);
+        
+        int value = 0;
+        try {
+            value = Integer.parseInt(stringValue);
+        } catch(NumberFormatException e) {
+            throw new RessourceLoadingException("Bad format number for measure '" + mesureString+"'", e);
+        }
 
         return new Measure(value, relative, axis);
     }
@@ -410,11 +418,39 @@ public class I3dRessourceManager {
 
             if (checkViewAttrs(attrName, attrValue, fileId, viewFactory)) {
             } else {
-                Log.error("Unknown attrib '" + attrName + "=" + attrValue + "' for RelativeLayout");
+                throw new RessourceLoadingException("Unknown attrib '" + attrName + "=" + attrValue + "' for RelativeLayout");
             }
         }
 
         return relativeLayout;
+    }
+    
+    private DrawableView NewDrawableView(Element element, String fileId) {
+        DrawableView drawableView = new DrawableView();
+        String ref = element.getAttribute("i3d:ref");
+        drawableView.setDrawable(loadDrawable(ref));
+        
+        Style style = loadStyle(element.getAttribute("i3d:style"));
+        style.apply(drawableView);
+
+        NamedNodeMap attributes = element.getAttributes();
+        for (int i = 0; i < attributes.getLength(); i++) {
+            Node item = attributes.item(i);
+            Attr attr = (Attr) item;
+            String attrName = attr.getName();
+            String attrValue = attr.getValue();
+
+            ViewFactory viewFactory = new ViewFactory(drawableView);
+
+            if (checkViewAttrs(attrName, attrValue, fileId, viewFactory)) {
+            } else if (attrName.equals("i3d:ref")) {
+                // Already processed
+            } else {
+                throw new RessourceLoadingException("Unknown attrib '" + attrName + "=" + attrValue + "' for DrawableView");
+            }
+        }
+
+        return drawableView;
     }
 
     private LinearLayout NewLinearLayout(Element element, String fileId) {
@@ -435,7 +471,7 @@ public class I3dRessourceManager {
             if (checkViewAttrs(attrName, attrValue, fileId, viewFactory)) {
             } else if (checkOrientation(attrName, attrValue, linearLayout)) {
             } else {
-                Log.error("Unknown attrib '" + attrName + "=" + attrValue + "' for LinearLayout");
+                throw new RessourceLoadingException("Unknown attrib '" + attrName + "=" + attrValue + "' for LinearLayout");
             }
         }
 
@@ -463,7 +499,7 @@ public class I3dRessourceManager {
             } else if (checkFont(attrName, attrValue, textViewFactory)) {
             } else if (checkGravity(attrName, attrValue, textViewFactory)) {
             } else {
-                Log.error("Unknown attrib '" + attrName + "=" + attrValue + "' for TextView");
+                throw new RessourceLoadingException("Unknown attrib '" + attrName + "=" + attrValue + "' for TextView");
             }
         }
 
@@ -487,7 +523,7 @@ public class I3dRessourceManager {
 
             if (checkViewAttrs(attrName, attrValue, fileId, viewFactory)) {
             } else {
-                Log.error("Unknown attrib '" + attrName + "=" + attrValue + "' for ScrollView");
+                throw new RessourceLoadingException("Unknown attrib '" + attrName + "=" + attrValue + "' for ScrollView");
             }
         }
 
@@ -514,7 +550,7 @@ public class I3dRessourceManager {
             } else if (checkText(attrName, attrValue, textViewFactory)) {
             } else if (checkFont(attrName, attrValue, textViewFactory)) {
             } else {
-                Log.error("Unknown attrib '" + attrName + "=" + attrValue + "' for Button");
+                throw new RessourceLoadingException("Unknown attrib '" + attrName + "=" + attrValue + "' for Button");
             }
         }
 
@@ -606,7 +642,7 @@ public class I3dRessourceManager {
                 view.setWidthMeasure(measure);
                 used = true;
             } else {
-                Log.error("Unsupported value '" + attrValue + "' for i3d:layout_width attribute");
+                throw new RessourceLoadingException("Unsupported value '" + attrValue + "' for i3d:layout_width attribute");
             }
         }
         return used;
@@ -627,7 +663,7 @@ public class I3dRessourceManager {
                 view.setHeightMeasure(measure);
                 used = true;
             } else {
-                Log.error("Unsupported value '" + attrValue + "' for i3d:layout_height attribute");
+                throw new RessourceLoadingException("Unsupported value '" + attrValue + "' for i3d:layout_height attribute");
             }
         }
         return used;
@@ -641,7 +677,7 @@ public class I3dRessourceManager {
                 view.setPaddingTopMeasure(measure);
                 used = true;
             } else {
-                Log.error("Unsupported value '" + attrValue + "' for i3d:layout_paddingTop attribute");
+                throw new RessourceLoadingException("Unsupported value '" + attrValue + "' for i3d:layout_paddingTop attribute");
             }
         }
         return used;
@@ -655,7 +691,7 @@ public class I3dRessourceManager {
                 view.setPaddingBottomMeasure(measure);
                 used = true;
             } else {
-                Log.error("Unsupported value '" + attrValue + "' for i3d:layout_paddingBottom attribute");
+                throw new RessourceLoadingException("Unsupported value '" + attrValue + "' for i3d:layout_paddingBottom attribute");
             }
         }
         return used;
@@ -669,7 +705,7 @@ public class I3dRessourceManager {
                 view.setPaddingLeftMeasure(measure);
                 used = true;
             } else {
-                Log.error("Unsupported value '" + attrValue + "' for i3d:layout_paddingLeft attribute");
+                throw new RessourceLoadingException("Unsupported value '" + attrValue + "' for i3d:layout_paddingLeft attribute");
             }
         }
         return used;
@@ -683,7 +719,7 @@ public class I3dRessourceManager {
                 view.setPaddingRightMeasure(measure);
                 used = true;
             } else {
-                Log.error("Unsupported value '" + attrValue + "' for i3d:layout_paddingRight attribute");
+                throw new RessourceLoadingException("Unsupported value '" + attrValue + "' for i3d:layout_paddingRight attribute");
             }
         }
         return used;
@@ -697,7 +733,7 @@ public class I3dRessourceManager {
                 view.setMarginTopMeasure(measure);
                 used = true;
             } else {
-                Log.error("Unsupported value '" + attrValue + "' for i3d:layout_marginTop attribute");
+                throw new RessourceLoadingException("Unsupported value '" + attrValue + "' for i3d:layout_marginTop attribute");
             }
         }
         return used;
@@ -711,7 +747,7 @@ public class I3dRessourceManager {
                 view.setMarginBottomMeasure(measure);
                 used = true;
             } else {
-                Log.error("Unsupported value '" + attrValue + "' for i3d:layout_marginBottom attribute");
+                throw new RessourceLoadingException("Unsupported value '" + attrValue + "' for i3d:layout_marginBottom attribute");
             }
         }
         return used;
@@ -725,7 +761,7 @@ public class I3dRessourceManager {
                 view.setMarginLeftMeasure(measure);
                 used = true;
             } else {
-                Log.error("Unsupported value '" + attrValue + "' for i3d:layout_marginLeft attribute");
+                throw new RessourceLoadingException("Unsupported value '" + attrValue + "' for i3d:layout_marginLeft attribute");
             }
         }
         return used;
@@ -739,7 +775,7 @@ public class I3dRessourceManager {
                 view.setMarginRightMeasure(measure);
                 used = true;
             } else {
-                Log.error("Unsupported value '" + attrValue + "' for i3d:layout_marginRight attribute");
+                throw new RessourceLoadingException("Unsupported value '" + attrValue + "' for i3d:layout_marginRight attribute");
             }
         }
         return used;
@@ -758,7 +794,7 @@ public class I3dRessourceManager {
                 view.setLayoutGravityX(LayoutGravity.RIGHT);
                 used = true;
             } else {
-                Log.error("Unsupported value '" + attrValue + "' for i3d:layout_gravity_x attribute");
+                throw new RessourceLoadingException("Unsupported value '" + attrValue + "' for i3d:layout_gravity_x attribute");
             }
         }
         return used;
@@ -777,7 +813,7 @@ public class I3dRessourceManager {
                 view.setLayoutGravityY(LayoutGravity.BOTTOM);
                 used = true;
             } else {
-                Log.error("Unsupported value '" + attrValue + "' for i3d:layout_gravity_y attribute");
+                throw new RessourceLoadingException("Unsupported value '" + attrValue + "' for i3d:layout_gravity_y attribute");
             }
         }
         return used;
@@ -793,7 +829,7 @@ public class I3dRessourceManager {
                 view.setLayoutOrientation(LayoutOrientation.HORIZONTAL);
                 used = true;
             } else {
-                Log.error("Unsupported value '" + attrValue + "' for i3d:orientation attribute");
+                throw new RessourceLoadingException("Unsupported value '" + attrValue + "' for i3d:orientation attribute");
             }
         }
         return used;
@@ -830,7 +866,7 @@ public class I3dRessourceManager {
                 view.setGravity(Gravity.BOTTOM_RIGHT);
                 used = true;
             } else {
-                Log.error("Unsupported value '" + attrValue + "' for i3d:gravity attribute");
+                throw new RessourceLoadingException("Unsupported value '" + attrValue + "' for i3d:gravity attribute");
             }
         }
         return used;
@@ -853,7 +889,7 @@ public class I3dRessourceManager {
                 view.setBorderSize(measure);
                 used = true;
             } else {
-                Log.error("Unsupported value '" + attrValue + "' for i3d:borderSize attribute");
+                throw new RessourceLoadingException("Unsupported value '" + attrValue + "' for i3d:borderSize attribute");
             }
         }
         return used;
@@ -867,7 +903,7 @@ public class I3dRessourceManager {
                 view.setCornerLeftTopSize(measure);
                 used = true;
             } else {
-                Log.error("Unsupported value '" + attrValue + "' for i3d:cornerLeftTopSize attribute");
+                throw new RessourceLoadingException("Unsupported value '" + attrValue + "' for i3d:cornerLeftTopSize attribute");
             }
         }
         return used;
@@ -881,7 +917,7 @@ public class I3dRessourceManager {
                 view.setCornerRightTopSize(measure);
                 used = true;
             } else {
-                Log.error("Unsupported value '" + attrValue + "' for i3d:cornerRightTopSize attribute");
+                throw new RessourceLoadingException("Unsupported value '" + attrValue + "' for i3d:cornerRightTopSize attribute");
             }
         }
         return used;
@@ -895,7 +931,7 @@ public class I3dRessourceManager {
                 view.setCornerLeftBottomSize(measure);
                 used = true;
             } else {
-                Log.error("Unsupported value '" + attrValue + "' for i3d:cornerLeftBottomSize attribute");
+                throw new RessourceLoadingException("Unsupported value '" + attrValue + "' for i3d:cornerLeftBottomSize attribute");
             }
         }
         return used;
@@ -909,7 +945,7 @@ public class I3dRessourceManager {
                 view.setCornerRightBottomSize(measure);
                 used = true;
             } else {
-                Log.error("Unsupported value '" + attrValue + "' for i3d:cornerRightBottomSize attribute");
+                throw new RessourceLoadingException("Unsupported value '" + attrValue + "' for i3d:cornerRightBottomSize attribute");
             }
         }
         return used;
@@ -925,7 +961,7 @@ public class I3dRessourceManager {
                 view.setCornerLeftTopStyle(CornerStyle.BEVEL);
                 used = true;
             } else {
-                Log.error("Unsupported value '" + attrValue + "' for i3d:cornerLeftTopStyle attribute");
+                throw new RessourceLoadingException("Unsupported value '" + attrValue + "' for i3d:cornerLeftTopStyle attribute");
             }
         }
         return used;
@@ -941,7 +977,7 @@ public class I3dRessourceManager {
                 view.setCornerRightTopStyle(CornerStyle.BEVEL);
                 used = true;
             } else {
-                Log.error("Unsupported value '" + attrValue + "' for i3d:cornerRightTopStyle attribute");
+                throw new RessourceLoadingException("Unsupported value '" + attrValue + "' for i3d:cornerRightTopStyle attribute");
             }
         }
         return used;
@@ -957,7 +993,7 @@ public class I3dRessourceManager {
                 view.setCornerLeftBottomStyle(CornerStyle.BEVEL);
                 used = true;
             } else {
-                Log.error("Unsupported value '" + attrValue + "' for i3d:cornerLeftBottomStyle attribute");
+                throw new RessourceLoadingException("Unsupported value '" + attrValue + "' for i3d:cornerLeftBottomStyle attribute");
             }
         }
         return used;
@@ -973,7 +1009,7 @@ public class I3dRessourceManager {
                 view.setCornerRightBottomStyle(CornerStyle.BEVEL);
                 used = true;
             } else {
-                Log.error("Unsupported value '" + attrValue + "' for i3d:cornerRightBottomStyle attribute");
+                throw new RessourceLoadingException("Unsupported value '" + attrValue + "' for i3d:cornerRightBottomStyle attribute");
             }
         }
         return used;
@@ -1032,7 +1068,10 @@ public class I3dRessourceManager {
         }
 
         if (drawable == null) {
-            Log.error("Unknown drawable '" + drawableId);
+            Log.warn("Unknown drawable '" + drawableId);
+            SolidDrawable mockdrawable = new SolidDrawable();
+            mockdrawable.setColor(Color.pink);
+            drawable = mockdrawable;
         }
 
         return drawable;
@@ -1190,6 +1229,8 @@ public class I3dRessourceManager {
                 drawable.setStartColor(loadColor(attrValue));
             } else if (attrName.equals("i3d:stopColor")) {
                 drawable.setStopColor(loadColor(attrValue));
+            } else if (attrName.equals("i3d:angle")) {
+                drawable.setAngle(Integer.parseInt(attrValue));
             } else {
                 Log.error("Unknown attrib '" + attrName + "=" + attrValue + "' for GradientDrawable");
             }

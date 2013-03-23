@@ -133,16 +133,16 @@ public class BorderParams {
 
     public BorderParams duplicate() {
         BorderParams border = new BorderParams();
-        border.borderSize = borderSize;
+        border.borderSize = new Measure(borderSize);
         border.borderColor = borderColor;
         border.cornerLeftTopStyle = cornerLeftTopStyle;
         border.cornerRightTopStyle = cornerRightTopStyle;
         border.cornerLeftBottomStyle = cornerLeftBottomStyle;
         border.cornerRightBottomStyle = cornerRightBottomStyle;
         border.cornerLeftTopSize= cornerLeftTopSize;
-        border.cornerRightTopSize = cornerRightTopSize;
-        border.cornerLeftBottomSize = cornerLeftBottomSize;
-        border.cornerRightBottomSize = cornerRightBottomSize;
+        border.cornerRightTopSize = new Measure(cornerRightTopSize);
+        border.cornerLeftBottomSize = new Measure(cornerLeftBottomSize);
+        border.cornerRightBottomSize = new Measure(cornerRightBottomSize);
         border.background = background;
         
         return border;

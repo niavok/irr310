@@ -10,6 +10,19 @@
         <item name="i3d:layout_paddingTop">10px</item>
         <item name="i3d:layout_paddingBottom">10px</item>
     </style>
+    
+    <style name="smallButton" parent="buttonBase@styles">
+        <item name="i3d:font">smallButton@fonts</item>
+        <item name="i3d:layout_width">wrap_content</item>
+        <item name="i3d:layout_height">wrap_content</item>
+        <item name="i3d:layout_paddingLeft">0px</item>
+        <item name="i3d:layout_paddingRight">0px</item>
+        <item name="i3d:layout_paddingTop">1px</item>
+        <item name="i3d:layout_paddingBottom">1px</item>
+        <item name="i3d:cornerLeftTopSize">8px</item>
+        <item name="i3d:cornerRightBottomStyle">bevel</item>
+        <item name="i3d:cornerRightBottomSize">8px</item>
+    </style>
 
     <style name="buttonBase">
         <item name="i3d:gravity">center</item>

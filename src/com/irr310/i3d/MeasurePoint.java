@@ -16,6 +16,11 @@ public class MeasurePoint {
         x = new Measure(0, false, Axis.HORIZONTAL);
         y = new Measure(0, false, Axis.VERTICAL);
     }
+    
+    public MeasurePoint(MeasurePoint measurePoint) {
+        x = new Measure(measurePoint.x);
+        y = new Measure(measurePoint.y);
+    }
 
     public Measure getX() {
         return x;

@@ -60,10 +60,10 @@ public class Color {
 
     }
 
-    public float r = 0;
-    public float g = 0;
-    public float b = 0;
-    public float a = 1;
+    public final float r;
+    public final float g;
+    public final float b;
+    public final float a;
     
     
     public static Pattern rgbHexaPattern = Pattern.compile("^#[0-9a-fA-F]{6}$");
@@ -75,6 +75,10 @@ public class Color {
      * Initialize black opaque color
      */
     public Color() {
+        this.r = 0;
+        this.g = 0;
+        this.b = 0;
+        this.a = 1;
     }
 
     /**
@@ -174,7 +178,10 @@ public class Color {
         
      // #ffeea2 or rgb(10,25,65)
         
-        
+        this.r = 0;
+        this.g = 0;
+        this.b = 0;
+        this.a = 1;
         
         
     }
@@ -220,8 +227,7 @@ public class Color {
     }
 
     public Color setAlpha(float alpha) {
-        a = alpha;
-        return this;
+        return new Color(r, g, b, alpha);
     }
 
     public org.fenggui.util.Color getFengguiColor() {

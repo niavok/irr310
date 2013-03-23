@@ -8,6 +8,7 @@ public class GradientDrawable extends Drawable {
 
     private Color startColor;
     private Color stopColor;
+    private int angle = 0;
 
     public GradientDrawable() {
     }
@@ -20,15 +21,25 @@ public class GradientDrawable extends Drawable {
         this.stopColor = stopColor;
     }
     
+    public void setAngle(int angle) {
+        this.angle = angle;
+    }
+    
     @Override
     public void setBounds(float left, float top, float right, float bottom) {
         super.setBounds(left, top, right, bottom);
     }
+       
     
     @Override
     public void vertex(float x, float y) {
+        float mix =0;
         
-        float mix = (y - top) / (bottom - top);
+        if(angle == 0) {
+            mix = (y - top) / (bottom - top);
+        } else  {
+            mix = (x - left) / (right- left);
+        }
         
         g.setColor(Color.mix(startColor, stopColor, mix));
         super.vertex(x, y);

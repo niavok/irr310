@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<drawables>
+    <gradient
+        name="leftSeparatorH"
+        i3d:startColor="separatorBase@color"
+        i3d:stopColor="separatorTop@color"
+        i3d:angle="90" />
+    <gradient
+        name="rightSeparatorH"
+        i3d:startColor="separatorTop@color"
+        i3d:stopColor="separatorBase@color"
+        i3d:angle="90" />
+
+    <solid
+        name="centerSeparatorH"
+        i3d:color="separatorTop@color" />
+
+</drawables>

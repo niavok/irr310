@@ -1,5 +1,6 @@
 package com.irr310.i3d;
 
+
 public class Measure {
 
     private float value;
@@ -15,6 +16,12 @@ public class Measure {
         this.value = value;
         this.relative = relative;
         this.axis = axis;
+    }
+
+    public Measure(Measure measure) {
+        this.value = measure.value;
+        this.relative = measure.relative;
+        this.axis = measure.axis;
     }
 
     public void setValue(float value) {

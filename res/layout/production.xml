@@ -35,7 +35,7 @@
         i3d:points="0%,0%|0%,100%|100%,50%" />
         -->
     </ScrollView>
-    
+
     <ScrollView
         i3d:id="producableListView"
         i3d:layout_width="match_parent"
@@ -51,44 +51,230 @@
         i3d:points="0%,0%|0%,100%|100%,50%" />
         -->
     </ScrollView>
-    
+
     <LinearLayout
-        i3d:id="productionCategoriesPanel"
-        i3d:style="lightBlock@styles"
         i3d:layout_width="wrap_content"
-        i3d:layout_height="wrap_content"
         i3d:layout_gravity_x="right"
         i3d:layout_marginRight="30px"
-        i3d:layout_marginTop="30px"
         i3d:orientation="vertical" >
-      
-        <Button
-            i3d:id="productionCategoryFactoryButton"
-            i3d:style="bigButton@styles"
-            i3d:layout_width="match_parent"
-            i3d:layout_marginBottom="10px"
-            i3d:layout_marginTop="10px"
-            i3d:help="newGameButtonHelp@help/mainmenu"
-            i3d:text="productionCategoryFactoryButton@strings" />
 
-        <Button
-            i3d:id="productionCategoryStocksButton"
-            i3d:style="bigButton@styles"
+        <LinearLayout
+            i3d:id="productionCategoriesPanel"
+            i3d:style="lightBlock@styles"
             i3d:layout_width="match_parent"
-            i3d:layout_marginBottom="10px"
-            i3d:layout_marginTop="10px"
-            i3d:help="newGameButtonHelp@help/mainmenu"
-            i3d:text="productionCategoryStocksButton@strings" />
-        
-        <Button
-            i3d:id="productionCategoryDesignButton"
-            i3d:style="bigButton@styles"
+            i3d:layout_height="wrap_content"
+            i3d:layout_marginTop="30px"
+            i3d:orientation="vertical" >
+
+            <Button
+                i3d:id="productionCategoryFactoryButton"
+                i3d:style="bigButton@styles"
+                i3d:layout_width="match_parent"
+                i3d:layout_marginBottom="10px"
+                i3d:layout_marginTop="10px"
+                i3d:help="newGameButtonHelp@help/mainmenu"
+                i3d:text="productionCategoryFactoryButton@strings" />
+
+            <Button
+                i3d:id="productionCategoryStocksButton"
+                i3d:style="bigButton@styles"
+                i3d:layout_width="match_parent"
+                i3d:layout_marginBottom="10px"
+                i3d:layout_marginTop="10px"
+                i3d:help="newGameButtonHelp@help/mainmenu"
+                i3d:text="productionCategoryStocksButton@strings" />
+
+            <Button
+                i3d:id="productionCategoryDesignButton"
+                i3d:style="bigButton@styles"
+                i3d:layout_width="match_parent"
+                i3d:layout_marginBottom="10px"
+                i3d:layout_marginTop="10px"
+                i3d:help="newGameButtonHelp@help/mainmenu"
+                i3d:text="productionCategoryDesignButton@strings" />
+        </LinearLayout>
+
+        <LinearLayout
+            i3d:id="productionDetailsPanel"
+            i3d:style="lightBlock@styles"
             i3d:layout_width="match_parent"
-            i3d:layout_marginBottom="10px"
-            i3d:layout_marginTop="10px"
-            i3d:help="newGameButtonHelp@help/mainmenu"
-            i3d:text="productionCategoryDesignButton@strings" />
-        
+            i3d:layout_height="wrap_content"
+            i3d:layout_gravity_x="right"
+            i3d:layout_marginTop="30px"
+            i3d:orientation="vertical" >
+
+            <LinearLayout
+                i3d:id="ressourcesPannel"
+                i3d:layout_width="match_parent"
+                i3d:layout_height="wrap_content"
+                i3d:layout_paddingTop="10px"
+                i3d:orientation="horizontal" >
+
+                <LinearLayout
+                    i3d:id="ressourcesPannel"
+                    i3d:layout_width="50%"
+                    i3d:layout_height="wrap_content"
+                    i3d:orientation="vertical" >
+
+                    <TextView
+                        i3d:layout_paddingBottom="5px"
+                        i3d:font="big@fonts"
+                        i3d:text="factoryStaters@strings"
+                        i3d:color="defaultFont@color" />
+
+                    <TextView
+                        i3d:layout_paddingBottom="5px"
+                        i3d:font="big@fonts"
+                        i3d:text="factoryMaintenance@strings"
+                        i3d:color="defaultFont@color" />
+
+                    <TextView
+                        i3d:layout_paddingBottom="5px"
+                        i3d:font="big@fonts"
+                        i3d:text="factoryCapacity@strings"
+                        i3d:color="defaultFont@color" />
+
+                    <TextView
+                        i3d:layout_paddingBottom="5px"
+                        i3d:font="big@fonts"
+                        i3d:text="factoryRentCapacity@strings"
+                        i3d:color="defaultFont@color" />
+
+                    <TextView
+                        i3d:layout_paddingBottom="5px"
+                        i3d:font="big@fonts"
+                        i3d:text="factoryTotalCapacity@strings"
+                        i3d:color="defaultFont@color" />
+                </LinearLayout>
+
+                <LinearLayout
+                    i3d:id="ressourcesPannel"
+                    i3d:layout_width="50%"
+                    i3d:layout_height="wrap_content"
+                    i3d:orientation="vertical" >
+
+                    <TextView
+                        i3d:id="factoryStatersAmountTextView"
+                        i3d:layout_width="match_parent"
+                        i3d:layout_paddingBottom="5px"
+                        i3d:font="big@fonts"
+                        i3d:gravity="center|right"
+                        i3d:color="defaultFont@color" />
+
+                    <TextView
+                        i3d:id="factoryMaintenanceAmountTextView"
+                        i3d:layout_width="match_parent"
+                        i3d:layout_paddingBottom="5px"
+                        i3d:font="big@fonts"
+                        i3d:gravity="center|right"
+                        i3d:color="defaultFont@color" />
+
+                    <TextView
+                        i3d:id="factoryCapacityAmountTextView"
+                        i3d:layout_width="match_parent"
+                        i3d:layout_paddingBottom="5px"
+                        i3d:font="big@fonts"
+                        i3d:gravity="center|right"
+                        i3d:color="defaultFont@color" />
+
+                    <TextView
+                        i3d:id="factoryRentCapacityAmountTextView"
+                        i3d:layout_width="match_parent"
+                        i3d:layout_paddingBottom="5px"
+                        i3d:font="big@fonts"
+                        i3d:gravity="center|right"
+                        i3d:color="defaultFont@color" />
+
+                    <TextView
+                        i3d:id="factoryTotalCapacityAmountTextView"
+                        i3d:layout_width="match_parent"
+                        i3d:layout_paddingBottom="5px"
+                        i3d:font="big@fonts"
+                        i3d:gravity="center|right"
+                        i3d:color="defaultFont@color" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                i3d:layout_width="match_parent"
+                i3d:layout_height="20px"
+                i3d:ref="main@layout/separator_horizontal" />
+
+            <LinearLayout
+                i3d:id="buyFactoryPanel"
+                i3d:layout_width="match_parent"
+                i3d:layout_height="wrap_content"
+                i3d:layout_paddingTop="10px"
+                i3d:orientation="horizontal" >
+
+                <LinearLayout
+                    i3d:id="ressourcesPannel"
+                    i3d:layout_width="50%"
+                    i3d:layout_height="wrap_content"
+                    i3d:orientation="vertical" >
+
+                    <TextView
+                        i3d:layout_paddingBottom="5px"
+                        i3d:font="big@fonts"
+                        i3d:text="factoryBuy@strings"
+                        i3d:color="defaultFont@color" />
+
+                    <TextView
+                        i3d:layout_paddingBottom="5px"
+                        i3d:font="big@fonts"
+                        i3d:text="factoryBuyIncoming@strings"
+                        i3d:color="defaultFont@color" />
+
+                    <TextView
+                        i3d:layout_paddingBottom="5px"
+                        i3d:font="big@fonts"
+                        i3d:text="factoryBuyDelay@strings"
+                        i3d:color="defaultFont@color" />
+                </LinearLayout>
+
+                <LinearLayout
+                    i3d:id="ressourcesPannel"
+                    i3d:layout_width="50%"
+                    i3d:layout_height="wrap_content"
+                    i3d:orientation="vertical" >
+
+                    <Button
+                        i3d:id="factoryBuyFactoyButton"
+                        i3d:style="smallButton@styles"
+                        i3d:layout_width="match_parent"
+                        i3d:color="defaultFont@color"
+                        i3d:text="factoryBuyButton@strings" />
+
+                    <TextView
+                        i3d:id="factoryIncomingCapacityTextView"
+                        i3d:layout_width="match_parent"
+                        i3d:layout_paddingBottom="5px"
+                        i3d:font="big@fonts"
+                        i3d:gravity="center|right"
+                        i3d:color="defaultFont@color" />
+
+                    <TextView
+                        i3d:id="factoryIncomingCapacityDelayTextView"
+                        i3d:layout_width="match_parent"
+                        i3d:layout_paddingBottom="5px"
+                        i3d:font="big@fonts"
+                        i3d:gravity="center|right"
+                        i3d:color="defaultFont@color" />
+
+                    <Button
+                        i3d:id="factorySellFactoryButton"
+                        i3d:style="smallButton@styles"
+                        i3d:layout_width="match_parent"
+                        i3d:color="defaultFont@color"
+                        i3d:text="factorySellButton@strings" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                i3d:layout_width="match_parent"
+                i3d:layout_height="20px"
+                i3d:ref="main@layout/separator_horizontal" />
+        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>

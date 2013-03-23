@@ -7,6 +7,7 @@ import java.util.Stack;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
+import com.irr310.common.tools.Log;
 import com.irr310.i3d.view.Activity;
 import com.irr310.server.Time;
 
@@ -28,6 +29,7 @@ public class Surface {
     public void startActivity(Intent intent) {
         Activity activity = null;
 
+        try{
         if (!intentStack.contains(intent)) {
             // New Activity
             try {
@@ -62,6 +64,10 @@ public class Surface {
             }
             currentActivity.forceLayout();
             currentActivity.resume();
+        }
+        } catch (RessourceLoadingException e) {
+            Log.warn("Fail to start Activity: "+e);
+            currentActivity = null;
         }
     }
     
@@ -314,6 +320,8 @@ public class Surface {
         
         if(currentActivity != null) {
             startActivity(currentActivity.getIntent());
+        } else if(!intentStack.empty()) {
+            startActivity(intentStack.peek());
         }
     }
 }

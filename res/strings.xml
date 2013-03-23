@@ -35,4 +35,16 @@
     <string name="productionCategoryStocksButton">Stocks</string>
     <string name="productionCategoryDesignButton">Design</string>
     
+    <!-- Production > Factory -->
+    <string name="factoryStaters">Staters</string>
+    <string name="factoryMaintenance">Maintenance</string>
+    <string name="factoryCapacity">Factory capacity</string>
+    <string name="factoryRentCapacity">Rent capacity</string>
+    <string name="factoryTotalCapacity">Total capacity</string>
+    <string name="factoryBuy">Buy factory</string>
+    <string name="factoryBuyIncoming">Incoming capacity</string>
+    <string name="factoryBuyDelay">Delay</string>
+    <string name="factoryBuyButton">300 [staters@icons]</string>
+    <string name="factorySellButton">Sell factory</string>
+    
 </resources>
