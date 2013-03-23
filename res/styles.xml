@@ -13,6 +13,7 @@
     
     <style name="smallButton" parent="buttonBase@styles">
         <item name="i3d:font">smallButton@fonts</item>
+        <item name="i3d:borderSize">0.5px</item>
         <item name="i3d:layout_width">wrap_content</item>
         <item name="i3d:layout_height">wrap_content</item>
         <item name="i3d:layout_paddingLeft">0px</item>

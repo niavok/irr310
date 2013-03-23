@@ -14,8 +14,8 @@
     <color name="systemNameWorldMap">#646464ff</color>
     <color name="blockTitle">#000000</color>
     <color name="lightBlock">#f2f2f2c8</color>
-    <color name="separatorBase">#b0b0b000</color>
-    <color name="separatorTop">#b0b0b0ff</color>
+    <color name="separatorBase">#00000000</color>
+    <color name="separatorTop">#000000ff</color>
     
     <!-- Ressources colors -->
     

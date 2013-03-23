@@ -13,19 +13,19 @@
 
         <Drawable
             i3d:layout_width="30%"
-            i3d:layout_height="1px"
+            i3d:layout_height="0.5px"
             i3d:layout_marginLeft="0px"
             i3d:layout_marginRight="0px"
             i3d:ref="leftSeparatorH@ui" />
 
         <Drawable
             i3d:layout_width="40%"
-            i3d:layout_height="1px"
+            i3d:layout_height="0.5px"
             i3d:ref="centerSeparatorH@ui" />
 
         <Drawable
             i3d:layout_width="30%"
-            i3d:layout_height="1px"
+            i3d:layout_height="0.5px"
             i3d:ref="rightSeparatorH@ui" />
     </LinearLayout>
 

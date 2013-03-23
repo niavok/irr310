@@ -391,9 +391,9 @@ public class I3dRessourceManager {
         }
 
         
-        int value = 0;
+        float value = 0;
         try {
-            value = Integer.parseInt(stringValue);
+            value = Float.parseFloat(stringValue);
         } catch(NumberFormatException e) {
             throw new RessourceLoadingException("Bad format number for measure '" + mesureString+"'", e);
         }
