@@ -16,15 +16,17 @@ public class Faction extends WorldEntity{
     private List<Player> players = new ArrayList<Player>();
     private Color color;
     private List<Ship> shipList = new ArrayList<Ship>();
-    private int statersAmount;
-    private int oresAmount;
-    private int koliumAmount;
-    private int neuridiumAmount;
+    private long statersAmount;
+    private long oresAmount;
+    private long koliumAmount;
+    private long neuridiumAmount;
+    private FactionProduction production;
     
     
     public Faction(World world, long id) {
         super(world, id);
         color = Color.randomDarkOpaqueColor();
+        production = new FactionProduction(this);
         statersAmount = 0;
         oresAmount = 0;
         koliumAmount = 0;
@@ -73,35 +75,35 @@ public class Faction extends WorldEntity{
         return shipList;
     }
 
-    public int getStatersAmount() {
+    public long getStatersAmount() {
         return statersAmount;
     }
     
-    public int getKoliumAmount() {
+    public long getKoliumAmount() {
         return koliumAmount;
     }
     
-    public int getNeuridiumAmount() {
+    public long getNeuridiumAmount() {
         return neuridiumAmount;
     }
     
-    public int getOresAmount() {
+    public long getOresAmount() {
         return oresAmount;
     }
     
-    public void setKoliumAmount(int koliumAmount) {
+    public void setKoliumAmount(long koliumAmount) {
         this.koliumAmount = koliumAmount;
     }
     
-    public void setNeuridiumAmount(int neuridiumAmount) {
+    public void setNeuridiumAmount(long neuridiumAmount) {
         this.neuridiumAmount = neuridiumAmount;
     }
     
-    public void setOresAmount(int oresAmount) {
+    public void setOresAmount(long oresAmount) {
         this.oresAmount = oresAmount;
     }
     
-    public void setStatersAmount(int statersAmount) {
+    public void setStatersAmount(long statersAmount) {
         this.statersAmount = statersAmount;
     }
     
@@ -125,6 +127,22 @@ public class Faction extends WorldEntity{
     
     public boolean isView(FactionView factionView) {
         return getId() == factionView.id;
+    }
+
+    public boolean takeStaters(long price) {
+        if(getStatersAmount() > price) {
+            setStatersAmount(getStatersAmount() - price);
+            return true;
+        }
+        return false;
+    }
+
+    public void giveStaters(long amount) {
+        setStatersAmount(getStatersAmount() + amount);
+    }
+    
+    public FactionProduction getProduction() {
+        return production;
     }
     
     

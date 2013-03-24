@@ -26,5 +26,20 @@ public class DefaultWorldEventVisitor implements WorldEventVisitor {
     @Override
     public void visit(WorldMapStateEvent event) {
     }
-
+    
+    @Override
+    public void visit(QueryFactionProductionStateEvent event) {
+    }
+    
+    @Override
+    public void visit(FactionProductionStateEvent event) {
+    }
+    
+    @Override
+    public void visit(ActionBuyFactionFactoryCapacityEvent event) {
+    }
+    
+    @Override
+    public void visit(ActionSellFactionFactoryCapacityEvent event) {
+    }
 }

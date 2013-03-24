@@ -15,10 +15,14 @@ import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.event.game.DefaultGameEventVisitor;
 import com.irr310.common.event.game.GameEvent;
 import com.irr310.common.event.game.QuitGameEvent;
+import com.irr310.common.event.world.ActionBuyFactionFactoryCapacityEvent;
+import com.irr310.common.event.world.ActionSellFactionFactoryCapacityEvent;
 import com.irr310.common.event.world.ConnectPlayerEvent;
 import com.irr310.common.event.world.DefaultWorldEventVisitor;
+import com.irr310.common.event.world.FactionProductionStateEvent;
 import com.irr310.common.event.world.FactionStateEvent;
 import com.irr310.common.event.world.PlayerConnectedEvent;
+import com.irr310.common.event.world.QueryFactionProductionStateEvent;
 import com.irr310.common.event.world.QueryFactionStateEvent;
 import com.irr310.common.event.world.QueryWorldMapStateEvent;
 import com.irr310.common.event.world.WorldEvent;
@@ -38,9 +42,14 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements WorldEven
 
     private World world;
     private EngineManager<WorldEventVisitor, WorldEvent> engineManager;
-
+    private Time nextTickTime;
+    private Time nextTurnTime;
+    private Duration tickDuration;
+    private Duration turnDuration;
+    private ProductionManager productionManager = new ProductionManager();
+    
     public WorldEngine() {
-        setFramerate(new Duration(1000000000l)); // 1s 
+        setFramerate(new Duration(40000000l)); // 40ms 25fps 
         engineManager = new EngineManager<WorldEventVisitor, WorldEvent>();
         engineManager.registerEventVisitor(new WorldEngineWorldEventVisitor());
     }
@@ -52,16 +61,65 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements WorldEven
 
     @Override
     protected void frame() {
+        // The game engine has 3 times cron :
+        // - One at each frame for use input managerment (frame)
+        // - One per second for short cooldown (tick)
+        // - One per 10 seconds for long cooldown (turn)
         
+        Time frameTime = Time.now(true);
+        
+        doFrame();
+        
+        while(frameTime.after(nextTickTime)) {
+            doTick();
+            nextTickTime = nextTickTime.add(tickDuration);
+        }
+        
+        while(frameTime.after(nextTurnTime)) {
+            doTurn();
+            nextTurnTime = nextTurnTime.add(turnDuration);
+        }
+        
+        
+    }
+
+    private void doFrame() {
+        
+    }
+
+    private void doTick() {
         for(Faction faction: world.getFactions()) {
-            faction.setStatersAmount(faction.getStatersAmount()+1);
-            engineManager.sendToAll(new FactionStateEvent(faction.toView()));
+            productionManager.doTick(faction.getProduction());
+            engineManager.sendToAll(new FactionProductionStateEvent(faction.getProduction().toView()));
         }
     }
 
+    private void doTurn() {
+    
+        // Revenue
+        for(Faction faction: world.getFactions()) {
+            faction.setStatersAmount(faction.getStatersAmount()+100);
+            
+        }
+        
+        for(Faction faction: world.getFactions()) {
+            productionManager.doTurn(faction.getProduction());
+        }
+        
+        for(Faction faction: world.getFactions()) {
+            engineManager.sendToAll(new FactionStateEvent(faction.toView()));
+            
+        }
+        
+    }
+    
     @Override
     protected void onInit() {
         initWorld();
+        tickDuration = new Duration(1000000000l); // 1s
+        turnDuration = new Duration(10000000000l); // 10s
+        nextTickTime = Time.now(true);
+        nextTurnTime = Time.now(true);
     }
 
     @Override
@@ -117,8 +175,30 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements WorldEven
         }
         
         @Override
+        public void visit(QueryFactionProductionStateEvent event) {
+            Faction faction = world.getFaction(event.getFaction());
+            engineManager.sendToAll(new FactionProductionStateEvent(faction.getProduction().toView()));
+        }
+        
+        @Override
         public void visit(QueryWorldMapStateEvent event) {
             engineManager.sendToAll(new WorldMapStateEvent(world.getMap().toView()));
+        }
+        
+        @Override
+        public void visit(ActionBuyFactionFactoryCapacityEvent event) {
+            Faction faction = world.getFaction(event.getFaction());
+            productionManager.buyFactoryCapacity(faction.getProduction(), event.getCount());
+            engineManager.sendToAll(new FactionProductionStateEvent(faction.getProduction().toView()));
+            engineManager.sendToAll(new FactionStateEvent(faction.toView()));
+        }
+        
+        @Override
+        public void visit(ActionSellFactionFactoryCapacityEvent event) {
+            Faction faction = world.getFaction(event.getFaction());
+            productionManager.sellFactoryCapacity(faction.getProduction(), event.getCount());
+            engineManager.sendToAll(new FactionProductionStateEvent(faction.getProduction().toView()));
+            engineManager.sendToAll(new FactionStateEvent(faction.toView()));
         }
     }
     

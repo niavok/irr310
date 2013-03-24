@@ -274,8 +274,83 @@
 
             <View
                 i3d:layout_width="match_parent"
-                i3d:layout_height="20px"
+                i3d:layout_height="30px"
                 i3d:ref="main@layout/separator_horizontal" />
+            
+            <LinearLayout
+                i3d:id="queueStatePanel"
+                i3d:layout_width="match_parent"
+                i3d:layout_height="wrap_content"
+                i3d:layout_paddingTop="10px"
+                i3d:orientation="horizontal" >
+
+                <LinearLayout
+                    i3d:id="queueStatePanel"
+                    i3d:layout_width="50%"
+                    i3d:layout_height="wrap_content"
+                    i3d:orientation="vertical" >
+
+                    <TextView
+                        i3d:layout_paddingBottom="5px"
+                        i3d:font="big@fonts"
+                        i3d:text="factoryOres@strings"
+                        i3d:color="defaultFont@color" />
+
+                    <TextView
+                        i3d:layout_paddingBottom="5px"
+                        i3d:font="big@fonts"
+                        i3d:text="factoryOresNeeds@strings"
+                        i3d:color="defaultFont@color" />
+
+                    <TextView
+                        i3d:layout_paddingBottom="5px"
+                        i3d:font="big@fonts"
+                        i3d:text="factoryCapacityNeeds@strings"
+                        i3d:color="defaultFont@color" />
+                </LinearLayout>
+
+                <LinearLayout
+                    i3d:id="queueStatePanel"
+                    i3d:layout_width="50%"
+                    i3d:layout_height="wrap_content"
+                    i3d:orientation="vertical" >
+
+                    <TextView
+                        i3d:id="factoryOresTextView"
+                        i3d:layout_width="match_parent"
+                        i3d:layout_paddingBottom="5px"
+                        i3d:font="big@fonts"
+                        i3d:gravity="center|right"
+                        i3d:color="defaultFont@color"
+                        />
+
+                    <TextView
+                        i3d:id="factoryOresNeedsTextView"
+                        i3d:layout_width="match_parent"
+                        i3d:layout_paddingBottom="5px"
+                        i3d:font="big@fonts"
+                        i3d:gravity="center|right"
+                        i3d:color="defaultFont@color" />
+
+                    <TextView
+                        i3d:id="factoryCapacityNeedsTextView"
+                        i3d:layout_width="match_parent"
+                        i3d:layout_paddingBottom="5px"
+                        i3d:font="big@fonts"
+                        i3d:gravity="center|right"
+                        i3d:color="defaultFont@color" />
+
+                    <TextView
+                        i3d:id="factoryTimeEstimationTextView"
+                        i3d:layout_width="match_parent"
+                        i3d:layout_paddingBottom="5px"
+                        i3d:font="medium@fonts"
+                        i3d:gravity="center|right"
+                        i3d:color="lightFont@color"
+                         />
+                </LinearLayout>
+            </LinearLayout>
+            
         </LinearLayout>
     </LinearLayout>
 

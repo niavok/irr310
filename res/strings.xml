@@ -47,4 +47,8 @@
     <string name="factoryBuyButton">300 [staters@icons]</string>
     <string name="factorySellButton">Sell factory</string>
     
+    <string name="factoryOres">Ores</string>
+    <string name="factoryOresNeeds">Factory needs</string>
+    <string name="factoryCapacityNeeds">Factory queue</string>
+    
 </resources>

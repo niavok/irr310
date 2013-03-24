@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="defaultFont">#000000</color>
+    <color name="lightFont">#4d4d4d</color>
     <color name="debugRed">#ff0000</color>
     <color name="debugGreen">#00ff00</color>
     <color name="debugBlue">#0000ff</color>
