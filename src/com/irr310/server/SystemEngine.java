@@ -18,7 +18,7 @@ public class SystemEngine extends FramerateEngine<WorldEvent> implements EventDi
     private EngineManager<SystemEventVisitor, SystemEvent> engineManager;
 
     public SystemEngine(WorldEngine worldEngine) {
-        world = worldEngine.getWorld();
+//        world = worldEngine.getWorld();
         engineManager = new EngineManager<SystemEventVisitor, SystemEvent>();
     }
 

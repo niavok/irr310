@@ -6,9 +6,9 @@ import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.ReentrantLock;
 
-import com.irr310.common.binder.BinderServer;
 import com.irr310.common.world.item.Item;
 import com.irr310.common.world.upgrade.Upgrade;
+import com.irr310.common.world.view.FactionView;
 import com.irr310.common.world.view.PlayerView;
 
 public class World {
@@ -23,11 +23,11 @@ public class World {
     private final Map<Long, Item> itemIdMap;
 
     ReentrantLock mutex;
-    private com.irr310.common.world.Map map;
-    private BinderServer binderServer;
+    private WorldMap map;
+//    private BinderServer binderServer;
 
     public World() {
-        binderServer = new BinderServer();
+//        binderServer = new BinderServer();
         
         players = new CopyOnWriteArrayList<Player>();
         factions= new CopyOnWriteArrayList<Faction>();
@@ -41,7 +41,7 @@ public class World {
         availableUpgrades = new CopyOnWriteArrayList<Upgrade>();
 
         mutex = new ReentrantLock();
-        map = new com.irr310.common.world.Map();
+        map = new com.irr310.common.world.WorldMap();
     }
 
     
@@ -99,7 +99,7 @@ public class World {
         return availableUpgrades;
     }
 
-    public com.irr310.common.world.Map getMap() {
+    public com.irr310.common.world.WorldMap getMap() {
         return map;
     }
 
@@ -108,21 +108,32 @@ public class World {
         itemIdMap.put(item.getId(), item);
     }
 
-    public Player getLocalPlayer() {
-        for(Player player: players) {
-            if(player.isLocal()) {
-                return player;
+//    public Player getLocalPlayer() {
+//        for(Player player: players) {
+//            if(player.isLocal()) {
+//                return player;
+//            }
+//        }
+//        return null;
+//    }
+
+
+
+    public Faction getFaction(FactionView factionView) {
+        for(Faction faction: factions) {
+            if(faction.isView(factionView)) {
+                return faction;
             }
         }
         return null;
     }
 
-    public BinderServer getBinderServer() {
-        return binderServer;
-    }
-
-    public void flush() {
-        binderServer.flush();
-    }
+//    public BinderServer getBinderServer() {
+//        return binderServer;
+//    }
+//
+//    public void flush() {
+//        binderServer.flush();
+//    }
 
 }

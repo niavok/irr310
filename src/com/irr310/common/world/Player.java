@@ -70,13 +70,12 @@ public class Player extends WorldEntity {
         PlayerView playerView = new PlayerView();
         playerView.id = getId();
         playerView.login = login;
-        playerView.money = money;
+        playerView.faction = faction.toView();
         return playerView;
     }
 
     public void fromView(PlayerView playerView) {
         login = playerView.login;
-        money = playerView.money;
     }
 
     

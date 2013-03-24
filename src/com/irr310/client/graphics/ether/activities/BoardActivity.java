@@ -2,35 +2,43 @@ package com.irr310.client.graphics.ether.activities;
 
 import com.irr310.client.graphics.ether.activities.production.ProductionActivity;
 import com.irr310.client.graphics.ether.activities.worldmap.WorldMapActivity;
-import com.irr310.common.binder.BindVariable;
-import com.irr310.common.binder.BinderClient;
-import com.irr310.common.binder.BinderListener;
-import com.irr310.common.world.World;
+import com.irr310.client.navigation.LoginManager;
+import com.irr310.common.event.world.DefaultWorldEventVisitor;
+import com.irr310.common.event.world.FactionStateEvent;
+import com.irr310.common.event.world.QueryFactionStateEvent;
+import com.irr310.common.event.world.WorldEventDispatcher;
+import com.irr310.common.event.world.WorldEventVisitor;
+import com.irr310.common.world.view.FactionView;
 import com.irr310.i3d.Bundle;
+import com.irr310.i3d.Handler;
 import com.irr310.i3d.Intent;
+import com.irr310.i3d.Message;
 import com.irr310.i3d.view.Activity;
 import com.irr310.i3d.view.Button;
 import com.irr310.i3d.view.TextView;
 import com.irr310.i3d.view.View;
 import com.irr310.i3d.view.View.OnClickListener;
 import com.irr310.server.Time;
+import com.irr310.server.WorldEngine;
 
 public class BoardActivity extends Activity {
 
     
-    private World world;
+    private WorldEventDispatcher worldEngine;
     private Button productionButton;
     private Button worldMapButton;
     private TextView boardStatersAmountTextView;
     private TextView boardOresAmountTextView;
     private TextView boardKoliumAmountTextView;
     private TextView boardNeuridiumAmountTextView;
-    private BinderClient binder;
-
+    private WorldEventVisitor visitor;
+    private Handler handler = new Handler();
+    private static final int UPDATE_FACTION_WHAT = 1;
+    
     @Override
     public void onCreate(Bundle bundle) {
         setContentView("main@layout/board");
-        world = ((BoardActivityBundle) bundle).getWorld();
+        worldEngine = ((BoardActivityBundle) bundle).getWorldEngine();
         
         
         worldMapButton = (Button) findViewById("seeWorldMapButton@layout/board");
@@ -45,7 +53,7 @@ public class BoardActivity extends Activity {
             
             @Override
             public void onClick(View view) {
-                Bundle bundle = new Bundle(world);
+                Bundle bundle = new Bundle(worldEngine);
                 startActivity(new Intent(WorldMapActivity.class, bundle));
             }
         });
@@ -54,53 +62,37 @@ public class BoardActivity extends Activity {
             
             @Override
             public void onClick(View view) {
-                Bundle bundle = new Bundle(world);
+                Bundle bundle = new Bundle(worldEngine);
                 startActivity(new Intent(ProductionActivity.class, bundle));
             }
         });
+        
+        visitor = new DefaultWorldEventVisitor() {
+            
+            @Override
+            public void visit(FactionStateEvent event) {
+                handler.obtainMessage(UPDATE_FACTION_WHAT, event.getFaction()).send();
+            }
+        };
+        
     }
 
-    private void initBinders() {
-        binder = new BinderClient();
-        binder.bind(world.getLocalPlayer().getFaction().getStatersAmount(), new BinderListener<Integer>() {
-            @Override
-            public void onChange(BindVariable<Integer> variable) {
-                boardStatersAmountTextView.setText(variable.get()+" [staters@icons]");
-            }
-        });
-        
-        binder.bind(world.getLocalPlayer().getFaction().getOresAmount(), new BinderListener<Integer>() {
-            @Override
-            public void onChange(BindVariable<Integer> variable) {
-                boardOresAmountTextView.setText(variable.get()+" [ores@icons]");
-            }
-        });
-        
-        binder.bind(world.getLocalPlayer().getFaction().getKoliumAmount(), new BinderListener<Integer>() {
-            @Override
-            public void onChange(BindVariable<Integer> variable) {
-                boardKoliumAmountTextView.setText(variable.get()+" [kolium@icons]");
-            }
-        });
-        
-        binder.bind(world.getLocalPlayer().getFaction().getNeuridiumAmount(), new BinderListener<Integer>() {
-            @Override
-            public void onChange(BindVariable<Integer> variable) {
-                boardNeuridiumAmountTextView.setText(variable.get()+" [neuridium@icons]");
-            }
-        });
-        
-        binder.forceProcess();
+    protected void updateFields(FactionView faction) {
+        boardStatersAmountTextView.setText(faction.statersAmount+" [staters@icons]");
+        boardOresAmountTextView.setText(faction.oresAmount+" [ores@icons]");
+        boardKoliumAmountTextView.setText(faction.koliumAmount+" [kolium@icons]");
+        boardNeuridiumAmountTextView.setText(faction.neuridiumAmount+" [neuridium@icons]");
     }
 
     @Override
     public void onResume() {
-        initBinders();
+        worldEngine.registerEventVisitor(visitor);
+        worldEngine.sendToAll(new QueryFactionStateEvent(LoginManager.getLocalPlayer().faction));
     }
 
     @Override
     public void onPause() {
-        binder.clear();
+        worldEngine.unregisterEventVisitor(visitor);
     }
     
     @Override
@@ -109,17 +101,26 @@ public class BoardActivity extends Activity {
 
     @Override
     protected void onUpdate(Time absTime, Time gameTime) {
-        binder.process();
+        while(handler.hasMessages()) {
+            Message message = handler.getMessage();
+            
+            switch(message.what) {
+                case UPDATE_FACTION_WHAT:
+                    updateFields((FactionView) message.obj);
+                    break;
+            }
+            
+        }
     }
     
     public static class BoardActivityBundle extends Bundle {
 
-        public BoardActivityBundle(World world) {
-            super(world);
+        public BoardActivityBundle(WorldEventDispatcher worldEngine) {
+            super(worldEngine);
         }
         
-        public World getWorld() {
-            return (World) getObject();
+        public WorldEventDispatcher getWorldEngine() {
+            return (WorldEngine) getObject();
         }
     }
 

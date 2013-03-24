@@ -6,6 +6,8 @@ import org.lwjgl.opengl.GL11;
 
 import com.irr310.common.world.Faction;
 import com.irr310.common.world.system.WorldSystem;
+import com.irr310.common.world.view.FactionView;
+import com.irr310.common.world.view.WorldSystemView;
 import com.irr310.i3d.Color;
 import com.irr310.i3d.Graphics;
 import com.irr310.i3d.I3dRessourceManager;
@@ -17,14 +19,14 @@ import com.irr310.i3d.view.View;
 
 public class SystemCircleView extends View {
 
-    private final WorldSystem system;
+    private final WorldSystemView system;
     private float size;
     private float zoom;
     private float zoomedSize;
     private boolean selected;
     private Color selectionColor;
 
-    public SystemCircleView(WorldSystem system) {
+    public SystemCircleView(WorldSystemView system) {
         this.system = system;
         
         size = 30;
@@ -59,11 +61,10 @@ public class SystemCircleView extends View {
 
     @Override
     public void onDraw(Graphics g) {
-        Faction faction = system.getOwner();
         
         Color color = Color.grey;
-        if(faction != null) {
-            color = faction.getColor();
+        if(system.ownerId != -1) {
+            color = system.ownerColor;
         }
         
         Color centerColor = color.setAlpha(0.2f);
@@ -80,7 +81,7 @@ public class SystemCircleView extends View {
         g.drawRing(radius,radius, radius, radius * 0.90f - 3f, color, color, 64);
         g.drawRing(radius,radius, radius * 0.90f - 3f, 0 , centerColor, centerColor, 64);
         
-        if(system.isHomeSystem()) {
+        if(system.homeSystem) {
         
             // Optimize allocation
             Point point1_1 = new Point(zoomedSize/2, 0).rotate(Math.PI /15);

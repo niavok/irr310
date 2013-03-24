@@ -32,7 +32,15 @@ public abstract class ContainerView extends View implements ViewParent {
     public void addChild(View widget) {
         children.add(widget);
         widget.assignParent(this);
+        requestLayout();
     }
+    
+    public void removeAllView() {
+        children.clear();
+        requestLayout();
+    }
+
+    
     
     public List<View> getChildren() {
         return children;

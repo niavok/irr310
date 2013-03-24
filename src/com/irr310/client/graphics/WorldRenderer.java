@@ -346,13 +346,13 @@ public class WorldRenderer implements GraphicRenderer {
         upgradeText.setColor(V3DColor.white, V3DColor.transparent);
         container.add(upgradeText);
 
-        moneyText = new V3DLabel(LoginManager.localPlayer.getMoney() + " $");
-        moneyText.setyAlignment(GuiYAlignment.BOTTOM);
-        moneyText.setxAlignment(GuiXAlignment.RIGHT);
-        moneyText.setPosition(15, 20);
-        moneyText.setFontStyle("Ubuntu", "bold", 40);
-        moneyText.setColor(GuiConstants.irrGreen, V3DColor.transparent);
-        container.add(moneyText);
+//        moneyText = new V3DLabel(LoginManager.localPlayer.getMoney() + " $");
+//        moneyText.setyAlignment(GuiYAlignment.BOTTOM);
+//        moneyText.setxAlignment(GuiXAlignment.RIGHT);
+//        moneyText.setPosition(15, 20);
+//        moneyText.setFontStyle("Ubuntu", "bold", 40);
+//        moneyText.setColor(GuiConstants.irrGreen, V3DColor.transparent);
+//        container.add(moneyText);
 
         V3DButton button = new V3DButton("");
         button.setPosition(0, 0);

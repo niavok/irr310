@@ -21,9 +21,9 @@ import com.irr310.server.WorldEngine;
 public class NewGameActivity extends Activity {
 
 
-    private Handler handler;
-    World world = null;
+    private Handler handler = new Handler();
     private WorldEngine worldEngine = null;
+    private NewGameEventVisitor visitor;
     
     private static final int NEW_GAME_CREATED_WHAT = 1;
     private EngineManager<GameEventVisitor, GameEvent> engineManager;
@@ -35,13 +35,11 @@ public class NewGameActivity extends Activity {
         
         engineManager = GameClient.getInstance().getEngineManager();
         
-        handler = new Handler();
         new Thread() {
-            
-
             public void run() {
-                worldEngine = new WorldEngine(null);
-                worldEngine.registerEventVisitor(new NewGameEventVisitor());
+                worldEngine = new WorldEngine();
+                visitor = new NewGameEventVisitor();
+                worldEngine.registerEventVisitor(visitor);
                 engineManager.startAndWait(worldEngine);
                 
                 worldEngine.sendToAll(new ConnectPlayerEvent("fredb219", true));
@@ -59,6 +57,7 @@ public class NewGameActivity extends Activity {
     
     @Override
     public void onDestroy() {
+        worldEngine.unregisterEventVisitor(visitor);
     }
 
     @Override
@@ -69,7 +68,7 @@ public class NewGameActivity extends Activity {
             
             switch(message.what) {
                 case NEW_GAME_CREATED_WHAT:
-                    BoardActivityBundle bundle = new BoardActivityBundle(world);
+                    BoardActivityBundle bundle = new BoardActivityBundle(worldEngine);
                     startActivity(new Intent(BoardActivity.class, bundle));
                     break;
             }
@@ -80,8 +79,7 @@ public class NewGameActivity extends Activity {
     private final class NewGameEventVisitor extends DefaultWorldEventVisitor {
          @Override
         public void visit(PlayerConnectedEvent event) {
-             world = worldEngine.getWorld();
-             LoginManager.localPlayer = event.getPlayer();
+             LoginManager.localPlayer = event.getPlayer().toView();
              handler.obtainMessage(NEW_GAME_CREATED_WHAT).send();
         }   
     }

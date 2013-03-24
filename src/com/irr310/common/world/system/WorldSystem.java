@@ -18,6 +18,8 @@ import com.irr310.common.world.view.CelestialObjectView;
 import com.irr310.common.world.view.ComponentView;
 import com.irr310.common.world.view.PartView;
 import com.irr310.common.world.view.ShipView;
+import com.irr310.common.world.view.WorldSystemView;
+import com.irr310.i3d.Color;
 import com.irr310.server.SystemEngine;
 
 public class WorldSystem extends WorldEntity {
@@ -140,7 +142,7 @@ public class WorldSystem extends WorldEntity {
     }
 
     private void removePart(Part part) {
-        if (part.getOwner() == LoginManager.localPlayer.getFaction()) {
+        if (part.getOwner().isView(LoginManager.localPlayer.faction)) {
             myParts.remove(part);
         }
         parts.remove(part);
@@ -265,6 +267,24 @@ public class WorldSystem extends WorldEntity {
     
     public String getName() {
         return name;
+    }
+
+    public WorldSystemView toView() {
+        WorldSystemView systemView = new WorldSystemView();
+        systemView.id = getId();
+        
+        systemView.homeSystem = homeSystem;
+        systemView.location = location;
+        systemView.name = name;
+        if(owner != null) {
+            systemView.ownerColor = owner.getColor();
+            systemView.ownerId = owner.getId();
+        } else {
+            systemView.ownerColor = Color.black;
+            systemView.ownerId = -1l;
+        }
+
+        return systemView;
     }
 
 //    public void removeShip(Ship ship) {

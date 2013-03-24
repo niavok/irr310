@@ -1,18 +1,13 @@
 package com.irr310.common.world;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
-import com.irr310.common.binder.BindVariable;
-import com.irr310.common.world.system.WorldEntity;
 import com.irr310.common.world.system.Ship;
+import com.irr310.common.world.system.WorldEntity;
 import com.irr310.common.world.system.WorldSystem;
+import com.irr310.common.world.view.FactionView;
 import com.irr310.i3d.Color;
-
-import fr.def.iss.vd2.lib_v3d.V3DColor;
 
 public class Faction extends WorldEntity{
 
@@ -21,19 +16,19 @@ public class Faction extends WorldEntity{
     private List<Player> players = new ArrayList<Player>();
     private Color color;
     private List<Ship> shipList = new ArrayList<Ship>();
-    private BindVariable<Integer> statersAmount;
-    private BindVariable<Integer> oresAmount;
-    private BindVariable<Integer> koliumAmount;
-    private BindVariable<Integer> neuridiumAmount;
+    private int statersAmount;
+    private int oresAmount;
+    private int koliumAmount;
+    private int neuridiumAmount;
     
     
     public Faction(World world, long id) {
         super(world, id);
         color = Color.randomDarkOpaqueColor();
-        statersAmount = new BindVariable<Integer>(world.getBinderServer(), 0);
-        oresAmount = new BindVariable<Integer>(world.getBinderServer(), 0);
-        koliumAmount = new BindVariable<Integer>(world.getBinderServer(), 0);
-        neuridiumAmount = new BindVariable<Integer>(world.getBinderServer(), 0);
+        statersAmount = 0;
+        oresAmount = 0;
+        koliumAmount = 0;
+        neuridiumAmount = 0;
     }
 
     public void setHomeSystem(WorldSystem system) {
@@ -78,20 +73,60 @@ public class Faction extends WorldEntity{
         return shipList;
     }
 
-    public BindVariable<Integer> getStatersAmount() {
+    public int getStatersAmount() {
         return statersAmount;
     }
     
-    public BindVariable<Integer> getKoliumAmount() {
+    public int getKoliumAmount() {
         return koliumAmount;
     }
     
-    public BindVariable<Integer> getNeuridiumAmount() {
+    public int getNeuridiumAmount() {
         return neuridiumAmount;
     }
     
-    public BindVariable<Integer> getOresAmount() {
+    public int getOresAmount() {
         return oresAmount;
     }
+    
+    public void setKoliumAmount(int koliumAmount) {
+        this.koliumAmount = koliumAmount;
+    }
+    
+    public void setNeuridiumAmount(int neuridiumAmount) {
+        this.neuridiumAmount = neuridiumAmount;
+    }
+    
+    public void setOresAmount(int oresAmount) {
+        this.oresAmount = oresAmount;
+    }
+    
+    public void setStatersAmount(int statersAmount) {
+        this.statersAmount = statersAmount;
+    }
+    
+    public FactionView toView() {
+        FactionView factionView = new FactionView();
+        factionView.id = getId();
+        factionView.statersAmount = statersAmount;
+        factionView.oresAmount = oresAmount;
+        factionView.koliumAmount = koliumAmount;
+        factionView.neuridiumAmount = neuridiumAmount;
+        factionView.color = color;
+        factionView.homeSystemId = homeSystem.getId();
+        
+        factionView.knownSystemIds = new ArrayList<Long>(); 
+        for(WorldSystem system: knownSystems) {
+            factionView.knownSystemIds.add(system.getId());
+        }
+
+        return factionView;
+    }
+    
+    public boolean isView(FactionView factionView) {
+        return getId() == factionView.id;
+    }
+    
+    
     
 }

@@ -76,15 +76,15 @@ public class ClassicalUpgradeTab extends UpgradeTab{
         
         
         
-        UpgradeOwnership ownership  = LoginManager.localPlayer.getUpgradeState(upgrade);
-        int currentRank = ownership.getRank();
+//        UpgradeOwnership ownership  = LoginManager.localPlayer.getUpgradeState(upgrade);
+//        int currentRank = ownership.getRank();
         
-        V3DLabel rankLabel = new V3DLabel(""+currentRank+" / "+upgrade.getMaxRank());
-        rankLabel.setFontStyle("Ubuntu", "bold", 24);
-        rankLabel.setColor(V3DColor.black, V3DColor.transparent);
-        rankLabel.setxAlignment(GuiXAlignment.RIGHT);
-        rankLabel.setPosition(5, 5);
-        pane.add(rankLabel);
+//        V3DLabel rankLabel = new V3DLabel(""+currentRank+" / "+upgrade.getMaxRank());
+//        rankLabel.setFontStyle("Ubuntu", "bold", 24);
+//        rankLabel.setColor(V3DColor.black, V3DColor.transparent);
+//        rankLabel.setxAlignment(GuiXAlignment.RIGHT);
+//        rankLabel.setPosition(5, 5);
+//        pane.add(rankLabel);
 
         
         
@@ -181,77 +181,77 @@ public class ClassicalUpgradeTab extends UpgradeTab{
         yPos += upgradeDescription.getSize().getHeight();
         
         
-        UpgradeOwnership ownership  = LoginManager.localPlayer.getUpgradeState(upgrade);
-        int currentRank = ownership.getRank();
+//        UpgradeOwnership ownership  = LoginManager.localPlayer.getUpgradeState(upgrade);
+//        int currentRank = ownership.getRank();
+//        
+//        V3DLabel rankLabel = new V3DLabel(""+currentRank+" / "+upgrade.getMaxRank());
+//        rankLabel.setFontStyle("Ubuntu", "bold", 24);
+//        rankLabel.setColor(V3DColor.white, V3DColor.transparent);
+//        rankLabel.setxAlignment(GuiXAlignment.RIGHT);
+//        rankLabel.setPosition(5, 5);
+//        pane.add(rankLabel);
+//        
         
-        V3DLabel rankLabel = new V3DLabel(""+currentRank+" / "+upgrade.getMaxRank());
-        rankLabel.setFontStyle("Ubuntu", "bold", 24);
-        rankLabel.setColor(V3DColor.white, V3DColor.transparent);
-        rankLabel.setxAlignment(GuiXAlignment.RIGHT);
-        rankLabel.setPosition(5, 5);
-        pane.add(rankLabel);
-        
-        
-        if(currentRank > 0) {
-            V3DLabel currentRankLabel = new V3DLabel("Current rank:");
-            currentRankLabel.setFontStyle("Ubuntu", "bold", 12);
-            currentRankLabel.setColor(V3DColor.white, V3DColor.transparent);
-            currentRankLabel.setWordWarping(true, 150);
-            currentRankLabel.setPosition(5, yPos);
-            pane.add(currentRankLabel);
-            
-            yPos += currentRankLabel.getSize().getHeight();
-            
-            V3DLabel currentRankDescription = new V3DLabel(upgrade.getRankDescriptions().get(currentRank-1));
-            currentRankDescription.setFontStyle("Ubuntu", "", 12);
-            currentRankDescription.setColor(V3DColor.lightgrey, V3DColor.transparent);
-            currentRankDescription.setWordWarping(true, 150);
-            currentRankDescription.setPosition(5, yPos);
-            pane.add(currentRankDescription);
-            
-            yPos += currentRankDescription.getSize().getHeight();
-                      
-           
-            
-            V3DLabel sellPrice = new V3DLabel(upgrade.getPrices().get(currentRank-1) +" $");
-            sellPrice.setFontStyle("Ubuntu", "bold", 16);
-            sellPrice.setColor(GuiConstants.irrRed, V3DColor.transparent);
-            sellPrice.setxAlignment(GuiXAlignment.RIGHT);
-            sellPrice.setyAlignment(GuiYAlignment.BOTTOM);
-            sellPrice.setPosition( 20,60);
-            pane.add(sellPrice);
-            
-        }
-        
-        
-        if(currentRank < upgrade.getMaxRank()) {
-            V3DLabel nextRankLabel = new V3DLabel("Next rank:");
-            nextRankLabel.setFontStyle("Ubuntu", "bold", 12);
-            nextRankLabel.setColor(V3DColor.white, V3DColor.transparent);
-            nextRankLabel.setWordWarping(true, 150);
-            nextRankLabel.setPosition(5, yPos);
-            pane.add(nextRankLabel);
-            
-            yPos += nextRankLabel.getSize().getHeight();
-            
-            V3DLabel nextRankDescription = new V3DLabel(upgrade.getRankDescriptions().get(currentRank));
-            nextRankDescription.setFontStyle("Ubuntu", "", 12);
-            nextRankDescription.setColor(V3DColor.lightgrey, V3DColor.transparent);
-            nextRankDescription.setWordWarping(true, 150);
-            nextRankDescription.setPosition(5, yPos);
-            pane.add(nextRankDescription);
-            
-            yPos += nextRankDescription.getSize().getHeight();
-            
-           
-            V3DLabel buyPrice = new V3DLabel(upgrade.getPrices().get(currentRank) +" $");
-            buyPrice.setFontStyle("Ubuntu", "bold", 16);
-            buyPrice.setColor(GuiConstants.irrGreen, V3DColor.transparent);
-            buyPrice.setxAlignment(GuiXAlignment.RIGHT);
-            buyPrice.setyAlignment(GuiYAlignment.BOTTOM);
-            buyPrice.setPosition( 20,10);
-            pane.add(buyPrice);
-        }
+//        if(currentRank > 0) {
+//            V3DLabel currentRankLabel = new V3DLabel("Current rank:");
+//            currentRankLabel.setFontStyle("Ubuntu", "bold", 12);
+//            currentRankLabel.setColor(V3DColor.white, V3DColor.transparent);
+//            currentRankLabel.setWordWarping(true, 150);
+//            currentRankLabel.setPosition(5, yPos);
+//            pane.add(currentRankLabel);
+//            
+//            yPos += currentRankLabel.getSize().getHeight();
+//            
+//            V3DLabel currentRankDescription = new V3DLabel(upgrade.getRankDescriptions().get(currentRank-1));
+//            currentRankDescription.setFontStyle("Ubuntu", "", 12);
+//            currentRankDescription.setColor(V3DColor.lightgrey, V3DColor.transparent);
+//            currentRankDescription.setWordWarping(true, 150);
+//            currentRankDescription.setPosition(5, yPos);
+//            pane.add(currentRankDescription);
+//            
+//            yPos += currentRankDescription.getSize().getHeight();
+//                      
+//           
+//            
+//            V3DLabel sellPrice = new V3DLabel(upgrade.getPrices().get(currentRank-1) +" $");
+//            sellPrice.setFontStyle("Ubuntu", "bold", 16);
+//            sellPrice.setColor(GuiConstants.irrRed, V3DColor.transparent);
+//            sellPrice.setxAlignment(GuiXAlignment.RIGHT);
+//            sellPrice.setyAlignment(GuiYAlignment.BOTTOM);
+//            sellPrice.setPosition( 20,60);
+//            pane.add(sellPrice);
+//            
+//        }
+//        
+//        
+//        if(currentRank < upgrade.getMaxRank()) {
+//            V3DLabel nextRankLabel = new V3DLabel("Next rank:");
+//            nextRankLabel.setFontStyle("Ubuntu", "bold", 12);
+//            nextRankLabel.setColor(V3DColor.white, V3DColor.transparent);
+//            nextRankLabel.setWordWarping(true, 150);
+//            nextRankLabel.setPosition(5, yPos);
+//            pane.add(nextRankLabel);
+//            
+//            yPos += nextRankLabel.getSize().getHeight();
+//            
+//            V3DLabel nextRankDescription = new V3DLabel(upgrade.getRankDescriptions().get(currentRank));
+//            nextRankDescription.setFontStyle("Ubuntu", "", 12);
+//            nextRankDescription.setColor(V3DColor.lightgrey, V3DColor.transparent);
+//            nextRankDescription.setWordWarping(true, 150);
+//            nextRankDescription.setPosition(5, yPos);
+//            pane.add(nextRankDescription);
+//            
+//            yPos += nextRankDescription.getSize().getHeight();
+//            
+//           
+//            V3DLabel buyPrice = new V3DLabel(upgrade.getPrices().get(currentRank) +" $");
+//            buyPrice.setFontStyle("Ubuntu", "bold", 16);
+//            buyPrice.setColor(GuiConstants.irrGreen, V3DColor.transparent);
+//            buyPrice.setxAlignment(GuiXAlignment.RIGHT);
+//            buyPrice.setyAlignment(GuiYAlignment.BOTTOM);
+//            buyPrice.setPosition( 20,10);
+//            pane.add(buyPrice);
+//        }
         
         return pane;
     }

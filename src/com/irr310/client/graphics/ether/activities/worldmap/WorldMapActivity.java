@@ -6,11 +6,23 @@ import java.util.List;
 import org.newdawn.slick.util.Log;
 
 import com.irr310.client.navigation.LoginManager;
+import com.irr310.common.event.world.DefaultWorldEventVisitor;
+import com.irr310.common.event.world.FactionStateEvent;
+import com.irr310.common.event.world.QueryFactionStateEvent;
+import com.irr310.common.event.world.QueryWorldMapStateEvent;
+import com.irr310.common.event.world.WorldEventDispatcher;
+import com.irr310.common.event.world.WorldEventVisitor;
+import com.irr310.common.event.world.WorldMapStateEvent;
 import com.irr310.common.world.Faction;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.World;
 import com.irr310.common.world.system.WorldSystem;
+import com.irr310.common.world.view.FactionView;
+import com.irr310.common.world.view.WorldMapView;
+import com.irr310.common.world.view.WorldSystemView;
 import com.irr310.i3d.Bundle;
+import com.irr310.i3d.Handler;
+import com.irr310.i3d.Message;
 import com.irr310.i3d.view.Activity;
 import com.irr310.i3d.view.LinearLayout;
 import com.irr310.i3d.view.Point;
@@ -28,13 +40,19 @@ import fr.def.iss.vd2.lib_v3d.V3DMouseEvent.Action;
 public class WorldMapActivity extends Activity {
 
     private RelativeLayout map;
-    private Faction faction;
     private ScrollView mapScrollView;
     private boolean firstUpdate = true;
     private float zoom;
     private SystemView selection;
     private TextView selectedSystemTitle;
     private LinearLayout selectedSystemPanel;
+    private Handler handler = new Handler();
+    private WorldEventVisitor visitor;
+    private WorldEventDispatcher worldEngine;
+    private FactionView faction;
+    private WorldMapView worldMap;
+    private static final int UPDATE_FACTION_WHAT = 1;
+    private static final int UPDATE_MAP_WHAT = 2;
 
     @Override
     public void onCreate(Bundle bundle) {
@@ -44,29 +62,9 @@ public class WorldMapActivity extends Activity {
         selectedSystemTitle = (TextView) findViewById("selectedSystemTitle@layout/world_map");
         selectedSystemPanel = (LinearLayout) findViewById("selectedSystemPanel@layout/world_map");
 
-        World world = (World) bundle.getObject();
-
-        Player player = LoginManager.getLocalPlayer();
-
-        faction = player.getFaction();
-        List<WorldSystem> knownSystems = faction.getKnownSystems();
-
         zoom = 8f;
 
-        List<WorldSystem> allSystems = world.getMap().getSystems();
-        for (WorldSystem system : allSystems) {
-            final SystemView systemView = new SystemView(system);
-            systemView.setZoom(zoom);
-            map.addChild(systemView);
-            systemView.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View view) {
-                    selectSystem(systemView);
-                }
-
-            });
-        }
+        worldEngine = (WorldEventDispatcher) bundle.getObject();
 
         map.setOnMouseListener(new OnMouseEventListener() {
 
@@ -84,14 +82,31 @@ public class WorldMapActivity extends Activity {
             }
         });
 
+        visitor = new DefaultWorldEventVisitor() {
+
+            @Override
+            public void visit(FactionStateEvent event) {
+                handler.obtainMessage(UPDATE_FACTION_WHAT, event.getFaction()).send();
+            }
+
+            @Override
+            public void visit(WorldMapStateEvent event) {
+                handler.obtainMessage(UPDATE_MAP_WHAT, event.getWorldMap()).send();
+            }
+        };
+
     }
 
     @Override
     public void onResume() {
+        worldEngine.registerEventVisitor(visitor);
+        worldEngine.sendToAll(new QueryWorldMapStateEvent());
+        worldEngine.sendToAll(new QueryFactionStateEvent(LoginManager.getLocalPlayer().faction));
     }
 
     @Override
     public void onPause() {
+        worldEngine.unregisterEventVisitor(visitor);
     }
 
     @Override
@@ -100,13 +115,59 @@ public class WorldMapActivity extends Activity {
 
     @Override
     protected void onUpdate(Time absTime, Time gameTime) {
+
+        while (handler.hasMessages()) {
+            Message message = handler.getMessage();
+
+            switch (message.what) {
+                case UPDATE_FACTION_WHAT:
+                    faction = (FactionView) message.obj;
+                    updateMap();
+                    break;
+                case UPDATE_MAP_WHAT:
+                    worldMap = (WorldMapView) message.obj;
+                    updateMap();
+                    break;
+            }
+
+        }
+    }
+
+    private void updateMap() {
+
+        if (faction == null || worldMap == null) {
+            return;
+        }
+
+        map.removeAllView();
+        
+        WorldSystemView homeSystem = null;
+
+        List<WorldSystemView> allSystems = worldMap.systems;
+        for (WorldSystemView system : allSystems) {
+            if (system.id == faction.homeSystemId) {
+                homeSystem = system;
+            }
+            final SystemView systemView = new SystemView(system);
+            systemView.setZoom(zoom);
+            map.addChild(systemView);
+            systemView.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    selectSystem(systemView);
+                }
+
+            });
+        }
+
         if (firstUpdate) {
             firstUpdate = false;
-            WorldSystem homeSystem = faction.getHomeSystem();
-            Log.debug("Home system at " + homeSystem.getLocation());
-            mapScrollView.setScrollCenter(new Point((float) homeSystem.getLocation().x * zoom, (float) homeSystem.getLocation().y * zoom));
-            // mapScrollView.setCenterScroll(0,0);
+
+            Log.debug("Home system at " + homeSystem.location);
+            mapScrollView.setScrollCenter(new Point((float) homeSystem.location.x * zoom, (float) homeSystem.location.y * zoom));
         }
+
     }
 
     private void selectSystem(SystemView systemView) {
@@ -115,11 +176,11 @@ public class WorldMapActivity extends Activity {
         }
         selection = systemView;
         systemView.setSelected(true);
-        
-        if(selection == null) {
+
+        if (selection == null) {
             selectedSystemPanel.setVisible(false);
         } else {
-            selectedSystemTitle.setText(selection.getSystem().getName());
+            selectedSystemTitle.setText(selection.getSystem().name);
             selectedSystemPanel.setVisible(true);
         }
     }

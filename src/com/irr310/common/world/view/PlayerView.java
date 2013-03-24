@@ -2,6 +2,7 @@ package com.irr310.common.world.view;
 
 import com.irr310.common.network.NetworkClass;
 import com.irr310.common.network.NetworkField;
+import com.irr310.common.network.NetworkOptionalField;
 
 @NetworkClass
 public class PlayerView {
@@ -12,7 +13,7 @@ public class PlayerView {
     @NetworkField
     public String login;
 
-    @NetworkField
-    public int money;
-
+    @NetworkOptionalField
+    public FactionView faction;
+    
 }

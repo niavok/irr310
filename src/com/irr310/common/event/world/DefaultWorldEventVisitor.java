@@ -11,6 +11,20 @@ public class DefaultWorldEventVisitor implements WorldEventVisitor {
     public void visit(ConnectPlayerEvent event) {
     }
 
+    @Override
+    public void visit(FactionStateEvent event) {
+    }
     
+    @Override
+    public void visit(QueryFactionStateEvent event) {
+    }
+
+    @Override
+    public void visit(QueryWorldMapStateEvent event) {
+    }
+    
+    @Override
+    public void visit(WorldMapStateEvent event) {
+    }
 
 }

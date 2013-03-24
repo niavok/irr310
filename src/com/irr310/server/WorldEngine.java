@@ -1,46 +1,45 @@
 package com.irr310.server;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import com.irr310.common.binder.BindVariable;
 import com.irr310.common.engine.EngineManager;
-import com.irr310.common.engine.EventDispatcher;
 import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.event.game.DefaultGameEventVisitor;
 import com.irr310.common.event.game.GameEvent;
 import com.irr310.common.event.game.QuitGameEvent;
 import com.irr310.common.event.world.ConnectPlayerEvent;
 import com.irr310.common.event.world.DefaultWorldEventVisitor;
+import com.irr310.common.event.world.FactionStateEvent;
 import com.irr310.common.event.world.PlayerConnectedEvent;
+import com.irr310.common.event.world.QueryFactionStateEvent;
+import com.irr310.common.event.world.QueryWorldMapStateEvent;
 import com.irr310.common.event.world.WorldEvent;
+import com.irr310.common.event.world.WorldEventDispatcher;
 import com.irr310.common.event.world.WorldEventVisitor;
-import com.irr310.common.tools.Log;
+import com.irr310.common.event.world.WorldMapStateEvent;
 import com.irr310.common.tools.Vec2;
 import com.irr310.common.world.Faction;
-import com.irr310.common.world.Map;
+import com.irr310.common.world.WorldMap;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.World;
 import com.irr310.common.world.item.BuildingItemFactory;
 import com.irr310.common.world.item.NexusItem;
 import com.irr310.common.world.system.WorldSystem;
 
-public class WorldEngine extends FramerateEngine<GameEvent> implements EventDispatcher<WorldEventVisitor, WorldEvent>  {
+public class WorldEngine extends FramerateEngine<GameEvent> implements WorldEventDispatcher  {
 
     private World world;
     private EngineManager<WorldEventVisitor, WorldEvent> engineManager;
 
-    public WorldEngine(Object object) {
+    public WorldEngine() {
         setFramerate(new Duration(1000000000l)); // 1s 
         engineManager = new EngineManager<WorldEventVisitor, WorldEvent>();
         engineManager.registerEventVisitor(new WorldEngineWorldEventVisitor());
@@ -53,9 +52,11 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements EventDisp
 
     @Override
     protected void frame() {
-        BindVariable<Integer> statersAmount = world.getFactions().get(0).getStatersAmount();
-        statersAmount.set(statersAmount.getCurrent()+1);
-        world.flush();
+        
+        for(Faction faction: world.getFactions()) {
+            faction.setStatersAmount(faction.getStatersAmount()+1);
+            engineManager.sendToAll(new FactionStateEvent(faction.toView()));
+        }
     }
 
     @Override
@@ -108,6 +109,17 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements EventDisp
             world.addPlayer(newPlayer);
             engineManager.sendToAll(new PlayerConnectedEvent(newPlayer));
         }
+        
+        @Override
+        public void visit(QueryFactionStateEvent event) {
+            Faction faction = world.getFaction(event.getFaction());
+            engineManager.sendToAll(new FactionStateEvent(faction.toView()));
+        }
+        
+        @Override
+        public void visit(QueryWorldMapStateEvent event) {
+            engineManager.sendToAll(new WorldMapStateEvent(world.getMap().toView()));
+        }
     }
     
     private void initWorld() {
@@ -117,7 +129,7 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements EventDisp
         world = new World();
         Random random = new Random();
         
-        Map map = getWorld().getMap();
+        WorldMap map = world.getMap();
         
         //Init map
         int factionCount = 5;
@@ -185,24 +197,24 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements EventDisp
             faction.setHomeSystem(system);
             system.setHomeSystem(true);
             
-            faction.getStatersAmount().set(2000);
-            faction.getOresAmount().set(200);
-            faction.getKoliumAmount().set(300);
-            faction.getNeuridiumAmount().set(0);
+            faction.setStatersAmount(2000);
+            faction.setOresAmount(200);
+            faction.setKoliumAmount(300);
+            faction.setNeuridiumAmount(0);
             
-            getWorld().addFaction(faction);
+            world.addFaction(faction);
             
             NexusItem nexus = new BuildingItemFactory(world).createNexus(faction);
             
             
-            getWorld().addItem(nexus);
+            world.addItem(nexus);
             
             system.setOwner(faction);
             
             nexus.forceDeploy(system, system.getRandomEmptySpace(nexus.getDeployedRadius()));
         }
         
-        getWorld().flush();
+//        world.flush();
         
         
         map.dump();
@@ -234,9 +246,9 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements EventDisp
         return names;
     }
 
-    public World getWorld() {
-        return world;
-    }
+//    public World getWorld() {
+//        return world;
+//    }
 
     @Override
     public void sendToAll(WorldEvent event) {

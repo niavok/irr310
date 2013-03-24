@@ -79,76 +79,76 @@ public class UpgradeWeaponsTab extends UpgradeTab{
         yPos += upgradeDescription.getSize().getHeight();
         
         
-        UpgradeOwnership ownership  = LoginManager.localPlayer.getUpgradeState(upgrade);
-        int currentRank = ownership.getRank();
-        
-        V3DLabel rankLabel = new V3DLabel(""+currentRank+" / "+upgrade.getMaxRank());
-        rankLabel.setFontStyle("Ubuntu", "bold", 24);
-        rankLabel.setColor(V3DColor.black, V3DColor.transparent);
-        rankLabel.setxAlignment(GuiXAlignment.RIGHT);
-        rankLabel.setPosition(5, 5);
-        pane.add(rankLabel);
-        
-        
-        if(currentRank > 0) {
-            
-            final V3DButton sellButton = new V3DButton("Sell");
-            sellButton.setFontStyle("Ubuntu", "bold", 16);
-            sellButton.setColor(V3DColor.white, GuiConstants.irrRed);
-            sellButton.setxAlignment(GuiXAlignment.RIGHT);
-            sellButton.setyAlignment(GuiYAlignment.BOTTOM);
-            sellButton.setPadding(5,20,20,5);
-            sellButton.setPosition( 145,30);
-            sellButton.getFenGUIWidget().addButtonPressedListener(new IButtonPressedListener() {
-                
-                @Override
-                public void buttonPressed(ButtonPressedEvent e) {
-//                    Game.getInstance().sendToAll(new SellUpgradeRequestEvent(upgrade, LoginManager.localPlayer));
-                }
-            });
-            pane.add(sellButton);
-            
-            
-            V3DLabel sellPrice = new V3DLabel(upgrade.getPrices().get(currentRank-1) +" $");
-            sellPrice.setFontStyle("Ubuntu", "bold", 16);
-            sellPrice.setColor(GuiConstants.irrRed, V3DColor.transparent);
-            sellPrice.setxAlignment(GuiXAlignment.RIGHT);
-            sellPrice.setyAlignment(GuiYAlignment.BOTTOM);
-            sellPrice.setPosition( 145,10);
-            pane.add(sellPrice);
-            
-        }
-        
-        
-        if(currentRank < upgrade.getMaxRank()) {
-            
-            
-            
-            final V3DButton buyButton = new V3DButton("Buy");
-            buyButton.setFontStyle("Ubuntu", "bold", 16);
-            buyButton.setColor(V3DColor.white, GuiConstants.irrGreen);
-            buyButton.setxAlignment(GuiXAlignment.RIGHT);
-            buyButton.setyAlignment(GuiYAlignment.BOTTOM);
-            buyButton.setPadding(5,30,30,5);
-            buyButton.setPosition( 20,30);
-            buyButton.getFenGUIWidget().addButtonPressedListener(new IButtonPressedListener() {
-                
-                @Override
-                public void buttonPressed(ButtonPressedEvent e) {
-//                    Game.getInstance().sendToAll(new BuyUpgradeRequestEvent(upgrade, LoginManager.localPlayer));
-                }
-            });
-            pane.add(buyButton);
-            
-            
-            V3DLabel buyPrice = new V3DLabel(upgrade.getPrices().get(currentRank) +" $");
-            buyPrice.setFontStyle("Ubuntu", "bold", 16);
-            buyPrice.setColor(GuiConstants.irrGreen, V3DColor.transparent);
-            buyPrice.setxAlignment(GuiXAlignment.RIGHT);
-            buyPrice.setyAlignment(GuiYAlignment.BOTTOM);
-            buyPrice.setPosition( 20,10);
-            pane.add(buyPrice);
-        }
+//        UpgradeOwnership ownership  = LoginManager.localPlayer.getUpgradeState(upgrade);
+//        int currentRank = ownership.getRank();
+//        
+//        V3DLabel rankLabel = new V3DLabel(""+currentRank+" / "+upgrade.getMaxRank());
+//        rankLabel.setFontStyle("Ubuntu", "bold", 24);
+//        rankLabel.setColor(V3DColor.black, V3DColor.transparent);
+//        rankLabel.setxAlignment(GuiXAlignment.RIGHT);
+//        rankLabel.setPosition(5, 5);
+//        pane.add(rankLabel);
+//        
+//        
+//        if(currentRank > 0) {
+//            
+//            final V3DButton sellButton = new V3DButton("Sell");
+//            sellButton.setFontStyle("Ubuntu", "bold", 16);
+//            sellButton.setColor(V3DColor.white, GuiConstants.irrRed);
+//            sellButton.setxAlignment(GuiXAlignment.RIGHT);
+//            sellButton.setyAlignment(GuiYAlignment.BOTTOM);
+//            sellButton.setPadding(5,20,20,5);
+//            sellButton.setPosition( 145,30);
+//            sellButton.getFenGUIWidget().addButtonPressedListener(new IButtonPressedListener() {
+//                
+//                @Override
+//                public void buttonPressed(ButtonPressedEvent e) {
+////                    Game.getInstance().sendToAll(new SellUpgradeRequestEvent(upgrade, LoginManager.localPlayer));
+//                }
+//            });
+//            pane.add(sellButton);
+//            
+//            
+//            V3DLabel sellPrice = new V3DLabel(upgrade.getPrices().get(currentRank-1) +" $");
+//            sellPrice.setFontStyle("Ubuntu", "bold", 16);
+//            sellPrice.setColor(GuiConstants.irrRed, V3DColor.transparent);
+//            sellPrice.setxAlignment(GuiXAlignment.RIGHT);
+//            sellPrice.setyAlignment(GuiYAlignment.BOTTOM);
+//            sellPrice.setPosition( 145,10);
+//            pane.add(sellPrice);
+//            
+//        }
+//        
+//        
+//        if(currentRank < upgrade.getMaxRank()) {
+//            
+//            
+//            
+//            final V3DButton buyButton = new V3DButton("Buy");
+//            buyButton.setFontStyle("Ubuntu", "bold", 16);
+//            buyButton.setColor(V3DColor.white, GuiConstants.irrGreen);
+//            buyButton.setxAlignment(GuiXAlignment.RIGHT);
+//            buyButton.setyAlignment(GuiYAlignment.BOTTOM);
+//            buyButton.setPadding(5,30,30,5);
+//            buyButton.setPosition( 20,30);
+//            buyButton.getFenGUIWidget().addButtonPressedListener(new IButtonPressedListener() {
+//                
+//                @Override
+//                public void buttonPressed(ButtonPressedEvent e) {
+////                    Game.getInstance().sendToAll(new BuyUpgradeRequestEvent(upgrade, LoginManager.localPlayer));
+//                }
+//            });
+//            pane.add(buyButton);
+//            
+//            
+//            V3DLabel buyPrice = new V3DLabel(upgrade.getPrices().get(currentRank) +" $");
+//            buyPrice.setFontStyle("Ubuntu", "bold", 16);
+//            buyPrice.setColor(GuiConstants.irrGreen, V3DColor.transparent);
+//            buyPrice.setxAlignment(GuiXAlignment.RIGHT);
+//            buyPrice.setyAlignment(GuiYAlignment.BOTTOM);
+//            buyPrice.setPosition( 20,10);
+//            pane.add(buyPrice);
+//        }
         
         return pane;
     }

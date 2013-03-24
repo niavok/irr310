@@ -1,29 +1,37 @@
 package com.irr310.client.graphics.ether.activities.production;
 
-import com.irr310.common.binder.BindVariable;
-import com.irr310.common.binder.BinderClient;
-import com.irr310.common.binder.BinderListener;
-import com.irr310.common.tools.Log;
+import com.irr310.client.navigation.LoginManager;
+import com.irr310.common.event.world.DefaultWorldEventVisitor;
+import com.irr310.common.event.world.FactionStateEvent;
+import com.irr310.common.event.world.QueryFactionStateEvent;
+import com.irr310.common.event.world.WorldEventDispatcher;
+import com.irr310.common.event.world.WorldEventVisitor;
 import com.irr310.common.world.World;
+import com.irr310.common.world.view.FactionView;
 import com.irr310.i3d.Bundle;
+import com.irr310.i3d.Handler;
+import com.irr310.i3d.Message;
 import com.irr310.i3d.view.Activity;
 import com.irr310.i3d.view.TextView;
 import com.irr310.server.Time;
 
 public class ProductionActivity extends Activity {
 
-    private World world;
+    private WorldEventDispatcher worldEngine;
     private TextView factoryStatersAmountTextView;
-    private BinderClient binder;
+//    private BinderClient binder;
     private TextView factoryTotalCapacityAmountTextView;
     private TextView factoryRentCapacityAmountTextView;
     private TextView factoryCapacityAmountTextView;
     private TextView factoryMaintenanceAmountTextView;
-
+    private Handler handler = new Handler();
+    private WorldEventVisitor visitor;
+    private static final int UPDATE_FACTION_WHAT = 1;
+    
     @Override
     public void onCreate(Bundle bundle) {
         setContentView("main@layout/production");
-        world = (World) bundle.getObject();
+        worldEngine = (WorldEventDispatcher) bundle.getObject();
         factoryStatersAmountTextView = (TextView) findViewById("factoryStatersAmountTextView@layout/production");
         factoryMaintenanceAmountTextView = (TextView) findViewById("factoryMaintenanceAmountTextView@layout/production");
         factoryCapacityAmountTextView = (TextView) findViewById("factoryCapacityAmountTextView@layout/production");
@@ -34,37 +42,49 @@ public class ProductionActivity extends Activity {
         factoryCapacityAmountTextView .setText("35 [production@icons]");
         factoryRentCapacityAmountTextView .setText("5 [production@icons]");
         factoryTotalCapacityAmountTextView .setText("40 [production@icons]");
-    }
-
-    private void initBinders() {
-        binder = new BinderClient();
-        binder.bind(world.getLocalPlayer().getFaction().getStatersAmount(), new BinderListener<Integer>() {
-            @Override
-            public void onChange(BindVariable<Integer> variable) {
-                factoryStatersAmountTextView.setText(variable.get()+" [staters@icons]");
-            }
-        });
         
-        binder.forceProcess();
+        visitor = new DefaultWorldEventVisitor() {
+            
+            @Override
+            public void visit(FactionStateEvent event) {
+                handler.obtainMessage(UPDATE_FACTION_WHAT, event.getFaction()).send();
+            }
+        };
     }
     
     @Override
     public void onResume() {
-        initBinders();
+        worldEngine.registerEventVisitor(visitor);
+        worldEngine.sendToAll(new QueryFactionStateEvent(LoginManager.getLocalPlayer().faction));
     }
 
     @Override
     public void onPause() {
-        binder.clear();
+        worldEngine.unregisterEventVisitor(visitor);
     }
 
     @Override
     public void onDestroy() {
+        
     }
 
     @Override
     protected void onUpdate(Time absTime, Time gameTime) {
-        binder.process();
+        while(handler.hasMessages()) {
+            Message message = handler.getMessage();
+            
+            switch(message.what) {
+                case UPDATE_FACTION_WHAT:
+                    updateFields((FactionView) message.obj);
+                    break;
+            }
+            
+        }
     }
+    
+    protected void updateFields(FactionView faction) {
+        factoryStatersAmountTextView.setText(faction.statersAmount+" [staters@icons]");
+    }
+
 
 }
