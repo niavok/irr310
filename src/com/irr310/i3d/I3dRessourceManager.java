@@ -36,6 +36,7 @@ import com.irr310.i3d.view.TextView.Gravity;
 import com.irr310.i3d.view.drawable.BitmapDrawable;
 import com.irr310.i3d.view.drawable.BitmapFactory;
 import com.irr310.i3d.view.drawable.CircleDrawable;
+import com.irr310.i3d.view.drawable.ColoredDrawable;
 import com.irr310.i3d.view.drawable.Drawable;
 import com.irr310.i3d.view.drawable.GradientDrawable;
 import com.irr310.i3d.view.drawable.InsetDrawable;
@@ -195,7 +196,7 @@ public class I3dRessourceManager {
             } else if (attrName.equals("i3d:ref")) {
                 // Already processed
             } else {
-                Log.error("Unknown attrib '" + attrName + "=" + attrValue + "' for View");
+                throw new RessourceLoadingException("Unknown attrib '" + attrName + "=" + attrValue + "' for View");
             }
         }
 
@@ -219,8 +220,10 @@ public class I3dRessourceManager {
                 parseCircleDrawable(subElement, fileId);
             } else if (subElement.getNodeName().equals("inset")) {
                 parseInsetDrawable(subElement, fileId);
+            } else if (subElement.getNodeName().equals("colored")) {
+                parseColoredDrawable(subElement, fileId);
             } else {
-                Log.error("Unknown drawable: " + subElement.getNodeName());
+                throw new RessourceLoadingException("Unknown drawable: " + subElement.getNodeName());
             }
         }
     }
@@ -252,7 +255,7 @@ public class I3dRessourceManager {
             } else if (subElement.getNodeName().equals("style")) {
                 parseStyle(subElement, ressourceFileCache);
             } else {
-                Log.error("Unknonw resources: " + subElement.getNodeName());
+                throw new RessourceLoadingException("Unknonw resources: " + subElement.getNodeName());
             }
         }
     }
@@ -296,7 +299,7 @@ public class I3dRessourceManager {
             } else if (checkCornerLeftBottomSize(attrName, attrValue, styleFactory)) {
             } else if (checkCornerRightBottomSize(attrName, attrValue, styleFactory)) {
             } else {
-                Log.error("Unknown attrib '" + attrName + "=" + attrValue + "' for Style");
+                throw new RessourceLoadingException("Unknown attrib '" + attrName + "=" + attrValue + "' for Style");
             }
 
         }
@@ -322,7 +325,7 @@ public class I3dRessourceManager {
             } else if (attrName.equals("i3d:backgroundColor")) {
                 rect.setBackgroundColor(loadColor(attrValue));
             } else {
-                Log.error("Unknown attrib '" + attrName + "=" + attrValue + "' for Rect");
+                throw new RessourceLoadingException("Unknown attrib '" + attrName + "=" + attrValue + "' for Rect");
             }
         }
 
@@ -346,16 +349,14 @@ public class I3dRessourceManager {
             } else if (attrName.equals("i3d:points")) {
                 String[] pointsStrings = attrValue.split("\\|");
                 if (pointsStrings.length != 3) {
-                    Log.error("A triangle must have 3 points and not " + pointsStrings.length + "(" + attrValue + ")");
-                    break;
+                    throw new RessourceLoadingException("A triangle must have 3 points and not " + pointsStrings.length + "(" + attrValue + ")");
                 }
                 int index = 0;
                 MeasurePoint[] points = new MeasurePoint[3];
                 for (String pointString : pointsStrings) {
                     String[] mesuresString = pointString.split(",");
                     if (mesuresString.length != 2) {
-                        Log.error("A point must have 2 points and not " + mesuresString.length + "(" + pointString + ")");
-                        break;
+                        throw new RessourceLoadingException("A point must have 2 points and not " + mesuresString.length + "(" + pointString + ")");
                     }
 
                     MeasurePoint point = new MeasurePoint();
@@ -368,8 +369,7 @@ public class I3dRessourceManager {
                 triangle.setPoints(points);
 
             } else {
-                Log.error("Unknown attrib '" + attrName + "=" + attrValue + "' for Triangle");
-                break;
+                throw new RessourceLoadingException("Unknown attrib '" + attrName + "=" + attrValue + "' for Triangle");
             }
         }
 
@@ -1028,8 +1028,7 @@ public class I3dRessourceManager {
 
         String[] colorParts = colorId.split("@");
         if (colorParts.length != 2) {
-            Log.error("Fail to load color '" + colorId + "' : no @ found");
-            return null;
+            throw new RessourceLoadingException("Fail to load color '" + colorId + "' : no @ found");
         }
 
         String localId = colorParts[0];
@@ -1047,7 +1046,7 @@ public class I3dRessourceManager {
         color = ressourceFileCache.getColor(localId);
 
         if (color == null) {
-            Log.error("Unknown color '" + colorId);
+            throw new RessourceLoadingException("Unknown color '" + colorId);
         }
 
         return color;
@@ -1105,8 +1104,7 @@ public class I3dRessourceManager {
     public Font loadFont(String fontId) {
         String[] fontParts = fontId.split("@");
         if (fontParts.length != 2) {
-            Log.error("Fail to load font '" + fontId + "' : no @ found");
-            return null;
+            throw new RessourceLoadingException("Fail to load font '" + fontId + "' : no @ found");
         }
 
         String localId = fontParts[0];
@@ -1124,7 +1122,7 @@ public class I3dRessourceManager {
         font = ressourceFileCache.getFont(localId);
 
         if (font == null) {
-            Log.error("Unknown font '" + fontId);
+            throw new RessourceLoadingException("Unknown font '" + fontId);
         }
 
         return font;
@@ -1138,8 +1136,7 @@ public class I3dRessourceManager {
 
         String[] styleParts = styleId.split("@");
         if (styleParts.length != 2) {
-            Log.error("Fail to load style '" + styleId + "' : no @ found");
-            return null;
+            throw new RessourceLoadingException("Fail to load style '" + styleId + "' : no @ found");
         }
 
         String localId = styleParts[0];
@@ -1157,7 +1154,7 @@ public class I3dRessourceManager {
         style = ressourceFileCache.getStyle(localId);
 
         if (style == null) {
-            Log.error("Unknown style '" + styleId);
+            throw new RessourceLoadingException("Unknown style '" + styleId);
         }
 
         return style;
@@ -1325,6 +1322,32 @@ public class I3dRessourceManager {
         addDrawable(name + "@" + fileId, drawable);
     }
 
+    private void parseColoredDrawable(Element element, String fileId) {
+        String name = element.getAttribute("name");
+
+        ColoredDrawable drawable = new ColoredDrawable();
+
+        NamedNodeMap attributes = element.getAttributes();
+        for (int i = 0; i < attributes.getLength(); i++) {
+            Node item = attributes.item(i);
+            Attr attr = (Attr) item;
+            String attrName = attr.getName();
+            String attrValue = attr.getValue();
+
+            if (attrName.equals("name")) {
+                // Already processed
+            } else if (attrName.equals("i3d:drawable")) {
+                drawable.setDrawableName(attrValue);
+            } else if (attrName.equals("i3d:color")) {
+                drawable.setColor(loadColor(attrValue));
+            } else {
+                Log.error("Unknown attrib '" + attrName + "=" + attrValue + "' for ColoredDrawable");
+            }
+        }
+
+        addDrawable(name + "@" + fileId, drawable);
+    }
+    
     private void loadPngImage(String name, String fileId, File file) {
 
         BitmapDrawable drawable = new BitmapFactory().loadPngDrawable(file);

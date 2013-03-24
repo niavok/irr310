@@ -18,10 +18,10 @@
     <color name="separatorTop">#000000ff</color>
     
     <!-- Ressources colors -->
-    
     <color name="staters">#f1ce11ff</color>
     <color name="ores">#976a33ff</color>
     <color name="kolium">#00526cff</color>
     <color name="neuridium">#036c00ff</color>
+    <color name="factory">#444444ff</color>
     
 </resources>

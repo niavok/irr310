@@ -239,10 +239,11 @@
                     i3d:orientation="vertical" >
 
                     <Button
-                        i3d:id="factoryBuyFactoyButton"
+                        i3d:id="factoryBuyFactoryButton"
                         i3d:style="smallButton@styles"
                         i3d:layout_width="match_parent"
                         i3d:color="defaultFont@color"
+                        i3d:layout_marginBottom="5px"
                         i3d:text="factoryBuyButton@strings" />
 
                     <TextView
@@ -263,6 +264,7 @@
 
                     <Button
                         i3d:id="factorySellFactoryButton"
+                        i3d:layout_marginTop="10px"
                         i3d:style="smallButton@styles"
                         i3d:layout_width="match_parent"
                         i3d:color="defaultFont@color"

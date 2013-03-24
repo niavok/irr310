@@ -81,5 +81,10 @@
         i3d:insetLeft="96"
         i3d:insetTop="32"
         i3d:width="32" />
-
+	<colored
+        name="factory"
+        i3d:drawable="production@icons"
+        i3d:color="factory@color" />
+    
+    
 </drawables>

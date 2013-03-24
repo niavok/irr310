@@ -12,6 +12,7 @@ import com.irr310.i3d.Bundle;
 import com.irr310.i3d.Handler;
 import com.irr310.i3d.Message;
 import com.irr310.i3d.view.Activity;
+import com.irr310.i3d.view.Button;
 import com.irr310.i3d.view.TextView;
 import com.irr310.server.Time;
 
@@ -26,6 +27,10 @@ public class ProductionActivity extends Activity {
     private TextView factoryMaintenanceAmountTextView;
     private Handler handler = new Handler();
     private WorldEventVisitor visitor;
+    private Button factoryBuyFactoryButton;
+    private Button factorySellFactoryButton;
+    private TextView factoryIncomingCapacityTextView;
+    private TextView factoryIncomingCapacityDelayTextView;
     private static final int UPDATE_FACTION_WHAT = 1;
     
     @Override
@@ -38,10 +43,21 @@ public class ProductionActivity extends Activity {
         factoryRentCapacityAmountTextView = (TextView) findViewById("factoryRentCapacityAmountTextView@layout/production");
         factoryTotalCapacityAmountTextView = (TextView) findViewById("factoryTotalCapacityAmountTextView@layout/production");
         
+        factoryBuyFactoryButton = (Button) findViewById("factoryBuyFactoryButton@layout/production");
+        factorySellFactoryButton = (Button) findViewById("factorySellFactoryButton@layout/production");
+        factoryIncomingCapacityTextView = (TextView) findViewById("factoryIncomingCapacityTextView@layout/production");
+        factoryIncomingCapacityDelayTextView = (TextView) findViewById("factoryIncomingCapacityDelayTextView@layout/production");
+        
+        
+        
+        
         factoryMaintenanceAmountTextView .setText("20 [staters@icons]");
-        factoryCapacityAmountTextView .setText("35 [production@icons]");
-        factoryRentCapacityAmountTextView .setText("5 [production@icons]");
-        factoryTotalCapacityAmountTextView .setText("40 [production@icons]");
+        factoryCapacityAmountTextView .setText("35 [factory@icons]");
+        factoryRentCapacityAmountTextView .setText("5 [factory@icons]");
+        factoryTotalCapacityAmountTextView .setText("40 [factory@icons]");
+        
+        factoryIncomingCapacityTextView .setText("+3");
+        factoryIncomingCapacityDelayTextView .setText("35 s");
         
         visitor = new DefaultWorldEventVisitor() {
             
