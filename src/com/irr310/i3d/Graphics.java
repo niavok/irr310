@@ -1,6 +1,10 @@
 package com.irr310.i3d;
 
+import java.util.Stack;
+
 import org.lwjgl.opengl.GL11;
+
+import com.irr310.i3d.view.Point;
 
 public class Graphics {
 
@@ -10,6 +14,8 @@ public class Graphics {
         return instance;
     }
 
+    Stack<Point> uiTranslationStack = new Stack<Point>(); 
+    
     private Graphics() {
     }
 
@@ -96,5 +102,33 @@ public class Graphics {
         }
 
     }
+
+    public void pushUiTranslation(Point translation) {
+        if(!uiTranslationStack.empty()) {
+            uiTranslationStack.push(uiTranslationStack.peek().add(translation));    
+        } else {
+            uiTranslationStack.push(translation);
+        }
+    }
+    
+    public void popUiTranslation() {
+        if(!uiTranslationStack.empty()) {
+            uiTranslationStack.pop();
+        }
+    }
+
+    public Point getUiTranslation() {
+        if(!uiTranslationStack.empty()) {
+            return uiTranslationStack.peek();
+        } else {
+            return new Point(0, 0);
+        }
+    }
+
+    public void initUiTranslation(Point point) {
+        uiTranslationStack.clear();
+        pushUiTranslation(point);
+    }
+    
 
 }

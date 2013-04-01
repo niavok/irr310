@@ -4,7 +4,11 @@
     i3d:style="lightBlock@styles"
     i3d:layout_width="match_parent"
     i3d:layout_height="wrap_content"
-    i3d:orientation="vertical" >
+    i3d:orientation="vertical"
+    i3d:layout_marginLeft="10px"
+    i3d:layout_marginRight="10px"
+    i3d:layout_marginTop="5px"
+    i3d:layout_marginBottom="5px" >
 
     <TextView
         i3d:id="productNameTextView"

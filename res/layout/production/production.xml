@@ -5,10 +5,13 @@
     i3d:layout_height="match_parent" >
 
     <LinearLayout
-        i3d:layout_width="match_parent"
+        i3d:layout_width="50%"
         i3d:layout_height="match_parent"
         i3d:orientation="horizontal"
-        i3d:style="debugGreen@styles" >
+        i3d:style="debugGreen@styles"
+        i3d:layout_marginLeft="300px"
+        i3d:layout_marginTop="100px"
+         >
 
         <!--  <ScrollView
             i3d:id="productionQueueScrollView"
@@ -46,21 +49,14 @@
                 i3d:layout_width="wrap_content"
                 i3d:layout_height="wrap_content"
                 i3d:orientation="vertical" />
-            <!--
-        <Triangle
-        i3d:id="logoRedPart"
-        i3d:layout_width="1000px"
-        i3d:layout_height="1000px"
-        i3d:backgroundColor="logoSecondary@color"
-        i3d:points="0%,0%|0%,100%|100%,50%" />
-            -->
         </ScrollView>
     </LinearLayout>
 
     <LinearLayout
-        i3d:layout_width="wrap_content"
+        i3d:layout_width="200px"
         i3d:layout_gravity_x="right"
         i3d:layout_marginRight="30px"
+        i3d:style="debugRed@styles"
         i3d:orientation="vertical" >
 
         <LinearLayout

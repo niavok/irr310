@@ -9,6 +9,7 @@ import org.lwjgl.util.glu.GLU;
 
 import com.irr310.common.tools.Log;
 import com.irr310.i3d.view.Activity;
+import com.irr310.i3d.view.Point;
 import com.irr310.server.Time;
 
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent;
@@ -111,6 +112,9 @@ public class Surface {
 
         GL11.glViewport(x, y, width, height);
         GL11.glScissor(x, y, width, height);
+        g.initUiTranslation(new Point(x, y-height));
+        
+        
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
         GL11.glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
@@ -129,7 +133,7 @@ public class Surface {
         if (currentActivity != null) {
             currentActivity.draw(g);
         }
-
+        
         GL11.glPopAttrib();
     }
 

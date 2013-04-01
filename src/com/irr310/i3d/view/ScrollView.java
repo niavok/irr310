@@ -68,12 +68,20 @@ public class ScrollView extends View implements ViewParent {
     @Override
     public void onDraw(Graphics g) {
 
+        
         GL11.glPushMatrix();
-        GL11.glScissor((int) layoutParams.mLeft, (int) layoutParams.mTop, (int) layoutParams.getWidth(), (int) layoutParams.getHeight());
+        GL11.glPushAttrib(GL11.GL_SCISSOR_BIT);
+        
+        Point translation = g.getUiTranslation();
+        GL11.glScissor((int) (translation.x+layoutParams.mLeft), (int) (layoutParams.mTop + translation.y+ layoutParams.getHeight()), (int) layoutParams.getWidth(), (int) layoutParams.getHeight());
+        
+        g.pushUiTranslation(new Point(scrollOffsetX, scrollOffsetY));
         GL11.glTranslatef(scrollOffsetX, scrollOffsetY, 0);
 
         child.draw(g);
 
+        g.popUiTranslation();
+        GL11.glPopAttrib();
         GL11.glPopMatrix();
 
     }

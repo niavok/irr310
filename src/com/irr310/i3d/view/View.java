@@ -41,11 +41,14 @@ public abstract class View {
 
         GL11.glPushMatrix();
         // GL11.glTranslatef(layout.offset.x, layout.offset.y, 0);
+        
         GL11.glTranslatef(layoutParams.mLeft, layoutParams.mTop, 0);
-
+        g.pushUiTranslation(new Point(layoutParams.mLeft, layoutParams.mTop));
         styleRenderer.draw(g);
         onDraw(g);
-
+        g.popUiTranslation();
+        
+        
         GL11.glPopMatrix();
     }
 
