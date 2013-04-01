@@ -1,62 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     i3d:id="main"
     i3d:layout_width="match_parent"
-    i3d:layout_height="match_parent" >
+    i3d:layout_height="match_parent"
+    i3d:orientation="horizontal" >
 
-    <LinearLayout
+    <ScrollView
+        i3d:id="productionQueueScrollView"
         i3d:layout_width="50%"
+        i3d:layout_height="match_parent" >
+
+        <RelativeLayout i3d:id="productionQueue" />
+    </ScrollView>
+
+    <ScrollView
+        i3d:id="productionDetailsScrollView"
+        i3d:layout_width="100%"
+        i3d:layout_height="match_parent" >
+
+        <RelativeLayout i3d:id="productionDetails" />
+    </ScrollView>
+
+    <ScrollView
+        i3d:id="producableListView"
+        i3d:layout_width="wrap_content"
         i3d:layout_height="match_parent"
-        i3d:orientation="horizontal"
-        i3d:style="debugGreen@styles"
-        i3d:layout_marginLeft="300px"
-        i3d:layout_marginTop="100px"
-         >
+        i3d:scroll_axis="vertical"
+        i3d:scroll_limits="strict" >
 
-        <!--  <ScrollView
-            i3d:id="productionQueueScrollView"
-            i3d:style="debugRed@styles"
+        <LinearLayout
+            i3d:id="availableProductListLinearLayout"
             i3d:layout_width="wrap_content"
-            i3d:layout_height="match_parent" >
+            i3d:layout_height="wrap_content"
+            i3d:orientation="vertical" />
+    </ScrollView>
 
-            <RelativeLayout i3d:id="productionQueue" />
-            
-        </ScrollView>-->
-
-<!--
-        <ScrollView
-            i3d:id="productionDetailsScrollView"
-            i3d:style="debugGreen@styles"
-            i3d:layout_width="100%"
-            i3d:layout_height="match_parent" >
-
-            <RelativeLayout i3d:id="productionDetails" />
     
-        </ScrollView>        -->
-
-        <ScrollView
-            i3d:id="producableListView"
-            i3d:style="debugBlue@styles"
-            i3d:layout_width="wrap_content"
-            i3d:layout_height="match_parent"
-            i3d:scroll_axis="vertical"
-            i3d:scroll_limits="strict"
-             >
-
-            <LinearLayout
-                i3d:id="availableProductListLinearLayout"
-                i3d:style="debugRed@styles"
-                i3d:layout_width="wrap_content"
-                i3d:layout_height="wrap_content"
-                i3d:orientation="vertical" />
-        </ScrollView>
-    </LinearLayout>
-
+    <ScrollView
+        i3d:id="producableListView"
+        i3d:layout_width="wrap_content"
+        i3d:layout_height="match_parent"
+        i3d:scroll_axis="vertical"
+        i3d:scroll_limits="strict" >
+    
     <LinearLayout
-        i3d:layout_width="200px"
-        i3d:layout_gravity_x="right"
-        i3d:layout_marginRight="30px"
-        i3d:style="debugRed@styles"
+        i3d:layout_width="wrap_content"
+        i3d:layout_marginLeft="10px"
+        i3d:layout_marginRight="20px"
         i3d:orientation="vertical" >
 
         <LinearLayout
@@ -351,5 +341,6 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+    </ScrollView>
 
-</RelativeLayout>
+</LinearLayout>

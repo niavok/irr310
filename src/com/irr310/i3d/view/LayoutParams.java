@@ -53,6 +53,9 @@ public class LayoutParams {
     private Measure layoutPaddingTopMeasure;
     private Measure layoutPaddingBottomMeasure;
 
+    private float relativeHorizontalRatio;
+    private float relativeVerticalRatio;
+
     
     public enum LayoutMeasure {
         MATCH_PARENT, WRAP_CONTENT, FIXED,
@@ -91,6 +94,8 @@ public class LayoutParams {
         mRightPadding = 0;
         mTopPadding = 0;
         mBottomPadding = 0;
+        relativeHorizontalRatio = 1;
+        relativeVerticalRatio = 1;
         layoutMarginTopMeasure = new Measure(0, false, Axis.VERTICAL);
         layoutMarginBottomMeasure = new Measure(0, false, Axis.VERTICAL);
         layoutMarginRightMeasure = new Measure(0, false, Axis.HORIZONTAL);
@@ -268,7 +273,8 @@ public class LayoutParams {
         layout.layoutPaddingRightMeasure = new Measure(layoutPaddingRightMeasure);
         layout.layoutPaddingTopMeasure = new Measure(layoutPaddingTopMeasure);
         layout.layoutPaddingBottomMeasure = new Measure(layoutPaddingBottomMeasure);
-        
+        layout.relativeHorizontalRatio = relativeHorizontalRatio;
+        layout.relativeVerticalRatio = relativeVerticalRatio;
         return layout;
     }
     
@@ -282,9 +288,9 @@ public class LayoutParams {
         if(mesure.isRelative()) {
             if(isLayouted()) {
                 if(mesure.getAxis() == Axis.HORIZONTAL) {
-                    value = getWidth() * mesure.getValue() / 100;
+                    value = relativeHorizontalRatio * getWidth() * mesure.getValue() / 100;
                 } else {
-                    value = getHeight() * mesure.getValue() / 100;
+                    value = relativeVerticalRatio * getHeight() * mesure.getValue() / 100;
                 }
             } else {
                 Log.error("Relative width in undefined width parent");
@@ -382,4 +388,13 @@ public class LayoutParams {
     public Measure getLayoutPaddingTop() {
         return layoutPaddingTopMeasure;
     }
+
+    public void setRelativeHorizontalRatio(float relativeHorizontalRatio) {
+        this.relativeHorizontalRatio = relativeHorizontalRatio;
+    }
+    
+    public void setRelativeVerticalRatio(float relativeVerticalRatio) {
+        this.relativeVerticalRatio = relativeVerticalRatio;
+    }
+    
 }

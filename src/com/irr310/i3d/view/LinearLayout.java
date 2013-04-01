@@ -1,5 +1,6 @@
 package com.irr310.i3d.view;
 
+import com.irr310.common.tools.Log;
 import com.irr310.i3d.Graphics;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 
@@ -92,7 +93,28 @@ public class LinearLayout extends ContainerView {
     }
 
     private void layoutHorizontal() {
+        
+        //Simulation pass
+        float fixedWidth = 0;
+        float variableWidth = 0;
+        layoutParams.setRelativeHorizontalRatio(1);
+        for (View view : children) {
+            LayoutParams childLayoutParams = view.getLayoutParams();
+            childLayoutParams.computeFrame(getLayoutParams());
+            
+            if(childLayoutParams.getLayoutWidthMeasure() == LayoutMeasure.FIXED && childLayoutParams.getMeasurePoint().getX().isRelative()) {
+                variableWidth += childLayoutParams.mComputedRight - childLayoutParams.mComputedLeft;
+            } else {
+                fixedWidth += childLayoutParams.mComputedRight - childLayoutParams.mComputedLeft;
+            }
+           
+        }
+        
+        float relativeRatio = (layoutParams.getWidth() - fixedWidth) / variableWidth;
+        layoutParams.setRelativeHorizontalRatio(relativeRatio);
+        
         int currentLeft = 0;
+
         
         for (View view : children) {
             LayoutParams childLayoutParams = view.getLayoutParams();
@@ -100,16 +122,37 @@ public class LinearLayout extends ContainerView {
             
             float computedWidth = childLayoutParams.mComputedRight - childLayoutParams.mComputedLeft;
             
-            view.layout(currentLeft + layoutParams.computeMesure(childLayoutParams.getLayoutMarginLeft()) + layoutParams.computeMesure(childLayoutParams.getLayoutPaddingLeft()) ,
-                        childLayoutParams.mComputedTop + layoutParams.computeMesure(childLayoutParams.getLayoutMarginTop()) + layoutParams.computeMesure(childLayoutParams.getLayoutPaddingTop()) ,
-                        currentLeft + computedWidth - layoutParams.computeMesure(childLayoutParams.getLayoutMarginRight()) - layoutParams.computeMesure(childLayoutParams.getLayoutPaddingRight()),
-                        childLayoutParams.mComputedBottom - layoutParams.computeMesure(childLayoutParams.getLayoutMarginBottom()) - layoutParams.computeMesure(childLayoutParams.getLayoutPaddingBottom()));
+            float l = currentLeft + layoutParams.computeMesure(childLayoutParams.getLayoutMarginLeft()) + layoutParams.computeMesure(childLayoutParams.getLayoutPaddingLeft());
+            float t = childLayoutParams.mComputedTop + layoutParams.computeMesure(childLayoutParams.getLayoutMarginTop()) + layoutParams.computeMesure(childLayoutParams.getLayoutPaddingTop());
+            float r = currentLeft + computedWidth - layoutParams.computeMesure(childLayoutParams.getLayoutMarginRight()) - layoutParams.computeMesure(childLayoutParams.getLayoutPaddingRight());
+            float b = childLayoutParams.mComputedBottom - layoutParams.computeMesure(childLayoutParams.getLayoutMarginBottom()) - layoutParams.computeMesure(childLayoutParams.getLayoutPaddingBottom());
+            view.layout(l, t, r, b);
             
             currentLeft += computedWidth;
         }
     }
 
     private void layoutVertical() {
+        
+      //Simulation pass
+        float fixedHeight = 0;
+        float variableHeight = 0;
+        layoutParams.setRelativeVerticalRatio(1);
+        for (View view : children) {
+            LayoutParams childLayoutParams = view.getLayoutParams();
+            childLayoutParams.computeFrame(getLayoutParams());
+            
+            if(childLayoutParams.getLayoutHeightMeasure() == LayoutMeasure.FIXED && childLayoutParams.getMeasurePoint().getY().isRelative()) {
+                variableHeight += childLayoutParams.mComputedBottom - childLayoutParams.mComputedTop;
+            } else {
+                fixedHeight += childLayoutParams.mComputedBottom - childLayoutParams.mComputedTop;
+            }
+           
+        }
+        
+        float relativeRatio = (layoutParams.getHeight() - fixedHeight) / variableHeight;
+        layoutParams.setRelativeVerticalRatio(relativeRatio);
+        
         
         int currentTop = 0;
         
