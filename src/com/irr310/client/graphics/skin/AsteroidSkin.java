@@ -47,7 +47,7 @@ public class AsteroidSkin extends Skin {
     public void update() {
         elements.setTransformMatrix(transform.toFloatBuffer());
         
-        if(lastDustEmission.getTimeToNow(true).longer(new Duration(0.5f))) {
+        if(lastDustEmission.getDurationToNow(true).longer(new Duration(0.5f))) {
             lastDustEmission = Time.getGameTime();
             renderer.addElement(new AsteroidDust(renderer, transform.getTranslation(), new Vec3(object.getFirstPart().getShape()).multiply(0.2) , new V3DColor(127, 105, 82,0.3f)));
         }

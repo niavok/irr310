@@ -55,7 +55,7 @@ public class LootSkin extends Skin {
         colorElement.setColor(new V3DColor(baseColor.r * offset + highlightColor.r * (1 - offset), baseColor.g * offset + highlightColor.g
                 * (1 - offset), baseColor.b * offset + highlightColor.b * (1 - offset), baseColor.a * offset + highlightColor.a * (1 - offset)));
         
-        if(lastDustEmission.getTimeToNow(true).longer(new Duration(0.2f))) {
+        if(lastDustEmission.getDurationToNow(true).longer(new Duration(0.2f))) {
             lastDustEmission = Time.getGameTime();
             getRenderer().addElement(new AsteroidDust(getRenderer(), transform.getTranslation(), new Vec3(object.getFirstPart().getShape()).multiply(0.2) , new V3DColor(0, 155, 0, 0.5f)));
         }

@@ -106,7 +106,7 @@ public class ReactorSkin extends Skin {
             double durablility = object.getDurabilityRatio();
             if(durablility < 1.0) {
             
-                if(lastDustEmission.getTimeToNow(true).longer(new Duration(0.05f))) {
+                if(lastDustEmission.getDurationToNow(true).longer(new Duration(0.05f))) {
                     lastDustEmission = Time.getGameTime();
                     getRenderer().addElement(new AsteroidDust(getRenderer(), transform.getTranslation(), new Vec3(object.getFirstPart().getShape()).multiply(0.4 * 0.5 + 0.5 * (1-durablility)) , new V3DColor((float)durablility, (float)durablility, (float)durablility,(float)(1.0 - durablility/3.0))));
                 }

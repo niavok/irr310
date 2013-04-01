@@ -49,11 +49,11 @@ public class AsteroidDust extends GenericGraphicalElement{
     @Override
     public void update() {
         
-        double mix = creationTime.getTimeToNow(true).getSeconds() / lifeDuration.getSeconds();
+        double mix = creationTime.getDurationToNow(true).getSeconds() / lifeDuration.getSeconds();
         
         element.setScale(baseSize.multiply(1-mix).plus(baseSize.multiply(5).multiply(mix)).toV3DVect3());
         colorElement.setColor(V3DColor.mix(color, targetColor, (float) mix));
-        if (creationTime.getTimeToNow(true).longer(lifeDuration)) {
+        if (creationTime.getDurationToNow(true).longer(lifeDuration)) {
             destroy();
         }
     }

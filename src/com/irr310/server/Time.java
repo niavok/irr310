@@ -33,7 +33,7 @@ public class Time {
 		return new Duration(otherTime.nanotime - nanotime);
 	}
 
-    public Duration getTimeToNow(boolean gameTime) {
+    public Duration getDurationToNow(boolean gameTime) {
         return durationTo(now(gameTime));
     }
     

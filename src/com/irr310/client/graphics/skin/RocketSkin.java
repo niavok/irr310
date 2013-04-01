@@ -60,7 +60,7 @@ public class RocketSkin extends Skin {
     public void update() {
         elements.setTransformMatrix(transform.toFloatBuffer());
         
-        if(rocketCapacity.currentThrust > 0 && lastDustEmission.getTimeToNow(true).longer(new Duration(0.001f))) {
+        if(rocketCapacity.currentThrust > 0 && lastDustEmission.getDurationToNow(true).longer(new Duration(0.001f))) {
             lastDustEmission = Time.getGameTime();
             
             if(lastPosition != null) {

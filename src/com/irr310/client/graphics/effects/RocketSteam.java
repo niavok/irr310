@@ -51,11 +51,11 @@ public class RocketSteam extends GenericGraphicalElement{
     @Override
     public void update() {
         
-        double mix = creationTime.getTimeToNow(true).getSeconds() / lifeDuration.getSeconds();
+        double mix = creationTime.getDurationToNow(true).getSeconds() / lifeDuration.getSeconds();
         
         element.setThickness((float) (5*(1-mix)));
         colorElement.setColor(V3DColor.mix(color, targetColor, (float) mix));
-        if (creationTime.getTimeToNow(true).longer(lifeDuration)) {
+        if (creationTime.getDurationToNow(true).longer(lifeDuration)) {
             destroy();
         }
     }

@@ -32,7 +32,12 @@ public class UiEngine extends FramerateEngine<GameEvent> {
     private Surface mainSurface;
     private Surface statusSurface;
     private final EventDispatcher<GameEventVisitor, GameEvent> dispatcher;
-
+    private Time nextFpsTime;
+    private int frameCount;
+    private Duration totalDuration;
+    private Duration usedDuration;
+    
+    
     public UiEngine(EventDispatcher<GameEventVisitor, GameEvent> dispatcher) {
         this.dispatcher = dispatcher;
         framerate = new Duration(16666666);
@@ -74,6 +79,11 @@ public class UiEngine extends FramerateEngine<GameEvent> {
         });*/
         
         context.update(Time.now(false), Time.now(true));
+        
+        nextFpsTime = Time.now(false).add(new Duration(5.0f));
+        frameCount = 0;
+        usedDuration = new Duration(0);
+        totalDuration = new Duration(0);
     }
     
     @Override
@@ -91,11 +101,29 @@ public class UiEngine extends FramerateEngine<GameEvent> {
 
     @Override
     protected void frame() {
+        Time beginTime = Time.now(false);
         context.update(Time.now(false), Time.now(true));
         //currentActivity.frame(Time.now(false), Time.now(true));
         //renderer.frame();
         //canvas.frame();
         //fpsIndicator.update();
+        Duration durationToNow = beginTime.getDurationToNow(false);
+        
+        usedDuration = usedDuration.add(durationToNow);
+        totalDuration = totalDuration.add(framerate);
+        frameCount++;
+        
+        if(beginTime.after(nextFpsTime)) {
+            float fps = (float) frameCount / 5.0f;
+            float load = 100* usedDuration.getSeconds() / totalDuration.getSeconds();
+            
+            Log.console("fps="+fps+" | load="+load+"%");
+            
+            usedDuration  = new Duration(0);
+            totalDuration  = new Duration(0);
+            frameCount = 0;
+            nextFpsTime = beginTime.add(new Duration(5.0f));
+        }
     }
 
     @Override
