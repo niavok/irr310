@@ -7,7 +7,9 @@
     <ScrollView
         i3d:id="mapScrollView"
         i3d:layout_width="match_parent"
-        i3d:layout_height="match_parent" >
+        i3d:layout_height="match_parent"
+        i3d:scroll_axis="both"
+        i3d:scroll_limits="free" >
 
         <RelativeLayout i3d:id="map" />
         <!--

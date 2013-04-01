@@ -19,9 +19,11 @@ import com.irr310.common.event.world.ActionBuyFactionFactoryCapacityEvent;
 import com.irr310.common.event.world.ActionSellFactionFactoryCapacityEvent;
 import com.irr310.common.event.world.ConnectPlayerEvent;
 import com.irr310.common.event.world.DefaultWorldEventVisitor;
+import com.irr310.common.event.world.FactionAvailableProductListEvent;
 import com.irr310.common.event.world.FactionProductionStateEvent;
 import com.irr310.common.event.world.FactionStateEvent;
 import com.irr310.common.event.world.PlayerConnectedEvent;
+import com.irr310.common.event.world.QueryFactionAvailableProductListEvent;
 import com.irr310.common.event.world.QueryFactionProductionStateEvent;
 import com.irr310.common.event.world.QueryFactionStateEvent;
 import com.irr310.common.event.world.QueryWorldMapStateEvent;
@@ -178,6 +180,12 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements WorldEven
         public void visit(QueryFactionProductionStateEvent event) {
             Faction faction = world.getFaction(event.getFaction());
             engineManager.sendToAll(new FactionProductionStateEvent(faction.getProduction().toView()));
+        }
+        
+        @Override
+        public void visit(QueryFactionAvailableProductListEvent event) {
+            Faction faction = world.getFaction(event.getFaction());
+            engineManager.sendToAll(new FactionAvailableProductListEvent(faction.getAvailableProductList().toView()));
         }
         
         @Override

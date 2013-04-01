@@ -16,15 +16,42 @@ public class RelativeLayout extends ContainerView {
 	@Override
     public void onLayout(float l, float t, float r, float b) {
 	    
+	    /**
+	     * The extras size is used when the real display position is requered, as for ScrollView scroll limits
+	     */
+	    
         for (View view : children) {
             LayoutParams childLayoutParams = view.getLayoutParams();
             childLayoutParams.computeFrame(layoutParams);
             //view.layout(childLayoutParams.mComputedLeft, childLayoutParams.mComputedTop, childLayoutParams.mComputedRight, childLayoutParams.mComputedBottom);
-            view.layout(childLayoutParams.mComputedLeft + layoutParams.computeMesure(childLayoutParams.getLayoutMarginLeft()) + layoutParams.computeMesure(childLayoutParams.getLayoutPaddingLeft())  ,
-                        childLayoutParams.mComputedTop + layoutParams.computeMesure(childLayoutParams.getLayoutMarginTop()) + layoutParams.computeMesure(childLayoutParams.getLayoutPaddingTop()),
-                        childLayoutParams.mComputedRight - layoutParams.computeMesure(childLayoutParams.getLayoutMarginRight()) - layoutParams.computeMesure(childLayoutParams.getLayoutPaddingRight()),
-                        childLayoutParams.mComputedBottom - layoutParams.computeMesure(childLayoutParams.getLayoutMarginBottom()) - layoutParams.computeMesure(childLayoutParams.getLayoutPaddingBottom()));
+            float left = childLayoutParams.mComputedLeft + layoutParams.computeMesure(childLayoutParams.getLayoutMarginLeft()) + layoutParams.computeMesure(childLayoutParams.getLayoutPaddingLeft());
+            float top = childLayoutParams.mComputedTop + layoutParams.computeMesure(childLayoutParams.getLayoutMarginTop()) + layoutParams.computeMesure(childLayoutParams.getLayoutPaddingTop());
+            float right = childLayoutParams.mComputedRight - layoutParams.computeMesure(childLayoutParams.getLayoutMarginRight()) - layoutParams.computeMesure(childLayoutParams.getLayoutPaddingRight());
+            float bottom = childLayoutParams.mComputedBottom - layoutParams.computeMesure(childLayoutParams.getLayoutMarginBottom()) - layoutParams.computeMesure(childLayoutParams.getLayoutPaddingBottom());
+            
+            view.layout(left  ,
+                        top,
+                        right,
+                        bottom);
+            
+            if(left < getLayoutParams().mExtraLeft) {
+                getLayoutParams().mExtraLeft = left;
+            }
+            
+            if(top < getLayoutParams().mExtraTop) {
+                getLayoutParams().mExtraTop= top;
+            }
+            
+            if(right > getLayoutParams().mExtraRight) {
+                getLayoutParams().mExtraRight = right;
+            }
+            
+            if(bottom > getLayoutParams().mExtraBottom) {
+                getLayoutParams().mExtraBottom = bottom;
+            }
         }
+        
+        
     }
 
     @Override

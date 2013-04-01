@@ -18,7 +18,12 @@ public class LayoutParams {
     public float mRight;
     public float mTop;
     public float mBottom;
-    
+
+    public float mExtraLeft;
+    public float mExtraRight;
+    public float mExtraTop;
+    public float mExtraBottom;
+
     public float mLeftPadding;
     public float mRightPadding;
     public float mTopPadding;
@@ -130,6 +135,22 @@ public class LayoutParams {
         layouted = true;
         return changed;
     }
+    
+    
+    protected boolean setExtrasFrame(float left, float top, float right, float bottom) {
+        boolean changed = false;
+
+        if (mExtraLeft != left || mExtraRight != right || mExtraTop != top || mExtraBottom != bottom) {
+            changed = true;
+            mExtraLeft = left;
+            mExtraTop = top;
+            mExtraRight = right;
+            mExtraBottom = bottom;
+        }
+        
+        return changed;
+    }
+    
     
     public float getWidth() {
         return mRight - mLeft;

@@ -21,12 +21,14 @@ public class Faction extends WorldEntity{
     private long koliumAmount;
     private long neuridiumAmount;
     private FactionProduction production;
+    private FactionAvailableProductList availableProductList;
     
     
     public Faction(World world, long id) {
         super(world, id);
         color = Color.randomDarkOpaqueColor();
         production = new FactionProduction(this);
+        availableProductList = new FactionAvailableProductList(this);
         statersAmount = 0;
         oresAmount = 0;
         koliumAmount = 0;
@@ -143,6 +145,10 @@ public class Faction extends WorldEntity{
     
     public FactionProduction getProduction() {
         return production;
+    }
+    
+    public FactionAvailableProductList getAvailableProductList() {
+        return availableProductList;
     }
     
     

@@ -1,0 +1,85 @@
+<items>
+    <component id="kernel1" >
+
+        <production
+            factoryCost="100"
+            oreCost="50" />
+
+        <parts>
+
+            <part
+                durability="100"
+                mass="0.125"
+                shape="(0.5,0.5,0.5)" >
+
+                <slots disposition="box" />
+            </part>
+
+            <parts />
+
+            <capacities>
+
+                <kernelCapacity electricConsomation="1" />
+            </capacities>
+        </parts>
+    </component>
+
+    <component id="mediumBattery1" >
+
+        <production
+            factoryCost="200"
+            oreCost="1500" />
+
+        <parts>
+
+            <part
+                durability="200"
+                mass="6"
+                shape="(2,3,1)" >
+
+                <slots disposition="box" />
+            </part>
+
+            <parts />
+
+            <capacities>
+
+                <electricStorageCapacity
+                    capacity="80000"
+                    yield="0.3" />
+            </capacities>
+        </parts>
+    </component>
+
+    <component id="smallPropeller1" >
+
+        <production
+            factoryCost="300"
+            oreCost="250" />
+
+        <parts>
+
+            <part
+                durability="20"
+                mass="0.2"
+                shape="(1,1,1)" >
+
+                <slot position="(-0.5,0,0)" />
+            </part>
+        </parts>
+
+        <capacities>
+
+            <linearEngineCapacity
+                airFriction="10"
+                currentThrust="0"
+                theoricalMaxThrust="10"
+                theoricalMinThrust="-4"
+                theoricalVariationSpeed="8" />
+
+            <electricStorageCapacity>
+            </electricStorageCapacity>
+        </capacities>
+    </component>
+
+</items>

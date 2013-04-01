@@ -11,6 +11,7 @@ import com.irr310.i3d.fonts.CharacterPixmap;
 import com.irr310.i3d.fonts.Font;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 import com.irr310.i3d.view.LinearLayout.LayoutOrientation;
+import com.irr310.i3d.view.ScrollView.ScrollAxis;
 import com.irr310.i3d.view.TextView.Gravity;
 import com.irr310.server.Time;
 
@@ -24,12 +25,41 @@ public class ScrollView extends View implements ViewParent {
     View child = null;
     private boolean scrolling = false;
 
+    private ScrollAxis scrollAxis = ScrollAxis.BOTH;
+    private ScrollLimits scrollLimits = ScrollLimits.SOFT;
     float scrollingBaseX = 0;
     float scrollingBaseY = 0;
     float scrollingBaseOffsetX = 0;
     float scrollingBaseOffsetY = 0;
     private float oldWidth = 0;
     private float oldHeight = 0;
+
+    public enum ScrollAxis {
+        VERTICAL, HORIZONTAL, BOTH
+    }
+
+    public enum ScrollLimits {
+        /**
+         * The content can be moved only if it is bigger the ScrollView. The
+         * move is limited when the outer border of the content it the same
+         * border of the view port
+         */
+        STRICT,
+
+        /**
+         * The content can be moved even if it is smaller than ScrollView. The
+         * move is limited when the outer border of the content it the same
+         * border of the view port
+         */
+        SOFT,
+
+        /**
+         * The content can be moved even if it is smaller than ScrollView. The
+         * move is limited when the outer border of the content it the opposite
+         * border of the view port
+         */
+        FREE,
+    }
 
     public ScrollView() {
         super();
@@ -39,6 +69,7 @@ public class ScrollView extends View implements ViewParent {
     public void onDraw(Graphics g) {
 
         GL11.glPushMatrix();
+        GL11.glScissor((int) layoutParams.mLeft, (int) layoutParams.mTop, (int) layoutParams.getWidth(), (int) layoutParams.getHeight());
         GL11.glTranslatef(scrollOffsetX, scrollOffsetY, 0);
 
         child.draw(g);
@@ -58,6 +89,8 @@ public class ScrollView extends View implements ViewParent {
     protected void duplicateTo(View view) {
         super.duplicateTo(view);
         ScrollView myView = (ScrollView) view;
+        myView.setScrollAxis(scrollAxis);
+        myView.setScrollLimits(scrollLimits);
         myView.addChild(child.duplicate());
     }
 
@@ -80,10 +113,10 @@ public class ScrollView extends View implements ViewParent {
                      childLayoutParams.mComputedBottom - layoutParams.computeMesure(childLayoutParams.getLayoutMarginBottom())
                              - layoutParams.computeMesure(childLayoutParams.getLayoutPaddingBottom()));
 
-        float oldCenterX = oldWidth / 2 - scrollOffsetX;
-        float oldCenterY = oldHeight / 2 - scrollOffsetY;
-
-        setScrollCenter(new Point(oldCenterX, oldCenterY));
+        // float oldCenterX = oldWidth / 2 - scrollOffsetX;
+        // float oldCenterY = oldHeight / 2 - scrollOffsetY;
+        //
+        // setScrollCenter(new Point(oldCenterX, oldCenterY));
 
         oldWidth = layoutParams.getWidth();
         oldHeight = layoutParams.getHeight();
@@ -136,33 +169,181 @@ public class ScrollView extends View implements ViewParent {
     public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
         boolean used = false;
 
-        if (scrolling) {
-            if (mouseEvent.getAction() == Action.MOUSE_RELEASED) {
-                scrolling = false;
-            } else if (mouseEvent.getAction() == Action.MOUSE_DRAGGED) {
-                scrollOffsetX = scrollingBaseOffsetX + (mouseEvent.getX() - scrollingBaseX);
-                scrollOffsetY = scrollingBaseOffsetY + (mouseEvent.getY() - scrollingBaseY);
-            }
-            used = true;
-        } else {
+        if (mouseEvent.getAction() == Action.MOUSE_PRESSED) {
 
             if (child.onMouseEvent(mouseEvent.relativeTo((int) (child.layoutParams.mLeft + scrollOffsetX),
                                                          (int) (child.layoutParams.mTop + scrollOffsetY)))) {
                 used = true;
             } else {
-                if (mouseEvent.getAction() == Action.MOUSE_PRESSED) {
-                    scrolling = true;
-                    scrollingBaseOffsetX = scrollOffsetX;
-                    scrollingBaseOffsetY = scrollOffsetY;
-                    scrollingBaseX = mouseEvent.getX();
-                    scrollingBaseY = mouseEvent.getY();
-                    used = true;
+                scrolling = true;
+                scrollingBaseOffsetX = scrollOffsetX;
+                scrollingBaseOffsetY = scrollOffsetY;
+                scrollingBaseX = mouseEvent.getX();
+                scrollingBaseY = mouseEvent.getY();
+                used = true;
+            }
+        } else if (mouseEvent.getAction() == Action.MOUSE_RELEASED) {
+            if (scrolling) {
+                scrolling = false;
+                used = true;
+            }
+        } else if (mouseEvent.getAction() == Action.MOUSE_DRAGGED) {
+            if (scrolling) {
+                if (scrollAxis == ScrollAxis.HORIZONTAL || scrollAxis == ScrollAxis.BOTH) {
+                    boolean hitLimit = false;
+                    float nextScrollOffsetX = scrollingBaseOffsetX + (mouseEvent.getX() - scrollingBaseX);
+
+                    switch (scrollLimits) {
+
+                        case STRICT:
+                            if (child.getLayoutParams().mExtraRight - child.getLayoutParams().mExtraLeft < getLayoutParams().getWidth()) {
+                                hitLimit = true;
+                                scrollOffsetX = -child.getLayoutParams().mExtraLeft;
+                                scrollingBaseOffsetX = scrollOffsetX;
+                                scrollingBaseX = mouseEvent.getX();
+                            } else if (nextScrollOffsetX >= -child.getLayoutParams().mExtraLeft) {
+                                hitLimit = true;
+                                scrollOffsetX = -child.getLayoutParams().mExtraLeft;
+                                scrollingBaseOffsetX = scrollOffsetX;
+                                scrollingBaseX = mouseEvent.getX();
+                            } else if (nextScrollOffsetX < getLayoutParams().getWidth() - child.getLayoutParams().mExtraRight) {
+                                hitLimit = true;
+                                scrollOffsetX = getLayoutParams().getWidth() - child.getLayoutParams().getWidth();
+                                scrollingBaseOffsetX = scrollOffsetX;
+                                scrollingBaseX = mouseEvent.getX();
+                            }
+                            break;
+                        case SOFT:
+                            if (child.getLayoutParams().mExtraRight - child.getLayoutParams().mExtraLeft < getLayoutParams().getWidth()) {
+                                if (nextScrollOffsetX <= -child.getLayoutParams().mExtraLeft) {
+                                    hitLimit = true;
+                                    scrollOffsetX = -child.getLayoutParams().mExtraLeft;
+                                    scrollingBaseOffsetX = scrollOffsetX;
+                                    scrollingBaseX = mouseEvent.getX();
+                                } else if (nextScrollOffsetX > getLayoutParams().getWidth() - child.getLayoutParams().mExtraRight) {
+                                    hitLimit = true;
+                                    scrollOffsetX = getLayoutParams().getWidth() - child.getLayoutParams().mExtraRight;
+                                    scrollingBaseOffsetX = scrollOffsetX;
+                                    scrollingBaseX = mouseEvent.getX();
+                                }
+                            } else {
+                                if (nextScrollOffsetX >= -child.getLayoutParams().mExtraLeft) {
+                                    hitLimit = true;
+                                    scrollOffsetX = -child.getLayoutParams().mExtraLeft;
+                                    scrollingBaseOffsetX = scrollOffsetX;
+                                    scrollingBaseX = mouseEvent.getX();
+                                } else if (nextScrollOffsetX < getLayoutParams().getWidth() - child.getLayoutParams().mExtraRight) {
+                                    hitLimit = true;
+                                    scrollOffsetX = getLayoutParams().getWidth() - child.getLayoutParams().mExtraRight;
+                                    scrollingBaseOffsetX = scrollOffsetX;
+                                    scrollingBaseX = mouseEvent.getX();
+                                }
+                            }
+                            break;
+                        case FREE:
+                            if (nextScrollOffsetX + child.getLayoutParams().mExtraRight < 0) {
+                                hitLimit = true;
+                                scrollOffsetX = -child.getLayoutParams().mExtraRight;
+                                scrollingBaseOffsetX = scrollOffsetX;
+                                scrollingBaseX = mouseEvent.getX();
+                            } else if (nextScrollOffsetX > getLayoutParams().getWidth() - child.getLayoutParams().mExtraLeft) {
+                                hitLimit = true;
+                                scrollOffsetX = getLayoutParams().getWidth() - child.getLayoutParams().mExtraLeft;
+                                scrollingBaseOffsetX = scrollOffsetX;
+                                scrollingBaseX = mouseEvent.getX();
+                            }
+                            break;
+                        default:
+                    }
+
+                    if (!hitLimit) {
+                        scrollOffsetX = nextScrollOffsetX;
+                    }
+
                 }
+                if (scrollAxis == ScrollAxis.VERTICAL || scrollAxis == ScrollAxis.BOTH) {
+                    boolean hitLimit = false;
+                    float nextScrollOffsetY = scrollingBaseOffsetY + (mouseEvent.getY() - scrollingBaseY);
+
+                    switch (scrollLimits) {
+
+                        case STRICT:
+                            if (child.getLayoutParams().mExtraBottom - child.getLayoutParams().mExtraTop < getLayoutParams().getHeight()) {
+                                hitLimit = true;
+                                scrollOffsetY = -child.getLayoutParams().mExtraTop;
+                                scrollingBaseOffsetY = scrollOffsetY;
+                                scrollingBaseY = mouseEvent.getY();
+                            } else if (nextScrollOffsetY >= -child.getLayoutParams().mExtraTop) {
+                                hitLimit = true;
+                                scrollOffsetY = -child.getLayoutParams().mExtraTop;
+                                scrollingBaseOffsetY = scrollOffsetY;
+                                scrollingBaseY = mouseEvent.getY();
+                            } else if (nextScrollOffsetY < getLayoutParams().getHeight() - child.getLayoutParams().mExtraBottom) {
+                                hitLimit = true;
+                                scrollOffsetY = getLayoutParams().getHeight() - child.getLayoutParams().getHeight();
+                                scrollingBaseOffsetY = scrollOffsetY;
+                                scrollingBaseY = mouseEvent.getY();
+                            }
+                            break;
+                        case SOFT:
+                            if (child.getLayoutParams().mExtraBottom - child.getLayoutParams().mExtraTop < getLayoutParams().getHeight()) {
+                                if (nextScrollOffsetY <= -child.getLayoutParams().mExtraTop) {
+                                    hitLimit = true;
+                                    scrollOffsetY = -child.getLayoutParams().mExtraTop;
+                                    scrollingBaseOffsetY = scrollOffsetY;
+                                    scrollingBaseY = mouseEvent.getY();
+                                } else if (nextScrollOffsetY > getLayoutParams().getHeight() - child.getLayoutParams().mExtraBottom) {
+                                    hitLimit = true;
+                                    scrollOffsetY = getLayoutParams().getHeight() - child.getLayoutParams().mExtraBottom;
+                                    scrollingBaseOffsetY = scrollOffsetY;
+                                    scrollingBaseY = mouseEvent.getY();
+                                }
+                            } else {
+                                if (nextScrollOffsetY >= -child.getLayoutParams().mExtraTop) {
+                                    hitLimit = true;
+                                    scrollOffsetY = -child.getLayoutParams().mExtraTop;
+                                    scrollingBaseOffsetY = scrollOffsetY;
+                                    scrollingBaseY = mouseEvent.getY();
+                                } else if (nextScrollOffsetY < getLayoutParams().getHeight() - child.getLayoutParams().mExtraBottom) {
+                                    hitLimit = true;
+                                    scrollOffsetY = getLayoutParams().getHeight() - child.getLayoutParams().mExtraBottom;
+                                    scrollingBaseOffsetY = scrollOffsetY;
+                                    scrollingBaseY = mouseEvent.getY();
+                                }
+                            }
+                            break;
+                        case FREE:
+                            if (nextScrollOffsetY + child.getLayoutParams().mExtraBottom < 0) {
+                                hitLimit = true;
+                                scrollOffsetY = -child.getLayoutParams().mExtraBottom;
+                                scrollingBaseOffsetY = scrollOffsetY;
+                                scrollingBaseY = mouseEvent.getY();
+                            } else if (nextScrollOffsetY > getLayoutParams().getHeight() - child.getLayoutParams().mExtraTop) {
+                                hitLimit = true;
+                                scrollOffsetY = getLayoutParams().getHeight() - child.getLayoutParams().mExtraTop;
+                                scrollingBaseOffsetY = scrollOffsetY;
+                                scrollingBaseY = mouseEvent.getY();
+                            }
+                            break;
+                        default:
+                    }
+
+                    if (!hitLimit) {
+                        scrollOffsetY = nextScrollOffsetY;
+                    }
+
+                }
+                used = true;
             }
         }
 
         if (!used) {
-            used = super.onMouseEvent(mouseEvent);
+            if (child.onMouseEvent(mouseEvent.relativeTo((int) (child.layoutParams.mLeft + scrollOffsetX),
+                                                         (int) (child.layoutParams.mTop + scrollOffsetY)))) {
+                used = true;
+            } else {
+                used = super.onMouseEvent(mouseEvent);
+            }
         }
 
         return used;
@@ -199,6 +380,14 @@ public class ScrollView extends View implements ViewParent {
     public void setScrollOffset(Point point) {
         scrollOffsetX = point.x;
         scrollOffsetY = point.y;
+    }
+
+    public void setScrollAxis(ScrollAxis scrollAxis) {
+        this.scrollAxis = scrollAxis;
+    }
+
+    public void setScrollLimits(ScrollLimits scrollLimits) {
+        this.scrollLimits = scrollLimits;
     }
 
 }

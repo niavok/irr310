@@ -4,53 +4,58 @@
     i3d:layout_width="match_parent"
     i3d:layout_height="match_parent" >
 
-    <ScrollView
-        i3d:id="productionQueueScrollView"
+    <LinearLayout
         i3d:layout_width="match_parent"
-        i3d:layout_height="match_parent" >
+        i3d:layout_height="match_parent"
+        i3d:orientation="horizontal"
+        i3d:style="debugGreen@styles" >
 
-        <RelativeLayout i3d:id="productionQueue" />
-        <!--
+        <!--  <ScrollView
+            i3d:id="productionQueueScrollView"
+            i3d:style="debugRed@styles"
+            i3d:layout_width="wrap_content"
+            i3d:layout_height="match_parent" >
+
+            <RelativeLayout i3d:id="productionQueue" />
+            
+        </ScrollView>-->
+
+<!--
+        <ScrollView
+            i3d:id="productionDetailsScrollView"
+            i3d:style="debugGreen@styles"
+            i3d:layout_width="100%"
+            i3d:layout_height="match_parent" >
+
+            <RelativeLayout i3d:id="productionDetails" />
+    
+        </ScrollView>        -->
+
+        <ScrollView
+            i3d:id="producableListView"
+            i3d:style="debugBlue@styles"
+            i3d:layout_width="wrap_content"
+            i3d:layout_height="match_parent"
+            i3d:scroll_axis="vertical"
+            i3d:scroll_limits="strict"
+             >
+
+            <LinearLayout
+                i3d:id="availableProductListLinearLayout"
+                i3d:style="debugRed@styles"
+                i3d:layout_width="wrap_content"
+                i3d:layout_height="wrap_content"
+                i3d:orientation="vertical" />
+            <!--
         <Triangle
         i3d:id="logoRedPart"
         i3d:layout_width="1000px"
         i3d:layout_height="1000px"
         i3d:backgroundColor="logoSecondary@color"
         i3d:points="0%,0%|0%,100%|100%,50%" />
-        -->
-    </ScrollView>
-
-    <ScrollView
-        i3d:id="productionDetailsScrollView"
-        i3d:layout_width="match_parent"
-        i3d:layout_height="match_parent" >
-
-        <RelativeLayout i3d:id="productionDetails" />
-        <!--
-        <Triangle
-        i3d:id="logoRedPart"
-        i3d:layout_width="1000px"
-        i3d:layout_height="1000px"
-        i3d:backgroundColor="logoSecondary@color"
-        i3d:points="0%,0%|0%,100%|100%,50%" />
-        -->
-    </ScrollView>
-
-    <ScrollView
-        i3d:id="producableListView"
-        i3d:layout_width="match_parent"
-        i3d:layout_height="match_parent" >
-
-        <RelativeLayout i3d:id="producableList" />
-        <!--
-        <Triangle
-        i3d:id="logoRedPart"
-        i3d:layout_width="1000px"
-        i3d:layout_height="1000px"
-        i3d:backgroundColor="logoSecondary@color"
-        i3d:points="0%,0%|0%,100%|100%,50%" />
-        -->
-    </ScrollView>
+            -->
+        </ScrollView>
+    </LinearLayout>
 
     <LinearLayout
         i3d:layout_width="wrap_content"
@@ -242,9 +247,9 @@
                         i3d:id="factoryBuyFactoryButton"
                         i3d:style="smallButton@styles"
                         i3d:layout_width="match_parent"
-                        i3d:color="defaultFont@color"
                         i3d:layout_marginBottom="5px"
-                        i3d:text="factoryBuyButton@strings" />
+                        i3d:text="factoryBuyButton@strings"
+                        i3d:color="defaultFont@color" />
 
                     <TextView
                         i3d:id="factoryIncomingCapacityTextView"
@@ -264,11 +269,11 @@
 
                     <Button
                         i3d:id="factorySellFactoryButton"
-                        i3d:layout_marginTop="10px"
                         i3d:style="smallButton@styles"
                         i3d:layout_width="match_parent"
-                        i3d:color="defaultFont@color"
-                        i3d:text="factorySellButton@strings" />
+                        i3d:layout_marginTop="10px"
+                        i3d:text="factorySellButton@strings"
+                        i3d:color="defaultFont@color" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -276,7 +281,7 @@
                 i3d:layout_width="match_parent"
                 i3d:layout_height="30px"
                 i3d:ref="main@layout/separator_horizontal" />
-            
+
             <LinearLayout
                 i3d:id="queueStatePanel"
                 i3d:layout_width="match_parent"
@@ -321,8 +326,7 @@
                         i3d:layout_paddingBottom="5px"
                         i3d:font="big@fonts"
                         i3d:gravity="center|right"
-                        i3d:color="defaultFont@color"
-                        />
+                        i3d:color="defaultFont@color" />
 
                     <TextView
                         i3d:id="factoryOresNeedsTextView"
@@ -346,11 +350,9 @@
                         i3d:layout_paddingBottom="5px"
                         i3d:font="medium@fonts"
                         i3d:gravity="center|right"
-                        i3d:color="lightFont@color"
-                         />
+                        i3d:color="lightFont@color" />
                 </LinearLayout>
             </LinearLayout>
-            
         </LinearLayout>
     </LinearLayout>
 

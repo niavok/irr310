@@ -34,7 +34,7 @@ public abstract class View {
         styleRenderer = new StyleRenderer(this);
     }
 
-    public final void draw(Graphics g) {
+    public void draw(Graphics g) {
         if (!visible) {
             return;
         }
@@ -97,6 +97,7 @@ public abstract class View {
 
     public void layout(float l, float t, float r, float b) {
         boolean changed = layoutParams.setFrame(l, t, r, b);
+        layoutParams.setExtrasFrame(l, t, r, b);
         // if (changed) {
         onLayout(l, t, r, b);
         // }
@@ -116,7 +117,7 @@ public abstract class View {
 
     public abstract View duplicate();
 
-    public final LayoutParams getLayoutParams() {
+    public LayoutParams getLayoutParams() {
         return layoutParams;
     }
 
@@ -136,7 +137,7 @@ public abstract class View {
      * 
      * @return Parent of this view.
      */
-    public final ViewParent getParent() {
+    public ViewParent getParent() {
         return mParent;
     }
 

@@ -1,0 +1,86 @@
+Production - liste objets
+=========================
+
+
+Catégories
+----------
+
+- Ship : assemblage de composants deployable dans l'espace et suivant un schema d'assemblage. Une station ou un vaisseau est indifférenciable
+
+- Composant : objet qui fera parti d'un assemblage
+
+- Item : object qui sera contenu dans un vaisseau, mais non déployable. Si le conteneur est détruit -> débrits (munitions, carburant)
+
+- Upgrade : objet qui modifie un composant. Réduction de poid, augmentation de la résistance aux chocs, augmentation de la capacité, augmentation du nombre d'upgrade etc ... Pas d'upgrade pour les items. Une upgrade s'applique à un type particulier de composant.
+
+
+
+
+Opération de fabrication : 
+
+
+
+- Fabrication : transforme du fer en composants, item ou upgrade. Consomme beaucoup de fer et peu de manufacture
+- Manufacture : fusionne un composant et un upgrade de manière définitive (coûte un peu de fer et beaucoup de temps) (par exemple, un canon, avec 3 slot d'upgrade et 3 upgrades)
+- Assemblage : permet d'assembler un vaisseau à partir de plusieurs composant, ou le modifier (demande très peu de fer et beaucoup de temps)
+- Réparation : permet de réparer des composants existants (consomme peu de temps mais pas mal de ressources)
+- Démontage : permet de désassembler un vaisseau en composant, ou retirer des composants d'un vaisseau (consomme peu de temps)
+- Recyclage : transformer en fer des composants et upgrade (consomme peu de temps) 
+
+
+
+Moteurs
+- Mini hélice
+- Mini hélice protégé
+- Grosse hélice
+- mini hélice orientable
+- Réacteur à pales (plus puissant avec du flux)
+- Réacteur tuyare puissant tout le temps, pas besoin d'avant ou d'arrière dégagé
+- Voile
+- moteurs à ions (très basse consomation
+- moteur à champs (peu être interne et multidirectionnel, très rapide et mais très consomateur)
+
+
+
+
+Composants structurels
+- toute sorte de poutre, plaque
+
+Capteurs
+
+Armes
+
+Outils
+- Réservoir (tout typr d'item)
+- Générateur (electricité, fuel, munitions, ... et même vaisseau ... pour des très gros générateurs .... item en général)
+- Foreuse : eclate les astéroid et récolte de l'ore.
+
+Composants "batiments"
+
+Noyau
+
+
+Upgrade
+
+- Traitement de surface, résistance à l'air réduite
+- réduction de masse
+- Peinture
+- Réduction signature radar
+
+
+Techno, minutiarisation : petit kernel pas cher, avec peu d'actionneurs, et couteur en energie (missile)
+
+
+
+Dock
+
+ - Les composants peuvent avoir des slots pour docker d'autre vaisseau. La rupture du docking peut etre à l'initiative de l'un ou l'autre
+ - Les docks avec baie peuvent déployer des vaisseaux contenue dans le vaisseau de base. Exemple lance missile avec répétition. Porte nef
+ 
+ 
+ Production
+ 
+  - Certains composant peuvent avoir une capacité de production, ou réparation, rescyclage ..., coutant de l'ore (qui doit être stocké dans le vaisseau) et beaucoup de temps mais pas de staters. Par contre, ils peuvent être détruit donc ils doivent être protégés.
+
+
+

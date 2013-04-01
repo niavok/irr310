@@ -1,0 +1,35 @@
+<items>
+    <ship id="droneShip"
+         name="Drone"
+         description="A light exploration ship"
+         kernel="kernel">
+        <components>
+            <component id="kernel"
+                 ref="kernel1"
+                 position="(0,0,0)" />
+            <component id="battery"
+                 ref="mediumBattery1" />
+            <component id="engineTop"
+                 ref="smallPropeller1" />
+            <component id="engineBottom"
+                 ref="smallPropeller1" />
+            <component id="engineLeft"
+                 ref="smallPropeller1" />
+            <component id="engineRight"
+                 ref="smallPropeller1" />
+        </components>
+        <links>
+            <link a="back@kernel" b="front@battery" /> 
+            <link a="base@engineTop" b="top@battery" />
+            <link a="base@engineBottom" b="bottom@battery" />
+            <link a="base@engineLeft" b="left@battery" />
+            <link a="base@engineRight" b="right@battery" />
+        </links>
+        
+        
+    </ship>
+    
+    
+    
+    
+</items>

@@ -1,23 +1,30 @@
 package com.irr310.client.graphics.ether.activities.production;
 
+import sun.security.util.Length;
+
 import com.irr310.client.navigation.LoginManager;
 import com.irr310.common.event.world.ActionBuyFactionFactoryCapacityEvent;
 import com.irr310.common.event.world.ActionSellFactionFactoryCapacityEvent;
 import com.irr310.common.event.world.DefaultWorldEventVisitor;
+import com.irr310.common.event.world.FactionAvailableProductListEvent;
 import com.irr310.common.event.world.FactionProductionStateEvent;
 import com.irr310.common.event.world.FactionStateEvent;
+import com.irr310.common.event.world.QueryFactionAvailableProductListEvent;
 import com.irr310.common.event.world.QueryFactionProductionStateEvent;
 import com.irr310.common.event.world.QueryFactionStateEvent;
 import com.irr310.common.event.world.WorldEventDispatcher;
 import com.irr310.common.event.world.WorldEventVisitor;
 import com.irr310.common.world.World;
+import com.irr310.common.world.view.FactionAvailableProductListView;
 import com.irr310.common.world.view.FactionProductionView;
 import com.irr310.common.world.view.FactionView;
+import com.irr310.common.world.view.ProductView;
 import com.irr310.i3d.Bundle;
 import com.irr310.i3d.Handler;
 import com.irr310.i3d.Message;
 import com.irr310.i3d.view.Activity;
 import com.irr310.i3d.view.Button;
+import com.irr310.i3d.view.LinearLayout;
 import com.irr310.i3d.view.TextView;
 import com.irr310.i3d.view.View;
 import com.irr310.i3d.view.View.OnClickListener;
@@ -44,29 +51,36 @@ public class ProductionActivity extends Activity {
     private TextView factoryOresNeedsTextView;
     private TextView factoryCapacityNeedsTextView;
     private TextView factoryTimeEstimationTextView;
+    private FactionAvailableProductListView availableProductList;
+    private LinearLayout availableProductListLinearLayout;
     private static final int UPDATE_FACTION_WHAT = 1;
     private static final int UPDATE_PRODUCTION_WHAT = 2;
+    private static final int UPDATE_AVAILABLE_PRODUCT_LIST_WHAT = 3;
 
     @Override
     public void onCreate(Bundle bundle) {
-        setContentView("main@layout/production");
+        setContentView("main@layout/production/production");
         worldEngine = (WorldEventDispatcher) bundle.getObject();
-        factoryStatersAmountTextView = (TextView) findViewById("factoryStatersAmountTextView@layout/production");
-        factoryMaintenanceAmountTextView = (TextView) findViewById("factoryMaintenanceAmountTextView@layout/production");
-        factoryCapacityAmountTextView = (TextView) findViewById("factoryCapacityAmountTextView@layout/production");
-        factoryRentCapacityAmountTextView = (TextView) findViewById("factoryRentCapacityAmountTextView@layout/production");
-        factoryTotalCapacityAmountTextView = (TextView) findViewById("factoryTotalCapacityAmountTextView@layout/production");
+        factoryStatersAmountTextView = (TextView) findViewById("factoryStatersAmountTextView@layout/production/production");
+        factoryMaintenanceAmountTextView = (TextView) findViewById("factoryMaintenanceAmountTextView@layout/production/production");
+        factoryCapacityAmountTextView = (TextView) findViewById("factoryCapacityAmountTextView@layout/production/production");
+        factoryRentCapacityAmountTextView = (TextView) findViewById("factoryRentCapacityAmountTextView@layout/production/production");
+        factoryTotalCapacityAmountTextView = (TextView) findViewById("factoryTotalCapacityAmountTextView@layout/production/production");
 
-        factoryBuyFactoryButton = (Button) findViewById("factoryBuyFactoryButton@layout/production");
-        factorySellFactoryButton = (Button) findViewById("factorySellFactoryButton@layout/production");
-        factoryIncomingCapacityTextView = (TextView) findViewById("factoryIncomingCapacityTextView@layout/production");
-        factoryIncomingCapacityDelayTextView = (TextView) findViewById("factoryIncomingCapacityDelayTextView@layout/production");
+        factoryBuyFactoryButton = (Button) findViewById("factoryBuyFactoryButton@layout/production/production");
+        factorySellFactoryButton = (Button) findViewById("factorySellFactoryButton@layout/production/production");
+        factoryIncomingCapacityTextView = (TextView) findViewById("factoryIncomingCapacityTextView@layout/production/production");
+        factoryIncomingCapacityDelayTextView = (TextView) findViewById("factoryIncomingCapacityDelayTextView@layout/production/production");
 
-        factoryOresTextView = (TextView) findViewById("factoryOresTextView@layout/production");
-        factoryOresNeedsTextView = (TextView) findViewById("factoryOresNeedsTextView@layout/production");
-        factoryCapacityNeedsTextView = (TextView) findViewById("factoryCapacityNeedsTextView@layout/production");
-        factoryTimeEstimationTextView = (TextView) findViewById("factoryTimeEstimationTextView@layout/production");
+        factoryOresTextView = (TextView) findViewById("factoryOresTextView@layout/production/production");
+        factoryOresNeedsTextView = (TextView) findViewById("factoryOresNeedsTextView@layout/production/production");
+        factoryCapacityNeedsTextView = (TextView) findViewById("factoryCapacityNeedsTextView@layout/production/production");
+        factoryTimeEstimationTextView = (TextView) findViewById("factoryTimeEstimationTextView@layout/production/production");
 
+        
+        availableProductListLinearLayout = (LinearLayout) findViewById("availableProductListLinearLayout@layout/production/production");
+        
+        
         factoryOresNeedsTextView.setText("8420 [ores@icons]");
         factoryCapacityNeedsTextView.setText("3580 [factory@icons]");
         factoryTimeEstimationTextView.setText("(12 min 35s)");
@@ -84,6 +98,13 @@ public class ProductionActivity extends Activity {
             public void visit(FactionProductionStateEvent event) {
                 if (LoginManager.getLocalPlayer().faction.id == event.getFactionProduction().factionId) {
                     handler.obtainMessage(UPDATE_PRODUCTION_WHAT, event.getFactionProduction()).send();
+                }
+            }
+            
+            @Override
+            public void visit(FactionAvailableProductListEvent event) {
+                if (LoginManager.getLocalPlayer().faction.id == event.getFactionAvailableProductList().factionId) {
+                    handler.obtainMessage(UPDATE_AVAILABLE_PRODUCT_LIST_WHAT, event.getFactionAvailableProductList()).send();
                 }
             }
         };
@@ -108,6 +129,7 @@ public class ProductionActivity extends Activity {
         worldEngine.registerEventVisitor(visitor);
         worldEngine.sendToAll(new QueryFactionStateEvent(LoginManager.getLocalPlayer().faction));
         worldEngine.sendToAll(new QueryFactionProductionStateEvent(LoginManager.getLocalPlayer().faction));
+        worldEngine.sendToAll(new QueryFactionAvailableProductListEvent(LoginManager.getLocalPlayer().faction));
     }
 
     @Override
@@ -134,13 +156,17 @@ public class ProductionActivity extends Activity {
                     production = (FactionProductionView) message.obj;
                     updateFields();
                     break;
+                case UPDATE_AVAILABLE_PRODUCT_LIST_WHAT:
+                    availableProductList = (FactionAvailableProductListView) message.obj;
+                    updateFields();
+                    break;
             }
 
         }
     }
 
     protected void updateFields() {
-        if (faction == null || production == null) {
+        if (faction == null || production == null || availableProductList == null) {
             return;
         }
         factoryStatersAmountTextView.setText(faction.statersAmount + " [staters@icons]");
@@ -158,6 +184,11 @@ public class ProductionActivity extends Activity {
         }
 
         factoryOresTextView.setText(faction.oresAmount + " [ores@icons]");
+        
+        availableProductListLinearLayout.removeAllView();
+        for(ProductView product: availableProductList.products) {            
+            availableProductListLinearLayout.addChild(new AvailableProductView(product));
+        }
         
     }
 

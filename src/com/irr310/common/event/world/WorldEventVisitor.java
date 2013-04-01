@@ -25,6 +25,10 @@ public interface WorldEventVisitor extends EngineEventVisitor {
     public abstract void visit(ActionBuyFactionFactoryCapacityEvent event);
     
     public abstract void visit(ActionSellFactionFactoryCapacityEvent event);
+
+    public abstract void visit(QueryFactionAvailableProductListEvent event);
+    
+    public abstract void visit(FactionAvailableProductListEvent event);
     
 //	public abstract void visit(QuitGameEvent event);
 //

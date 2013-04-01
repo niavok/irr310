@@ -32,6 +32,8 @@ import com.irr310.i3d.view.Rect;
 import com.irr310.i3d.view.RelativeLayout;
 import com.irr310.i3d.view.ScrollView;
 import com.irr310.i3d.view.TextView;
+import com.irr310.i3d.view.ScrollView.ScrollAxis;
+import com.irr310.i3d.view.ScrollView.ScrollLimits;
 import com.irr310.i3d.view.TextView.Gravity;
 import com.irr310.i3d.view.drawable.BitmapDrawable;
 import com.irr310.i3d.view.drawable.BitmapFactory;
@@ -522,6 +524,26 @@ public class I3dRessourceManager {
             ViewFactory viewFactory = new ViewFactory(view);
 
             if (checkViewAttrs(attrName, attrValue, fileId, viewFactory)) {
+            } else if (attrName.equals("i3d:scroll_axis")) {
+                if(attrValue.equals("vertical")) {
+                    view.setScrollAxis(ScrollAxis.VERTICAL);
+                } else if(attrValue.equals("horizontal")) {
+                    view.setScrollAxis(ScrollAxis.HORIZONTAL);
+                } else  if(attrValue.equals("both")) {
+                    view.setScrollAxis(ScrollAxis.BOTH);
+                } else {
+                    Log.warn("Unknown value '" + attrValue + " for attribute '" + attrName + "' for ScrollView. Correct values are 'vertical', 'horizontal', or 'both'");
+                }
+            } else if (attrName.equals("i3d:scroll_limits")) {
+                if(attrValue.equals("strict")) {
+                    view.setScrollLimits(ScrollLimits.STRICT);
+                } else if(attrValue.equals("soft")) {
+                    view.setScrollLimits(ScrollLimits.SOFT);
+                } else  if(attrValue.equals("free")) {
+                    view.setScrollLimits(ScrollLimits.FREE);
+                } else {
+                    Log.warn("Unknown value '" + attrValue + " for attribute '" + attrName + "' for ScrollView. Correct values are 'stric', 'soft', or 'free'");
+                }
             } else {
                 throw new RessourceLoadingException("Unknown attrib '" + attrName + "=" + attrValue + "' for ScrollView");
             }
