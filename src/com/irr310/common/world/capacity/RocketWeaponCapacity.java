@@ -5,8 +5,8 @@ import java.util.List;
 
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.World;
+import com.irr310.common.world.state.CapacityState;
 import com.irr310.common.world.system.DamageDescriptor;
-import com.irr310.common.world.view.CapacityView;
 
 public class RocketWeaponCapacity extends Capacity {
 
@@ -56,8 +56,8 @@ public class RocketWeaponCapacity extends Capacity {
     }
 
     @Override
-    public CapacityView toView() {
-        CapacityView view = new CapacityView();
+    public CapacityState toState() {
+        CapacityState view = new CapacityState();
         view.id = getId();
         view.name = getName();
         view.type = CapacityType.GUN.ordinal();
@@ -81,7 +81,7 @@ public class RocketWeaponCapacity extends Capacity {
     }
 
     @Override
-    public void fromView(CapacityView view) {
+    public void fromState(CapacityState view) {
         setName(view.name);
         fire = view.popBoolean();
         // damage = view.popDouble();

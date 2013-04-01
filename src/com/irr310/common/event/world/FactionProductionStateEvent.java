@@ -1,16 +1,16 @@
 package com.irr310.common.event.world;
 
-import com.irr310.common.world.view.FactionProductionView;
+import com.irr310.common.world.state.FactionProductionState;
 
 public class FactionProductionStateEvent extends WorldEvent {
 
-    final private FactionProductionView factionProduction;
+    final private FactionProductionState factionProduction;
 
-    public FactionProductionStateEvent(FactionProductionView factionProduction) {
+    public FactionProductionStateEvent(FactionProductionState factionProduction) {
         this.factionProduction = factionProduction;
     }
 
-    public FactionProductionView getFactionProduction() {
+    public FactionProductionState getFactionProduction() {
         return factionProduction;
     }
 

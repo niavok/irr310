@@ -5,9 +5,9 @@ package com.irr310.client.graphics.ether.activities.worldmap;
 import org.lwjgl.opengl.GL11;
 
 import com.irr310.common.world.Faction;
+import com.irr310.common.world.state.FactionState;
+import com.irr310.common.world.state.WorldSystemState;
 import com.irr310.common.world.system.WorldSystem;
-import com.irr310.common.world.view.FactionView;
-import com.irr310.common.world.view.WorldSystemView;
 import com.irr310.i3d.Color;
 import com.irr310.i3d.Graphics;
 import com.irr310.i3d.I3dRessourceManager;
@@ -19,14 +19,14 @@ import com.irr310.i3d.view.View;
 
 public class SystemCircleView extends View {
 
-    private final WorldSystemView system;
+    private final WorldSystemState system;
     private float size;
     private float zoom;
     private float zoomedSize;
     private boolean selected;
     private Color selectionColor;
 
-    public SystemCircleView(WorldSystemView system) {
+    public SystemCircleView(WorldSystemState system) {
         this.system = system;
         
         size = 30;

@@ -16,10 +16,10 @@ import com.irr310.common.event.world.WorldMapStateEvent;
 import com.irr310.common.world.Faction;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.World;
+import com.irr310.common.world.state.FactionState;
+import com.irr310.common.world.state.WorldMapState;
+import com.irr310.common.world.state.WorldSystemState;
 import com.irr310.common.world.system.WorldSystem;
-import com.irr310.common.world.view.FactionView;
-import com.irr310.common.world.view.WorldMapView;
-import com.irr310.common.world.view.WorldSystemView;
 import com.irr310.i3d.Bundle;
 import com.irr310.i3d.Handler;
 import com.irr310.i3d.Message;
@@ -49,8 +49,8 @@ public class WorldMapActivity extends Activity {
     private Handler handler = new Handler();
     private WorldEventVisitor visitor;
     private WorldEventDispatcher worldEngine;
-    private FactionView faction;
-    private WorldMapView worldMap;
+    private FactionState faction;
+    private WorldMapState worldMap;
     private static final int UPDATE_FACTION_WHAT = 1;
     private static final int UPDATE_MAP_WHAT = 2;
 
@@ -123,11 +123,11 @@ public class WorldMapActivity extends Activity {
 
             switch (message.what) {
                 case UPDATE_FACTION_WHAT:
-                    faction = (FactionView) message.obj;
+                    faction = (FactionState) message.obj;
                     updateMap();
                     break;
                 case UPDATE_MAP_WHAT:
-                    worldMap = (WorldMapView) message.obj;
+                    worldMap = (WorldMapState) message.obj;
                     updateMap();
                     break;
             }
@@ -143,10 +143,10 @@ public class WorldMapActivity extends Activity {
 
         map.removeAllView();
         
-        WorldSystemView homeSystem = null;
+        WorldSystemState homeSystem = null;
 
-        List<WorldSystemView> allSystems = worldMap.systems;
-        for (WorldSystemView system : allSystems) {
+        List<WorldSystemState> allSystems = worldMap.systems;
+        for (WorldSystemState system : allSystems) {
             if (system.id == faction.homeSystemId) {
                 homeSystem = system;
             }

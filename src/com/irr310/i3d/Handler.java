@@ -3,7 +3,7 @@ package com.irr310.i3d;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import com.irr310.common.world.view.FactionView;
+import com.irr310.common.world.state.FactionState;
 
 public class Handler {
 

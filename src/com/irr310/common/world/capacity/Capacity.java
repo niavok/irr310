@@ -1,8 +1,8 @@
 package com.irr310.common.world.capacity;
 
 import com.irr310.common.world.World;
+import com.irr310.common.world.state.CapacityState;
 import com.irr310.common.world.system.WorldEntity;
-import com.irr310.common.world.view.CapacityView;
 
 public abstract class Capacity extends WorldEntity{
 
@@ -20,9 +20,9 @@ public abstract class Capacity extends WorldEntity{
         ROCKET,
     }
     
-    public abstract CapacityView toView();
+    public abstract CapacityState toState();
 
-    public abstract void fromView(CapacityView view);
+    public abstract void fromState(CapacityState state);
 
     public static Capacity createFromType(World world, long id, CapacityType type) {
         switch (type) {

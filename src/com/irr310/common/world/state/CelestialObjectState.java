@@ -1,4 +1,4 @@
-package com.irr310.common.world.view;
+package com.irr310.common.world.state;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import com.irr310.common.network.NetworkField;
 import com.irr310.common.network.NetworkListField;
 
 @NetworkClass
-public class CelestialObjectView {
+public class CelestialObjectState {
 
     @NetworkField
     public long id;
@@ -19,8 +19,8 @@ public class CelestialObjectView {
     @NetworkField
     public String skin;
     
-    @NetworkListField(PartView.class)
-    public List<PartView> parts = new ArrayList<PartView>();
+    @NetworkListField(PartState.class)
+    public List<PartState> parts = new ArrayList<PartState>();
     
     
     @NetworkField

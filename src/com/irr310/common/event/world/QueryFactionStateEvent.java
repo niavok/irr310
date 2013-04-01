@@ -1,17 +1,17 @@
 package com.irr310.common.event.world;
 
-import com.irr310.common.world.view.FactionView;
+import com.irr310.common.world.state.FactionState;
 
 public class QueryFactionStateEvent extends WorldEvent {
 
     
-    final private FactionView faction;
+    final private FactionState faction;
 
-    public QueryFactionStateEvent(FactionView faction) {
+    public QueryFactionStateEvent(FactionState faction) {
         this.faction = faction;
     }
     
-    public FactionView getFaction() {
+    public FactionState getFaction() {
         return faction;
     }
     

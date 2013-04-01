@@ -1,4 +1,4 @@
-package com.irr310.common.world.view;
+package com.irr310.common.world.state;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import com.irr310.common.network.NetworkListField;
 import com.irr310.i3d.Color;
 
 @NetworkClass
-public class FactionView {
+public class FactionState {
 
     @NetworkField
     public long id;

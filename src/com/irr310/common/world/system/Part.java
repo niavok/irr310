@@ -8,8 +8,8 @@ import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Faction;
 import com.irr310.common.world.Player;
-import com.irr310.common.world.view.PartStateView;
-import com.irr310.common.world.view.PartView;
+import com.irr310.common.world.state.MovementState;
+import com.irr310.common.world.state.PartState;
 
 public class Part extends WorldEntity {
 
@@ -91,8 +91,8 @@ public class Part extends WorldEntity {
         this.shape = shape;
     }
 
-    public PartView toView() {
-        PartView partView = new PartView();
+    public PartState toState() {
+        PartState partView = new PartState();
         partView.id = getId();
         partView.linearSpeed = linearSpeed;
         partView.mass = mass;
@@ -106,20 +106,20 @@ public class Part extends WorldEntity {
         return partView;
     }
 
-    public void fromView(PartView partView) {
-        linearSpeed.set(partView.linearSpeed);
-        rotationSpeed.set(partView.rotationSpeed);
-        mass = partView.mass;
-        linearDamping = partView.linearDamping;
-        angularDamping = partView.angularDamping;
-        shape = partView.shape;
-        collisionShape = CollisionShape.values()[partView.collisionShape];
-        transform.set(partView.transform.getData());
+    public void fromState(PartState partState) {
+        linearSpeed.set(partState.linearSpeed);
+        rotationSpeed.set(partState.rotationSpeed);
+        mass = partState.mass;
+        linearDamping = partState.linearDamping;
+        angularDamping = partState.angularDamping;
+        shape = partState.shape;
+        collisionShape = CollisionShape.values()[partState.collisionShape];
+        transform.set(partState.transform.getData());
 //        owner = (partView.ownerId == -1 ? null : Game.getInstance().getWorld().getPlayerById(partView.ownerId));
     }
 
-    public PartStateView toStateView() {
-        PartStateView partStateView = new PartStateView();
+    public MovementState toStateView() {
+        MovementState partStateView = new MovementState();
         partStateView.id = getId();
         partStateView.linearSpeed = linearSpeed;
         partStateView.rotationSpeed = rotationSpeed;
@@ -127,7 +127,7 @@ public class Part extends WorldEntity {
         return partStateView;
     }
 
-    public void fromStateView(PartStateView partStateView) {
+    public void fromMovementState(MovementState partStateView) {
 
         // if (Game.getInstance() instanceof GameClient) {
         //

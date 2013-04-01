@@ -15,10 +15,10 @@ import com.irr310.common.event.world.QueryFactionStateEvent;
 import com.irr310.common.event.world.WorldEventDispatcher;
 import com.irr310.common.event.world.WorldEventVisitor;
 import com.irr310.common.world.World;
-import com.irr310.common.world.view.FactionAvailableProductListView;
-import com.irr310.common.world.view.FactionProductionView;
-import com.irr310.common.world.view.FactionView;
-import com.irr310.common.world.view.ProductView;
+import com.irr310.common.world.state.FactionAvailableProductListState;
+import com.irr310.common.world.state.FactionProductionState;
+import com.irr310.common.world.state.FactionState;
+import com.irr310.common.world.state.ProductState;
 import com.irr310.i3d.Bundle;
 import com.irr310.i3d.Handler;
 import com.irr310.i3d.Message;
@@ -45,13 +45,13 @@ public class ProductionActivity extends Activity {
     private Button factorySellFactoryButton;
     private TextView factoryIncomingCapacityTextView;
     private TextView factoryIncomingCapacityDelayTextView;
-    private FactionView faction;
-    private FactionProductionView production;
+    private FactionState faction;
+    private FactionProductionState production;
     private TextView factoryOresTextView;
     private TextView factoryOresNeedsTextView;
     private TextView factoryCapacityNeedsTextView;
     private TextView factoryTimeEstimationTextView;
-    private FactionAvailableProductListView availableProductList;
+    private FactionAvailableProductListState availableProductList;
     private LinearLayout availableProductListLinearLayout;
     private static final int UPDATE_FACTION_WHAT = 1;
     private static final int UPDATE_PRODUCTION_WHAT = 2;
@@ -149,15 +149,15 @@ public class ProductionActivity extends Activity {
 
             switch (message.what) {
                 case UPDATE_FACTION_WHAT:
-                    faction = (FactionView) message.obj;
+                    faction = (FactionState) message.obj;
                     updateFields();
                     break;
                 case UPDATE_PRODUCTION_WHAT:
-                    production = (FactionProductionView) message.obj;
+                    production = (FactionProductionState) message.obj;
                     updateFields();
                     break;
                 case UPDATE_AVAILABLE_PRODUCT_LIST_WHAT:
-                    availableProductList = (FactionAvailableProductListView) message.obj;
+                    availableProductList = (FactionAvailableProductListState) message.obj;
                     updateFields();
                     break;
             }
@@ -186,7 +186,7 @@ public class ProductionActivity extends Activity {
         factoryOresTextView.setText(faction.oresAmount + " [ores@icons]");
         
         availableProductListLinearLayout.removeAllView();
-        for(ProductView product: availableProductList.products) {            
+        for(ProductState product: availableProductList.products) {            
             availableProductListLinearLayout.addChild(new AvailableProductView(product));
         }
         

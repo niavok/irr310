@@ -14,11 +14,11 @@ import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Faction;
 import com.irr310.common.world.World;
 import com.irr310.common.world.capacity.Capacity;
-import com.irr310.common.world.view.CelestialObjectView;
-import com.irr310.common.world.view.ComponentView;
-import com.irr310.common.world.view.PartView;
-import com.irr310.common.world.view.ShipView;
-import com.irr310.common.world.view.WorldSystemView;
+import com.irr310.common.world.state.CelestialObjectState;
+import com.irr310.common.world.state.ComponentState;
+import com.irr310.common.world.state.PartState;
+import com.irr310.common.world.state.ShipState;
+import com.irr310.common.world.state.WorldSystemState;
 import com.irr310.i3d.Color;
 import com.irr310.server.SystemEngine;
 
@@ -142,30 +142,30 @@ public class WorldSystem extends WorldEntity {
     }
 
     private void removePart(Part part) {
-        if (part.getOwner().isView(LoginManager.localPlayer.faction)) {
+        if (part.getOwner().isState(LoginManager.localPlayer.faction)) {
             myParts.remove(part);
         }
         parts.remove(part);
     }
     
-    public CelestialObject loadCelestialObject(CelestialObjectView celestialObjectView) {
+    public CelestialObject loadCelestialObject(CelestialObjectState celestialObjectView) {
         if (celestialObjectIdMap.containsKey(celestialObjectView.id)) {
             return celestialObjectIdMap.get(celestialObjectView.id);
         }
 
         CelestialObject celestialObject = new CelestialObject(getWorld(), celestialObjectView.id, celestialObjectView.name);
-        celestialObject.fromView(celestialObjectView);
+        celestialObject.fromState(celestialObjectView);
         addCelestialObject(celestialObject);
         return celestialObject;
     }
 
-    public Ship loadShip(ShipView shipView) {
+    public Ship loadShip(ShipState shipView) {
         if (shipIdMap.containsKey(shipView.id)) {
             return shipIdMap.get(shipView.id);
         }
 
         Ship ship = new Ship(getWorld(), shipView.id);
-        ship.fromView(shipView);
+        ship.fromState(shipView);
         addShip(ship, null);
         return ship;
     }
@@ -211,13 +211,13 @@ public class WorldSystem extends WorldEntity {
         return capacityIdMap.get(capacityId);
     }
 
-    public Component loadComponent(ComponentView componentView) {
+    public Component loadComponent(ComponentState componentView) {
         if (componentIdMap.containsKey(componentView.id)) {
             return componentIdMap.get(componentView.id);
         }
 
         Component component = new Component(getWorld(), componentView.id, componentView.name);
-        component.fromView(componentView);
+        component.fromState(componentView);
         addComponent(component);
         return component;
     }
@@ -226,13 +226,13 @@ public class WorldSystem extends WorldEntity {
         return celestialObjects;
     }
 
-    public Part loadPart(PartView partView, WorldObject parentObject) {
+    public Part loadPart(PartState partView, WorldObject parentObject) {
         if (partIdMap.containsKey(partView.id)) {
             return partIdMap.get(partView.id);
         }
 
         Part part = new Part(partView.id, parentObject);
-        part.fromView(partView);
+        part.fromState(partView);
         addPart(part);
         return part;
     }
@@ -269,22 +269,22 @@ public class WorldSystem extends WorldEntity {
         return name;
     }
 
-    public WorldSystemView toView() {
-        WorldSystemView systemView = new WorldSystemView();
-        systemView.id = getId();
+    public WorldSystemState toState() {
+        WorldSystemState systemState = new WorldSystemState();
+        systemState.id = getId();
         
-        systemView.homeSystem = homeSystem;
-        systemView.location = location;
-        systemView.name = name;
+        systemState.homeSystem = homeSystem;
+        systemState.location = location;
+        systemState.name = name;
         if(owner != null) {
-            systemView.ownerColor = owner.getColor();
-            systemView.ownerId = owner.getId();
+            systemState.ownerColor = owner.getColor();
+            systemState.ownerId = owner.getId();
         } else {
-            systemView.ownerColor = Color.black;
-            systemView.ownerId = -1l;
+            systemState.ownerColor = Color.black;
+            systemState.ownerId = -1l;
         }
 
-        return systemView;
+        return systemState;
     }
 
 //    public void removeShip(Ship ship) {

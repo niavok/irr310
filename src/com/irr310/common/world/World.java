@@ -7,9 +7,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.ReentrantLock;
 
 import com.irr310.common.world.item.Item;
+import com.irr310.common.world.state.FactionState;
+import com.irr310.common.world.state.PlayerState;
 import com.irr310.common.world.upgrade.Upgrade;
-import com.irr310.common.world.view.FactionView;
-import com.irr310.common.world.view.PlayerView;
 
 public class World {
 
@@ -62,13 +62,13 @@ public class World {
         return factions;
     }
     
-    public Player loadPlayer(PlayerView playerView) {
+    public Player loadPlayer(PlayerState playerView) {
         if (playerIdMap.containsKey(playerView.id)) {
             return playerIdMap.get(playerView.id);
         }
 
         Player player = new Player(this, playerView.id, playerView.login);
-        player.fromView(playerView);
+        player.fromState(playerView);
         addPlayer(player);
         return player;
     }
@@ -119,9 +119,9 @@ public class World {
 
 
 
-    public Faction getFaction(FactionView factionView) {
+    public Faction getFaction(FactionState factionView) {
         for(Faction faction: factions) {
-            if(faction.isView(factionView)) {
+            if(faction.isState(factionView)) {
                 return faction;
             }
         }

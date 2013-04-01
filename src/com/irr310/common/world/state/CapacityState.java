@@ -1,4 +1,4 @@
-package com.irr310.common.world.view;
+package com.irr310.common.world.state;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import com.irr310.common.network.NetworkListField;
 import com.irr310.common.tools.Vec3;
 
 @NetworkClass
-public class CapacityView {
+public class CapacityState {
 
     @NetworkField
     public long id;

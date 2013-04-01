@@ -1,4 +1,4 @@
-package com.irr310.common.world.view;
+package com.irr310.common.world.state;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,11 +8,11 @@ import com.irr310.common.network.NetworkField;
 import com.irr310.common.network.NetworkListField;
 
 @NetworkClass
-public class FactionAvailableProductListView {
+public class FactionAvailableProductListState {
 
     @NetworkField
     public long factionId;
     
-    @NetworkListField(ProductView.class)
-    public List<ProductView> products = new ArrayList<ProductView>();
+    @NetworkListField(ProductState.class)
+    public List<ProductState> products = new ArrayList<ProductState>();
 }

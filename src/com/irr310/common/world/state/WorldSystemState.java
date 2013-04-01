@@ -1,4 +1,4 @@
-package com.irr310.common.world.view;
+package com.irr310.common.world.state;
 
 import com.irr310.common.network.NetworkClass;
 import com.irr310.common.network.NetworkField;
@@ -6,7 +6,7 @@ import com.irr310.common.tools.Vec2;
 import com.irr310.i3d.Color;
 
 @NetworkClass
-public class WorldSystemView {
+public class WorldSystemState {
 
     @NetworkField
     public long id;

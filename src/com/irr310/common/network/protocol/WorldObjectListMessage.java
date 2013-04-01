@@ -4,22 +4,22 @@ import java.util.List;
 
 import com.irr310.common.network.NetworkListField;
 import com.irr310.common.network.NetworkMessage;
-import com.irr310.common.world.view.CelestialObjectView;
-import com.irr310.common.world.view.ShipView;
+import com.irr310.common.world.state.CelestialObjectState;
+import com.irr310.common.world.state.ShipState;
 
 public class WorldObjectListMessage extends NetworkMessage {
 
-    @NetworkListField(CelestialObjectView.class)
-    public List<CelestialObjectView> celestialObjectList;
+    @NetworkListField(CelestialObjectState.class)
+    public List<CelestialObjectState> celestialObjectList;
     
-    @NetworkListField(ShipView.class)
-    public List<ShipView> shipsList;
+    @NetworkListField(ShipState.class)
+    public List<ShipState> shipsList;
 
     public WorldObjectListMessage() {
         super(NetworkMessageType.WORLD_OBJECT_LIST);
     }
     
-    public WorldObjectListMessage(long responseIndex,  List<CelestialObjectView> celestialObjectList, List<ShipView> shipsList) {
+    public WorldObjectListMessage(long responseIndex,  List<CelestialObjectState> celestialObjectList, List<ShipState> shipsList) {
         super(NetworkMessageType.WORLD_OBJECT_LIST);
         setResponseIndex(responseIndex);
         this.celestialObjectList = celestialObjectList;

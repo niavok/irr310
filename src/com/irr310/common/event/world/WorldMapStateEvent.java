@@ -1,18 +1,18 @@
 package com.irr310.common.event.world;
 
-import com.irr310.common.world.view.FactionView;
-import com.irr310.common.world.view.WorldMapView;
+import com.irr310.common.world.state.FactionState;
+import com.irr310.common.world.state.WorldMapState;
 
 public class WorldMapStateEvent extends WorldEvent {
 
     
-    final private WorldMapView map;
+    final private WorldMapState map;
 
-    public WorldMapStateEvent(WorldMapView map) {
+    public WorldMapStateEvent(WorldMapState map) {
         this.map = map;
     }
     
-    public WorldMapView getWorldMap() {
+    public WorldMapState getWorldMap() {
         return map;
     }
     

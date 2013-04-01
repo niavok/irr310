@@ -1,7 +1,7 @@
 package com.irr310.common.world.system;
 
 import com.irr310.common.tools.Vec3;
-import com.irr310.common.world.view.SlotView;
+import com.irr310.common.world.state.SlotState;
 
 public class Slot extends WorldEntity {
 
@@ -32,12 +32,12 @@ public class Slot extends WorldEntity {
 		return parentComponent.getAbsoluteShipPosition(position);
 	}
 
-    public SlotView toView() {
-        SlotView slotView = new SlotView();
-        slotView.id = getId();
-        slotView.componentId = parentComponent.getId();
-        slotView.partId = part.getId();
-        slotView.position = position;
-        return slotView;
+    public SlotState toState() {
+        SlotState slotState = new SlotState();
+        slotState.id = getId();
+        slotState.componentId = parentComponent.getId();
+        slotState.partId = part.getId();
+        slotState.position = position;
+        return slotState;
     }
 }

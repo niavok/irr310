@@ -1,16 +1,16 @@
 package com.irr310.common.event.world;
 
-import com.irr310.common.world.view.FactionAvailableProductListView;
+import com.irr310.common.world.state.FactionAvailableProductListState;
 
 public class FactionAvailableProductListEvent extends WorldEvent {
 
-    final private FactionAvailableProductListView factionAvailableProductList;
+    final private FactionAvailableProductListState factionAvailableProductList;
 
-    public FactionAvailableProductListEvent(FactionAvailableProductListView factionAvailableProductList) {
+    public FactionAvailableProductListEvent(FactionAvailableProductListState factionAvailableProductList) {
         this.factionAvailableProductList = factionAvailableProductList;
     }
 
-    public FactionAvailableProductListView getFactionAvailableProductList() {
+    public FactionAvailableProductListState getFactionAvailableProductList() {
         return factionAvailableProductList;
     }
 

@@ -2,7 +2,7 @@ package com.irr310.client.graphics.ether.activities.worldmap;
 
 
 
-import com.irr310.common.world.view.WorldSystemView;
+import com.irr310.common.world.state.WorldSystemState;
 import com.irr310.i3d.I3dRessourceManager;
 import com.irr310.i3d.Measure;
 import com.irr310.i3d.Measure.Axis;
@@ -13,14 +13,14 @@ import com.irr310.i3d.view.TextView.Gravity;
 
 public class SystemView extends RelativeLayout {
 
-    private final WorldSystemView system;
+    private final WorldSystemState system;
     private float size;
     private float zoom;
     private float zoomedSize;
     private SystemCircleView systemCircleView;
     private TextView textView;
 
-    public SystemView(WorldSystemView system) {
+    public SystemView(WorldSystemState system) {
         this.system = system;
         
         size = 30;
@@ -39,7 +39,7 @@ public class SystemView extends RelativeLayout {
         reshape();
     }
     
-    public WorldSystemView getSystem() {
+    public WorldSystemState getSystem() {
         return system;
     }
     

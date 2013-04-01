@@ -8,7 +8,7 @@ import com.irr310.common.event.world.FactionStateEvent;
 import com.irr310.common.event.world.QueryFactionStateEvent;
 import com.irr310.common.event.world.WorldEventDispatcher;
 import com.irr310.common.event.world.WorldEventVisitor;
-import com.irr310.common.world.view.FactionView;
+import com.irr310.common.world.state.FactionState;
 import com.irr310.i3d.Bundle;
 import com.irr310.i3d.Handler;
 import com.irr310.i3d.Intent;
@@ -79,7 +79,7 @@ public class BoardActivity extends Activity {
         
     }
 
-    protected void updateFields(FactionView faction) {
+    protected void updateFields(FactionState faction) {
         boardStatersAmountTextView.setText(faction.statersAmount+" [staters@icons]");
         boardOresAmountTextView.setText(faction.oresAmount+" [ores@icons]");
         boardKoliumAmountTextView.setText(faction.koliumAmount+" [kolium@icons]");
@@ -108,7 +108,7 @@ public class BoardActivity extends Activity {
             
             switch(message.what) {
                 case UPDATE_FACTION_WHAT:
-                    updateFields((FactionView) message.obj);
+                    updateFields((FactionState) message.obj);
                     break;
             }
             

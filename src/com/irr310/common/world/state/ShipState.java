@@ -1,4 +1,4 @@
-package com.irr310.common.world.view;
+package com.irr310.common.world.state;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,21 +9,21 @@ import com.irr310.common.network.NetworkListField;
 import com.irr310.common.network.NetworkOptionalField;
 
 @NetworkClass
-public class ShipView {
+public class ShipState {
 
     @NetworkField
     public long id;
 
-    @NetworkListField(LinkView.class)
-    public List<LinkView> links = new ArrayList<LinkView>();
+    @NetworkListField(LinkState.class)
+    public List<LinkState> links = new ArrayList<LinkState>();
 
-    @NetworkListField(ComponentView.class)
-    public List<ComponentView> components = new ArrayList<ComponentView>();
+    @NetworkListField(ComponentState.class)
+    public List<ComponentState> components = new ArrayList<ComponentState>();
 
     //@NetworkOptionalField
     //public KernelCapacity kernel;
 
     @NetworkOptionalField
-    public PlayerView owner;
+    public PlayerState owner;
 
 }

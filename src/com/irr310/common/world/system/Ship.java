@@ -15,7 +15,7 @@ import com.irr310.common.world.Player;
 import com.irr310.common.world.World;
 import com.irr310.common.world.capacity.KernelCapacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
-import com.irr310.common.world.view.ShipView;
+import com.irr310.common.world.state.ShipState;
 import com.irr310.server.SystemEngine;
 
 public class Ship extends WorldEntity implements Container {
@@ -121,23 +121,23 @@ public class Ship extends WorldEntity implements Container {
         return owner;
     }
 
-    public ShipView toView() {
-        ShipView shipView = new ShipView();
-        shipView.id = getId();
+    public ShipState toState() {
+        ShipState shipState = new ShipState();
+        shipState.id = getId();
 //        shipView.owner = owner.toView();
 
         for (Link link : links) {
-            shipView.links.add(link.toView());
+            shipState.links.add(link.toState());
         }
 
         for (Component component : components) {
-            shipView.components.add(component.toView());
+            shipState.components.add(component.toState());
         }
 
-        return shipView;
+        return shipState;
     }
 
-    public void fromView(ShipView shipView) {
+    public void fromState(ShipState shipState) {
         World world = systemEngine.getWorld();
 //        setOwner(world.loadPlayer(shipView.owner));
 //

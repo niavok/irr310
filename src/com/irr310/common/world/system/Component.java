@@ -11,10 +11,10 @@ import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.World;
 import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.capacity.Capacity.CapacityType;
-import com.irr310.common.world.view.CapacityView;
-import com.irr310.common.world.view.ComponentView;
-import com.irr310.common.world.view.PartView;
-import com.irr310.common.world.view.SlotView;
+import com.irr310.common.world.state.CapacityState;
+import com.irr310.common.world.state.ComponentState;
+import com.irr310.common.world.state.PartState;
+import com.irr310.common.world.state.SlotState;
 
 
 public final class  Component extends WorldObject {
@@ -168,8 +168,8 @@ public final class  Component extends WorldObject {
 		return tmp.getTranslation();
 	}
 
-    public ComponentView toView() {
-        ComponentView componentView = new ComponentView();
+    public ComponentState toState() {
+        ComponentState componentView = new ComponentState();
         
         componentView.id = getId();
         componentView.name = getName();
@@ -186,46 +186,46 @@ public final class  Component extends WorldObject {
         componentView.quality = quality;
         
         for(Part part: parts) {
-            componentView.parts.add(part.toView());    
+            componentView.parts.add(part.toState());    
         }
         
         for(Slot slot: slots) {
-            componentView.slots.add(slot.toView());    
+            componentView.slots.add(slot.toState());    
         }
         
         for(Capacity capacity: capacities) {
-            componentView.capacities.add(capacity.toView());    
+            componentView.capacities.add(capacity.toState());    
         }
         
         return componentView;
     }
 
-    public void fromView(ComponentView componentView) {
-        shipPosition = componentView.shipPosition;
-        shipRotation = componentView.shipRotation;
-        quality = componentView.quality;
+    public void fromState(ComponentState componentState) {
+        shipPosition = componentState.shipPosition;
+        shipRotation = componentState.shipRotation;
+        quality = componentState.quality;
 
         // WorldObject properties
-        setSkin(componentView.skin);
-        setDurabilityMax(componentView.durabilityMax);
-        setDurability(componentView.durability);
-        setPhysicalResistance(componentView.physicalResistance);
-        setHeatResistance(componentView.heatResistance);
+        setSkin(componentState.skin);
+        setDurabilityMax(componentState.durabilityMax);
+        setDurability(componentState.durability);
+        setPhysicalResistance(componentState.physicalResistance);
+        setHeatResistance(componentState.heatResistance);
         
         
         computeEfficiency();
         
-        for(PartView part: componentView.parts) {
+        for(PartState part: componentState.parts) {
             addPart(system.loadPart(part, this));
         }
         
-        for(SlotView slot: componentView.slots) {
+        for(SlotState slot: componentState.slots) {
             addSlot(slot.id, system.getPartById(slot.partId), slot.position);
         }
         
-        for(CapacityView capacityView: componentView.capacities) {
+        for(CapacityState capacityView: componentState.capacities) {
             Capacity capacity = Capacity.createFromType(getWorld(), capacityView.id,  CapacityType.values()[capacityView.type]);
-            capacity.fromView(capacityView);
+            capacity.fromState(capacityView);
             addCapacity(capacity);
         }
         

@@ -92,7 +92,7 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements WorldEven
     private void doTick() {
         for(Faction faction: world.getFactions()) {
             productionManager.doTick(faction.getProduction());
-            engineManager.sendToAll(new FactionProductionStateEvent(faction.getProduction().toView()));
+            engineManager.sendToAll(new FactionProductionStateEvent(faction.getProduction().toState()));
         }
     }
 
@@ -109,7 +109,7 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements WorldEven
         }
         
         for(Faction faction: world.getFactions()) {
-            engineManager.sendToAll(new FactionStateEvent(faction.toView()));
+            engineManager.sendToAll(new FactionStateEvent(faction.toState()));
             
         }
         
@@ -173,40 +173,40 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements WorldEven
         @Override
         public void visit(QueryFactionStateEvent event) {
             Faction faction = world.getFaction(event.getFaction());
-            engineManager.sendToAll(new FactionStateEvent(faction.toView()));
+            engineManager.sendToAll(new FactionStateEvent(faction.toState()));
         }
         
         @Override
         public void visit(QueryFactionProductionStateEvent event) {
             Faction faction = world.getFaction(event.getFaction());
-            engineManager.sendToAll(new FactionProductionStateEvent(faction.getProduction().toView()));
+            engineManager.sendToAll(new FactionProductionStateEvent(faction.getProduction().toState()));
         }
         
         @Override
         public void visit(QueryFactionAvailableProductListEvent event) {
             Faction faction = world.getFaction(event.getFaction());
-            engineManager.sendToAll(new FactionAvailableProductListEvent(faction.getAvailableProductList().toView()));
+            engineManager.sendToAll(new FactionAvailableProductListEvent(faction.getAvailableProductList().toState()));
         }
         
         @Override
         public void visit(QueryWorldMapStateEvent event) {
-            engineManager.sendToAll(new WorldMapStateEvent(world.getMap().toView()));
+            engineManager.sendToAll(new WorldMapStateEvent(world.getMap().toState()));
         }
         
         @Override
         public void visit(ActionBuyFactionFactoryCapacityEvent event) {
             Faction faction = world.getFaction(event.getFaction());
             productionManager.buyFactoryCapacity(faction.getProduction(), event.getCount());
-            engineManager.sendToAll(new FactionProductionStateEvent(faction.getProduction().toView()));
-            engineManager.sendToAll(new FactionStateEvent(faction.toView()));
+            engineManager.sendToAll(new FactionProductionStateEvent(faction.getProduction().toState()));
+            engineManager.sendToAll(new FactionStateEvent(faction.toState()));
         }
         
         @Override
         public void visit(ActionSellFactionFactoryCapacityEvent event) {
             Faction faction = world.getFaction(event.getFaction());
             productionManager.sellFactoryCapacity(faction.getProduction(), event.getCount());
-            engineManager.sendToAll(new FactionProductionStateEvent(faction.getProduction().toView()));
-            engineManager.sendToAll(new FactionStateEvent(faction.toView()));
+            engineManager.sendToAll(new FactionProductionStateEvent(faction.getProduction().toState()));
+            engineManager.sendToAll(new FactionStateEvent(faction.toState()));
         }
     }
     

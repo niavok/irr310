@@ -3,10 +3,10 @@ package com.irr310.common.world;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.irr310.common.world.state.FactionState;
 import com.irr310.common.world.system.Ship;
 import com.irr310.common.world.system.WorldEntity;
 import com.irr310.common.world.system.WorldSystem;
-import com.irr310.common.world.view.FactionView;
 import com.irr310.i3d.Color;
 
 public class Faction extends WorldEntity{
@@ -109,26 +109,26 @@ public class Faction extends WorldEntity{
         this.statersAmount = statersAmount;
     }
     
-    public FactionView toView() {
-        FactionView factionView = new FactionView();
-        factionView.id = getId();
-        factionView.statersAmount = statersAmount;
-        factionView.oresAmount = oresAmount;
-        factionView.koliumAmount = koliumAmount;
-        factionView.neuridiumAmount = neuridiumAmount;
-        factionView.color = color;
-        factionView.homeSystemId = homeSystem.getId();
+    public FactionState toState() {
+        FactionState factionState = new FactionState();
+        factionState.id = getId();
+        factionState.statersAmount = statersAmount;
+        factionState.oresAmount = oresAmount;
+        factionState.koliumAmount = koliumAmount;
+        factionState.neuridiumAmount = neuridiumAmount;
+        factionState.color = color;
+        factionState.homeSystemId = homeSystem.getId();
         
-        factionView.knownSystemIds = new ArrayList<Long>(); 
+        factionState.knownSystemIds = new ArrayList<Long>(); 
         for(WorldSystem system: knownSystems) {
-            factionView.knownSystemIds.add(system.getId());
+            factionState.knownSystemIds.add(system.getId());
         }
 
-        return factionView;
+        return factionState;
     }
     
-    public boolean isView(FactionView factionView) {
-        return getId() == factionView.id;
+    public boolean isState(FactionState factionState) {
+        return getId() == factionState.id;
     }
 
     public boolean takeStaters(long price) {

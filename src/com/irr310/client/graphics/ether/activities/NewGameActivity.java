@@ -79,7 +79,7 @@ public class NewGameActivity extends Activity {
     private final class NewGameEventVisitor extends DefaultWorldEventVisitor {
          @Override
         public void visit(PlayerConnectedEvent event) {
-             LoginManager.localPlayer = event.getPlayer().toView();
+             LoginManager.localPlayer = event.getPlayer().toState();
              handler.obtainMessage(NEW_GAME_CREATED_WHAT).send();
         }   
     }

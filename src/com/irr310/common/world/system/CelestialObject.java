@@ -1,8 +1,8 @@
 package com.irr310.common.world.system;
 
 import com.irr310.common.world.World;
-import com.irr310.common.world.view.CelestialObjectView;
-import com.irr310.common.world.view.PartView;
+import com.irr310.common.world.state.CelestialObjectState;
+import com.irr310.common.world.state.PartState;
 
 
 public class  CelestialObject extends WorldObject {
@@ -13,37 +13,37 @@ public class  CelestialObject extends WorldObject {
 	    super(world, id, name);
 	}
 
-    public CelestialObjectView toView() {
-        CelestialObjectView celestialObjectView = new CelestialObjectView();
+    public CelestialObjectState toState() {
+        CelestialObjectState celestialObjectState = new CelestialObjectState();
         
-        celestialObjectView.id = getId();
-        celestialObjectView.name = getName();
+        celestialObjectState.id = getId();
+        celestialObjectState.name = getName();
         
         // WorldObject properties    
-        celestialObjectView.skin = getSkin();
-        celestialObjectView.durabilityMax = getDurabilityMax();
-        celestialObjectView.durability = getDurability();
-        celestialObjectView.physicalResistance = getPhysicalResistance();
-        celestialObjectView.heatResistance = getHeatResistance();
+        celestialObjectState.skin = getSkin();
+        celestialObjectState.durabilityMax = getDurabilityMax();
+        celestialObjectState.durability = getDurability();
+        celestialObjectState.physicalResistance = getPhysicalResistance();
+        celestialObjectState.heatResistance = getHeatResistance();
 
         for(Part part: parts) {
-            celestialObjectView.parts.add(part.toView());    
+            celestialObjectState.parts.add(part.toState());    
         }
         
-        return celestialObjectView;
+        return celestialObjectState;
     }
 
-    public void fromView(CelestialObjectView celestialObjectView) {
+    public void fromState(CelestialObjectState celestialObjectState) {
 
         // World objectProperties
-        setSkin(celestialObjectView.skin);
-        setDurabilityMax(celestialObjectView.durabilityMax);
-        setDurability(celestialObjectView.durability);
-        setPhysicalResistance(celestialObjectView.physicalResistance);
-        setHeatResistance(celestialObjectView.heatResistance);
+        setSkin(celestialObjectState.skin);
+        setDurabilityMax(celestialObjectState.durabilityMax);
+        setDurability(celestialObjectState.durability);
+        setPhysicalResistance(celestialObjectState.physicalResistance);
+        setHeatResistance(celestialObjectState.heatResistance);
 
         
-        for(PartView part: celestialObjectView.parts) {
+        for(PartState part: celestialObjectState.parts) {
             addPart(system.loadPart(part, this));
         }
     }

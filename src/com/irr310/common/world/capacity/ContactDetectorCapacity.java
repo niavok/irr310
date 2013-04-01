@@ -1,8 +1,8 @@
 package com.irr310.common.world.capacity;
 
 import com.irr310.common.world.World;
+import com.irr310.common.world.state.CapacityState;
 import com.irr310.common.world.system.Ship;
-import com.irr310.common.world.view.CapacityView;
 
 public class ContactDetectorCapacity extends Capacity {
 
@@ -23,8 +23,8 @@ public class ContactDetectorCapacity extends Capacity {
     }
 
     @Override
-    public CapacityView toView() {
-        CapacityView view = new CapacityView();
+    public CapacityState toState() {
+        CapacityState view = new CapacityState();
         view.id = getId();
         view.name = getName();
         view.type = CapacityType.LINEAR_ENGINE.ordinal();
@@ -34,7 +34,7 @@ public class ContactDetectorCapacity extends Capacity {
     }
 
     @Override
-    public void fromView(CapacityView view) {
+    public void fromState(CapacityState view) {
         setName(view.name);
         //TODO
     }

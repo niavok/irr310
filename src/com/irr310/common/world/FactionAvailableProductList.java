@@ -2,8 +2,8 @@ package com.irr310.common.world;
 
 import java.util.ArrayList;
 
-import com.irr310.common.world.view.FactionAvailableProductListView;
-import com.irr310.common.world.view.ProductView;
+import com.irr310.common.world.state.FactionAvailableProductListState;
+import com.irr310.common.world.state.ProductState;
 
 public class FactionAvailableProductList {
 
@@ -17,18 +17,18 @@ public class FactionAvailableProductList {
         return faction;
     }
 
-    public FactionAvailableProductListView toView() {
-        FactionAvailableProductListView factionAvailableProductListView = new FactionAvailableProductListView();
-        factionAvailableProductListView.factionId = faction.getId();
+    public FactionAvailableProductListState toState() {
+        FactionAvailableProductListState factionAvailableProductListState = new FactionAvailableProductListState();
+        factionAvailableProductListState.factionId = faction.getId();
 
-        factionAvailableProductListView.products = new ArrayList<ProductView>();
+        factionAvailableProductListState.products = new ArrayList<ProductState>();
         
-        ProductView productView1 = new ProductView(); 
-        ProductView productView2 = new ProductView();
-        ProductView productView3 = new ProductView();
-        ProductView productView4 = new ProductView(); 
-        ProductView productView5 = new ProductView();
-        ProductView productView6 = new ProductView();
+        ProductState productView1 = new ProductState(); 
+        ProductState productView2 = new ProductState();
+        ProductState productView3 = new ProductState();
+        ProductState productView4 = new ProductState(); 
+        ProductState productView5 = new ProductState();
+        ProductState productView6 = new ProductState();
         
         productView1.name = "Fighter X34";
         productView2.name = "Light Machine gun";
@@ -37,14 +37,14 @@ public class FactionAvailableProductList {
         productView5.name = "Heavy Machine gun";
         productView6.name = "Structural bar 2m";
         
-        factionAvailableProductListView.products.add(productView1);
-        factionAvailableProductListView.products.add(productView2);
-        factionAvailableProductListView.products.add(productView3);
-        factionAvailableProductListView.products.add(productView4);
-        factionAvailableProductListView.products.add(productView5);
-        factionAvailableProductListView.products.add(productView6);
+        factionAvailableProductListState.products.add(productView1);
+        factionAvailableProductListState.products.add(productView2);
+        factionAvailableProductListState.products.add(productView3);
+        factionAvailableProductListState.products.add(productView4);
+        factionAvailableProductListState.products.add(productView5);
+        factionAvailableProductListState.products.add(productView6);
         
-        return factionAvailableProductListView;
+        return factionAvailableProductListState;
     }
     
 }

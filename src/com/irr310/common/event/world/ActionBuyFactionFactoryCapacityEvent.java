@@ -1,19 +1,19 @@
 package com.irr310.common.event.world;
 
-import com.irr310.common.world.view.FactionView;
+import com.irr310.common.world.state.FactionState;
 
 public class ActionBuyFactionFactoryCapacityEvent extends WorldEvent {
 
     
-    final private FactionView faction;
+    final private FactionState faction;
     private final long count;
 
-    public ActionBuyFactionFactoryCapacityEvent(FactionView faction, long count) {
+    public ActionBuyFactionFactoryCapacityEvent(FactionState faction, long count) {
         this.faction = faction;
         this.count = count;
     }
     
-    public FactionView getFaction() {
+    public FactionState getFaction() {
         return faction;
     }
     

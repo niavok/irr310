@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import com.irr310.common.world.state.FactionProductionState;
+import com.irr310.common.world.state.FactionState;
 import com.irr310.common.world.system.WorldSystem;
-import com.irr310.common.world.view.FactionProductionView;
-import com.irr310.common.world.view.FactionView;
 
 public class FactionProduction {
 
@@ -83,17 +83,17 @@ public class FactionProduction {
         this.factoryCapacityActiveList = factoryCapacityActiveList;
     }
 
-    public FactionProductionView toView() {
-        FactionProductionView factionProductionView = new FactionProductionView();
-        factionProductionView.factionId = faction.getId();
-        factionProductionView.factoryCapacity = factoryCapacity;
-        factionProductionView.incomingCapacity = computeIncomingCapacity();
-        factionProductionView.nextFactoryCapacityIncreaseTicks = nextFactoryCapacityIncreaseTicks;
-        factionProductionView.maintenanceAmount = factoryCapacity * FACTORY_MAINTENANCE_PRICE;
-        factionProductionView.factoryRentCapacity = 0; 
-        factionProductionView.factoryTotalCapacity = factoryCapacity;
+    public FactionProductionState toState() {
+        FactionProductionState factionProductionState = new FactionProductionState();
+        factionProductionState.factionId = faction.getId();
+        factionProductionState.factoryCapacity = factoryCapacity;
+        factionProductionState.incomingCapacity = computeIncomingCapacity();
+        factionProductionState.nextFactoryCapacityIncreaseTicks = nextFactoryCapacityIncreaseTicks;
+        factionProductionState.maintenanceAmount = factoryCapacity * FACTORY_MAINTENANCE_PRICE;
+        factionProductionState.factoryRentCapacity = 0; 
+        factionProductionState.factoryTotalCapacity = factoryCapacity;
 
-        return factionProductionView;
+        return factionProductionState;
     }
 
     private long computeIncomingCapacity() {

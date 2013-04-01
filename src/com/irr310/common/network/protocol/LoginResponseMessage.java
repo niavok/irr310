@@ -3,7 +3,7 @@ package com.irr310.common.network.protocol;
 import com.irr310.common.network.NetworkField;
 import com.irr310.common.network.NetworkMessage;
 import com.irr310.common.network.NetworkOptionalField;
-import com.irr310.common.world.view.PlayerView;
+import com.irr310.common.world.state.PlayerState;
 
 public class LoginResponseMessage extends NetworkMessage {
 
@@ -14,13 +14,13 @@ public class LoginResponseMessage extends NetworkMessage {
     public String reason;
 
     @NetworkOptionalField
-    public PlayerView player;
+    public PlayerState player;
 
     public LoginResponseMessage() {
         super(NetworkMessageType.LOGIN_RESPONSE);
     }
     
-    public LoginResponseMessage(long responseIndex, boolean success, String reason, PlayerView player) {
+    public LoginResponseMessage(long responseIndex, boolean success, String reason, PlayerState player) {
         super(NetworkMessageType.LOGIN_RESPONSE);
         setResponseIndex(responseIndex);
         this.player = player;

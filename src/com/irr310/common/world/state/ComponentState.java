@@ -1,4 +1,4 @@
-package com.irr310.common.world.view;
+package com.irr310.common.world.state;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import com.irr310.common.network.NetworkListField;
 import com.irr310.common.tools.Vec3;
 
 @NetworkClass
-public class ComponentView {
+public class ComponentState {
 
     @NetworkField
     public long id;
@@ -20,14 +20,14 @@ public class ComponentView {
     @NetworkField
     public String skin;
     
-    @NetworkListField(PartView.class)
-    public List<PartView> parts = new ArrayList<PartView>();
+    @NetworkListField(PartState.class)
+    public List<PartState> parts = new ArrayList<PartState>();
 
-    @NetworkListField(SlotView.class)
-    public List<SlotView> slots = new ArrayList<SlotView>();
+    @NetworkListField(SlotState.class)
+    public List<SlotState> slots = new ArrayList<SlotState>();
     
-    @NetworkListField(CapacityView.class)
-    public List<CapacityView> capacities = new ArrayList<CapacityView>();
+    @NetworkListField(CapacityState.class)
+    public List<CapacityState> capacities = new ArrayList<CapacityState>();
     
     @NetworkField
     public Vec3 shipPosition;

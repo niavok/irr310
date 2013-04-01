@@ -1,11 +1,11 @@
-package com.irr310.common.world.view;
+package com.irr310.common.world.state;
 
 import com.irr310.common.network.NetworkClass;
 import com.irr310.common.network.NetworkField;
 import com.irr310.common.network.NetworkOptionalField;
 
 @NetworkClass
-public class PlayerView {
+public class PlayerState {
 
     @NetworkField
     public long id;
@@ -14,6 +14,6 @@ public class PlayerView {
     public String login;
 
     @NetworkOptionalField
-    public FactionView faction;
+    public FactionState faction;
     
 }

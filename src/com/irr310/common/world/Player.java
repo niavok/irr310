@@ -8,11 +8,11 @@ import org.apache.commons.lang3.RandomStringUtils;
 import com.irr310.common.tools.Hash;
 import com.irr310.common.world.item.ItemSlot;
 import com.irr310.common.world.item.ShipSchema;
+import com.irr310.common.world.state.PlayerState;
 import com.irr310.common.world.system.WorldEntity;
 import com.irr310.common.world.system.Ship;
 import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
-import com.irr310.common.world.view.PlayerView;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 
@@ -66,16 +66,16 @@ public class Player extends WorldEntity {
         this.human = human;
     }
 
-    public PlayerView toView() {
-        PlayerView playerView = new PlayerView();
+    public PlayerState toState() {
+        PlayerState playerView = new PlayerState();
         playerView.id = getId();
         playerView.login = login;
-        playerView.faction = faction.toView();
+        playerView.faction = faction.toState();
         return playerView;
     }
 
-    public void fromView(PlayerView playerView) {
-        login = playerView.login;
+    public void fromState(PlayerState playerState) {
+        login = playerState.login;
     }
 
     
