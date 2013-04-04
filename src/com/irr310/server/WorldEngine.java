@@ -31,6 +31,7 @@ import com.irr310.common.event.world.WorldEvent;
 import com.irr310.common.event.world.WorldEventDispatcher;
 import com.irr310.common.event.world.WorldEventVisitor;
 import com.irr310.common.event.world.WorldMapStateEvent;
+import com.irr310.common.tools.Log;
 import com.irr310.common.tools.Vec2;
 import com.irr310.common.world.Faction;
 import com.irr310.common.world.WorldMap;
@@ -39,6 +40,8 @@ import com.irr310.common.world.World;
 import com.irr310.common.world.item.BuildingItemFactory;
 import com.irr310.common.world.item.NexusItem;
 import com.irr310.common.world.system.WorldSystem;
+import com.irr310.i3d.RessourceLoadingException;
+import com.irr310.server.world.product.ProductManager;
 
 public class WorldEngine extends FramerateEngine<GameEvent> implements WorldEventDispatcher  {
 
@@ -117,7 +120,8 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements WorldEven
     
     @Override
     protected void onInit() {
-        initWorld();
+        initWorld();    
+        
         tickDuration = new Duration(1000000000l); // 1s
         turnDuration = new Duration(10000000000l); // 10s
         nextTickTime = Time.now(true);
@@ -273,6 +277,14 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements WorldEven
             availableHome.add(map.nearestSystemTo(location));
         }
         
+        // Init products
+        ProductManager productManager = new ProductManager();
+        try {
+            productManager.init();    
+        } catch(RessourceLoadingException e) {
+            Log.warn("Fail to load products world correctly", e);
+        }
+        
         
         // Init faction
         for(int i = 0; i < factionCount; i++) {
@@ -282,6 +294,7 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements WorldEven
             availableHome.remove(homeIndex);
             
             Faction faction = new Faction(world, GameServer.pickNewId());
+            faction.getAvailableProductList().setProductManager(productManager);
             faction.setHomeSystem(system);
             system.setHomeSystem(true);
             

@@ -117,7 +117,7 @@ public class UiEngine extends FramerateEngine<GameEvent> {
             float fps = (float) frameCount / 5.0f;
             float load = 100* usedDuration.getSeconds() / totalDuration.getSeconds();
             
-            Log.console("fps="+fps+" | load="+load+"%");
+//            Log.console("fps="+fps+" | load="+load+"%");
             
             usedDuration  = new Duration(0);
             totalDuration  = new Duration(0);

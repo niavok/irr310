@@ -3,6 +3,8 @@ package com.irr310.common.tools;
 import java.text.DecimalFormat;
 import java.util.Stack;
 
+import org.xml.sax.SAXException;
+
 public class Log {
     
     private static Stack<LogBegin> logBeginStack = new Stack<Log.LogBegin>(); 
@@ -110,8 +112,28 @@ public class Log {
         throw new RuntimeException(string);
     }
     
-    public static void warn(String string) {
+    public static void bug(String string) {
         System.err.println(string);
         Thread.dumpStack();
+    }
+    
+    public static void warn(String string) {
+        System.err.println(string);
+    }
+
+    public static void error(String string, Throwable  e) {
+        System.err.println(string);
+        throw new RuntimeException(string,e);
+    }
+    
+    public static void bug(String string, Throwable  e) {
+        System.err.println(string);
+        e.printStackTrace();
+        Thread.dumpStack();
+    }
+    
+    public static void warn(String string, Throwable  e) {
+        System.err.println(string);
+        e.printStackTrace();
     }
 }

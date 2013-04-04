@@ -1,5 +1,8 @@
-<items>
-    <component id="kernel1" >
+<products>
+    <component id="kernel1"
+		name="Kernel"
+		code="K1"
+		description="Basic kernel. Control point of the ship and embed basic sensors." >
 
         <production
             factoryCost="100"
@@ -24,7 +27,10 @@
         </parts>
     </component>
 
-    <component id="mediumBattery1" >
+    <component id="mediumBattery1"
+		name="Battery"
+		code="BT5"
+		description="Standard battery for autonomous and small electric powerd ship. Heavy and big." >
 
         <production
             factoryCost="200"
@@ -51,7 +57,10 @@
         </parts>
     </component>
 
-    <component id="smallPropeller1" >
+    <component id="smallPropeller1"
+		name="Propeller"
+		code="PR1"
+		description="Small propeller. Consume electical power.Low power, low resistance but cheap." >
 
         <production
             factoryCost="300"
@@ -82,4 +91,4 @@
         </capacities>
     </component>
 
-</items>
+</products>

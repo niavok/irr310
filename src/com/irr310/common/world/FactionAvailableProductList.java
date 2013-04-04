@@ -4,13 +4,19 @@ import java.util.ArrayList;
 
 import com.irr310.common.world.state.FactionAvailableProductListState;
 import com.irr310.common.world.state.ProductState;
+import com.irr310.server.world.product.ProductManager;
 
 public class FactionAvailableProductList {
 
     private final Faction faction;
+    private ProductManager productManager;
     
     public FactionAvailableProductList(Faction faction) {
         this.faction = faction;
+    }
+
+    public void setProductManager(ProductManager productManager) {
+        this.productManager = productManager;
     }
     
     public Faction getFaction() {
