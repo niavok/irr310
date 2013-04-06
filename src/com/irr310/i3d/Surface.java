@@ -8,6 +8,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
 import com.irr310.common.tools.Log;
+import com.irr310.common.tools.RessourceLoadingException;
 import com.irr310.i3d.view.Activity;
 import com.irr310.i3d.view.Point;
 import com.irr310.server.Time;

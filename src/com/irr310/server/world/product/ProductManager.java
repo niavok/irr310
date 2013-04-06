@@ -20,7 +20,11 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.irr310.common.tools.Log;
-import com.irr310.i3d.RessourceLoadingException;
+import com.irr310.common.tools.RessourceLoadingException;
+import com.irr310.common.tools.Vec3;
+import com.irr310.server.world.product.ComponentProduct.ComponentPartProduct;
+import com.irr310.server.world.product.ComponentProduct.PartShapeProduct;
+import com.irr310.server.world.product.ComponentProduct.PartShapeProduct.ShapeType;
 
 public class ProductManager {
 
@@ -113,7 +117,7 @@ public class ProductManager {
 
     
     private ComponentProduct parseComponentProduct(Element element) {
-        ComponentProduct product = new ComponentProduct();
+        ComponentProduct component = new ComponentProduct();
 
         NamedNodeMap attributes = element.getAttributes();
         for (int i = 0; i < attributes.getLength(); i++) {
@@ -122,14 +126,35 @@ public class ProductManager {
             String attrName = attr.getName();
             String attrValue = attr.getValue();
 
-            if (checkProductCommonAttrs(attrName, attrValue, product)) {
-            } else if (checkComponentAttrs(attrName, attrValue, product)) {
+            if (checkProductCommonAttrs(attrName, attrValue, component)) {
+            } else if (checkComponentAttrs(attrName, attrValue, component)) {
             } else {
                 throw new RessourceLoadingException("Unknown attrib '" + attrName + "=" + attrValue + "' for ComponentProduct");
             }
         }
         
-        return product;
+        NodeList childNodes = element.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            Node node = childNodes.item(i);
+            if (node.getNodeType() != Node.ELEMENT_NODE) {
+                // TODO error
+                continue;
+            }
+            Element subElement = (Element) node;
+            if (subElement.getNodeName().equals("parts")) {
+                parseComponentProductParts(subElement, component);
+            } else if (subElement.getNodeName().equals("specifications")) {
+                Log.warn("TODO : parse specifications");
+            } else if (subElement.getNodeName().equals("production")) {
+                Log.warn("TODO : parse production");
+            } else if (subElement.getNodeName().equals("capacities")) {
+                Log.warn("TODO : parse capacities");
+            } else {
+                throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for tag component for component '"+component.getId()+"'");
+            }
+        }
+        
+        return component;
     }
     
     private ShipProduct parseShipProduct(Element element) {
@@ -160,10 +185,9 @@ public class ProductManager {
             if (subElement.getNodeName().equals("components")) {
                 parseShipProductComponents(subElement, ship);
             } else if (subElement.getNodeName().equals("links")) {
-                //parseShipProductLinks(subElement, ship);
-                Log.warn("TODO : parse links");
+                parseShipProductLinks(subElement, ship);
             } else {
-                Log.error("Unknown tag for tag ship: " + subElement.getNodeName());
+                throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for tag ship for ship '"+ship.getId()+"'");
             }
         }
         
@@ -184,7 +208,7 @@ public class ProductManager {
             if (subElement.getNodeName().equals("component")) {
                 parseShipProductComponent(subElement, ship);
             } else {
-                Log.error("Unknown tag for tag ship/components: " + subElement.getNodeName());
+                throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for tag ship/components for ship '"+ship.getId()+"'");
             }
         }        
     }
@@ -196,7 +220,161 @@ public class ProductManager {
         String ref = element.getAttribute("ref");
         ship.addComponent(key, ref);
     }
+    
+    private void parseShipProductLinks(Element element, ShipProduct ship) {
+        NodeList childNodes = element.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            Node node = childNodes.item(i);
+            if (node.getNodeType() != Node.ELEMENT_NODE) {
+                // TODO error
+                continue;
+            }
+            Element subElement = (Element) node;
+            if (subElement.getNodeName().equals("link")) {
+                parseShipProductLink(subElement, ship);
+            } else {
+                throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for tag ship/components for ship '"+ship.getId()+"'");
+            }
+        }        
+    }
+    
+    private void parseComponentProductParts(Element element, ComponentProduct component) {
+        NodeList childNodes = element.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            Node node = childNodes.item(i);
+            if (node.getNodeType() != Node.ELEMENT_NODE) {
+                // TODO error
+                continue;
+            }
+            Element subElement = (Element) node;
+            if (subElement.getNodeName().equals("part")) {
+                parseComponentProductPart(subElement, component);
+            } else {
+                throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for tag component/parts for component '"+component.getId()+"'");
+            }
+        }        
+    }
+    
+    private void parseComponentProductPart(Element element, ComponentProduct component) {
+        ComponentPartProduct part = new ComponentPartProduct(component);
+        
+        NamedNodeMap attributes = element.getAttributes();
+        for (int i = 0; i < attributes.getLength(); i++) {
+            Node item = attributes.item(i);
+            Attr attr = (Attr) item;
+            String attrName = attr.getName();
+            String attrValue = attr.getValue();
 
+            if (attrName.equals("mass")) {
+                part.setMass(Double.parseDouble(attrValue));
+            } else if (attrName.equals("shape")) {
+                part.setShape(parseShape(attrValue));
+            } else {
+                throw new RessourceLoadingException("Unknown attrib '" + attrName + "=" + attrValue + "' for ComponentPartProduct");
+            }
+        }
+        
+        NodeList childNodes = element.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            Node node = childNodes.item(i);
+            if (node.getNodeType() != Node.ELEMENT_NODE) {
+                // TODO error
+                continue;
+            }
+            Element subElement = (Element) node;
+            if (subElement.getNodeName().equals("slots")) {
+                parseComponentProductPartSlots(subElement, part);
+            }else if (subElement.getNodeName().equals("slot")) {
+                parseComponentProductPartSlot(subElement, part);
+            } else {
+                throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for tag component/parts/part for component '"+component.getId()+"'");
+            }
+        }        
+    }
+
+    private void parseComponentProductPartSlots(Element subElement, ComponentPartProduct part) {
+        String disposition = subElement.getAttribute("disposition");
+        
+        if(disposition == null || disposition.isEmpty()) {
+            throw new RessourceLoadingException("Fail to parse slots for components '" + part.getComponent().getId()  + "' : slots tags must have a valid disposition");
+        } else if(disposition.equals("box")) {
+            Vec3 shapeSize = part.getShape().getSize();
+            part.addSlot("right", new Vec3(shapeSize.x / 2, 0, 0));
+            part.addSlot("left",new Vec3(-shapeSize.x / 2, 0, 0));
+            part.addSlot("front",new Vec3(0, shapeSize.y / 2, 0));
+            part.addSlot("back",new Vec3(0, -shapeSize.y / 2, 0));
+            part.addSlot("top",new Vec3(0, 0, shapeSize.z / 2));
+            part.addSlot("bottom", new Vec3(0, 0, -shapeSize.z / 2));
+        } else {
+            throw new RessourceLoadingException("Fail to parse slots for component '" + part.getComponent().getId()  + "' : unknown disposition '"+disposition+"'");
+        }
+    }
+    
+    private void parseComponentProductPartSlot(Element subElement, ComponentPartProduct part) {
+        String positionString= subElement.getAttribute("position");
+        String key= subElement.getAttribute("key");
+        
+        if(positionString == null || positionString.isEmpty()) {
+            throw new RessourceLoadingException("Fail to parse slot for component '" + part.getComponent().getId()  + "' : slot tags must have a valid position");
+        } else if(key == null || key.isEmpty()) {
+                throw new RessourceLoadingException("Fail to parse slot for component '" + part.getComponent().getId()  + "' : slot tags must have a valid key");
+        } else {
+            Vec3 position = parseVec3(positionString);
+            part.addSlot(key, position);
+        }
+    }
+
+    private Vec3 parseVec3(String vec3String) {
+        if(!vec3String.matches("^vec3\\(.*\\)$")) {
+            throw new RessourceLoadingException("Fail to parse vec3 '" + vec3String  + "'");
+        }
+        
+        String vec3ValuesString = vec3String.substring(5, vec3String.length()-1);
+        String[] vec3ValuesSplit = vec3ValuesString.split(",");
+        
+        if(vec3ValuesSplit.length != 3) {
+            throw new RessourceLoadingException("Fail to parse vec3 '" + vec3String  + "' : the vector size must have 3 components");
+        }
+        
+        try {
+            double x = Double.parseDouble(vec3ValuesSplit[0]);
+            double y = Double.parseDouble(vec3ValuesSplit[1]);
+            double z = Double.parseDouble(vec3ValuesSplit[2]);
+            
+            return new Vec3(x, y, z);
+        } catch(NumberFormatException e) {
+            throw new RessourceLoadingException("Fail to parse vec3 '" + vec3String  + "' : double parsing failed", e);
+        }
+        
+        
+    }
+
+
+    private PartShapeProduct parseShape(String shapeString) {
+        if(!shapeString.matches("^box\\(.*\\)$")) {
+            throw new RessourceLoadingException("Fail to parse shape '" + shapeString  + "'");
+        }
+        
+        String boxSizeString = shapeString.substring(4, shapeString.length()-1);
+        String[] boxSizeStringSplit = boxSizeString.split(",");
+        
+        if(boxSizeStringSplit.length != 3) {
+            throw new RessourceLoadingException("Fail to parse shape '" + shapeString  + "' : the box size must have 3 components");
+        }
+        
+        double sizeX = Double.parseDouble(boxSizeStringSplit[0]);
+        double sizeY = Double.parseDouble(boxSizeStringSplit[1]);
+        double sizeZ = Double.parseDouble(boxSizeStringSplit[2]);
+        
+        return new PartShapeProduct(ShapeType.BOX, new Vec3(sizeX, sizeY, sizeZ));
+    }
+
+    private void parseShipProductLink(Element element, ShipProduct ship) {
+
+        String refA = element.getAttribute("a");
+        String refB = element.getAttribute("b");
+        ship.addLink(refA, refB);
+    }
 
     private boolean checkProductCommonAttrs(String attrName, String attrValue, Product product) {
         boolean used = true;

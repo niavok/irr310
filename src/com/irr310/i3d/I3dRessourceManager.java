@@ -18,6 +18,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.irr310.common.tools.Log;
+import com.irr310.common.tools.RessourceLoadingException;
 import com.irr310.i3d.Measure.Axis;
 import com.irr310.i3d.fonts.Font;
 import com.irr310.i3d.fonts.FontFactory;

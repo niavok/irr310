@@ -8,23 +8,21 @@
             factoryCost="100"
             oreCost="50" />
 
+		<specifications
+			durability="100" />
+		
         <parts>
-
             <part
-                durability="100"
                 mass="0.125"
-                shape="(0.5,0.5,0.5)" >
+                shape="box(0.5,0.5,0.5)" >
 
                 <slots disposition="box" />
             </part>
-
-            <parts />
-
-            <capacities>
-
-                <kernelCapacity electricConsomation="1" />
-            </capacities>
-        </parts>
+		</parts>
+		
+        <capacities>
+			<kernelCapacity electricConsomation="1" />
+		</capacities>
     </component>
 
     <component id="mediumBattery1"
@@ -35,26 +33,25 @@
         <production
             factoryCost="200"
             oreCost="1500" />
+		
+		<specifications
+			durability="200" />
 
         <parts>
 
-            <part
-                durability="200"
+            <part                
                 mass="6"
-                shape="(2,3,1)" >
+                shape="box(2,3,1)" >
 
                 <slots disposition="box" />
             </part>
-
-            <parts />
-
-            <capacities>
-
-                <electricStorageCapacity
-                    capacity="80000"
-                    yield="0.3" />
-            </capacities>
-        </parts>
+		</parts>
+		<capacities>
+			<electricStorageCapacity
+				capacity="80000"
+				yield="0.3" />
+		</capacities>
+        
     </component>
 
     <component id="smallPropeller1"
@@ -66,14 +63,16 @@
             factoryCost="300"
             oreCost="250" />
 
+		<specifications
+			durability="20" />
+
         <parts>
 
             <part
-                durability="20"
                 mass="0.2"
-                shape="(1,1,1)" >
+                shape="box(1,1,1)" >
 
-                <slot position="(-0.5,0,0)" />
+                <slot key="base" position="vec3(-0.5,0,0)" />
             </part>
         </parts>
 

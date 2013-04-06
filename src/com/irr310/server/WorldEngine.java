@@ -32,6 +32,7 @@ import com.irr310.common.event.world.WorldEventDispatcher;
 import com.irr310.common.event.world.WorldEventVisitor;
 import com.irr310.common.event.world.WorldMapStateEvent;
 import com.irr310.common.tools.Log;
+import com.irr310.common.tools.RessourceLoadingException;
 import com.irr310.common.tools.Vec2;
 import com.irr310.common.world.Faction;
 import com.irr310.common.world.WorldMap;
@@ -40,7 +41,6 @@ import com.irr310.common.world.World;
 import com.irr310.common.world.item.BuildingItemFactory;
 import com.irr310.common.world.item.NexusItem;
 import com.irr310.common.world.system.WorldSystem;
-import com.irr310.i3d.RessourceLoadingException;
 import com.irr310.server.world.product.ProductManager;
 
 public class WorldEngine extends FramerateEngine<GameEvent> implements WorldEventDispatcher  {

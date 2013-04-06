@@ -1,4 +1,4 @@
-package com.irr310.i3d;
+package com.irr310.common.tools;
 
 public class RessourceLoadingException extends RuntimeException {
 

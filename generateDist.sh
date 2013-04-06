@@ -34,3 +34,9 @@ cp fonts/*.ttf dist/fonts
 # Copy firmware
 mkdir -p dist/drivers
 cp drivers/*.js dist/drivers
+
+# Copy assets
+cp -r assets dist/assets
+
+# Copy res
+cp -r res dist/res
