@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.irr310.common.tools.RessourceLoadingException;
 import com.irr310.common.tools.Vec3;
+import com.irr310.common.world.state.ProductState;
 
 public class ComponentProduct extends Product {
 
@@ -23,6 +24,18 @@ public class ComponentProduct extends Product {
         }
         
         slots.put(slotProduct.getKey(), slotProduct);
+    }
+    
+    @Override
+    public ProductState toState() {
+        ProductState productState = new ProductState();
+        productState.id = getId();
+        productState.name = getName();
+        productState.code = getCode();
+        productState.description = getDescription();
+        productState.type = ProductState.TYPE_COMPONENT;
+        
+        return productState;
     }
     
     public static class ComponentSlotProduct {
@@ -99,7 +112,5 @@ public class ComponentProduct extends Product {
             return size;
         }
     }
-
-    
     
 }

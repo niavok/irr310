@@ -3,8 +3,7 @@ package com.irr310.i3d.view;
 import org.lwjgl.opengl.GL11;
 
 import com.irr310.i3d.Graphics;
-import com.irr310.i3d.Measure;
-import com.irr310.i3d.view.BorderParams.CornerStyle;
+import com.irr310.i3d.Style;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
@@ -27,7 +26,17 @@ public abstract class View {
     private OnMouseEventListener onMouseEventListener;
     private boolean visible = true;
     private StyleRenderer styleRenderer;
+    private Style selectedStyle = new Style();
+    private Style idleStyle = new Style();
+    private ViewState state = ViewState.IDLE;
 
+    public enum ViewState {
+        IDLE,
+        OVER,
+        ACTIVE,
+        SELECTED
+    }
+    
     public View() {
         layoutParams = new LayoutParams();
         borderParams = new BorderParams();
@@ -123,6 +132,25 @@ public abstract class View {
     public LayoutParams getLayoutParams() {
         return layoutParams;
     }
+    
+    public void setState(ViewState state) {
+        if(this.state != state) {
+            this.state = state;
+            switch (state) {
+                case SELECTED:
+                    if(selectedStyle != null) {
+                        selectedStyle.apply(this);
+                    } else {
+                        idleStyle.apply(this);
+                    }
+                break;
+                case IDLE:
+                default:
+                    idleStyle.apply(this);
+                break;    
+            }
+        }
+    }
 
     void assignParent(ViewParent parent) {
         if (mParent == null) {
@@ -165,8 +193,11 @@ public abstract class View {
 
     protected void duplicateTo(View view) {
         view.setId(getId());
+        view.setSelectedStyle(selectedStyle.duplicate());
+        view.setIdleStyle(idleStyle.duplicate());
         view.setLayout(getLayoutParams().duplicate());
         view.setBorder(getBorderParams().duplicate());
+        view.getIdleStyle().apply(view);
     }
 
     public void setOnClickListener(OnClickListener onClickListener) {
@@ -223,6 +254,22 @@ public abstract class View {
 
     public void setVisible(boolean visible) {
         this.visible = visible;
+    }
+
+    public void setSelectedStyle(Style style) {
+        selectedStyle = style;
+    }
+    
+    public void setIdleStyle(Style style) {
+        idleStyle = style;
+    }
+    
+    public Style getIdleStyle() {
+        return idleStyle;
+    }
+    
+    public Style getSelectedStyle() {
+        return selectedStyle;
     }
 
 }

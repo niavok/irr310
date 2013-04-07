@@ -192,19 +192,25 @@ public class LinearLayout extends ContainerView {
     public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
         boolean used = false;
         
+        if(mouseEvent.getAction() == Action.MOUSE_CLICKED) {
+            Log.trace("mouseClick");
+        }
+        
         for (View view : children) {
             
+            
+            
             if(mouseEvent.getAction() != Action.MOUSE_DRAGGED) {
-                if(mouseEvent.getX() < view.layoutParams.mLeft - view.layoutParams.mLeftPadding || mouseEvent.getX() > view.layoutParams.mRight + view.layoutParams.mRightPadding) {
+                if(mouseEvent.getX() < view.getLayoutParams().mLeft - view.getLayoutParams().mLeftPadding || mouseEvent.getX() > view.getLayoutParams().mRight + view.getLayoutParams().mRightPadding) {
                     continue;
                 }
                 
-                if(mouseEvent.getY() < view.layoutParams.mTop - view.layoutParams.mTopPadding || mouseEvent.getY() > view.layoutParams.mBottom + view.layoutParams.mBottomPadding) {
+                if(mouseEvent.getY() < view.getLayoutParams().mTop - view.getLayoutParams().mTopPadding || mouseEvent.getY() > view.getLayoutParams().mBottom + view.getLayoutParams().mBottomPadding) {
                     continue;
                 }
             }
             
-            if(view.onMouseEvent(mouseEvent.relativeTo((int) view.layoutParams.mLeft,(int)  view.layoutParams.mTop))) {
+            if(view.onMouseEvent(mouseEvent.relativeTo((int) view.getLayoutParams().mLeft,(int)  view.getLayoutParams().mTop))) {
                 used = true;
                 break;
             }

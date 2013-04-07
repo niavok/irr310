@@ -58,6 +58,10 @@ public class ProductManager {
         
         performLinks();
     }
+    
+    public List<Product> getProducts() {
+        return products;
+    }
 
    
     private void loadProductFile(File file) {

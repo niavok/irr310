@@ -5,6 +5,8 @@ import java.util.Stack;
 
 import org.xml.sax.SAXException;
 
+import com.irr310.server.Time;
+
 public class Log {
     
     private static Stack<LogBegin> logBeginStack = new Stack<Log.LogBegin>(); 
@@ -22,7 +24,7 @@ public class Log {
     }
     
     public static void trace(String log) {
-        System.err.println(log);
+        System.err.println(""+Time.now(false).getSeconds()+": "+log);
     }
     
     public static void perfBegin(String log) {

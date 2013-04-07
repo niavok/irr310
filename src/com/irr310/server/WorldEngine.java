@@ -284,6 +284,7 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements WorldEven
         } catch(RessourceLoadingException e) {
             Log.warn("Fail to load products world correctly", e);
         }
+        world.setProductManager(productManager);
         
         
         // Init faction

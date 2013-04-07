@@ -3,8 +3,9 @@ package com.irr310.server.world.product;
 import java.util.Map;
 
 import com.irr310.common.tools.Log;
+import com.irr310.common.world.state.ProductState;
 
-public class Product {
+public abstract class Product {
 
     private String id = null;
     
@@ -70,4 +71,6 @@ public class Product {
         
         return true;
     }
+
+    public abstract ProductState toState();
 }

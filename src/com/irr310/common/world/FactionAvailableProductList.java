@@ -1,9 +1,11 @@
 package com.irr310.common.world;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.irr310.common.world.state.FactionAvailableProductListState;
 import com.irr310.common.world.state.ProductState;
+import com.irr310.server.world.product.Product;
 import com.irr310.server.world.product.ProductManager;
 
 public class FactionAvailableProductList {
@@ -11,8 +13,9 @@ public class FactionAvailableProductList {
     private final Faction faction;
     private ProductManager productManager;
     
-    public FactionAvailableProductList(Faction faction) {
+    public FactionAvailableProductList(Faction faction, ProductManager productManager) {
         this.faction = faction;
+        this.productManager = productManager;
     }
 
     public void setProductManager(ProductManager productManager) {
@@ -29,26 +32,10 @@ public class FactionAvailableProductList {
 
         factionAvailableProductListState.products = new ArrayList<ProductState>();
         
-        ProductState productView1 = new ProductState(); 
-        ProductState productView2 = new ProductState();
-        ProductState productView3 = new ProductState();
-        ProductState productView4 = new ProductState(); 
-        ProductState productView5 = new ProductState();
-        ProductState productView6 = new ProductState();
-        
-        productView1.name = "Fighter X34";
-        productView2.name = "Light Machine gun";
-        productView3.name = "Structural bar 1m";
-        productView4.name = "Fighter X35";
-        productView5.name = "Heavy Machine gun";
-        productView6.name = "Structural bar 2m";
-        
-        factionAvailableProductListState.products.add(productView1);
-        factionAvailableProductListState.products.add(productView2);
-        factionAvailableProductListState.products.add(productView3);
-        factionAvailableProductListState.products.add(productView4);
-        factionAvailableProductListState.products.add(productView5);
-        factionAvailableProductListState.products.add(productView6);
+        for(Product product: productManager.getProducts()) {
+            
+            factionAvailableProductListState.products.add(product.toState());
+        }
         
         return factionAvailableProductListState;
     }

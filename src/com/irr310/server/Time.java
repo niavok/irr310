@@ -17,8 +17,8 @@ public class Time {
 		return nanotime;
 	}
 	
-	public float getSeconds() {
-        return (float) ((double) nanotime / (double) 1000000000);
+	public double getSeconds() {
+        return (double) ((double) nanotime / (double) 1000000000);
     }
 	
 	public boolean after(Time otherTime) {

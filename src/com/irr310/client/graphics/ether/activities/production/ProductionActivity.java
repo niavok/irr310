@@ -22,6 +22,7 @@ import com.irr310.common.world.state.ProductState;
 import com.irr310.i3d.Bundle;
 import com.irr310.i3d.Handler;
 import com.irr310.i3d.Message;
+import com.irr310.i3d.SelectionManager;
 import com.irr310.i3d.view.Activity;
 import com.irr310.i3d.view.Button;
 import com.irr310.i3d.view.LinearLayout;
@@ -53,6 +54,7 @@ public class ProductionActivity extends Activity {
     private TextView factoryTimeEstimationTextView;
     private FactionAvailableProductListState availableProductList;
     private LinearLayout availableProductListLinearLayout;
+    private SelectionManager<ProductState> productSelectionManager;
     private static final int UPDATE_FACTION_WHAT = 1;
     private static final int UPDATE_PRODUCTION_WHAT = 2;
     private static final int UPDATE_AVAILABLE_PRODUCT_LIST_WHAT = 3;
@@ -84,6 +86,8 @@ public class ProductionActivity extends Activity {
         factoryOresNeedsTextView.setText("8420 [ores@icons]");
         factoryCapacityNeedsTextView.setText("3580 [factory@icons]");
         factoryTimeEstimationTextView.setText("(12 min 35s)");
+        
+        productSelectionManager = new SelectionManager<ProductState>();
         
         visitor = new DefaultWorldEventVisitor() {
 
@@ -186,8 +190,10 @@ public class ProductionActivity extends Activity {
         factoryOresTextView.setText(faction.oresAmount + " [ores@icons]");
         
         availableProductListLinearLayout.removeAllView();
+        productSelectionManager.clear();
+        
         for(ProductState product: availableProductList.products) {            
-            availableProductListLinearLayout.addChild(new AvailableProductView(product));
+            availableProductListLinearLayout.addChild(new AvailableProductView(product, productSelectionManager));
         }
         
     }

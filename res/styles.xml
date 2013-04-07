@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    
     <style name="bigButton" parent="buttonBase@styles">
         <item name="i3d:font">bigButton@fonts</item>
         <item name="i3d:layout_width">wrap_content</item>
@@ -37,6 +37,7 @@
     </style>
     
     <style name="lightBlock">
+        <item name="i3d:borderSize">0px</item>
         <item name="i3d:cornerLeftTopStyle">bevel</item>
         <item name="i3d:cornerLeftTopSize">10px</item>
         <item name="i3d:cornerRightBottomStyle">bevel</item>
@@ -48,6 +49,11 @@
         <item name="i3d:background">lightBlock@backgrounds</item>
     </style>
 
+    <style name="selectedLightBlock" parent="lightBlock@styles">
+        <item name="i3d:borderSize">3px</item>
+        <item name="i3d:borderColor">selection@color</item>
+    </style>
+    
     <style name="debugRed">
         <item name="i3d:borderSize">5px</item>
         <item name="i3d:borderColor">debugRed@color</item>

@@ -1,6 +1,7 @@
 package com.irr310.i3d.view;
 
 import com.irr310.i3d.Graphics;
+import com.irr310.i3d.Style;
 
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 
@@ -104,6 +105,27 @@ public class ProxyView extends View {
     public ViewParent getParent() {
         return client.getParent();
     }
+
+    public void setState(ViewState state) {
+        client.setState(state);
+    }
+
+    public void setSelectedStyle(Style style) {
+        client.setSelectedStyle(style);
+    }
+
+    public void setIdleStyle(Style style) {
+        client.setIdleStyle(style);
+    }
+
+    public Style getIdleStyle() {
+        return client.getIdleStyle();
+    }
+
+    public Style getSelectedStyle() {
+        return client.getSelectedStyle();
+    }
+    
     
 	    
     

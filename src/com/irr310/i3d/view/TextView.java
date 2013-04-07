@@ -175,10 +175,7 @@ public class TextView extends View {
     protected void duplicateTo(View view) {
         super.duplicateTo(view);
         TextView myView = (TextView) view;
-        myView.setTextColor(textColor);
-        myView.setGravity(gravity);
         myView.setText(text);
-        myView.setFont(font);
     }
 
     public void setText(String text) {

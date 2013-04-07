@@ -10,6 +10,7 @@ import com.irr310.common.world.item.Item;
 import com.irr310.common.world.state.FactionState;
 import com.irr310.common.world.state.PlayerState;
 import com.irr310.common.world.upgrade.Upgrade;
+import com.irr310.server.world.product.ProductManager;
 
 public class World {
 
@@ -24,6 +25,7 @@ public class World {
 
     ReentrantLock mutex;
     private WorldMap map;
+    private ProductManager productManager;
 //    private BinderServer binderServer;
 
     public World() {
@@ -126,6 +128,16 @@ public class World {
             }
         }
         return null;
+    }
+
+
+
+    public void setProductManager(ProductManager productManager) {
+        this.productManager = productManager;
+    }
+    
+    public ProductManager getProductManager() {
+        return productManager;
     }
 
 //    public BinderServer getBinderServer() {

@@ -67,6 +67,7 @@ public class Style {
     private Measure widthMeasure;
     private LayoutMeasure layoutHeightMeasure;
     private Measure heightMeasure;
+    private Style selectedStyle;
     private boolean heightMeasureDefined = false;
     private boolean layoutHeightMeasureDefined = false;
     private boolean widthMeasureDefined = false;
@@ -95,6 +96,7 @@ public class Style {
     private boolean fontDefined = false;
     private boolean textColorDefined = false;
     private boolean borderColorDefined = false;
+    private boolean selectedStyleDefined = false;
 
     public void setParent(String parentName) {
         this.parentName = parentName;
@@ -104,45 +106,76 @@ public class Style {
 
         applyParentStyle(view);
 
-        if(layoutWidthMeasureDefined) view.getLayoutParams().setLayoutWidthMeasure(layoutWidthMeasure); 
-        if(widthMeasureDefined) view.getLayoutParams().setWidthMeasure(widthMeasure);
+        if (layoutWidthMeasureDefined)
+            view.getLayoutParams().setLayoutWidthMeasure(layoutWidthMeasure);
+        if (widthMeasureDefined)
+            view.getLayoutParams().setWidthMeasure(widthMeasure);
 
-        if(layoutHeightMeasureDefined) view.getLayoutParams().setLayoutHeightMeasure(layoutHeightMeasure);
-        if(heightMeasureDefined) view.getLayoutParams().setHeightMeasure(heightMeasure);
+        if (layoutHeightMeasureDefined)
+            view.getLayoutParams().setLayoutHeightMeasure(layoutHeightMeasure);
+        if (heightMeasureDefined)
+            view.getLayoutParams().setHeightMeasure(heightMeasure);
 
-        if(gravityXDefined) view.getLayoutParams().setLayoutGravityX(gravityX);
+        if (gravityXDefined)
+            view.getLayoutParams().setLayoutGravityX(gravityX);
 
-        if(gravityYDefined) view.getLayoutParams().setLayoutGravityY(gravityY);
+        if (gravityYDefined)
+            view.getLayoutParams().setLayoutGravityY(gravityY);
 
-        if(marginBottomDefined) view.getLayoutParams().setMarginBottomMeasure(marginBottom);
-        if(marginTopDefined) view.getLayoutParams().setMarginTopMeasure(marginTop);
-        if(marginLeftDefined) view.getLayoutParams().setMarginLeftMeasure(marginLeft);
-        if(marginRightDefined) view.getLayoutParams().setMarginRightMeasure(marginRight);
+        if (marginBottomDefined)
+            view.getLayoutParams().setMarginBottomMeasure(marginBottom);
+        if (marginTopDefined)
+            view.getLayoutParams().setMarginTopMeasure(marginTop);
+        if (marginLeftDefined)
+            view.getLayoutParams().setMarginLeftMeasure(marginLeft);
+        if (marginRightDefined)
+            view.getLayoutParams().setMarginRightMeasure(marginRight);
 
-        if(paddingBottomDefined) view.getLayoutParams().setPaddingBottomMeasure(paddingBottom);
-        if(paddingTopDefined) view.getLayoutParams().setPaddingTopMeasure(paddingTop);
-        if(paddingLeftDefined) view.getLayoutParams().setPaddingLeftMeasure(paddingLeft);
-        if(paddingRightDefined) view.getLayoutParams().setPaddingRightMeasure(paddingRight);
+        if (paddingBottomDefined)
+            view.getLayoutParams().setPaddingBottomMeasure(paddingBottom);
+        if (paddingTopDefined)
+            view.getLayoutParams().setPaddingTopMeasure(paddingTop);
+        if (paddingLeftDefined)
+            view.getLayoutParams().setPaddingLeftMeasure(paddingLeft);
+        if (paddingRightDefined)
+            view.getLayoutParams().setPaddingRightMeasure(paddingRight);
 
-        if(backgroundDefined) view.getBorderParams().setBackground(background);
+        if (backgroundDefined)
+            view.getBorderParams().setBackground(background);
 
-        if(borderColorDefined) view.getBorderParams().setBorderColor(borderColor);
-        if(borderSizeDefined) view.getBorderParams().setBorderSize(borderSize);
+        if (borderColorDefined)
+            view.getBorderParams().setBorderColor(borderColor);
+        if (borderSizeDefined)
+            view.getBorderParams().setBorderSize(borderSize);
 
-        if(cornerLeftTopStyleDefined) view.getBorderParams().setCornerLeftTopStyle(cornerLeftTopStyle);
-        if(cornerRightTopStyleDefined) view.getBorderParams().setCornerRightTopStyle(cornerRightTopStyle);
-        if(cornerLeftBottomStyleDefined) view.getBorderParams().setCornerLeftBottomStyle(cornerLeftBottomStyle);
-        if(cornerRightBottomStyleDefined) view.getBorderParams().setCornerRightBottomStyle(cornerRightBottomStyle);
-        if(cornerLeftTopSizeDefined) view.getBorderParams().setCornerLeftTopSize(cornerLeftTopSize);
-        if(cornerRightTopSizeDefined) view.getBorderParams().setCornerRightTopSize(cornerRightTopSize);
-        if(cornerLeftBottomSizeDefined) view.getBorderParams().setCornerLeftBottomSize(cornerLeftBottomSize);
-        if(cornerRightBottomSizeDefined) view.getBorderParams().setCornerRightBottomSize(cornerRightBottomSize);
+        if (cornerLeftTopStyleDefined)
+            view.getBorderParams().setCornerLeftTopStyle(cornerLeftTopStyle);
+        if (cornerRightTopStyleDefined)
+            view.getBorderParams().setCornerRightTopStyle(cornerRightTopStyle);
+        if (cornerLeftBottomStyleDefined)
+            view.getBorderParams().setCornerLeftBottomStyle(cornerLeftBottomStyle);
+        if (cornerRightBottomStyleDefined)
+            view.getBorderParams().setCornerRightBottomStyle(cornerRightBottomStyle);
+        if (cornerLeftTopSizeDefined)
+            view.getBorderParams().setCornerLeftTopSize(cornerLeftTopSize);
+        if (cornerRightTopSizeDefined)
+            view.getBorderParams().setCornerRightTopSize(cornerRightTopSize);
+        if (cornerLeftBottomSizeDefined)
+            view.getBorderParams().setCornerLeftBottomSize(cornerLeftBottomSize);
+        if (cornerRightBottomSizeDefined)
+            view.getBorderParams().setCornerRightBottomSize(cornerRightBottomSize);
+
+        if (selectedStyleDefined)
+            view.setSelectedStyle(selectedStyle);
 
         if (view instanceof TextView) {
             TextView textView = (TextView) view;
-            if(fontDefined) textView.setFont(font);
-            if(textColorDefined) textView.setTextColor(textColor);
-            if(gravityDefined) textView.setGravity(gravity);
+            if (fontDefined)
+                textView.setFont(font);
+            if (textColorDefined)
+                textView.setTextColor(textColor);
+            if (gravityDefined)
+                textView.setGravity(gravity);
         }
     }
 
@@ -283,7 +316,7 @@ public class Style {
         this.gravityY = gravityY;
         this.gravityYDefined = true;
     }
-   
+
     public void setFont(Font font) {
         this.font = font;
         this.fontDefined = true;
@@ -297,6 +330,85 @@ public class Style {
     public void setBorderColor(Color borderColor) {
         this.borderColor = borderColor;
         this.borderColorDefined = true;
+    }
+
+    public void setSelectedStyle(Style style) {
+        this.selectedStyle = style;
+        this.selectedStyleDefined = true;
+    }
+
+    public Style duplicate() {
+        Style style = new Style();
+
+        if (parentName != null) {
+            style.parentName = parentName;
+        }
+
+        if (parent != null) {
+            style.parent = parent.duplicate();
+        }
+
+        style.font = font;
+        style.textColor = textColor;
+        style.borderColor = borderColor;
+        style.text = text;
+        style.gravityY = gravityY;
+        style.gravityX = gravityX;
+        style.cornerRightBottomSize = cornerRightBottomSize;
+        style.cornerLeftBottomSize = cornerLeftBottomSize;
+        style.cornerRightTopSize = cornerRightTopSize;
+        style.cornerLeftTopSize = cornerLeftTopSize;
+        style.borderSize = borderSize;
+        style.cornerLeftTopStyle = cornerLeftTopStyle;
+        style.cornerRightTopStyle = cornerRightTopStyle;
+        style.cornerLeftBottomStyle = cornerLeftBottomStyle;
+        style.cornerRightBottomStyle = cornerRightBottomStyle;
+        style.background = background;
+        style.marginRight = marginRight;
+        style.marginLeft = marginLeft;
+        style.marginBottom = marginBottom;
+        style.marginTop = marginTop;
+        style.paddingRight = paddingRight;
+        style.paddingLeft = paddingLeft;
+        style.paddingBottom = paddingBottom;
+        style.paddingTop = paddingTop;
+        style.layoutWidthMeasure = layoutWidthMeasure;
+        style.gravity = gravity;
+        style.widthMeasure = widthMeasure;
+        style.layoutHeightMeasure = layoutHeightMeasure;
+        style.heightMeasure = heightMeasure;
+        style.selectedStyle = selectedStyle;
+        style.heightMeasureDefined = heightMeasureDefined;
+        style.layoutHeightMeasureDefined = layoutHeightMeasureDefined;
+        style.widthMeasureDefined = widthMeasureDefined;
+        style.layoutWidthMeasureDefined = layoutWidthMeasureDefined;
+        style.gravityDefined = gravityDefined;
+        style.paddingTopDefined = paddingTopDefined;
+        style.paddingBottomDefined = paddingBottomDefined;
+        style.paddingLeftDefined = paddingLeftDefined;
+        style.paddingRightDefined = paddingRightDefined;
+        style.marginTopDefined = marginTopDefined;
+        style.marginBottomDefined = marginBottomDefined;
+        style.marginLeftDefined = marginLeftDefined;
+        style.marginRightDefined = marginRightDefined;
+        style.backgroundDefined = backgroundDefined;
+        style.cornerRightBottomStyleDefined = cornerRightBottomStyleDefined;
+        style.cornerLeftBottomStyleDefined = cornerLeftBottomStyleDefined;
+        style.cornerRightTopStyleDefined = cornerRightTopStyleDefined;
+        style.cornerLeftTopStyleDefined = cornerLeftTopStyleDefined;
+        style.cornerRightBottomSizeDefined = cornerRightBottomSizeDefined;
+        style.cornerLeftBottomSizeDefined = cornerLeftBottomSizeDefined;
+        style.cornerRightTopSizeDefined = cornerRightTopSizeDefined;
+        style.cornerLeftTopSizeDefined = cornerLeftTopSizeDefined;
+        style.borderSizeDefined = borderSizeDefined;
+        style.gravityXDefined = gravityXDefined;
+        style.gravityYDefined = gravityYDefined;
+        style.fontDefined = fontDefined;
+        style.textColorDefined = textColorDefined;
+        style.borderColorDefined = borderColorDefined;
+        style.selectedStyleDefined = selectedStyleDefined;
+
+        return style;
     }
 
 }

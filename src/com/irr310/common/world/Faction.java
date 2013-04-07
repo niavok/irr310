@@ -28,7 +28,7 @@ public class Faction extends WorldEntity{
         super(world, id);
         color = Color.randomDarkOpaqueColor();
         production = new FactionProduction(this);
-        availableProductList = new FactionAvailableProductList(this);
+        availableProductList = new FactionAvailableProductList(this, world.getProductManager());
         statersAmount = 0;
         oresAmount = 0;
         koliumAmount = 0;
