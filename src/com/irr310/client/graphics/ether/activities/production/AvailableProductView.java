@@ -29,7 +29,6 @@ public class AvailableProductView extends ProxyView {
             
             @Override
             public void onClick(View view) {
-                Log.trace("Select "+AvailableProductView.this.product.id+" !");
                 selectionManager.select(AvailableProductView.this.product);
             }
         });
@@ -39,11 +38,14 @@ public class AvailableProductView extends ProxyView {
             public void onSelectionChange(List<ProductState> selection) {
                 if(selection.contains(AvailableProductView.this.product)) {
                     setState(ViewState.SELECTED);
-                    Log.trace("Set to SELECTED "+AvailableProductView.this.product.id);
                 } else {
                     setState(ViewState.IDLE);
-                    Log.trace("Set to IDLE "+AvailableProductView.this.product.id);
                 }
+            }
+
+            @Override
+            public boolean mustClear(Object clearKey) {
+                return (clearKey.equals(AvailableProductView.class));
             }
         }
         );

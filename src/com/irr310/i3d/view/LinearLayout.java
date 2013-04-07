@@ -192,10 +192,6 @@ public class LinearLayout extends ContainerView {
     public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
         boolean used = false;
         
-        if(mouseEvent.getAction() == Action.MOUSE_CLICKED) {
-            Log.trace("mouseClick");
-        }
-        
         for (View view : children) {
             
             

@@ -100,7 +100,9 @@ public class ScrollView extends View implements ViewParent {
         ScrollView myView = (ScrollView) view;
         myView.setScrollAxis(scrollAxis);
         myView.setScrollLimits(scrollLimits);
-        myView.addChild(child.duplicate());
+        if(child != null) {
+            myView.addChild(child.duplicate());
+        }
     }
 
     public void addChild(View view) {
@@ -367,7 +369,7 @@ public class ScrollView extends View implements ViewParent {
     public View findViewById(String id) {
         View outputView = null;
         outputView = super.findViewById(id);
-        if (outputView == null) {
+        if (outputView == null && child != null) {
             outputView = child.findViewById(id);
         }
         return outputView;

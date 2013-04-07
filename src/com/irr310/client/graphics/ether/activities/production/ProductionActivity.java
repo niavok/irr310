@@ -1,5 +1,7 @@
 package com.irr310.client.graphics.ether.activities.production;
 
+import java.util.List;
+
 import sun.security.util.Length;
 
 import com.irr310.client.navigation.LoginManager;
@@ -23,9 +25,11 @@ import com.irr310.i3d.Bundle;
 import com.irr310.i3d.Handler;
 import com.irr310.i3d.Message;
 import com.irr310.i3d.SelectionManager;
+import com.irr310.i3d.SelectionManager.OnSelectionChangeListener;
 import com.irr310.i3d.view.Activity;
 import com.irr310.i3d.view.Button;
 import com.irr310.i3d.view.LinearLayout;
+import com.irr310.i3d.view.ScrollView;
 import com.irr310.i3d.view.TextView;
 import com.irr310.i3d.view.View;
 import com.irr310.i3d.view.View.OnClickListener;
@@ -55,6 +59,7 @@ public class ProductionActivity extends Activity {
     private FactionAvailableProductListState availableProductList;
     private LinearLayout availableProductListLinearLayout;
     private SelectionManager<ProductState> productSelectionManager;
+    private LinearLayout productionDetailsLinearLayout;
     private static final int UPDATE_FACTION_WHAT = 1;
     private static final int UPDATE_PRODUCTION_WHAT = 2;
     private static final int UPDATE_AVAILABLE_PRODUCT_LIST_WHAT = 3;
@@ -81,6 +86,8 @@ public class ProductionActivity extends Activity {
 
         
         availableProductListLinearLayout = (LinearLayout) findViewById("availableProductListLinearLayout@layout/production/production");
+        
+        productionDetailsLinearLayout = (LinearLayout) findViewById("productionDetailsLinearLayout@layout/production/production");
         
         
         factoryOresNeedsTextView.setText("8420 [ores@icons]");
@@ -124,6 +131,23 @@ public class ProductionActivity extends Activity {
             @Override
             public void onClick(View view) {
                 worldEngine.sendToAll(new ActionSellFactionFactoryCapacityEvent(LoginManager.getLocalPlayer().faction, 1));
+            }
+        });
+        
+        
+        productSelectionManager.addOnSelectionChangeListener(new OnSelectionChangeListener<ProductState>() {
+            @Override
+            public void onSelectionChange(List<ProductState> selection) {
+                productionDetailsLinearLayout.removeAllView();
+                
+                for(ProductState product: selection) {
+                    productionDetailsLinearLayout.addChild(new AvailableProductDetailsView(product));
+                }
+            }
+
+            @Override
+            public boolean mustClear(Object clearKey) {
+                return false;
             }
         });
     }
@@ -189,8 +213,10 @@ public class ProductionActivity extends Activity {
 
         factoryOresTextView.setText(faction.oresAmount + " [ores@icons]");
         
+        
+        
         availableProductListLinearLayout.removeAllView();
-        productSelectionManager.clear();
+        productSelectionManager.clear(AvailableProductView.class);
         
         for(ProductState product: availableProductList.products) {            
             availableProductListLinearLayout.addChild(new AvailableProductView(product, productSelectionManager));

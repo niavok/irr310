@@ -18,7 +18,11 @@
         i3d:layout_width="100%"
         i3d:layout_height="match_parent" >
 
-        <RelativeLayout i3d:id="productionDetails" />
+        <LinearLayout
+            i3d:id="productionDetailsLinearLayout"
+            i3d:layout_width="match_parent"
+            i3d:layout_height="match_parent"
+            i3d:orientation="vertical" />
     </ScrollView>
 
     <ScrollView
