@@ -66,7 +66,7 @@ public class RelativeLayout extends ContainerView {
         super.duplicateTo(view);
         RelativeLayout myView = (RelativeLayout) view;
         for (View childView : children) {
-            myView.addChild(childView.duplicate());
+            myView.addViewInLayout(childView.duplicate());
         }
     }
 

@@ -2,6 +2,7 @@
 <LinearLayout
     i3d:id="main"
     i3d:style="lightBlock@styles"
+    i3d:selected_style="selectedLightBlock@styles"
     i3d:layout_width="match_parent"
     i3d:layout_height="wrap_content"
     i3d:orientation="vertical"
@@ -15,14 +16,5 @@
         i3d:layout_paddingBottom="5px"
         i3d:font="medium@fonts"
         i3d:color="defaultFont@color" />
-    
-    <Button
-        i3d:id="buyProductButton"
-        i3d:style="smallButton@styles"
-        i3d:layout_marginBottom="5px"
-        i3d:layout_paddingLeft="20px"
-        i3d:layout_paddingRight="20px"
-        i3d:text="buyProductButton@strings"
-        i3d:color="defaultFont@color" />
-    
+
 </LinearLayout>

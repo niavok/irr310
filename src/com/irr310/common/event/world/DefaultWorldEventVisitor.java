@@ -50,4 +50,8 @@ public class DefaultWorldEventVisitor implements WorldEventVisitor {
     @Override
     public void visit(FactionAvailableProductListEvent event) {
     }
+    
+    @Override
+    public void visit(ActionBuyProductEvent event) {
+    }
 }

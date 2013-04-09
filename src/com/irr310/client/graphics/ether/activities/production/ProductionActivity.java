@@ -1,11 +1,13 @@
 package com.irr310.client.graphics.ether.activities.production;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import sun.security.util.Length;
 
 import com.irr310.client.navigation.LoginManager;
 import com.irr310.common.event.world.ActionBuyFactionFactoryCapacityEvent;
+import com.irr310.common.event.world.ActionBuyProductEvent;
 import com.irr310.common.event.world.ActionSellFactionFactoryCapacityEvent;
 import com.irr310.common.event.world.DefaultWorldEventVisitor;
 import com.irr310.common.event.world.FactionAvailableProductListEvent;
@@ -21,6 +23,7 @@ import com.irr310.common.world.state.FactionAvailableProductListState;
 import com.irr310.common.world.state.FactionProductionState;
 import com.irr310.common.world.state.FactionState;
 import com.irr310.common.world.state.ProductState;
+import com.irr310.common.world.state.ProductionTaskState;
 import com.irr310.i3d.Bundle;
 import com.irr310.i3d.Handler;
 import com.irr310.i3d.Message;
@@ -59,7 +62,9 @@ public class ProductionActivity extends Activity {
     private FactionAvailableProductListState availableProductList;
     private LinearLayout availableProductListLinearLayout;
     private SelectionManager<ProductState> productSelectionManager;
+    private SelectionManager<ProductionTaskState> productionTaskSelectionManager;
     private LinearLayout productionDetailsLinearLayout;
+    private LinearLayout productionTaskQueueLinearLayout;
     private static final int UPDATE_FACTION_WHAT = 1;
     private static final int UPDATE_PRODUCTION_WHAT = 2;
     private static final int UPDATE_AVAILABLE_PRODUCT_LIST_WHAT = 3;
@@ -85,6 +90,8 @@ public class ProductionActivity extends Activity {
         factoryTimeEstimationTextView = (TextView) findViewById("factoryTimeEstimationTextView@layout/production/production");
 
         
+        productionTaskQueueLinearLayout = (LinearLayout) findViewById("productionTaskQueueLinearLayout@layout/production/production");
+        
         availableProductListLinearLayout = (LinearLayout) findViewById("availableProductListLinearLayout@layout/production/production");
         
         productionDetailsLinearLayout = (LinearLayout) findViewById("productionDetailsLinearLayout@layout/production/production");
@@ -95,6 +102,7 @@ public class ProductionActivity extends Activity {
         factoryTimeEstimationTextView.setText("(12 min 35s)");
         
         productSelectionManager = new SelectionManager<ProductState>();
+        productionTaskSelectionManager = new SelectionManager<ProductionTaskState>();
         
         visitor = new DefaultWorldEventVisitor() {
 
@@ -136,12 +144,50 @@ public class ProductionActivity extends Activity {
         
         
         productSelectionManager.addOnSelectionChangeListener(new OnSelectionChangeListener<ProductState>() {
+            
+            private List<View> addedViews = new ArrayList<View>();
             @Override
             public void onSelectionChange(List<ProductState> selection) {
-                productionDetailsLinearLayout.removeAllView();
+                for(View view: addedViews) {
+                    productionDetailsLinearLayout.removeView(view);
+                }
+                addedViews.clear();
                 
                 for(ProductState product: selection) {
-                    productionDetailsLinearLayout.addChild(new AvailableProductDetailsView(product));
+                    View view = new AvailableProductDetailsView(ProductionActivity.this, product);
+                    addedViews.add(view);
+                    productionDetailsLinearLayout.addViewInLayout(view);
+                }
+                if(selection.size() > 0) {
+                    productionTaskSelectionManager.clearSelection();
+                }
+            }
+
+            @Override
+            public boolean mustClear(Object clearKey) {
+                return false;
+            }
+        });
+        
+        productionTaskSelectionManager.addOnSelectionChangeListener(new OnSelectionChangeListener<ProductionTaskState>() {
+            
+            private List<View> addedViews = new ArrayList<View>();
+            
+            @Override
+            public void onSelectionChange(List<ProductionTaskState> selection) {
+                for(View view: addedViews) {
+                    productionDetailsLinearLayout.removeView(view);
+                }
+                addedViews.clear();
+                
+                for(ProductionTaskState productionTask: selection) {
+                    View view = new ProductionTaskDetailsView(ProductionActivity.this, productionTask);
+                    addedViews.add(view);
+                    productionDetailsLinearLayout.addViewInLayout(view);
+                }
+                
+                if(selection.size() > 0) {
+                    productSelectionManager.clearSelection();
                 }
             }
 
@@ -215,13 +261,26 @@ public class ProductionActivity extends Activity {
         
         
         
+        // Update production task queue
+        productionTaskQueueLinearLayout.removeAllView();
+        productionTaskSelectionManager.clear(ProductionTaskView.class);
+        
+        for(ProductionTaskState productionTask: production.productionTaskQueue) {            
+            productionTaskQueueLinearLayout.addViewInLayout(new ProductionTaskView(productionTask, productionTaskSelectionManager));
+        }
+        
+        // Update available product list
         availableProductListLinearLayout.removeAllView();
         productSelectionManager.clear(AvailableProductView.class);
         
         for(ProductState product: availableProductList.products) {            
-            availableProductListLinearLayout.addChild(new AvailableProductView(product, productSelectionManager));
+            availableProductListLinearLayout.addViewInLayout(new AvailableProductView(product, productSelectionManager));
         }
         
+    }
+    
+    void buyProduct(ProductState product, int quantity) {
+        worldEngine.sendToAll(new ActionBuyProductEvent(LoginManager.getLocalPlayer().faction, product, quantity));
     }
 
 }

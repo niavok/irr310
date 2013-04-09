@@ -497,4 +497,8 @@ public class ProductManager {
         products = validProducts;
     }
 
+    public Product getProductById(String id) {
+        return productIds.get(id);
+    }
+
 }

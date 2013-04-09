@@ -15,7 +15,7 @@ public interface ViewParent {
     */
    public ViewParent getParent();
 
-   public void addChild(View view);
+   public void addViewInLayout(View view);
    
    //public Layout getLayout();
 }

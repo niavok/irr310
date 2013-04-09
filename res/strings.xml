@@ -51,4 +51,7 @@
     <string name="factoryOresNeeds">Factory needs</string>
     <string name="factoryCapacityNeeds">Factory queue</string>
     
+    <string name="buyProductButton">Buy</string>
+    <string name="cancelProductionTask">Cancel</string>
+    
 </resources>

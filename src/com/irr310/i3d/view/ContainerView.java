@@ -29,9 +29,14 @@ public abstract class ContainerView extends View implements ViewParent {
 //        return view;
 //    }
     
-    public void addChild(View widget) {
-        children.add(widget);
-        widget.assignParent(this);
+    public void addViewInLayout(View view) {
+        children.add(view);
+        view.assignParent(this);
+        requestLayout();
+    }
+    
+    public void removeView(View view) {
+        children.remove(view);
         requestLayout();
     }
     

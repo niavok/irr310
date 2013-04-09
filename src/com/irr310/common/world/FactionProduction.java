@@ -6,7 +6,9 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import com.irr310.common.world.state.FactionProductionState;
 import com.irr310.common.world.state.FactionState;
+import com.irr310.common.world.state.ProductionTaskState;
 import com.irr310.common.world.system.WorldSystem;
+import com.irr310.server.world.product.Product;
 
 public class FactionProduction {
 
@@ -23,6 +25,8 @@ public class FactionProduction {
     
     private Queue<FactoryCapacityOrder> factoryCapacityOrderList = new LinkedBlockingQueue<FactoryCapacityOrder>();
     private final Faction faction;
+    
+    private Queue<ProductionTask> productionTaskQueue = new LinkedBlockingQueue<ProductionTask>();
     
     public static class FactoryCapacityOrder {
         
@@ -93,6 +97,13 @@ public class FactionProduction {
         factionProductionState.factoryRentCapacity = 0; 
         factionProductionState.factoryTotalCapacity = factoryCapacity;
 
+        factionProductionState.productionTaskQueue = new ArrayList<ProductionTaskState>();
+        
+        for(ProductionTask task : productionTaskQueue) {
+            factionProductionState.productionTaskQueue.add(task.toState());
+        }
+        
+        
         return factionProductionState;
     }
 
@@ -107,6 +118,12 @@ public class FactionProduction {
         }
         
         return capacity;
+    }
+
+    public void addTask(long id, Product product, long count) {
+        if(product.isAvailable(faction)) {
+            productionTaskQueue.add(new ProductionTask(getFaction().getWorld(), id, product, count));
+        }
     }
    
     

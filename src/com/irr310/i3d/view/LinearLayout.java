@@ -183,7 +183,7 @@ public class LinearLayout extends ContainerView {
         super.duplicateTo(view);
         LinearLayout myView = (LinearLayout) view;
         for (View widget : children) {
-            myView.addChild(widget.duplicate());
+            myView.addViewInLayout(widget.duplicate());
         }
         myView.setLayoutOrientation(orientation);
     }

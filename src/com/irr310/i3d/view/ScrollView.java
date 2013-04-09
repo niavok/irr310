@@ -101,11 +101,11 @@ public class ScrollView extends View implements ViewParent {
         myView.setScrollAxis(scrollAxis);
         myView.setScrollLimits(scrollLimits);
         if(child != null) {
-            myView.addChild(child.duplicate());
+            myView.addViewInLayout(child.duplicate());
         }
     }
 
-    public void addChild(View view) {
+    public void addViewInLayout(View view) {
         this.child = view;
         view.assignParent(this);
     }

@@ -46,4 +46,11 @@ public class SelectionManager<T> {
             }
         }
     }
+
+    public void clearSelection() {
+        selection.clear();
+        for(OnSelectionChangeListener<T> listener:listeners) {
+            listener.onSelectionChange(selection);
+        }
+    }
 }

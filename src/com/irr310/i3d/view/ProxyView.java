@@ -55,7 +55,7 @@ public class ProxyView extends View {
     }
 
     public boolean equals(Object obj) {
-        return client.equals(obj);
+        return super.equals(obj);
     }
 
     public View findViewById(String id) {

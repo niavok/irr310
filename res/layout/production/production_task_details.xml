@@ -17,12 +17,12 @@
         i3d:color="defaultFont@color" />
     
     <Button
-        i3d:id="buyProductButton"
+        i3d:id="cancelProductButton"
         i3d:style="smallButton@styles"
         i3d:layout_marginBottom="5px"
         i3d:layout_paddingLeft="20px"
         i3d:layout_paddingRight="20px"
-        i3d:text="buyProductButton@strings"
+        i3d:text="cancelProductionTask@strings"
         i3d:color="defaultFont@color" />
     
 </LinearLayout>

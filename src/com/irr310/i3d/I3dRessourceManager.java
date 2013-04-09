@@ -168,7 +168,7 @@ public class I3dRessourceManager {
                     continue;
                 }
                 Element subElement = (Element) node;
-                viewParent.addChild(ParseView(subElement, ressourceFileCache));
+                viewParent.addViewInLayout(ParseView(subElement, ressourceFileCache));
             }
         }
 

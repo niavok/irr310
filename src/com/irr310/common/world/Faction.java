@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.irr310.common.world.state.FactionState;
+import com.irr310.common.world.state.ProductState;
 import com.irr310.common.world.system.Ship;
 import com.irr310.common.world.system.WorldEntity;
 import com.irr310.common.world.system.WorldSystem;
 import com.irr310.i3d.Color;
+import com.irr310.server.world.product.Product;
 
 public class Faction extends WorldEntity{
 
@@ -150,7 +152,9 @@ public class Faction extends WorldEntity{
     public FactionAvailableProductList getAvailableProductList() {
         return availableProductList;
     }
-    
-    
+
+    public Product getProduct(ProductState product) {
+        return availableProductList.getProduct(product);
+    }
     
 }

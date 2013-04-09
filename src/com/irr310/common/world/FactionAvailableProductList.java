@@ -39,5 +39,9 @@ public class FactionAvailableProductList {
         
         return factionAvailableProductListState;
     }
+
+    public Product getProduct(ProductState product) {
+        return productManager.getProductById(product.id);
+    }
     
 }

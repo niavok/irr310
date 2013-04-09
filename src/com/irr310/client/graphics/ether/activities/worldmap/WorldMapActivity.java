@@ -152,7 +152,7 @@ public class WorldMapActivity extends Activity {
             }
             final SystemView systemView = new SystemView(system);
             systemView.setZoom(zoom);
-            map.addChild(systemView);
+            map.addViewInLayout(systemView);
             systemView.setOnClickListener(new OnClickListener() {
 
                 @Override

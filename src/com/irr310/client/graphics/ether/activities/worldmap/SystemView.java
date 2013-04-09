@@ -33,8 +33,8 @@ public class SystemView extends RelativeLayout {
         textView.setText(system.name);
         textView.setFont(I3dRessourceManager.getInstance().loadFont("systemNameWorldMap@fonts"));
         textView.setTextColor(I3dRessourceManager.getInstance().loadColor("systemNameWorldMap@color")); 
-        addChild(systemCircleView);
-        addChild(textView);
+        addViewInLayout(systemCircleView);
+        addViewInLayout(textView);
         
         reshape();
     }

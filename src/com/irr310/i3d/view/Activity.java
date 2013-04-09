@@ -120,7 +120,7 @@ public abstract class Activity implements ViewParent {
     }
   
     @Override
-    public void addChild(View view) {
+    public void addViewInLayout(View view) {
         // TODO Auto-generated method stub
         
     }

@@ -16,6 +16,7 @@ import com.irr310.common.event.game.DefaultGameEventVisitor;
 import com.irr310.common.event.game.GameEvent;
 import com.irr310.common.event.game.QuitGameEvent;
 import com.irr310.common.event.world.ActionBuyFactionFactoryCapacityEvent;
+import com.irr310.common.event.world.ActionBuyProductEvent;
 import com.irr310.common.event.world.ActionSellFactionFactoryCapacityEvent;
 import com.irr310.common.event.world.ConnectPlayerEvent;
 import com.irr310.common.event.world.DefaultWorldEventVisitor;
@@ -41,6 +42,7 @@ import com.irr310.common.world.World;
 import com.irr310.common.world.item.BuildingItemFactory;
 import com.irr310.common.world.item.NexusItem;
 import com.irr310.common.world.system.WorldSystem;
+import com.irr310.server.world.product.Product;
 import com.irr310.server.world.product.ProductManager;
 
 public class WorldEngine extends FramerateEngine<GameEvent> implements WorldEventDispatcher  {
@@ -211,6 +213,14 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements WorldEven
             productionManager.sellFactoryCapacity(faction.getProduction(), event.getCount());
             engineManager.sendToAll(new FactionProductionStateEvent(faction.getProduction().toState()));
             engineManager.sendToAll(new FactionStateEvent(faction.toState()));
+        }
+        
+        @Override
+        public void visit(ActionBuyProductEvent event) {
+            Faction faction = world.getFaction(event.getFaction());
+            Product product = faction.getProduct(event.getProduct());
+            faction.getProduction().addTask(GameServer.pickNewId(), product, event.getCount());
+            engineManager.sendToAll(new FactionProductionStateEvent(faction.getProduction().toState()));
         }
     }
     
