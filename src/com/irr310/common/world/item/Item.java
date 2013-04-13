@@ -15,6 +15,7 @@ public class Item extends WorldEntity {
 
     private boolean deployable;
     private ItemType type;
+    private boolean reserved;
 
     
     public Item(World world, long id, Faction owner) {
@@ -34,6 +35,11 @@ public class Item extends WorldEntity {
 
     protected void setDeployable(boolean deployable) {
         this.deployable = deployable;
+    }
+
+    public void setReserved(boolean reserved) {
+        this.reserved = reserved;
+        
     }
 
 }

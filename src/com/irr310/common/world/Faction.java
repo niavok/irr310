@@ -157,4 +157,16 @@ public class Faction extends WorldEntity{
         return availableProductList.getProduct(product);
     }
     
+    public boolean takeOres(long price) {
+        if(getOresAmount() > price) {
+            setOresAmount(getOresAmount() - price);
+            return true;
+        }
+        return false;
+    }
+
+    public void giveOres(long amount) {
+        setOresAmount(getOresAmount() + amount);
+    }
+    
 }

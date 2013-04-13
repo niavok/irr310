@@ -118,7 +118,6 @@ public class ShipProduct extends Product {
             
             
         }
-        
         return true;
     }
     
@@ -223,7 +222,14 @@ public class ShipProduct extends Product {
         }
     }
 
-    
+    @Override
+    public List<Product> getSubProducts() {
+        ArrayList<Product> products = new ArrayList<Product>();
+        for(ShipComponentProduct shipComponentProduct: components.values()) {
+            products.add(shipComponentProduct.getComponent());
+        }
+        return products;
+    }
 
     
     

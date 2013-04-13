@@ -1,5 +1,6 @@
 package com.irr310.server.world.product;
 
+import java.util.List;
 import java.util.Map;
 
 import com.irr310.common.tools.Log;
@@ -16,7 +17,7 @@ public abstract class Product {
     private String code = null;
     private String name = null;
     private String description = "";
-
+    
     public void setId(String id) {
         this.id = id;
     }
@@ -40,6 +41,7 @@ public abstract class Product {
     public String getName() {
         return name;
     }
+  
     
     public void setDescription(String description) {
         this.description  = description;
@@ -79,4 +81,6 @@ public abstract class Product {
         // TODO: check techno and law.
         return true;
     }
+
+    public abstract List<Product> getSubProducts();
 }

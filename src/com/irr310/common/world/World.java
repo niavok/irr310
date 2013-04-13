@@ -27,6 +27,7 @@ public class World {
     private WorldMap map;
     private ProductManager productManager;
 //    private BinderServer binderServer;
+    private ItemFactory itemFactory;
 
     public World() {
 //        binderServer = new BinderServer();
@@ -44,6 +45,8 @@ public class World {
 
         mutex = new ReentrantLock();
         map = new com.irr310.common.world.WorldMap();
+        
+        itemFactory = new ItemFactory(this);
     }
 
     
@@ -138,6 +141,12 @@ public class World {
     
     public ProductManager getProductManager() {
         return productManager;
+    }
+
+
+
+    public ItemFactory getItemFactory() {
+        return itemFactory;
     }
 
 //    public BinderServer getBinderServer() {

@@ -27,6 +27,7 @@ public class FactionProduction {
     private final Faction faction;
     
     private Queue<ProductionTask> productionTaskQueue = new LinkedBlockingQueue<ProductionTask>();
+    private ProductionTask activeTask;
     
     public static class FactoryCapacityOrder {
         
@@ -122,8 +123,42 @@ public class FactionProduction {
 
     public void addTask(long id, Product product, long count) {
         if(product.isAvailable(faction)) {
-            productionTaskQueue.add(new ProductionTask(getFaction().getWorld(), id, product, count));
+            productionTaskQueue.add(new ProductionTask(this, id, product, count));
         }
+        
+        findActiveTask();
+    }
+    
+    public Queue<ProductionTask> getProductionTaskQueue() {
+        return productionTaskQueue;
+    }
+
+    private void findActiveTask() {
+        
+        if(activeTask != null) {
+            activeTask.desactivate();
+        }
+        
+        for(ProductionTask task : productionTaskQueue) {
+            if(!task.isPaused()) {
+                activeTask = task;
+                activeTask.activate();
+                break;
+            }
+        }
+    }
+    
+    public ProductionTask getActiveProductionTask() {
+        return activeTask;
+    }
+
+    public void notifyTaskFinished(ProductionTask task) {
+        productionTaskQueue.remove(task);
+        if(activeTask.equals(task)) {
+            activeTask.desactivate();
+        }
+        activeTask = null;
+        findActiveTask();
     }
    
     

@@ -150,7 +150,7 @@ public class ProductManager {
             } else if (subElement.getNodeName().equals("specifications")) {
                 Log.warn("TODO : parse specifications");
             } else if (subElement.getNodeName().equals("production")) {
-                Log.warn("TODO : parse production");
+                parseComponentProductProduction(subElement, component);
             } else if (subElement.getNodeName().equals("capacities")) {
                 Log.warn("TODO : parse capacities");
             } else {
@@ -257,6 +257,25 @@ public class ProductManager {
                 throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for tag component/parts for component '"+component.getId()+"'");
             }
         }        
+    }
+    
+    private void parseComponentProductProduction(Element element, ComponentProduct component) {
+        
+        NamedNodeMap attributes = element.getAttributes();
+        for (int i = 0; i < attributes.getLength(); i++) {
+            Node item = attributes.item(i);
+            Attr attr = (Attr) item;
+            String attrName = attr.getName();
+            String attrValue = attr.getValue();
+
+            if (attrName.equals("factoryCost")) {
+                component.setFactoryCost(Long.parseLong(attrValue));
+            } else if (attrName.equals("oreCost")) {
+                component.setOreCost(Long.parseLong(attrValue));
+            } else {
+                throw new RessourceLoadingException("Unknown attrib '" + attrName + "=" + attrValue + "' for ComponentPartProduct");
+            }
+        }
     }
     
     private void parseComponentProductPart(Element element, ComponentProduct component) {

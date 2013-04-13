@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.irr310.common.tools.Log;
 import com.irr310.common.tools.RessourceLoadingException;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.state.ProductState;
@@ -12,11 +13,32 @@ import com.irr310.common.world.state.ProductState;
 public class ComponentProduct extends Product {
 
     private Map<String, ComponentSlotProduct> slots = new HashMap<String, ComponentSlotProduct>();
-
+    private long oreCost = -1;
+    private long factoryCost = -1;
+    
     public ComponentSlotProduct getSlot(String key) {
         return slots.get(key);
     }
 
+    
+    @Override
+    public boolean performLinks(Map<String, Product> productIds) {
+        if(!super.performLinks(productIds)) {
+            return false;
+        }
+        
+        if(oreCost == -1) {
+            Log.warn("Product '"+getId()+"' has no ore cost.");
+            return false;
+        }
+        
+        if(factoryCost == -1) {
+            Log.warn("Product '"+getId()+"' has no production capacity cost.");
+            return false;
+        }
+        
+        return true;
+    }
     
     public void notifyNewSlot(ComponentSlotProduct slotProduct) {
         if(slots.containsKey(slotProduct.getKey())) {
@@ -112,5 +134,28 @@ public class ComponentProduct extends Product {
             return size;
         }
     }
+    
+    @Override
+    public List<Product> getSubProducts() {
+        return new ArrayList<Product>();
+    }
+    
+    
+    public long getOreCost() {
+        return oreCost;
+    }
+    
+    public long getFactoryCost() {
+        return factoryCost;
+    }
+    
+    public void setOreCost(long oreCost) {
+        this.oreCost = oreCost;
+    }
+    
+    public void setFactoryCost(long factoryCost) {
+        this.factoryCost = factoryCost;
+    }
+    
     
 }

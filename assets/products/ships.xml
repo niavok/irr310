@@ -4,6 +4,7 @@
          code="D-1"
          description="A light exploration ship"
          kernel="kernel">
+         
         <components>
             <component key="kernel"
                  ref="kernel1"

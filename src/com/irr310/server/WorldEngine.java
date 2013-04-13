@@ -105,7 +105,8 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements WorldEven
     
         // Revenue
         for(Faction faction: world.getFactions()) {
-            faction.setStatersAmount(faction.getStatersAmount()+100);
+            faction.giveStaters(100);
+//            faction.giveOres(400);
             
         }
         
@@ -310,7 +311,7 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements WorldEven
             system.setHomeSystem(true);
             
             faction.setStatersAmount(2000);
-            faction.setOresAmount(200);
+            faction.setOresAmount(20000);
             faction.setKoliumAmount(300);
             faction.setNeuridiumAmount(0);
             
