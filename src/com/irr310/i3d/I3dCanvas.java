@@ -25,6 +25,7 @@ public class I3dCanvas {
     private final String title;
     private JFrame frame;
     private TextureManager textureManager = new TextureManager();
+    private boolean pauseDisplay = false;
     
     private boolean polygonOffset = false;
 
@@ -127,10 +128,12 @@ public class I3dCanvas {
             
             @Override
             public void windowIconified(WindowEvent e) {
+               pauseDisplay = true;
             }
             
             @Override
             public void windowDeiconified(WindowEvent e) {
+                pauseDisplay = false;
             }
             
             @Override
@@ -168,7 +171,7 @@ public class I3dCanvas {
 
     
     public boolean draw(Graphics g) {
-        if(Display.isCloseRequested()) {
+        if(pauseDisplay || Display.isCloseRequested()) {
             return false;
         }
         
