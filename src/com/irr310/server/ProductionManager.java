@@ -45,7 +45,9 @@ public class ProductionManager {
     
     
     void payMaintenance(FactionProduction production) {
-        production.getFaction().takeStaters(FactionProduction.FACTORY_MAINTENANCE_PRICE * production.getFactoryCapacity());
+        while(!production.getFaction().takeStaters(FactionProduction.FACTORY_MAINTENANCE_PRICE * production.getFactoryCapacity())) {
+            sellFactoryCapacity(production, 1);
+        }
     }
     
     void checkCapacityIncrease(FactionProduction production) {
