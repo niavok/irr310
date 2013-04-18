@@ -183,8 +183,7 @@ public class I3dRessourceManager {
         String ref = element.getAttribute("i3d:ref");
         View view = loadView(ref).duplicate();
 
-        Style style = loadStyle(element.getAttribute("i3d:style")).duplicate();
-        view.setIdleStyle(style);
+        checkStyles(element, view);
 
         NamedNodeMap attributes = element.getAttributes();
         for (int i = 0; i < attributes.getLength(); i++) {
@@ -407,8 +406,8 @@ public class I3dRessourceManager {
     private RelativeLayout NewRelativeLayout(Element element, String fileId) {
         RelativeLayout relativeLayout = new RelativeLayout();
 
-        Style style = loadStyle(element.getAttribute("i3d:style")).duplicate();
-        relativeLayout.setIdleStyle(style);
+        checkStyles(element, relativeLayout);
+
 
         NamedNodeMap attributes = element.getAttributes();
         for (int i = 0; i < attributes.getLength(); i++) {
@@ -433,8 +432,7 @@ public class I3dRessourceManager {
         String ref = element.getAttribute("i3d:ref");
         drawableView.setDrawable(loadDrawable(ref));
         
-        Style style = loadStyle(element.getAttribute("i3d:style")).duplicate();
-        drawableView.setIdleStyle(style);
+        checkStyles(element, drawableView);
 
         NamedNodeMap attributes = element.getAttributes();
         for (int i = 0; i < attributes.getLength(); i++) {
@@ -459,8 +457,7 @@ public class I3dRessourceManager {
     private LinearLayout NewLinearLayout(Element element, String fileId) {
         LinearLayout linearLayout = new LinearLayout();
 
-        Style style = loadStyle(element.getAttribute("i3d:style")).duplicate();
-        linearLayout.setIdleStyle(style);
+        checkStyles(element, linearLayout);
 
         NamedNodeMap attributes = element.getAttributes();
         for (int i = 0; i < attributes.getLength(); i++) {
@@ -484,8 +481,7 @@ public class I3dRessourceManager {
     private TextView NewTextView(Element element, String fileId) {
         TextView textView = new TextView();
 
-        Style style = loadStyle(element.getAttribute("i3d:style")).duplicate();
-        textView.setIdleStyle(style);
+        checkStyles(element, textView);
 
         NamedNodeMap attributes = element.getAttributes();
         for (int i = 0; i < attributes.getLength(); i++) {
@@ -512,8 +508,7 @@ public class I3dRessourceManager {
     private ScrollView NewScrollView(Element element, String fileId) {
         ScrollView view = new ScrollView();
 
-        Style style = loadStyle(element.getAttribute("i3d:style")).duplicate();
-        view.setIdleStyle(style);
+        checkStyles(element, view);
 
         NamedNodeMap attributes = element.getAttributes();
         for (int i = 0; i < attributes.getLength(); i++) {
@@ -556,8 +551,8 @@ public class I3dRessourceManager {
     private Button NewButton(Element element, String fileId) {
         Button button = new Button();
 
-        Style style = loadStyle(element.getAttribute("i3d:style")).duplicate();
-        button.setIdleStyle(style);
+        checkStyles(element, button);
+        
 
         NamedNodeMap attributes = element.getAttributes();
         for (int i = 0; i < attributes.getLength(); i++) {
@@ -580,13 +575,20 @@ public class I3dRessourceManager {
         return button;
     }
 
+    private void checkStyles(Element element, View view) {
+        Style idleStyle = loadStyle(element.getAttribute("i3d:style")).duplicate();
+        view.setIdleStyle(idleStyle);
+        Style selectedStyle = loadStyle(element.getAttribute("i3d:selected_style")).duplicate();
+        view.setSelectedStyle(selectedStyle);
+    }
+
     private boolean checkViewAttrs(String attrName, String attrValue, String fileId, LayoutFactory view) {
         boolean used = true;
         if (checkId(attrName, attrValue, fileId, view)) {
         } else if (attrName.equals("i3d:style")) {
             // Already checked
         } else if (attrName.equals("i3d:selected_style")) {
-            view.setSelectedStyle(loadStyle(attrValue));
+            // Already checked
         } else if (checkHelp(attrName, attrValue, view)) {
         } else if (checkLayoutWidth(attrName, attrValue, view)) {
         } else if (checkLayoutHeight(attrName, attrValue, view)) {
@@ -1475,126 +1477,151 @@ public class I3dRessourceManager {
         @Override
         public void setBackground(Drawable drawable) {
             view.getIdleStyle().setBackground(drawable);
+            view.getSelectedStyle().setBackground(drawable);
         }
 
         @Override
         public void setCornerRightBottomStyle(CornerStyle style) {
             view.getIdleStyle().setCornerRightBottomStyle(style);
+            view.getSelectedStyle().setCornerRightBottomStyle(style);
         }
 
         @Override
         public void setCornerLeftBottomStyle(CornerStyle style) {
             view.getIdleStyle().setCornerLeftBottomStyle(style);
+            view.getSelectedStyle().setCornerLeftBottomStyle(style);
         }
 
         @Override
         public void setCornerRightTopStyle(CornerStyle style) {
             view.getIdleStyle().setCornerRightTopStyle(style);
+            view.getSelectedStyle().setCornerRightTopStyle(style);
         }
 
         @Override
         public void setCornerLeftTopStyle(CornerStyle style) {
             view.getIdleStyle().setCornerLeftTopStyle(style);
+            view.getSelectedStyle().setCornerLeftTopStyle(style);
         }
 
         @Override
         public void setCornerRightBottomSize(Measure measure) {
             view.getIdleStyle().setCornerRightBottomSize(measure);
+            view.getSelectedStyle().setCornerRightBottomSize(measure);
         }
 
         @Override
         public void setCornerLeftBottomSize(Measure measure) {
             view.getIdleStyle().setCornerLeftBottomSize(measure);
+            view.getSelectedStyle().setCornerLeftBottomSize(measure);
         }
 
         @Override
         public void setCornerRightTopSize(Measure measure) {
             view.getIdleStyle().setCornerRightTopSize(measure);
+            view.getSelectedStyle().setCornerRightTopSize(measure);
         }
 
         @Override
         public void setCornerLeftTopSize(Measure measure) {
             view.getIdleStyle().setCornerLeftTopSize(measure);
+            view.getSelectedStyle().setCornerLeftTopSize(measure);
         }
 
         @Override
         public void setBorderSize(Measure measure) {
             view.getIdleStyle().setBorderSize(measure);
+            view.getSelectedStyle().setBorderSize(measure);
         }
 
         @Override
         public void setBorderColor(Color color) {
             view.getIdleStyle().setBorderColor(color);
+            view.getSelectedStyle().setBorderColor(color);
         }
 
         @Override
         public void setLayoutGravityY(LayoutGravity align) {
             view.getIdleStyle().setLayoutGravityY(align);
+            view.getSelectedStyle().setLayoutGravityY(align);
         }
 
         @Override
         public void setLayoutGravityX(LayoutGravity align) {
             view.getIdleStyle().setLayoutGravityX(align);
+            view.getSelectedStyle().setLayoutGravityX(align);
         }
 
         @Override
         public void setMarginRightMeasure(Measure measure) {
             view.getIdleStyle().setMarginRightMeasure(measure);
+            view.getSelectedStyle().setMarginRightMeasure(measure);
         }
 
         @Override
         public void setMarginLeftMeasure(Measure measure) {
             view.getIdleStyle().setMarginLeftMeasure(measure);
+            view.getSelectedStyle().setMarginLeftMeasure(measure);
         }
 
         @Override
         public void setMarginBottomMeasure(Measure measure) {
             view.getIdleStyle().setMarginBottomMeasure(measure);
+            view.getSelectedStyle().setMarginBottomMeasure(measure);
         }
 
         @Override
         public void setMarginTopMeasure(Measure measure) {
             view.getIdleStyle().setMarginTopMeasure(measure);
+            view.getSelectedStyle().setMarginTopMeasure(measure);
         }
 
         @Override
         public void setPaddingRightMeasure(Measure measure) {
             view.getIdleStyle().setPaddingRightMeasure(measure);
+            view.getSelectedStyle().setPaddingRightMeasure(measure);
         }
 
         @Override
         public void setPaddingLeftMeasure(Measure measure) {
             view.getIdleStyle().setPaddingLeftMeasure(measure);
+            view.getSelectedStyle().setPaddingLeftMeasure(measure);
         }
 
         @Override
         public void setPaddingBottomMeasure(Measure measure) {
             view.getIdleStyle().setPaddingBottomMeasure(measure);
+            view.getSelectedStyle().setPaddingBottomMeasure(measure);
         }
 
         @Override
         public void setPaddingTopMeasure(Measure measure) {
             view.getIdleStyle().setPaddingTopMeasure(measure);
+            view.getSelectedStyle().setPaddingTopMeasure(measure);
         }
 
         @Override
         public void setHeightMeasure(Measure measure) {
             view.getIdleStyle().setHeightMeasure(measure);
+            view.getSelectedStyle().setHeightMeasure(measure);
         }
 
         @Override
         public void setLayoutHeightMeasure(LayoutMeasure measure) {
             view.getIdleStyle().setLayoutHeightMeasure(measure);
+            view.getSelectedStyle().setLayoutHeightMeasure(measure);
         }
 
         @Override
         public void setWidthMeasure(Measure measure) {
             view.getIdleStyle().setWidthMeasure(measure);
+            view.getSelectedStyle().setWidthMeasure(measure);
         }
 
         @Override
         public void setLayoutWidthMeasure(LayoutMeasure measure) {
             view.getIdleStyle().setLayoutWidthMeasure(measure);
+            view.getSelectedStyle().setLayoutWidthMeasure(measure);
         }
 
         @Override
@@ -1605,6 +1632,7 @@ public class I3dRessourceManager {
         @Override
         public void setSelectedStyle(Style style) {
             view.getIdleStyle().setSelectedStyle(style);
+            view.getSelectedStyle().setSelectedStyle(style);
         }
     }
 
