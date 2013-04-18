@@ -13,8 +13,8 @@ public class BuildingItemFactory {
         this.world = world;
     }
     
-    public NexusItem createNexus(Faction owner) {
-        return new NexusItem(world, GameServer.pickNewId(), owner);
-    }
+//    public NexusItem createNexus(Faction owner) {
+//        return new NexusItem(world, GameServer.pickNewId(), owner);
+//    }
 
 }

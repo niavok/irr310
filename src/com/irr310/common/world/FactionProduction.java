@@ -14,7 +14,7 @@ public class FactionProduction {
 
     public static final long FACTORY_CAPACITY_INCREASE_PRICE = 300;
     public static final long FACTORY_CAPACITY_SELL_PRICE = 200;
-    public static final long FACTORY_CAPACITY_INCREASE_DELAY = 10; //TickCount
+    public static final long FACTORY_CAPACITY_INCREASE_DELAY = 1; //TickCount
     public static final long FACTORY_MAINTENANCE_PRICE = 10;
     
     private long factoryCapacity;

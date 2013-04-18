@@ -1,9 +1,14 @@
 package com.irr310.server.world.product;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import sun.security.action.GetLongAction;
 
 import com.irr310.common.tools.Log;
 import com.irr310.common.world.state.ProductState;
@@ -11,10 +16,13 @@ import com.irr310.server.world.product.ComponentProduct.ComponentSlotProduct;
 
 public class ShipProduct extends Product {
 
+    private static final long ORES_COST_PER_LINK = 10;
+    private static final long FACTORY_COST_PER_LINK = 50;
     private String kernelKey;
     private ShipComponentProduct kernel;
     private Map<String, ShipComponentProduct> components = new HashMap<String, ShipProduct.ShipComponentProduct>();
     private List<ShipLinkProduct> links = new ArrayList<ShipLinkProduct>();
+    private ArrayList<Product> subProducts;
 
     public void setKernelKey(String kernelKey) {
         this.kernelKey = kernelKey;
@@ -224,11 +232,30 @@ public class ShipProduct extends Product {
 
     @Override
     public List<Product> getSubProducts() {
-        ArrayList<Product> products = new ArrayList<Product>();
-        for(ShipComponentProduct shipComponentProduct: components.values()) {
-            products.add(shipComponentProduct.getComponent());
+        
+        if(subProducts == null) {
+            subProducts = new ArrayList<Product>();
+            for(ShipComponentProduct shipComponentProduct: components.values()) {
+                subProducts.add(shipComponentProduct.getComponent());
+            }
+            Collections.sort(subProducts, new Comparator<Product>() {
+                @Override
+                public int compare(Product o1, Product o2) {
+                    return o1.getId().compareTo(o2.getId());
+                }});
         }
-        return products;
+        
+        return subProducts;
+    }
+
+    @Override
+    public long getOreCost() {
+        return links.size()* ORES_COST_PER_LINK;
+    }
+
+    @Override
+    public long getFactoryCost() {
+        return links.size()* FACTORY_COST_PER_LINK;
     }
 
     

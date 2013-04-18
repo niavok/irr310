@@ -4,14 +4,15 @@ import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Faction;
 import com.irr310.common.world.World;
 import com.irr310.common.world.system.WorldSystem;
+import com.irr310.server.world.product.Product;
 
 public abstract class DeployableItem extends Item {
     
     private double deployedRadius;
     protected WorldSystem currentSystem;
 
-    public DeployableItem(World world, long id, Faction owner) {
-        super(world, id, owner);
+    public DeployableItem(Product product, World world, long id, Faction owner, Item[] subItems) {
+        super(product, world, id, owner, subItems);
         setDeployable(true);
     }
     

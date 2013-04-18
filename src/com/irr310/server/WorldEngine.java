@@ -36,11 +36,10 @@ import com.irr310.common.tools.Log;
 import com.irr310.common.tools.RessourceLoadingException;
 import com.irr310.common.tools.Vec2;
 import com.irr310.common.world.Faction;
-import com.irr310.common.world.WorldMap;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.World;
+import com.irr310.common.world.WorldMap;
 import com.irr310.common.world.item.BuildingItemFactory;
-import com.irr310.common.world.item.NexusItem;
 import com.irr310.common.world.system.WorldSystem;
 import com.irr310.server.world.product.Product;
 import com.irr310.server.world.product.ProductManager;
@@ -95,18 +94,24 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements WorldEven
     }
 
     private void doTick() {
+        Log.trace("-------------- tick");
         for(Faction faction: world.getFactions()) {
             productionManager.doTick(faction.getProduction());
             engineManager.sendToAll(new FactionProductionStateEvent(faction.getProduction().toState()));
         }
+        for(Faction faction: world.getFactions()) {
+            engineManager.sendToAll(new FactionStateEvent(faction.toState()));
+            
+        }
+        
     }
 
     private void doTurn() {
-    
+        Log.trace("=============== turn");
         // Revenue
         for(Faction faction: world.getFactions()) {
-            faction.giveStaters(100);
-//            faction.giveOres(400);
+            faction.giveStaters(1000);
+            faction.giveOres(400);
             
         }
         
@@ -114,10 +119,6 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements WorldEven
             productionManager.doTurn(faction.getProduction());
         }
         
-        for(Faction faction: world.getFactions()) {
-            engineManager.sendToAll(new FactionStateEvent(faction.toState()));
-            
-        }
         
     }
     
@@ -317,14 +318,14 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements WorldEven
             
             world.addFaction(faction);
             
-            NexusItem nexus = new BuildingItemFactory(world).createNexus(faction);
+//            NexusItem nexus = new BuildingItemFactory(world).createNexus(faction);
             
             
-            world.addItem(nexus);
+//            world.addItem(nexus);
             
             system.setOwner(faction);
             
-            nexus.forceDeploy(system, system.getRandomEmptySpace(nexus.getDeployedRadius()));
+//            nexus.forceDeploy(system, system.getRandomEmptySpace(nexus.getDeployedRadius()));
         }
         
 //        world.flush();

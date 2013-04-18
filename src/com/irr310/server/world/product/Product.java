@@ -82,5 +82,12 @@ public abstract class Product {
         return true;
     }
 
+    /**
+     * Return sorted product list
+     */
     public abstract List<Product> getSubProducts();
+
+    public abstract long getOreCost();
+
+    public abstract long getFactoryCost();
 }

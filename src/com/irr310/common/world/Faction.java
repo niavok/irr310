@@ -23,6 +23,7 @@ public class Faction extends WorldEntity{
     private long koliumAmount;
     private long neuridiumAmount;
     private FactionProduction production;
+    private FactionStocks stocks;
     private FactionAvailableProductList availableProductList;
     
     
@@ -30,6 +31,7 @@ public class Faction extends WorldEntity{
         super(world, id);
         color = Color.randomDarkOpaqueColor();
         production = new FactionProduction(this);
+        stocks = new FactionStocks(this);
         availableProductList = new FactionAvailableProductList(this, world.getProductManager());
         statersAmount = 0;
         oresAmount = 0;
@@ -167,6 +169,10 @@ public class Faction extends WorldEntity{
 
     public void giveOres(long amount) {
         setOresAmount(getOresAmount() + amount);
+    }
+
+    public FactionStocks getStocks() {
+        return stocks;
     }
     
 }
