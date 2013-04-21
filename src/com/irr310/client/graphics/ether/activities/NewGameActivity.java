@@ -21,7 +21,6 @@ import com.irr310.server.WorldEngine;
 public class NewGameActivity extends Activity {
 
 
-    private Handler handler = new Handler();
     private WorldEngine worldEngine = null;
     private NewGameEventVisitor visitor;
     
@@ -61,18 +60,12 @@ public class NewGameActivity extends Activity {
     }
 
     @Override
-    protected void onUpdate(Time absTime, Time gameTime) {
-        
-        while(handler.hasMessages()) {
-            Message message = handler.getMessage();
-            
-            switch(message.what) {
-                case NEW_GAME_CREATED_WHAT:
-                    BoardActivityBundle bundle = new BoardActivityBundle(worldEngine);
-                    startActivity(new Intent(BoardActivity.class, bundle));
-                    break;
-            }
-            
+    protected void onMessage(Message message) {
+        switch(message.what) {
+            case NEW_GAME_CREATED_WHAT:
+                BoardActivityBundle bundle = new BoardActivityBundle(worldEngine);
+                startActivity(new Intent(BoardActivity.class, bundle));
+                break;
         }
     }
     
@@ -80,7 +73,7 @@ public class NewGameActivity extends Activity {
          @Override
         public void visit(PlayerConnectedEvent event) {
              LoginManager.localPlayer = event.getPlayer().toState();
-             handler.obtainMessage(NEW_GAME_CREATED_WHAT).send();
+             getHandler().obtainMessage(NEW_GAME_CREATED_WHAT).send();
         }   
     }
 

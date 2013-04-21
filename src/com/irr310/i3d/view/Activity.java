@@ -2,11 +2,14 @@ package com.irr310.i3d.view;
 
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.RessourceLoadingException;
+import com.irr310.common.world.state.FactionState;
 import com.irr310.i3d.Bundle;
 import com.irr310.i3d.Graphics;
+import com.irr310.i3d.Handler;
 import com.irr310.i3d.I3dContext;
 import com.irr310.i3d.I3dRessourceManager;
 import com.irr310.i3d.Intent;
+import com.irr310.i3d.Message;
 import com.irr310.i3d.Surface;
 import com.irr310.server.Time;
 
@@ -22,6 +25,7 @@ public abstract class Activity implements ViewParent {
     private I3dContext context = null;
     private boolean stackable = true;
     private State state = State.STOPPED;
+    private Handler handler = new Handler();
 
     protected abstract void onCreate(Bundle bundle);
     protected abstract void onResume();
@@ -94,11 +98,22 @@ public abstract class Activity implements ViewParent {
     
     public void update(Time absTime, Time gameTime) {
         updateLayout();
+        
+        
+        executeHandler();
         onUpdate(absTime, gameTime);
         //The update may have changed the layout. Check that
         updateLayout();
     }
 
+    private void executeHandler() {
+        while(handler.hasMessages()) {
+            Message message = handler.getMessage();
+            onMessage(message);
+        }        
+    }
+    protected void onMessage(Message message) {
+    }
     private void updateLayout() {
         if(!mLayoutUpdated) {
             mLayoutUpdated = true;
@@ -171,6 +186,10 @@ public abstract class Activity implements ViewParent {
         mview.onMouseEvent(mouseEvent);
     }
    
+    public Handler getHandler() {
+        return handler;
+    }
 
+    
 
 }

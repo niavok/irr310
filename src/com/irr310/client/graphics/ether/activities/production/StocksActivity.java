@@ -52,7 +52,6 @@ public class StocksActivity extends Activity {
     private Button productionCategoryDesignButton;
     private DefaultWorldEventVisitor visitor;
     private LinearLayout stocksListLinearLayout;
-    private Handler handler = new Handler();
     private FactionStocksState stocks;
     private SelectionManager<ItemState> stockItemSelectionManager;
     
@@ -85,7 +84,7 @@ public class StocksActivity extends Activity {
             @Override
             public void visit(FactionStocksStateEvent event) {
                 if (LoginManager.getLocalPlayer().faction.id == event.getFactionStocks().factionId) {
-                    handler.obtainMessage(UPDATE_STOCKS_WHAT, event.getFactionStocks()).send();
+                    getHandler().obtainMessage(UPDATE_STOCKS_WHAT, event.getFactionStocks()).send();
                 }
             }
         };
@@ -111,17 +110,12 @@ public class StocksActivity extends Activity {
     }
 
     @Override
-    protected void onUpdate(Time absTime, Time gameTime) {
-        while (handler.hasMessages()) {
-            Message message = handler.getMessage();
-
-            switch (message.what) {
-                case UPDATE_STOCKS_WHAT:
-                    stocks = (FactionStocksState) message.obj;
-                    updateFields();
-                    break;
-            }
-
+    protected void onMessage(Message message) {
+        switch (message.what) {
+            case UPDATE_STOCKS_WHAT:
+                stocks = (FactionStocksState) message.obj;
+                updateFields();
+                break;
         }
     }
 

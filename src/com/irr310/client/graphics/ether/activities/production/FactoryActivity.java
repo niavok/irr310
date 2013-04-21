@@ -49,7 +49,6 @@ public class FactoryActivity extends Activity {
     private TextView factoryRentCapacityAmountTextView;
     private TextView factoryCapacityAmountTextView;
     private TextView factoryMaintenanceAmountTextView;
-    private Handler handler = new Handler();
     private WorldEventVisitor visitor;
     private Button factoryBuyFactoryButton;
     private Button factorySellFactoryButton;
@@ -129,21 +128,21 @@ public class FactoryActivity extends Activity {
             @Override
             public void visit(FactionStateEvent event) {
                 if (LoginManager.getLocalPlayer().faction.id == event.getFaction().id) {
-                    handler.obtainMessage(UPDATE_FACTION_WHAT, event.getFaction()).send();
+                    getHandler().obtainMessage(UPDATE_FACTION_WHAT, event.getFaction()).send();
                 }
             }
 
             @Override
             public void visit(FactionProductionStateEvent event) {
                 if (LoginManager.getLocalPlayer().faction.id == event.getFactionProduction().factionId) {
-                    handler.obtainMessage(UPDATE_PRODUCTION_WHAT, event.getFactionProduction()).send();
+                    getHandler().obtainMessage(UPDATE_PRODUCTION_WHAT, event.getFactionProduction()).send();
                 }
             }
             
             @Override
             public void visit(FactionAvailableProductListEvent event) {
                 if (LoginManager.getLocalPlayer().faction.id == event.getFactionAvailableProductList().factionId) {
-                    handler.obtainMessage(UPDATE_AVAILABLE_PRODUCT_LIST_WHAT, event.getFactionAvailableProductList()).send();
+                    getHandler().obtainMessage(UPDATE_AVAILABLE_PRODUCT_LIST_WHAT, event.getFactionAvailableProductList()).send();
                 }
             }
         };
@@ -237,25 +236,20 @@ public class FactoryActivity extends Activity {
     }
 
     @Override
-    protected void onUpdate(Time absTime, Time gameTime) {
-        while (handler.hasMessages()) {
-            Message message = handler.getMessage();
-
-            switch (message.what) {
-                case UPDATE_FACTION_WHAT:
-                    faction = (FactionState) message.obj;
-                    updateFields();
-                    break;
-                case UPDATE_PRODUCTION_WHAT:
-                    production = (FactionProductionState) message.obj;
-                    updateFields();
-                    break;
-                case UPDATE_AVAILABLE_PRODUCT_LIST_WHAT:
-                    availableProductList = (FactionAvailableProductListState) message.obj;
-                    updateFields();
-                    break;
-            }
-
+    protected void onMessage(Message message) {
+        switch (message.what) {
+            case UPDATE_FACTION_WHAT:
+                faction = (FactionState) message.obj;
+                updateFields();
+                break;
+            case UPDATE_PRODUCTION_WHAT:
+                production = (FactionProductionState) message.obj;
+                updateFields();
+                break;
+            case UPDATE_AVAILABLE_PRODUCT_LIST_WHAT:
+                availableProductList = (FactionAvailableProductListState) message.obj;
+                updateFields();
+                break;
         }
     }
 

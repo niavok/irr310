@@ -32,7 +32,6 @@ public class BoardActivity extends Activity {
     private TextView boardKoliumAmountTextView;
     private TextView boardNeuridiumAmountTextView;
     private WorldEventVisitor visitor;
-    private Handler handler = new Handler();
     private static final int UPDATE_FACTION_WHAT = 1;
     
     @Override
@@ -72,7 +71,7 @@ public class BoardActivity extends Activity {
             @Override
             public void visit(FactionStateEvent event) {
                 if(LoginManager.getLocalPlayer().faction.id == event.getFaction().id) {
-                    handler.obtainMessage(UPDATE_FACTION_WHAT, event.getFaction()).send();
+                    getHandler().obtainMessage(UPDATE_FACTION_WHAT, event.getFaction()).send();
                 }
             }
         };
@@ -103,15 +102,14 @@ public class BoardActivity extends Activity {
 
     @Override
     protected void onUpdate(Time absTime, Time gameTime) {
-        while(handler.hasMessages()) {
-            Message message = handler.getMessage();
-            
-            switch(message.what) {
-                case UPDATE_FACTION_WHAT:
-                    updateFields((FactionState) message.obj);
-                    break;
-            }
-            
+    }
+    
+    @Override
+    protected void onMessage(Message message) {
+        switch(message.what) {
+            case UPDATE_FACTION_WHAT:
+                updateFields((FactionState) message.obj);
+                break;
         }
     }
     
