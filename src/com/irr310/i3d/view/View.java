@@ -65,11 +65,6 @@ public abstract class View {
     public abstract void onDraw(Graphics g);
 
     public void measure() {
-        
-        if(getId().contains("production_categories")) {
-            Log.trace("plop");
-        }
-        
         if (layoutParams.getLayoutWidthMeasure() == LayoutMeasure.FIXED) {
             if (!layoutParams.getMeasurePoint().getX().isRelative()) {
                 layoutParams.mContentWidth = layoutParams.computeMesure(layoutParams.getMeasurePoint().getX());
@@ -119,10 +114,6 @@ public abstract class View {
     }
 
     public void layout(float l, float t, float r, float b) {
-        if(getId().contains("production_categories")) {
-            Log.trace("plop");
-        }
-        
         boolean changed = layoutParams.setFrame(l, t, r, b);
         layoutParams.setExtrasFrame(l, t, r, b);
         // if (changed) {
