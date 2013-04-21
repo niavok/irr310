@@ -23,10 +23,12 @@ import com.irr310.common.event.world.DefaultWorldEventVisitor;
 import com.irr310.common.event.world.FactionAvailableProductListEvent;
 import com.irr310.common.event.world.FactionProductionStateEvent;
 import com.irr310.common.event.world.FactionStateEvent;
+import com.irr310.common.event.world.FactionStocksStateEvent;
 import com.irr310.common.event.world.PlayerConnectedEvent;
 import com.irr310.common.event.world.QueryFactionAvailableProductListEvent;
 import com.irr310.common.event.world.QueryFactionProductionStateEvent;
 import com.irr310.common.event.world.QueryFactionStateEvent;
+import com.irr310.common.event.world.QueryFactionStocksStateEvent;
 import com.irr310.common.event.world.QueryWorldMapStateEvent;
 import com.irr310.common.event.world.WorldEvent;
 import com.irr310.common.event.world.WorldEventDispatcher;
@@ -40,6 +42,7 @@ import com.irr310.common.world.Player;
 import com.irr310.common.world.World;
 import com.irr310.common.world.WorldMap;
 import com.irr310.common.world.item.BuildingItemFactory;
+import com.irr310.common.world.state.FactionStocksState;
 import com.irr310.common.world.system.WorldSystem;
 import com.irr310.server.world.product.Product;
 import com.irr310.server.world.product.ProductManager;
@@ -94,12 +97,11 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements WorldEven
     }
 
     private void doTick() {
-        Log.trace("-------------- tick");
+//        Log.trace("-------------- tick");
         for(Faction faction: world.getFactions()) {
             productionManager.doTick(faction.getProduction());
             engineManager.sendToAll(new FactionProductionStateEvent(faction.getProduction().toState()));
-        }
-        for(Faction faction: world.getFactions()) {
+            engineManager.sendToAll(new FactionStocksStateEvent(faction.getStocks().toState()));
             engineManager.sendToAll(new FactionStateEvent(faction.toState()));
             
         }
@@ -107,7 +109,7 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements WorldEven
     }
 
     private void doTurn() {
-        Log.trace("=============== turn");
+//        Log.trace("=============== turn");
         // Revenue
         for(Faction faction: world.getFactions()) {
             faction.giveStaters(1000);
@@ -197,6 +199,12 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements WorldEven
         }
         
         @Override
+        public void visit(QueryFactionStocksStateEvent event) {
+            Faction faction = world.getFaction(event.getFaction());
+            engineManager.sendToAll(new FactionStocksStateEvent(faction.getStocks().toState()));
+        }
+        
+        @Override
         public void visit(QueryWorldMapStateEvent event) {
             engineManager.sendToAll(new WorldMapStateEvent(world.getMap().toState()));
         }
@@ -224,6 +232,7 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements WorldEven
             faction.getProduction().addTask(GameServer.pickNewId(), product, event.getCount());
             engineManager.sendToAll(new FactionProductionStateEvent(faction.getProduction().toState()));
         }
+
     }
     
     private void initWorld() {

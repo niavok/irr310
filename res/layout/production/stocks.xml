@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    i3d:id="main"
+    i3d:layout_width="match_parent"
+    i3d:layout_height="match_parent"
+    i3d:orientation="horizontal" >
+    
+    <ScrollView
+        i3d:id="stocksListView"
+        i3d:layout_width="100%"
+        i3d:layout_height="match_parent"
+        i3d:scroll_axis="vertical"
+        i3d:scroll_limits="strict" >
+
+        <LinearLayout
+            i3d:id="stocksListLinearLayout"
+            i3d:layout_width="wrap_content"
+            i3d:layout_height="wrap_content"
+            i3d:orientation="vertical" />
+    </ScrollView>
+
+    <ScrollView
+        i3d:id="producableListView"
+        i3d:layout_width="wrap_content"
+        i3d:layout_height="match_parent"
+        i3d:scroll_axis="vertical"
+        i3d:scroll_limits="strict" >
+
+        <LinearLayout
+            i3d:layout_width="wrap_content"
+            i3d:layout_marginLeft="10px"
+            i3d:layout_marginRight="20px"
+            i3d:orientation="vertical" >
+
+            <View
+            i3d:id="production_categories"
+            i3d:ref="main@layout/production/production_categories" />
+
+            
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

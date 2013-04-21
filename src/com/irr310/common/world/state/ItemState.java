@@ -8,10 +8,13 @@ public class ItemState {
 
     @NetworkField
     public long id;
-   
+ 
     @NetworkField
-    public String name;
+    public ProductState product;
     
     @NetworkField
-    public boolean used;
+    public boolean deployed;
+
+    @NetworkField
+    public boolean reserved;
 }

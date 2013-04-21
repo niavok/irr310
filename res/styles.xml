@@ -11,6 +11,13 @@
         <item name="i3d:layout_paddingBottom">10px</item>
     </style>
     
+    <style name="selectedBigButton" parent="bigButton@styles" >
+        <item name="i3d:borderSize">0px</item>
+        <item name="i3d:background">buttonSelectedBackground@backgrounds</item>
+        <item name="i3d:color">white@color</item>
+        
+    </style>
+    
     <style name="smallButton" parent="buttonBase@styles">
         <item name="i3d:font">smallButton@fonts</item>
         <item name="i3d:borderSize">0.5px</item>
@@ -35,6 +42,9 @@
         <item name="i3d:cornerRightBottomSize">10px</item>
         <item name="i3d:background">buttonBaseBackground@backgrounds</item>
     </style>
+    
+
+    
     
     <style name="lightBlock">
         <item name="i3d:borderSize">0px</item>

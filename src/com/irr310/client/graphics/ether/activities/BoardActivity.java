@@ -1,6 +1,6 @@
 package com.irr310.client.graphics.ether.activities;
 
-import com.irr310.client.graphics.ether.activities.production.ProductionActivity;
+import com.irr310.client.graphics.ether.activities.production.FactoryActivity;
 import com.irr310.client.graphics.ether.activities.worldmap.WorldMapActivity;
 import com.irr310.client.navigation.LoginManager;
 import com.irr310.common.event.world.DefaultWorldEventVisitor;
@@ -63,7 +63,7 @@ public class BoardActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Bundle bundle = new Bundle(worldEngine);
-                startActivity(new Intent(ProductionActivity.class, bundle));
+                startActivity(new Intent(FactoryActivity.class, bundle));
             }
         });
         

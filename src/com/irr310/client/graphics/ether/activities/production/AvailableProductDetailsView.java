@@ -19,9 +19,9 @@ public class AvailableProductDetailsView extends ProxyView {
     private final ProductState product;
     private TextView productNameTextView;
     private Button buyProductButton;
-    private final ProductionActivity productionActivity;
+    private final FactoryActivity productionActivity;
 
-    public AvailableProductDetailsView(ProductionActivity productionActivity, ProductState product) {
+    public AvailableProductDetailsView(FactoryActivity productionActivity, ProductState product) {
         super(I3dRessourceManager.loadView("main@layout/production/available_product_details"));
         this.productionActivity = productionActivity;
         this.product = product;

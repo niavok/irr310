@@ -26,6 +26,7 @@ import com.irr310.common.world.state.ProductState;
 import com.irr310.common.world.state.ProductionTaskState;
 import com.irr310.i3d.Bundle;
 import com.irr310.i3d.Handler;
+import com.irr310.i3d.Intent;
 import com.irr310.i3d.Message;
 import com.irr310.i3d.SelectionManager;
 import com.irr310.i3d.SelectionManager.OnSelectionChangeListener;
@@ -36,9 +37,10 @@ import com.irr310.i3d.view.ScrollView;
 import com.irr310.i3d.view.TextView;
 import com.irr310.i3d.view.View;
 import com.irr310.i3d.view.View.OnClickListener;
+import com.irr310.i3d.view.View.ViewState;
 import com.irr310.server.Time;
 
-public class ProductionActivity extends Activity {
+public class FactoryActivity extends Activity {
 
     private WorldEventDispatcher worldEngine;
     private TextView factoryStatersAmountTextView;
@@ -65,36 +67,54 @@ public class ProductionActivity extends Activity {
     private SelectionManager<ProductionTaskState> productionTaskSelectionManager;
     private LinearLayout productionDetailsLinearLayout;
     private LinearLayout productionTaskQueueLinearLayout;
+    private Button productionCategoryFactoryButton;
+    private Button productionCategoryStocksButton;
+    private Button productionCategoryDesignButton;
     private static final int UPDATE_FACTION_WHAT = 1;
     private static final int UPDATE_PRODUCTION_WHAT = 2;
     private static final int UPDATE_AVAILABLE_PRODUCT_LIST_WHAT = 3;
 
     @Override
     public void onCreate(Bundle bundle) {
-        setContentView("main@layout/production/production");
+        setContentView("main@layout/production/factory");
         worldEngine = (WorldEventDispatcher) bundle.getObject();
-        factoryStatersAmountTextView = (TextView) findViewById("factoryStatersAmountTextView@layout/production/production");
-        factoryMaintenanceAmountTextView = (TextView) findViewById("factoryMaintenanceAmountTextView@layout/production/production");
-        factoryCapacityAmountTextView = (TextView) findViewById("factoryCapacityAmountTextView@layout/production/production");
-        factoryRentCapacityAmountTextView = (TextView) findViewById("factoryRentCapacityAmountTextView@layout/production/production");
-        factoryTotalCapacityAmountTextView = (TextView) findViewById("factoryTotalCapacityAmountTextView@layout/production/production");
+        factoryStatersAmountTextView = (TextView) findViewById("factoryStatersAmountTextView@layout/production/factory");
+        factoryMaintenanceAmountTextView = (TextView) findViewById("factoryMaintenanceAmountTextView@layout/production/factory");
+        factoryCapacityAmountTextView = (TextView) findViewById("factoryCapacityAmountTextView@layout/production/factory");
+        factoryRentCapacityAmountTextView = (TextView) findViewById("factoryRentCapacityAmountTextView@layout/production/factory");
+        factoryTotalCapacityAmountTextView = (TextView) findViewById("factoryTotalCapacityAmountTextView@layout/production/factory");
 
-        factoryBuyFactoryButton = (Button) findViewById("factoryBuyFactoryButton@layout/production/production");
-        factorySellFactoryButton = (Button) findViewById("factorySellFactoryButton@layout/production/production");
-        factoryIncomingCapacityTextView = (TextView) findViewById("factoryIncomingCapacityTextView@layout/production/production");
-        factoryIncomingCapacityDelayTextView = (TextView) findViewById("factoryIncomingCapacityDelayTextView@layout/production/production");
+        factoryBuyFactoryButton = (Button) findViewById("factoryBuyFactoryButton@layout/production/factory");
+        factorySellFactoryButton = (Button) findViewById("factorySellFactoryButton@layout/production/factory");
+        factoryIncomingCapacityTextView = (TextView) findViewById("factoryIncomingCapacityTextView@layout/production/factory");
+        factoryIncomingCapacityDelayTextView = (TextView) findViewById("factoryIncomingCapacityDelayTextView@layout/production/factory");
 
-        factoryOresTextView = (TextView) findViewById("factoryOresTextView@layout/production/production");
-        factoryOresNeedsTextView = (TextView) findViewById("factoryOresNeedsTextView@layout/production/production");
-        factoryCapacityNeedsTextView = (TextView) findViewById("factoryCapacityNeedsTextView@layout/production/production");
-        factoryTimeEstimationTextView = (TextView) findViewById("factoryTimeEstimationTextView@layout/production/production");
+        factoryOresTextView = (TextView) findViewById("factoryOresTextView@layout/production/factory");
+        factoryOresNeedsTextView = (TextView) findViewById("factoryOresNeedsTextView@layout/production/factory");
+        factoryCapacityNeedsTextView = (TextView) findViewById("factoryCapacityNeedsTextView@layout/production/factory");
+        factoryTimeEstimationTextView = (TextView) findViewById("factoryTimeEstimationTextView@layout/production/factory");
 
         
-        productionTaskQueueLinearLayout = (LinearLayout) findViewById("productionTaskQueueLinearLayout@layout/production/production");
+        productionTaskQueueLinearLayout = (LinearLayout) findViewById("productionTaskQueueLinearLayout@layout/production/factory");
         
-        availableProductListLinearLayout = (LinearLayout) findViewById("availableProductListLinearLayout@layout/production/production");
+        availableProductListLinearLayout = (LinearLayout) findViewById("availableProductListLinearLayout@layout/production/factory");
         
-        productionDetailsLinearLayout = (LinearLayout) findViewById("productionDetailsLinearLayout@layout/production/production");
+        productionDetailsLinearLayout = (LinearLayout) findViewById("productionDetailsLinearLayout@layout/production/factory");
+        
+        productionCategoryFactoryButton = (Button) findViewById("productionCategoryFactoryButton@layout/production/production_categories"); 
+        productionCategoryStocksButton = (Button) findViewById("productionCategoryStocksButton@layout/production/production_categories");
+        productionCategoryDesignButton = (Button) findViewById("productionCategoryDesignButton@layout/production/production_categories");
+        
+        productionCategoryFactoryButton.setState(ViewState.SELECTED);
+        
+        productionCategoryStocksButton.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle(worldEngine);
+                startActivity(new Intent(StocksActivity.class, bundle));
+            }
+        });
         
         
         factoryOresNeedsTextView.setText("8420 [ores@icons]");
@@ -154,7 +174,7 @@ public class ProductionActivity extends Activity {
                 addedViews.clear();
                 
                 for(ProductState product: selection) {
-                    View view = new AvailableProductDetailsView(ProductionActivity.this, product);
+                    View view = new AvailableProductDetailsView(FactoryActivity.this, product);
                     addedViews.add(view);
                     productionDetailsLinearLayout.addViewInLayout(view);
                 }
@@ -181,7 +201,7 @@ public class ProductionActivity extends Activity {
                 addedViews.clear();
                 
                 for(ProductionTaskState productionTask: selection) {
-                    View view = new ProductionTaskDetailsView(ProductionActivity.this, productionTask);
+                    View view = new ProductionTaskDetailsView(FactoryActivity.this, productionTask);
                     addedViews.add(view);
                     productionDetailsLinearLayout.addViewInLayout(view);
                 }

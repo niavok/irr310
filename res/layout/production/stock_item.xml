@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    i3d:id="main"
+    i3d:style="lightBlock@styles"
+    i3d:selected_style="selectedLightBlock@styles"
+    i3d:layout_width="match_parent"
+    i3d:layout_height="wrap_content"
+    i3d:orientation="vertical"
+    i3d:layout_marginLeft="10px"
+    i3d:layout_marginRight="10px"
+    i3d:layout_marginTop="5px"
+    i3d:layout_marginBottom="5px" >
+
+    <TextView
+        i3d:id="itemNameTextView"
+        i3d:layout_paddingBottom="5px"
+        i3d:font="medium@fonts"
+        i3d:color="defaultFont@color" />
+
+</LinearLayout>

@@ -1,7 +1,10 @@
 package com.irr310.common.world.item;
 
+import com.irr310.common.network.NetworkField;
 import com.irr310.common.world.Faction;
 import com.irr310.common.world.World;
+import com.irr310.common.world.state.ItemState;
+import com.irr310.common.world.state.ProductState;
 import com.irr310.common.world.system.WorldEntity;
 import com.irr310.server.world.product.ComponentProduct;
 import com.irr310.server.world.product.Product;
@@ -64,5 +67,15 @@ public class Item extends WorldEntity {
 
     public Product getProduct() {
         return product;
+    }
+
+    public ItemState toState() {
+        ItemState state  = new ItemState();
+        state.id = getId();
+        state.product = product.toState();
+        state.deployed = deployed;
+        state.reserved = reserved;
+        
+        return state;
     }
 }

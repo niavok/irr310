@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    i3d:id="main"
+    i3d:style="lightBlock@styles"
+    i3d:layout_width="250px"
+    i3d:layout_height="wrap_content"
+    i3d:layout_marginTop="30px"
+    i3d:orientation="vertical" >
+
+    <Button
+        i3d:id="productionCategoryFactoryButton"
+        i3d:style="bigButton@styles"
+        i3d:selected_style="selectedBigButton@styles"
+        i3d:layout_width="match_parent"
+        i3d:layout_marginBottom="10px"
+        i3d:layout_marginTop="10px"
+        i3d:help="newGameButtonHelp@help/mainmenu"
+        i3d:text="productionCategoryFactoryButton@strings" />
+
+    <Button
+        i3d:id="productionCategoryStocksButton"
+        i3d:style="bigButton@styles"
+        i3d:selected_style="selectedBigButton@styles"
+        i3d:layout_width="match_parent"
+        i3d:layout_marginBottom="10px"
+        i3d:layout_marginTop="10px"
+        i3d:help="newGameButtonHelp@help/mainmenu"
+        i3d:text="productionCategoryStocksButton@strings" />
+
+    <Button
+        i3d:id="productionCategoryDesignButton"
+        i3d:style="bigButton@styles"
+        i3d:selected_style="selectedBigButton@styles"
+        i3d:layout_width="match_parent"
+        i3d:layout_marginBottom="10px"
+        i3d:layout_marginTop="10px"
+        i3d:help="newGameButtonHelp@help/mainmenu"
+        i3d:text="productionCategoryDesignButton@strings" />
+
+</LinearLayout>

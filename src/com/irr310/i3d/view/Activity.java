@@ -1,6 +1,7 @@
 package com.irr310.i3d.view;
 
 import com.irr310.common.tools.Log;
+import com.irr310.common.tools.RessourceLoadingException;
 import com.irr310.i3d.Bundle;
 import com.irr310.i3d.Graphics;
 import com.irr310.i3d.I3dContext;
@@ -137,7 +138,7 @@ public abstract class Activity implements ViewParent {
     protected View findViewById(String id) {
 		View view = mview.findViewById(id);
 		if(view == null) {
-			Log.error("Fail to find View with '"+id+"' as id.");
+		    throw new RessourceLoadingException("Fail to find View with '"+id+"' as id."); 
 		}
 		return view;
 	}

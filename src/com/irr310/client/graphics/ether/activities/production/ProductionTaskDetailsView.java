@@ -20,9 +20,9 @@ public class ProductionTaskDetailsView extends ProxyView {
     private final ProductionTaskState productionTask;
     private TextView productNameTextView;
     private Button cancelProductButton;
-    private final ProductionActivity productionActivity;
+    private final FactoryActivity productionActivity;
 
-    public ProductionTaskDetailsView(ProductionActivity productionActivity, ProductionTaskState productionState) {
+    public ProductionTaskDetailsView(FactoryActivity productionActivity, ProductionTaskState productionState) {
         super(I3dRessourceManager.loadView("main@layout/production/production_task_details"));
         this.productionActivity = productionActivity;
         this.productionTask = productionState;
