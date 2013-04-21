@@ -11,11 +11,4 @@ public class BuildingFactory {
     public BuildingFactory(World world) {
         this.world = world;
     }
-    
-    public Nexus createNexus() {
-        Nexus nexus = new Nexus(world, GameServer.pickNewId(), "nexus");
-        
-        return nexus;
-    }
-    
 }

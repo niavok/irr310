@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.irr310.common.world.state.FactionState;
 import com.irr310.common.world.state.ProductState;
+import com.irr310.common.world.system.Nexus;
 import com.irr310.common.world.system.Ship;
 import com.irr310.common.world.system.WorldEntity;
 import com.irr310.common.world.system.WorldSystem;
@@ -25,7 +26,7 @@ public class Faction extends WorldEntity{
     private FactionProduction production;
     private FactionStocks stocks;
     private FactionAvailableProductList availableProductList;
-    
+    private Nexus rootNexus;
     
     public Faction(World world, long id) {
         super(world, id);
@@ -113,6 +114,14 @@ public class Faction extends WorldEntity{
         this.statersAmount = statersAmount;
     }
     
+    public Nexus getRootNexus() {
+        return rootNexus;
+    }
+    
+    public void setRootNexus(Nexus rootNexus) {
+        this.rootNexus = rootNexus;
+    }
+    
     public FactionState toState() {
         FactionState factionState = new FactionState();
         factionState.id = getId();
@@ -122,6 +131,7 @@ public class Faction extends WorldEntity{
         factionState.neuridiumAmount = neuridiumAmount;
         factionState.color = color;
         factionState.homeSystemId = homeSystem.getId();
+        factionState.rootNexus = rootNexus.toState();
         
         factionState.knownSystemIds = new ArrayList<Long>(); 
         for(WorldSystem system: knownSystems) {
@@ -136,7 +146,7 @@ public class Faction extends WorldEntity{
     }
 
     public boolean takeStaters(long price) {
-        if(getStatersAmount() > price) {
+        if(getStatersAmount() >= price) {
             setStatersAmount(getStatersAmount() - price);
             return true;
         }
@@ -160,7 +170,7 @@ public class Faction extends WorldEntity{
     }
     
     public boolean takeOres(long price) {
-        if(getOresAmount() > price) {
+        if(getOresAmount() >= price) {
             setOresAmount(getOresAmount() - price);
             return true;
         }

@@ -4,23 +4,12 @@ import com.irr310.common.network.NetworkClass;
 import com.irr310.common.network.NetworkField;
 
 @NetworkClass
-public class ItemState {
+public class NexusState {
 
-    static public final int STOCKED = 0;
-    static public final int RESERVED = 1;
-    static public final int DEPLOYED = 2;
-    static public final int DEPLOYING = 3;
-    static public final int DESTROYED = 4;
-    
     @NetworkField
     public long id;
  
-    @NetworkField
-    public ProductState product;
-    
-    @NetworkField
-    public int state;
-
+   
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -37,7 +26,7 @@ public class ItemState {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        ItemState other = (ItemState) obj;
+        NexusState other = (NexusState) obj;
         if (id != other.id)
             return false;
         return true;

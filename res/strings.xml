@@ -54,4 +54,8 @@
     <string name="buyProductButton">Buy</string>
     <string name="cancelProductionTask">Cancel</string>
     
+    <!-- Production > Stocks -->
+    
+    <string name="deployShipButton">Deploy</string>
+    
 </resources>

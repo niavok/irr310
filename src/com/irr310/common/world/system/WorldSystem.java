@@ -28,6 +28,7 @@ public class WorldSystem extends WorldEntity {
     private double radius;
     
     private final List<CelestialObject> celestialObjects;
+    private final List<Nexus> nexuses;
     private final List<Ship> ships;
     private final List<Part> parts;
     private final List<Part> myParts;
@@ -48,6 +49,7 @@ public class WorldSystem extends WorldEntity {
         this.radius = 1000;
         
         celestialObjects = new CopyOnWriteArrayList<CelestialObject>();
+        nexuses =  new CopyOnWriteArrayList<Nexus>();
         ships = new CopyOnWriteArrayList<Ship>();
         parts = new CopyOnWriteArrayList<Part>();
         myParts = new CopyOnWriteArrayList<Part>();
@@ -285,6 +287,10 @@ public class WorldSystem extends WorldEntity {
         }
 
         return systemState;
+    }
+
+    public void addNexus(Nexus rootNexus) {
+        nexuses.add(rootNexus);        
     }
 
 //    public void removeShip(Ship ship) {

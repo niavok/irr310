@@ -1,25 +1,41 @@
 package com.irr310.common.world.system;
 
 import com.irr310.common.tools.Vec3;
+import com.irr310.common.world.Faction;
 import com.irr310.common.world.World;
-import com.irr310.common.world.system.Part.CollisionShape;
-import com.irr310.server.GameServer;
+import com.irr310.common.world.state.NexusState;
 
-public class Nexus extends CelestialObject {
+public class Nexus extends WorldEntity {
 
-    public Nexus(World world, long id, String name) {
-        super(world, id, name);
-        setPhysicalResistance(0.5);
-        setDurabilityMax(1000);
-        setDurability(1000);
-        setSkin("nexus");
+    private double radius;
+    private Vec3 location;
+    private Faction faction;
+
+    public Nexus(World world, long id) {
+        super(world, id);
+    }
+
+    public void setRadius(double radius) {
+        this.radius = radius;
         
-        Part part = new Part(GameServer.pickNewId(), this);
-        part.setCollisionShape(CollisionShape.SPHERE);
-        this.addPart(part);
-        
-        part.setShape(new Vec3(10, 10, 10));
-        
+    }
+    
+    public double getRadius() {
+        return radius;
+    }
+
+    public void setLocation(Vec3 location) {
+        this.location = location;
+    }
+
+    public void setOwner(Faction faction) {
+        this.faction = faction;
+    }
+
+    public NexusState toState() {
+        NexusState state = new NexusState();
+        state.id = getId();
+        return state;
     }
 
 }

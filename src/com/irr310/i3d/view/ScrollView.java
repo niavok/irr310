@@ -366,11 +366,11 @@ public class ScrollView extends View implements ViewParent {
     }
 
     @Override
-    public View findViewById(String id) {
+    public View doFindViewById(String id) {
         View outputView = null;
-        outputView = super.findViewById(id);
+        outputView = super.doFindViewById(id);
         if (outputView == null && child != null) {
-            outputView = child.findViewById(id);
+            outputView = child.doFindViewById(id);
         }
         return outputView;
     }

@@ -3,6 +3,7 @@ package com.irr310.i3d.view;
 import org.lwjgl.opengl.GL11;
 
 import com.irr310.common.tools.Log;
+import com.irr310.common.tools.RessourceLoadingException;
 import com.irr310.i3d.Graphics;
 import com.irr310.i3d.Style;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
@@ -190,7 +191,15 @@ public abstract class View {
         this.borderParams = border;
     }
 
-    public View findViewById(String id) {
+    public final View findViewById(String id) {
+        View view = doFindViewById(id);
+        if(view != null) {
+            return view;
+        }
+        throw new RessourceLoadingException("Fail to find view '"+id+"' in '"+this.id+"'");
+    }
+
+    public View doFindViewById(String id) {
         if (id.equals(this.id)) {
             return this;
         }

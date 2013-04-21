@@ -151,11 +151,7 @@ public abstract class Activity implements ViewParent {
     }
     
     protected View findViewById(String id) {
-		View view = mview.findViewById(id);
-		if(view == null) {
-		    throw new RessourceLoadingException("Fail to find View with '"+id+"' as id."); 
-		}
-		return view;
+		return mview.findViewById(id);
 	}
 	public void forceLayout() {
 		mLayoutUpdated = false;

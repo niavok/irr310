@@ -70,12 +70,12 @@ public abstract class ContainerView extends View implements ViewParent {
     }
     
     @Override
-    public View findViewById(String id) {
+    public View doFindViewById(String id) {
     	View outputView = null;
-    	outputView = super.findViewById(id); 
+    	outputView = super.doFindViewById(id); 
     	if(outputView == null) {
     		for (View view : children) {
-    			outputView = view.findViewById(id);
+    			outputView = view.doFindViewById(id);
     			if(outputView != null) {
     				break;
     			}

@@ -58,8 +58,8 @@ public class ProxyView extends View {
         return super.equals(obj);
     }
 
-    public View findViewById(String id) {
-        return client.findViewById(id);
+    public View doFindViewById(String id) {
+        return client.doFindViewById(id);
     }
 
     public BorderParams getBorderParams() {

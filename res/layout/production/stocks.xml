@@ -20,13 +20,13 @@
     </ScrollView>
 
     <ScrollView
-        i3d:id="producableListView"
         i3d:layout_width="wrap_content"
         i3d:layout_height="match_parent"
         i3d:scroll_axis="vertical"
         i3d:scroll_limits="strict" >
 
         <LinearLayout
+            i3d:id="stockDetailsLinearLayout"
             i3d:layout_width="wrap_content"
             i3d:layout_marginLeft="10px"
             i3d:layout_marginRight="20px"

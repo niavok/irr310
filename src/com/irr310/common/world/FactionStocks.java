@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.irr310.common.world.item.Item;
+import com.irr310.common.world.item.Item.State;
 import com.irr310.common.world.state.FactionProductionState;
 import com.irr310.common.world.state.FactionStocksState;
 import com.irr310.common.world.state.ItemState;
@@ -31,7 +32,7 @@ public class FactionStocks {
         }
         
         for(Item item: items) {
-            if(!item.isReserved() && !item.isDeployed()) {
+            if(item.getState() == State.STOCKED) {
                 return item;
             }
         }

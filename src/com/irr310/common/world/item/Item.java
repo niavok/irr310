@@ -1,6 +1,7 @@
 package com.irr310.common.world.item;
 
 import com.irr310.common.network.NetworkField;
+import com.irr310.common.tools.Log;
 import com.irr310.common.world.Faction;
 import com.irr310.common.world.World;
 import com.irr310.common.world.state.ItemState;
@@ -15,13 +16,19 @@ public class Item extends WorldEntity {
         BUILDING
     }
     
+    public enum State {
+        STOCKED,
+        RESERVED,
+        DEPLOYED,
+        DEPLOYING,
+        DESTROYED,
+    }
+    
     private final Faction owner;
     private Faction usufruct;
-
+    private State state;
     private boolean deployable = false;
     private ItemType type;
-    private boolean reserved = false;
-    private boolean deployed = false;
     private Product product;
     private Item[] subItems;
 
@@ -31,6 +38,7 @@ public class Item extends WorldEntity {
         this.product = product;
         this.owner = owner;
         this.subItems = subItems;
+        this.state = State.STOCKED;
         setUsufruct(owner);
         
     }
@@ -48,33 +56,49 @@ public class Item extends WorldEntity {
         this.deployable = deployable;
     }
 
-    public void setReserved(boolean reserved) {
-        this.reserved = reserved;
-        
-    }
-    
-    public boolean isReserved() {
-        return reserved;
-    }
-    
+       
     public boolean isDeployable() {
         return deployable;
     }
-    
-    public boolean isDeployed() {
-        return deployed;
+   
+    public State getState() {
+        return state;
     }
-
+    
+    public void setState(State state) {
+        this.state = state;
+    }
+    
     public Product getProduct() {
         return product;
     }
+   
 
     public ItemState toState() {
         ItemState state  = new ItemState();
         state.id = getId();
         state.product = product.toState();
-        state.deployed = deployed;
-        state.reserved = reserved;
+        
+        switch (this.state) {
+            case STOCKED:
+                    state.state = ItemState.STOCKED;
+                break;
+            case DEPLOYED:
+                state.state = ItemState.DEPLOYED;
+            break;
+            case DEPLOYING:
+                state.state = ItemState.DEPLOYING;
+            break;
+            case RESERVED:
+                state.state = ItemState.RESERVED;
+            break;
+            case DESTROYED:
+                state.state = ItemState.DESTROYED;
+            break;
+            default:
+                Log.error("Unsupported state");
+                break;
+        }
         
         return state;
     }

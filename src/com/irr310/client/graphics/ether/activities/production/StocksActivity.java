@@ -1,35 +1,19 @@
 package com.irr310.client.graphics.ether.activities.production;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import sun.security.util.Length;
-
 import com.irr310.client.navigation.LoginManager;
-import com.irr310.common.event.world.ActionBuyFactionFactoryCapacityEvent;
 import com.irr310.common.event.world.ActionBuyProductEvent;
-import com.irr310.common.event.world.ActionSellFactionFactoryCapacityEvent;
+import com.irr310.common.event.world.ActionDeployShipEvent;
 import com.irr310.common.event.world.DefaultWorldEventVisitor;
-import com.irr310.common.event.world.FactionAvailableProductListEvent;
-import com.irr310.common.event.world.FactionProductionStateEvent;
-import com.irr310.common.event.world.FactionStateEvent;
 import com.irr310.common.event.world.FactionStocksStateEvent;
-import com.irr310.common.event.world.QueryFactionAvailableProductListEvent;
-import com.irr310.common.event.world.QueryFactionProductionStateEvent;
-import com.irr310.common.event.world.QueryFactionStateEvent;
 import com.irr310.common.event.world.QueryFactionStocksStateEvent;
 import com.irr310.common.event.world.WorldEventDispatcher;
-import com.irr310.common.event.world.WorldEventVisitor;
-import com.irr310.common.world.World;
-import com.irr310.common.world.state.FactionAvailableProductListState;
-import com.irr310.common.world.state.FactionProductionState;
-import com.irr310.common.world.state.FactionState;
+import com.irr310.common.world.item.Item.State;
 import com.irr310.common.world.state.FactionStocksState;
 import com.irr310.common.world.state.ItemState;
-import com.irr310.common.world.state.ProductState;
-import com.irr310.common.world.state.ProductionTaskState;
+import com.irr310.common.world.state.NexusState;
 import com.irr310.i3d.Bundle;
-import com.irr310.i3d.Handler;
 import com.irr310.i3d.Intent;
 import com.irr310.i3d.Message;
 import com.irr310.i3d.SelectionManager;
@@ -37,15 +21,13 @@ import com.irr310.i3d.SelectionManager.OnSelectionChangeListener;
 import com.irr310.i3d.view.Activity;
 import com.irr310.i3d.view.Button;
 import com.irr310.i3d.view.LinearLayout;
-import com.irr310.i3d.view.ScrollView;
-import com.irr310.i3d.view.TextView;
 import com.irr310.i3d.view.View;
 import com.irr310.i3d.view.View.OnClickListener;
 import com.irr310.i3d.view.View.ViewState;
-import com.irr310.server.Time;
 
 public class StocksActivity extends Activity {
 
+    protected static StockItemDetailsView stockItemView;
     private WorldEventDispatcher worldEngine;
     private Button productionCategoryFactoryButton;
     private Button productionCategoryStocksButton;
@@ -54,6 +36,7 @@ public class StocksActivity extends Activity {
     private LinearLayout stocksListLinearLayout;
     private FactionStocksState stocks;
     private SelectionManager<ItemState> stockItemSelectionManager;
+    private LinearLayout stockDetailsLinearLayout;
     
     private static final int UPDATE_STOCKS_WHAT = 1;
     
@@ -68,6 +51,8 @@ public class StocksActivity extends Activity {
         
         
         stocksListLinearLayout = (LinearLayout) findViewById("stocksListLinearLayout@layout/production/stocks");
+        stockDetailsLinearLayout = (LinearLayout) findViewById("stockDetailsLinearLayout@layout/production/stocks");
+        
         
         productionCategoryStocksButton.setState(ViewState.SELECTED);
         
@@ -91,7 +76,24 @@ public class StocksActivity extends Activity {
         
         stockItemSelectionManager = new SelectionManager<ItemState>();
        
-    }
+        stockItemSelectionManager.addOnSelectionChangeListener(new OnSelectionChangeListener<ItemState>() {
+
+            @Override
+            public void onSelectionChange(List<ItemState> selection) {
+                if(selection.size() == 1) {
+                   
+                    stockDetailsLinearLayout.removeView(stockItemView);
+                    stockItemView = new StockItemDetailsView(StocksActivity.this,selection.get(0));
+                    stockDetailsLinearLayout.addViewInLayout(stockItemView);
+                }
+            }
+
+            @Override
+            public boolean mustClear(Object clearKey) {
+                return false;
+            }});
+        
+    };
 
     @Override
     public void onResume() {
@@ -124,9 +126,16 @@ public class StocksActivity extends Activity {
         stocksListLinearLayout.removeAllView();
         stockItemSelectionManager.clear(StockItemView.class);
         
-        for(ItemState item: stocks.stocks) {            
-            stocksListLinearLayout.addViewInLayout(new StockItemView(item, stockItemSelectionManager));
+        for(ItemState item: stocks.stocks) {
+            if(item.state == ItemState.STOCKED) {
+                stocksListLinearLayout.addViewInLayout(new StockItemView(item, stockItemSelectionManager));
+            }
         }        
+    }
+
+    public void deployShip(ItemState item) {
+        NexusState nexus = LoginManager.getLocalPlayer().faction.rootNexus;
+        worldEngine.sendToAll(new ActionDeployShipEvent(item, nexus));
     }
 
   

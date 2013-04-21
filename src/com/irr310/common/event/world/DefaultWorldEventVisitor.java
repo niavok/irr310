@@ -62,4 +62,8 @@ public class DefaultWorldEventVisitor implements WorldEventVisitor {
     @Override
     public void visit(QueryFactionStocksStateEvent event) {
     }
+    
+    @Override
+    public void visit(ActionDeployShipEvent event) {
+    }
 }

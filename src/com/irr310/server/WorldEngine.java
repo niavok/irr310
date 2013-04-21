@@ -37,12 +37,14 @@ import com.irr310.common.event.world.WorldMapStateEvent;
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.RessourceLoadingException;
 import com.irr310.common.tools.Vec2;
+import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Faction;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.World;
 import com.irr310.common.world.WorldMap;
 import com.irr310.common.world.item.BuildingItemFactory;
 import com.irr310.common.world.state.FactionStocksState;
+import com.irr310.common.world.system.Nexus;
 import com.irr310.common.world.system.WorldSystem;
 import com.irr310.server.world.product.Product;
 import com.irr310.server.world.product.ProductManager;
@@ -319,6 +321,7 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements WorldEven
             faction.getAvailableProductList().setProductManager(productManager);
             faction.setHomeSystem(system);
             system.setHomeSystem(true);
+            system.setOwner(faction);
             
             faction.setStatersAmount(2000);
             faction.setOresAmount(20000);
@@ -327,14 +330,24 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements WorldEven
             
             world.addFaction(faction);
             
+            Nexus rootNexus = new Nexus(world, GameServer.pickNewId());
+            rootNexus.setRadius(10);
+            Vec3 nexusLocation = system.getRandomEmptySpace(rootNexus.getRadius());
+            rootNexus.setLocation(nexusLocation);
+            rootNexus.setOwner(faction);
+            
+            faction.setRootNexus(rootNexus);
+            system.addNexus(rootNexus);
+            
+            
 //            NexusItem nexus = new BuildingItemFactory(world).createNexus(faction);
             
             
 //            world.addItem(nexus);
             
-            system.setOwner(faction);
             
-//            nexus.forceDeploy(system, system.getRandomEmptySpace(nexus.getDeployedRadius()));
+            
+//            nexus.forceDeploy(system, );
         }
         
 //        world.flush();

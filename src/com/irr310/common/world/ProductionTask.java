@@ -2,6 +2,7 @@ package com.irr310.common.world;
 
 import com.irr310.common.tools.Log;
 import com.irr310.common.world.item.Item;
+import com.irr310.common.world.item.Item.State;
 import com.irr310.common.world.state.ProductionTaskState;
 import com.irr310.common.world.system.WorldEntity;
 import com.irr310.server.ProductionManager.ProductionStatus;
@@ -227,7 +228,7 @@ public class ProductionTask extends WorldEntity {
                                 workState = WorkState.BUILDING_ITEM;
                                 break;
                             } else {
-                                item.setReserved(true);
+                                item.setState(State.RESERVED);
                                 reservedItems[i] = item;
                             }
                         }
@@ -285,7 +286,7 @@ public class ProductionTask extends WorldEntity {
             
             for (int i = 0; i < reservedItems.length; i++) {
                 if (reservedItems[i] != null) {
-                    reservedItems[i].setReserved(false);
+                    reservedItems[i].setState(State.STOCKED);
                     reservedItems[i] = null;
                 }
             }

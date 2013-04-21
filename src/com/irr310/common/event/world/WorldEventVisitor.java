@@ -35,6 +35,8 @@ public interface WorldEventVisitor extends EngineEventVisitor {
     public abstract void visit(QueryFactionStocksStateEvent event);
 
     public abstract void visit(FactionStocksStateEvent event);
+
+    public abstract void visit(ActionDeployShipEvent event);
     
 //	public abstract void visit(QuitGameEvent event);
 //

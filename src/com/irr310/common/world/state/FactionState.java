@@ -34,4 +34,7 @@ public class FactionState {
     @NetworkField
     public Color color;
 
+    @NetworkField
+    public NexusState rootNexus;
+
 }
