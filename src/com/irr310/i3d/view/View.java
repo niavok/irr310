@@ -2,6 +2,7 @@ package com.irr310.i3d.view;
 
 import org.lwjgl.opengl.GL11;
 
+import com.irr310.common.tools.Log;
 import com.irr310.i3d.Graphics;
 import com.irr310.i3d.Style;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
@@ -20,7 +21,7 @@ public abstract class View {
     protected LayoutParams layoutParams;
     protected BorderParams borderParams;
 
-    private String id;
+    private String id = "";
     private OnClickListener onClickListener = null;
     private String help;
     private OnMouseEventListener onMouseEventListener;
@@ -64,6 +65,11 @@ public abstract class View {
     public abstract void onDraw(Graphics g);
 
     public void measure() {
+        
+        if(getId().contains("production_categories")) {
+            Log.trace("plop");
+        }
+        
         if (layoutParams.getLayoutWidthMeasure() == LayoutMeasure.FIXED) {
             if (!layoutParams.getMeasurePoint().getX().isRelative()) {
                 layoutParams.mContentWidth = layoutParams.computeMesure(layoutParams.getMeasurePoint().getX());
@@ -91,23 +97,32 @@ public abstract class View {
         }
 
         // Set padding
-        if (!layoutParams.getLayoutPaddingTop().isRelative()) {
-            layoutParams.mContentHeight += layoutParams.computeMesure(layoutParams.getLayoutPaddingTop());
+        if (layoutParams.getLayoutHeightMeasure() != LayoutMeasure.FIXED) {
+            if (!layoutParams.getLayoutPaddingTop().isRelative()) {
+                layoutParams.mContentHeight += layoutParams.computeMesure(layoutParams.getLayoutPaddingTop());
+            }
+            if (!layoutParams.getLayoutPaddingBottom().isRelative()) {
+                layoutParams.mContentHeight += layoutParams.computeMesure(layoutParams.getLayoutPaddingBottom());
+            }
         }
-        if (!layoutParams.getLayoutPaddingBottom().isRelative()) {
-            layoutParams.mContentHeight += layoutParams.computeMesure(layoutParams.getLayoutPaddingBottom());
-        }
-        if (!layoutParams.getLayoutPaddingLeft().isRelative()) {
-            layoutParams.mContentWidth += layoutParams.computeMesure(layoutParams.getLayoutPaddingLeft());
-        }
-        if (!layoutParams.getLayoutPaddingRight().isRelative()) {
-            layoutParams.mContentWidth += layoutParams.computeMesure(layoutParams.getLayoutPaddingRight());
+        
+        if (layoutParams.getLayoutWidthMeasure() != LayoutMeasure.FIXED) {
+            if (!layoutParams.getLayoutPaddingLeft().isRelative()) {
+                layoutParams.mContentWidth += layoutParams.computeMesure(layoutParams.getLayoutPaddingLeft());
+            }
+            if (!layoutParams.getLayoutPaddingRight().isRelative()) {
+                layoutParams.mContentWidth += layoutParams.computeMesure(layoutParams.getLayoutPaddingRight());
+            }
         }
 
         onMeasure();
     }
 
     public void layout(float l, float t, float r, float b) {
+        if(getId().contains("production_categories")) {
+            Log.trace("plop");
+        }
+        
         boolean changed = layoutParams.setFrame(l, t, r, b);
         layoutParams.setExtrasFrame(l, t, r, b);
         // if (changed) {
