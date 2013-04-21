@@ -23,7 +23,6 @@ public class SystemCircleView extends View {
     private float size;
     private float zoom;
     private float zoomedSize;
-    private boolean selected;
     private Color selectionColor;
 
     public SystemCircleView(WorldSystemState system) {
@@ -32,7 +31,6 @@ public class SystemCircleView extends View {
         size = 30;
         zoom = 1;
         reshape();
-        selected = false;
         selectionColor = I3dRessourceManager.getInstance().loadColor("selection@color");
     }
     
@@ -74,7 +72,7 @@ public class SystemCircleView extends View {
         //g.drawFilledRectangle(0, 0, zoomedSize, zoomedSize);
         
         float radius = zoomedSize / 2f;
-        if(selected) {
+        if(getState() == ViewState.SELECTED) {
             g.drawRing(radius,radius, radius * 1.04f + 2f, radius, selectionColor, selectionColor, 64);
         }
         
@@ -123,9 +121,5 @@ public class SystemCircleView extends View {
     public View duplicate() {
         // TODO Auto-generated method stub
         return null;
-    }
-
-    public void setSelected(boolean selected) {
-        this.selected = selected;
     }
 }

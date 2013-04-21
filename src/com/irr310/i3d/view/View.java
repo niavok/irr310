@@ -158,6 +158,10 @@ public abstract class View {
         }
     }
 
+    public ViewState getState() {
+        return state;
+    }
+    
     void assignParent(ViewParent parent) {
         if (mParent == null) {
             mParent = parent;

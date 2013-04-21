@@ -2,14 +2,19 @@ package com.irr310.client.graphics.ether.activities.worldmap;
 
 
 
+import java.util.List;
+
 import com.irr310.common.world.state.WorldSystemState;
 import com.irr310.i3d.I3dRessourceManager;
 import com.irr310.i3d.Measure;
 import com.irr310.i3d.Measure.Axis;
+import com.irr310.i3d.SelectionManager;
+import com.irr310.i3d.SelectionManager.OnSelectionChangeListener;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 import com.irr310.i3d.view.RelativeLayout;
 import com.irr310.i3d.view.TextView;
 import com.irr310.i3d.view.TextView.Gravity;
+import com.irr310.i3d.view.View;
 
 public class SystemView extends RelativeLayout {
 
@@ -20,7 +25,7 @@ public class SystemView extends RelativeLayout {
     private SystemCircleView systemCircleView;
     private TextView textView;
 
-    public SystemView(WorldSystemState system) {
+    public SystemView(final WorldSystemState system, final SelectionManager<WorldSystemState>selectionManager) {
         this.system = system;
         
         size = 30;
@@ -35,6 +40,36 @@ public class SystemView extends RelativeLayout {
         textView.setTextColor(I3dRessourceManager.getInstance().loadColor("systemNameWorldMap@color")); 
         addViewInLayout(systemCircleView);
         addViewInLayout(textView);
+        
+        this.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                selectionManager.select(system);
+            }
+
+        });
+        
+        selectionManager.addOnSelectionChangeListener(new OnSelectionChangeListener<WorldSystemState>() {
+            
+            public void onSelectionChange(List<WorldSystemState> selection) {
+                if(selection.contains(SystemView.this.system)) {
+                    systemCircleView.setState(ViewState.SELECTED);
+                } else {
+                    systemCircleView.setState(ViewState.IDLE);
+                }
+            }
+
+            @Override
+            public boolean mustClear(Object clearKey) {
+                return (clearKey.equals(SystemView.class));
+            }
+        }
+        );
+        
+        if(selectionManager.getSelection().contains(system)) {
+            systemCircleView.setState(ViewState.SELECTED);
+        }
         
         reshape();
     }
@@ -77,9 +112,4 @@ public class SystemView extends RelativeLayout {
             getParent().requestLayout();
         }
     }
-
-    public void setSelected(boolean selected) {
-        systemCircleView.setSelected(selected);
-    }
-
 }
