@@ -17,27 +17,27 @@ import com.irr310.common.world.state.PartState;
 import com.irr310.common.world.state.SlotState;
 
 
-public final class  Component extends WorldObject {
+public final class  Component extends SystemObject {
 
 	
 	
 	private double quality;
 	private double efficiency;
 	private Ship ship;
-	private Vec3 shipPosition;
+	private Vec3 locationInShip;
 	private Vec3 shipRotation;
 	private List<Slot> slots;
 	private List<Capacity> capacities;
 	private Map<String, Capacity> capacityNameMap;
 	private boolean attached;
 	
-	public Component(World world, long id, String name) {
-	    super(world, id, name);
+	public Component(WorldSystem system, long id, String name) {
+	    super(system, id, name);
 		slots = new ArrayList<Slot>();
 		capacities = new ArrayList<Capacity>();
 		capacityNameMap = new HashMap<String, Capacity>();
 		shipRotation = Vec3.origin();
-		shipPosition = Vec3.origin();
+		locationInShip = Vec3.origin();
 		quality = 1;
 		computeEfficiency();
 		attached = true;
@@ -58,7 +58,7 @@ public final class  Component extends WorldObject {
 	
 	public Slot addSlot(long slotId, Part part, Vec3 position) {
 		Slot slot = new Slot(slotId, this,part, position);
-		system.addSlot(slot);
+		getSystem().addSlot(slot);
 		slots.add(slot);
 		return slot;
 		
@@ -102,16 +102,16 @@ public final class  Component extends WorldObject {
 		this.ship = ship;
 	}
 
-	public void setShipPosition(Vec3 shipPosition) {
-		this.shipPosition = shipPosition;
+	public void setLocationInShip(Vec3 locationInShip) {
+		this.locationInShip = locationInShip;
 	}
 
 	public void setShipRotation(Vec3 shipRotation) {
 		this.shipRotation = shipRotation;
 	}
 
-	public Vec3 getShipPosition() {
-		return shipPosition;
+	public Vec3 getLocationInShip() {
+		return locationInShip;
 	}
 
 	public Vec3 getShipRotation() {
@@ -143,7 +143,7 @@ public final class  Component extends WorldObject {
 
 		TransformMatrix tmp = TransformMatrix.identity();
 		
-		tmp.translate(shipPosition.negative());
+		tmp.translate(locationInShip.negative());
 		tmp.translate(absolutePosition);
 		
 		
@@ -154,7 +154,7 @@ public final class  Component extends WorldObject {
 		return tmp.getTranslation();
 	}
 
-	public Vec3 getAbsoluteShipPosition(Vec3 position) {
+	public Vec3 getAbsoluteShipLocation(Vec3 position) {
 		TransformMatrix tmp = TransformMatrix.identity();
 		
 		tmp.translate(position);
@@ -163,7 +163,7 @@ public final class  Component extends WorldObject {
         tmp.rotateY(Math.toRadians(shipRotation.y));
         tmp.rotateZ(Math.toRadians(shipRotation.z));
 		
-		tmp.translate(shipPosition);
+		tmp.translate(locationInShip);
         
 		return tmp.getTranslation();
 	}
@@ -173,7 +173,7 @@ public final class  Component extends WorldObject {
         
         componentView.id = getId();
         componentView.name = getName();
-        componentView.shipPosition = shipPosition;
+        componentView.shipPosition = locationInShip;
         componentView.shipRotation = shipRotation;
         
         // WorldObject properties    
@@ -201,7 +201,7 @@ public final class  Component extends WorldObject {
     }
 
     public void fromState(ComponentState componentState) {
-        shipPosition = componentState.shipPosition;
+        locationInShip = componentState.shipPosition;
         shipRotation = componentState.shipRotation;
         quality = componentState.quality;
 
@@ -216,11 +216,11 @@ public final class  Component extends WorldObject {
         computeEfficiency();
         
         for(PartState part: componentState.parts) {
-            addPart(system.loadPart(part, this));
+            addPart(getSystem().loadPart(part, this));
         }
         
         for(SlotState slot: componentState.slots) {
-            addSlot(slot.id, system.getPartById(slot.partId), slot.position);
+            addSlot(slot.id, getSystem().getPartById(slot.partId), slot.position);
         }
         
         for(CapacityState capacityView: componentState.capacities) {

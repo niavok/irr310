@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.irr310.common.world.World;
 
-public abstract class WorldObject extends WorldEntity {
+public abstract class SystemObject extends SystemEntity {
 
     private String name;
     protected List<Part> parts;
@@ -15,12 +15,10 @@ public abstract class WorldObject extends WorldEntity {
     private double durability;
     private double physicalResistance;
     private double heatResistance;
-    protected WorldSystem system;
 
-    public WorldObject(World world, long id, String name) {
-        super(world, id);
+    public SystemObject(WorldSystem system, long id, String name) {
+        super(system, id);
         this.name = name;
-        this.system = null;
         firstPart = null;
         parts = new ArrayList<Part>();
         skin = "";
@@ -30,10 +28,6 @@ public abstract class WorldObject extends WorldEntity {
         heatResistance = 0;
     }
     
-    public void setSystem(WorldSystem system) {
-        this.system = system;
-    }
-
     public String getName() {
         return name;
     }
@@ -103,10 +97,6 @@ public abstract class WorldObject extends WorldEntity {
     
     public boolean isBroken() {
         return this.durability <= 0;
-    }
-
-    public WorldSystem getSystem() {
-        return system;
     }
 
 }

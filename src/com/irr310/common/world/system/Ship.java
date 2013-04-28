@@ -18,7 +18,7 @@ import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.common.world.state.ShipState;
 import com.irr310.server.SystemEngine;
 
-public class Ship extends WorldEntity implements Container {
+public class Ship extends SystemEntity implements Container {
 
     private static final double MIN_LINK_DISTANCE = 0.1;
     List<Link> links = new ArrayList<Link>();
@@ -29,8 +29,8 @@ public class Ship extends WorldEntity implements Container {
     private boolean destructible;
     private SystemEngine systemEngine;
 
-    public Ship(World world, long id) {
-        super(world, id);
+    public Ship(WorldSystem system, long id) {
+        super(system, id);
         owner = null;
         destructible = true;
     }
@@ -138,7 +138,7 @@ public class Ship extends WorldEntity implements Container {
     }
 
     public void fromState(ShipState shipState) {
-        World world = systemEngine.getWorld();
+//        World world = systemEngine.getWorld();
 //        setOwner(world.loadPlayer(shipView.owner));
 //
 //        for (ComponentView component : shipView.components) {

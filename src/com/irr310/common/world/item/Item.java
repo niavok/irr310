@@ -4,6 +4,7 @@ import com.irr310.common.network.NetworkField;
 import com.irr310.common.tools.Log;
 import com.irr310.common.world.Faction;
 import com.irr310.common.world.World;
+import com.irr310.common.world.state.FactionState;
 import com.irr310.common.world.state.ItemState;
 import com.irr310.common.world.state.ProductState;
 import com.irr310.common.world.system.WorldEntity;
@@ -40,7 +41,7 @@ public class Item extends WorldEntity {
         this.subItems = subItems;
         this.state = State.STOCKED;
         setUsufruct(owner);
-        
+        world.addItem(this);
     }
 
     private void setUsufruct(Faction usufruct) {
@@ -101,5 +102,17 @@ public class Item extends WorldEntity {
         }
         
         return state;
+    }
+    
+    public boolean isState(ItemState itemState) {
+        return getId() == itemState.id;
+    }
+    
+    public Faction getOwner() {
+        return owner;
+    }
+    
+    public Item[] getSubItems() {
+        return subItems;
     }
 }

@@ -6,4 +6,8 @@ public class DefaultSystemEventVisitor implements SystemEventVisitor {
     public void visit(CollisionEvent event) {
     }
 
+    @Override
+    public void visit(ShipDeployedSystemEvent event) {
+    }
+    
 }

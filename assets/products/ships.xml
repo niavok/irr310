@@ -8,17 +8,22 @@
         <components>
             <component key="kernel"
                  ref="kernel1"
-                 position="(0,0,0)" />
+                 location="vec3(0,0,0)" />
             <component key="battery"
-                 ref="mediumBattery1" />
+                 ref="mediumBattery1"
+                 location="vec3(0,-2,0)" />
             <component key="engineTop"
-                 ref="smallPropeller1" />
+                 ref="smallPropeller1"
+                 location="vec3(0,-2,1.5)" />
             <component key="engineBottom"
-                 ref="smallPropeller1" />
+                 ref="smallPropeller1"
+                 location="vec3(0,-2,-1.5)" />
             <component key="engineLeft"
-                 ref="smallPropeller1" />
+                 ref="smallPropeller1"
+                 location="vec3(-1.5,-2,0)" />
             <component key="engineRight"
-                 ref="smallPropeller1" />
+                 ref="smallPropeller1"
+                 location="vec3(1.5,-2,0)" />
         </components>
         <links>
             <link a="back@kernel" b="front@battery" /> 

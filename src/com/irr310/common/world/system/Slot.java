@@ -29,7 +29,7 @@ public class Slot extends WorldEntity {
 	}
 
 	public Vec3 getAbsoluteShipPosition() {
-		return parentComponent.getAbsoluteShipPosition(position);
+		return parentComponent.getAbsoluteShipLocation(position);
 	}
 
     public SlotState toState() {

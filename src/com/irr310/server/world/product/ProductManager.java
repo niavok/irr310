@@ -32,6 +32,9 @@ public class ProductManager {
     Map<String, Product> productIds = new HashMap<String, Product>();
     
     private DocumentBuilderFactory docBuilderFactory;
+
+    public static final int DEBUG_COEF = 100; 
+    
     
     public void init() {
 
@@ -217,12 +220,16 @@ public class ProductManager {
         }        
     }
 
-
     private void parseShipProductComponent(Element element, ShipProduct ship) {
 
         String key = element.getAttribute("key");
         String ref = element.getAttribute("ref");
-        ship.addComponent(key, ref);
+        String locationString = element.getAttribute("location");
+        if(locationString == null || locationString.isEmpty()) {
+            throw new RessourceLoadingException("No valid location for component '"+key+"'for ship '"+ship.getId()+"'");
+        }
+        Vec3 location = parseVec3(locationString);
+        ship.addComponent(key, ref, location);
     }
     
     private void parseShipProductLinks(Element element, ShipProduct ship) {
@@ -244,7 +251,7 @@ public class ProductManager {
     
     private void parseComponentProductParts(Element element, ComponentProduct component) {
         NodeList childNodes = element.getChildNodes();
-        for (int i = 0; i < childNodes.getLength(); i++) {
+        for (int i = 0; i < childNodes.getLength(); i++) {           
             Node node = childNodes.item(i);
             if (node.getNodeType() != Node.ELEMENT_NODE) {
                 // TODO error
@@ -269,9 +276,9 @@ public class ProductManager {
             String attrValue = attr.getValue();
 
             if (attrName.equals("factoryCost")) {
-                component.setFactoryCost(Long.parseLong(attrValue));
+                component.setFactoryCost(Long.parseLong(attrValue)/ DEBUG_COEF);
             } else if (attrName.equals("oreCost")) {
-                component.setOreCost(Long.parseLong(attrValue));
+                component.setOreCost(Long.parseLong(attrValue) / DEBUG_COEF);
             } else {
                 throw new RessourceLoadingException("Unknown attrib '" + attrName + "=" + attrValue + "' for ComponentPartProduct");
             }
@@ -312,7 +319,8 @@ public class ProductManager {
             } else {
                 throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for tag component/parts/part for component '"+component.getId()+"'");
             }
-        }        
+        }
+        component.addPart(part);
     }
 
     private void parseComponentProductPartSlots(Element subElement, ComponentPartProduct part) {
@@ -334,16 +342,16 @@ public class ProductManager {
     }
     
     private void parseComponentProductPartSlot(Element subElement, ComponentPartProduct part) {
-        String positionString= subElement.getAttribute("position");
+        String locationString= subElement.getAttribute("location");
         String key= subElement.getAttribute("key");
         
-        if(positionString == null || positionString.isEmpty()) {
+        if(locationString == null || locationString.isEmpty()) {
             throw new RessourceLoadingException("Fail to parse slot for component '" + part.getComponent().getId()  + "' : slot tags must have a valid position");
         } else if(key == null || key.isEmpty()) {
                 throw new RessourceLoadingException("Fail to parse slot for component '" + part.getComponent().getId()  + "' : slot tags must have a valid key");
         } else {
-            Vec3 position = parseVec3(positionString);
-            part.addSlot(key, position);
+            Vec3 location = parseVec3(locationString);
+            part.addSlot(key, location);
         }
     }
 

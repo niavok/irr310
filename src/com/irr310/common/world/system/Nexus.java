@@ -3,6 +3,8 @@ package com.irr310.common.world.system;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Faction;
 import com.irr310.common.world.World;
+import com.irr310.common.world.item.Item;
+import com.irr310.common.world.state.ItemState;
 import com.irr310.common.world.state.NexusState;
 
 public class Nexus extends WorldEntity {
@@ -36,6 +38,14 @@ public class Nexus extends WorldEntity {
         NexusState state = new NexusState();
         state.id = getId();
         return state;
+    }
+    
+    public boolean isState(NexusState nexusState) {
+        return getId() == nexusState.id;
+    }
+
+    public Vec3 getLocation() {
+        return location;
     }
 
 }

@@ -9,10 +9,12 @@ import com.irr310.common.tools.Log;
 import com.irr310.common.tools.RessourceLoadingException;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.state.ProductState;
+import com.irr310.server.world.product.ComponentProduct.ComponentPartProduct;
 
 public class ComponentProduct extends Product {
 
     private Map<String, ComponentSlotProduct> slots = new HashMap<String, ComponentSlotProduct>();
+    private List<ComponentPartProduct> parts = new ArrayList<ComponentPartProduct>();
     private long oreCost = -1;
     private long factoryCost = -1;
     
@@ -62,20 +64,26 @@ public class ComponentProduct extends Product {
     
     public static class ComponentSlotProduct {
 
-        private final Vec3 position;
+        private final Vec3 location;
         private final String key;
+        private ComponentPartProduct part;
 
-        public ComponentSlotProduct(String key, Vec3 position) {
+        public ComponentSlotProduct(ComponentPartProduct part, String key, Vec3 location) {
+            this.part = part;
             this.key = key;
-            this.position = position;
+            this.location = location;
         }
         
-        public Vec3 getPosition() {
-            return position;
+        public Vec3 getLocation() {
+            return location;
         }
         
         public String getKey() {
             return key;
+        }
+        
+        public ComponentPartProduct getPart() {
+            return part;
         }
     }
 
@@ -105,10 +113,18 @@ public class ComponentProduct extends Product {
             return shape;
         }
 
-        public void addSlot(String key ,Vec3 slotPosition) {
-            ComponentSlotProduct slotProduct = new ComponentSlotProduct(key, slotPosition);
+        public double getMass() {
+            return mass;
+        }
+        
+        public void addSlot(String key ,Vec3 slotLocation) {
+            ComponentSlotProduct slotProduct = new ComponentSlotProduct(this,key, slotLocation);
             slots.add(slotProduct);
             component.notifyNewSlot(slotProduct);
+        }
+        
+        public List<ComponentSlotProduct> getSlots() {
+            return slots;
         }
 
     }
@@ -156,6 +172,12 @@ public class ComponentProduct extends Product {
     public void setFactoryCost(long factoryCost) {
         this.factoryCost = factoryCost;
     }
+
+    public void addPart(ComponentPartProduct part) {
+        parts.add(part);
+    }
     
-    
+    public List<ComponentPartProduct> getParts() {
+        return parts;
+    }
 }

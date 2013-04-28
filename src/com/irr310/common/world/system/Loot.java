@@ -9,8 +9,8 @@ public class Loot extends CelestialObject {
 
     int value;
     
-    public Loot(World world, long id, String name) {
-        super(world, id, name);
+    public Loot(WorldSystem system, long id, String name) {
+        super(system, id, name);
         setPhysicalResistance(100);
         setHeatResistance(100);
         setDurabilityMax(250);

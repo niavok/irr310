@@ -7,8 +7,8 @@ import com.irr310.server.GameServer;
 
 public class Asteroid extends CelestialObject {
 
-    public Asteroid(World world, long id, String name) {
-        super(world, id, name);
+    public Asteroid(WorldSystem system, long id, String name) {
+        super(system, id, name);
         setPhysicalResistance(0.6);
         setDurabilityMax(250);
         setDurability(250);

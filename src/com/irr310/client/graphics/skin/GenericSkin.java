@@ -8,7 +8,7 @@ import com.irr310.client.graphics.UiEngine;
 import com.irr310.client.graphics.WorldRenderer;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.world.system.Part;
-import com.irr310.common.world.system.WorldObject;
+import com.irr310.common.world.system.SystemObject;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
@@ -21,12 +21,12 @@ import fr.def.iss.vd2.lib_v3d.element.V3DLine;
 
 public class GenericSkin extends Skin {
 
-    private final WorldObject object;
+    private final SystemObject object;
     private final Map<Part, V3DElement> elementsMap = new HashMap<Part, V3DElement>();
     private final Map<Part, V3DLine> speedLineMap = new HashMap<Part, V3DLine>();
     private V3DGroupElement elements;
 
-    public GenericSkin(WorldRenderer renderer, WorldObject object) {
+    public GenericSkin(WorldRenderer renderer, SystemObject object) {
         super(renderer);
         UiEngine engine = renderer.getEngine();
         this.object = object;

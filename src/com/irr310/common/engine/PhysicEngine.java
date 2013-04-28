@@ -59,7 +59,7 @@ import com.irr310.common.world.system.Link;
 import com.irr310.common.world.system.Part;
 import com.irr310.common.world.system.Ship;
 import com.irr310.common.world.system.Slot;
-import com.irr310.common.world.system.WorldObject;
+import com.irr310.common.world.system.SystemObject;
 import com.irr310.server.Duration;
 import com.irr310.server.SystemEngine;
 
@@ -219,7 +219,7 @@ public class PhysicEngine extends FramerateEngine<SystemEvent> {
         }
         mutex.unlock();
 
-        systemEngine.getWorld().lock();
+        systemEngine.getSystem().lock();
         mutex.lock();
 
         // step the simulation
@@ -227,7 +227,7 @@ public class PhysicEngine extends FramerateEngine<SystemEvent> {
             dynamicsWorld.stepSimulation(framerate.getSeconds());
         }
         mutex.unlock();
-        systemEngine.getWorld().unlock();
+        systemEngine.getSystem().unlock();
 
     }
 
@@ -464,13 +464,13 @@ public class PhysicEngine extends FramerateEngine<SystemEvent> {
 
     }
 
-    private void addObject(WorldObject object) {
+    private void addObject(SystemObject object) {
         for (final Part part : object.getParts()) {
             addPart(part, new UserData());
         }
     }
 
-    private void removeObject(WorldObject object) {
+    private void removeObject(SystemObject object) {
         for (final Part part : object.getParts()) {
             RigidBody body = partToBodyMap.remove(part);
 
@@ -548,7 +548,7 @@ public class PhysicEngine extends FramerateEngine<SystemEvent> {
             if (transform != null) {
                 part.getTransform().rotate(component.getShipRotation());
 
-                part.getTransform().translate(component.getShipPosition());
+                part.getTransform().translate(component.getLocationInShip());
                 part.getTransform().preMultiply(transform);
             }
 

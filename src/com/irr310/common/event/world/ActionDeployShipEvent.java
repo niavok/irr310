@@ -1,9 +1,7 @@
 package com.irr310.common.event.world;
 
-import com.irr310.common.world.state.FactionState;
 import com.irr310.common.world.state.ItemState;
 import com.irr310.common.world.state.NexusState;
-import com.irr310.common.world.state.ProductState;
 
 public class ActionDeployShipEvent extends WorldEvent {
 

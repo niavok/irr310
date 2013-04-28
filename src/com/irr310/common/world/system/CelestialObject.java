@@ -1,16 +1,15 @@
 package com.irr310.common.world.system;
 
-import com.irr310.common.world.World;
 import com.irr310.common.world.state.CelestialObjectState;
 import com.irr310.common.world.state.PartState;
 
 
-public class  CelestialObject extends WorldObject {
+public class  CelestialObject extends SystemObject {
 
 	
 	
-	public CelestialObject(World world, long id, String name) {
-	    super(world, id, name);
+	public CelestialObject(WorldSystem system, long id, String name) {
+	    super(system, id, name);
 	}
 
     public CelestialObjectState toState() {
@@ -44,7 +43,7 @@ public class  CelestialObject extends WorldObject {
 
         
         for(PartState part: celestialObjectState.parts) {
-            addPart(system.loadPart(part, this));
+            addPart(getSystem().loadPart(part, this));
         }
     }
 }

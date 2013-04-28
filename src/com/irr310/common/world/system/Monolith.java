@@ -7,8 +7,8 @@ import com.irr310.server.GameServer;
 
 public class Monolith extends CelestialObject {
 
-    public Monolith(World world, long id, String name) {
-        super(world, id, name);
+    public Monolith(WorldSystem system, long id, String name) {
+        super(system, id, name);
         setPhysicalResistance(0.5);
         setDurabilityMax(1000);
         setDurability(1000);

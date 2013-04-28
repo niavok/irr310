@@ -7,7 +7,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import com.irr310.common.engine.EngineManager;
@@ -17,6 +19,7 @@ import com.irr310.common.event.game.GameEvent;
 import com.irr310.common.event.game.QuitGameEvent;
 import com.irr310.common.event.world.ActionBuyFactionFactoryCapacityEvent;
 import com.irr310.common.event.world.ActionBuyProductEvent;
+import com.irr310.common.event.world.ActionDeployShipEvent;
 import com.irr310.common.event.world.ActionSellFactionFactoryCapacityEvent;
 import com.irr310.common.event.world.ConnectPlayerEvent;
 import com.irr310.common.event.world.DefaultWorldEventVisitor;
@@ -30,6 +33,7 @@ import com.irr310.common.event.world.QueryFactionProductionStateEvent;
 import com.irr310.common.event.world.QueryFactionStateEvent;
 import com.irr310.common.event.world.QueryFactionStocksStateEvent;
 import com.irr310.common.event.world.QueryWorldMapStateEvent;
+import com.irr310.common.event.world.ShipDeployedWorldEvent;
 import com.irr310.common.event.world.WorldEvent;
 import com.irr310.common.event.world.WorldEventDispatcher;
 import com.irr310.common.event.world.WorldEventVisitor;
@@ -43,6 +47,8 @@ import com.irr310.common.world.Player;
 import com.irr310.common.world.World;
 import com.irr310.common.world.WorldMap;
 import com.irr310.common.world.item.BuildingItemFactory;
+import com.irr310.common.world.item.Item;
+import com.irr310.common.world.item.Item.State;
 import com.irr310.common.world.state.FactionStocksState;
 import com.irr310.common.world.system.Nexus;
 import com.irr310.common.world.system.WorldSystem;
@@ -58,6 +64,7 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements WorldEven
     private Duration tickDuration;
     private Duration turnDuration;
     private ProductionManager productionManager = new ProductionManager();
+    private Map<WorldSystem, SystemEngine> systemEngineMap = new HashMap<WorldSystem, SystemEngine>();
     
     public WorldEngine() {
         setFramerate(new Duration(40000000l)); // 40ms 25fps 
@@ -234,7 +241,21 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements WorldEven
             faction.getProduction().addTask(GameServer.pickNewId(), product, event.getCount());
             engineManager.sendToAll(new FactionProductionStateEvent(faction.getProduction().toState()));
         }
-
+        
+        @Override
+        public void visit(ActionDeployShipEvent event) {
+            Item item = world.getItem(event.getItem());
+            item.setState(State.DEPLOYING);
+            engineManager.sendToAll(new FactionStocksStateEvent(item.getOwner().getStocks().toState()));
+        }
+        
+        @Override
+        public void visit(ShipDeployedWorldEvent event) {
+            
+            Item item = world.getItem(event.getShip());
+            item.setState(State.DEPLOYED);
+            engineManager.sendToAll(new FactionStocksStateEvent(item.getOwner().getStocks().toState()));
+        }
     }
     
     private void initWorld() {
@@ -280,6 +301,12 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements WorldEven
             
             WorldSystem system = new WorldSystem(world, GameServer.pickNewId(), location);
             
+            SystemEngine systemEngine = new SystemEngine(this, system);
+            engineManager.add(systemEngine);
+            systemEngineMap.put(system, systemEngine);
+            engineManager.start(systemEngine);
+            
+            
             int nameIndex = random.nextInt(availableNames.size());
             String name = availableNames.remove(nameIndex);
             
@@ -289,7 +316,7 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements WorldEven
             
             validSystem++;
         }
-
+        
         // Find home system
         double baseAzimut = random.nextDouble() * 2 * Math.PI;
         
@@ -352,6 +379,11 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements WorldEven
         
 //        world.flush();
         
+        
+        //Wait for system engine started
+        for(SystemEngine engine: systemEngineMap.values()) {
+            engineManager.wait(engine);
+        }
         
         map.dump();
         

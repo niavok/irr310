@@ -39,7 +39,7 @@ import com.irr310.common.world.system.CelestialObject;
 import com.irr310.common.world.system.Component;
 import com.irr310.common.world.system.Monolith;
 import com.irr310.common.world.system.Ship;
-import com.irr310.common.world.system.WorldObject;
+import com.irr310.common.world.system.SystemObject;
 import com.irr310.server.Time;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
@@ -73,7 +73,7 @@ public class WorldRenderer implements GraphicRenderer {
     private List<GuiAnimatedElement> persistantGuiElementList = new CopyOnWriteArrayList<GuiAnimatedElement>();
 
     private V3DFollow3DCameraController cameraController;
-    private Map<WorldObject, List<GraphicalElement>> worldObjectToV3DElementMap = new HashMap<WorldObject, List<GraphicalElement>>();
+    private Map<SystemObject, List<GraphicalElement>> worldObjectToV3DElementMap = new HashMap<SystemObject, List<GraphicalElement>>();
 
     V3DEye3DCamera activeCamera;
     private final UiEngine engine;
@@ -695,7 +695,7 @@ public class WorldRenderer implements GraphicRenderer {
         worldObjectToV3DElementMap.get(component).add(graphicalElement);
     }
 
-    protected GraphicalElement addObject(final WorldObject object) {
+    protected GraphicalElement addObject(final SystemObject object) {
 
         Skin skin = null;
 

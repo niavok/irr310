@@ -8,6 +8,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import com.irr310.common.world.item.Item;
 import com.irr310.common.world.state.FactionState;
+import com.irr310.common.world.state.ItemState;
 import com.irr310.common.world.state.PlayerState;
 import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.server.world.product.ProductManager;
@@ -23,7 +24,7 @@ public class World {
     private final Map<Long, Faction> factionIdMap;
     private final Map<Long, Item> itemIdMap;
 
-    ReentrantLock mutex;
+    
     private WorldMap map;
     private ProductManager productManager;
 //    private BinderServer binderServer;
@@ -42,8 +43,7 @@ public class World {
         
         itemIdMap = new HashMap<Long, Item>();
         availableUpgrades = new CopyOnWriteArrayList<Upgrade>();
-
-        mutex = new ReentrantLock();
+       
         map = new com.irr310.common.world.WorldMap();
         
         itemFactory = new ItemFactory(this);
@@ -83,15 +83,6 @@ public class World {
         return playerIdMap.get(playerId);
     }
 
-
-    public void lock() {
-        mutex.lock();
-    }
-
-    public void unlock() {
-        mutex.unlock();
-    }
-
     public List<Player> getPlayers() {
         return players;
     }
@@ -124,16 +115,24 @@ public class World {
 
 
 
-    public Faction getFaction(FactionState factionView) {
+    public Faction getFaction(FactionState factionState) {
         for(Faction faction: factions) {
-            if(faction.isState(factionView)) {
+            if(faction.isState(factionState)) {
                 return faction;
             }
         }
         return null;
     }
 
-
+    public Item getItem(ItemState itemState) {
+        for(Item item: items) {
+            if(item.isState(itemState)) {
+                return item;
+            }
+        }
+        return null;
+    }
+    
 
     public void setProductManager(ProductManager productManager) {
         this.productManager = productManager;

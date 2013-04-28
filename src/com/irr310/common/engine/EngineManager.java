@@ -6,6 +6,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import com.irr310.common.event.EngineEvent;
 import com.irr310.common.event.EngineEventVisitor;
 import com.irr310.server.Duration;
+import com.irr310.server.SystemEngine;
 
 public class EngineManager<V extends EngineEventVisitor , T extends EngineEvent<V>> implements EventDispatcher<V,T> {
 
@@ -73,17 +74,22 @@ public class EngineManager<V extends EngineEventVisitor , T extends EngineEvent<
     }
 
     public void startAndWait(Engine<T> engine) {
+        start(engine);
+        wait(engine);
+//        engine.pushEvent(new StartEngineEvent());
+    }
+
+    public void start(Engine<T> engine) {
         add(engine);
         if (!engine.isAlive()) {
             engine.start();
         }
-
+    }
+    public void wait(Engine<T> engine) {
         // Wait engine started
         while (!engine.isRunning()) {
             Duration.TEN_MILLISECONDE.sleep();
         }
-
-//        engine.pushEvent(new StartEngineEvent());
     }
 
     public void registerEventVisitor(V visitor) {
@@ -93,4 +99,6 @@ public class EngineManager<V extends EngineEventVisitor , T extends EngineEvent<
     public void unregisterEventVisitor(V visitor) {
         visitorList.remove(visitor);
     }
+
+   
 }

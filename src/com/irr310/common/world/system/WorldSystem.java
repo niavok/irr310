@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.locks.ReentrantLock;
 
 import com.irr310.client.navigation.LoginManager;
 import com.irr310.common.tools.TransformMatrix;
@@ -14,8 +15,11 @@ import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Faction;
 import com.irr310.common.world.World;
 import com.irr310.common.world.capacity.Capacity;
+import com.irr310.common.world.item.Item;
 import com.irr310.common.world.state.CelestialObjectState;
 import com.irr310.common.world.state.ComponentState;
+import com.irr310.common.world.state.ItemState;
+import com.irr310.common.world.state.NexusState;
 import com.irr310.common.world.state.PartState;
 import com.irr310.common.world.state.ShipState;
 import com.irr310.common.world.state.WorldSystemState;
@@ -27,6 +31,7 @@ public class WorldSystem extends WorldEntity {
     private  Vec2 location;
     private double radius;
     
+    ReentrantLock mutex;
     private final List<CelestialObject> celestialObjects;
     private final List<Nexus> nexuses;
     private final List<Ship> ships;
@@ -47,6 +52,8 @@ public class WorldSystem extends WorldEntity {
         super(world, id);
         this.location = location;
         this.radius = 1000;
+
+        mutex = new ReentrantLock();
         
         celestialObjects = new CopyOnWriteArrayList<CelestialObject>();
         nexuses =  new CopyOnWriteArrayList<Nexus>();
@@ -155,7 +162,7 @@ public class WorldSystem extends WorldEntity {
             return celestialObjectIdMap.get(celestialObjectView.id);
         }
 
-        CelestialObject celestialObject = new CelestialObject(getWorld(), celestialObjectView.id, celestialObjectView.name);
+        CelestialObject celestialObject = new CelestialObject(this, celestialObjectView.id, celestialObjectView.name);
         celestialObject.fromState(celestialObjectView);
         addCelestialObject(celestialObject);
         return celestialObject;
@@ -166,7 +173,7 @@ public class WorldSystem extends WorldEntity {
             return shipIdMap.get(shipView.id);
         }
 
-        Ship ship = new Ship(getWorld(), shipView.id);
+        Ship ship = new Ship(this, shipView.id);
         ship.fromState(shipView);
         addShip(ship, null);
         return ship;
@@ -218,7 +225,7 @@ public class WorldSystem extends WorldEntity {
             return componentIdMap.get(componentView.id);
         }
 
-        Component component = new Component(getWorld(), componentView.id, componentView.name);
+        Component component = new Component(this, componentView.id, componentView.name);
         component.fromState(componentView);
         addComponent(component);
         return component;
@@ -228,7 +235,7 @@ public class WorldSystem extends WorldEntity {
         return celestialObjects;
     }
 
-    public Part loadPart(PartState partView, WorldObject parentObject) {
+    public Part loadPart(PartState partView, SystemObject parentObject) {
         if (partIdMap.containsKey(partView.id)) {
             return partIdMap.get(partView.id);
         }
@@ -293,6 +300,23 @@ public class WorldSystem extends WorldEntity {
         nexuses.add(rootNexus);        
     }
 
+    public Nexus getNexus(NexusState nexusState) {
+        for(Nexus nexus: nexuses) {
+            if(nexus.isState(nexusState)) {
+                return nexus;
+            }
+        }
+        return null;
+    }
+
+    public void lock() {
+        mutex.lock();
+    }
+
+    public void unlock() {
+        mutex.unlock();
+    }
+    
 //    public void removeShip(Ship ship) {
 //        ships.remove(ship);
 //        shipIdMap.remove(ship.getId());

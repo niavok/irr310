@@ -68,13 +68,13 @@ public class ServerSystemGameEngine extends FramerateEngine<SystemEvent> {
         }
 
         // Interrest
-        if (lastInterrestTime.durationTo(currentTime).longer(interrestInterval)) {
-            for (Player player : systemEngine.getWorld().getPlayers()) {
-                // 1% per minute
-                player.giveInterrest(player.getMoney() * 0.01 / 6);
-            }
-            lastInterrestTime = currentTime;
-        }
+//        if (lastInterrestTime.durationTo(currentTime).longer(interrestInterval)) {
+//            for (Player player : systemEngine.getWorld().getPlayers()) {
+//                // 1% per minute
+//                player.giveInterrest(player.getMoney() * 0.01 / 6);
+//            }
+//            lastInterrestTime = currentTime;
+//        }
 
         // Check world leave
 //        double worldSize = Game.getInstance().getWorld().getWorldSize();
@@ -188,17 +188,17 @@ public class ServerSystemGameEngine extends FramerateEngine<SystemEvent> {
 
     }
 
-    private int distachRevenue(int amount) {
-        List<Player> players = systemEngine.getWorld().getPlayers();
+//    private int distachRevenue(int amount) {
+//        List<Player> players = systemEngine.getWorld().getPlayers();
 
         // Be generious, round to ceil
-        int amountPerPlayer = (int) Math.ceil((float) amount / (float) players.size());
-        for (Player player : players) {
-            player.giveMoney(amountPerPlayer);
-
-        }
-        return amountPerPlayer * players.size();
-    }
+//        int amountPerPlayer = (int) Math.ceil((float) amount / (float) players.size());
+//        for (Player player : players) {
+//            player.giveMoney(amountPerPlayer);
+//
+//        }
+//        return amountPerPlayer * players.size();
+//    }
 
     private final class GameEngineEventVisitor extends DefaultSystemEventVisitor {
 

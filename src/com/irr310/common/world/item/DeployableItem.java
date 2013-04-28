@@ -24,12 +24,6 @@ public abstract class DeployableItem extends Item {
     public double getDeployedRadius() {
         return deployedRadius;
     }
-    
-    public void forceDeploy(WorldSystem system, Vec3 position) {
-        
-        this.currentSystem = system;
-        doDeploy(position);
-    }
 
     protected abstract void doDeploy(Vec3 position);
 }

@@ -22,7 +22,7 @@ public class Part extends WorldEntity {
     private final TransformMatrix transform;
     private Vec3 shape;
     private Faction owner;
-    private final WorldObject parentObject;
+    private final SystemObject parentObject;
     private CollisionShape collisionShape;
     private List<Part> collisionExcludeList;
     
@@ -31,7 +31,7 @@ public class Part extends WorldEntity {
         BOX, SPHERE,
     }
 
-    public Part(long id, WorldObject parentObject) {
+    public Part(long id, SystemObject parentObject) {
         super(parentObject.getWorld(), id);
         this.parentObject = parentObject;
         rotationSpeed = Vec3.origin();
@@ -165,7 +165,7 @@ public class Part extends WorldEntity {
         this.owner = owner;
     }
 
-    public WorldObject getParentObject() {
+    public SystemObject getParentObject() {
         return parentObject;
     }
 

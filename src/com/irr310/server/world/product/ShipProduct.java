@@ -11,6 +11,7 @@ import java.util.Map;
 import sun.security.action.GetLongAction;
 
 import com.irr310.common.tools.Log;
+import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.state.ProductState;
 import com.irr310.server.world.product.ComponentProduct.ComponentSlotProduct;
 
@@ -129,14 +130,14 @@ public class ShipProduct extends Product {
         return true;
     }
     
-    public void addComponent(String key, String ref) {
+    public void addComponent(String key, String ref, Vec3 location) {
         if(key == null | key.isEmpty()) {
             Log.warn("A component of ship '"+getId()+"' has no key. Skip");
         } else if(ref == null | ref.isEmpty()) {
             Log.warn("A component of ship '"+getId()+"' has no ref. Skip");
         } else {
             // All is ok, let's add the component to ship
-            components.put(key,new ShipComponentProduct(key, ref));
+            components.put(key,new ShipComponentProduct(key, ref, location));
         }
         
         
@@ -169,10 +170,12 @@ public class ShipProduct extends Product {
         private final String key;
         private final String ref;
         private ComponentProduct component;
+        private Vec3 location;
 
-        public ShipComponentProduct(String key, String ref) {
+        public ShipComponentProduct(String key, String ref, Vec3 location) {
             this.key = key;
             this.ref = ref;
+            this.location = location;
         }
         
         public void setComponent(ComponentProduct component) {
@@ -189,6 +192,10 @@ public class ShipProduct extends Product {
 
         public ComponentProduct getComponent() {
             return component;
+        }
+        
+        public Vec3 getLocation() {
+            return location;
         }
         
     }
@@ -250,14 +257,20 @@ public class ShipProduct extends Product {
 
     @Override
     public long getOreCost() {
-        return links.size()* ORES_COST_PER_LINK;
+        return links.size()* ORES_COST_PER_LINK / ProductManager.DEBUG_COEF;
     }
 
     @Override
     public long getFactoryCost() {
-        return links.size()* FACTORY_COST_PER_LINK;
+        return links.size()* FACTORY_COST_PER_LINK / ProductManager.DEBUG_COEF;
     }
-
     
+    public Map<String, ShipComponentProduct> getComponents() {
+        return components;
+    }
+    
+    public List<ShipLinkProduct> getLinks() {
+        return links;
+    }
     
 }

@@ -80,4 +80,6 @@ public interface SystemEventVisitor extends EngineEventVisitor  {
 //    public abstract void visit(BindAIEvent event);
 //
 //    public abstract void visit(FactionAddedEvent event);
+
+    public abstract void visit(ShipDeployedSystemEvent event);
 }
