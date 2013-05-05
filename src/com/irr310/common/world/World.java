@@ -10,6 +10,8 @@ import com.irr310.common.world.item.Item;
 import com.irr310.common.world.state.FactionState;
 import com.irr310.common.world.state.ItemState;
 import com.irr310.common.world.state.PlayerState;
+import com.irr310.common.world.state.WorldSystemState;
+import com.irr310.common.world.system.WorldSystem;
 import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.server.world.product.ProductManager;
 
@@ -146,6 +148,17 @@ public class World {
 
     public ItemFactory getItemFactory() {
         return itemFactory;
+    }
+
+
+
+    public WorldSystem getSystem(WorldSystemState systemState) {
+        for(WorldSystem system: map.getSystems()) {
+            if(system.isState(systemState)) {
+                return system;
+            }
+        }
+        return null;
     }
 
 //    public BinderServer getBinderServer() {

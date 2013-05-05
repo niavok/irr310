@@ -82,4 +82,8 @@ public interface SystemEventVisitor extends EngineEventVisitor  {
 //    public abstract void visit(FactionAddedEvent event);
 
     public abstract void visit(ShipDeployedSystemEvent event);
+
+    public abstract void visit(QuerySystemStateEvent event);
+    
+    public abstract void visit(SystemStateEvent event);
 }

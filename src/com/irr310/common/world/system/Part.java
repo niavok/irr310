@@ -3,11 +3,9 @@ package com.irr310.common.world.system;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.irr310.common.Game;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Faction;
-import com.irr310.common.world.Player;
 import com.irr310.common.world.state.MovementState;
 import com.irr310.common.world.state.PartState;
 

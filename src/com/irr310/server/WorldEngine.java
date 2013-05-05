@@ -50,6 +50,7 @@ import com.irr310.common.world.item.BuildingItemFactory;
 import com.irr310.common.world.item.Item;
 import com.irr310.common.world.item.Item.State;
 import com.irr310.common.world.state.FactionStocksState;
+import com.irr310.common.world.state.WorldSystemState;
 import com.irr310.common.world.system.Nexus;
 import com.irr310.common.world.system.WorldSystem;
 import com.irr310.server.world.product.Product;
@@ -70,6 +71,7 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements WorldEven
         setFramerate(new Duration(40000000l)); // 40ms 25fps 
         engineManager = new EngineManager<WorldEventVisitor, WorldEvent>();
         engineManager.registerEventVisitor(new WorldEngineWorldEventVisitor());
+        GameServer.setWorldEngine(this);
     }
 
     @Override
@@ -158,7 +160,14 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements WorldEven
         @Override
         public void visit(QuitGameEvent event) {
             java.lang.System.out.println("stopping world engine");
+            
+            // Stop system engines
+            for(SystemEngine engine: systemEngineMap.values()) {
+                engine.setRunning(false);
+            }
+            
             setRunning(false);
+            
         }
 //        
 //        @Override
@@ -429,6 +438,11 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements WorldEven
 
     public void unregisterEventVisitor(WorldEventVisitor visitor) {
         engineManager.unregisterEventVisitor(visitor);
+    }
+
+    public SystemEngine getSystemEngine(WorldSystemState systemState) {
+        WorldSystem system = world.getSystem(systemState);
+        return systemEngineMap.get(system);
     }
 
 }

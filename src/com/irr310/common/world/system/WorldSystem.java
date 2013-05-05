@@ -316,6 +316,10 @@ public class WorldSystem extends WorldEntity {
     public void unlock() {
         mutex.unlock();
     }
+
+    public boolean isState(WorldSystemState systemState) {
+            return getId() == systemState.id;
+    }
     
 //    public void removeShip(Ship ship) {
 //        ships.remove(ship);

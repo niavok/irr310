@@ -1,7 +1,6 @@
 package com.irr310.client.graphics.ether.activities;
 
 import com.irr310.client.GameClient;
-import com.irr310.client.graphics.ether.activities.BoardActivity.BoardActivityBundle;
 import com.irr310.client.navigation.LoginManager;
 import com.irr310.common.engine.EngineManager;
 import com.irr310.common.event.game.GameEvent;
@@ -9,13 +8,10 @@ import com.irr310.common.event.game.GameEventVisitor;
 import com.irr310.common.event.world.ConnectPlayerEvent;
 import com.irr310.common.event.world.DefaultWorldEventVisitor;
 import com.irr310.common.event.world.PlayerConnectedEvent;
-import com.irr310.common.world.World;
 import com.irr310.i3d.Bundle;
-import com.irr310.i3d.Handler;
 import com.irr310.i3d.Intent;
 import com.irr310.i3d.Message;
 import com.irr310.i3d.view.Activity;
-import com.irr310.server.Time;
 import com.irr310.server.WorldEngine;
 
 public class NewGameActivity extends Activity {
@@ -36,6 +32,7 @@ public class NewGameActivity extends Activity {
         
         new Thread() {
             public void run() {
+                
                 worldEngine = new WorldEngine();
                 visitor = new NewGameEventVisitor();
                 worldEngine.registerEventVisitor(visitor);
@@ -63,8 +60,7 @@ public class NewGameActivity extends Activity {
     protected void onMessage(Message message) {
         switch(message.what) {
             case NEW_GAME_CREATED_WHAT:
-                BoardActivityBundle bundle = new BoardActivityBundle(worldEngine);
-                startActivity(new Intent(BoardActivity.class, bundle));
+                startActivity(new Intent(BoardActivity.class));
                 break;
         }
     }

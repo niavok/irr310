@@ -1,16 +1,9 @@
 package com.irr310.server.upgrade;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import com.irr310.common.Game;
 import com.irr310.common.world.Player;
-import com.irr310.common.world.capacity.BalisticWeaponCapacity;
-import com.irr310.common.world.capacity.LinearEngineCapacity;
-import com.irr310.common.world.capacity.RocketWeaponCapacity;
-import com.irr310.common.world.system.Component;
-import com.irr310.common.world.system.Ship;
 import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.common.world.upgrade.UpgradeOwnership;
 

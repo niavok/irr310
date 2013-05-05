@@ -5,16 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.irr310.common.Game;
 import com.irr310.common.engine.Engine;
 import com.irr310.common.event.game.GameEvent;
 import com.irr310.common.event.game.QuitGameEvent;
 import com.irr310.common.world.Player;
 import com.irr310.common.world.World;
+import com.irr310.common.world.state.WorldSystemState;
 import com.irr310.server.ai.AIEngine;
 import com.irr310.server.network.ServerNetworkEngine;
 
-public class GameServer extends Game {
+public class GameServer {
     /*
      * private ServerGameEngine gameEngine; private ServerNetworkEngine
      * networkEngine; private PhysicEngine physicEngine;
@@ -26,7 +26,7 @@ public class GameServer extends Game {
     // private boolean stillRunning;
     // private CommandManager commandManager;
     // private DebugGraphicEngine debugGraphicEngine;
-    private World world;
+//    private World world;
 
     private List<Player> playerList = new ArrayList<Player>();
     private Map<Integer, Player> playerMap = new HashMap<Integer, Player>();
@@ -39,6 +39,8 @@ public class GameServer extends Game {
 //    private PhysicEngine physicEngine;
     private AIEngine aiEngine;
 
+    private static WorldEngine worldEngine;
+
     public static synchronized long pickNewId() {
         return nextId++;
     }
@@ -50,15 +52,14 @@ public class GameServer extends Game {
     public GameServer(ParameterAnalyser parameterAnalyser) {
         // this.parameterAnalyser = parameterAnalyser;
         instance = this;
-        super.setInstance(this);
         // stillRunning = true;
 
-        world = new World();
+//        world = new World();
 
 //        engineList.add(new ServerSystemGameEngine());
 //        physicEngine = new PhysicEngine();
 //        engineList.add(physicEngine);
-        engineList.add(new ServerNetworkEngine());
+//        engineList.add(new ServerNetworkEngine());
         //engineList.add(new DebugGraphicEngine());
 
         /*
@@ -163,13 +164,9 @@ public class GameServer extends Game {
         return playerList;
     }
 
-    
-
-    
-
-    public World getWorld() {
-        return world;
-    }
+//    public World getWorld() {
+//        return world;
+//    }
 
     
 //    public PhysicEngine getPhysicEngine() {
@@ -190,5 +187,12 @@ public class GameServer extends Game {
 //        
 //    }
 
+    public static void setWorldEngine(WorldEngine worldEngine) {
+        GameServer.worldEngine = worldEngine;
+    }
+
+    public static WorldEngine getWorldEngine() {
+        return worldEngine;
+    }
     
 }

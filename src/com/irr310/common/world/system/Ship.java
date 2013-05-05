@@ -7,12 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import com.irr310.common.Game;
 import com.irr310.common.engine.PhysicEngine;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Faction;
-import com.irr310.common.world.Player;
-import com.irr310.common.world.World;
 import com.irr310.common.world.capacity.KernelCapacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.common.world.state.ShipState;

@@ -2,16 +2,13 @@ package com.irr310.client;
 
 import com.irr310.client.graphics.UiEngine;
 import com.irr310.client.input.InputEngine;
-import com.irr310.common.Game;
 import com.irr310.common.engine.EngineManager;
 import com.irr310.common.event.game.GameEvent;
 import com.irr310.common.event.game.GameEventVisitor;
 import com.irr310.common.tools.Log;
-import com.irr310.common.world.World;
 import com.irr310.server.ParameterAnalyser;
-import com.irr310.server.WorldEngine;
 
-public class GameClient extends Game {
+public class GameClient {
 
     
     // private ClientGameEngine clientGameEngine;
@@ -36,7 +33,6 @@ public class GameClient extends Game {
     public GameClient(ParameterAnalyser parameterAnalyser) {
         // this.parameterAnalyser = parameterAnalyser;
         instance = this;
-        super.setInstance(this);
         // stillRunning = true;
 
 

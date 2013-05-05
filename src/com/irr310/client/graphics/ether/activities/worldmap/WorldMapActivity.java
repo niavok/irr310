@@ -1,10 +1,12 @@
 package com.irr310.client.graphics.ether.activities.worldmap;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.newdawn.slick.util.Log;
 
+import com.irr310.client.graphics.ether.activities.BoardActivity;
+import com.irr310.client.graphics.ether.activities.systemmap.SystemMapActivity;
+import com.irr310.client.graphics.ether.activities.systemmap.SystemMapActivity.SystemMapActivityBundle;
 import com.irr310.client.navigation.LoginManager;
 import com.irr310.common.event.world.DefaultWorldEventVisitor;
 import com.irr310.common.event.world.FactionStateEvent;
@@ -13,20 +15,16 @@ import com.irr310.common.event.world.QueryWorldMapStateEvent;
 import com.irr310.common.event.world.WorldEventDispatcher;
 import com.irr310.common.event.world.WorldEventVisitor;
 import com.irr310.common.event.world.WorldMapStateEvent;
-import com.irr310.common.world.Faction;
-import com.irr310.common.world.Player;
-import com.irr310.common.world.World;
 import com.irr310.common.world.state.FactionState;
-import com.irr310.common.world.state.ItemState;
 import com.irr310.common.world.state.WorldMapState;
 import com.irr310.common.world.state.WorldSystemState;
-import com.irr310.common.world.system.WorldSystem;
 import com.irr310.i3d.Bundle;
-import com.irr310.i3d.Handler;
+import com.irr310.i3d.Intent;
 import com.irr310.i3d.Message;
 import com.irr310.i3d.SelectionManager;
 import com.irr310.i3d.SelectionManager.OnSelectionChangeListener;
 import com.irr310.i3d.view.Activity;
+import com.irr310.i3d.view.Button;
 import com.irr310.i3d.view.LinearLayout;
 import com.irr310.i3d.view.Point;
 import com.irr310.i3d.view.RelativeLayout;
@@ -35,7 +33,6 @@ import com.irr310.i3d.view.TextView;
 import com.irr310.i3d.view.View;
 import com.irr310.i3d.view.View.OnClickListener;
 import com.irr310.i3d.view.View.OnMouseEventListener;
-import com.irr310.server.Time;
 
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent.Action;
@@ -54,6 +51,7 @@ public class WorldMapActivity extends Activity {
     private FactionState faction;
     private WorldMapState worldMap;
     private SelectionManager<WorldSystemState> systemViewSelectionManager;
+    private Button inspectSystemButton;
     private static final int UPDATE_FACTION_WHAT = 1;
     private static final int UPDATE_MAP_WHAT = 2;
 
@@ -64,6 +62,7 @@ public class WorldMapActivity extends Activity {
         mapScrollView = (ScrollView) findViewById("mapScrollView@layout/world_map");
         selectedSystemTitle = (TextView) findViewById("selectedSystemTitle@layout/world_map");
         selectedSystemPanel = (LinearLayout) findViewById("selectedSystemPanel@layout/world_map");
+        inspectSystemButton = (Button) findViewById("inspectSystemButton@layout/world_map");
 
         zoom = 8f;
 
@@ -119,6 +118,17 @@ public class WorldMapActivity extends Activity {
                 // TODO Auto-generated method stub
                 return false;
             }});
+        
+        inspectSystemButton.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View view) {
+                if(systemViewSelectionManager.getSelection().size() == 1) {
+                    SystemMapActivityBundle bundle = new SystemMapActivityBundle(selectedSystem);
+                    startActivity(new Intent(SystemMapActivity.class, bundle));
+                }
+            }
+        });
         
     }
 

@@ -18,6 +18,7 @@ import com.irr310.i3d.view.Button;
 import com.irr310.i3d.view.TextView;
 import com.irr310.i3d.view.View;
 import com.irr310.i3d.view.View.OnClickListener;
+import com.irr310.server.GameServer;
 import com.irr310.server.Time;
 import com.irr310.server.WorldEngine;
 
@@ -37,7 +38,7 @@ public class BoardActivity extends Activity {
     @Override
     public void onCreate(Bundle bundle) {
         setContentView("main@layout/board");
-        worldEngine = ((BoardActivityBundle) bundle).getWorldEngine();
+        worldEngine = GameServer.getWorldEngine();
         
         
         worldMapButton = (Button) findViewById("seeWorldMapButton@layout/board");
@@ -110,17 +111,6 @@ public class BoardActivity extends Activity {
             case UPDATE_FACTION_WHAT:
                 updateFields((FactionState) message.obj);
                 break;
-        }
-    }
-    
-    public static class BoardActivityBundle extends Bundle {
-
-        public BoardActivityBundle(WorldEventDispatcher worldEngine) {
-            super(worldEngine);
-        }
-        
-        public WorldEventDispatcher getWorldEngine() {
-            return (WorldEngine) getObject();
         }
     }
 

@@ -1,4 +1,4 @@
-package com.irr310.client.graphics.ether.activities.worldmap;
+package com.irr310.client.graphics.ether.activities.systemmap;
 
 
 
@@ -12,45 +12,28 @@ import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 import com.irr310.i3d.view.Point;
 import com.irr310.i3d.view.View;
 
-public class SystemCircleView extends View {
+public class SystemDetailCircleView extends View {
 
     private final WorldSystemState system;
-    private float size;
-    private float zoom;
-    private float zoomedSize;
     private Color selectionColor;
 
-    public SystemCircleView(WorldSystemState system) {
+    public SystemDetailCircleView(WorldSystemState system) {
         this.system = system;
         
-        size = 30;
-        zoom = 1;
         reshape();
         selectionColor = I3dRessourceManager.getInstance().loadColor("selection@color");
     }
     
     void reshape() {
         
-        zoomedSize = size * zoom;
+        layoutParams.setLayoutWidthMeasure(LayoutMeasure.MATCH_PARENT);
+        layoutParams.setLayoutHeightMeasure(LayoutMeasure.MATCH_PARENT);
         
-        layoutParams.setLayoutWidthMeasure(LayoutMeasure.FIXED);
-        layoutParams.setWidthMeasure(new Measure(zoomedSize, false, Axis.HORIZONTAL));
-        layoutParams.setLayoutHeightMeasure(LayoutMeasure.FIXED);
-        layoutParams.setHeightMeasure(new Measure(zoomedSize, false, Axis.VERTICAL));
-        
-//        layoutParams.setMarginLeftMeasure(new Measure((float) (system.getLocation().x * zoom) - zoomedSize/2, false));
-//        layoutParams.setMarginTopMeasure(new Measure((float) (system.getLocation().y * zoom) - zoomedSize/2, false));
+        layoutParams.setMarginLeftMeasure(new Measure(20, false, Axis.HORIZONTAL));
+        layoutParams.setMarginTopMeasure(new Measure(20, false, Axis.HORIZONTAL));
+        layoutParams.setMarginRightMeasure(new Measure(20, false, Axis.HORIZONTAL));
+        layoutParams.setMarginBottomMeasure(new Measure(20, false, Axis.HORIZONTAL));
     }
-    
-    
-    public void setZoom(float zoom) {
-        this.zoom = zoom;
-        reshape();
-        if(getParent() != null) {
-            getParent().requestLayout();
-        }
-    }
-    
 
     @Override
     public void onDraw(Graphics g) {
@@ -60,26 +43,26 @@ public class SystemCircleView extends View {
             color = system.ownerColor;
         }
         
-        Color centerColor = color.setAlpha(0.2f);
+        Color centerColor = color.setAlpha(0.03f);
         
         
         g.setColor(color);
         //g.drawFilledRectangle(0, 0, zoomedSize, zoomedSize);
-        
-        float radius = zoomedSize / 2f;
+        float size = Math.min(layoutParams.getWidth(), layoutParams.getHeight());
+        float radius = size / 2f;
         if(getState() == ViewState.SELECTED) {
             g.drawRing(radius,radius, radius * 1.04f + 2f, radius, selectionColor, selectionColor, 64);
         }
         
-        g.drawRing(radius,radius, radius, radius * 0.90f - 3f, color, color, 64);
-        g.drawRing(radius,radius, radius * 0.90f - 3f, 0 , centerColor, centerColor, 64);
+        g.drawRing(radius,radius, radius, radius - 10f, color, color, 128);
+        g.drawRing(radius,radius, radius - 10f, 0 , centerColor, centerColor, 64);
         
         if(system.homeSystem) {
         
             // Optimize allocation
-            Point point1_1 = new Point(zoomedSize/2, 0).rotate(Math.PI /15);
-            Point point1_2 = new Point(zoomedSize/2, 0).rotate(-Math.PI /15);
-            Point point1_3 = new Point((zoomedSize * 1.3f + 5) / 2, 0);
+            Point point1_1 = new Point(size/2, 0).rotate(Math.PI /45);
+            Point point1_2 = new Point(size/2, 0).rotate(-Math.PI /45);
+            Point point1_3 = new Point((size * 1.1f) / 2, 0);
             
             point1_1 = point1_1.rotate(Math.PI /4);
             point1_2 = point1_2.rotate(Math.PI /4);

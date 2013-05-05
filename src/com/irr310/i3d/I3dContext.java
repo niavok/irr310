@@ -3,10 +3,6 @@ package com.irr310.i3d;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.newdawn.slick.util.Log;
-
-import com.irr310.common.Game;
-import com.irr310.common.event.game.QuitGameEvent;
 import com.irr310.i3d.fonts.Font;
 import com.irr310.i3d.fonts.FontFactory;
 import com.irr310.i3d.view.drawable.BitmapFactory;
@@ -14,7 +10,6 @@ import com.irr310.server.Time;
 
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent;
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
-import fr.def.iss.vd2.lib_v3d.V3DKeyEvent.KeyAction;
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent.Action;
 
 public class I3dContext {

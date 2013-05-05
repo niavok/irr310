@@ -78,9 +78,11 @@ public class Surface {
         
         
         // Drop current intent
-        Intent dropedIntent = currentActivity.getIntent();
-        intentStack.remove(dropedIntent);
-        activityMap.remove(dropedIntent);
+        if(currentActivity != null) {
+            Intent dropedIntent = currentActivity.getIntent();
+            intentStack.remove(dropedIntent);
+            activityMap.remove(dropedIntent);
+        }
         
         if(intentStack.size() == 0) {
             // No activity yo unstack, restart the current one

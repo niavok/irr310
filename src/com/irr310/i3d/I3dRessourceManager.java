@@ -1106,6 +1106,12 @@ public class I3dRessourceManager {
     private String loadString(String stringId) {
 
         String[] stringParts = stringId.split("@");
+        
+        if (stringParts.length < 2) {
+            Log.warn("Inline string !!! '" + stringId+"'");
+            return stringId;
+        }
+        
         String localId = stringParts[0];
         String fileId = stringParts[1];
 

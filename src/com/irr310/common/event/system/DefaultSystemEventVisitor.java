@@ -10,4 +10,11 @@ public class DefaultSystemEventVisitor implements SystemEventVisitor {
     public void visit(ShipDeployedSystemEvent event) {
     }
     
+    @Override
+    public void visit(QuerySystemStateEvent event) {
+    }
+
+    @Override
+    public void visit(SystemStateEvent event) {
+    }
 }

@@ -6,12 +6,14 @@ import com.irr310.common.engine.EngineManager;
 import com.irr310.common.engine.EventDispatcher;
 import com.irr310.common.engine.FramerateEngine;
 import com.irr310.common.engine.PhysicEngine;
+import com.irr310.common.event.system.DefaultSystemEventVisitor;
+import com.irr310.common.event.system.QuerySystemStateEvent;
 import com.irr310.common.event.system.ShipDeployedSystemEvent;
 import com.irr310.common.event.system.SystemEvent;
 import com.irr310.common.event.system.SystemEventVisitor;
+import com.irr310.common.event.system.SystemStateEvent;
 import com.irr310.common.event.world.ActionDeployShipEvent;
 import com.irr310.common.event.world.DefaultWorldEventVisitor;
-import com.irr310.common.event.world.FactionStocksStateEvent;
 import com.irr310.common.event.world.ShipDeployedWorldEvent;
 import com.irr310.common.event.world.WorldEvent;
 import com.irr310.common.tools.TransformMatrix;
@@ -36,7 +38,14 @@ public class SystemEngine extends FramerateEngine<WorldEvent> implements EventDi
         shipFactory = new ShipFactory(system);
         //        world = worldEngine.getWorld();
         engineManager = new EngineManager<SystemEventVisitor, SystemEvent>();
+        engineManager.registerEventVisitor(new SystemEngineSystemEventVisitor());
         systemEngineVisitor = new SystemEngineWorldEventVisitor();
+        
+        
+        
+        
+        
+        
     }
 
     @Override
@@ -95,9 +104,15 @@ public class SystemEngine extends FramerateEngine<WorldEvent> implements EventDi
                 worldEngine.sendToAll(new ShipDeployedWorldEvent(shipItem.toState()));
             }
         }
-
     }
 
+    private final class SystemEngineSystemEventVisitor extends DefaultSystemEventVisitor {
+        @Override
+        public void visit(QuerySystemStateEvent event) {
+            sendToAll(new SystemStateEvent(system.toState()));
+        }
+    }
+    
     public PhysicEngine getPhysicEngine() {
         return null;
     }
