@@ -1,9 +1,10 @@
 package com.irr310.client.graphics.ether.activities.worldmap;
 
-
-
 import java.util.List;
 
+import org.lwjgl.input.Mouse;
+
+import com.irr310.common.tools.Log;
 import com.irr310.common.world.state.WorldSystemState;
 import com.irr310.i3d.I3dRessourceManager;
 import com.irr310.i3d.Measure;
@@ -16,6 +17,8 @@ import com.irr310.i3d.view.TextView;
 import com.irr310.i3d.view.TextView.Gravity;
 import com.irr310.i3d.view.View;
 
+import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
+
 public class SystemView extends RelativeLayout {
 
     private final WorldSystemState system;
@@ -25,7 +28,7 @@ public class SystemView extends RelativeLayout {
     private SystemCircleView systemCircleView;
     private TextView textView;
 
-    public SystemView(final WorldSystemState system, final SelectionManager<WorldSystemState>selectionManager) {
+    public SystemView(final WorldMapActivity activity, final WorldSystemState system, final SelectionManager<WorldSystemState>selectionManager) {
         this.system = system;
         
         size = 30;
@@ -44,8 +47,13 @@ public class SystemView extends RelativeLayout {
         this.setOnClickListener(new OnClickListener() {
 
             @Override
-            public void onClick(View view) {
-                selectionManager.select(system);
+            public void onClick(V3DMouseEvent mouseEvent, View view) {
+                Log.trace("click on system count="+mouseEvent.getClickCount());
+                if(mouseEvent.getClickCount() == 2) {
+                    activity.inspectSystemAction(system);
+                } else {
+                    selectionManager.select(system);
+                }
             }
 
         });

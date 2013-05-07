@@ -110,7 +110,9 @@ public class WorldMapActivity extends Activity {
 
                     selectedSystemTitle.setText(selectedSystem.name);
                     selectedSystemPanel.setVisible(true);
-                }                
+                } else {
+                    WorldMapActivity.selectedSystem = null;
+                }
             }
 
             @Override
@@ -122,16 +124,20 @@ public class WorldMapActivity extends Activity {
         inspectSystemButton.setOnClickListener(new OnClickListener() {
             
             @Override
-            public void onClick(View view) {
-                if(systemViewSelectionManager.getSelection().size() == 1) {
-                    SystemMapActivityBundle bundle = new SystemMapActivityBundle(selectedSystem);
-                    startActivity(new Intent(SystemMapActivity.class, bundle));
+            public void onClick(V3DMouseEvent mouseEvent, View view) {
+                if(WorldMapActivity.selectedSystem != null) {
+                    inspectSystemAction(selectedSystem);
                 }
             }
         });
         
     }
 
+    public void inspectSystemAction(WorldSystemState selectedSystem) {
+        SystemMapActivityBundle bundle = new SystemMapActivityBundle(selectedSystem);
+        startActivity(new Intent(SystemMapActivity.class, bundle));
+    }
+    
     @Override
     public void onResume() {
         worldEngine.registerEventVisitor(visitor);
@@ -177,7 +183,7 @@ public class WorldMapActivity extends Activity {
             if (system.id == faction.homeSystemId) {
                 homeSystem = system;
             }
-            final SystemView systemView = new SystemView(system, systemViewSelectionManager);
+            final SystemView systemView = new SystemView(this, system, systemViewSelectionManager);
             systemView.setZoom(zoom);
             map.addViewInLayout(systemView);
         }

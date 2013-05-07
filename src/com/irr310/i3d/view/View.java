@@ -227,16 +227,16 @@ public abstract class View {
         this.onMouseEventListener = onMouseEventListener;
     }
 
-    public boolean performClick() {
+    public boolean performClick(V3DMouseEvent mouseEvent) {
         if (onClickListener != null) {
-            onClickListener.onClick(this);
+            onClickListener.onClick(mouseEvent, this);
             return true;
         }
         return false;
     }
 
     public static interface OnClickListener {
-        void onClick(View view);
+        void onClick(V3DMouseEvent mouseEvent, View view);
     }
 
     public static interface OnMouseEventListener {
@@ -255,7 +255,7 @@ public abstract class View {
         }
 
         if (mouseEvent.getAction() == Action.MOUSE_CLICKED) {
-            if (performClick()) {
+            if (performClick(mouseEvent)) {
                 return true;
             }
         }

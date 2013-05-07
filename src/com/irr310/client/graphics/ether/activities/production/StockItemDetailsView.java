@@ -8,6 +8,8 @@ import com.irr310.i3d.view.ProxyView;
 import com.irr310.i3d.view.TextView;
 import com.irr310.i3d.view.View;
 
+import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
+
 public class StockItemDetailsView extends ProxyView {
 
     private final ItemState item;
@@ -29,7 +31,7 @@ public class StockItemDetailsView extends ProxyView {
             deployShipButton.setOnClickListener(new OnClickListener() {
                 
                 @Override
-                public void onClick(View view) {
+                public void onClick(V3DMouseEvent mouseEvent, View view) {
                     StockItemDetailsView.this.stocksActivity.deployShip(StockItemDetailsView.this.item);
                 }
             });

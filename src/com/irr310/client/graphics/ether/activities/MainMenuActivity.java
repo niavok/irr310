@@ -11,6 +11,8 @@ import com.irr310.i3d.view.View.OnClickListener;
 import com.irr310.server.Duration;
 import com.irr310.server.Time;
 
+import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
+
 public class MainMenuActivity extends Activity {
 
     //private Triangle mobileLogoPart;
@@ -29,7 +31,7 @@ public class MainMenuActivity extends Activity {
         newGameMenu.setOnClickListener(new OnClickListener() {
             
             @Override
-            public void onClick(View view) {
+            public void onClick(V3DMouseEvent mouseEvent, View view) {
                 startActivity(new Intent(NewGameActivity.class));
             }
         });

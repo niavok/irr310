@@ -12,15 +12,22 @@ public class V3DMouseEvent extends V3DInputEvent {
     private final int y;
     private final int x;
 
-    public V3DMouseEvent(Action action, int x, int y, int button) {
+    private final int clickCount;
+    
+    public V3DMouseEvent(Action action, int x, int y, int button, int clickCount) {
         this.action = action;
         this.x = x;
         this.y = y;
         this.button = button;
+        this.clickCount = clickCount;
     }
 
     public Action getAction() {
         return action;
+    }
+    
+    public int getClickCount() {
+        return clickCount;
     }
 
     public int getX() {
@@ -36,7 +43,7 @@ public class V3DMouseEvent extends V3DInputEvent {
     }
     
     public V3DMouseEvent relativeTo(int xOffset, int yOffset) {
-        return new V3DMouseEvent(action, x - xOffset, y - yOffset, button);
+        return new V3DMouseEvent(action, x - xOffset, y - yOffset, button, clickCount);
     }
 
     @Override

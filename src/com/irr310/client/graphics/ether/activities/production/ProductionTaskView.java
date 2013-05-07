@@ -10,6 +10,8 @@ import com.irr310.i3d.view.ProxyView;
 import com.irr310.i3d.view.TextView;
 import com.irr310.i3d.view.View;
 
+import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
+
 public class ProductionTaskView extends ProxyView {
 
     private final ProductionTaskState productionTask;
@@ -25,7 +27,7 @@ public class ProductionTaskView extends ProxyView {
         this.setOnClickListener(new OnClickListener() {
             
             @Override
-            public void onClick(View view) {
+            public void onClick(V3DMouseEvent mouseEvent, View view) {
                 selectionManager.select(ProductionTaskView.this.productionTask);
             }
         });

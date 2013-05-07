@@ -101,7 +101,7 @@ public class I3dContext {
         for (Surface surface : surfaceList) {
             if (surface.contains(mouseEvent.getX(), mouseEvent.getY()) ||mouseEvent.getAction() == Action.MOUSE_DRAGGED) {
                 V3DMouseEvent topLeftEvent = new V3DMouseEvent(mouseEvent.getAction(), mouseEvent.getX() - surface.x, (surface.y + surface.height)
-                        - mouseEvent.getY(), mouseEvent.getButton());
+                        - mouseEvent.getY(), mouseEvent.getButton(), mouseEvent.getClickCount());
 
                 surface.onMouseEvent(topLeftEvent);
                 break;

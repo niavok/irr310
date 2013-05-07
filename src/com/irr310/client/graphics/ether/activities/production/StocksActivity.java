@@ -25,6 +25,8 @@ import com.irr310.i3d.view.View;
 import com.irr310.i3d.view.View.OnClickListener;
 import com.irr310.i3d.view.View.ViewState;
 
+import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
+
 public class StocksActivity extends Activity {
 
     protected static StockItemDetailsView stockItemView;
@@ -59,7 +61,7 @@ public class StocksActivity extends Activity {
         productionCategoryFactoryButton.setOnClickListener(new OnClickListener() {
             
             @Override
-            public void onClick(View view) {
+            public void onClick(V3DMouseEvent mouseEvent, View view) {
                 Bundle bundle = new Bundle(worldEngine);
                 startActivity(new Intent(FactoryActivity.class, bundle));
             }

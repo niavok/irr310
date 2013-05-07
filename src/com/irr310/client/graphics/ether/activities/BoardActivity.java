@@ -22,6 +22,8 @@ import com.irr310.server.GameServer;
 import com.irr310.server.Time;
 import com.irr310.server.WorldEngine;
 
+import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
+
 public class BoardActivity extends Activity {
 
     
@@ -52,7 +54,7 @@ public class BoardActivity extends Activity {
         worldMapButton.setOnClickListener(new OnClickListener() {
             
             @Override
-            public void onClick(View view) {
+            public void onClick(V3DMouseEvent mouseEvent, View view) {
                 Bundle bundle = new Bundle(worldEngine);
                 startActivity(new Intent(WorldMapActivity.class, bundle));
             }
@@ -61,7 +63,7 @@ public class BoardActivity extends Activity {
         productionButton.setOnClickListener(new OnClickListener() {
             
             @Override
-            public void onClick(View view) {
+            public void onClick(V3DMouseEvent mouseEvent, View view) {
                 Bundle bundle = new Bundle(worldEngine);
                 startActivity(new Intent(FactoryActivity.class, bundle));
             }

@@ -40,6 +40,8 @@ import com.irr310.i3d.view.View.OnClickListener;
 import com.irr310.i3d.view.View.ViewState;
 import com.irr310.server.Time;
 
+import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
+
 public class FactoryActivity extends Activity {
 
     private WorldEventDispatcher worldEngine;
@@ -109,7 +111,7 @@ public class FactoryActivity extends Activity {
         productionCategoryStocksButton.setOnClickListener(new OnClickListener() {
             
             @Override
-            public void onClick(View view) {
+            public void onClick(V3DMouseEvent mouseEvent, View view) {
                 Bundle bundle = new Bundle(worldEngine);
                 startActivity(new Intent(StocksActivity.class, bundle));
             }
@@ -149,14 +151,14 @@ public class FactoryActivity extends Activity {
 
         factoryBuyFactoryButton.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(V3DMouseEvent mouseEvent, View view) {
                 worldEngine.sendToAll(new ActionBuyFactionFactoryCapacityEvent(LoginManager.getLocalPlayer().faction, 1));
             }
         });
         
         factorySellFactoryButton.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(V3DMouseEvent mouseEvent, View view) {
                 worldEngine.sendToAll(new ActionSellFactionFactoryCapacityEvent(LoginManager.getLocalPlayer().faction, 1));
             }
         });

@@ -7,6 +7,8 @@ import com.irr310.i3d.view.ProxyView;
 import com.irr310.i3d.view.TextView;
 import com.irr310.i3d.view.View;
 
+import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
+
 public class AvailableProductDetailsView extends ProxyView {
 
     private final ProductState product;
@@ -28,7 +30,7 @@ public class AvailableProductDetailsView extends ProxyView {
         buyProductButton.setOnClickListener(new OnClickListener() {
             
             @Override
-            public void onClick(View view) {
+            public void onClick(V3DMouseEvent mouseEvent, View view) {
                 AvailableProductDetailsView.this.productionActivity.buyProduct(AvailableProductDetailsView.this.product, 1);
             }
         });

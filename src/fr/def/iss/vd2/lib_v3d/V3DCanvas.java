@@ -435,7 +435,7 @@ public class V3DCanvas {
                     e.getAction(),
                     e.getX() - binding.mouseX,
                     mouseY = (getHeight() - e.getY()) - binding.mouseY,
-                    e.getButton());
+                    e.getButton(), e.getClickCount());
 
             if (e.isConsumed()) {
                 localEvent.consume();

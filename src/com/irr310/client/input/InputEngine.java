@@ -11,6 +11,7 @@ import com.irr310.common.event.game.GameEventVisitor;
 import com.irr310.common.event.game.KeyEvent;
 import com.irr310.common.event.game.MouseEvent;
 import com.irr310.common.event.game.QuitGameEvent;
+import com.irr310.common.tools.Log;
 import com.irr310.i3d.view.Point;
 import com.irr310.server.Duration;
 
@@ -21,8 +22,13 @@ import fr.def.iss.vd2.lib_v3d.V3DMouseEvent.Action;
 
 public class InputEngine extends FramerateEngine<GameEvent> {
 
+    private static final int CLICK_TIME = 500000000;
+    private static final int DOUBLE_CLICK_TIME = 500000000;
+    
     private boolean dragging;
     private long[] pressTime;
+    private long[] clickTime;
+    private int[] clickCount;
     private Point[] pressLocation;
     // private String cheatString = "";
     private final EventDispatcher<GameEventVisitor, GameEvent> dispatcher;
@@ -32,7 +38,9 @@ public class InputEngine extends FramerateEngine<GameEvent> {
         framerate = new Duration(15000000);
         dragging = false;
         pressTime = new long[10];
+        clickTime = new long[10];
         pressLocation = new Point[10];
+        clickCount = new int[10];
         
     }
 
@@ -45,28 +53,25 @@ public class InputEngine extends FramerateEngine<GameEvent> {
     protected void frame() {
         
         try { 
-        
-        
-        
 
         while (Mouse.next()) {
 
             int dWheel = Mouse.getDWheel();
             
             if(dWheel > 0) {
-                V3DMouseEvent mouseEvent = new V3DMouseEvent(Action.MOUSE_WHEEL_UP, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1);
+                V3DMouseEvent mouseEvent = new V3DMouseEvent(Action.MOUSE_WHEEL_UP, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1, 0);
                 dispatcher.sendToAll(new MouseEvent(mouseEvent));
             } else if(dWheel < 0) {
-                V3DMouseEvent mouseEvent = new V3DMouseEvent(Action.MOUSE_WHEEL_DOWN, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1);
+                V3DMouseEvent mouseEvent = new V3DMouseEvent(Action.MOUSE_WHEEL_DOWN, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1, 0);
                 dispatcher.sendToAll(new MouseEvent(mouseEvent));
             } else if (Mouse.getEventButton() == -1) {
                 if (dragging) {
                     // Drag
-                    V3DMouseEvent mouseEvent = new V3DMouseEvent(Action.MOUSE_DRAGGED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1);
+                    V3DMouseEvent mouseEvent = new V3DMouseEvent(Action.MOUSE_DRAGGED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1, 0);
                     dispatcher.sendToAll(new MouseEvent(mouseEvent));
                 } else {
                     // Move
-                    V3DMouseEvent mouseEvent = new V3DMouseEvent(Action.MOUSE_MOVED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1);
+                    V3DMouseEvent mouseEvent = new V3DMouseEvent(Action.MOUSE_MOVED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1, 0);
                     dispatcher.sendToAll(new MouseEvent(mouseEvent));
                 }
 
@@ -76,19 +81,26 @@ public class InputEngine extends FramerateEngine<GameEvent> {
                     dragging = true;
                     pressTime[Mouse.getEventButton()] = Mouse.getEventNanoseconds();
                     pressLocation[Mouse.getEventButton()] = new Point(Mouse.getX(), Mouse.getY());
-                    V3DMouseEvent mouseEvent = new V3DMouseEvent(Action.MOUSE_PRESSED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1);
+                    V3DMouseEvent mouseEvent = new V3DMouseEvent(Action.MOUSE_PRESSED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1, 0);
                     dispatcher.sendToAll(new MouseEvent(mouseEvent));
                 } else {
                     // Released
                     dragging = false;
-                    V3DMouseEvent mouseEvent = new V3DMouseEvent(Action.MOUSE_RELEASED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1);
+                    V3DMouseEvent mouseEvent = new V3DMouseEvent(Action.MOUSE_RELEASED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1, 0);
                     dispatcher.sendToAll(new MouseEvent(mouseEvent));
-                    if( Mouse.getEventNanoseconds()  - pressTime[Mouse.getEventButton()] < 500000000 && new Point(Mouse.getX(), Mouse.getY()).distanceTo(pressLocation[Mouse.getEventButton()])  < 10) {
-                        mouseEvent = new V3DMouseEvent(Action.MOUSE_CLICKED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1);
+                    if( Mouse.getEventNanoseconds()  - pressTime[Mouse.getEventButton()] < CLICK_TIME && new Point(Mouse.getX(), Mouse.getY()).distanceTo(pressLocation[Mouse.getEventButton()])  < 10) {
+                        
+                        if( Mouse.getEventNanoseconds()  - clickTime[Mouse.getEventButton()] > DOUBLE_CLICK_TIME ) {
+                            clickCount[Mouse.getEventButton()] = 0;
+                            Log.trace("Too long click");
+                        }
+                        clickCount[Mouse.getEventButton()]++;
+                        clickTime[Mouse.getEventButton()] = Mouse.getEventNanoseconds();
+                        Log.trace("click count set to "+clickCount[Mouse.getEventButton()]);
+                        mouseEvent = new V3DMouseEvent(Action.MOUSE_CLICKED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1, clickCount[Mouse.getEventButton()]);
                         dispatcher.sendToAll(new MouseEvent(mouseEvent));
                     }
                 }
-
             }
 
         }
