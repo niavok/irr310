@@ -37,6 +37,8 @@ public class Nexus extends WorldEntity {
     public NexusState toState() {
         NexusState state = new NexusState();
         state.id = getId();
+        state.location = location;
+        state.radius = radius;
         return state;
     }
     

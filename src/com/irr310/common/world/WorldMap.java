@@ -45,11 +45,14 @@ public class WorldMap {
         return systems;
     }
 
-    public WorldMapState toState() {
+    public WorldMapState toState(int depth) {
         WorldMapState worldMapState = new WorldMapState();
         worldMapState.systems = new ArrayList<WorldSystemState>();
-        for(WorldSystem system: systems) {
-            worldMapState.systems.add(system.toState());
+        
+        if(depth != 0) {
+            for(WorldSystem system: systems) {
+                worldMapState.systems.add(system.toState(depth-1));
+            }
         }
         
         return worldMapState;

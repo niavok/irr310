@@ -5,11 +5,11 @@ import java.util.List;
 
 import com.irr310.i3d.Graphics;
 
-public abstract class ContainerView extends View implements ViewParent {
+public abstract class ViewGroup extends View implements ViewParent {
 
     List<View> children = new ArrayList<View>();
     
-    public ContainerView() {
+    public ViewGroup() {
     }
 
     @Override

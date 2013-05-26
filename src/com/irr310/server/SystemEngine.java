@@ -9,6 +9,7 @@ import com.irr310.common.engine.PhysicEngine;
 import com.irr310.common.event.system.DefaultSystemEventVisitor;
 import com.irr310.common.event.system.QuerySystemStateEvent;
 import com.irr310.common.event.system.ShipDeployedSystemEvent;
+import com.irr310.common.event.system.ShipDeployedSystemEvent;
 import com.irr310.common.event.system.SystemEvent;
 import com.irr310.common.event.system.SystemEventVisitor;
 import com.irr310.common.event.system.SystemStateEvent;
@@ -31,6 +32,7 @@ public class SystemEngine extends FramerateEngine<WorldEvent> implements EventDi
     private WorldSystem system;
     private WorldEngine worldEngine;
     private ShipFactory shipFactory;
+    private PhysicEngine physicEngine;
 
     public SystemEngine(WorldEngine worldEngine, WorldSystem system) {
         this.worldEngine = worldEngine;
@@ -42,9 +44,8 @@ public class SystemEngine extends FramerateEngine<WorldEvent> implements EventDi
         systemEngineVisitor = new SystemEngineWorldEventVisitor();
         
         
-        
-        
-        
+        physicEngine = new PhysicEngine(this);
+        engineManager.registerEventVisitor(physicEngine.getEventVisitor());
         
     }
 
@@ -61,6 +62,7 @@ public class SystemEngine extends FramerateEngine<WorldEvent> implements EventDi
     @Override
     protected void onStart() {
         pause(false);
+        physicEngine.start();
     }
     
     @Override
@@ -99,9 +101,7 @@ public class SystemEngine extends FramerateEngine<WorldEvent> implements EventDi
                 ShipItem shipItem = (ShipItem) item;
                 
                 Ship ship  = deployShip(shipItem, nexus);
-                engineManager.sendToAll(new ShipDeployedSystemEvent(ship));
-                
-                worldEngine.sendToAll(new ShipDeployedWorldEvent(shipItem.toState()));
+               
             }
         }
     }
@@ -109,7 +109,7 @@ public class SystemEngine extends FramerateEngine<WorldEvent> implements EventDi
     private final class SystemEngineSystemEventVisitor extends DefaultSystemEventVisitor {
         @Override
         public void visit(QuerySystemStateEvent event) {
-            sendToAll(new SystemStateEvent(system.toState()));
+            sendToAll(new SystemStateEvent(system.toState(event.getDepth())));
         }
     }
     
@@ -139,14 +139,19 @@ public class SystemEngine extends FramerateEngine<WorldEvent> implements EventDi
         Random random = new Random();
         
         TransformMatrix shipTransform = TransformMatrix.identity();
-        shipTransform.rotateX(random.nextDouble() * 360);        
-        shipTransform.rotateZ(random.nextDouble() * 360);
-        shipTransform.rotateY(random.nextDouble() * 360);
+//        shipTransform.rotateX(random.nextDouble() * 360);        
+//        shipTransform.rotateZ(random.nextDouble() * 360);
+//        shipTransform.rotateY(random.nextDouble() * 360);
         shipTransform.translate(nexus.getLocation());
 
-        system.addShip(ship, shipTransform);
+        system.addShip(ship);
         
         system.unlock();
+        
+        engineManager.sendToAll(new ShipDeployedSystemEvent(ship, shipTransform));
+        
+        worldEngine.sendToAll(new ShipDeployedWorldEvent(shipItem.toState()));
+        
         return ship;
     }
 

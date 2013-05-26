@@ -1,23 +1,29 @@
 package com.irr310.common.event.system;
 
+import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.world.system.Ship;
-
 
 public class ShipDeployedSystemEvent extends SystemEvent {
 
+	final private Ship ship;
+	private final TransformMatrix transform;
 
-    private final Ship ship;
+	public ShipDeployedSystemEvent(Ship ship, TransformMatrix transform) {
+		this.ship = ship;
+		this.transform = transform;
+	}
 
-    public ShipDeployedSystemEvent(Ship ship) {
-        this.ship = ship;
-    }
+	@Override
+	public void accept(SystemEventVisitor visitor) {
+		visitor.visit(this);
+	}
 
-    @Override
-    public void accept(SystemEventVisitor visitor) {
-        visitor.visit(this);
-    }
+	public Ship getShip() {
+		return ship;
+	}
+	
+	public TransformMatrix getTransform() {
+		return transform;
+	}
 
-    public Ship getShip() {
-        return ship;
-    }
 }

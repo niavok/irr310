@@ -224,7 +224,7 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements WorldEven
         
         @Override
         public void visit(QueryWorldMapStateEvent event) {
-            engineManager.sendToAll(new WorldMapStateEvent(world.getMap().toState()));
+            engineManager.sendToAll(new WorldMapStateEvent(world.getMap().toState(event.getDepth())));
         }
         
         @Override
@@ -309,6 +309,10 @@ public class WorldEngine extends FramerateEngine<GameEvent> implements WorldEven
             }
             
             WorldSystem system = new WorldSystem(world, GameServer.pickNewId(), location);
+            
+            
+            system.setRadius(1000 + (1 - random.nextDouble()) * 50000 );
+            
             
             SystemEngine systemEngine = new SystemEngine(this, system);
             engineManager.add(systemEngine);

@@ -1,7 +1,11 @@
 package com.irr310.common.world.state;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.irr310.common.network.NetworkClass;
 import com.irr310.common.network.NetworkField;
+import com.irr310.common.network.NetworkListField;
 import com.irr310.common.tools.Vec2;
 import com.irr310.i3d.Color;
 
@@ -26,6 +30,15 @@ public class WorldSystemState {
     @NetworkField
     public Color ownerColor;
 
+    @NetworkListField(NexusState.class)
+    public List<NexusState> nexuses = new ArrayList<NexusState>();
+    
+    @NetworkListField(NexusState.class)
+    public List<ShipState> ships = new ArrayList<ShipState>();
+
+    @NetworkField
+    public double radius;
+    
     @Override
     public int hashCode() {
         final int prime = 31;

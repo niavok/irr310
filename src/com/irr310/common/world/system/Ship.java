@@ -25,11 +25,14 @@ public class Ship extends SystemEntity implements Container {
     private Faction owner;
     private boolean destructible;
     private SystemEngine systemEngine;
+    private ShipState shipState;
+    private boolean stateChanged;
 
     public Ship(WorldSystem system, long id) {
         super(system, id);
         owner = null;
         destructible = true;
+        stateChanged = true;
     }
 
     @Override
@@ -118,17 +121,23 @@ public class Ship extends SystemEntity implements Container {
         return owner;
     }
 
-    public ShipState toState() {
-        ShipState shipState = new ShipState();
-        shipState.id = getId();
-//        shipView.owner = owner.toView();
+    public ShipState toState(int depth) {
+        if(stateChanged) {
+            stateChanged = false;
+            shipState = new ShipState();
+            
+            shipState.id = getId();
+            shipState.owner = owner.toState();
 
-        for (Link link : links) {
-            shipState.links.add(link.toState());
-        }
-
-        for (Component component : components) {
-            shipState.components.add(component.toState());
+            if(depth != 0) {
+                for (Link link : links) {
+                    shipState.links.add(link.toState());
+                }
+        
+                for (Component component : components) {
+                    shipState.components.add(component.toState(depth -1));
+                }
+            }
         }
 
         return shipState;

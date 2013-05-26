@@ -1,8 +1,5 @@
 package com.irr310.i3d.view;
 
-import com.irr310.common.tools.Log;
-import com.irr310.common.tools.RessourceLoadingException;
-import com.irr310.common.world.state.FactionState;
 import com.irr310.i3d.Bundle;
 import com.irr310.i3d.Graphics;
 import com.irr310.i3d.Handler;

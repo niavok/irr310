@@ -7,7 +7,7 @@ import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent.Action;
 
-public class LinearLayout extends ContainerView {
+public class LinearLayout extends ViewGroup {
 
     private LayoutOrientation orientation = LayoutOrientation.HORIZONTAL;
 

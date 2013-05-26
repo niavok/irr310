@@ -24,6 +24,6 @@ public class ShipState {
     //public KernelCapacity kernel;
 
     @NetworkOptionalField
-    public PlayerState owner;
+    public FactionState owner;
 
 }

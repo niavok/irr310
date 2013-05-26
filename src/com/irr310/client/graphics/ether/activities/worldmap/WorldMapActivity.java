@@ -141,7 +141,7 @@ public class WorldMapActivity extends Activity {
     @Override
     public void onResume() {
         worldEngine.registerEventVisitor(visitor);
-        worldEngine.sendToAll(new QueryWorldMapStateEvent());
+        worldEngine.sendToAll(new QueryWorldMapStateEvent(1));
         worldEngine.sendToAll(new QueryFactionStateEvent(LoginManager.getLocalPlayer().faction));
     }
 

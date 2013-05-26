@@ -27,6 +27,8 @@ public class Faction extends WorldEntity{
     private FactionStocks stocks;
     private FactionAvailableProductList availableProductList;
     private Nexus rootNexus;
+    private FactionState factionState;
+    private boolean stateChanged;
     
     public Faction(World world, long id) {
         super(world, id);
@@ -38,6 +40,7 @@ public class Faction extends WorldEntity{
         oresAmount = 0;
         koliumAmount = 0;
         neuridiumAmount = 0;
+        stateChanged = true;
     }
 
     public void setHomeSystem(WorldSystem system) {
@@ -100,18 +103,22 @@ public class Faction extends WorldEntity{
     
     public void setKoliumAmount(long koliumAmount) {
         this.koliumAmount = koliumAmount;
+        stateChanged = true;
     }
     
     public void setNeuridiumAmount(long neuridiumAmount) {
         this.neuridiumAmount = neuridiumAmount;
+        stateChanged = true;
     }
     
     public void setOresAmount(long oresAmount) {
         this.oresAmount = oresAmount;
+        stateChanged = true;
     }
     
     public void setStatersAmount(long statersAmount) {
         this.statersAmount = statersAmount;
+        stateChanged = true;
     }
     
     public Nexus getRootNexus() {
@@ -123,26 +130,30 @@ public class Faction extends WorldEntity{
     }
     
     public FactionState toState() {
-        FactionState factionState = new FactionState();
-        factionState.id = getId();
-        factionState.statersAmount = statersAmount;
-        factionState.oresAmount = oresAmount;
-        factionState.koliumAmount = koliumAmount;
-        factionState.neuridiumAmount = neuridiumAmount;
-        factionState.color = color;
-        factionState.homeSystemId = homeSystem.getId();
-        factionState.rootNexus = rootNexus.toState();
+        if(stateChanged) {
+            stateChanged = false;
+            factionState = new FactionState();
         
-        factionState.knownSystemIds = new ArrayList<Long>(); 
-        for(WorldSystem system: knownSystems) {
-            factionState.knownSystemIds.add(system.getId());
+            factionState.id = getId();
+            factionState.statersAmount = statersAmount;
+            factionState.oresAmount = oresAmount;
+            factionState.koliumAmount = koliumAmount;
+            factionState.neuridiumAmount = neuridiumAmount;
+            factionState.color = color;
+            factionState.homeSystemId = homeSystem.getId();
+            factionState.rootNexus = rootNexus.toState();
+            
+            factionState.knownSystemIds = new ArrayList<Long>(); 
+            for(WorldSystem system: knownSystems) {
+                factionState.knownSystemIds.add(system.getId());
+            }
         }
 
         return factionState;
     }
     
     public boolean isState(FactionState factionState) {
-        return getId() == factionState.id;
+        return getId() == toState().id;
     }
 
     public boolean takeStaters(long price) {

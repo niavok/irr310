@@ -166,7 +166,7 @@ public final class  Component extends SystemObject {
 		return tmp.getTranslation();
 	}
 
-    public ComponentState toState() {
+    public ComponentState toState(int depth) {
         ComponentState componentView = new ComponentState();
         
         componentView.id = getId();
@@ -183,16 +183,19 @@ public final class  Component extends SystemObject {
         
         componentView.quality = quality;
         
-        for(Part part: parts) {
-            componentView.parts.add(part.toState());    
-        }
+        if(depth != 0) {
         
-        for(Slot slot: slots) {
-            componentView.slots.add(slot.toState());    
-        }
-        
-        for(Capacity capacity: capacities) {
-            componentView.capacities.add(capacity.toState());    
+            for(Part part: parts) {
+                componentView.parts.add(part.toState());    
+            }
+            
+            for(Slot slot: slots) {
+                componentView.slots.add(slot.toState());    
+            }
+            
+            for(Capacity capacity: capacities) {
+                componentView.capacities.add(capacity.toState());    
+            }
         }
         
         return componentView;

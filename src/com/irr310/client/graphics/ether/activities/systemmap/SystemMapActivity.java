@@ -3,6 +3,7 @@ package com.irr310.client.graphics.ether.activities.systemmap;
 import com.irr310.common.event.system.DefaultSystemEventVisitor;
 import com.irr310.common.event.system.QuerySystemStateEvent;
 import com.irr310.common.event.system.SystemStateEvent;
+import com.irr310.common.world.state.EntityState;
 import com.irr310.common.world.state.WorldSystemState;
 import com.irr310.i3d.Bundle;
 import com.irr310.i3d.Message;
@@ -18,6 +19,8 @@ public class SystemMapActivity extends Activity {
     private RelativeLayout systemDetailsRelativeLayout;
 
     private static final int UPDATE_SYSTEM_WHAT = 1;
+    private static final int UPDATE_SYSTEM_CONTENT_WHAT = 1;
+    private WorldSystemState system;
     
     @Override
     public void onCreate(Bundle bundle) {
@@ -25,7 +28,7 @@ public class SystemMapActivity extends Activity {
         
         systemDetailsRelativeLayout = (RelativeLayout) findViewById("systemDetailsRelativeLayout@layout/system_map/system_map");
         
-        WorldSystemState system = (WorldSystemState) bundle.getObject();
+        system = (WorldSystemState) bundle.getObject();
         systemEngine = GameServer.getWorldEngine().getSystemEngine(system);
         
         visitor = new DefaultSystemEventVisitor() {
@@ -34,6 +37,8 @@ public class SystemMapActivity extends Activity {
                 systemState = event.getSystemState();
                 getHandler().obtainMessage(UPDATE_SYSTEM_WHAT).send();
             }
+            
+            
         };
         
     }
@@ -42,7 +47,7 @@ public class SystemMapActivity extends Activity {
     @Override
     public void onResume() {
         systemEngine.registerEventVisitor(visitor);
-        systemEngine.sendToAll(new QuerySystemStateEvent());
+        systemEngine.sendToAll(new QuerySystemStateEvent(system, EntityState.FULL_DEPTH));
     }
 
     @Override

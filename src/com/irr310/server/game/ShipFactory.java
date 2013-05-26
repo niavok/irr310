@@ -30,6 +30,7 @@ public class ShipFactory {
     public Ship createShip(ShipItem shipItem) {
 
         Ship ship = new Ship(system, GameServer.pickNewId());
+        ship.setOwner(shipItem.getOwner());
         
         List<Component> components = new ArrayList<Component>();
         Map<ComponentProduct, Component> componentCache = new HashMap<ComponentProduct, Component>();

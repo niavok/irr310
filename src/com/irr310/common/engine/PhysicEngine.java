@@ -47,7 +47,9 @@ import com.bulletphysics.linearmath.Transform;
 import com.bulletphysics.util.ObjectArrayList;
 import com.irr310.common.event.system.CollisionEvent;
 import com.irr310.common.event.system.DefaultSystemEventVisitor;
+import com.irr310.common.event.system.ShipDeployedSystemEvent;
 import com.irr310.common.event.system.SystemEvent;
+import com.irr310.common.event.system.SystemEventVisitor;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.capacity.Capacity;
@@ -109,6 +111,10 @@ public class PhysicEngine extends FramerateEngine<SystemEvent> {
         initPhysics();
         random = new Random();
         mutex = new ReentrantLock();
+    }
+    
+    public SystemEventVisitor getEventVisitor() {
+        return eventVisitor;
     }
 
     @Override
@@ -864,10 +870,10 @@ public class PhysicEngine extends FramerateEngine<SystemEvent> {
 //            }
 //        }
 //
-//        @Override
-//        public void visit(WorldShipAddedEvent event) {
-//            addShip(event.getShip(), event.getTransform());
-//        }
+        @Override
+        public void visit(ShipDeployedSystemEvent event) {
+            addShip(event.getShip(), event.getTransform());
+        }
 
     }
 

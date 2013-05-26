@@ -9,6 +9,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.ReentrantLock;
 
 import com.irr310.client.navigation.LoginManager;
+import com.irr310.common.event.system.ShipDeployedSystemEvent;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec2;
 import com.irr310.common.tools.Vec3;
@@ -175,17 +176,16 @@ public class WorldSystem extends WorldEntity {
 
         Ship ship = new Ship(this, shipView.id);
         ship.fromState(shipView);
-        addShip(ship, null);
+        addShip(ship);
         return ship;
     }
 
-    public void addShip(Ship ship, TransformMatrix transform) {
+    public void addShip(Ship ship) {
         ships.add(ship);
         for (Component component : ship.getComponents()) {
             addComponent(component);
         }
         shipIdMap.put(ship.getId(), ship);
-//        systemEngine.sendToAll(new WorldShipAddedEvent(ship, transform));
     }
 
     public List<Ship> getShips() {
@@ -278,12 +278,13 @@ public class WorldSystem extends WorldEntity {
         return name;
     }
 
-    public WorldSystemState toState() {
+    public WorldSystemState toState(int depth) {
         WorldSystemState systemState = new WorldSystemState();
         systemState.id = getId();
         
         systemState.homeSystem = homeSystem;
         systemState.location = location;
+        systemState.radius = radius;
         systemState.name = name;
         if(owner != null) {
             systemState.ownerColor = owner.getColor();
@@ -292,6 +293,17 @@ public class WorldSystem extends WorldEntity {
             systemState.ownerColor = Color.black;
             systemState.ownerId = -1l;
         }
+        
+        if(depth != 0) {
+            for(Nexus nexus: nexuses) {
+                systemState.nexuses.add(nexus.toState());
+            }
+            
+            for(Ship ship : ships) {
+                systemState.ships.add(ship.toState(depth-1));
+            }
+        }
+        
 
         return systemState;
     }
@@ -319,6 +331,10 @@ public class WorldSystem extends WorldEntity {
 
     public boolean isState(WorldSystemState systemState) {
             return getId() == systemState.id;
+    }
+
+    public void setRadius(double radius) {
+        this.radius = radius;
     }
     
 //    public void removeShip(Ship ship) {

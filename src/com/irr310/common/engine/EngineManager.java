@@ -14,7 +14,9 @@ public class EngineManager<V extends EngineEventVisitor , T extends EngineEvent<
     List<V> visitorList = new CopyOnWriteArrayList<V>();
 
     public void add(Engine<T> engine) {
-        engineList.add(engine);
+        if(!engineList.contains(engine)) {
+            engineList.add(engine);
+        }
     }
 
     public void sendToAll(T e) {
