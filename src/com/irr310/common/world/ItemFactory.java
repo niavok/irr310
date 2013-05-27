@@ -1,5 +1,7 @@
 package com.irr310.common.world;
 
+import java.util.Map;
+
 import com.irr310.common.tools.Log;
 import com.irr310.common.world.item.ComponentItem;
 import com.irr310.common.world.item.Item;
@@ -17,7 +19,7 @@ public class ItemFactory {
         this.world = world;
     }
 
-    public void createItem(Product product, Faction faction, Item[] subItems) {
+    public void createItem(Product product, Faction faction, Map<String,Item> subItems) {
         if(product instanceof ComponentProduct) {
             ComponentProduct componentProduct = (ComponentProduct) product;
             ComponentItem componentItem = new ComponentItem(componentProduct, GameServer.pickNewId(), faction, subItems);
@@ -31,7 +33,7 @@ public class ItemFactory {
         }
      
         //Remove sub items from stock
-        for(Item item:subItems) {
+        for(Item item:subItems.values()) {
             faction.getStocks().removeItem(item);
         }
         

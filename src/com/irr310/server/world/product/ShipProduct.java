@@ -23,7 +23,7 @@ public class ShipProduct extends Product {
     private ShipComponentProduct kernel;
     private Map<String, ShipComponentProduct> components = new HashMap<String, ShipProduct.ShipComponentProduct>();
     private List<ShipLinkProduct> links = new ArrayList<ShipLinkProduct>();
-    private ArrayList<Product> subProducts;
+    private ArrayList<SubProduct> subProducts;
 
     public void setKernelKey(String kernelKey) {
         this.kernelKey = kernelKey;
@@ -238,17 +238,17 @@ public class ShipProduct extends Product {
     }
 
     @Override
-    public List<Product> getSubProducts() {
+    public List<SubProduct> getSubProducts() {
         
         if(subProducts == null) {
-            subProducts = new ArrayList<Product>();
+            subProducts = new ArrayList<SubProduct>();
             for(ShipComponentProduct shipComponentProduct: components.values()) {
-                subProducts.add(shipComponentProduct.getComponent());
+                subProducts.add(new SubProduct(shipComponentProduct.getKey(), shipComponentProduct.getComponent()));
             }
-            Collections.sort(subProducts, new Comparator<Product>() {
+            Collections.sort(subProducts, new Comparator<SubProduct>() {
                 @Override
-                public int compare(Product o1, Product o2) {
-                    return o1.getId().compareTo(o2.getId());
+                public int compare(SubProduct o1, SubProduct o2) {
+                    return o1.getProduct().getId().compareTo(o2.getProduct().getId());
                 }});
         }
         

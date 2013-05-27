@@ -1,5 +1,7 @@
 package com.irr310.common.world.item;
 
+import java.util.Map;
+
 import com.irr310.common.network.NetworkField;
 import com.irr310.common.tools.Log;
 import com.irr310.common.world.Faction;
@@ -31,10 +33,10 @@ public class Item extends WorldEntity {
     private boolean deployable = false;
     private ItemType type;
     private Product product;
-    private Item[] subItems;
+    private Map<String,Item> subItems;
 
     
-    public Item(Product product, World world, long id, Faction owner, Item[] subItems) {
+    public Item(Product product, World world, long id, Faction owner, Map<String,Item> subItems) {
         super(world, id);
         this.product = product;
         this.owner = owner;
@@ -112,7 +114,7 @@ public class Item extends WorldEntity {
         return owner;
     }
     
-    public Item[] getSubItems() {
+    public Map<String,Item> getSubItems() {
         return subItems;
     }
 }

@@ -25,13 +25,13 @@ public class NexusView extends View {
         
         
         g.setColor(Color.green);
-        g.drawRing(0,0,radius,0,Color.mauve, portalOuterColor, 16);
+        g.drawRing(radius,radius,radius,0,Color.mauve, portalOuterColor, 16);
     }
 
     @Override
     public void onLayout(float l, float t, float r, float b) {
         
-        radius = (float) (nexus.radius * parentView.getScale()) + 10;
+        radius = (float) (nexus.radius * parentView.getScale()) + 20;
         
         getLayoutParams().mLeft = (float) (nexus.location.x * parentView.getScale() + parentView.getOffset() - radius);
         getLayoutParams().mTop = (float) (nexus.location.y * parentView.getScale() + parentView.getOffset()- radius);

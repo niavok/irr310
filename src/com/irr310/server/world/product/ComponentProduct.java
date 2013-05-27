@@ -152,8 +152,8 @@ public class ComponentProduct extends Product {
     }
     
     @Override
-    public List<Product> getSubProducts() {
-        return new ArrayList<Product>();
+    public List<SubProduct> getSubProducts() {
+        return new ArrayList<SubProduct>();
     }
     
     

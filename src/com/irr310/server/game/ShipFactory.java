@@ -38,10 +38,10 @@ public class ShipFactory {
         ShipProduct shipProduct = (ShipProduct) shipItem.getProduct();
         
         // Create and place components
-        int itemIndex = 0;
         for(ShipComponentProduct shipComponentProduct: shipProduct.getComponents().values()) {
+            
             Vec3 componentLocation = shipComponentProduct.getLocation();
-            ComponentItem componentItem = (ComponentItem) shipItem.getSubItems()[itemIndex++];
+            ComponentItem componentItem = (ComponentItem) shipItem.getSubItems().get(shipComponentProduct.getKey());
             
             Component component = componentFactory.createComponent(componentItem);
             component.setLocationInShip(componentLocation);

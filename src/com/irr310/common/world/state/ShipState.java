@@ -26,4 +26,6 @@ public class ShipState {
     @NetworkOptionalField
     public FactionState owner;
 
+
+
 }

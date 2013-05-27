@@ -45,7 +45,7 @@ public class ComponentFactory {
             component.addPart(part);
             
             part.setMass(partProduct.getMass());
-            part.setShape(part.getShape());
+            part.setShape(partProduct.getShape().getSize());
             
             for(ComponentSlotProduct slotProduct: partProduct.getSlots()) {
                 component.addSlot(GameServer.pickNewId(), part, slotProduct.getLocation());    

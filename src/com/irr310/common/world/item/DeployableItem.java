@@ -1,5 +1,7 @@
 package com.irr310.common.world.item;
 
+import java.util.Map;
+
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Faction;
 import com.irr310.common.world.World;
@@ -11,7 +13,7 @@ public abstract class DeployableItem extends Item {
     private double deployedRadius;
     protected WorldSystem currentSystem;
 
-    public DeployableItem(Product product, World world, long id, Faction owner, Item[] subItems) {
+    public DeployableItem(Product product, World world, long id, Faction owner, Map<String,Item> subItems) {
         super(product, world, id, owner, subItems);
         setDeployable(true);
     }

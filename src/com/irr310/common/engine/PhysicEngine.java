@@ -13,6 +13,7 @@ import javax.vecmath.Vector3d;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.newdawn.slick.util.Log;
 
 import com.bulletphysics.collision.broadphase.BroadphaseInterface;
 import com.bulletphysics.collision.broadphase.BroadphasePair;
@@ -556,6 +557,7 @@ public class PhysicEngine extends FramerateEngine<SystemEvent> {
 
                 part.getTransform().translate(component.getLocationInShip());
                 part.getTransform().preMultiply(transform);
+                Log.error("Deploy part of component '"+component.getName()+"' at "+part.getTransform().getTranslation());
             }
 
             UserData userData = new UserData();

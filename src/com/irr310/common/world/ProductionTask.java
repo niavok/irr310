@@ -1,5 +1,8 @@
 package com.irr310.common.world;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.irr310.common.tools.Log;
 import com.irr310.common.world.item.Item;
 import com.irr310.common.world.item.Item.State;
@@ -10,6 +13,7 @@ import com.irr310.server.ProductionManager.ProductionStatus.ProductionEndCause;
 import com.irr310.server.world.product.ComponentProduct;
 import com.irr310.server.world.product.Product;
 import com.irr310.server.world.product.ShipProduct;
+import com.irr310.server.world.product.SubProduct;
 
 public class ProductionTask extends WorldEntity {
 
@@ -197,14 +201,15 @@ public class ProductionTask extends WorldEntity {
         private WorkState workState;
         private long pendingOres;
         private long accumulatedProductionCapacity;
-        private Item[] reservedItems;
+        private Map<String, Item> reservedItems;
         private BuildWorkUnit subItemWorkUnit;
 
         public BuildWorkUnit(Product product) {
             this.product = product;
             pendingOres = 0;
             workState = WorkState.WAITING_FOR_ITEMS;
-            reservedItems = new Item[product.getSubProducts().size()];
+            //product.getSubProducts().size()
+            reservedItems = new HashMap<String, Item>();
         }
 
         @Override
@@ -218,18 +223,18 @@ public class ProductionTask extends WorldEntity {
             switch (workState) {
                 case WAITING_FOR_ITEMS:
                     boolean allItemsReady = true;
-                    for (int i = 0; i < reservedItems.length; i++) {
-                        if (reservedItems[i] == null) {
+                    
+                    for(SubProduct subProduct: product.getSubProducts()) {
+                        if(!reservedItems.containsKey(subProduct.getKey())) {
                             allItemsReady = false;
-                            Product subProduct = product.getSubProducts().get(i);
-                            Item item = factionProduction.getFaction().getStocks().getAvailableItem(subProduct);
+                            Item item = factionProduction.getFaction().getStocks().getAvailableItem(subProduct.getProduct());
                             if (item == null) {
-                                subItemWorkUnit = new BuildWorkUnit(subProduct);
+                                subItemWorkUnit = new BuildWorkUnit(subProduct.getProduct());
                                 workState = WorkState.BUILDING_ITEM;
                                 break;
                             } else {
                                 item.setState(State.RESERVED);
-                                reservedItems[i] = item;
+                                reservedItems.put(subProduct.getKey(), item);
                             }
                         }
                     }
@@ -282,15 +287,11 @@ public class ProductionTask extends WorldEntity {
         @Override
         public void pause() {
             
-            
-            
-            for (int i = 0; i < reservedItems.length; i++) {
-                if (reservedItems[i] != null) {
-                    reservedItems[i].setState(State.STOCKED);
-                    reservedItems[i] = null;
-                }
+            for(Item item : reservedItems.values()) {
+                item.setState(State.STOCKED);
             }
-            
+            reservedItems.clear();
+                        
             if(workState == WorkState.BUILDING_ITEM) {
                 subItemWorkUnit.pause();
             } else {
