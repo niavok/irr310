@@ -9,18 +9,34 @@ import com.irr310.common.world.state.PartState;
 import com.irr310.common.world.state.ShipState;
 import com.irr310.i3d.Color;
 import com.irr310.i3d.Graphics;
+import com.irr310.i3d.I3dRessourceManager;
 import com.irr310.i3d.view.View;
+
+import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 
 public class ShipView extends View {
 
-    private static final double TARGET_SIZE = 400;
+    private static final double TARGET_SIZE = 20;
     private SystemDetailCircleView parentView;
     private ShipState ship;
-//    private Vec3 baseLocation;
-
+    private boolean selected = false;
+    private Color selectionColor;
+    
+    
     public ShipView(ShipState ship, SystemDetailCircleView parentView) {
         this.ship = ship;
         this.parentView = parentView;
+        selectionColor = I3dRessourceManager.getInstance().loadColor("selection@color");
+        
+        
+        setOnClickListener(new OnClickListener() {
+            
+
+            @Override
+            public void onClick(V3DMouseEvent mouseEvent, View view) {
+                selected = true;
+            }
+        });
         
     }
 
@@ -74,6 +90,8 @@ public class ShipView extends View {
         //
         getLayoutParams().mLeft = (float) ((baseLocation.x) * parentView.getScale() + parentView.getOffset() - (scale*width)/2);
         getLayoutParams().mTop = (float) ((baseLocation.y) * parentView.getScale() + parentView.getOffset() - (scale*height)/2);
+        getLayoutParams().mRight = (float) (getLayoutParams().mLeft + scale*width);  
+        getLayoutParams().mBottom = (float) (getLayoutParams().mTop  + scale*height);
         
 //        g.setColor(Color.pink);
 //        g.drawFilledRectangle(0,0, (float)(width * scale),(float)(height * scale));
@@ -90,6 +108,12 @@ public class ShipView extends View {
 //        g.setColor(Color.blue);
 //        g.drawFilledRectangle((float)((maxX - baseLocation.x) * scale-5.+ TARGET_SIZE/2),(float)((maxY - baseLocation.y) * scale-5.+ TARGET_SIZE/2),10, 10);
 //        
+        
+        if(selected) {
+            g.drawRing((float) (scale*width)/2, (float) (scale*height)/2,(float) TARGET_SIZE/2,0,selectionColor, selectionColor, 16);
+        }
+        
+        
         g.setColor(ship.owner.color);
         
         GL11.glBegin(GL11.GL_QUADS);
