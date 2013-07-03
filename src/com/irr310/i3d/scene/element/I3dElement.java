@@ -14,16 +14,18 @@
 //
 // You should have received a copy of the GNU Lesser General Public License
 // along with V3dScene.  If not, see <http://www.gnu.org/licenses/>.
-package fr.def.iss.vd2.lib_v3d.element;
+package com.irr310.i3d.scene.element;
 
 import java.nio.FloatBuffer;
 
 import org.lwjgl.opengl.GL11;
 
+import com.irr310.i3d.I3dContext;
+import com.irr310.i3d.scene.I3dCamera;
+
 import fr.def.iss.vd2.lib_v3d.V3DContext;
-import fr.def.iss.vd2.lib_v3d.V3DContextElement;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
-import fr.def.iss.vd2.lib_v3d.camera.V3DCamera;
+import fr.def.iss.vd2.lib_v3d.element.V3DBoundingBox;
 import fr.def.iss.vd2.lib_v3d.element.animation.V3DAnimation;
 import fr.def.iss.vd2.lib_v3d.element.animation.V3DNullAnimation;
 
@@ -250,16 +252,13 @@ import fr.def.iss.vd2.lib_v3d.element.animation.V3DNullAnimation;
  * 
  * @author fberto
  */
-abstract public class V3DElement extends V3DContextElement {
+abstract public class I3dElement {
 
 	/**
 	 * Crée un nouvel élément dans le context fournis en paramètre
-	 * 
-	 * @param context
 	 */
-	public V3DElement(V3DContext context) {
-		super(context);
-		id = context.getIdAllocator().getNewId(this);
+	public I3dElement() {
+		id = I3dContext.getInstance().getSceneManager().getIdAllocator().getNewId(this);
 	}
 
 	public V3DVect3 getPosition() {
@@ -414,7 +413,7 @@ abstract public class V3DElement extends V3DContextElement {
 	 * @param camera
 	 *            point de vue
 	 */
-	final public void display(V3DCamera camera) {
+	final public void display(I3dCamera camera) {
 		if (!visible) {
 			return;
 		}
@@ -496,7 +495,7 @@ abstract public class V3DElement extends V3DContextElement {
 	 * @param gl
 	 * @param camera
 	 */
-	abstract protected void doDisplay(V3DCamera camera);
+	abstract protected void doDisplay(I3dCamera camera);
 
 	/**
 	 * Internal public method Méthode appelé par select. Contient le code
@@ -507,7 +506,7 @@ abstract public class V3DElement extends V3DContextElement {
 	 * @param camera
 	 * @param parentId
 	 */
-	protected void doSelect(V3DCamera camera, long parentId) {
+	protected void doSelect(I3dCamera camera, long parentId) {
 		if (parentId != 0) {
 			getBoundingBox().displayFaces();
 		}
@@ -536,7 +535,7 @@ abstract public class V3DElement extends V3DContextElement {
 	 * @param camera
 	 *            point de vue
 	 */
-	final public void select(V3DCamera camera, long parentId) {
+	final public void select(I3dCamera camera, long parentId) {
 
 		if (!inited) {
 			init();

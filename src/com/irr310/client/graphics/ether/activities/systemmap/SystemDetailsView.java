@@ -16,10 +16,10 @@ public class SystemDetailsView extends RelativeLayout {
     private SystemDetailCircleView systemCircleView;
     private TextView textView;
 
-    public SystemDetailsView(final WorldSystemState system) {
+    public SystemDetailsView(SystemMapActivity activity, final WorldSystemState system) {
         this.system = system;
         
-        systemCircleView = new SystemDetailCircleView(system);
+        systemCircleView = new SystemDetailCircleView(activity, system);
         
         textView = new TextView();
         textView.setText(system.name);

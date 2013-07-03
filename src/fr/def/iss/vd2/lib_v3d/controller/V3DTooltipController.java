@@ -20,12 +20,14 @@ package fr.def.iss.vd2.lib_v3d.controller;
 import java.awt.Point;
 import java.util.Map;
 
+import com.irr310.i3d.I3dContext;
+import com.irr310.i3d.scene.I3dMouseOverlapListener;
+import com.irr310.i3d.scene.element.I3dElement;
+
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.V3DInputEvent;
-import fr.def.iss.vd2.lib_v3d.V3DMouseOverlapListener;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraController;
-import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 import fr.def.iss.vd2.lib_v3d.gui.V3DLabel;
 
 public class V3DTooltipController implements V3DCameraController {
@@ -35,19 +37,17 @@ public class V3DTooltipController implements V3DCameraController {
     V3DCameraBinding currentBinding;
     private int mouseY;
     private int mouseX;
-    Map<V3DElement, String> labelMap;
-    private final V3DContext context;
-    private V3DMouseOverlapListener mouseOverlapListener;
+    Map<I3dElement, String> labelMap;
+    private I3dMouseOverlapListener mouseOverlapListener;
     private boolean killed = false;
 
-    public V3DTooltipController(V3DContext context, V3DCameraBinding binding, Map<V3DElement, String> labelMap) {
+    public V3DTooltipController(V3DCameraBinding binding, Map<I3dElement, String> labelMap) {
         this.currentBinding = binding;
-        this.context = context;
         this.labelMap = labelMap;
 
         tooltip = new V3DLabel("null");
 
-        mouseOverlapListener = new V3DMouseOverlapListener() {
+        mouseOverlapListener = new I3dMouseOverlapListener() {
 
             @Override
             public void selectionChange() {
@@ -59,7 +59,7 @@ public class V3DTooltipController implements V3DCameraController {
         mouseX = mouse.x;
         mouseY = mouse.y;
         //TODO: memory leak because the listener is never removed
-        context.addMouseOverlapListener(mouseOverlapListener);
+        I3dContext.getInstance().getSceneManager().addMouseOverlapListener(mouseOverlapListener);
     }
 
     @Override
@@ -107,9 +107,9 @@ public class V3DTooltipController implements V3DCameraController {
 
         }
 
-        if (context.getMouseOverlapTop() != null && context.getMouseOverCameraBinding() == currentBinding) {
+        if (I3dContext.getInstance().getSceneManager().getMouseOverlapTop() != null && I3dContext.getInstance().getSceneManager().getMouseOverCameraBinding() == currentBinding) {
             
-            V3DElement topElement = context.getMouseOverlapTop();
+            I3dElement topElement = I3dContext.getInstance().getSceneManager().getMouseOverlapTop();
 
             String text = labelMap.get(topElement);
             if (text == null) {
@@ -149,7 +149,7 @@ public class V3DTooltipController implements V3DCameraController {
     @Override
     public void notifyRemove() {
         kill();
-        context.removeMouseOverlapListener(mouseOverlapListener);
+        I3dContext.getInstance().getSceneManager().removeMouseOverlapListener(mouseOverlapListener);
     }
 
     private void kill() {

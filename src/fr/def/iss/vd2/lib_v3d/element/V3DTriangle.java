@@ -19,15 +19,17 @@ package fr.def.iss.vd2.lib_v3d.element;
 
 import org.lwjgl.opengl.GL11;
 
+import com.irr310.i3d.scene.I3dCamera;
+import com.irr310.i3d.scene.element.I3dElement;
+
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
-import fr.def.iss.vd2.lib_v3d.camera.V3DCamera;
 
 /**
  *
  * @author fberto
  */
-public class V3DTriangle extends V3DElement implements LineDrawable {
+public class V3DTriangle extends I3dElement implements LineDrawable {
 
     private V3DVect3 size = new V3DVect3(1, 1, 0);
     private V3DBoundingBox boundingBox = new V3DBoundingBox();
@@ -44,8 +46,7 @@ public class V3DTriangle extends V3DElement implements LineDrawable {
         PLAIN,
     }
 
-    public V3DTriangle(V3DContext context) {
-        super(context);
+    public V3DTriangle() {
         boundingBox.setSize(1, 1, 0);
         boundingBox.setFlat(true);
     }
@@ -64,7 +65,7 @@ public class V3DTriangle extends V3DElement implements LineDrawable {
     }
 
     @Override
-    protected void doDisplay( V3DCamera camera) {
+    protected void doDisplay( I3dCamera camera) {
         float x0 = -size.x/2;
         float y0 = -size.y/2;
         float x1 = size.x/2;

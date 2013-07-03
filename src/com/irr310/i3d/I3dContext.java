@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.irr310.i3d.fonts.Font;
 import com.irr310.i3d.fonts.FontFactory;
+import com.irr310.i3d.scene.I3dSceneManager;
 import com.irr310.i3d.view.drawable.BitmapFactory;
 import com.irr310.server.Time;
 
@@ -19,16 +20,15 @@ public class I3dContext {
     private Graphics graphics;
     private List<Surface> surfaceList = new ArrayList<Surface>();
     private Font defaultFont;
-    private TextureManager textureManager;
     private boolean preloaded;
     private ContextListener listener;
-
+    private I3dSceneManager sceneManager = new I3dSceneManager();
+    
     public static I3dContext getInstance() {
         return instance;
     }
 
     private I3dContext() {
-        textureManager = new TextureManager();
         preloaded = false;
     }
 
@@ -89,10 +89,6 @@ public class I3dContext {
         return defaultFont;
     }
 
-    public TextureManager getTextureManager() {
-        return textureManager;
-    }
-
     public boolean isPreloaded() {
         return preloaded;
     }
@@ -135,7 +131,7 @@ public class I3dContext {
 
     public void clearCaches() {
         I3dRessourceManager.getInstance().clearCache();
-        textureManager.clearCache();
+        TextureManager.clearCache();
         FontFactory.clearCache();
         BitmapFactory.clearCache();
     }
@@ -145,4 +141,10 @@ public class I3dContext {
             surface.reloadUi();
         }
     }
+ 
+    public I3dSceneManager getSceneManager() {
+        return sceneManager;
+    }
+    
+    
 }

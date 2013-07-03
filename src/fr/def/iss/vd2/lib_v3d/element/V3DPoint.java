@@ -19,21 +19,22 @@ package fr.def.iss.vd2.lib_v3d.element;
 
 import org.lwjgl.opengl.GL11;
 
+import com.irr310.i3d.scene.I3dCamera;
+import com.irr310.i3d.scene.element.I3dElement;
+
 import fr.def.iss.vd2.lib_v3d.V3DContext;
-import fr.def.iss.vd2.lib_v3d.camera.V3DCamera;
 
 /**
  *
  * @author fberto
  */
-public class V3DPoint extends V3DElement {
+public class V3DPoint extends I3dElement {
 
     
     private V3DBoundingBox boundingBox = new V3DBoundingBox();
     private float size = 1.0f;
     
-    public V3DPoint(V3DContext context) {
-        super(context);
+    public V3DPoint() {
         boundingBox.setSize(0, 0, 0);
     }
 
@@ -45,7 +46,7 @@ public class V3DPoint extends V3DElement {
     }
 
     @Override
-    protected void doDisplay( V3DCamera camera) {
+    protected void doDisplay( I3dCamera camera) {
 
         GL11.glPointSize(size);
 

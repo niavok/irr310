@@ -21,15 +21,17 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
+import com.irr310.i3d.scene.I3dCamera;
+import com.irr310.i3d.scene.element.I3dElement;
+
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
-import fr.def.iss.vd2.lib_v3d.camera.V3DCamera;
 
 /**
  *
  * @author pgesta
  */
-public class V3DTube extends V3DElement {
+public class V3DTube extends I3dElement {
 
     private V3DBoundingBox boundingBox = new V3DBoundingBox();
     private List<V3DVect3> pointList = new ArrayList<V3DVect3>();
@@ -45,16 +47,15 @@ public class V3DTube extends V3DElement {
         PLAIN,
     }
 
-    public V3DTube(V3DContext context) {
-        this(context, 1, 1, 16);
+    public V3DTube() {
+        this(1, 1, 16);
     }
 
-    public V3DTube(V3DContext context, float radius, float height) {
-        this(context, radius, height, 16);
+    public V3DTube(float radius, float height) {
+        this(radius, height, 16);
     }
 
-    public V3DTube(V3DContext context, float radius, float height, int quality) {
-        super(context);
+    public V3DTube(float radius, float height, int quality) {
         setHeight(height);
         setRadius(radius);
         setQuality(quality); // Force la génération des sommets du périmètre
@@ -65,7 +66,7 @@ public class V3DTube extends V3DElement {
     }
 
     @Override
-    protected void doDisplay( V3DCamera camera) {
+    protected void doDisplay( I3dCamera camera) {
 
         if (renderMode == RenderMode.PLAIN) {
 

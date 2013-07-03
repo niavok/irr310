@@ -18,15 +18,17 @@ package fr.def.iss.vd2.lib_v3d.element;
 
 import org.lwjgl.opengl.GL11;
 
+import com.irr310.i3d.scene.I3dCamera;
+import com.irr310.i3d.scene.element.I3dElement;
+
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
-import fr.def.iss.vd2.lib_v3d.camera.V3DCamera;
 
 /**
  *
  * @author fberto
  */
-public class V3DLine extends V3DElement implements LineDrawable {
+public class V3DLine extends I3dElement implements LineDrawable {
 
     private V3DVect3 locationA = new V3DVect3(0, 0, 0);
     private V3DVect3 locationB = new V3DVect3(1, 0, 0);
@@ -35,8 +37,7 @@ public class V3DLine extends V3DElement implements LineDrawable {
     private int stippleFactor = 1;
     private short stipplePattern = (short) 0xFFFF;
 
-    public V3DLine(V3DContext context) {
-        super(context);
+    public V3DLine() {
         boundingBox.setSize(0, 0, 0);
     }
 
@@ -59,7 +60,7 @@ public class V3DLine extends V3DElement implements LineDrawable {
     }
 
     @Override
-    protected void doDisplay( V3DCamera camera) {
+    protected void doDisplay( I3dCamera camera) {
 
         GL11.glLineWidth(thickness);
 

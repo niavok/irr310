@@ -8,12 +8,12 @@ import com.irr310.client.graphics.WorldRenderer;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.world.capacity.BalisticWeaponCapacity;
 import com.irr310.common.world.system.Component;
+import com.irr310.i3d.scene.element.I3dElement;
+import com.irr310.i3d.scene.element.I3dGroupElement;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
-import fr.def.iss.vd2.lib_v3d.element.V3DElement;
-import fr.def.iss.vd2.lib_v3d.element.V3DGroupElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DLine;
 import fr.def.iss.vd2.lib_v3d.element.V3DPoint;
 import fr.def.iss.vd2.lib_v3d.element.V3DShaderElement;
@@ -21,13 +21,13 @@ import fr.def.iss.vd2.lib_v3d.element.V3DrawElement;
 
 public class WeaponSkin extends Skin {
 
-    private V3DGroupElement elements;
+    private I3dGroupElement elements;
     private TransformMatrix transform;
 
     public WeaponSkin(WorldRenderer renderer, final Component object) {
         super(renderer);
         UiEngine engine = renderer.getEngine();
-        elements = new V3DGroupElement(engine.getV3DContext());
+        elements = new I3dGroupElement();
 
         File v3drawFileStructure = new File("graphics/output/gun.v3draw");
         final V3DrawElement elementStructure = V3DrawElement.LoadFromFile(v3drawFileStructure, engine.getV3DContext());
@@ -46,13 +46,13 @@ public class WeaponSkin extends Skin {
             range = gunCapacity.range;
         }
         
-        final V3DLine line = new V3DLine(engine.getV3DContext());
+        final V3DLine line = new V3DLine();
         line.setThickness(1);
         line.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, (float) range, 0));
         elements.add(new V3DColorElement(line, new V3DColor(255, 135,  158 , 0.7f)));
 
         
-        final V3DPoint point100 = new V3DPoint(engine.getV3DContext());
+        final V3DPoint point100 = new V3DPoint();
         point100.setSize(5);
         point100.setPosition(new V3DVect3(0, (float) range, 0));
         elements.add(new V3DColorElement(point100, new V3DColor(255, 35, 58, 0.8f)));
@@ -65,7 +65,7 @@ public class WeaponSkin extends Skin {
     }
 
     @Override
-    public V3DElement getV3DElement() {
+    public I3dElement getV3DElement() {
         return elements;
     }
     

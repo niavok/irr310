@@ -4,24 +4,24 @@ import com.irr310.client.graphics.GenericGraphicalElement;
 import com.irr310.client.graphics.UiEngine;
 import com.irr310.client.graphics.WorldRenderer;
 import com.irr310.common.tools.Vec3;
+import com.irr310.i3d.scene.element.I3dElement;
+import com.irr310.i3d.scene.element.I3dGroupElement;
 import com.irr310.server.Duration;
 import com.irr310.server.Time;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.element.V3DBox;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
-import fr.def.iss.vd2.lib_v3d.element.V3DElement;
-import fr.def.iss.vd2.lib_v3d.element.V3DGroupElement;
 
 public class AsteroidDust extends GenericGraphicalElement{
 
-    private V3DGroupElement elements;
+    private I3dGroupElement elements;
     private Duration lifeDuration = new Duration(20f);
     private Time creationTime;
     private float location = 0;
 
     private final UiEngine engine;
-    private V3DElement element;
+    private I3dElement element;
     private final V3DColor color;
     private final Vec3 baseSize;
     private V3DColorElement colorElement;
@@ -35,9 +35,9 @@ public class AsteroidDust extends GenericGraphicalElement{
         this.engine = renderer.getEngine();
 
 
-        elements = new V3DGroupElement(engine.getV3DContext());
+        elements = new I3dGroupElement();
 
-        element = new V3DBox(engine.getV3DContext());
+        element = new V3DBox();
         element.setPosition(position.toV3DVect3());
         element.setScale(baseSize.toV3DVect3());
 
@@ -69,7 +69,7 @@ public class AsteroidDust extends GenericGraphicalElement{
     }
 
     @Override
-    public V3DElement getV3DElement() {
+    public I3dElement getV3DElement() {
         return elements;
     }
 

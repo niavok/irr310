@@ -5,13 +5,15 @@ import java.util.Date;
 import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
 
+import com.irr310.i3d.I3dContext;
+import com.irr310.i3d.scene.I3dCamera;
+import com.irr310.i3d.scene.controller.I3dFollow3DCameraController;
+import com.irr310.i3d.scene.element.I3dElement;
+
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.V3DShader;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
-import fr.def.iss.vd2.lib_v3d.camera.V3DCamera;
-import fr.def.iss.vd2.lib_v3d.controller.V3DFollow3DCameraController;
 import fr.def.iss.vd2.lib_v3d.element.V3DBoundingBox;
-import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 
 /**
  * The vertex and fragment shaders are setup when the box object is constructed.
@@ -20,7 +22,7 @@ import fr.def.iss.vd2.lib_v3d.element.V3DElement;
  * 
  * @author Stephen Jones
  */
-public class Sky extends V3DElement {
+public class Sky extends I3dElement {
 
     /*
      * if the shaders are setup ok we can use shaders, otherwise we just use
@@ -29,17 +31,16 @@ public class Sky extends V3DElement {
    
     
     private V3DShader shader;
-    private final V3DFollow3DCameraController cameraController;
+    private final I3dFollow3DCameraController cameraController;
 
-    public Sky(V3DContext context, final V3DFollow3DCameraController cameraController) {
-        super(context);
+    public Sky(final I3dFollow3DCameraController cameraController) {
         this.cameraController = cameraController;
         
         
         
         
         
-        shader = context.createUniqueShader(new V3DShader("sky") {
+        shader = I3dContext.getInstance().getSceneManager().createUniqueShader(new V3DShader("sky") {
             private int inputRotation;
             private int resolution;
             private int time;
@@ -75,7 +76,7 @@ public class Sky extends V3DElement {
     }
 
     @Override
-    protected void doDisplay(V3DCamera camera) {
+    protected void doDisplay(I3dCamera camera) {
         float x0 = 0;
         float x1 = camera.getCurrentWidth();
         float y0 = 0;

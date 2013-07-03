@@ -22,8 +22,9 @@ import java.nio.IntBuffer;
 
 import org.lwjgl.opengl.GL11;
 
+import com.irr310.i3d.scene.I3dCamera;
+
 import fr.def.iss.vd2.lib_v3d.V3DContext;
-import fr.def.iss.vd2.lib_v3d.camera.V3DCamera;
 import fr.def.iss.vd2.lib_v3d.element.V3DBoundingBox;
 
 /**
@@ -75,8 +76,7 @@ public class PolyBasemap extends Basemap{
 
     }
 
-    public PolyBasemap(V3DContext context) {
-        super(context);
+    public PolyBasemap() {
     }
     
 
@@ -89,7 +89,7 @@ public class PolyBasemap extends Basemap{
     }
 
     @Override
-    protected void doDisplay( V3DCamera cameraDistance) {
+    protected void doDisplay( I3dCamera cameraDistance) {
         GL11.glLineWidth(1.0f);
         //GL11.GLCallList(listId);
         draw();

@@ -17,7 +17,7 @@
 
 package fr.def.iss.vd2.lib_v3d.controller.listener;
 
-import fr.def.iss.vd2.lib_v3d.element.V3DElement;
+import com.irr310.i3d.scene.element.I3dElement;
 
 /**
  *
@@ -25,6 +25,6 @@ import fr.def.iss.vd2.lib_v3d.element.V3DElement;
  */
 public interface V3DSelectionListener {
 
-    public boolean select(V3DElement selection);
+    public boolean select(I3dElement selection);
 
 }

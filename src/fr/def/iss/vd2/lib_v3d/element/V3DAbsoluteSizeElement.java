@@ -19,27 +19,27 @@ package fr.def.iss.vd2.lib_v3d.element;
 
 import org.lwjgl.opengl.GL11;
 
+import com.irr310.i3d.scene.I3dCamera;
+import com.irr310.i3d.scene.element.I3dElement;
+
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
-import fr.def.iss.vd2.lib_v3d.camera.V3DCamera;
 
 /**
  *
  * @author fberto
  */
-public class V3DAbsoluteSizeElement extends V3DElement {
+public class V3DAbsoluteSizeElement extends I3dElement {
 
-    private V3DElement childElement = null;
+    private I3dElement childElement = null;
     private V3DBoundingBox boundingBox = new V3DBoundingBox();
     private V3DVect3 absoluteSize = new V3DVect3(0, 0, 0);
     private boolean maxOnly = false;
     
-    public V3DAbsoluteSizeElement(V3DContext context) {
-        super(context);
+    public V3DAbsoluteSizeElement() {
     }
 
-    public V3DAbsoluteSizeElement(V3DElement element, V3DVect3 size) {
-        super(element.getContext());
+    public V3DAbsoluteSizeElement(I3dElement element, V3DVect3 size) {
         childElement = element;
         boundingBox.setSize(new V3DVect3(0, 0, 0));
 
@@ -48,13 +48,13 @@ public class V3DAbsoluteSizeElement extends V3DElement {
 
 
 
-    public void setElement(V3DElement element) {
+    public void setElement(I3dElement element) {
         childElement = element;
     }
 
 
     @Override
-    protected void doDisplay( V3DCamera camera) {
+    protected void doDisplay( I3dCamera camera) {
         if(childElement == null) {
             return;
         }
@@ -100,7 +100,7 @@ public class V3DAbsoluteSizeElement extends V3DElement {
     }
 
     @Override
-    protected void doSelect( V3DCamera camera, long parentId) {
+    protected void doSelect( I3dCamera camera, long parentId) {
         if(childElement == null) {
             return;
         }

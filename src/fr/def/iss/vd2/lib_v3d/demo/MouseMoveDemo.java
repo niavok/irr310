@@ -23,10 +23,12 @@ import java.util.Map;
 
 import org.lwjgl.LWJGLException;
 
+import com.irr310.i3d.scene.I3dScene;
+import com.irr310.i3d.scene.element.I3dElement;
+
 import fr.def.iss.vd2.lib_v3d.V3DCanvas;
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DContext;
-import fr.def.iss.vd2.lib_v3d.V3DScene;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
 import fr.def.iss.vd2.lib_v3d.camera.V3DSimple3DCamera;
@@ -36,7 +38,6 @@ import fr.def.iss.vd2.lib_v3d.controller.V3DSimple3DCameraController;
 import fr.def.iss.vd2.lib_v3d.controller.listener.V3DSelectionListener;
 import fr.def.iss.vd2.lib_v3d.element.V3DBox;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
-import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DPolygonBox;
 
 /**
@@ -54,11 +55,11 @@ public class MouseMoveDemo {
     V3DCameraBinding fullscreenBinding;
     V3DSimple3DCamera activeCamera;
     V3DCanvas canvas;
-    private V3DElement element1;
-    private V3DElement element2;
-    private V3DElement element3;
-    private V3DElement element4;
-    private V3DElement element5;
+    private I3dElement element1;
+    private I3dElement element2;
+    private I3dElement element3;
+    private I3dElement element4;
+    private I3dElement element5;
     
     public MouseMoveDemo() {
 
@@ -79,7 +80,7 @@ public class MouseMoveDemo {
 
         canvas = new V3DCanvas(context, 1024, 768);
 
-        activeCamera = new V3DSimple3DCamera(context);
+        activeCamera = new V3DSimple3DCamera();
         fullscreenBinding = V3DCameraBinding.buildFullscreenCamera(activeCamera);
         
 
@@ -107,11 +108,11 @@ public class MouseMoveDemo {
 		}
     }
 
-    private V3DScene generateScene() {
-        V3DScene scene = new V3DScene(context);
+    private I3dScene generateScene() {
+        I3dScene scene = new I3dScene();
 
         {
-            V3DBox box = new V3DBox(context);
+            V3DBox box = new V3DBox();
             box.setSize(new V3DVect3(1, 2, 3));
             V3DColorElement colorElement = new V3DColorElement(box, V3DColor.azure);
 
@@ -122,7 +123,7 @@ public class MouseMoveDemo {
         }
 
         {
-            V3DBox box = new V3DBox(context);
+            V3DBox box = new V3DBox();
             box.setSize(new V3DVect3(1, 1, 2));
             V3DColorElement colorElement = new V3DColorElement(box, V3DColor.azure);
 
@@ -133,7 +134,7 @@ public class MouseMoveDemo {
         }
 
         {
-            V3DBox box = new V3DBox(context);
+            V3DBox box = new V3DBox();
             box.setSize(new V3DVect3(4, 4, 1));
             V3DColorElement colorElement = new V3DColorElement(box, V3DColor.azure);
 
@@ -144,7 +145,7 @@ public class MouseMoveDemo {
         }
 
         {
-            V3DBox box = new V3DBox(context);
+            V3DBox box = new V3DBox();
             box.setSize(new V3DVect3(2, 2, 6));
             V3DColorElement colorElement = new V3DColorElement(box, V3DColor.azure);
 
@@ -155,7 +156,7 @@ public class MouseMoveDemo {
         }
 
         {
-            V3DElement box = getBoxHexaGon();
+            I3dElement box = getBoxHexaGon();
             V3DColorElement colorElement = new V3DColorElement(box, V3DColor.azure);
 
             colorElement.setPosition(4, -4, 0);
@@ -172,7 +173,7 @@ public class MouseMoveDemo {
     private void generateControllers() {
 
         {
-            Map<V3DElement, V3DElement> moveMap = new HashMap<V3DElement, V3DElement>();
+            Map<I3dElement, I3dElement> moveMap = new HashMap<I3dElement, I3dElement>();
 
 
             moveMap.put(element1, element1);
@@ -191,14 +192,14 @@ public class MouseMoveDemo {
        
 
         {
-            V3DMouseOverController controller = new V3DMouseOverController(context);
+            V3DMouseOverController controller = new V3DMouseOverController();
 
             controller.setListener(new V3DSelectionListener() {
 
                 V3DColorElement over;
 
                 @Override
-                public boolean select(V3DElement selection) {
+                public boolean select(I3dElement selection) {
                     //System.err.println("over");
 
                     if (over != null) {
@@ -232,7 +233,7 @@ public class MouseMoveDemo {
 
     private V3DPolygonBox getBoxHexaGon() {
 
-        V3DPolygonBox polygon = new V3DPolygonBox(context);
+        V3DPolygonBox polygon = new V3DPolygonBox();
         polygon.setHeight(2);
         polygon.setPointList(getHexaGonPointList(), false);
         return polygon;

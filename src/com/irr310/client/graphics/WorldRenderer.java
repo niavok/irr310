@@ -40,17 +40,17 @@ import com.irr310.common.world.system.Component;
 import com.irr310.common.world.system.Monolith;
 import com.irr310.common.world.system.Ship;
 import com.irr310.common.world.system.SystemObject;
+import com.irr310.i3d.scene.I3dEye3DCamera;
+import com.irr310.i3d.scene.I3dScene;
+import com.irr310.i3d.scene.controller.I3dFollow3DCameraController;
+import com.irr310.i3d.scene.element.I3dElement;
+import com.irr310.i3d.scene.element.I3dGroupElement;
 import com.irr310.server.Time;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
-import fr.def.iss.vd2.lib_v3d.V3DScene;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
-import fr.def.iss.vd2.lib_v3d.camera.V3DEye3DCamera;
-import fr.def.iss.vd2.lib_v3d.controller.V3DFollow3DCameraController;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
-import fr.def.iss.vd2.lib_v3d.element.V3DElement;
-import fr.def.iss.vd2.lib_v3d.element.V3DGroupElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DLine;
 import fr.def.iss.vd2.lib_v3d.element.V3DrawElement;
 import fr.def.iss.vd2.lib_v3d.gui.V3DButton;
@@ -65,17 +65,17 @@ import fr.def.iss.vd2.lib_v3d.gui.V3DLabel;
 
 public class WorldRenderer implements GraphicRenderer {
     V3DCameraBinding fullscreenBinding;
-    private V3DScene scene;
+    private I3dScene scene;
     //private List<Pair<LinearEngineCapacity, V3DLine>> thrustLines;
     private List<GraphicalElement> animatedList = new CopyOnWriteArrayList<GraphicalElement>();
     private List<GraphicalElement> guiAnimatedList = new CopyOnWriteArrayList<GraphicalElement>();
     private List<GraphicalElement> elementList = new CopyOnWriteArrayList<GraphicalElement>();
     private List<GuiAnimatedElement> persistantGuiElementList = new CopyOnWriteArrayList<GuiAnimatedElement>();
 
-    private V3DFollow3DCameraController cameraController;
+    private I3dFollow3DCameraController cameraController;
     private Map<SystemObject, List<GraphicalElement>> worldObjectToV3DElementMap = new HashMap<SystemObject, List<GraphicalElement>>();
 
-    V3DEye3DCamera activeCamera;
+    I3dEye3DCamera activeCamera;
     private final UiEngine engine;
     private V3DGuiLayer interfaceLayer;
     private V3DGuiLayer hudLayer;
@@ -110,9 +110,9 @@ public class WorldRenderer implements GraphicRenderer {
 
     @Override
     public void init() {
-        activeCamera = new V3DEye3DCamera(engine.getV3DContext());
+        activeCamera = new I3dEye3DCamera();
 
-        cameraController = new V3DFollow3DCameraController(this, activeCamera);
+        cameraController = new I3dFollow3DCameraController(activeCamera);
         configureDefaultCamera();
         animatedList.add(cameraController);
 
@@ -122,7 +122,7 @@ public class WorldRenderer implements GraphicRenderer {
         // Add zoom and pane camera controlleur
         // cameraController.setLimitBound(false);
 
-        scene = new V3DScene(engine.getV3DContext());
+        scene = new I3dScene();
         activeCamera.setScene(scene);
 
         /*
@@ -138,11 +138,11 @@ public class WorldRenderer implements GraphicRenderer {
         createBubble();
 
         // Add reference
-        V3DElement ref0 = generateReference();
+        I3dElement ref0 = generateReference();
         ref0.setPosition(0, 0, 0);
-        V3DElement ref1 = generateReference();
+        I3dElement ref1 = generateReference();
         ref1.setPosition(1, 0, 0);
-        V3DElement ref2 = generateReference();
+        I3dElement ref2 = generateReference();
         ref2.setPosition(2, 0, 0);
 
         scene.add(ref0);
@@ -613,17 +613,17 @@ public class WorldRenderer implements GraphicRenderer {
 //        scene.add(new V3DColorElement(new V3DShaderElement(bubbleElement, shader), new V3DColor(255, 255, 255)));
     }
 
-    private V3DElement generateReference() {
-        V3DLine xAxis = new V3DLine(engine.getV3DContext());
+    private I3dElement generateReference() {
+        V3DLine xAxis = new V3DLine();
         xAxis.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(1, 0, 0));
 
-        V3DLine yAxis = new V3DLine(engine.getV3DContext());
+        V3DLine yAxis = new V3DLine();
         yAxis.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, 1, 0));
 
-        V3DLine zAxis = new V3DLine(engine.getV3DContext());
+        V3DLine zAxis = new V3DLine();
         zAxis.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, 0, 1));
 
-        V3DGroupElement group = new V3DGroupElement(engine.getV3DContext());
+        I3dGroupElement group = new I3dGroupElement();
 
         group.add(new V3DColorElement(xAxis, V3DColor.red));
         group.add(new V3DColorElement(yAxis, V3DColor.green));
@@ -887,7 +887,7 @@ public class WorldRenderer implements GraphicRenderer {
 //
 //        @Override
 //        public void visit(CollisionEvent event) {
-////            V3DPoint point = new V3DPoint(engine.getV3DContext());
+////            V3DPoint point = new V3DPoint();
 ////            point.setPosition(event.getCollisionDescriptor().getGlobalPosition().toV3DVect3());
 ////            point.setSize(5f);
 ////            scene.add(new V3DColorElement(point, new V3DColor((int) event.getCollisionDescriptor().getImpulse() * 10,

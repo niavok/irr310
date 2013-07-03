@@ -7,16 +7,16 @@ import com.irr310.client.graphics.WorldRenderer;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.common.world.system.Component;
+import com.irr310.i3d.scene.element.I3dElement;
+import com.irr310.i3d.scene.element.I3dGroupElement;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
-import fr.def.iss.vd2.lib_v3d.element.V3DElement;
-import fr.def.iss.vd2.lib_v3d.element.V3DGroupElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DrawElement;
 
 public class PropellerSkin extends Skin {
 
-    private V3DGroupElement elements;
+    private I3dGroupElement elements;
     private V3DrawElement elementRotor;
     private float angle;
     private LinearEngineCapacity linearEngineCapacity;
@@ -26,7 +26,7 @@ public class PropellerSkin extends Skin {
     public PropellerSkin(WorldRenderer renderer, final Component object) {
         super(renderer);
         UiEngine engine = renderer.getEngine();
-        elements = new V3DGroupElement(engine.getV3DContext());
+        elements = new I3dGroupElement();
 
         // stator
         File v3drawFileStator = new File("graphics/output/big_propeller_stator.v3draw");
@@ -48,7 +48,7 @@ public class PropellerSkin extends Skin {
     }
 
     @Override
-    public V3DElement getV3DElement() {
+    public I3dElement getV3DElement() {
         return elements;
     }
 

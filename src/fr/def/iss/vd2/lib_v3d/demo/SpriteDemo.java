@@ -17,18 +17,22 @@
 package fr.def.iss.vd2.lib_v3d.demo;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import org.lwjgl.LWJGLException;
 
+import com.irr310.i3d.TextureManager;
+import com.irr310.i3d.scene.I3dScene;
+
 import fr.def.iss.vd2.lib_v3d.V3DCanvas;
 import fr.def.iss.vd2.lib_v3d.V3DContext;
-import fr.def.iss.vd2.lib_v3d.V3DScene;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
 import fr.def.iss.vd2.lib_v3d.camera.V3DSimple2DCamera;
 import fr.def.iss.vd2.lib_v3d.controller.V3DSimple2DCameraController;
-import fr.def.iss.vd2.lib_v3d.element.TextureManager;
 import fr.def.iss.vd2.lib_v3d.element.V3DAbsoluteSizeElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DSprite;
 
@@ -62,7 +66,7 @@ public class SpriteDemo {
 
         canvas = new V3DCanvas(context, 1024, 768);
 
-        activeCamera = new V3DSimple2DCamera(context);
+        activeCamera = new V3DSimple2DCamera();
         fullscreenBinding = V3DCameraBinding.buildFullscreenCamera(activeCamera);
 
 
@@ -92,21 +96,21 @@ public class SpriteDemo {
 		}
     }
 
-    private V3DScene generateScene() {
-        V3DScene scene = new V3DScene(context);
+    private I3dScene generateScene() {
+        I3dScene scene = new I3dScene();
 
 
         try {
-            BufferedImage image = TextureManager.LoadImage("graphics/texture1.png");
-            V3DSprite sprite1 = new V3DSprite(context, image);
+            BufferedImage image = ImageIO.read(new File("graphics/texture1.png"));
+            V3DSprite sprite1 = new V3DSprite(image);
             scene.add(sprite1);
         } catch (IOException ex) {
             System.err.println("File 'graphics/texture1.png' is not available");
         }
 
         try {
-            BufferedImage image = TextureManager.LoadImage("graphics/texture2.png");
-            V3DSprite sprite2 = new V3DSprite(context, image);
+            BufferedImage image = ImageIO.read(new File("graphics/texture2.png"));
+            V3DSprite sprite2 = new V3DSprite(image);
             //The sprite will always have a size of 200px
             V3DAbsoluteSizeElement absolute = new V3DAbsoluteSizeElement(sprite2, new V3DVect3(200, 200, 0));
             scene.add(absolute);

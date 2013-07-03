@@ -55,7 +55,7 @@ public class EmptyCanvasDemo {
 
         canvas = new V3DCanvas(context, 1024, 768);
 
-        activeCamera = new V3DSimple2DCamera(context);
+        activeCamera = new V3DSimple2DCamera();
         fullscreenBinding = V3DCameraBinding.buildFullscreenCamera(activeCamera);
 
 

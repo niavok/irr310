@@ -32,6 +32,18 @@ public class Texture {
       this.imgHeight = imageHeight;
     }
     
+    public int getTextureID() {
+        return textureID;
+    }
+    
+    public int getTexHeight() {
+        return texHeight;
+    }
+    
+    public int getTexWidth() {
+        return texWidth;
+    }
+    
     /**
      * Get the height of the original image
      *

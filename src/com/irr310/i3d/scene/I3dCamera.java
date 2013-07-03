@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with V3dScene.  If not, see <http://www.gnu.org/licenses/>.
 
-package fr.def.iss.vd2.lib_v3d.camera;
+package com.irr310.i3d.scene;
 
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -25,24 +25,25 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
+import com.irr310.i3d.I3dContext;
+import com.irr310.i3d.scene.I3dSceneManager.FloatValuedElement;
+import com.irr310.i3d.scene.element.I3dElement;
+
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DContext;
-import fr.def.iss.vd2.lib_v3d.V3DContext.FloatValuedElement;
-import fr.def.iss.vd2.lib_v3d.V3DContextElement;
 import fr.def.iss.vd2.lib_v3d.V3DInputEvent;
-import fr.def.iss.vd2.lib_v3d.V3DScene;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
-import fr.def.iss.vd2.lib_v3d.element.V3DElement;
+import fr.def.iss.vd2.lib_v3d.camera.V3DCameraController;
 
 /**
  *
  * @author fberto
  */
-public abstract class V3DCamera extends V3DContextElement {
+public abstract class I3dCamera {
 
-    protected V3DScene currentScene;
-    protected V3DScene hudScene;
-    protected V3DScene backgroundScene;
+    protected I3dScene currentScene;
+    protected I3dScene hudScene;
+    protected I3dScene backgroundScene;
     // 1000 object max
     //private IntBuffer buff = BufferUtils.newIntBuffer(4000);
     
@@ -56,10 +57,9 @@ public abstract class V3DCamera extends V3DContextElement {
     private boolean configured = false;
     private Runnable cameraInitialisation;
 
-    public V3DCamera(V3DContext context) {
-        super(context);
-        hudScene = new V3DScene(context);
-        backgroundScene = new V3DScene(context);
+    public I3dCamera() {
+        hudScene = new I3dScene();
+        backgroundScene = new I3dScene();
     }
 
     public void display( float width, float height) {
@@ -179,11 +179,11 @@ public abstract class V3DCamera extends V3DContextElement {
 */
     }
 
-    public void setScene(V3DScene scene) {
+    public void setScene(I3dScene scene) {
         currentScene = scene;
     }
 
-    public V3DScene getScene() {
+    public I3dScene getScene() {
         return currentScene;
     }
 
@@ -206,7 +206,7 @@ public abstract class V3DCamera extends V3DContextElement {
         
         for (int i = 0; i < hits; i++) { // for each hit
 
-            V3DElement selectedElement = null;
+            I3dElement selectedElement = null;
 
             names = buffer.get(ptr++);
 
@@ -216,7 +216,7 @@ public abstract class V3DCamera extends V3DContextElement {
             
             for (int j = 0; j < names; j++) { // for each name
                 if (j == 0) {
-                    selectedElement = getContext().getIdAllocator().getElement(buffer.get(ptr));
+                    selectedElement = I3dContext.getInstance().getSceneManager().getIdAllocator().getElement(buffer.get(ptr));
                 }
                 ptr++;
             }
@@ -225,7 +225,7 @@ public abstract class V3DCamera extends V3DContextElement {
 
         }
 
-        getContext().setMouseOverlapList(hitsElements);
+        I3dContext.getInstance().getSceneManager().setMouseOverlapList(hitsElements);
     }
     
     protected void preDisplayScene() {
@@ -275,26 +275,26 @@ public abstract class V3DCamera extends V3DContextElement {
 
     protected abstract void initPerspective();
 
-    void setSize(int width, int height) {
+    public void setSize(int width, int height) {
         this.currentWidth = width;
         this.currentHeight = height;
     }
 
     abstract public void fitAll();
 
-    public V3DScene getHudScene() {
+    public I3dScene getHudScene() {
         return hudScene;
     }
 
-    public void setHudScene(V3DScene hudScene) {
+    public void setHudScene(I3dScene hudScene) {
         this.hudScene = hudScene;
     }
     
-    public V3DScene getBackgroundScene() {
+    public I3dScene getBackgroundScene() {
         return backgroundScene;
     }
     
-    public void setBackgroundScene(V3DScene backgroundScene) {
+    public void setBackgroundScene(I3dScene backgroundScene) {
         this.backgroundScene = backgroundScene;
     }
 

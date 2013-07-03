@@ -15,8 +15,6 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.PixelFormat;
 
-import fr.def.iss.vd2.lib_v3d.element.TextureManager;
-
 public class I3dCanvas {
 
     private I3dContext context;
@@ -24,7 +22,6 @@ public class I3dCanvas {
     private int height;
     private final String title;
     private JFrame frame;
-    private TextureManager textureManager = new TextureManager();
     private boolean pauseDisplay = false;
     
     private boolean polygonOffset = false;
@@ -105,7 +102,7 @@ public class I3dCanvas {
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
         GL11.glFlush();
 
-        getTextureManager().clearCache();
+        TextureManager.clearCache();
         //initied = true;
         
         new LWJGLBinding();
@@ -164,11 +161,6 @@ public class I3dCanvas {
     public int getHeight() {
         return height;
     }
-    
-    public TextureManager getTextureManager() {
-        return textureManager;
-    }
-
     
     public boolean draw(Graphics g) {
         if(pauseDisplay || Display.isCloseRequested()) {

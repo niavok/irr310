@@ -38,9 +38,10 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
 import com.irr310.common.tools.Log;
+import com.irr310.i3d.TextureManager;
+import com.irr310.i3d.scene.element.I3dElement;
 
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
-import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 
 /**
  *
@@ -84,7 +85,7 @@ public class V3DCanvas {
         //initListeners();
     }
    
-    V3DElement map;
+    I3dElement map;
 	private int width;
 	private int height;
 
@@ -163,7 +164,7 @@ public class V3DCanvas {
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
         GL11.glFlush();
 
-        context.getTextureManager().clearCache();
+        TextureManager.clearCache();
         initied = true;
         
         new LWJGLBinding();

@@ -9,13 +9,13 @@ import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.common.world.system.Component;
+import com.irr310.i3d.scene.element.I3dElement;
+import com.irr310.i3d.scene.element.I3dGroupElement;
 import com.irr310.server.Duration;
 import com.irr310.server.Time;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
-import fr.def.iss.vd2.lib_v3d.element.V3DElement;
-import fr.def.iss.vd2.lib_v3d.element.V3DGroupElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DShaderElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DTriangle;
 import fr.def.iss.vd2.lib_v3d.element.V3DTriangle.RenderMode;
@@ -23,7 +23,7 @@ import fr.def.iss.vd2.lib_v3d.element.V3DrawElement;
 
 public class ReactorSkin extends Skin {
 
-    private V3DGroupElement elements;
+    private I3dGroupElement elements;
     private V3DrawElement elementRotor;
     private float angle;
     private LinearEngineCapacity linearEngineCapacity;
@@ -39,7 +39,7 @@ public class ReactorSkin extends Skin {
         super(renderer);
         this.object = object;
         UiEngine engine = renderer.getEngine();
-        elements = new V3DGroupElement(engine.getV3DContext());
+        elements = new I3dGroupElement();
 
         // stator
         File v3drawFileStator = new File("graphics/output/reactor_stator.v3draw");
@@ -52,15 +52,15 @@ public class ReactorSkin extends Skin {
         elements.add(new V3DColorElement(new V3DShaderElement(elementRotor, "propeller"), new V3DColor(135, 158, 169)));
 
         // Flame
-        flame1 = new V3DTriangle(engine.getV3DContext());
+        flame1 = new V3DTriangle();
         flame1.setRenderMode(RenderMode.PLAIN);
         flame1.setSize((float)object.getFirstPart().getShape().x*0.8f, 0f);
-        flame2 = new V3DTriangle(engine.getV3DContext());
+        flame2 = new V3DTriangle();
         flame2.setRenderMode(RenderMode.PLAIN);
         flame2.setSize((float)object.getFirstPart().getShape().x*0.8f, 0f);
         flame2.setRotation(0, 90, 0);
 
-        V3DGroupElement flames = new V3DGroupElement(engine.getV3DContext());
+        I3dGroupElement flames = new I3dGroupElement();
         flames.add(flame1);
         flames.add(flame2);
         colorFlame = new V3DColorElement(flames, V3DColor.transparent);
@@ -79,7 +79,7 @@ public class ReactorSkin extends Skin {
     }
   
     @Override
-    public V3DElement getV3DElement() {
+    public I3dElement getV3DElement() {
         return elements;
     }
 

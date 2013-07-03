@@ -18,10 +18,12 @@ package fr.def.iss.vd2.lib_v3d.demo;
 
 import org.lwjgl.LWJGLException;
 
+import com.irr310.i3d.scene.I3dScene;
+import com.irr310.i3d.scene.element.I3dElement;
+
 import fr.def.iss.vd2.lib_v3d.V3DCanvas;
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DContext;
-import fr.def.iss.vd2.lib_v3d.V3DScene;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
 import fr.def.iss.vd2.lib_v3d.camera.V3DSimple3DCamera;
@@ -29,7 +31,6 @@ import fr.def.iss.vd2.lib_v3d.controller.V3DSimple3DCameraController;
 import fr.def.iss.vd2.lib_v3d.element.V3DCircle;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DCylinder;
-import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DTube;
 
 /**
@@ -48,7 +49,7 @@ public class CylinderDemo {
     V3DCameraBinding viewport;
     V3DSimple3DCamera camera;
     V3DCanvas canvas;
-    V3DScene scene;
+    I3dScene scene;
 
     public CylinderDemo() {
         generateCanvas();
@@ -66,7 +67,7 @@ public class CylinderDemo {
     private void generateCanvas() {
 
         canvas = new V3DCanvas(context, 1024, 768);
-        camera = new V3DSimple3DCamera(context);
+        camera = new V3DSimple3DCamera();
 
         viewport = V3DCameraBinding.buildFullscreenCamera(camera);
         scene = generateScene();
@@ -87,10 +88,10 @@ public class CylinderDemo {
 		}
     }
 
-    private V3DScene generateScene() {
+    private I3dScene generateScene() {
 
-        V3DElement element = null;
-        V3DScene scene = new V3DScene(context);
+        I3dElement element = null;
+        I3dScene scene = new I3dScene();
 
         element = getCircle();
         // element.setPosition(-R3S2 * SPAG, -DEMI * SPAG, 0);
@@ -117,7 +118,7 @@ public class CylinderDemo {
 
     private V3DCircle getCircle() {
 
-        V3DCircle circle = new V3DCircle(context);
+        V3DCircle circle = new V3DCircle();
         // V3DColor color = V3DColor.randomLightOpaqueColor(); fadetoblack
         // circle.setRenderMode(V3DCircle.RenderMode.SOLID); // Mode Fil de fer
         // circle.setColors(V3DColor.emerald, V3DColor.fadetoblack);
@@ -131,19 +132,19 @@ public class CylinderDemo {
 
     private V3DTube getTube() {
 
-        V3DTube tube = new V3DTube(context, 2, 2);
+        V3DTube tube = new V3DTube(2, 2);
         return tube;
     }
 
     private V3DCylinder getRoundBox() {
 
-        V3DCylinder cylinder = new V3DCylinder(context, 2, 2, 16);
+        V3DCylinder cylinder = new V3DCylinder(2, 2, 16);
         cylinder.setShowTop(false);
         return cylinder;
     }
 
         private V3DCylinder getCylinder() {
-        V3DCylinder cylinder = new V3DCylinder(context, 2, 2, 32);
+        V3DCylinder cylinder = new V3DCylinder(2, 2, 32);
         return cylinder;
     }
 }

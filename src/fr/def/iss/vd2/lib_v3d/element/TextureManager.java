@@ -36,7 +36,7 @@ import org.lwjgl.opengl.SGISGenerateMipmap;
 /**
  * @author fberto
  */
-public class TextureManager {
+/*public class TextureManager {
 
     static Map<BufferedImage, Texture> textureCache = new HashMap<BufferedImage, Texture>();
 
@@ -174,4 +174,4 @@ public class TextureManager {
     public static BufferedImage LoadImage(String string) throws IOException {
         return ImageIO.read(new File(string));
     }
-}
+}*/

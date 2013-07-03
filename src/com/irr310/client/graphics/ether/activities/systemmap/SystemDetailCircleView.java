@@ -23,8 +23,10 @@ public class SystemDetailCircleView extends RelativeLayout {
     private Color selectionColor;
     private float scale;
     private float offset;
+    private SystemMapActivity activity;
 
-    public SystemDetailCircleView(WorldSystemState system) {
+    public SystemDetailCircleView(SystemMapActivity activity, WorldSystemState system) {
+        this.activity = activity;
         this.system = system;
         
         reshape();
@@ -43,7 +45,7 @@ public class SystemDetailCircleView extends RelativeLayout {
         }
         
         for(ShipState ship: system.ships) {
-            addViewInLayout(new ShipView(ship, this));
+            addViewInLayout(new ShipView(activity, ship, this));
         }
     }
     

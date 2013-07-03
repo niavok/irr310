@@ -1,16 +1,17 @@
 package fr.def.iss.vd2.lib_v3d.gui;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import org.fenggui.Widget;
 import org.fenggui.binding.render.Graphics;
 import org.fenggui.util.Color;
 import org.fenggui.util.Dimension;
 
-import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.element.TextureHandler;
-import fr.def.iss.vd2.lib_v3d.element.TextureManager;
 
 public class V3DGuiSprite extends V3DGuiComponent {
 
@@ -20,13 +21,13 @@ public class V3DGuiSprite extends V3DGuiComponent {
     private TextureHandler texture;
     Dimension size = new Dimension(0, 0);
 
-    public V3DGuiSprite(V3DContext context, String imagePath) throws IOException {
-        this(context, TextureManager.LoadImage(imagePath));
+    public V3DGuiSprite(String imagePath) throws IOException {
+        this(ImageIO.read(new File(imagePath)));
     }
 
-    public V3DGuiSprite(V3DContext context, BufferedImage image) {
+    public V3DGuiSprite(BufferedImage image) {
 
-        texture = new TextureHandler(context.getTextureManager(), image);
+        texture = new TextureHandler(image);
         widget = new Widget() {
             @Override
             public void paint(Graphics g) {

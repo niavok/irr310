@@ -17,22 +17,22 @@
 
 package fr.def.iss.vd2.lib_v3d.element.basemap;
 
+import com.irr310.i3d.scene.element.I3dElement;
+
 import fr.def.iss.vd2.lib_v3d.V3DContext;
-import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 
 /**
  *
  * @author fberto
  */
-abstract public class Basemap extends V3DElement{
+abstract public class Basemap extends I3dElement{
 
     float maxWidth;
     float maxHeight;
     float offsetX;
     float offsetY;
 
-    public Basemap(V3DContext context) {
-        super(context);
+    public Basemap() {
     }
 
 

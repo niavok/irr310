@@ -26,15 +26,17 @@ import java.util.logging.Logger;
 
 import org.lwjgl.opengl.GL11;
 
+import com.irr310.i3d.scene.I3dCamera;
+import com.irr310.i3d.scene.element.I3dElement;
+
 import fr.def.iss.vd2.lib_v3d.V3DContext;
-import fr.def.iss.vd2.lib_v3d.camera.V3DCamera;
 import fr.def.iss.vd2.lib_v3d.v3draw.V3DrawReader;
 import fr.def.iss.vd2.lib_v3d.v3draw.V3DrawReader.V3DrawBadFormatError;
 
 /**
  * @author fberto
  */
-public class V3DrawElement extends V3DElement {
+public class V3DrawElement extends I3dElement {
 
     private V3DBoundingBox boundingBox = new V3DBoundingBox();
     private final V3DrawReader v3drawReader;
@@ -43,8 +45,8 @@ public class V3DrawElement extends V3DElement {
     private final float dz;
     private boolean enableLighting = false;
 
-    public V3DrawElement(V3DContext context, ByteBuffer buffer) throws V3DrawBadFormatError {
-        super(context);
+    public V3DrawElement(ByteBuffer buffer) throws V3DrawBadFormatError {
+        super();
 
 
         v3drawReader = new V3DrawReader(buffer);
@@ -65,12 +67,12 @@ public class V3DrawElement extends V3DElement {
 
     @Override
     protected void doInit() {
-        v3drawReader.init(getContext());
+        v3drawReader.init();
 
     }
 
     @Override
-    protected void doDisplay(V3DCamera camera) {
+    protected void doDisplay(I3dCamera camera) {
 
         GL11.glPushMatrix();
         GL11.glTranslatef(dx, dy, dz);
@@ -108,7 +110,8 @@ public class V3DrawElement extends V3DElement {
             fileInputStream = new FileInputStream(v3drawFile);
             FileChannel fileChannel = fileInputStream.getChannel();
             ByteBuffer buffer = fileChannel.map(FileChannel.MapMode.READ_ONLY, 0, fileChannel.size());
-            V3DrawElement v3DrawElement = new V3DrawElement(context, buffer);
+            V3DrawElement v3DrawElement = new V3DrawElement(buffer);
+            fileInputStream.close();
             return v3DrawElement;
         } catch (V3DrawBadFormatError ex) {
             Logger.getLogger(V3DrawElement.class.getName()).log(Level.SEVERE, null, ex);

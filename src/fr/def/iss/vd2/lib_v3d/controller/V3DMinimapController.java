@@ -50,7 +50,7 @@ public class V3DMinimapController implements V3DCameraController {
         this.controllingCamera = controllingCamera;
         this.controlledCamera = controlledCamera;
 
-        frame = new V3DRectangle(controllingCamera.getContext());
+        frame = new V3DRectangle();
         frame.setTangible(false);
         frame.setThickness(2f);
         frame.setPosition(0, 0, 100);
@@ -58,26 +58,26 @@ public class V3DMinimapController implements V3DCameraController {
         
         controllingCamera.getScene().add(new V3DColorElement(frame, borderColor));
 
-        frameTop = new V3DRectangle(controllingCamera.getContext());
+        frameTop = new V3DRectangle();
         frameTop.setTangible(false);
         frameTop.setPosition(0, 0, 50);
         frameTop.setRenderMode(V3DRectangle.RenderMode.PLAIN);
         controllingCamera.getScene().add(new V3DColorElement(frameTop, maskColor));
 
 
-        frameBottom = new V3DRectangle(controllingCamera.getContext());
+        frameBottom = new V3DRectangle();
         frameBottom.setTangible(false);
         frameBottom.setPosition(0, 0, 50);
         frameBottom.setRenderMode(V3DRectangle.RenderMode.PLAIN);
         controllingCamera.getScene().add(new V3DColorElement(frameBottom, maskColor));
 
-        frameLeft = new V3DRectangle(controllingCamera.getContext());
+        frameLeft = new V3DRectangle();
         frameLeft.setTangible(false);
         frameLeft.setPosition(0, 0, 50);
         frameLeft.setRenderMode(V3DRectangle.RenderMode.PLAIN);
         controllingCamera.getScene().add(new V3DColorElement(frameLeft, maskColor));
 
-        frameRight = new V3DRectangle(controllingCamera.getContext());
+        frameRight = new V3DRectangle();
         frameRight.setTangible(false);
         frameRight.setPosition(0, 0, 50);
         frameRight.setRenderMode(V3DRectangle.RenderMode.PLAIN);

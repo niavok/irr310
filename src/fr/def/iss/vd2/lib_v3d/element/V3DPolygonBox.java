@@ -19,6 +19,8 @@ package fr.def.iss.vd2.lib_v3d.element;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.irr310.i3d.scene.element.I3dGroupElement;
+
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 
@@ -27,7 +29,7 @@ import fr.def.iss.vd2.lib_v3d.V3DVect3;
  * @author fberto
  * @refactored by pgesta
  */
-public class V3DPolygonBox extends V3DGroupElement {
+public class V3DPolygonBox extends I3dGroupElement {
 
     private List<V3DPolygonWalls> WallList = new ArrayList<V3DPolygonWalls>();
     private V3DPolygon topPolygon;
@@ -36,22 +38,19 @@ public class V3DPolygonBox extends V3DGroupElement {
     private boolean showBottom = true;
     private float height;
 
-    public V3DPolygonBox(V3DContext context) {
-
-        this(context, 1);
+    public V3DPolygonBox() {
+        this(1);
     }
 
-    public V3DPolygonBox(V3DContext context, float height) {
-
-        super(context);
+    public V3DPolygonBox(float height) {
 
         this.height = height;
 
-        bottomPolygon = new V3DPolygon(context);
+        bottomPolygon = new V3DPolygon();
         bottomPolygon.setPosition(0, 0,-height/2);
         add(bottomPolygon);
               
-        topPolygon = new V3DPolygon(context);
+        topPolygon = new V3DPolygon();
         topPolygon.setPosition(0, 0, height/2);
         add(topPolygon);
     }
@@ -81,7 +80,7 @@ public class V3DPolygonBox extends V3DGroupElement {
 
     public void addPointList(List<V3DVect3> pointList, boolean isHole) {
 
-        V3DPolygonWalls polygonWall = new V3DPolygonWalls(getContext());
+        V3DPolygonWalls polygonWall = new V3DPolygonWalls();
         polygonWall.setRenderMode(V3DPolygonWalls.RenderMode.PLAIN);
         polygonWall.setHeight(height);
         polygonWall.setPointList(pointList);

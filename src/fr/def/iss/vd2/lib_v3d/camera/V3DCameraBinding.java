@@ -19,6 +19,8 @@ package fr.def.iss.vd2.lib_v3d.camera;
 
 import java.awt.Point;
 
+import com.irr310.i3d.scene.I3dCamera;
+
 import fr.def.iss.vd2.lib_v3d.gui.V3DGui;
 
 /**
@@ -69,7 +71,7 @@ public class V3DCameraBinding {
      * Define the bound camera
      * @param camera
      */
-    public void setCamera(V3DCamera camera) {
+    public void setCamera(I3dCamera camera) {
         this.camera = camera;
         camera.setSize(width, height);
     }
@@ -80,7 +82,7 @@ public class V3DCameraBinding {
      * @param camera
      * @return
      */
-    public static V3DCameraBinding buildFullscreenCamera(V3DCamera camera) {
+    public static V3DCameraBinding buildFullscreenCamera(I3dCamera camera) {
         V3DCameraBinding cameraBinding = new V3DCameraBinding();
         cameraBinding.camera = camera;
         cameraBinding.preferredX = 0;
@@ -105,7 +107,7 @@ public class V3DCameraBinding {
      * @param height
      * @return
      */
-    public static V3DCameraBinding buildAbsoluteCamera(V3DCamera camera, int x, int y, int width, int height) {
+    public static V3DCameraBinding buildAbsoluteCamera(I3dCamera camera, int x, int y, int width, int height) {
         V3DCameraBinding cameraBinding = new V3DCameraBinding();
         cameraBinding.camera = camera;
         cameraBinding.preferredX = x;
@@ -128,7 +130,7 @@ public class V3DCameraBinding {
     //------------------
     //
 
-    public V3DCamera camera;
+    public I3dCamera camera;
     public int preferredX;
     public int preferredY;
     public int preferredWidth;

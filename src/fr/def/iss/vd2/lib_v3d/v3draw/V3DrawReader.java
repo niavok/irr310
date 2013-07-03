@@ -28,8 +28,10 @@ import javax.imageio.ImageIO;
 
 import org.lwjgl.opengl.GL11;
 
+import com.irr310.i3d.I3dContext;
+import com.irr310.i3d.scene.I3dCamera;
+
 import fr.def.iss.vd2.lib_v3d.V3DContext;
-import fr.def.iss.vd2.lib_v3d.camera.V3DCamera;
 import fr.def.iss.vd2.lib_v3d.element.TextureHandler;
 
 /**
@@ -49,10 +51,9 @@ public class V3DrawReader {
     private List<String> metadataList = new ArrayList<String>();
     private int commandListOffset;
     private int initCommandListOffset;
-    private V3DCamera camera;
+    private I3dCamera camera;
     private List<Tesselation> concavePolygonList = new ArrayList<Tesselation>();
     private List<TextureHandler> textureList = new ArrayList<TextureHandler>();
-    private V3DContext context;
 
     public V3DrawReader(ByteBuffer buffer) throws V3DrawBadFormatError {
         this.buffer = buffer;
@@ -128,8 +129,7 @@ public class V3DrawReader {
         initCommandListOffset = commandListOffset + commandListLenght + 4;
     }
 
-    public void init( V3DContext context) {
-        this.context = context;
+    public void init() {
         // Skip header and command list
         buffer.position(initCommandListOffset);
 
@@ -203,7 +203,7 @@ public class V3DrawReader {
         return version;
     }
 
-    public void draw(V3DCamera camera) {
+    public void draw(I3dCamera camera) {
         this.camera = camera;
 
         // Prepare the buffer for reading
@@ -342,7 +342,7 @@ public class V3DrawReader {
         } catch (IOException e) {
             return;
         }
-        TextureHandler texture = new TextureHandler(context.getTextureManager(), image);
+        TextureHandler texture = new TextureHandler(image);
 
         textureList.add(texture);
     }

@@ -21,16 +21,17 @@ import java.util.List;
 
 import org.lwjgl.LWJGLException;
 
+import com.irr310.i3d.scene.I3dScene;
+import com.irr310.i3d.scene.element.I3dElement;
+
 import fr.def.iss.vd2.lib_v3d.V3DCanvas;
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DContext;
-import fr.def.iss.vd2.lib_v3d.V3DScene;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
 import fr.def.iss.vd2.lib_v3d.camera.V3DSimple3DCamera;
 import fr.def.iss.vd2.lib_v3d.controller.V3DSimple3DCameraController;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
-import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DPolygon;
 import fr.def.iss.vd2.lib_v3d.element.V3DPolygonBox;
 import fr.def.iss.vd2.lib_v3d.element.V3DPolygonWalls;
@@ -52,7 +53,7 @@ public class PolygonDemo {
     V3DCameraBinding viewport;
     V3DSimple3DCamera camera;
     V3DCanvas canvas;
-    V3DScene scene;
+    I3dScene scene;
 
     public PolygonDemo() {
         
@@ -70,7 +71,7 @@ public class PolygonDemo {
     private void generateCanvas() {
 
         canvas = new V3DCanvas(context, 1024, 768);
-        camera = new V3DSimple3DCamera(context);
+        camera = new V3DSimple3DCamera();
         viewport = V3DCameraBinding.buildFullscreenCamera(camera);
         scene = generateScene();
 
@@ -91,10 +92,10 @@ public class PolygonDemo {
 		}
     }
 
-    private V3DScene generateScene() {
+    private I3dScene generateScene() {
 
-        V3DElement element = null;
-        V3DScene scene = new V3DScene(context);
+        I3dElement element = null;
+        I3dScene scene = new I3dScene();
 
         element = getFlatHexaGon();
         element.setPosition(-R3S2*SPAG, -DEMI*SPAG, 0);
@@ -125,14 +126,14 @@ public class PolygonDemo {
 
     private V3DPolygon getFlatHexaGon() {
 
-        V3DPolygon polygon = new V3DPolygon(context);
+        V3DPolygon polygon = new V3DPolygon();
         polygon.setPointList(getHexaGonPointList());
         return polygon;
     }
 
     private V3DPolygonWalls getWallHexaGon() {
 
-        V3DPolygonWalls polygon = new V3DPolygonWalls(context);
+        V3DPolygonWalls polygon = new V3DPolygonWalls();
         polygon.setHeight(1);
         polygon.setPointList(getHexaGonPointList());
         return polygon;
@@ -140,7 +141,7 @@ public class PolygonDemo {
 
     private V3DPolygonBox getBoxHexaGonNoTop() {
 
-        V3DPolygonBox polygon = new V3DPolygonBox(context);
+        V3DPolygonBox polygon = new V3DPolygonBox();
         polygon.setHeight(1);
         polygon.setPointList(getHexaGonPointList(), false);
         polygon.setShowTop(false);
@@ -149,7 +150,7 @@ public class PolygonDemo {
 
         private V3DPolygonBox getBoxHexaGon() {
 
-        V3DPolygonBox polygon = new V3DPolygonBox(context);
+        V3DPolygonBox polygon = new V3DPolygonBox();
         polygon.setHeight(2);
         polygon.setPointList(getHexaGonPointList(), false);
         return polygon;
@@ -157,7 +158,7 @@ public class PolygonDemo {
 
     private V3DPolygonBox getHollowHexaGon() {
 
-        V3DPolygonBox polygon = new V3DPolygonBox(context);
+        V3DPolygonBox polygon = new V3DPolygonBox();
         polygon.setHeight(1);
         polygon.setPointList(getHexaGonPointList(), false);
         //polygon.addPointList(getTrianglePointList(), true);
@@ -168,7 +169,7 @@ public class PolygonDemo {
 
     private V3DPolygonBox getStarPolyGon() {
 
-        V3DPolygonBox polygon = new V3DPolygonBox(context);
+        V3DPolygonBox polygon = new V3DPolygonBox();
         polygon.setHeight(1);
         polygon.setPointList(getInnerStarPointList(), false);
         polygon.setShowTop(false);

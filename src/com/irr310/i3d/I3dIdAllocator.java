@@ -15,20 +15,42 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with V3dScene.  If not, see <http://www.gnu.org/licenses/>.
 
-package fr.def.iss.vd2.lib_v3d;
+package com.irr310.i3d;
+
+import java.lang.ref.WeakReference;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.irr310.i3d.scene.element.I3dElement;
 
 /**
  *
  * @author fberto
+ * TODO: desallocation
  */
-public class V3DContextElement {
-    private V3DContext context;
+public class I3dIdAllocator {
+    long nextValue = 1;
 
-    public V3DContextElement(V3DContext context) {
-        this.context = context;
+    Map<Long, WeakReference<I3dElement>> elementMap = new HashMap<Long, WeakReference<I3dElement>>();
+
+
+    public long getNewId(I3dElement element) {
+
+        long key = nextValue++;
+
+        elementMap.put(key,new WeakReference<I3dElement>(element));
+
+        return key;
     }
 
-    final public V3DContext getContext() {
-        return context;
+    public I3dElement getElement(long id) {
+        if(elementMap.containsKey(id)) {
+            return elementMap.get(id).get();
+        }
+        else {
+            return null;
+        }
     }
+
+
 }

@@ -39,7 +39,7 @@ public class V3DTextEditor extends V3DGuiComponent {
     private int yPos;
     
 
-    public V3DTextEditor(V3DContext context, String initialText) {
+    public V3DTextEditor(String initialText) {
         editor = new TextEditor();
         editor.setText(initialText);
         editor.setXY(0, 0);

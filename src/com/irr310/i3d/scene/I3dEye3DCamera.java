@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with V3dScene.  If not, see <http://www.gnu.org/licenses/>.
 
-package fr.def.iss.vd2.lib_v3d.camera;
+package com.irr310.i3d.scene;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -24,15 +24,16 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
+import com.irr310.i3d.scene.element.I3dElement;
+
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.element.V3DBoundingBox;
-import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 
 /**
  * @author fberto
  */
-public class V3DEye3DCamera extends V3DCamera {
+public class I3dEye3DCamera extends I3dCamera {
 
     private V3DVect3 position = new V3DVect3(0, 0, 0);
     private V3DVect3 eye = new V3DVect3(0, 0, 0);
@@ -41,8 +42,7 @@ public class V3DEye3DCamera extends V3DCamera {
     private float perspective = 45;
     private boolean showCenter = false;
 
-    public V3DEye3DCamera(V3DContext context) {
-        super(context);
+    public I3dEye3DCamera() {
     }
 
     @Override
@@ -289,7 +289,7 @@ public class V3DEye3DCamera extends V3DCamera {
     }
 
     public boolean containsAll() {
-        V3DElement rootElt = null;
+        I3dElement rootElt = null;
         if (currentScene != null) {
             rootElt = currentScene.getRootElement();
         }

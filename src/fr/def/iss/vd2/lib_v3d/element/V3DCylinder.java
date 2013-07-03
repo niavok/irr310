@@ -16,13 +16,15 @@
 // along with V3dScene.  If not, see <http://www.gnu.org/licenses/>.
 package fr.def.iss.vd2.lib_v3d.element;
 
+import com.irr310.i3d.scene.element.I3dGroupElement;
+
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 
 /**
  *
  * @author pgesta
  */
-public class V3DCylinder extends V3DGroupElement {
+public class V3DCylinder extends I3dGroupElement {
 
     private V3DCircle topCircle;
     private V3DCircle bottomCircle;
@@ -33,30 +35,29 @@ public class V3DCylinder extends V3DGroupElement {
     private float radius;
     private int quality;
 
-    public V3DCylinder(V3DContext context) {
-        this(context, 1, 1, 32);
+    public V3DCylinder() {
+        this(1, 1, 32);
     }
 
-    public V3DCylinder(V3DContext context, float radius, float height) {
-        this(context, radius, height, 32);
+    public V3DCylinder(float radius, float height) {
+        this(radius, height, 32);
     }
 
-    public V3DCylinder(V3DContext context, float radius, float height, int quality) {
-        super(context);
+    public V3DCylinder(float radius, float height, int quality) {
 
-        bottomCircle = new V3DCircle(context);
+        bottomCircle = new V3DCircle();
         bottomCircle.setPosition(0, 0,-height/2);
         bottomCircle.setQuality(quality);
         bottomCircle.setSize(radius);
         add(bottomCircle);
 
-        topCircle = new V3DCircle(context);
+        topCircle = new V3DCircle();
         topCircle.setPosition(0, 0, height/2);
         topCircle.setQuality(quality);
         topCircle.setSize(radius);
         add(topCircle);
 
-        mainTube = new V3DTube(context, radius, height, quality);
+        mainTube = new V3DTube(radius, height, quality);
         add(mainTube);
     }
 

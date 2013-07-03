@@ -1,6 +1,6 @@
 package com.irr310.client.graphics;
 
-import fr.def.iss.vd2.lib_v3d.element.V3DElement;
+import com.irr310.i3d.scene.element.I3dElement;
 
 
 public interface GraphicalElement {
@@ -13,6 +13,6 @@ public interface GraphicalElement {
 
     public boolean isDisplayable();
 
-    public V3DElement getV3DElement();
+    public I3dElement getV3DElement();
     
 }

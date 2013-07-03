@@ -5,6 +5,7 @@ import java.util.Hashtable;
 
 import com.irr310.i3d.I3dContext;
 import com.irr310.i3d.Texture;
+import com.irr310.i3d.TextureManager;
 
 
 public class Font {
@@ -92,7 +93,7 @@ public class Font {
     
     public Texture uploadToVideoMemory()
     {
-      Texture tex = I3dContext.getInstance().getTextureManager().getTexture(image);
+      Texture tex = TextureManager.getTexture(image);
 
       for (CharacterPixmap cp : texHashMap.values())
       {

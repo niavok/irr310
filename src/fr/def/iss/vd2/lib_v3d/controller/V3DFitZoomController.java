@@ -115,7 +115,7 @@ public class V3DFitZoomController implements V3DCameraController {
         mouseXInitial = e.getX();
         mouseYInitial = e.getY();
 
-        targetFrame = new V3DRectangle(targetCamera.getContext());
+        targetFrame = new V3DRectangle();
         targetFrame.setThickness(1.0f);
         targetFrame.setSize(0, 0);
         beginPosition = inputCamera.pick(mouseXInitial, mouseYInitial);
@@ -127,7 +127,7 @@ public class V3DFitZoomController implements V3DCameraController {
         targetCamera.getScene().add(targetFrameColor);
 
 
-        inputFrame = new V3DRectangle(inputCamera.getContext());
+        inputFrame = new V3DRectangle();
         inputFrame.setThickness(1.0f);
         inputFrame.setSize(0, 0);
         inputFrame.setPosition(beginPosition.x, beginPosition.y, 100);

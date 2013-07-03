@@ -15,34 +15,36 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with V3dScene.  If not, see <http://www.gnu.org/licenses/>.
 
-package fr.def.iss.vd2.lib_v3d;
+package com.irr310.i3d.scene;
 
 import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
-import fr.def.iss.vd2.lib_v3d.camera.V3DCamera;
-import fr.def.iss.vd2.lib_v3d.element.V3DElement;
-import fr.def.iss.vd2.lib_v3d.element.V3DGroupElement;
+import com.irr310.i3d.scene.element.I3dElement;
+import com.irr310.i3d.scene.element.I3dGroupElement;
+
+
+import fr.def.iss.vd2.lib_v3d.V3DContext;
 
 /**
  * A V3DScene is an agregate of element positionned in a void world.
  * This is the root of the scene graph
  * @author fberto
  */
-public class V3DScene {
+public class I3dScene {
 
 
-    private V3DGroupElement rootElement;
+    private I3dGroupElement rootElement;
 
 
     /**
      * Create a scene
      * @param context
      */
-    public V3DScene(V3DContext context) {
-        rootElement = new V3DGroupElement(context);
+    public I3dScene() {
+        rootElement = new I3dGroupElement();
     }
 
     /**
@@ -51,7 +53,7 @@ public class V3DScene {
      * @param gl context gl to draw the image
      * @param camera point of view of the draw
      */
-    public void display(V3DCamera camera) {
+    public void display(I3dCamera camera) {
 
         float[] lightAmbient1 = {0.0f, 0.0f, 0.0f, 1.0f};
         float[] lightDiffuse1 = {0.75f, 0.75f, 0.75f, 1.0f};
@@ -105,15 +107,15 @@ public class V3DScene {
      * Add an element at the root of the scene
      * @param element
      */
-    public void add(V3DElement element) {
+    public void add(I3dElement element) {
         rootElement.add(element);
     }
 
-    public void select( V3DCamera camera) {
+    public void select( I3dCamera camera) {
         rootElement.select( camera, 0);
     }
 
-    public V3DGroupElement getRootElement(){
+    public I3dGroupElement getRootElement(){
         return rootElement;
     }
 
@@ -121,7 +123,7 @@ public class V3DScene {
         rootElement.clear();
     }
 
-    public void remove(V3DElement element) {
+    public void remove(I3dElement element) {
         rootElement.remove(element);
     }
 

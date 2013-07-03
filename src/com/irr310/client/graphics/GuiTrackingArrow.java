@@ -4,9 +4,9 @@ import com.irr310.client.graphics.WorldRenderer.GuiLayer;
 import com.irr310.common.tools.Vec2;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.system.Part;
+import com.irr310.i3d.scene.controller.I3dFollow3DCameraController;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
-import fr.def.iss.vd2.lib_v3d.controller.V3DFollow3DCameraController;
 import fr.def.iss.vd2.lib_v3d.gui.V3DContainer;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiTriangle;
@@ -14,7 +14,7 @@ import fr.def.iss.vd2.lib_v3d.gui.V3DLabel;
 
 public class GuiTrackingArrow extends GuiAnimatedElement {
 
-    private final V3DFollow3DCameraController camera;
+    private final I3dFollow3DCameraController camera;
     private final Part followed;
     private V3DGuiTriangle v3dGuiTriangle;
     private V3DLabel v3dLabel;
@@ -22,7 +22,7 @@ public class GuiTrackingArrow extends GuiAnimatedElement {
     private final WorldRenderer renderer;
     private V3DColor color;
 
-    public GuiTrackingArrow(WorldRenderer renderer, V3DFollow3DCameraController cameraController, Part followed) {
+    public GuiTrackingArrow(WorldRenderer renderer, I3dFollow3DCameraController cameraController, Part followed) {
         super(renderer);
         this.renderer = renderer;
         this.camera = cameraController;

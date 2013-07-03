@@ -98,7 +98,7 @@ public class V3D3DPickTestController implements V3DCameraController {
         mouseXInitial = e.getX();
         mouseYInitial = e.getY();
 
-        selectFraming = new V3DRectangle(targetCamera.getContext());
+        selectFraming = new V3DRectangle();
         selectFraming.setThickness(1.0f);
         selectFraming.setSize(0, 0);
         begin_position = inputCamera.pick(mouseXInitial, mouseYInitial,0);

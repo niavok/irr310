@@ -20,15 +20,17 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
+import com.irr310.i3d.scene.I3dCamera;
+import com.irr310.i3d.scene.element.I3dElement;
+
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
-import fr.def.iss.vd2.lib_v3d.camera.V3DCamera;
 
 /**
  *
  * @author fberto
  */
-public class V3DPolygonWalls extends V3DElement {
+public class V3DPolygonWalls extends I3dElement {
 
     private V3DBoundingBox boundingBox = new V3DBoundingBox();
     private float thickness = 1.0f;
@@ -42,8 +44,7 @@ public class V3DPolygonWalls extends V3DElement {
         PLAIN,
     }
 
-    public V3DPolygonWalls(V3DContext context) {
-        super(context);
+    public V3DPolygonWalls() {
         boundingBox.setSize(1, 1, 1);
         boundingBox.setFlat(false);
     }
@@ -90,7 +91,7 @@ public class V3DPolygonWalls extends V3DElement {
     }
 
     @Override
-    protected void doDisplay( V3DCamera camera) {
+    protected void doDisplay( I3dCamera camera) {
 
         if (renderMode == RenderMode.PLAIN) {
 

@@ -23,7 +23,7 @@ public class ShipView extends View {
     private Color selectionColor;
     
     
-    public ShipView(ShipState ship, SystemDetailCircleView parentView) {
+    public ShipView(final SystemMapActivity activity, final ShipState ship, SystemDetailCircleView parentView) {
         this.ship = ship;
         this.parentView = parentView;
         selectionColor = I3dRessourceManager.getInstance().loadColor("selection@color");
@@ -35,6 +35,9 @@ public class ShipView extends View {
             @Override
             public void onClick(V3DMouseEvent mouseEvent, View view) {
                 selected = true;
+                if(mouseEvent.getClickCount() == 2) {
+                    activity.connectShip(ship);
+                }
             }
         });
         

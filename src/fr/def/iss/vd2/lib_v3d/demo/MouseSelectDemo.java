@@ -21,10 +21,12 @@ import java.util.List;
 
 import org.lwjgl.LWJGLException;
 
+import com.irr310.i3d.scene.I3dScene;
+import com.irr310.i3d.scene.element.I3dElement;
+
 import fr.def.iss.vd2.lib_v3d.V3DCanvas;
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DContext;
-import fr.def.iss.vd2.lib_v3d.V3DScene;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
 import fr.def.iss.vd2.lib_v3d.camera.V3DSimple3DCamera;
@@ -35,7 +37,6 @@ import fr.def.iss.vd2.lib_v3d.controller.V3DSimple3DCameraController;
 import fr.def.iss.vd2.lib_v3d.controller.listener.V3DSelectionListener;
 import fr.def.iss.vd2.lib_v3d.element.V3DBox;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
-import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DPolygonBox;
 
 /**
@@ -73,7 +74,7 @@ public class MouseSelectDemo{
 
         canvas = new V3DCanvas(context, 1024, 768);
 
-        activeCamera = new V3DSimple3DCamera(context);
+        activeCamera = new V3DSimple3DCamera();
         fullscreenBinding = V3DCameraBinding.buildFullscreenCamera(activeCamera);
         activeCamera.addController(new V3DSimple3DCameraController(activeCamera));
 
@@ -100,11 +101,11 @@ public class MouseSelectDemo{
 		}
     }
 
-    private V3DScene generateScene() {
-        V3DScene scene = new V3DScene(context);
+    private I3dScene generateScene() {
+        I3dScene scene = new I3dScene();
 
         {
-            V3DBox box = new V3DBox(context);
+            V3DBox box = new V3DBox();
             box.setSize(new V3DVect3(1, 2, 3));
             V3DColorElement colorElement = new V3DColorElement(box, V3DColor.azure);
 
@@ -114,7 +115,7 @@ public class MouseSelectDemo{
         }
 
         {
-            V3DBox box = new V3DBox(context);
+            V3DBox box = new V3DBox();
             box.setSize(new V3DVect3(1, 1, 2));
             V3DColorElement colorElement = new V3DColorElement(box, V3DColor.azure);
 
@@ -124,7 +125,7 @@ public class MouseSelectDemo{
         }
 
         {
-            V3DBox box = new V3DBox(context);
+            V3DBox box = new V3DBox();
             box.setSize(new V3DVect3(4, 4, 1));
             V3DColorElement colorElement = new V3DColorElement(box, V3DColor.azure);
 
@@ -134,7 +135,7 @@ public class MouseSelectDemo{
         }
 
         {
-            V3DBox box = new V3DBox(context);
+            V3DBox box = new V3DBox();
             box.setSize(new V3DVect3(2, 2, 6));
             V3DColorElement colorElement = new V3DColorElement(box, V3DColor.azure);
 
@@ -144,7 +145,7 @@ public class MouseSelectDemo{
         }
 
         {
-            V3DElement box = getBoxHexaGon();
+            I3dElement box = getBoxHexaGon();
             V3DColorElement colorElement = new V3DColorElement(box, V3DColor.azure);
 
             colorElement.setPosition(4, -4, 0);
@@ -160,11 +161,11 @@ public class MouseSelectDemo{
     private void generateControllers() {
 
         {
-            V3DDoubleClickController controller = new V3DDoubleClickController(context);
+            V3DDoubleClickController controller = new V3DDoubleClickController();
             controller.setListener(new V3DSelectionListener() {
 
                 @Override
-                public boolean select(V3DElement selection) {
+                public boolean select(I3dElement selection) {
                     if (selection instanceof V3DColorElement) {
                         V3DColorElement colorElement = (V3DColorElement) selection;
                         if (colorElement.getColor().isSame(V3DColor.violet) || colorElement.getColor().isSame(V3DColor.mauve)) {
@@ -183,11 +184,11 @@ public class MouseSelectDemo{
         }
 
         {
-            V3DSelectController controller = new V3DSelectController(context);
+            V3DSelectController controller = new V3DSelectController();
             controller.setListener(new V3DSelectionListener() {
 
                 @Override
-                public boolean select(V3DElement selection) {
+                public boolean select(I3dElement selection) {
                     if (selection instanceof V3DColorElement) {
                         V3DColorElement colorElement = (V3DColorElement) selection;
                         if (colorElement.getColor().isSame(V3DColor.violet)) {
@@ -208,14 +209,14 @@ public class MouseSelectDemo{
         
 
         {
-            V3DMouseOverController controller = new V3DMouseOverController(context);
+            V3DMouseOverController controller = new V3DMouseOverController();
 
             controller.setListener(new V3DSelectionListener() {
 
                 V3DColorElement over;
 
                 @Override
-                public boolean select(V3DElement selection) {
+                public boolean select(I3dElement selection) {
                     //System.err.println("over");
 
                     if (over != null) {
@@ -249,7 +250,7 @@ public class MouseSelectDemo{
 
     private V3DPolygonBox getBoxHexaGon() {
 
-        V3DPolygonBox polygon = new V3DPolygonBox(context);
+        V3DPolygonBox polygon = new V3DPolygonBox();
         polygon.setHeight(2);
         polygon.setPointList(getHexaGonPointList(), false);
         return polygon;

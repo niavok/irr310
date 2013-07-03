@@ -15,6 +15,10 @@ public class TextureManager {
 
     static Map<BufferedImage, Texture> textureCache = new HashMap<BufferedImage, Texture>();
     
+    
+    private TextureManager() {
+    }
+    
     /**
      * Creates an integer buffer to hold specified ints
      * - strictly a utility method
@@ -72,7 +76,7 @@ public class TextureManager {
         return texture;
     }
 
-    public void clearCache() {
+    public static void clearCache() {
         for(Texture texture: textureCache.values()) {
             texture.free();
         }

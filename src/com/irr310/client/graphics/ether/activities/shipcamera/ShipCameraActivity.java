@@ -1,7 +1,5 @@
-package com.irr310.client.graphics.ether.activities.systemmap;
+package com.irr310.client.graphics.ether.activities.shipcamera;
 
-import com.irr310.client.graphics.ether.activities.shipcamera.ShipCameraActivity;
-import com.irr310.client.graphics.ether.activities.shipcamera.ShipCameraActivity.ShipCameraActivityBundle;
 import com.irr310.common.event.system.DefaultSystemEventVisitor;
 import com.irr310.common.event.system.QuerySystemStateEvent;
 import com.irr310.common.event.system.SystemStateEvent;
@@ -9,33 +7,37 @@ import com.irr310.common.world.state.EntityState;
 import com.irr310.common.world.state.ShipState;
 import com.irr310.common.world.state.WorldSystemState;
 import com.irr310.i3d.Bundle;
-import com.irr310.i3d.Intent;
 import com.irr310.i3d.Message;
 import com.irr310.i3d.view.Activity;
 import com.irr310.i3d.view.RelativeLayout;
 import com.irr310.server.GameServer;
 import com.irr310.server.SystemEngine;
 
-public class SystemMapActivity extends Activity {
+public class ShipCameraActivity extends Activity {
+
+    private RelativeLayout mainRelativeLayout;
+    private WorldSystemState system;
+    private ShipState ship;
+    private WorldSystemState systemState;
     private SystemEngine systemEngine;
     private DefaultSystemEventVisitor visitor;
-    WorldSystemState systemState;
-    private RelativeLayout systemDetailsRelativeLayout;
-
     private static final int UPDATE_SYSTEM_WHAT = 1;
-    private static final int UPDATE_SYSTEM_CONTENT_WHAT = 1;
-    private WorldSystemState system;
-    
+
     @Override
-    public void onCreate(Bundle bundle) {
-        setContentView("main@layout/system_map/system_map");
+    protected void onCreate(Bundle bundle) {
+setContentView("main@layout/camera/ship_camera");
         
-        systemDetailsRelativeLayout = (RelativeLayout) findViewById("systemDetailsRelativeLayout@layout/system_map/system_map");
+        mainRelativeLayout = (RelativeLayout) findViewById("main@layout/camera/ship_camera");
         
-        system = (WorldSystemState) bundle.getObject();
+        ShipCameraActivityBundle shipCameraActivityBundle = (ShipCameraActivityBundle) bundle;
+        system = shipCameraActivityBundle.getSystem();
+        ship = shipCameraActivityBundle.getShip();
+        
         systemEngine = GameServer.getWorldEngine().getSystemEngine(system);
         
         visitor = new DefaultSystemEventVisitor() {
+            
+
             @Override
             public void visit(SystemStateEvent event) {
                 systemState = event.getSystemState();
@@ -71,27 +73,33 @@ public class SystemMapActivity extends Activity {
                 break;
         }
     }
-    
-    public static class SystemMapActivityBundle extends Bundle {
 
-        public SystemMapActivityBundle(WorldSystemState obj) {
-            super(obj);
+    private void updateAll() {
+        mainRelativeLayout.addViewInLayout(new ShipCameraView(ship));
+    }
+
+    public static class ShipCameraActivityBundle extends Bundle {
+
+        static class ShipCameraData {
+            public ShipCameraData(WorldSystemState system, ShipState ship) {
+                this.system = system;
+                this.ship = ship;
+            }
+            public WorldSystemState system;
+            public ShipState ship;
+        }
+        
+        public ShipCameraActivityBundle(WorldSystemState system, ShipState ship) {
+            super(new ShipCameraData(system, ship));
         }
         
         WorldSystemState getSystem() {
-            return (WorldSystemState) getObject();
+            return ((ShipCameraData) getObject()).system;
         }
-    }
-    
-    protected void updateAll() {
-        systemDetailsRelativeLayout.removeAllView();
-        systemDetailsRelativeLayout.addViewInLayout(new SystemDetailsView(this, systemState));
-    }
-
-
-    public void connectShip(ShipState ship) {
-        ShipCameraActivityBundle bundle = new ShipCameraActivityBundle(system, ship);
-        startActivity(new Intent(ShipCameraActivity.class, bundle));
+        
+        ShipState getShip() {
+            return ((ShipCameraData) getObject()).ship;
+        }
     }
     
 }

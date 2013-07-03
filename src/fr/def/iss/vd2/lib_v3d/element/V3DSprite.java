@@ -21,15 +21,18 @@ import java.awt.image.BufferedImage;
 
 import org.lwjgl.opengl.GL11;
 
+import com.irr310.i3d.I3dContext;
+import com.irr310.i3d.scene.I3dCamera;
+import com.irr310.i3d.scene.element.I3dElement;
+
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
-import fr.def.iss.vd2.lib_v3d.camera.V3DCamera;
 
 /**
  *
  * @author fberto
  */
-public class V3DSprite extends V3DElement {
+public class V3DSprite extends I3dElement {
 
     private  TextureHandler texture = null;
 
@@ -40,8 +43,7 @@ public class V3DSprite extends V3DElement {
     private boolean enableColor = true;
     private float opacity = 1f;
 
-    public V3DSprite(V3DContext context, BufferedImage image) {
-        super(context);
+    public V3DSprite(BufferedImage image) {
         this.image = image;
         boundingBox.setFlat(true);
 
@@ -70,12 +72,12 @@ public class V3DSprite extends V3DElement {
 
     @Override
     protected void doInit() {
-        texture = new TextureHandler(getContext().getTextureManager(), image);
+        texture = new TextureHandler(image);
        
     }
     
     @Override
-    protected void doDisplay( V3DCamera camera) {
+    protected void doDisplay( I3dCamera camera) {
 
         if(!enableColor) {
             GL11.glPushAttrib(GL11.GL_CURRENT_BIT);

@@ -20,11 +20,12 @@ package fr.def.iss.vd2.lib_v3d.controller;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
+import com.irr310.i3d.scene.element.I3dElement;
+
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.V3DInputEvent;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraController;
 import fr.def.iss.vd2.lib_v3d.controller.listener.V3DSelectionListener;
-import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 
 /**
  *
@@ -35,18 +36,18 @@ public class V3DDoubleClickController implements V3DCameraController {
     int mouseXInitial = 0;
     int mouseYInitial = 0;
     private long lastClickTime = 0;
-    List<V3DElement> whiteList = null;
+    List<I3dElement> whiteList = null;
     V3DContext context;
     V3DSelectionListener listener;
     private boolean strict = false;
 
-    public V3DDoubleClickController(V3DContext context) {
+    public V3DDoubleClickController() {
         this.context = context;
     }
 
 
     
-    public void setWhiteList(List<V3DElement> whiteList) {
+    public void setWhiteList(List<I3dElement> whiteList) {
         this.whiteList = whiteList;
     }
 
@@ -85,18 +86,18 @@ public class V3DDoubleClickController implements V3DCameraController {
                 }
                 if (Math.abs(e.getX() - mouseXInitial) < 5 && Math.abs(e.getY() - mouseYInitial) < 5) {
                     if (whiteList == null) {
-                        V3DElement overElement = context.getMouseOverlapTop();
+                        I3dElement overElement = context.getMouseOverlapTop();
                         listener.select(overElement);
                         e.consume();
                     } else {
                         if(strict) {
-                            V3DElement overElement =  context.getMouseOverlapTop();
+                            I3dElement overElement =  context.getMouseOverlapTop();
                             if(whiteList.contains(overElement)) {
                                 listener.select(overElement);
                                 e.consume();
                             }
                         }else{
-                            V3DElement overElement = context.getMouseOverlapTop(whiteList);
+                            I3dElement overElement = context.getMouseOverlapTop(whiteList);
                             listener.select(overElement);
                             e.consume();
                         }

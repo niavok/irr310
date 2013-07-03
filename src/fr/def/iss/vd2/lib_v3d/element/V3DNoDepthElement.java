@@ -19,36 +19,36 @@ package fr.def.iss.vd2.lib_v3d.element;
 
 import org.lwjgl.opengl.GL11;
 
+import com.irr310.i3d.scene.I3dCamera;
+import com.irr310.i3d.scene.element.I3dElement;
+
 import fr.def.iss.vd2.lib_v3d.V3DContext;
-import fr.def.iss.vd2.lib_v3d.camera.V3DCamera;
 
 /**
  *
  * @author fberto
  */
-public class V3DNoDepthElement extends V3DElement {
+public class V3DNoDepthElement extends I3dElement {
 
-    private V3DElement childElement = null;
+    private I3dElement childElement = null;
     private V3DBoundingBox boundingBox = new V3DBoundingBox();
     
-    public V3DNoDepthElement(V3DContext context) {
-        super(context);
+    public V3DNoDepthElement() {
     }
 
-    public V3DNoDepthElement(V3DElement element) {
-        super(element.getContext());
+    public V3DNoDepthElement(I3dElement element) {
         childElement = element;
     }
 
 
 
-    public void setElement(V3DElement element) {
+    public void setElement(I3dElement element) {
         childElement = element;
     }
 
 
     @Override
-    protected void doDisplay( V3DCamera camera) {
+    protected void doDisplay( I3dCamera camera) {
         if(childElement == null) {
             return;
         }
@@ -70,7 +70,7 @@ public class V3DNoDepthElement extends V3DElement {
     }
 
     @Override
-    protected void doSelect( V3DCamera camera, long parentId) {
+    protected void doSelect( I3dCamera camera, long parentId) {
         if(childElement == null) {
             return;
         }

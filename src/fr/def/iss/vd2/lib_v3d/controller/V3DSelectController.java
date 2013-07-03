@@ -20,28 +20,29 @@ package fr.def.iss.vd2.lib_v3d.controller;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
+import com.irr310.i3d.scene.element.I3dElement;
+
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.V3DInputEvent;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraController;
 import fr.def.iss.vd2.lib_v3d.controller.listener.V3DSelectionListener;
-import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 
 public class V3DSelectController implements V3DCameraController {
 
     private V3DContext context;
-    private List<V3DElement> whiteList = null;
+    private List<I3dElement> whiteList = null;
     private int mouseEventType = MouseEvent.MOUSE_CLICKED;
     private int mouseButton = MouseEvent.BUTTON1;
     private boolean strict = false;
     private V3DSelectionListener listener;
     private boolean enable = true;
 
-    public V3DSelectController(V3DContext context) {
+    public V3DSelectController() {
         assert (context != null);
         this.context = context;
     }
 
-    public void setWhiteList(List<V3DElement> whiteList) {
+    public void setWhiteList(List<I3dElement> whiteList) {
         this.whiteList = whiteList;
     }
 

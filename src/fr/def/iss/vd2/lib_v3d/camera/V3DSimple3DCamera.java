@@ -24,16 +24,18 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
+import com.irr310.i3d.scene.I3dCamera;
+import com.irr310.i3d.scene.element.I3dElement;
+
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.element.V3DBoundingBox;
-import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 
 /**
  *
  * @author fberto
  */
-public class V3DSimple3DCamera extends V3DCamera {
+public class V3DSimple3DCamera extends I3dCamera {
 
     private V3DVect3 position = new V3DVect3(0, 0, 0);
     private V3DVect3 rotation = new V3DVect3(45, 0, 0);
@@ -43,8 +45,7 @@ public class V3DSimple3DCamera extends V3DCamera {
 
 
 
-    public V3DSimple3DCamera(V3DContext context) {
-        super(context);
+    public V3DSimple3DCamera() {
     }
 
     @Override
@@ -349,7 +350,7 @@ public class V3DSimple3DCamera extends V3DCamera {
     }
 
     public boolean containsAll() {
-        V3DElement rootElt = null;
+        I3dElement rootElt = null;
         if (currentScene != null) {
             rootElt = currentScene.getRootElement();
         }

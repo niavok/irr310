@@ -25,15 +25,17 @@ import org.lwjgl.util.glu.GLUtessellator;
 import org.lwjgl.util.glu.GLUtessellatorCallback;
 import org.lwjgl.util.glu.GLUtessellatorCallbackAdapter;
 
+import com.irr310.i3d.scene.I3dCamera;
+import com.irr310.i3d.scene.element.I3dElement;
+
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
-import fr.def.iss.vd2.lib_v3d.camera.V3DCamera;
 
 /**
  *
  * @author fberto
  */
-public class V3DPolygon extends V3DElement {
+public class V3DPolygon extends I3dElement {
 
     private List<List<V3DVect3>> pointListList = new ArrayList<List<V3DVect3>>();
     private List<Boolean> holeList = new ArrayList<Boolean>();
@@ -51,8 +53,7 @@ public class V3DPolygon extends V3DElement {
         PLAIN,
     }
 
-    public V3DPolygon(V3DContext context) {
-        super(context);
+    public V3DPolygon() {
         boundingBox.setSize(0, 0, 0);
     }
 
@@ -247,7 +248,7 @@ public class V3DPolygon extends V3DElement {
     }
 
     @Override
-    protected void doDisplay( V3DCamera camera) {
+    protected void doDisplay( I3dCamera camera) {
 
         if (renderMode == RenderMode.PLAIN) {
             displayPlainPolygon();
@@ -260,7 +261,7 @@ public class V3DPolygon extends V3DElement {
     }
 
     @Override
-    protected void doSelect( V3DCamera camera, long parentId) {
+    protected void doSelect( I3dCamera camera, long parentId) {
         if (parentId != 0) {
             displayPlainPolygon();
         }

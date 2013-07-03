@@ -24,10 +24,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.irr310.i3d.I3dIdAllocator;
+import com.irr310.i3d.TextureManager;
+import com.irr310.i3d.scene.I3dMouseOverlapListener;
+import com.irr310.i3d.scene.element.I3dElement;
+
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
-import fr.def.iss.vd2.lib_v3d.element.TextureManager;
-import fr.def.iss.vd2.lib_v3d.element.V3DElement;
-import fr.def.iss.vd2.lib_v3d.element.V3DIdAllocator;
 
 /**
  * Un V3dContext relie tous les objets servant au rendu d'image 3d dans un
@@ -186,7 +188,7 @@ public class V3DContext {
      * 
      * @return list of V3DElement
      */
-    public List<V3DElement> getMouseOverlapList() {
+    public List<I3dElement> getMouseOverlapList() {
         return mouseOverlapList;
     }
 
@@ -196,7 +198,7 @@ public class V3DContext {
      * 
      * @return front element or null
      */
-    public V3DElement getMouseOverlapTop() {
+    public I3dElement getMouseOverlapTop() {
 
         if (mouseOverlapList.size() > 0) {
             return mouseOverlapList.get(mouseOverlapList.size() - 1);
@@ -213,7 +215,7 @@ public class V3DContext {
      * @param whiteList
      * @return front element or null
      */
-    public V3DElement getMouseOverlapTop(List<V3DElement> whiteList) {
+    public I3dElement getMouseOverlapTop(List<I3dElement> whiteList) {
         if (mouseOverlapList.size() > 0) {
             for (int i = mouseOverlapList.size() - 1; i >= 0; i--) {
                 if (whiteList.contains(mouseOverlapList.get(i))) {
@@ -233,7 +235,7 @@ public class V3DContext {
      * 
      * @param listener
      */
-    public void addMouseOverlapListener(V3DMouseOverlapListener listener) {
+    public void addMouseOverlapListener(I3dMouseOverlapListener listener) {
         mouseOverLapListenerList.add(listener);
     }
 
@@ -242,7 +244,7 @@ public class V3DContext {
      * 
      * @param listener
      */
-    public void removeMouseOverlapListener(V3DMouseOverlapListener listener) {
+    public void removeMouseOverlapListener(I3dMouseOverlapListener listener) {
         mouseOverLapListenerList.remove(listener);
     }
 
@@ -253,12 +255,11 @@ public class V3DContext {
     //
 
     private final ElementComparator elementComparator = new ElementComparator();
-    private V3DIdAllocator idAllocator = new V3DIdAllocator();
+    private I3dIdAllocator idAllocator = new I3dIdAllocator();
     private List<FloatValuedElement> mouseOverlapDepthList = new ArrayList<FloatValuedElement>();
-    private List<V3DElement> mouseOverlapList = new ArrayList<V3DElement>();
-    private List<V3DMouseOverlapListener> mouseOverLapListenerList = new ArrayList<V3DMouseOverlapListener>();
+    private List<I3dElement> mouseOverlapList = new ArrayList<I3dElement>();
+    private List<I3dMouseOverlapListener> mouseOverLapListenerList = new ArrayList<I3dMouseOverlapListener>();
     private V3DCameraBinding mouseOverCameraBinding = null;
-    private TextureManager textureManager = new TextureManager();
     private Map<String, V3DShader> shaderMap = new HashMap<String, V3DShader>();
     private List<V3DShader> uniqueShaderList = new ArrayList<V3DShader>();
 
@@ -278,20 +279,11 @@ public class V3DContext {
     }
 
     /**
-     * Internal public method Used by texture users to access to a texture cache
-     * 
-     * @return texture manager
-     */
-    public TextureManager getTextureManager() {
-        return textureManager;
-    }
-
-    /**
      * Internal public method Used by V3DElement to generate there id
      * 
      * @return id allocator
      */
-    public V3DIdAllocator getIdAllocator() {
+    public I3dIdAllocator getIdAllocator() {
         return idAllocator;
     }
 
@@ -309,7 +301,7 @@ public class V3DContext {
             Collections.sort(newElementsList, elementComparator);
 
             mouseOverlapDepthList = newElementsList;
-            mouseOverlapList = new ArrayList<V3DElement>(mouseOverlapDepthList.size());
+            mouseOverlapList = new ArrayList<I3dElement>(mouseOverlapDepthList.size());
 
             for (FloatValuedElement elem : mouseOverlapDepthList) {
                 if (elem.element != null) {
@@ -326,7 +318,7 @@ public class V3DContext {
      * change
      */
     private void fireMouseOverlapChanged() {
-        for (V3DMouseOverlapListener listener : mouseOverLapListenerList) {
+        for (I3dMouseOverlapListener listener : mouseOverLapListenerList) {
             listener.selectionChange();
         }
     }
@@ -353,10 +345,10 @@ public class V3DContext {
      */
     public static class FloatValuedElement {
 
-        public V3DElement element;
+        public I3dElement element;
         public float value;
 
-        public FloatValuedElement(V3DElement element, float value) {
+        public FloatValuedElement(I3dElement element, float value) {
             this.element = element;
             this.value = value;
         }

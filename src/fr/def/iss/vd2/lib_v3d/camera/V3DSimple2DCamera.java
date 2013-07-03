@@ -24,6 +24,8 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
+import com.irr310.i3d.scene.I3dCamera;
+
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 
@@ -31,7 +33,7 @@ import fr.def.iss.vd2.lib_v3d.V3DVect3;
  *
  * @author fberto
  */
-public class V3DSimple2DCamera extends V3DCamera {
+public class V3DSimple2DCamera extends I3dCamera {
 
     private Point2D.Float position = new Point2D.Float(0, 0);
     private float rotation = 0;
@@ -40,8 +42,7 @@ public class V3DSimple2DCamera extends V3DCamera {
     private float lastHeight = 0;
     private boolean showCenter = false;
 
-    public V3DSimple2DCamera(V3DContext context) {
-        super(context);
+    public V3DSimple2DCamera() {
     }
 
     @Override

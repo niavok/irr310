@@ -64,7 +64,7 @@ public class CameraBindingDemo{
 
         canvas = new V3DCanvas(context, 1024, 768);
 
-        activeCamera = new V3DSimple2DCamera(context);
+        activeCamera = new V3DSimple2DCamera();
         fullscreenBinding = V3DCameraBinding.buildFullscreenCamera(activeCamera);
 
         miniBinding = V3DCameraBinding.buildAbsoluteCamera(activeCamera, 10, 20 , 200, 150);
@@ -103,7 +103,7 @@ public class CameraBindingDemo{
 
         
 
-        leftCamera = new V3DSimple2DCamera(context);
+        leftCamera = new V3DSimple2DCamera();
         leftCamera.setBackgroundColor(V3DColor.emerald);
         leftCamera.setShowCenter(true);
         leftBinding = new V3DCameraBinding();
@@ -131,7 +131,7 @@ public class CameraBindingDemo{
 
 
 
-        topRightLeftCamera = new V3DSimple2DCamera(context);
+        topRightLeftCamera = new V3DSimple2DCamera();
         topRightLeftCamera.setBackgroundColor(V3DColor.azure);
         topRightLeftCamera.setShowCenter(true);
         topRightLeftBinding = new V3DCameraBinding();
@@ -159,7 +159,7 @@ public class CameraBindingDemo{
 
 
 
-        topRightRightCamera = new V3DSimple2DCamera(context);
+        topRightRightCamera = new V3DSimple2DCamera();
         topRightRightCamera.setBackgroundColor(V3DColor.fushia);
         topRightRightCamera.setShowCenter(true);
         topRightRightinding = new V3DCameraBinding();
@@ -188,7 +188,7 @@ public class CameraBindingDemo{
 
 
 
-        bottomRightCamera = new V3DSimple2DCamera(context);
+        bottomRightCamera = new V3DSimple2DCamera();
         bottomRightCamera.setBackgroundColor(V3DColor.lavander);
         bottomRightCamera.setShowCenter(true);
         bottomRightinding = new V3DCameraBinding();

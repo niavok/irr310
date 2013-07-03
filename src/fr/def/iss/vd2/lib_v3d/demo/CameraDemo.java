@@ -18,10 +18,11 @@ package fr.def.iss.vd2.lib_v3d.demo;
 
 import org.lwjgl.LWJGLException;
 
+import com.irr310.i3d.scene.I3dScene;
+
 import fr.def.iss.vd2.lib_v3d.V3DCanvas;
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DContext;
-import fr.def.iss.vd2.lib_v3d.V3DScene;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
 import fr.def.iss.vd2.lib_v3d.camera.V3DSimple2DCamera;
@@ -67,13 +68,13 @@ public class CameraDemo{
 
         canvas = new V3DCanvas(context, 1024, 768);
 
-        V3DScene scene = new V3DScene(context);
+        I3dScene scene = new I3dScene();
 
 
         //Left
         {
 
-            V3DSimple2DCamera camera = new V3DSimple2DCamera(context);
+            V3DSimple2DCamera camera = new V3DSimple2DCamera();
             camera.setBackgroundColor(V3DColor.violet);
             camera.setShowCenter(true);
             V3DCameraBinding binding = new V3DCameraBinding();
@@ -101,7 +102,7 @@ public class CameraDemo{
         //Center
         {
 
-            V3DSimple3DCamera camera = new V3DSimple3DCamera(context);
+            V3DSimple3DCamera camera = new V3DSimple3DCamera();
             camera.setBackgroundColor(V3DColor.mauve);
             camera.setShowCenter(true);
             V3DCameraBinding binding = new V3DCameraBinding();
@@ -130,7 +131,7 @@ public class CameraDemo{
 
 
 
-            V3DSimple3DCamera camera = new V3DSimple3DCamera(context);
+            V3DSimple3DCamera camera = new V3DSimple3DCamera();
             camera.setBackgroundColor(V3DColor.lavander);
             camera.setShowCenter(true);
             V3DCameraBinding binding = new V3DCameraBinding();
@@ -169,8 +170,8 @@ public class CameraDemo{
 		}
     }
 
-    private void fillScene(V3DScene scene) {
-        V3DBox box = new V3DBox(context);
+    private void fillScene(I3dScene scene) {
+        V3DBox box = new V3DBox();
         box.setSize(new V3DVect3(1, 1, 2));
 
         scene.add(new V3DColorElement(box, V3DColor.emerald));

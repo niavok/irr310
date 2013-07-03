@@ -20,11 +20,12 @@ package fr.def.iss.vd2.lib_v3d.controller;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 
+import com.irr310.i3d.scene.element.I3dElement;
+
 import fr.def.iss.vd2.lib_v3d.V3DInputEvent;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraController;
 import fr.def.iss.vd2.lib_v3d.camera.V3DSimple2DCamera;
 import fr.def.iss.vd2.lib_v3d.controller.listener.V3DInsertListener;
-import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 
 /**
  * This controlleur destroy itself after the element's insertion
@@ -34,7 +35,7 @@ public class V3DInsertion2DController implements V3DCameraController {
 
     V3DSimple2DCamera camera;
     boolean moving = false;
-    private V3DElement elementToInsert;
+    private I3dElement elementToInsert;
     private V3DInsertListener listener;
 
     public V3DInsertion2DController(V3DSimple2DCamera camera) {
@@ -42,7 +43,7 @@ public class V3DInsertion2DController implements V3DCameraController {
 
     }
 
-    public void setElementToInsert(V3DElement elementToInsert) {
+    public void setElementToInsert(I3dElement elementToInsert) {
 
         if (this.elementToInsert != null) {
             camera.getScene().remove(elementToInsert);
@@ -107,7 +108,7 @@ public class V3DInsertion2DController implements V3DCameraController {
         camera.removeController(this);
     }
 
-    public V3DElement getElementToInsert() {
+    public I3dElement getElementToInsert() {
         return elementToInsert;
     }
 

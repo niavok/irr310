@@ -17,7 +17,7 @@
 
 package fr.def.iss.vd2.lib_v3d.controller.listener;
 
-import fr.def.iss.vd2.lib_v3d.element.V3DElement;
+import com.irr310.i3d.scene.element.I3dElement;
 
 /**
  *
@@ -25,8 +25,8 @@ import fr.def.iss.vd2.lib_v3d.element.V3DElement;
  */
 public interface V3DMoveListener {
 
-    public void move(V3DElement selection, V3DElement moved);
+    public void move(I3dElement selection, I3dElement moved);
 
-    public void moveEnded(V3DElement selection, V3DElement moved);
+    public void moveEnded(I3dElement selection, I3dElement moved);
 
 }

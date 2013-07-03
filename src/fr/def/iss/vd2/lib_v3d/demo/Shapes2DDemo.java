@@ -18,18 +18,19 @@ package fr.def.iss.vd2.lib_v3d.demo;
 
 import org.lwjgl.LWJGLException;
 
+import com.irr310.i3d.scene.I3dScene;
+import com.irr310.i3d.scene.element.I3dElement;
+import com.irr310.i3d.scene.element.I3dGroupElement;
+
 import fr.def.iss.vd2.lib_v3d.V3DCanvas;
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DContext;
-import fr.def.iss.vd2.lib_v3d.V3DScene;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
 import fr.def.iss.vd2.lib_v3d.camera.V3DSimple2DCamera;
 import fr.def.iss.vd2.lib_v3d.controller.V3DSimple2DCameraController;
 import fr.def.iss.vd2.lib_v3d.element.V3DCircle;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
-import fr.def.iss.vd2.lib_v3d.element.V3DElement;
-import fr.def.iss.vd2.lib_v3d.element.V3DGroupElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DLine;
 import fr.def.iss.vd2.lib_v3d.element.V3DPoint;
 
@@ -43,7 +44,7 @@ public class Shapes2DDemo  {
     V3DCameraBinding fullscreenBinding;
     V3DSimple2DCamera activeCamera;
     V3DCanvas canvas;
-    private V3DScene scene;
+    private I3dScene scene;
     private float offsetX = 0;
     private float offsetY = 0;
 
@@ -65,7 +66,7 @@ public class Shapes2DDemo  {
 
         canvas = new V3DCanvas(context, 1024, 768);
 
-        activeCamera = new V3DSimple2DCamera(context);
+        activeCamera = new V3DSimple2DCamera();
         fullscreenBinding = V3DCameraBinding.buildFullscreenCamera(activeCamera);
 
         // Add zoom and pane camera controlleur
@@ -88,8 +89,8 @@ public class Shapes2DDemo  {
 		}
     }
 
-    private V3DScene generateScene() {
-        scene = new V3DScene(context);
+    private I3dScene generateScene() {
+        scene = new I3dScene();
 
         addElement(generatePlainCircle());
         addElement(generateThickBorderCircle());
@@ -117,7 +118,7 @@ public class Shapes2DDemo  {
         return scene;
     }
 
-    private void addElement(V3DElement element) {
+    private void addElement(I3dElement element) {
 
         V3DColor color = V3DColor.randomLightOpaqueColor();
 
@@ -126,9 +127,9 @@ public class Shapes2DDemo  {
         scene.add(new V3DColorElement(element, color));
     }
 
-    private V3DElement generatePlainCircle() {
+    private I3dElement generatePlainCircle() {
         //Add green circle
-        V3DCircle circle = new V3DCircle(context);
+        V3DCircle circle = new V3DCircle();
 
         circle.setQuality(64);
         circle.setSize(0.8f);
@@ -136,9 +137,9 @@ public class Shapes2DDemo  {
         return circle;
     }
 
-    private V3DElement generateThickBorderCircle() {
+    private I3dElement generateThickBorderCircle() {
         //Add green circle
-        V3DCircle circle = new V3DCircle(context);
+        V3DCircle circle = new V3DCircle();
 
         circle.setRenderMode(V3DCircle.RenderMode.SOLID);
         circle.setQuality(16);
@@ -147,9 +148,9 @@ public class Shapes2DDemo  {
         return circle;
     }
 
-    private V3DElement generateLargeBorderCircle() {
+    private I3dElement generateLargeBorderCircle() {
         //Add green circle
-        V3DCircle circle = new V3DCircle(context);
+        V3DCircle circle = new V3DCircle();
 
         circle.setRenderMode(V3DCircle.RenderMode.SOLID);
         circle.setQuality(16);
@@ -158,9 +159,9 @@ public class Shapes2DDemo  {
         return circle;
     }
 
-    private V3DElement generateRingCircle() {
+    private I3dElement generateRingCircle() {
         //Add green circle
-        V3DCircle circle = new V3DCircle(context);
+        V3DCircle circle = new V3DCircle();
 
         circle.setRenderMode(V3DCircle.RenderMode.PLAIN);
         circle.setInnerRadius(0.2f);
@@ -169,9 +170,9 @@ public class Shapes2DDemo  {
         return circle;
     }
 
-    private V3DElement generateColorGradiantCircle() {
+    private I3dElement generateColorGradiantCircle() {
         //Add green circle
-        V3DCircle circle = new V3DCircle(context);
+        V3DCircle circle = new V3DCircle();
 
         circle.setRenderMode(V3DCircle.RenderMode.PLAIN);
         circle.setInnerRadius(0.4f);
@@ -181,11 +182,11 @@ public class Shapes2DDemo  {
         return circle;
     }
 
-    private V3DElement generateHaloCircle() {
+    private I3dElement generateHaloCircle() {
 
         V3DColor color = V3DColor.randomLightOpaqueColor();
         //Add green circle
-        V3DCircle iCircle = new V3DCircle(context);
+        V3DCircle iCircle = new V3DCircle();
 
         iCircle.setRenderMode(V3DCircle.RenderMode.PLAIN);
         iCircle.setInnerRadius(0.4f);
@@ -193,23 +194,23 @@ public class Shapes2DDemo  {
         iCircle.setQuality(64);
         iCircle.setSize(0.8f);
 
-        V3DCircle oCircle = new V3DCircle(context);
+        V3DCircle oCircle = new V3DCircle();
 
         oCircle.setRenderMode(V3DCircle.RenderMode.PLAIN);
         oCircle.setColors(color, color);
         oCircle.setQuality(64);
         oCircle.setSize(0.4f);
 
-        V3DGroupElement group = new V3DGroupElement(context);
+        I3dGroupElement group = new I3dGroupElement();
         group.add(iCircle);
         group.add(oCircle);
 
         return group;
     }
 
-    private V3DElement generateLowQualityCircle() {
+    private I3dElement generateLowQualityCircle() {
         //Add green circle
-        V3DCircle circle = new V3DCircle(context);
+        V3DCircle circle = new V3DCircle();
 
         circle.setQuality(10);
         circle.setSize(0.8f);
@@ -217,60 +218,60 @@ public class Shapes2DDemo  {
         return circle;
     }
 
-    private V3DElement generateSmallPoint() {
+    private I3dElement generateSmallPoint() {
         //Add green circle
-        V3DPoint point = new V3DPoint(context);
+        V3DPoint point = new V3DPoint();
         point.setSize(1);
 
         return point;
     }
 
-    private V3DElement generateMediumPoint() {
+    private I3dElement generateMediumPoint() {
         //Add green circle
-        V3DPoint point = new V3DPoint(context);
+        V3DPoint point = new V3DPoint();
         point.setSize(5);
 
         return point;
     }
 
-    private V3DElement generateLargePoint() {
+    private I3dElement generateLargePoint() {
         //Add green circle
-        V3DPoint point = new V3DPoint(context);
+        V3DPoint point = new V3DPoint();
         point.setSize(30);
 
         return point;
     }
 
-    private V3DElement generateSmallLine() {
+    private I3dElement generateSmallLine() {
         //Add green circle
-        V3DLine line = new V3DLine(context);
+        V3DLine line = new V3DLine();
         line.setLocation(new V3DVect3(-0.5f, -0.5f, 0), new V3DVect3(0.5f, 0.5f, 0));
         line.setThickness(1);
 
         return line;
     }
 
-    private V3DElement generateMediumLine() {
+    private I3dElement generateMediumLine() {
         //Add green circle
-        V3DLine line = new V3DLine(context);
+        V3DLine line = new V3DLine();
         line.setLocation(new V3DVect3(-0.5f, -0.5f, 0), new V3DVect3(0.5f, 0.5f, 0));
         line.setThickness(3);
 
         return line;
     }
 
-    private V3DElement generateLargeLine() {
+    private I3dElement generateLargeLine() {
         //Add green circle
-        V3DLine line = new V3DLine(context);
+        V3DLine line = new V3DLine();
         line.setLocation(new V3DVect3(-0.5f, -0.5f, 0), new V3DVect3(0.5f, 0.5f, 0));
         line.setThickness(10);
 
         return line;
     }
 
-    private V3DElement generateStrippleLine() {
+    private I3dElement generateStrippleLine() {
         //Add green circle
-        V3DLine line = new V3DLine(context);
+        V3DLine line = new V3DLine();
         line.setLocation(new V3DVect3(-0.5f, -0.5f, 0), new V3DVect3(0.5f, 0.5f, 0));
         line.setThickness(2);
         line.setStipple(1, (short) 5658);

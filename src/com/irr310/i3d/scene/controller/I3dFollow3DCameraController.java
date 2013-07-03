@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with V3dScene.  If not, see <http://www.gnu.org/licenses/>.
 
-package fr.def.iss.vd2.lib_v3d.controller;
+package com.irr310.i3d.scene.controller;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -27,20 +27,20 @@ import com.irr310.client.graphics.WorldRenderer;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.system.Part;
+import com.irr310.i3d.scene.I3dCamera;
+import com.irr310.i3d.scene.I3dEye3DCamera;
+import com.irr310.i3d.scene.element.I3dElement;
 
 import fr.def.iss.vd2.lib_v3d.V3DInputEvent;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
-import fr.def.iss.vd2.lib_v3d.camera.V3DCamera;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraController;
-import fr.def.iss.vd2.lib_v3d.camera.V3DEye3DCamera;
-import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 
 /**
  * @author fberto
  */
 
-public class V3DFollow3DCameraController implements V3DCameraController, GraphicalElement {
-    V3DEye3DCamera camera;
+public class I3dFollow3DCameraController implements V3DCameraController, GraphicalElement {
+    I3dEye3DCamera camera;
     float cameraXInitial = 0;
     float cameraYInitial = 0;
     float cameraThetaInitial = 0;
@@ -57,7 +57,6 @@ public class V3DFollow3DCameraController implements V3DCameraController, Graphic
     private int translationButton = MouseEvent.BUTTON1;
     private int rotationButton = MouseEvent.BUTTON3;
     private Part element;
-    private final WorldRenderer renderer;
     private TransformMatrix eye;
     private TransformMatrix target;
     private TransformMatrix top;
@@ -71,8 +70,7 @@ public class V3DFollow3DCameraController implements V3DCameraController, Graphic
         TRANSLATE, ROTATE,
     }
 
-    public V3DFollow3DCameraController(WorldRenderer renderer, V3DEye3DCamera camera) {
-        this.renderer = renderer;
+    public I3dFollow3DCameraController(I3dEye3DCamera camera) {
         this.camera = camera;
 
         camera.addController(this);
@@ -271,7 +269,8 @@ public class V3DFollow3DCameraController implements V3DCameraController, Graphic
 
     @Override
     public void destroy() {
-        renderer.destroyElement(this);
+        // TODO find what was the use of this ?
+        //renderer.destroyElement(this);
     }
 
     @Override
@@ -280,11 +279,11 @@ public class V3DFollow3DCameraController implements V3DCameraController, Graphic
     }
 
     @Override
-    public V3DElement getV3DElement() {
+    public I3dElement getV3DElement() {
         return null;
     }
 
-    public V3DCamera getCamera() {
+    public I3dCamera getCamera() {
         return camera;
     }
 

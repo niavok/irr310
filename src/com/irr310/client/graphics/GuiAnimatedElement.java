@@ -1,8 +1,8 @@
 package com.irr310.client.graphics;
 
 import com.irr310.client.graphics.WorldRenderer.GuiLayer;
+import com.irr310.i3d.scene.element.I3dElement;
 
-import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent;
 
 
@@ -23,7 +23,7 @@ public abstract class GuiAnimatedElement extends GenericGraphicalElement {
     }
     
     @Override
-    public V3DElement getV3DElement() {
+    public I3dElement getV3DElement() {
         return null;
     }
 

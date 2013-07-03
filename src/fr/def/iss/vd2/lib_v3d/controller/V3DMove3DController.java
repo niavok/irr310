@@ -23,16 +23,18 @@ import java.awt.geom.Point2D;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.irr310.i3d.I3dContext;
+import com.irr310.i3d.scene.element.I3dElement;
+
 import fr.def.iss.vd2.lib_v3d.V3DInputEvent;
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraController;
 import fr.def.iss.vd2.lib_v3d.camera.V3DSimple3DCamera;
 import fr.def.iss.vd2.lib_v3d.controller.listener.V3DMoveListener;
-import fr.def.iss.vd2.lib_v3d.element.V3DElement;
 
 public class V3DMove3DController implements V3DCameraController {
 
-    Map<V3DElement, V3DElement> moveMap = new HashMap<V3DElement, V3DElement>();
+    Map<I3dElement, I3dElement> moveMap = new HashMap<I3dElement, I3dElement>();
     V3DSimple3DCamera camera;
     Point popUpPosition = new Point(0, 0);
     float elementXInitial = 0;
@@ -41,8 +43,8 @@ public class V3DMove3DController implements V3DCameraController {
     float mouseYInitial = 0;
     int lastPressedButton = 0;
     boolean moving = false;
-    private V3DElement elementToMove;
-    private V3DElement clickedElement;
+    private I3dElement elementToMove;
+    private I3dElement clickedElement;
     private V3DMoveListener listener;
     private boolean enable = true;
     private boolean firstOnMove = false;
@@ -60,7 +62,7 @@ public class V3DMove3DController implements V3DCameraController {
         this.translationButton = translationButton;
     }
 
-    public void setMoveMap(Map<V3DElement, V3DElement> moveMap) {
+    public void setMoveMap(Map<I3dElement, I3dElement> moveMap) {
         this.moveMap = moveMap;
     }
 
@@ -95,7 +97,7 @@ public class V3DMove3DController implements V3DCameraController {
 
     private void beginMove(V3DMouseEvent e) {
 
-        V3DElement overElement = camera.getContext().getMouseOverlapTop();
+        I3dElement overElement = I3dContext.getInstance().getSceneManager().getMouseOverlapTop();
 
         if (moving) {
             mouseMoving(e);

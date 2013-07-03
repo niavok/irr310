@@ -15,10 +15,11 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with V3dScene.  If not, see <http://www.gnu.org/licenses/>.
 
-package fr.def.iss.vd2.lib_v3d.element;
+package com.irr310.i3d.scene.element;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 
@@ -26,21 +27,20 @@ import fr.def.iss.vd2.lib_v3d.V3DContext;
  *
  * @author fberto
  */
-public class V3DGroupElement extends V3DCommonGroupElement {
+public class I3dGroupElement extends I3dCommonGroupElement {
 
-    List<V3DElement> childrenList = new ArrayList<V3DElement>();
+    List<I3dElement> childrenList = new ArrayList<I3dElement>();
 
-    public V3DGroupElement(V3DContext context) {
-        super(context);
+    public I3dGroupElement() {
     }
 
-    public void add(V3DElement element) {
+    public void add(I3dElement element) {
         assert(element != null);
         childrenList.add(element);
     }
 
     @Override
-    protected List<V3DElement> doGetChildren() {
+    protected List<I3dElement> doGetChildren() {
         return childrenList;
     }
 

@@ -18,10 +18,11 @@ package fr.def.iss.vd2.lib_v3d.demo;
 
 import org.lwjgl.LWJGLException;
 
+import com.irr310.i3d.scene.I3dScene;
+
 import fr.def.iss.vd2.lib_v3d.V3DCanvas;
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DContext;
-import fr.def.iss.vd2.lib_v3d.V3DScene;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
 import fr.def.iss.vd2.lib_v3d.camera.V3DSimple3DCamera;
@@ -61,7 +62,7 @@ generateCanvas();
 
         canvas = new V3DCanvas(context, 1024, 768);
 
-        activeCamera = new V3DSimple3DCamera(context);
+        activeCamera = new V3DSimple3DCamera();
         fullscreenBinding = V3DCameraBinding.buildFullscreenCamera(activeCamera);
 
 
@@ -92,12 +93,12 @@ generateCanvas();
 		}
     }
 
-    private V3DScene generateScene() {
-        V3DScene scene = new V3DScene(context);
+    private I3dScene generateScene() {
+        I3dScene scene = new I3dScene();
 
 
         //Add green circle
-        V3DCircle circle = new V3DCircle(context);
+        V3DCircle circle = new V3DCircle();
 
         circle.setQuality(64);
         circle.setSize(5);
@@ -106,7 +107,7 @@ generateCanvas();
         scene.add(new V3DColorElement(circle, V3DColor.green));
 
         //Add red rectangle
-        V3DRectangle rectangle = new V3DRectangle(context);
+        V3DRectangle rectangle = new V3DRectangle();
 
         rectangle.setSize(5, 8);
         rectangle.setPosition(-2, -5, 0);
@@ -115,7 +116,7 @@ generateCanvas();
         scene.add(new V3DColorElement(rectangle, V3DColor.red));
 
 
-        V3DBox box = new V3DBox(context);
+        V3DBox box = new V3DBox();
         box.setSize(new V3DVect3(2, 7, 5));
 
         box.setPosition(2, 5, -1);

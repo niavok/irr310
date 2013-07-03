@@ -22,21 +22,24 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.irr310.i3d.scene.element.I3dCommonGroupElement;
+import com.irr310.i3d.scene.element.I3dElement;
+
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 
 /**
  *
  * @author fberto
  */
-public class V3DOrderedGroupElement<T extends Comparable<T>> extends V3DCommonGroupElement {
+public class V3DOrderedGroupElement<T extends Comparable<T>> extends I3dCommonGroupElement {
 
     List<KeyAndElement<T>> childrenList = new ArrayList<KeyAndElement<T>>();
 
     private static class KeyAndElement<T extends Comparable<T>> implements Comparable<KeyAndElement<T>> {
         public final T key;
-        public final V3DElement element;
+        public final I3dElement element;
 
-        public KeyAndElement(T key, V3DElement element) {
+        public KeyAndElement(T key, I3dElement element) {
             this.key = key;
             this.element = element;
         }
@@ -48,10 +51,10 @@ public class V3DOrderedGroupElement<T extends Comparable<T>> extends V3DCommonGr
 
     }
 
-    private List<V3DElement> elementList = new AbstractList<V3DElement>() {
+    private List<I3dElement> elementList = new AbstractList<I3dElement>() {
 
         @Override
-        public V3DElement get(int index) {
+        public I3dElement get(int index) {
             return childrenList.get(index).element;
         }
 
@@ -61,16 +64,15 @@ public class V3DOrderedGroupElement<T extends Comparable<T>> extends V3DCommonGr
         }
 
         @Override
-        public V3DElement remove(int index) {
+        public I3dElement remove(int index) {
             return childrenList.remove(index).element;
         }
     };
 
-    public V3DOrderedGroupElement(V3DContext context) {
-        super(context);
+    public V3DOrderedGroupElement() {
     }
 
-    public void addOrdered(V3DElement element, T key) {
+    public void addOrdered(I3dElement element, T key) {
         assert(element != null);
         KeyAndElement<T> kae = new KeyAndElement<T>(key, element);
         int insertPoint = Collections.binarySearch(childrenList, kae);
@@ -85,7 +87,7 @@ public class V3DOrderedGroupElement<T extends Comparable<T>> extends V3DCommonGr
     }
 
     @Override
-    protected List<V3DElement> doGetChildren() {
+    protected List<I3dElement> doGetChildren() {
         return elementList;
     }
 

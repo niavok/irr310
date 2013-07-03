@@ -20,15 +20,17 @@ package fr.def.iss.vd2.lib_v3d.element;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
+import com.irr310.i3d.scene.I3dCamera;
+import com.irr310.i3d.scene.element.I3dElement;
+
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DContext;
-import fr.def.iss.vd2.lib_v3d.camera.V3DCamera;
 
 /**
  *
  * @author fberto
  */
-public class V3DCircle extends V3DElement {
+public class V3DCircle extends I3dElement {
 
     private float radius = 0.5f;
     private float innerRadius = 0.f;
@@ -50,8 +52,7 @@ public class V3DCircle extends V3DElement {
     }
 
 
-    public V3DCircle(V3DContext context) {
-        super(context);
+    public V3DCircle() {
         boundingBox.setSize(1, 1, 0);
         boundingBox.setFlat(true);
     }
@@ -88,7 +89,7 @@ public class V3DCircle extends V3DElement {
     }
 
     @Override
-    protected void doDisplay( V3DCamera camera) {
+    protected void doDisplay( I3dCamera camera) {
         
         GL11.glLineWidth(thickness);
         GL11.glPointSize(thickness*0.9f);

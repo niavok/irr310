@@ -15,52 +15,53 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with V3dScene.  If not, see <http://www.gnu.org/licenses/>.
 
-package fr.def.iss.vd2.lib_v3d.element;
+package com.irr310.i3d.scene.element;
 
 import java.util.List;
 
+import com.irr310.i3d.scene.I3dCamera;
+
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
-import fr.def.iss.vd2.lib_v3d.camera.V3DCamera;
+import fr.def.iss.vd2.lib_v3d.element.V3DBoundingBox;
 
 /**
  *
  * @author fberto
  */
-abstract class V3DCommonGroupElement extends V3DElement {
+public abstract class I3dCommonGroupElement extends I3dElement {
 
     V3DBoundingBox boundingBox = new V3DBoundingBox();
 
-    public V3DCommonGroupElement(V3DContext context) {
-        super(context);
+    public I3dCommonGroupElement() {
     }
 
     @Override
-    protected void doDisplay( V3DCamera camera) {
-        for(V3DElement child: getChildren()) {
+    protected void doDisplay( I3dCamera camera) {
+        for(I3dElement child: getChildren()) {
             child.display( camera);
         }
     }
 
     @Override
     protected void doInit() {
-        for(V3DElement child: getChildren()) {
+        for(I3dElement child: getChildren()) {
             child.init();
         }
     }
 
     @Override
-    protected void doSelect( V3DCamera camera, long parentId) {
-        for(V3DElement child: getChildren()) {
+    protected void doSelect( I3dCamera camera, long parentId) {
+        for(I3dElement child: getChildren()) {
             child.select( camera, parentId);
         }
     }
 
-    public final List<V3DElement> getChildren() {
+    public final List<I3dElement> getChildren() {
         return doGetChildren();
     }
 
-    protected abstract List<V3DElement> doGetChildren();
+    protected abstract List<I3dElement> doGetChildren();
 
     @Override
     public V3DBoundingBox getBoundingBox() {
@@ -72,7 +73,7 @@ abstract class V3DCommonGroupElement extends V3DElement {
         float maxZ = Float.NEGATIVE_INFINITY;
         boolean exists = false;
 
-        for(V3DElement child: getChildren()) {
+        for(I3dElement child: getChildren()) {
             V3DBoundingBox childBox = child.getBoundingBox();
 
             if(child.isTangible() && childBox.isExist()) {
@@ -117,7 +118,7 @@ abstract class V3DCommonGroupElement extends V3DElement {
         getChildren().clear();
     }
 
-    public void remove(V3DElement element) {
+    public void remove(I3dElement element) {
         getChildren().remove(element);
     }
     

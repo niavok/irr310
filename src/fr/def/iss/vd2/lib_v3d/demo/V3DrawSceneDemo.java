@@ -20,10 +20,11 @@ import java.io.File;
 
 import org.lwjgl.LWJGLException;
 
+import com.irr310.i3d.scene.I3dScene;
+
 import fr.def.iss.vd2.lib_v3d.V3DCanvas;
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DContext;
-import fr.def.iss.vd2.lib_v3d.V3DScene;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
 import fr.def.iss.vd2.lib_v3d.camera.V3DSimple3DCamera;
 import fr.def.iss.vd2.lib_v3d.controller.V3DSimple3DCameraController;
@@ -41,7 +42,7 @@ public class V3DrawSceneDemo  {
     V3DCameraBinding fullscreenBinding;
     V3DSimple3DCamera activeCamera;
     V3DCanvas canvas;
-    private V3DScene scene;
+    private I3dScene scene;
 
     public V3DrawSceneDemo() {
 
@@ -59,7 +60,7 @@ public class V3DrawSceneDemo  {
     private void generateCanvas() {
 
         canvas = new V3DCanvas(context, 1024, 768);
-        activeCamera = new V3DSimple3DCamera(context);
+        activeCamera = new V3DSimple3DCamera();
         fullscreenBinding = V3DCameraBinding.buildFullscreenCamera(activeCamera);
 
         // Add zoom and pane camera controlleur
@@ -84,9 +85,9 @@ public class V3DrawSceneDemo  {
 
     }
 
-    private V3DScene generateScene() {
+    private I3dScene generateScene() {
 
-        scene = new V3DScene(context);
+        scene = new I3dScene();
 
         displayBuilding();
         displayGround();

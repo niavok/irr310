@@ -26,22 +26,22 @@ import org.fenggui.theme.xml.IXMLStreamableException;
 import org.fenggui.theme.xml.InputOutputStream;
 import org.lwjgl.opengl.GL11;
 
-import fr.def.iss.vd2.lib_v3d.element.TextureManager.Texture;
+import com.irr310.i3d.Texture;
+import com.irr310.i3d.TextureManager;
+
 
 public class TextureHandler implements ITexture {
 
-    private TextureManager textureManager;
     private BufferedImage buffer;
     private Texture texture;
 
     
-    public TextureHandler(TextureManager textureManager, BufferedImage buffer) {
-        this.textureManager = textureManager;
+    public TextureHandler(BufferedImage buffer) {
         this.buffer = buffer;
-        this.texture = textureManager.getTexture(buffer);
+        this.texture = TextureManager.getTexture(buffer);
     }
 
-    BufferedImage getBuffer() {
+    public BufferedImage getBuffer() {
         return buffer;
     }
 
@@ -56,23 +56,24 @@ public class TextureHandler implements ITexture {
 
     @Override
     public void dispose() {
-        GL11.glDeleteTextures(IntBuffer.wrap(new int[] { texture.getGlId() }));
-        texture.setValid(false);
+        //TODO
+//        GL11.glDeleteTextures(IntBuffer.wrap(new int[] { texture.getTextureID() }));
+//        texture.setValid(false);
     }
 
     @Override
     public void bind() {
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getGlId());
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
     }
 
     @Override
     public int getTextureWidth() {
-        return texture.getWidth();
+        return texture.getTexWidth();
     }
 
     @Override
     public int getTextureHeight() {
-        return texture.getHeight();
+        return texture.getTexHeight();
     }
 
     @Override
@@ -93,9 +94,13 @@ public class TextureHandler implements ITexture {
     @Override
     public int getID() {
         if(texture == null) {
-            textureManager.refresh(this);
+            refresh();
         }
-        return texture.getGlId();
+        return texture.getTextureID();
+    }
+
+    private void refresh() {
+        texture = TextureManager.getTexture(buffer);
     }
 
     public void setTexture(Texture texture) {
