@@ -15,5 +15,9 @@ public class PlayerState {
 
     @NetworkOptionalField
     public FactionState faction;
+
+    public boolean isConnected() {
+        return faction != null;
+    }
     
 }

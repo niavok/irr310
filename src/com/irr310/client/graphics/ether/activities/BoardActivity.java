@@ -73,7 +73,7 @@ public class BoardActivity extends Activity {
             
             @Override
             public void visit(FactionStateEvent event) {
-                if(LoginManager.getLocalPlayer().faction.id == event.getFaction().id) {
+                if(LoginManager.getLocalPlayer().isConnected() && LoginManager.getLocalPlayer().faction.id == event.getFaction().id) {
                     getHandler().obtainMessage(UPDATE_FACTION_WHAT, event.getFaction()).send();
                 }
             }
