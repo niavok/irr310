@@ -56,7 +56,7 @@ public class I3dFollow3DCameraController implements V3DCameraController, Graphic
     private Point2D.Float mouseInitialPick;
     private int translationButton = MouseEvent.BUTTON1;
     private int rotationButton = MouseEvent.BUTTON3;
-    private Part element;
+    private Followable element;
     private TransformMatrix eye;
     private TransformMatrix target;
     private TransformMatrix top;
@@ -70,6 +70,12 @@ public class I3dFollow3DCameraController implements V3DCameraController, Graphic
         TRANSLATE, ROTATE,
     }
 
+    public interface Followable {
+
+        TransformMatrix getTransform();
+        
+    }
+    
     public I3dFollow3DCameraController(I3dEye3DCamera camera) {
         this.camera = camera;
 
@@ -85,7 +91,7 @@ public class I3dFollow3DCameraController implements V3DCameraController, Graphic
         
     }
 
-    public void setFollowed(Part element) {
+    public void setFollowed(Followable element) {
         this.element = element;
 
     }
@@ -287,7 +293,7 @@ public class I3dFollow3DCameraController implements V3DCameraController, Graphic
         return camera;
     }
 
-    public Part getFollowed() {
+    public Followable getFollowed() {
         return element;
     }
 

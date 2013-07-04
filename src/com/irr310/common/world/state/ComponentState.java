@@ -49,5 +49,10 @@ public class ComponentState {
     
     @NetworkField
     public double heatResistance;
+
+    // Helpers
+    public PartState getFirstPart() {
+        return parts.get(0);
+    }
     
 }

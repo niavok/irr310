@@ -33,7 +33,7 @@ public class ProductManager {
     
     private DocumentBuilderFactory docBuilderFactory;
 
-    public static final int DEBUG_COEF = 100; 
+    public static final int DEBUG_COEF = 10000; 
     
     
     public void init() {

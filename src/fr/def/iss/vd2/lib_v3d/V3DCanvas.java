@@ -294,7 +294,6 @@ public class V3DCanvas {
 
         GL11.glClear(GL11.GL_ACCUM_BUFFER_BIT);
 
-        int i = 0;
         for (V3DCameraBinding binding : cameraList) {
 
             GL11.glViewport(binding.x, binding.y, binding.width, binding.height);
@@ -342,7 +341,6 @@ public class V3DCanvas {
                 binding.camera.select( mouseX, mouseY);
                 context.setMouseOverCameraBinding(binding);
             }
-            i++;
         }
         GL11.glFlush();
         select = false;

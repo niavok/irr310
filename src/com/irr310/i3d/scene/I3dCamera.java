@@ -96,6 +96,12 @@ public abstract class I3dCamera {
             }
         }
 
+//        GL11.glColor3f(1, 0, 0);
+//        GL11.glBegin(GL11.GL_LINES);
+//        GL11.glVertex3d(0, 0, 0);
+//        GL11.glVertex3d(100, 100, 100);
+//        GL11.glEnd();
+        
 
         preDisplayScene();
         if(currentScene != null) {

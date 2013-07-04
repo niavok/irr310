@@ -7,6 +7,7 @@ import com.irr310.common.network.NetworkClass;
 import com.irr310.common.network.NetworkField;
 import com.irr310.common.network.NetworkListField;
 import com.irr310.common.network.NetworkOptionalField;
+import com.irr310.common.world.system.Component;
 
 @NetworkClass
 public class ShipState {
@@ -25,6 +26,18 @@ public class ShipState {
 
     @NetworkOptionalField
     public FactionState owner;
+
+    
+    // Helpers
+    public ComponentState getComponentByName(String name) {
+        
+        for(ComponentState component: components) {
+            if(component.name.equals(name)) {
+                return component;
+            }
+        }
+        return null;
+    }
 
 
 

@@ -670,10 +670,10 @@ public class WorldRenderer implements GraphicRenderer {
             addComponent(component);
         }
 
-        if(cameraController.getFollowed() == null) {
-            Component kernel = ship.getComponentByName("kernel");
-            cameraController.setFollowed(kernel.getFirstPart());
-        }
+//        if(cameraController.getFollowed() == null) {
+//            Component kernel = ship.getComponentByName("kernel");
+//            cameraController.setFollowed(kernel.getFirstPart());
+//        }
 
         if(LoginManager.getLocalPlayer().equals(ship.getOwner())) {
             activeCamera.fitAll();
