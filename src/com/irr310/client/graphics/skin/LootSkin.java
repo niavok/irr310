@@ -30,13 +30,12 @@ public class LootSkin extends Skin {
     private final CelestialObject object;
 
     public LootSkin(WorldRenderer renderer, final CelestialObject object) {
-        super(renderer);
         this.object = object;
         UiEngine engine = renderer.getEngine();
         elements = new I3dGroupElement();
 
         File v3drawFileStructure = new File("graphics/output/asteroid.v3draw");
-        final V3DrawElement elementStructure = V3DrawElement.LoadFromFile(v3drawFileStructure, engine.getV3DContext());
+        final V3DrawElement elementStructure = V3DrawElement.LoadFromFile(v3drawFileStructure);
         elementStructure.setScale(object.getFirstPart().getShape().toV3DVect3());
         colorElement = new V3DColorElement(new V3DShaderElement(elementStructure, "propeller"), baseColor);
         elements.add(colorElement);
@@ -48,17 +47,17 @@ public class LootSkin extends Skin {
 
     @Override
     public void update() {
-        elements.setTransformMatrix(transform.toFloatBuffer());
-
-        angle += getEngine().getFramerate().getSeconds() * 10;
-        float offset = (float) Math.sin(angle);
-        colorElement.setColor(new V3DColor(baseColor.r * offset + highlightColor.r * (1 - offset), baseColor.g * offset + highlightColor.g
-                * (1 - offset), baseColor.b * offset + highlightColor.b * (1 - offset), baseColor.a * offset + highlightColor.a * (1 - offset)));
-        
-        if(lastDustEmission.getDurationToNow(true).longer(new Duration(0.2f))) {
-            lastDustEmission = Time.getGameTime();
-            getRenderer().addElement(new AsteroidDust(getRenderer(), transform.getTranslation(), new Vec3(object.getFirstPart().getShape()).multiply(0.2) , new V3DColor(0, 155, 0, 0.5f)));
-        }
+//        elements.setTransformMatrix(transform.toFloatBuffer());
+//
+//        angle += getEngine().getFramerate().getSeconds() * 10;
+//        float offset = (float) Math.sin(angle);
+//        colorElement.setColor(new V3DColor(baseColor.r * offset + highlightColor.r * (1 - offset), baseColor.g * offset + highlightColor.g
+//                * (1 - offset), baseColor.b * offset + highlightColor.b * (1 - offset), baseColor.a * offset + highlightColor.a * (1 - offset)));
+//        
+//        if(lastDustEmission.getDurationToNow(true).longer(new Duration(0.2f))) {
+//            lastDustEmission = Time.getGameTime();
+//            getRenderer().addElement(new AsteroidDust(getRenderer(), transform.getTranslation(), new Vec3(object.getFirstPart().getShape()).multiply(0.2) , new V3DColor(0, 155, 0, 0.5f)));
+//        }
     }
 
     @Override

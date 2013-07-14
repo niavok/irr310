@@ -582,7 +582,7 @@ public class WorldRenderer implements GraphicRenderer {
     private void createBubble() {
 
 //        File v3drawFileStructure = new File("graphics/output/bubble.v3draw");
-//        bubbleElement = V3DrawElement.LoadFromFile(v3drawFileStructure, engine.getV3DContext());
+//        bubbleElement = V3DrawElement.LoadFromFile(v3drawFileStructure);
 //        // elementStructure.setShader("bubble");
 //        bubbleElement.setScale((float)Game.getInstance().getWorld().getWorldSize());
 //
@@ -701,7 +701,7 @@ public class WorldRenderer implements GraphicRenderer {
 
         if (object.getSkin().isEmpty()) {
             System.err.println("generic skin");
-            skin = new GenericSkin(this, object);
+//            skin = new GenericSkin(this, object);
         } else {
             if (object.getSkin().equals("big_propeller")) {
                 skin = new PropellerSkin(this, (Component) object);
@@ -757,7 +757,7 @@ public class WorldRenderer implements GraphicRenderer {
                 worldObjectToV3DElementMap.get(object).add(guiTrackingArrow);
             } else {
                 System.err.println("No skin found for: " + object.getSkin());
-                skin = new GenericSkin(this, object);
+//                skin = new GenericSkin(this, object);
             }
         }
 

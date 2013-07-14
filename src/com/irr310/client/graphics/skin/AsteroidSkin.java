@@ -27,14 +27,13 @@ public class AsteroidSkin extends Skin {
     private final CelestialObject object;
 
     public AsteroidSkin(WorldRenderer renderer, final CelestialObject object) {
-        super(renderer);
         this.renderer = renderer;
         this.object = object;
         UiEngine engine = renderer.getEngine();
         elements = new I3dGroupElement();
 
         File v3drawFileStructure = new File("graphics/output/asteroid.v3draw");
-        final V3DrawElement elementStructure = V3DrawElement.LoadFromFile(v3drawFileStructure, engine.getV3DContext());
+        final V3DrawElement elementStructure = V3DrawElement.LoadFromFile(v3drawFileStructure);
         elementStructure.setScale(object.getFirstPart().getShape().toV3DVect3());
         elements.add(new V3DColorElement(new V3DShaderElement(elementStructure, "propeller"), new V3DColor(227, 205, 182)));
         

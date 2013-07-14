@@ -25,7 +25,6 @@ public class BulletEffect extends GenericGraphicalElement{
     private final UiEngine engine;
 
     public BulletEffect(WorldRenderer renderer, Vec3 from, Vec3 to) {
-        super(renderer);
         this.engine = renderer.getEngine();
         this.from = from;
         this.to = to;

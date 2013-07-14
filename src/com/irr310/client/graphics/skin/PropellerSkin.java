@@ -24,18 +24,17 @@ public class PropellerSkin extends Skin {
     private TransformMatrix transform;
 
     public PropellerSkin(WorldRenderer renderer, final Component object) {
-        super(renderer);
         UiEngine engine = renderer.getEngine();
         elements = new I3dGroupElement();
 
         // stator
         File v3drawFileStator = new File("graphics/output/big_propeller_stator.v3draw");
-        final V3DrawElement elementStator = V3DrawElement.LoadFromFile(v3drawFileStator, engine.getV3DContext());
+        final V3DrawElement elementStator = V3DrawElement.LoadFromFile(v3drawFileStator);
         elements.add(new V3DColorElement(elementStator, new V3DColor(135, 158, 255)));
 
         // stator
         File v3drawFileRotor = new File("graphics/output/big_propeller_rotor.v3draw");
-        elementRotor = V3DrawElement.LoadFromFile(v3drawFileRotor, engine.getV3DContext());
+        elementRotor = V3DrawElement.LoadFromFile(v3drawFileRotor);
         elements.add(new V3DColorElement(elementRotor, new V3DColor(135, 158, 169)));
 
         transform = object.getFirstPart().getTransform();
@@ -54,12 +53,12 @@ public class PropellerSkin extends Skin {
 
     @Override
     public void update() {
-        elements.setTransformMatrix(transform.toFloatBuffer());
-        
-        angle += getEngine().getFramerate().getSeconds()* speed * linearEngineCapacity.getCurrentThrust();
-        angle = angle % 360f;
-        
-        elementRotor.setRotation(0, angle, 0);
+//        elements.setTransformMatrix(transform.toFloatBuffer());
+//        
+//        angle += getEngine().getFramerate().getSeconds()* speed * linearEngineCapacity.getCurrentThrust();
+//        angle = angle % 360f;
+//        
+//        elementRotor.setRotation(0, angle, 0);
     }
     
     @Override

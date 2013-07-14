@@ -3,8 +3,7 @@ package com.irr310.client.graphics;
 
 public abstract class AnimatedElement extends GenericGraphicalElement implements GraphicalElement {
 
-    public AnimatedElement(WorldRenderer renderer) {
-        super(renderer);
+    public AnimatedElement() {
     }
 
     @Override

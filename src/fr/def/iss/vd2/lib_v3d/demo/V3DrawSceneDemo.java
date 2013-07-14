@@ -99,7 +99,7 @@ public class V3DrawSceneDemo  {
     private void displayBuilding() {
         File v3drawFile = new File("graphics/output/building.v3draw");
 
-        V3DrawElement v3DrawElement = V3DrawElement.LoadFromFile(v3drawFile, context);
+        V3DrawElement v3DrawElement = V3DrawElement.LoadFromFile(v3drawFile);
 
         if (v3DrawElement != null) {
 
@@ -138,7 +138,7 @@ public class V3DrawSceneDemo  {
     private void displayGround() {
         File v3drawFile = new File("graphics/output/ground.v3draw");
 
-        V3DrawElement v3DrawElement = V3DrawElement.LoadFromFile(v3drawFile, context);
+        V3DrawElement v3DrawElement = V3DrawElement.LoadFromFile(v3drawFile);
 
         if (v3DrawElement != null) {
 
@@ -160,7 +160,7 @@ public class V3DrawSceneDemo  {
     private void displayBoule() {
         File v3drawFile = new File("graphics/output/boule.v3draw");
 
-        V3DrawElement v3DrawElement = V3DrawElement.LoadFromFile(v3drawFile, context);
+        V3DrawElement v3DrawElement = V3DrawElement.LoadFromFile(v3drawFile);
 
         if (v3DrawElement != null) {
 

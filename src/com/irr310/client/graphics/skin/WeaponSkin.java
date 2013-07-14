@@ -25,12 +25,11 @@ public class WeaponSkin extends Skin {
     private TransformMatrix transform;
 
     public WeaponSkin(WorldRenderer renderer, final Component object) {
-        super(renderer);
         UiEngine engine = renderer.getEngine();
         elements = new I3dGroupElement();
 
         File v3drawFileStructure = new File("graphics/output/gun.v3draw");
-        final V3DrawElement elementStructure = V3DrawElement.LoadFromFile(v3drawFileStructure, engine.getV3DContext());
+        final V3DrawElement elementStructure = V3DrawElement.LoadFromFile(v3drawFileStructure);
         elements.add(new V3DColorElement(new V3DShaderElement(elementStructure, "propeller"), V3DColor.fromI3d(object.getShip().getOwner().getColor())));
         
         transform = object.getFirstPart().getTransform();

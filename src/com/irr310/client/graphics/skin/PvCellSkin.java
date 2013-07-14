@@ -20,18 +20,17 @@ public class PvCellSkin extends Skin {
     private TransformMatrix transform;
 
     public PvCellSkin(WorldRenderer renderer, final Component object) {
-        super(renderer);
         UiEngine engine = renderer.getEngine();
         elements = new I3dGroupElement();
 
         // structure
         File v3drawFileStructure = new File("graphics/output/pvcell_structure.v3draw");
-        final V3DrawElement elementStructure = V3DrawElement.LoadFromFile(v3drawFileStructure, engine.getV3DContext());
+        final V3DrawElement elementStructure = V3DrawElement.LoadFromFile(v3drawFileStructure);
         elements.add(new V3DColorElement(elementStructure, new V3DColor(135, 158, 255)));
 
         // panel
         File v3drawFilePanel = new File("graphics/output/pvcell_panel.v3draw");
-        elementPanel = V3DrawElement.LoadFromFile(v3drawFilePanel, engine.getV3DContext());
+        elementPanel = V3DrawElement.LoadFromFile(v3drawFilePanel);
         elements.add(new V3DColorElement(elementPanel, new V3DColor(0,20,60)));
 
         transform = object.getFirstPart().getTransform();

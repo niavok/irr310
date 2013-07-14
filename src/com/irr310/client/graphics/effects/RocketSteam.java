@@ -29,7 +29,6 @@ public class RocketSteam extends GenericGraphicalElement{
     private V3DColor targetColor;
 
     public RocketSteam(WorldRenderer renderer, Vec3 position , Vec3 size, V3DColor color, double duration, double deltaTime) {
-        super(renderer);
         this.baseSize = size;
         this.color = color;
         this.targetColor = color.copy().setAlpha(0);

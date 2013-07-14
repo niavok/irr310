@@ -30,20 +30,19 @@ public class RocketSkin extends Skin {
     private Vec3 lastPosition;
 
     public RocketSkin(WorldRenderer renderer, final Component object) {
-        super(renderer);
         this.renderer = renderer;
         this.object = object;
         UiEngine engine = renderer.getEngine();
         elements = new I3dGroupElement();
 
         File v3drawFileStructure = new File("graphics/output/rocket_tube.v3draw");
-        final V3DrawElement elementStructure = V3DrawElement.LoadFromFile(v3drawFileStructure, engine.getV3DContext());
+        final V3DrawElement elementStructure = V3DrawElement.LoadFromFile(v3drawFileStructure);
         elements.add(new V3DColorElement(new V3DShaderElement(elementStructure, "propeller"), new V3DColor(103, 0, 7)));
         
         
         // fins
         File v3drawFileFins = new File("graphics/output/rocket_fins.v3draw");
-        final V3DrawElement elementFins = V3DrawElement.LoadFromFile(v3drawFileFins, engine.getV3DContext());
+        final V3DrawElement elementFins = V3DrawElement.LoadFromFile(v3drawFileFins);
         elements.add(new V3DColorElement(new V3DShaderElement(elementFins, "propeller"), new V3DColor(103, 103, 103)));
         
         transform = object.getFirstPart().getTransform();

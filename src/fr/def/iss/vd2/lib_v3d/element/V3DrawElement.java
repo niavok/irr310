@@ -104,7 +104,7 @@ public class V3DrawElement extends I3dElement {
         return v3drawReader;
     }
 
-    public static V3DrawElement LoadFromFile(File v3drawFile, V3DContext context) {
+    public static V3DrawElement LoadFromFile(File v3drawFile) {
         FileInputStream fileInputStream;
         try {
             fileInputStream = new FileInputStream(v3drawFile);

@@ -1,14 +1,44 @@
 package com.irr310.client.graphics.ether.activities.shipcamera;
 
+import java.awt.image.ComponentSampleModel;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
 
 import com.irr310.client.graphics.GraphicalElement;
+import com.irr310.client.graphics.GuiTrackingArrow;
+import com.irr310.client.graphics.skin.AsteroidSkin;
+import com.irr310.client.graphics.skin.CameraSkin;
+import com.irr310.client.graphics.skin.FactorySkin;
+import com.irr310.client.graphics.skin.GenericSkin;
+import com.irr310.client.graphics.skin.HullSkin;
+import com.irr310.client.graphics.skin.LootSkin;
+import com.irr310.client.graphics.skin.MonolithSkin;
+import com.irr310.client.graphics.skin.PropellerSkin;
+import com.irr310.client.graphics.skin.PvCellSkin;
+import com.irr310.client.graphics.skin.ReactorSkin;
+import com.irr310.client.graphics.skin.RocketSkin;
+import com.irr310.client.graphics.skin.Skin;
+import com.irr310.client.graphics.skin.TankSkin;
+import com.irr310.client.graphics.skin.ThrusterBlockSkin;
+import com.irr310.client.graphics.skin.WeaponSkin;
+import com.irr310.client.graphics.skin.WingSkin;
+import com.irr310.client.navigation.LoginManager;
+import com.irr310.common.world.item.ShipSchema;
 import com.irr310.common.world.state.ComponentState;
 import com.irr310.common.world.state.ShipState;
+import com.irr310.common.world.state.WorldSystemState;
+import com.irr310.common.world.system.CelestialObject;
 import com.irr310.common.world.system.Component;
+import com.irr310.common.world.system.Ship;
+import com.irr310.common.world.system.SystemObject;
 import com.irr310.i3d.Graphics;
 import com.irr310.i3d.I3dContext;
 import com.irr310.i3d.scene.I3dEye3DCamera;
@@ -20,10 +50,13 @@ import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 import com.irr310.i3d.view.View;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
+import fr.def.iss.vd2.lib_v3d.V3DShader;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DLine;
+import fr.def.iss.vd2.lib_v3d.element.V3DShaderElement;
+import fr.def.iss.vd2.lib_v3d.element.V3DrawElement;
 
 public class ShipCameraView extends View {
 
@@ -34,10 +67,13 @@ public class ShipCameraView extends View {
     private V3DCameraBinding fullscreenBinding;
     private I3dScene scene;
     private V3DCameraBinding binding;
+    private Map<ComponentState, List<GraphicalElement>> componentToV3DElementMap = new HashMap<ComponentState, List<GraphicalElement>>();
+    private WorldSystemState systemState;
+
     
-    
-    public ShipCameraView(ShipState ship) {
+    public ShipCameraView(ShipState ship, WorldSystemState systemState) {
         this.focusedShip = ship;
+        this.systemState = systemState;
         
         init();
         binding = new V3DCameraBinding();
@@ -55,13 +91,19 @@ public class ShipCameraView extends View {
     @Override
     public void onDraw(Graphics g) {
         
+        
+     // amination
+        for (GraphicalElement animated : animatedList) {
+            animated.update();
+        }
+        
         cameraController.update();
         
-//        GL11.glColor3f(1, 0, 0);
-//        GL11.glBegin(GL11.GL_LINES);
-//        GL11.glVertex3d(0, 0, 0);
-//        GL11.glVertex3d(100, 100, 100);
-//        GL11.glEnd();
+        GL11.glColor3f(1, 0, 0);
+        GL11.glBegin(GL11.GL_LINES);
+        GL11.glVertex3d(0, 0, 0);
+        GL11.glVertex3d(100, 100, 100);
+        GL11.glEnd();
         
         activeCamera.fitAll();
         GL11.glViewport(binding.x, binding.y, binding.width, binding.height);
@@ -181,6 +223,9 @@ private void init() {
         scene.add(ref0);
         scene.add(ref1);
         scene.add(ref2);
+        
+        addShip(focusedShip);
+        
 
 //        generateGuiStructure();
 
@@ -197,36 +242,38 @@ private void init() {
     
     private void createBubble() {
 
-//      File v3drawFileStructure = new File("graphics/output/bubble.v3draw");
-//      bubbleElement = V3DrawElement.LoadFromFile(v3drawFileStructure, engine.getV3DContext());
-//      // elementStructure.setShader("bubble");
-//      bubbleElement.setScale((float)Game.getInstance().getWorld().getWorldSize());
-//
-//      V3DShader shader = new V3DShader("bubble") {
-//          private int resolution;
-//          private int time;
-//          private long startTime;
-//
-//          protected void loadUniforms() {
-//              resolution = ARBShaderObjects.glGetUniformLocationARB(shader, "resolution");
-//              time = ARBShaderObjects.glGetUniformLocationARB(shader, "time");
-//
-//              startTime = new Date().getTime();
-//          };
-//
-//          protected void setUniforms() {
-//              // V3DVect3 rotation = camera.getRotation();
-//              // ARBShaderObjects.glUniform3fARB(inputRotation, rotation.x,
-//              // rotation.y, rotation.z);
-//              ARBShaderObjects.glUniform2fARB(resolution, cameraController.getCamera().getCurrentWidth(), cameraController.getCamera()
-//                                                                                                                          .getCurrentHeight());
-//              float time2 = ((float) (new Date().getTime() - startTime)) / 10000.0f;
-//              ARBShaderObjects.glUniform1fARB(time, time2);
-//
-//          }
-//      };
-//
-//      scene.add(new V3DColorElement(new V3DShaderElement(bubbleElement, shader), new V3DColor(255, 255, 255)));
+      
+        
+      File v3drawFileStructure = new File("graphics/output/bubble.v3draw");
+      V3DrawElement bubbleElement = V3DrawElement.LoadFromFile(v3drawFileStructure);
+      // elementStructure.setShader("bubble");
+      bubbleElement.setScale((float) systemState.radius);
+
+      V3DShader shader = new V3DShader("bubble") {
+          private int resolution;
+          private int time;
+          private long startTime;
+
+          protected void loadUniforms() {
+              resolution = ARBShaderObjects.glGetUniformLocationARB(shader, "resolution");
+              time = ARBShaderObjects.glGetUniformLocationARB(shader, "time");
+
+              startTime = new Date().getTime();
+          };
+
+          protected void setUniforms() {
+              // V3DVect3 rotation = camera.getRotation();
+              // ARBShaderObjects.glUniform3fARB(inputRotation, rotation.x,
+              // rotation.y, rotation.z);
+              ARBShaderObjects.glUniform2fARB(resolution, cameraController.getCamera().getCurrentWidth(), cameraController.getCamera()
+                                                                                                                          .getCurrentHeight());
+              float time2 = ((float) (new Date().getTime() - startTime)) / 10000.0f;
+              ARBShaderObjects.glUniform1fARB(time, time2);
+
+          }
+      };
+
+      scene.add(new V3DColorElement(new V3DShaderElement(bubbleElement, shader), new V3DColor(255, 255, 255)));
   }
     
     private I3dElement generateReference() {
@@ -246,4 +293,111 @@ private void init() {
         group.add(new V3DColorElement(zAxis, V3DColor.blue));
         return group;
     }
+    
+    protected void addShip(final ShipState ship) {
+
+        for (ComponentState component : ship.components) {
+            addComponent(component);
+        }
+
+//        if(LoginManager.getLocalPlayer().equals(ship.getOwner())) {
+//            activeCamera.fitAll();
+//        } else {
+//            Component kernel = ship.getComponentByName("kernel");
+//            GuiTrackingArrow guiTrackingArrow = new GuiTrackingArrow(this, cameraController, kernel.getFirstPart());
+//            guiTrackingArrow.setColor(V3DColor.fromI3d(ship.getOwner().getColor().copy().setAlpha(0.8f)));
+//            addPersistantGuiElement(guiTrackingArrow);
+//            worldObjectToV3DElementMap.get(kernel).add(guiTrackingArrow);    
+//        }
+    }
+    
+    private void addComponent(ComponentState component) {
+        if(componentToV3DElementMap.get(component) != null) {
+            return;
+        }
+        GraphicalElement graphicalElement = addObject(component);
+        componentToV3DElementMap.put(component, new ArrayList<GraphicalElement>());
+        componentToV3DElementMap.get(component).add(graphicalElement);
+    }
+    
+    protected GraphicalElement addObject(final ComponentState object) {
+
+        Skin skin = null;
+
+//        if (object.getSkin().isEmpty()) {
+            System.err.println("generic skin");
+            skin = new GenericSkin(object);
+//        } else {
+//            if (object.getSkin().equals("big_propeller")) {
+//                skin = new PropellerSkin(this, (Component) object);
+//            } else if (object.getSkin().equals("pvcell")) {
+//                skin = new PvCellSkin(this, (Component) object);
+//            } else if (object.getSkin().equals("camera")) {
+//                skin = new CameraSkin(this, (Component) object);
+//            } else if (object.getSkin().equals("reactor")) {
+//                skin = new ReactorSkin(this, (Component) object);
+//            } else if (object.getSkin().equals("tank")) {
+//                skin = new TankSkin(this, (Component) object);
+//            } else if (object.getSkin().equals("factory")) {
+//                skin = new FactorySkin(this, (Component) object);
+//            } else if (object.getSkin().equals("hangar")) {
+//                skin = new FactorySkin(this, (Component) object);
+//            } else if (object.getSkin().equals("harvester")) {
+//                skin = new FactorySkin(this, (Component) object);
+//            } else if (object.getSkin().equals("refinery")) {
+//                skin = new FactorySkin(this, (Component) object);
+//            } else if (object.getSkin().equals("kernel")) {
+//                skin = new CameraSkin(this, (Component) object);
+//            } else if (object.getSkin().equals("wing")) {
+//                skin = new WingSkin(this, (Component) object);
+//            } else if (object.getSkin().equals("hull")) {
+//                skin = new HullSkin(this, (Component) object);
+//            } else if (object.getSkin().equals("thrusterBlock")) {
+//                skin = new ThrusterBlockSkin(this, (Component) object);
+//            } else if (object.getSkin().equals("gun")) {
+//                skin = new WeaponSkin(this, (Component) object);
+//            } else if (object.getSkin().equals("rocket_hull")) {
+//                skin = new RocketSkin(this, (Component) object);
+//            } else if (object.getSkin().equals("asteroid")) {
+//                skin = new AsteroidSkin(this, (CelestialObject) object);
+//
+//                GuiTrackingArrow guiTrackingArrow = new GuiTrackingArrow(this, cameraController, object.getFirstPart());
+//                guiTrackingArrow.setColor(new V3DColor(255, 0, 0, 0.8f));
+//                addPersistantGuiElement(guiTrackingArrow);
+//                worldObjectToV3DElementMap.get(object).add(guiTrackingArrow);
+//
+//            } else if (object.getSkin().equals("monolith")) {
+//                skin = new MonolithSkin(this, (CelestialObject) object);
+//
+//                GuiTrackingArrow guiTrackingArrow = new GuiTrackingArrow(this, cameraController, object.getFirstPart());
+//                guiTrackingArrow.setColor(new V3DColor(88, 9, 168, 0.8f));
+//                addPersistantGuiElement(guiTrackingArrow);
+//                worldObjectToV3DElementMap.get(object).add(guiTrackingArrow);
+//            } else if (object.getSkin().equals("loot")) {
+//                skin = new LootSkin(this, (CelestialObject) object);
+//
+//                GuiTrackingArrow guiTrackingArrow = new GuiTrackingArrow(this, cameraController, object.getFirstPart());
+//                guiTrackingArrow.setColor(new V3DColor(32, 200, 32, 0.8f));
+//                addPersistantGuiElement(guiTrackingArrow);
+//                worldObjectToV3DElementMap.get(object).add(guiTrackingArrow);
+//            } else {
+//                System.err.println("No skin found for: " + object.getSkin());
+//                skin = new GenericSkin(this, object);
+//            }
+//        }
+//
+        addElement(skin);
+        return skin;
+    }
+    
+    public void addElement(GraphicalElement graphicalElement) {
+//        elementList.add(graphicalElement);
+        if (graphicalElement.isAnimated()) {
+            animatedList.add(graphicalElement);
+        }
+        if (graphicalElement.isDisplayable()) {
+            scene.add(graphicalElement.getV3DElement());
+        }
+    }
+    
 }

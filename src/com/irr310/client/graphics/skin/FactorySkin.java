@@ -19,12 +19,11 @@ public class FactorySkin extends Skin {
     private TransformMatrix transform;
 
     public FactorySkin(WorldRenderer renderer, final Component object) {
-        super(renderer);
         UiEngine engine = renderer.getEngine();
         elements = new I3dGroupElement();
 
         File v3drawFileStructure = new File("graphics/output/factory.v3draw");
-        final V3DrawElement elementStructure = V3DrawElement.LoadFromFile(v3drawFileStructure, engine.getV3DContext());
+        final V3DrawElement elementStructure = V3DrawElement.LoadFromFile(v3drawFileStructure);
         elements.add(new V3DColorElement(elementStructure, new V3DColor(135, 158, 255)));
         
         transform = object.getFirstPart().getTransform();

@@ -28,7 +28,6 @@ public class AsteroidDust extends GenericGraphicalElement{
     private V3DColor targetColor;
 
     public AsteroidDust(WorldRenderer renderer, Vec3 position , Vec3 size, V3DColor color) {
-        super(renderer);
         this.baseSize = size;
         this.color = color;
         this.targetColor = color.copy().setAlpha(0);

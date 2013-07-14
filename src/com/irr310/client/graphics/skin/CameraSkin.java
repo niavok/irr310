@@ -20,12 +20,11 @@ public class CameraSkin extends Skin {
     private TransformMatrix transform;
 
     public CameraSkin(WorldRenderer renderer, final Component object) {
-        super(renderer);
         UiEngine engine = renderer.getEngine();
         elements = new I3dGroupElement();
 
         File v3drawFileStructure = new File("graphics/output/camera.v3draw");
-        final V3DrawElement elementStructure = V3DrawElement.LoadFromFile(v3drawFileStructure, engine.getV3DContext());
+        final V3DrawElement elementStructure = V3DrawElement.LoadFromFile(v3drawFileStructure);
         elements.add(new V3DColorElement(new V3DShaderElement(elementStructure, "propeller"), new V3DColor(255, 255, 255)));
         
         transform = object.getFirstPart().getTransform();

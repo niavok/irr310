@@ -36,19 +36,18 @@ public class ReactorSkin extends Skin {
     private V3DTriangle flame2;
 
     public ReactorSkin(WorldRenderer renderer, final Component object) {
-        super(renderer);
         this.object = object;
         UiEngine engine = renderer.getEngine();
         elements = new I3dGroupElement();
 
         // stator
         File v3drawFileStator = new File("graphics/output/reactor_stator.v3draw");
-        final V3DrawElement elementStator = V3DrawElement.LoadFromFile(v3drawFileStator, engine.getV3DContext());
+        final V3DrawElement elementStator = V3DrawElement.LoadFromFile(v3drawFileStator);
         elements.add(new V3DColorElement(new V3DShaderElement(elementStator, "propeller"), V3DColor.fromI3d(object.getShip().getOwner().getColor())));
 
         // rotor
         File v3drawFileRotor = new File("graphics/output/reactor_rotor.v3draw");
-        elementRotor = V3DrawElement.LoadFromFile(v3drawFileRotor, engine.getV3DContext());
+        elementRotor = V3DrawElement.LoadFromFile(v3drawFileRotor);
         elements.add(new V3DColorElement(new V3DShaderElement(elementRotor, "propeller"), new V3DColor(135, 158, 169)));
 
         // Flame
@@ -85,44 +84,44 @@ public class ReactorSkin extends Skin {
 
     @Override
     public void update() {
-        elements.setTransformMatrix(transform.toFloatBuffer());
-        
-        double t =  linearEngineCapacity.getCurrentThrust();
-        double s = 0;
-        if(t > 0) {
-            s = Math.sqrt(t);
-        } else {
-            s = - Math.sqrt(-t);
-        }
-        angle += getEngine().getFramerate().getSeconds() * speed * s;
-        angle = angle % 360f;
-        
-        elementRotor.setRotation(0, angle, 0);
-     
-        if(object.isBroken()) {
-            elements.setVisible(false);
-        } else {
-            elements.setVisible(true);
-            double durablility = object.getDurabilityRatio();
-            if(durablility < 1.0) {
-            
-                if(lastDustEmission.getDurationToNow(true).longer(new Duration(0.05f))) {
-                    lastDustEmission = Time.getGameTime();
-                    getRenderer().addElement(new AsteroidDust(getRenderer(), transform.getTranslation(), new Vec3(object.getFirstPart().getShape()).multiply(0.4 * 0.5 + 0.5 * (1-durablility)) , new V3DColor((float)durablility, (float)durablility, (float)durablility,(float)(1.0 - durablility/3.0))));
-                }
-            
-            }
-            
-        }
-        
-        
-        flame1.setSize((float)object.getFirstPart().getShape().x*0.7f, (float)linearEngineCapacity.getCurrentThrust());
-        flame1.setPosition(0, (float) - linearEngineCapacity.getCurrentThrust() /2, 0);
-        flame2.setSize((float)object.getFirstPart().getShape().x*0.7f, (float)linearEngineCapacity.getCurrentThrust());
-        flame2.setPosition(0, (float) - linearEngineCapacity.getCurrentThrust() /2, 0);
-        double percent = 1 - Math.abs(linearEngineCapacity.getCurrentThrust() / linearEngineCapacity.getMaxThrust());
-        colorFlame.setColor(new V3DColor((int) (108* percent + (1-percent) * 255) , (int) ( 200 * percent + (1-percent) * 180)  ,(int) (251 * percent + (1-percent) * 0) , 0.6f ));
-        
+//        elements.setTransformMatrix(transform.toFloatBuffer());
+//        
+//        double t =  linearEngineCapacity.getCurrentThrust();
+//        double s = 0;
+//        if(t > 0) {
+//            s = Math.sqrt(t);
+//        } else {
+//            s = - Math.sqrt(-t);
+//        }
+//        angle += getEngine().getFramerate().getSeconds() * speed * s;
+//        angle = angle % 360f;
+//        
+//        elementRotor.setRotation(0, angle, 0);
+//     
+//        if(object.isBroken()) {
+//            elements.setVisible(false);
+//        } else {
+//            elements.setVisible(true);
+//            double durablility = object.getDurabilityRatio();
+//            if(durablility < 1.0) {
+//            
+//                if(lastDustEmission.getDurationToNow(true).longer(new Duration(0.05f))) {
+//                    lastDustEmission = Time.getGameTime();
+//                    getRenderer().addElement(new AsteroidDust(getRenderer(), transform.getTranslation(), new Vec3(object.getFirstPart().getShape()).multiply(0.4 * 0.5 + 0.5 * (1-durablility)) , new V3DColor((float)durablility, (float)durablility, (float)durablility,(float)(1.0 - durablility/3.0))));
+//                }
+//            
+//            }
+//            
+//        }
+//        
+//        
+//        flame1.setSize((float)object.getFirstPart().getShape().x*0.7f, (float)linearEngineCapacity.getCurrentThrust());
+//        flame1.setPosition(0, (float) - linearEngineCapacity.getCurrentThrust() /2, 0);
+//        flame2.setSize((float)object.getFirstPart().getShape().x*0.7f, (float)linearEngineCapacity.getCurrentThrust());
+//        flame2.setPosition(0, (float) - linearEngineCapacity.getCurrentThrust() /2, 0);
+//        double percent = 1 - Math.abs(linearEngineCapacity.getCurrentThrust() / linearEngineCapacity.getMaxThrust());
+//        colorFlame.setColor(new V3DColor((int) (108* percent + (1-percent) * 255) , (int) ( 200 * percent + (1-percent) * 180)  ,(int) (251 * percent + (1-percent) * 0) , 0.6f ));
+//        
     }
     
     @Override

@@ -9,7 +9,6 @@ import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent;
 public abstract class GuiAnimatedElement extends GenericGraphicalElement {
 
     public GuiAnimatedElement(WorldRenderer renderer) {
-        super(renderer);
     }
 
     @Override

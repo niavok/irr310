@@ -24,7 +24,6 @@ public class ExplosionEffect extends GenericGraphicalElement{
     private V3DrawElement bubbleElement;
 
     public ExplosionEffect(WorldRenderer renderer, Vec3 from, double radius) {
-        super(renderer);
         this.radius = radius;
         this.engine = renderer.getEngine();
         currentLocation = (float) (radius/10);
@@ -32,7 +31,7 @@ public class ExplosionEffect extends GenericGraphicalElement{
         elements = new I3dGroupElement();
 
         File v3drawFileStructure = new File("graphics/output/bubble.v3draw");
-        bubbleElement = V3DrawElement.LoadFromFile(v3drawFileStructure, engine.getV3DContext());
+        bubbleElement = V3DrawElement.LoadFromFile(v3drawFileStructure);
         bubbleElement.setScale(0);
 
         bubbleElement.setPosition(from.toV3DVect3());

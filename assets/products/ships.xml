@@ -14,10 +14,10 @@
                  location="vec3(0,-1.75,0)" />
             <component key="engineTop"
                  ref="smallPropeller1"
-                 location="vec3(0,-1.75,1.5)" />
+                 location="vec3(0,-1.75,1.0)" />
             <component key="engineBottom"
                  ref="smallPropeller1"
-                 location="vec3(0,-1.75,-1.5)" />
+                 location="vec3(0,-1.75,-1.0)" />
             <component key="engineLeft"
                  ref="smallPropeller1"
                  location="vec3(-1.5,-1.75,0)" />

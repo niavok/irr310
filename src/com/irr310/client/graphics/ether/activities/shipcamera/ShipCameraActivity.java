@@ -75,7 +75,7 @@ setContentView("main@layout/camera/ship_camera");
     }
 
     private void updateAll() {
-        mainRelativeLayout.addViewInLayout(new ShipCameraView(ship));
+        mainRelativeLayout.addViewInLayout(new ShipCameraView(ship, systemState));
     }
 
     public static class ShipCameraActivityBundle extends Bundle {
