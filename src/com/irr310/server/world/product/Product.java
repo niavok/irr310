@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.irr310.common.tools.Log;
 import com.irr310.common.world.Faction;
-import com.irr310.common.world.state.ProductState;
 
 public abstract class Product {
 
@@ -75,8 +74,6 @@ public abstract class Product {
         return true;
     }
 
-    public abstract ProductState toState();
-
     public boolean isAvailable(Faction faction) {
         // TODO: check techno and law.
         return true;
@@ -90,4 +87,6 @@ public abstract class Product {
     public abstract long getOreCost();
 
     public abstract long getFactoryCost();
+
+    public abstract boolean isShip();
 }

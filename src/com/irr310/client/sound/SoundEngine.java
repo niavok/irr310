@@ -13,62 +13,19 @@ import org.newdawn.slick.openal.Audio;
 import org.newdawn.slick.openal.AudioLoader;
 import org.newdawn.slick.util.ResourceLoader;
 
-import com.irr310.common.engine.EventEngine;
-import com.irr310.common.event.game.DefaultGameEventVisitor;
-import com.irr310.common.event.game.GameEvent;
-import com.irr310.common.event.game.QuitGameEvent;
+import com.irr310.common.engine.Engine;
+import com.irr310.server.Time.Timestamp;
 
-public class SoundEngine extends EventEngine<GameEvent> {
+public class SoundEngine implements Engine {
 
     private Audio explosionEffect;
 
     public SoundEngine() {
      
     }
-  
-    @Override
-    protected void onStart() {
-    }
 
     @Override
-    protected void processEvent(GameEvent e) {
-        e.accept(new SoundEngineEventVisitor());
-    }
-
-    private final class SoundEngineEventVisitor extends DefaultGameEventVisitor {
-        @Override
-        public void visit(QuitGameEvent event) {
-            System.out.println("stopping sound engine");
-            setRunning(false);
-
-        }
-
-//        @Override
-//        public void visit(BulletFiredEvent event) {
-//            oggEffect.playAsSoundEffect(1f, 0.1f, false, 0, 0 ,0);
-//        }
-//        
-//        @Override
-//        public void visit(DamageEvent event) {
-//            Component kernel = LoginManager.localPlayer.getShipList().get(0).getComponentByName("kernel");
-//            Vec3 target = event.getTarget().getTransform().getTranslation();
-//            Vec3 playerPosition = kernel.getFirstPart().getTransform().getTranslation();
-//            
-//            Vec3 worldDistance = target.minus(playerPosition);
-//            Vec3 localDistance = worldDistance.rotate(kernel.getFirstPart().getTransform().inverse());
-//            
-//            Vec3 audioPosition = localDistance.multiply(0.03);
-//            
-////            Log.trace("(float) (event.getDamage().getEffectiveDamage()* 0.005f) "+(float) (event.getDamage().getEffectiveDamage()* 0.005f));
-////            Log.trace("(float)  audioPosition.x"+(float)  audioPosition.x);
-////            Log.trace("(float)  audioPosition.y"+(float)  audioPosition.y);
-////            Log.trace("(float)  audioPosition.z"+(float)  audioPosition.z);
-//            explosionEffect.playAsSoundEffect(3.0f,(float) Math.max(0,  (event.getDamage().getEffectiveDamage()* 0.005f)), false, (float)  audioPosition.x, (float)  audioPosition.y , (float) audioPosition.z);
-//        }
-    }
-
-    @Override
-    protected void onInit() {
+    public void init() {
         try {
             oggEffect = AudioLoader.getAudio("OGG", ResourceLoader.getResourceAsStream("sounds/gun1.ogg"));
             explosionEffect = AudioLoader.getAudio("OGG", ResourceLoader.getResourceAsStream("sounds/explosion1.ogg"));
@@ -97,13 +54,53 @@ public class SoundEngine extends EventEngine<GameEvent> {
         
        // AL10.alSourcePlay(source.get(0));
     }
+    
+    @Override
+    public void start() {
+    }
 
     @Override
-    protected void onEnd() {
+    public void stop() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void destroy() {
         //killALData();
         AL.destroy();
     }
 
+    @Override
+    public void tick(Timestamp time) {
+        // TODO Auto-generated method stub
+        
+    }
+
+//        @Override
+//        public void visit(BulletFiredEvent event) {
+//            oggEffect.playAsSoundEffect(1f, 0.1f, false, 0, 0 ,0);
+//        }
+//        
+//        @Override
+//        public void visit(DamageEvent event) {
+//            Component kernel = LoginManager.localPlayer.getShipList().get(0).getComponentByName("kernel");
+//            Vec3 target = event.getTarget().getTransform().getTranslation();
+//            Vec3 playerPosition = kernel.getFirstPart().getTransform().getTranslation();
+//            
+//            Vec3 worldDistance = target.minus(playerPosition);
+//            Vec3 localDistance = worldDistance.rotate(kernel.getFirstPart().getTransform().inverse());
+//            
+//            Vec3 audioPosition = localDistance.multiply(0.03);
+//            
+////            Log.trace("(float) (event.getDamage().getEffectiveDamage()* 0.005f) "+(float) (event.getDamage().getEffectiveDamage()* 0.005f));
+////            Log.trace("(float)  audioPosition.x"+(float)  audioPosition.x);
+////            Log.trace("(float)  audioPosition.y"+(float)  audioPosition.y);
+////            Log.trace("(float)  audioPosition.z"+(float)  audioPosition.z);
+//            explosionEffect.playAsSoundEffect(3.0f,(float) Math.max(0,  (event.getDamage().getEffectiveDamage()* 0.005f)), false, (float)  audioPosition.x, (float)  audioPosition.y , (float) audioPosition.z);
+//        }
+
+    
     /** Buffers hold sound data. */
     IntBuffer buffer = BufferUtils.createIntBuffer(1);
 
@@ -255,5 +252,4 @@ public class SoundEngine extends EventEngine<GameEvent> {
       killALData();
       AL.destroy();
     }
-
 }

@@ -3,29 +3,14 @@ package com.irr310.client.graphics.ether.activities.production;
 import java.util.ArrayList;
 import java.util.List;
 
-import sun.security.util.Length;
-
 import com.irr310.client.navigation.LoginManager;
-import com.irr310.common.event.world.ActionBuyFactionFactoryCapacityEvent;
-import com.irr310.common.event.world.ActionBuyProductEvent;
-import com.irr310.common.event.world.ActionSellFactionFactoryCapacityEvent;
-import com.irr310.common.event.world.DefaultWorldEventVisitor;
-import com.irr310.common.event.world.FactionAvailableProductListEvent;
-import com.irr310.common.event.world.FactionProductionStateEvent;
-import com.irr310.common.event.world.FactionStateEvent;
-import com.irr310.common.event.world.QueryFactionAvailableProductListEvent;
-import com.irr310.common.event.world.QueryFactionProductionStateEvent;
-import com.irr310.common.event.world.QueryFactionStateEvent;
-import com.irr310.common.event.world.WorldEventDispatcher;
-import com.irr310.common.event.world.WorldEventVisitor;
-import com.irr310.common.world.World;
-import com.irr310.common.world.state.FactionAvailableProductListState;
-import com.irr310.common.world.state.FactionProductionState;
-import com.irr310.common.world.state.FactionState;
-import com.irr310.common.world.state.ProductState;
-import com.irr310.common.world.state.ProductionTaskState;
+import com.irr310.common.world.Faction;
+import com.irr310.common.world.FactionAvailableProductList;
+import com.irr310.common.world.FactionProduction;
+import com.irr310.common.world.FactionStocks;
+import com.irr310.common.world.Player;
+import com.irr310.common.world.ProductionTask;
 import com.irr310.i3d.Bundle;
-import com.irr310.i3d.Handler;
 import com.irr310.i3d.Intent;
 import com.irr310.i3d.Message;
 import com.irr310.i3d.SelectionManager;
@@ -33,52 +18,58 @@ import com.irr310.i3d.SelectionManager.OnSelectionChangeListener;
 import com.irr310.i3d.view.Activity;
 import com.irr310.i3d.view.Button;
 import com.irr310.i3d.view.LinearLayout;
-import com.irr310.i3d.view.ScrollView;
 import com.irr310.i3d.view.TextView;
 import com.irr310.i3d.view.View;
 import com.irr310.i3d.view.View.OnClickListener;
 import com.irr310.i3d.view.View.ViewState;
-import com.irr310.server.Time;
+import com.irr310.server.engine.world.WorldEngine;
+import com.irr310.server.engine.world.WorldEngineObserver;
+import com.irr310.server.world.product.Product;
 
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 
 public class FactoryActivity extends Activity {
 
-    private WorldEventDispatcher worldEngine;
+    private WorldEngine worldEngine;
     private TextView factoryStatersAmountTextView;
-    // private BinderClient binder;
     private TextView factoryTotalCapacityAmountTextView;
     private TextView factoryRentCapacityAmountTextView;
     private TextView factoryCapacityAmountTextView;
     private TextView factoryMaintenanceAmountTextView;
-    private WorldEventVisitor visitor;
     private Button factoryBuyFactoryButton;
     private Button factorySellFactoryButton;
     private TextView factoryIncomingCapacityTextView;
     private TextView factoryIncomingCapacityDelayTextView;
-    private FactionState faction;
-    private FactionProductionState production;
     private TextView factoryOresTextView;
     private TextView factoryOresNeedsTextView;
     private TextView factoryCapacityNeedsTextView;
     private TextView factoryTimeEstimationTextView;
-    private FactionAvailableProductListState availableProductList;
+    
     private LinearLayout availableProductListLinearLayout;
-    private SelectionManager<ProductState> productSelectionManager;
-    private SelectionManager<ProductionTaskState> productionTaskSelectionManager;
+    private SelectionManager<Product> productSelectionManager;
+    private SelectionManager<ProductionTask> productionTaskSelectionManager;
     private LinearLayout productionDetailsLinearLayout;
     private LinearLayout productionTaskQueueLinearLayout;
     private Button productionCategoryFactoryButton;
     private Button productionCategoryStocksButton;
     private Button productionCategoryDesignButton;
-    private static final int UPDATE_FACTION_WHAT = 1;
-    private static final int UPDATE_PRODUCTION_WHAT = 2;
-    private static final int UPDATE_AVAILABLE_PRODUCT_LIST_WHAT = 3;
+    private Faction mFaction;
+    private FactionAvailableProductList mAvailableProductList;
+    private WorldEngineObserver mWorldEngineObserver;
+    private static final int UPDATE_WHAT = 1;
+    private FactionProduction mProduction;
+    private FactionStocks mStocks;
 
     @Override
     public void onCreate(Bundle bundle) {
         setContentView("main@layout/production/factory");
-        worldEngine = (WorldEventDispatcher) bundle.getObject();
+        worldEngine = (WorldEngine) bundle.getObject();
+        
+        mFaction = LoginManager.getLocalPlayer().getFaction();
+        mProduction = mFaction.getProduction();
+        mStocks = mFaction.getStocks();
+        mAvailableProductList = mFaction.getAvailableProductList();
+        
         factoryStatersAmountTextView = (TextView) findViewById("factoryStatersAmountTextView@layout/production/factory");
         factoryMaintenanceAmountTextView = (TextView) findViewById("factoryMaintenanceAmountTextView@layout/production/factory");
         factoryCapacityAmountTextView = (TextView) findViewById("factoryCapacityAmountTextView@layout/production/factory");
@@ -122,59 +113,66 @@ public class FactoryActivity extends Activity {
         factoryCapacityNeedsTextView.setText("3580 [factory@icons]");
         factoryTimeEstimationTextView.setText("(12 min 35s)");
         
-        productSelectionManager = new SelectionManager<ProductState>();
-        productionTaskSelectionManager = new SelectionManager<ProductionTaskState>();
+        productSelectionManager = new SelectionManager<Product>();
+        productionTaskSelectionManager = new SelectionManager<ProductionTask>();
         
-        visitor = new DefaultWorldEventVisitor() {
-
+        mWorldEngineObserver = new WorldEngineObserver() {
+            
             @Override
-            public void visit(FactionStateEvent event) {
-                if (LoginManager.getLocalPlayer().faction.id == event.getFaction().id) {
-                    getHandler().obtainMessage(UPDATE_FACTION_WHAT, event.getFaction()).send();
-                }
-            }
-
-            @Override
-            public void visit(FactionProductionStateEvent event) {
-                if (LoginManager.getLocalPlayer().faction.id == event.getFactionProduction().factionId) {
-                    getHandler().obtainMessage(UPDATE_PRODUCTION_WHAT, event.getFactionProduction()).send();
+            public void onStocksChanged(FactionStocks stocks) {
+                if (mStocks.equals(stocks)) {
+                    getHandler().removeMessages(UPDATE_WHAT);
+                    getHandler().obtainMessage(UPDATE_WHAT).send();
                 }
             }
             
             @Override
-            public void visit(FactionAvailableProductListEvent event) {
-                if (LoginManager.getLocalPlayer().faction.id == event.getFactionAvailableProductList().factionId) {
-                    getHandler().obtainMessage(UPDATE_AVAILABLE_PRODUCT_LIST_WHAT, event.getFactionAvailableProductList()).send();
+            public void onProductionChanged(FactionProduction production) {
+                if (mProduction.equals(production)) {
+                    getHandler().removeMessages(UPDATE_WHAT);
+                    getHandler().obtainMessage(UPDATE_WHAT).send();
+                }
+            }
+            
+            @Override
+            public void onPlayerConnected(Player player) {
+            }
+            
+            @Override
+            public void onFactionChanged(Faction faction) {
+                if (mFaction.equals(faction)) {
+                    getHandler().removeMessages(UPDATE_WHAT);
+                    getHandler().obtainMessage(UPDATE_WHAT, faction).send();
                 }
             }
         };
 
         factoryBuyFactoryButton.setOnClickListener(new OnClickListener() {
+        	
             @Override
             public void onClick(V3DMouseEvent mouseEvent, View view) {
-                worldEngine.sendToAll(new ActionBuyFactionFactoryCapacityEvent(LoginManager.getLocalPlayer().faction, 1));
+                worldEngine.buyFactoryCapacityAction(LoginManager.getLocalPlayer().getFaction(), 1);
             }
         });
         
         factorySellFactoryButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(V3DMouseEvent mouseEvent, View view) {
-                worldEngine.sendToAll(new ActionSellFactionFactoryCapacityEvent(LoginManager.getLocalPlayer().faction, 1));
+            	worldEngine.sellFactoryCapacityAction(LoginManager.getLocalPlayer().getFaction(), 1);
             }
         });
         
-        
-        productSelectionManager.addOnSelectionChangeListener(new OnSelectionChangeListener<ProductState>() {
+        productSelectionManager.addOnSelectionChangeListener(new OnSelectionChangeListener<Product>() {
             
             private List<View> addedViews = new ArrayList<View>();
             @Override
-            public void onSelectionChange(List<ProductState> selection) {
+            public void onSelectionChange(List<Product> selection) {
                 for(View view: addedViews) {
                     productionDetailsLinearLayout.removeView(view);
                 }
                 addedViews.clear();
                 
-                for(ProductState product: selection) {
+                for(Product product: selection) {
                     View view = new AvailableProductDetailsView(FactoryActivity.this, product);
                     addedViews.add(view);
                     productionDetailsLinearLayout.addViewInLayout(view);
@@ -190,18 +188,18 @@ public class FactoryActivity extends Activity {
             }
         });
         
-        productionTaskSelectionManager.addOnSelectionChangeListener(new OnSelectionChangeListener<ProductionTaskState>() {
+        productionTaskSelectionManager.addOnSelectionChangeListener(new OnSelectionChangeListener<ProductionTask>() {
             
             private List<View> addedViews = new ArrayList<View>();
             
             @Override
-            public void onSelectionChange(List<ProductionTaskState> selection) {
+            public void onSelectionChange(List<ProductionTask> selection) {
                 for(View view: addedViews) {
                     productionDetailsLinearLayout.removeView(view);
                 }
                 addedViews.clear();
                 
-                for(ProductionTaskState productionTask: selection) {
+                for(ProductionTask productionTask: selection) {
                     View view = new ProductionTaskDetailsView(FactoryActivity.this, productionTask);
                     addedViews.add(view);
                     productionDetailsLinearLayout.addViewInLayout(view);
@@ -221,15 +219,13 @@ public class FactoryActivity extends Activity {
 
     @Override
     public void onResume() {
-        worldEngine.registerEventVisitor(visitor);
-        worldEngine.sendToAll(new QueryFactionStateEvent(LoginManager.getLocalPlayer().faction));
-        worldEngine.sendToAll(new QueryFactionProductionStateEvent(LoginManager.getLocalPlayer().faction));
-        worldEngine.sendToAll(new QueryFactionAvailableProductListEvent(LoginManager.getLocalPlayer().faction));
+        worldEngine.getWorldEnginObservable().register(this, mWorldEngineObserver);
+        updateFields();
     }
 
     @Override
     public void onPause() {
-        worldEngine.unregisterEventVisitor(visitor);
+        worldEngine.getWorldEnginObservable().unregister(this);
     }
 
     @Override
@@ -240,40 +236,28 @@ public class FactoryActivity extends Activity {
     @Override
     protected void onMessage(Message message) {
         switch (message.what) {
-            case UPDATE_FACTION_WHAT:
-                faction = (FactionState) message.obj;
-                updateFields();
-                break;
-            case UPDATE_PRODUCTION_WHAT:
-                production = (FactionProductionState) message.obj;
-                updateFields();
-                break;
-            case UPDATE_AVAILABLE_PRODUCT_LIST_WHAT:
-                availableProductList = (FactionAvailableProductListState) message.obj;
+            case UPDATE_WHAT:
                 updateFields();
                 break;
         }
     }
 
     protected void updateFields() {
-        if (faction == null || production == null || availableProductList == null) {
-            return;
-        }
-        factoryStatersAmountTextView.setText(faction.statersAmount + " [staters@icons]");
-        factoryMaintenanceAmountTextView.setText(production.maintenanceAmount + " [staters@icons]");
-        factoryCapacityAmountTextView.setText(production.factoryCapacity + " [factory@icons]");
-        factoryRentCapacityAmountTextView.setText(production.factoryRentCapacity + " [factory@icons]");
-        factoryTotalCapacityAmountTextView.setText(production.factoryTotalCapacity + " [factory@icons]");
+        factoryStatersAmountTextView.setText(mFaction.getStatersAmount() + " [staters@icons]");
+        factoryMaintenanceAmountTextView.setText(mProduction.getMaintenanceAmount() + " [staters@icons]");
+        factoryCapacityAmountTextView.setText(mProduction.getFactoryCapacity() + " [factory@icons]");
+        factoryRentCapacityAmountTextView.setText(mProduction.getFactoryRentCapacity() + " [factory@icons]");
+        factoryTotalCapacityAmountTextView.setText(mProduction.getFactoryTotalCapacity() + " [factory@icons]");
 
-        if (production.incomingCapacity > 0) {
-            factoryIncomingCapacityTextView.setText("+" + production.incomingCapacity);
-            factoryIncomingCapacityDelayTextView.setText(production.nextFactoryCapacityIncreaseTicks + " s");
+        if (mProduction.getIncomingCapacity() > 0) {
+            factoryIncomingCapacityTextView.setText("+" + mProduction.getIncomingCapacity());
+            factoryIncomingCapacityDelayTextView.setText(mProduction.getNextFactoryCapacityIncreaseRounds() + " s");
         } else {
             factoryIncomingCapacityTextView.setText("0");
             factoryIncomingCapacityDelayTextView.setText("--");
         }
 
-        factoryOresTextView.setText(faction.oresAmount + " [ores@icons]");
+        factoryOresTextView.setText(mFaction.getOresAmount() + " [ores@icons]");
         
         
         
@@ -281,7 +265,7 @@ public class FactoryActivity extends Activity {
         productionTaskQueueLinearLayout.removeAllView();
         productionTaskSelectionManager.clear(ProductionTaskView.class);
         
-        for(ProductionTaskState productionTask: production.productionTaskQueue) {            
+        for(ProductionTask productionTask: mProduction.getProductionTaskQueue()) {            
             productionTaskQueueLinearLayout.addViewInLayout(new ProductionTaskView(productionTask, productionTaskSelectionManager));
         }
         
@@ -289,14 +273,14 @@ public class FactoryActivity extends Activity {
         availableProductListLinearLayout.removeAllView();
         productSelectionManager.clear(AvailableProductView.class);
         
-        for(ProductState product: availableProductList.products) {            
+        for(Product product: mAvailableProductList.getProducts()) {            
             availableProductListLinearLayout.addViewInLayout(new AvailableProductView(product, productSelectionManager));
         }
         
     }
     
-    void buyProduct(ProductState product, int quantity) {
-        worldEngine.sendToAll(new ActionBuyProductEvent(LoginManager.getLocalPlayer().faction, product, quantity));
+    void buyProduct(Product product, long quantity) {
+        worldEngine.buyProductAction(LoginManager.getLocalPlayer().getFaction(), product, quantity);  
     }
 
 }

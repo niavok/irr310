@@ -1,28 +1,21 @@
 package com.irr310.client;
 
 import com.irr310.client.graphics.UiEngine;
+import com.irr310.client.graphics.UiEngineObserver;
 import com.irr310.client.input.InputEngine;
+import com.irr310.client.input.InputEngineObserver;
 import com.irr310.common.engine.EngineManager;
-import com.irr310.common.event.game.GameEvent;
-import com.irr310.common.event.game.GameEventVisitor;
 import com.irr310.common.tools.Log;
 import com.irr310.server.ParameterAnalyser;
 
+import fr.def.iss.vd2.lib_v3d.V3DKeyEvent;
+import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
+
 public class GameClient {
-
-    
-    // private ClientGameEngine clientGameEngine;
-    // private InputEngine inputEngine;
-//    private ClientNetworkEngine clientNetworkEngine;
-//    private PhysicEngine physicEngine;
-    // private ClientScriptEngine scriptEngine;
-//    private UiEngine uiEngine;
-    // private ParameterAnalyser parameterAnalyser;
-    // private boolean stillRunning;
-    // private CommandManager commandManager;
-
    
-    private EngineManager<GameEventVisitor, GameEvent> engineManager;
+    private EngineManager engineManager;
+
+    private InputEngine mInputEngine;
 
     public static GameClient instance = null;
 
@@ -36,14 +29,44 @@ public class GameClient {
         // stillRunning = true;
 
 
-        engineManager = new EngineManager<GameEventVisitor, GameEvent>();
+        engineManager = new EngineManager();
         
         // clientNetworkEngine = new ClientNetworkEngine("127.0.0.10", 22310);
         // physicEngine = new PhysicEngine();
 //        uiEngine = ;
 
-        engineManager.add(new UiEngine(engineManager));
-        engineManager.add(new InputEngine(engineManager));
+        mInputEngine = new InputEngine();
+        mInputEngine.getInputEnginObservable().register(this, new InputEngineObserver() {
+            
+            @Override
+            public void onQuitEvent() {
+                engineManager.stop();
+            }
+            
+            @Override
+            public void onMouseEvent(V3DMouseEvent event) {
+            }
+            
+            @Override
+            public void onKeyEvent(V3DKeyEvent event) {
+            }
+        });
+        
+        UiEngine uiEngine = new UiEngine();
+        
+        uiEngine.getUiEnginObservable().register(this, new UiEngineObserver() {
+            
+            @Override
+            public void onQuitEvent() {
+                engineManager.stop();
+            }
+        });
+        
+        
+        engineManager.add(mInputEngine);
+        
+        engineManager.add(uiEngine);
+        
         
         
         /*if(ClientConfig.sound_isEnabled()) {
@@ -74,17 +97,19 @@ public class GameClient {
 
     public void run() {
 
-        Log.perfBegin("Start");
-        Log.perfBegin("Start Engine");
+//        Log.perfBegin("Start");
+//        Log.perfBegin("Start Engine");
 
-        engineManager.startAndWaitAllEngines();
+        
 
-        Log.perfEnd(); // Start Engine
-        Log.perfBegin("Finish Start");
+//        Log.perfEnd(); // Start Engine
+//        Log.perfBegin("Finish Start");
         
 
         java.lang.System.out.println("Irr310 Client - v0.1a");
 
+        engineManager.run();
+        
         // autologin();
         /*
          * LoginForm loginForm = new LoginForm();
@@ -106,7 +131,7 @@ public class GameClient {
          * (IOException e) { // Todo handle exception }
          */
         
-        engineManager.waitStop();
+//        engineManager.waitStop();
         
         java.lang.System.out.println("Game Client: Stopped");
 
@@ -116,8 +141,12 @@ public class GameClient {
 
     }
 
-    public EngineManager<GameEventVisitor, GameEvent> getEngineManager() {
+    public EngineManager getEngineManager() {
         return engineManager;
+    }
+
+    public InputEngine getInputEngine() {
+        return mInputEngine;
     }
 
 

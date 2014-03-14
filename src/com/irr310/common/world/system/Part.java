@@ -6,8 +6,6 @@ import java.util.List;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Faction;
-import com.irr310.common.world.state.MovementState;
-import com.irr310.common.world.state.PartState;
 
 public class Part extends WorldEntity {
 
@@ -87,72 +85,6 @@ public class Part extends WorldEntity {
 
     public void setShape(Vec3 shape) {
         this.shape = shape;
-    }
-
-    public PartState toState() {
-        PartState partView = new PartState();
-        partView.id = getId();
-        partView.linearSpeed = linearSpeed;
-        partView.mass = mass;
-        partView.linearDamping = linearDamping;
-        partView.angularDamping = angularDamping;
-        partView.rotationSpeed = rotationSpeed;
-        partView.shape = shape;
-        partView.collisionShape = collisionShape.ordinal();
-        partView.transform = transform;
-        partView.ownerId = (owner == null ? -1 : owner.getId());
-        return partView;
-    }
-
-    public void fromState(PartState partState) {
-        linearSpeed.set(partState.linearSpeed);
-        rotationSpeed.set(partState.rotationSpeed);
-        mass = partState.mass;
-        linearDamping = partState.linearDamping;
-        angularDamping = partState.angularDamping;
-        shape = partState.shape;
-        collisionShape = CollisionShape.values()[partState.collisionShape];
-        transform.set(partState.transform.getData());
-//        owner = (partView.ownerId == -1 ? null : Game.getInstance().getWorld().getPlayerById(partView.ownerId));
-    }
-
-    public MovementState toStateView() {
-        MovementState partStateView = new MovementState();
-        partStateView.id = getId();
-        partStateView.linearSpeed = linearSpeed;
-        partStateView.rotationSpeed = rotationSpeed;
-        partStateView.transform = transform;
-        return partStateView;
-    }
-
-    public void fromMovementState(MovementState partStateView) {
-
-        // if (Game.getInstance() instanceof GameClient) {
-        //
-        // if (linearSpeed.distanceTo(partStateView.linearSpeed) > 0) {
-        // System.err.println("fix speed from: " + linearSpeed.toString() +
-        // " to " + partStateView.linearSpeed);
-        // }
-        // if
-        // (transform.getTranslation().distanceTo(partStateView.transform.getTranslation())
-        // > 0) {
-        // System.err.println("fix position from: " +
-        // transform.getTranslation().toString() + " to "
-        // + partStateView.transform.getTranslation().toString());
-        // }
-        //
-        // }
-        linearSpeed.set(partStateView.linearSpeed);
-        rotationSpeed.set(partStateView.rotationSpeed);
-        transform.set(partStateView.transform.getData());
-        // if (Game.getInstance() instanceof GameClient) {
-        //
-        //
-        // System.err.println("new position : " +
-        // transform.getTranslation().toString() + " asked "
-        // + partStateView.transform.getTranslation().toString());
-        // }
-
     }
 
     public Faction getOwner() {

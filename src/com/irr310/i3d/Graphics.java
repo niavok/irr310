@@ -5,6 +5,7 @@ import java.util.Stack;
 import org.lwjgl.opengl.GL11;
 
 import com.irr310.i3d.view.Point;
+import com.irr310.server.Time.Timestamp;
 
 public class Graphics {
 
@@ -14,7 +15,8 @@ public class Graphics {
         return instance;
     }
 
-    Stack<Point> uiTranslationStack = new Stack<Point>(); 
+    Stack<Point> uiTranslationStack = new Stack<Point>();
+    private Timestamp mTime; 
     
     private Graphics() {
     }
@@ -128,6 +130,14 @@ public class Graphics {
     public void initUiTranslation(Point point) {
         uiTranslationStack.clear();
         pushUiTranslation(point);
+    }
+
+    public void setTimestamp(Timestamp time) {
+        mTime = time;
+    }
+    
+    public Timestamp getTime() {
+        return mTime;
     }
     
 

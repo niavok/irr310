@@ -4,15 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.irr310.client.graphics.UiEngine;
-import com.irr310.client.graphics.WorldRenderer;
 import com.irr310.common.tools.TransformMatrix;
-import com.irr310.common.world.state.ComponentState;
-import com.irr310.common.world.state.PartState;
+import com.irr310.common.world.system.Component;
 import com.irr310.common.world.system.Part;
-import com.irr310.common.world.system.SystemObject;
 import com.irr310.i3d.scene.element.I3dElement;
 import com.irr310.i3d.scene.element.I3dGroupElement;
+import com.irr310.server.Time.Timestamp;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
@@ -23,25 +20,25 @@ import fr.def.iss.vd2.lib_v3d.element.V3DLine;
 
 public class GenericSkin extends Skin {
 
-    private final ComponentState component;
-    private final Map<PartState, I3dElement> elementsMap = new HashMap<PartState, I3dElement>();
-    private final Map<PartState, V3DLine> speedLineMap = new HashMap<PartState, V3DLine>();
+    private final Component component;
+    private final Map<Part, I3dElement> elementsMap = new HashMap<Part, I3dElement>();
+    private final Map<Part, V3DLine> speedLineMap = new HashMap<Part, V3DLine>();
     private I3dGroupElement elements;
 
-    public GenericSkin(ComponentState component) {
+    public GenericSkin(Component component) {
 //        UiEngine engine = renderer.getEngine();
         this.component = component;
         elements = new I3dGroupElement();
         
-        for (final PartState part : component.parts) {
+        for (final Part part : component.getParts()) {
 
                 final V3DBox box = new V3DBox();
                 box.setRenderMode(RenderMode.SOLID);
 
-                TransformMatrix transform = part.transform;
+                TransformMatrix transform = part.getTransform();
                 //box.setTransformMatrix(transform.toFloatBuffer());
 
-                box.setSize(part.shape.toV3DVect3());
+                box.setSize(part.getShape().toV3DVect3());
 
 
                 I3dGroupElement element = new I3dGroupElement();
@@ -53,7 +50,7 @@ public class GenericSkin extends Skin {
                     
                 final V3DBox max = new V3DBox();
                 max.setRenderMode(RenderMode.PLAIN);
-                max.setPosition(part.shape.toV3DVect3().divideBy(2));
+                max.setPosition(part.getShape().toV3DVect3().divideBy(2));
                 max.setSize(new V3DVect3(0.1f, 0.1f, 0.1f));
                 
                 element.add(new V3DColorElement(max, V3DColor.red));
@@ -71,16 +68,21 @@ public class GenericSkin extends Skin {
         }
     }
 
+    @Override
+    public void init(Timestamp time) {
+        // TODO Auto-generated method stub
+        
+    }
 
     @Override
-    public void update() {
-        for (Entry<PartState, I3dElement> entry : elementsMap.entrySet()) {
-            entry.getValue().setTransformMatrix(entry.getKey().transform.toFloatBuffer());
+    public void update(Timestamp time) {
+        for (Entry<Part, I3dElement> entry : elementsMap.entrySet()) {
+            entry.getValue().setTransformMatrix(entry.getKey().getTransform().toFloatBuffer());
         }
         
-        for (Entry<PartState, V3DLine> entry : speedLineMap.entrySet()) {
-            entry.getValue().setPosition(entry.getKey().transform.getTranslation().toV3DVect3());
-            entry.getValue().setLocation(new V3DVect3(0, 0, 0), entry.getKey().linearSpeed.toV3DVect3());
+        for (Entry<Part, V3DLine> entry : speedLineMap.entrySet()) {
+            entry.getValue().setPosition(entry.getKey().getTransform().getTranslation().toV3DVect3());
+            entry.getValue().setLocation(new V3DVect3(0, 0, 0), entry.getKey().getLinearSpeed().toV3DVect3());
         }
         
     }

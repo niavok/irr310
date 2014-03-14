@@ -1,8 +1,5 @@
 package com.irr310.client.navigation;
 
-import com.irr310.client.GameClient;
-import com.irr310.client.network.request.SignupRequest;
-import com.irr310.common.network.protocol.SignupResponseMessage;
 
 public class SignupTask extends Task{
 

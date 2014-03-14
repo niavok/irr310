@@ -3,40 +3,50 @@ package com.irr310.client.game;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.irr310.common.engine.FramerateEngine;
-import com.irr310.common.event.system.DefaultSystemEventVisitor;
-import com.irr310.common.event.system.SystemEvent;
+import com.irr310.common.engine.Engine;
 import com.irr310.common.world.capacity.controller.CapacityController;
 import com.irr310.server.Duration;
+import com.irr310.server.Time;
+import com.irr310.server.Time.Timestamp;
 
-public class ClientSystemEngine extends FramerateEngine<SystemEvent> {
+public class ClientSystemEngine implements Engine {
 
     private List<CapacityController> capacityControllers;
+    private Time mLastTime;
     
     public ClientSystemEngine() {
         capacityControllers = new ArrayList<CapacityController>();
-        framerate = new Duration(15000000);
     }
 
     @Override
-    protected void onStart() {
+    public void init() {
+    }
+
+    @Override
+    public void stop() {
+    }
+    
+    @Override
+    public void start() {
+        mLastTime = Time.getGameTime();
+    }
+    
+    @Override
+    public void destroy() {
         // TODO Auto-generated method stub
         
     }
     
     @Override
-    protected void frame() {
+    public void tick(Timestamp time) {
+        Duration duration = mLastTime.durationTo(time.getGameTime());
         for (CapacityController controller : capacityControllers) {
-            controller.update(framerate.getSeconds());
+            controller.update(duration.getSeconds());
         }
+        mLastTime = time.getGameTime();
     }
 
-    @Override
-    protected void processEvent(SystemEvent e) {
-        e.accept(new ClientSystemEngineEventVisitor());
-    }
-
-    private final class ClientSystemEngineEventVisitor extends DefaultSystemEventVisitor {
+//    private final class ClientSystemEngineEventVisitor extends DefaultSystemEventVisitor {
 //        @Override
 //        public void visit(QuitGameEvent event) {
 //            System.out.println("stopping game engine");
@@ -81,18 +91,10 @@ public class ClientSystemEngine extends FramerateEngine<SystemEvent> {
 
         
         
-    }
+//    }
 
 //    private void addCapacityController(CapacityController controller) {
 //        capacityControllers.add(controller);
 //    }
-
-    @Override
-    protected void onInit() {
-    }
-
-    @Override
-    protected void onEnd() {
-    }
 
 }

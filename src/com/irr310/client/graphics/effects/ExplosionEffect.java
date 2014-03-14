@@ -8,6 +8,8 @@ import com.irr310.client.graphics.WorldRenderer;
 import com.irr310.common.tools.Vec3;
 import com.irr310.i3d.scene.element.I3dElement;
 import com.irr310.i3d.scene.element.I3dGroupElement;
+import com.irr310.server.Time;
+import com.irr310.server.Time.Timestamp;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
@@ -17,16 +19,17 @@ public class ExplosionEffect extends GenericGraphicalElement{
 
     private I3dGroupElement elements;
     private float speed;
-    private float currentLocation;
+    private float initialLocation;
 
     private final UiEngine engine;
     private final double radius;
     private V3DrawElement bubbleElement;
+    private Time mInitialTime;
 
     public ExplosionEffect(WorldRenderer renderer, Vec3 from, double radius) {
         this.radius = radius;
         this.engine = renderer.getEngine();
-        currentLocation = (float) (radius/10);
+        initialLocation = (float) (radius/10);
         speed = (float) radius*10; 
         elements = new I3dGroupElement();
 
@@ -41,11 +44,17 @@ public class ExplosionEffect extends GenericGraphicalElement{
     }
 
     @Override
-    public void update() {
+    public void init(Timestamp timestamp) {
+        mInitialTime = timestamp.getGameTime();
+    }
+    
+    @Override
+    public void update(Timestamp time) {
 
+        float currentLocation = speed * mInitialTime.durationTo(time.getGameTime()).getSeconds();
+        
         bubbleElement.setScale(currentLocation);
         
-        currentLocation += speed *  engine.getFramerate().getSeconds();
         if (currentLocation > radius) {
             destroy();
         }

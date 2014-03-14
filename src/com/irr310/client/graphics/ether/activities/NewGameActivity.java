@@ -3,25 +3,23 @@ package com.irr310.client.graphics.ether.activities;
 import com.irr310.client.GameClient;
 import com.irr310.client.navigation.LoginManager;
 import com.irr310.common.engine.EngineManager;
-import com.irr310.common.event.game.GameEvent;
-import com.irr310.common.event.game.GameEventVisitor;
-import com.irr310.common.event.world.ConnectPlayerEvent;
-import com.irr310.common.event.world.DefaultWorldEventVisitor;
-import com.irr310.common.event.world.PlayerConnectedEvent;
+import com.irr310.common.world.Faction;
+import com.irr310.common.world.FactionProduction;
+import com.irr310.common.world.FactionStocks;
+import com.irr310.common.world.Player;
 import com.irr310.i3d.Bundle;
 import com.irr310.i3d.Intent;
 import com.irr310.i3d.Message;
 import com.irr310.i3d.view.Activity;
-import com.irr310.server.WorldEngine;
+import com.irr310.server.engine.world.WorldEngine;
+import com.irr310.server.engine.world.WorldEngineObserver;
 
 public class NewGameActivity extends Activity {
 
-
     private WorldEngine worldEngine = null;
-    private NewGameEventVisitor visitor;
     
     private static final int NEW_GAME_CREATED_WHAT = 1;
-    private EngineManager<GameEventVisitor, GameEvent> engineManager;
+    private EngineManager engineManager;
     
     @Override
     public void onCreate(Bundle bundle) {
@@ -30,17 +28,33 @@ public class NewGameActivity extends Activity {
         
         engineManager = GameClient.getInstance().getEngineManager();
         
-        new Thread() {
-            public void run() {
-                
-                worldEngine = new WorldEngine();
-                visitor = new NewGameEventVisitor();
-                worldEngine.registerEventVisitor(visitor);
-                engineManager.startAndWait(worldEngine);
-                
-                worldEngine.sendToAll(new ConnectPlayerEvent("fredb219", true));
-            };
-        }.start();
+        worldEngine = new WorldEngine();
+        engineManager.add(worldEngine);
+        worldEngine.start();
+        
+        
+        worldEngine.getWorldEnginObservable().register(this, new WorldEngineObserver() {
+            
+            @Override
+            public void onStocksChanged(FactionStocks stocks) {
+            }
+            
+            @Override
+            public void onProductionChanged(FactionProduction production) {
+            }
+            
+            @Override
+            public void onPlayerConnected(Player player) {
+                LoginManager.localPlayer = player;
+                getHandler().obtainMessage(NEW_GAME_CREATED_WHAT).send();
+            }
+            
+            @Override
+            public void onFactionChanged(Faction faction) {
+            }
+        });
+        
+        worldEngine.connectPlayerAction("fredb219", true);
     }
 
     @Override
@@ -53,7 +67,7 @@ public class NewGameActivity extends Activity {
     
     @Override
     public void onDestroy() {
-        worldEngine.unregisterEventVisitor(visitor);
+        worldEngine.getWorldEnginObservable().unregister(this);
     }
 
     @Override
@@ -64,13 +78,4 @@ public class NewGameActivity extends Activity {
                 break;
         }
     }
-    
-    private final class NewGameEventVisitor extends DefaultWorldEventVisitor {
-         @Override
-        public void visit(PlayerConnectedEvent event) {
-             LoginManager.localPlayer = event.getPlayer().toState();
-             getHandler().obtainMessage(NEW_GAME_CREATED_WHAT).send();
-        }   
-    }
-
 }

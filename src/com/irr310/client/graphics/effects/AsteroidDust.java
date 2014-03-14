@@ -8,6 +8,7 @@ import com.irr310.i3d.scene.element.I3dElement;
 import com.irr310.i3d.scene.element.I3dGroupElement;
 import com.irr310.server.Duration;
 import com.irr310.server.Time;
+import com.irr310.server.Time.Timestamp;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.element.V3DBox;
@@ -42,17 +43,24 @@ public class AsteroidDust extends GenericGraphicalElement{
 
         colorElement = new V3DColorElement(element, color);
         elements.add(colorElement);
-        creationTime = Time.now(true);
+        
     }
 
     @Override
-    public void update() {
+    public void init(Timestamp time) {
+        creationTime = time.getGameTime();
+    }
+    
+    @Override
+    public void update(Timestamp time) {
         
-        double mix = creationTime.getDurationToNow(true).getSeconds() / lifeDuration.getSeconds();
+        
+        Duration duration = creationTime.durationTo(Time.getGameTime());
+        double mix = duration.getSeconds() / lifeDuration.getSeconds();
         
         element.setScale(baseSize.multiply(1-mix).plus(baseSize.multiply(5).multiply(mix)).toV3DVect3());
         colorElement.setColor(V3DColor.mix(color, targetColor, (float) mix));
-        if (creationTime.getDurationToNow(true).longer(lifeDuration)) {
+        if (duration.longer(lifeDuration)) {
             destroy();
         }
     }

@@ -6,33 +6,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.locks.ReentrantLock;
 
 import com.irr310.client.navigation.LoginManager;
-import com.irr310.common.event.system.ShipDeployedSystemEvent;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec2;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Faction;
 import com.irr310.common.world.World;
 import com.irr310.common.world.capacity.Capacity;
-import com.irr310.common.world.item.Item;
-import com.irr310.common.world.state.CelestialObjectState;
-import com.irr310.common.world.state.ComponentState;
-import com.irr310.common.world.state.ItemState;
-import com.irr310.common.world.state.NexusState;
-import com.irr310.common.world.state.PartState;
-import com.irr310.common.world.state.ShipState;
-import com.irr310.common.world.state.WorldSystemState;
-import com.irr310.i3d.Color;
-import com.irr310.server.SystemEngine;
+import com.irr310.server.engine.system.SystemEngine;
 
 public class WorldSystem extends WorldEntity {
 
     private  Vec2 location;
     private double radius;
     
-    ReentrantLock mutex;
     private final List<CelestialObject> celestialObjects;
     private final List<Nexus> nexuses;
     private final List<Ship> ships;
@@ -54,8 +42,6 @@ public class WorldSystem extends WorldEntity {
         this.location = location;
         this.radius = 1000;
 
-        mutex = new ReentrantLock();
-        
         celestialObjects = new CopyOnWriteArrayList<CelestialObject>();
         nexuses =  new CopyOnWriteArrayList<Nexus>();
         ships = new CopyOnWriteArrayList<Ship>();
@@ -152,32 +138,10 @@ public class WorldSystem extends WorldEntity {
     }
 
     private void removePart(Part part) {
-        if (part.getOwner().isState(LoginManager.localPlayer.faction)) {
+        if (part.getOwner().equals(LoginManager.localPlayer.getFaction())) {
             myParts.remove(part);
         }
         parts.remove(part);
-    }
-    
-    public CelestialObject loadCelestialObject(CelestialObjectState celestialObjectView) {
-        if (celestialObjectIdMap.containsKey(celestialObjectView.id)) {
-            return celestialObjectIdMap.get(celestialObjectView.id);
-        }
-
-        CelestialObject celestialObject = new CelestialObject(this, celestialObjectView.id, celestialObjectView.name);
-        celestialObject.fromState(celestialObjectView);
-        addCelestialObject(celestialObject);
-        return celestialObject;
-    }
-
-    public Ship loadShip(ShipState shipView) {
-        if (shipIdMap.containsKey(shipView.id)) {
-            return shipIdMap.get(shipView.id);
-        }
-
-        Ship ship = new Ship(this, shipView.id);
-        ship.fromState(shipView);
-        addShip(ship);
-        return ship;
     }
 
     public void addShip(Ship ship) {
@@ -220,30 +184,8 @@ public class WorldSystem extends WorldEntity {
         return capacityIdMap.get(capacityId);
     }
 
-    public Component loadComponent(ComponentState componentView) {
-        if (componentIdMap.containsKey(componentView.id)) {
-            return componentIdMap.get(componentView.id);
-        }
-
-        Component component = new Component(this, componentView.id, componentView.name);
-        component.fromState(componentView);
-        addComponent(component);
-        return component;
-    }
-
     public List<CelestialObject> getCelestialsObjects() {
         return celestialObjects;
-    }
-
-    public Part loadPart(PartState partView, SystemObject parentObject) {
-        if (partIdMap.containsKey(partView.id)) {
-            return partIdMap.get(partView.id);
-        }
-
-        Part part = new Part(partView.id, parentObject);
-        part.fromState(partView);
-        addPart(part);
-        return part;
     }
 
     public List<Part> getParts() {
@@ -252,6 +194,10 @@ public class WorldSystem extends WorldEntity {
 
     public List<Part> getMyParts() {
         return myParts;
+    }
+    
+    public List<Nexus> getNexuses() {
+        return nexuses;
     }
 
     public void setOwner(Faction faction) {
@@ -278,72 +224,15 @@ public class WorldSystem extends WorldEntity {
         return name;
     }
 
-    public WorldSystemState toState(int depth) {
-        WorldSystemState systemState = new WorldSystemState();
-        systemState.id = getId();
-        
-        systemState.homeSystem = homeSystem;
-        systemState.location = location;
-        systemState.radius = radius;
-        systemState.name = name;
-        if(owner != null) {
-            systemState.ownerColor = owner.getColor();
-            systemState.ownerId = owner.getId();
-        } else {
-            systemState.ownerColor = Color.black;
-            systemState.ownerId = -1l;
-        }
-        
-        if(depth != 0) {
-            for(Nexus nexus: nexuses) {
-                systemState.nexuses.add(nexus.toState());
-            }
-            
-            for(Ship ship : ships) {
-                systemState.ships.add(ship.toState(depth-1));
-            }
-        }
-        
-
-        return systemState;
-    }
+    public double getRadius() {
+		return radius;
+	}
 
     public void addNexus(Nexus rootNexus) {
         nexuses.add(rootNexus);        
     }
-
-    public Nexus getNexus(NexusState nexusState) {
-        for(Nexus nexus: nexuses) {
-            if(nexus.isState(nexusState)) {
-                return nexus;
-            }
-        }
-        return null;
-    }
-
-    public void lock() {
-        mutex.lock();
-    }
-
-    public void unlock() {
-        mutex.unlock();
-    }
-
-    public boolean isState(WorldSystemState systemState) {
-            return getId() == systemState.id;
-    }
-
+  
     public void setRadius(double radius) {
         this.radius = radius;
     }
-    
-//    public void removeShip(Ship ship) {
-//        ships.remove(ship);
-//        shipIdMap.remove(ship.getId());
-//        for (Component component : ship.getComponents()) {
-//            removeComponent(component, com.irr310.common.event.ComponentRemovedEvent.Reason.SHIP);
-//        }
-////        systemEngine.sendToAll(new WorldShipRemovedEvent(ship));
-//    }
-    
 }

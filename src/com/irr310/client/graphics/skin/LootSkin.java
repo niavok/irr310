@@ -12,6 +12,7 @@ import com.irr310.i3d.scene.element.I3dElement;
 import com.irr310.i3d.scene.element.I3dGroupElement;
 import com.irr310.server.Duration;
 import com.irr310.server.Time;
+import com.irr310.server.Time.Timestamp;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
@@ -44,9 +45,15 @@ public class LootSkin extends Skin {
         elements.setTransformMatrix(transform.toFloatBuffer());
         lastDustEmission = Time.getGameTime();
     }
+    
+    @Override
+    public void init(Timestamp time) {
+        // TODO Auto-generated method stub
+        
+    }
 
     @Override
-    public void update() {
+    public void update(Timestamp time) {
 //        elements.setTransformMatrix(transform.toFloatBuffer());
 //
 //        angle += getEngine().getFramerate().getSeconds() * 10;

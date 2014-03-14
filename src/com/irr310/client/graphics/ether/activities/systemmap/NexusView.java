@@ -1,17 +1,17 @@
 package com.irr310.client.graphics.ether.activities.systemmap;
 
-import com.irr310.common.world.state.NexusState;
+import com.irr310.common.world.system.Nexus;
 import com.irr310.i3d.Color;
 import com.irr310.i3d.Graphics;
 import com.irr310.i3d.view.View;
 
 public class NexusView extends View {
 
-    private NexusState nexus;
+    private Nexus nexus;
     private SystemDetailCircleView parentView;
     private float radius;
 
-    public NexusView(NexusState nexus, SystemDetailCircleView parentView) {
+    public NexusView(Nexus nexus, SystemDetailCircleView parentView) {
         this.nexus = nexus;
         this.parentView = parentView;
         
@@ -31,10 +31,10 @@ public class NexusView extends View {
     @Override
     public void onLayout(float l, float t, float r, float b) {
         
-        radius = (float) (nexus.radius * parentView.getScale()) + 20;
+        radius = (float) (nexus.getRadius() * parentView.getScale()) + 20;
         
-        getLayoutParams().mLeft = (float) (nexus.location.x * parentView.getScale() + parentView.getOffset() - radius);
-        getLayoutParams().mTop = (float) (nexus.location.y * parentView.getScale() + parentView.getOffset()- radius);
+        getLayoutParams().mLeft = (float) (nexus.getLocation().x * parentView.getScale() + parentView.getOffset() - radius);
+        getLayoutParams().mTop = (float) (nexus.getLocation().y * parentView.getScale() + parentView.getOffset()- radius);
         
     }
 

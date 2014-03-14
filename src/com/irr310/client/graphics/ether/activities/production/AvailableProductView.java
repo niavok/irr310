@@ -2,30 +2,27 @@ package com.irr310.client.graphics.ether.activities.production;
 
 import java.util.List;
 
-import com.irr310.common.tools.Log;
-import com.irr310.common.world.state.ProductState;
-import com.irr310.common.world.state.WorldSystemState;
 import com.irr310.i3d.I3dRessourceManager;
 import com.irr310.i3d.SelectionManager;
 import com.irr310.i3d.SelectionManager.OnSelectionChangeListener;
 import com.irr310.i3d.view.ProxyView;
-import com.irr310.i3d.view.RelativeLayout;
 import com.irr310.i3d.view.TextView;
 import com.irr310.i3d.view.View;
+import com.irr310.server.world.product.Product;
 
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 
 public class AvailableProductView extends ProxyView {
 
-    private final ProductState product;
+    private final Product product;
     private TextView productNameTextView;
 
-    public AvailableProductView(ProductState product, final SelectionManager<ProductState> selectionManager) {
+    public AvailableProductView(Product product, final SelectionManager<Product> selectionManager) {
         super(I3dRessourceManager.loadView("main@layout/production/available_product"));
         this.product = product;
         productNameTextView = (TextView) findViewById("productNameTextView@layout/production/available_product");
         
-        productNameTextView.setText(product.name +" "+ product.code);
+        productNameTextView.setText(product.getName() +" "+ product.getCode());
         
         this.setOnClickListener(new OnClickListener() {
             
@@ -35,9 +32,9 @@ public class AvailableProductView extends ProxyView {
             }
         });
         
-        selectionManager.addOnSelectionChangeListener(new OnSelectionChangeListener<ProductState>() {
+        selectionManager.addOnSelectionChangeListener(new OnSelectionChangeListener<Product>() {
           
-            public void onSelectionChange(List<ProductState> selection) {
+            public void onSelectionChange(List<Product> selection) {
                 if(selection.contains(AvailableProductView.this.product)) {
                     setState(ViewState.SELECTED);
                 } else {

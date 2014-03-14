@@ -8,6 +8,7 @@ import com.irr310.i3d.fonts.FontFactory;
 import com.irr310.i3d.scene.I3dSceneManager;
 import com.irr310.i3d.view.drawable.BitmapFactory;
 import com.irr310.server.Time;
+import com.irr310.server.Time.Timestamp;
 
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent;
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
@@ -51,11 +52,12 @@ public class I3dContext {
         surface.configure(canvas.getWidth(), canvas.getHeight());
     }
 
-    public void update(Time absTime, Time gameTime) {
+    public void update(Timestamp time) {
         for (Surface surface : surfaceList) {
-            surface.update(absTime, gameTime);
+            surface.update(time);
         }
 
+        graphics.setTimestamp(time);
         canvas.draw(graphics);
     }
 

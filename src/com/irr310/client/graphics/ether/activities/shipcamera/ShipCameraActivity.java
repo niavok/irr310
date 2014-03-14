@@ -1,26 +1,25 @@
 package com.irr310.client.graphics.ether.activities.shipcamera;
 
-import com.irr310.common.event.system.DefaultSystemEventVisitor;
-import com.irr310.common.event.system.QuerySystemStateEvent;
-import com.irr310.common.event.system.SystemStateEvent;
-import com.irr310.common.world.state.EntityState;
-import com.irr310.common.world.state.ShipState;
-import com.irr310.common.world.state.WorldSystemState;
+import com.irr310.common.tools.TransformMatrix;
+import com.irr310.common.world.system.Ship;
+import com.irr310.common.world.system.WorldSystem;
 import com.irr310.i3d.Bundle;
 import com.irr310.i3d.Message;
 import com.irr310.i3d.view.Activity;
 import com.irr310.i3d.view.RelativeLayout;
 import com.irr310.server.GameServer;
-import com.irr310.server.SystemEngine;
+import com.irr310.server.engine.system.SystemEngine;
+import com.irr310.server.engine.system.SystemEngineObserver;
+import com.sun.org.apache.xerces.internal.impl.validation.EntityState;
 
 public class ShipCameraActivity extends Activity {
 
     private RelativeLayout mainRelativeLayout;
-    private WorldSystemState system;
-    private ShipState ship;
-    private WorldSystemState systemState;
+    private WorldSystem system;
+    private Ship ship;
+    private WorldSystem systemState;
     private SystemEngine systemEngine;
-    private DefaultSystemEventVisitor visitor;
+    private SystemEngineObserver mSystemEngineObserver;
     private static final int UPDATE_SYSTEM_WHAT = 1;
 
     @Override
@@ -35,30 +34,24 @@ setContentView("main@layout/camera/ship_camera");
         
         systemEngine = GameServer.getWorldEngine().getSystemEngine(system);
         
-        visitor = new DefaultSystemEventVisitor() {
+        
+        mSystemEngineObserver = new SystemEngineObserver() {
             
-
             @Override
-            public void visit(SystemStateEvent event) {
-                systemState = event.getSystemState();
-                getHandler().obtainMessage(UPDATE_SYSTEM_WHAT).send();
+            public void onDeployShip(Ship ship, TransformMatrix transform) {
             }
-            
-            
         };
         
     }
 
-
     @Override
     public void onResume() {
-        systemEngine.registerEventVisitor(visitor);
-        systemEngine.sendToAll(new QuerySystemStateEvent(system, EntityState.FULL_DEPTH));
+        systemEngine.getSystemEnginObservable().register(this, mSystemEngineObserver);
     }
 
     @Override
     public void onPause() {
-        systemEngine.unregisterEventVisitor(visitor);
+        systemEngine.getSystemEnginObservable().unregister(this);
     }
 
     @Override
@@ -81,23 +74,23 @@ setContentView("main@layout/camera/ship_camera");
     public static class ShipCameraActivityBundle extends Bundle {
 
         static class ShipCameraData {
-            public ShipCameraData(WorldSystemState system, ShipState ship) {
+            public ShipCameraData(WorldSystem system, Ship ship) {
                 this.system = system;
                 this.ship = ship;
             }
-            public WorldSystemState system;
-            public ShipState ship;
+            public WorldSystem system;
+            public Ship ship;
         }
         
-        public ShipCameraActivityBundle(WorldSystemState system, ShipState ship) {
+        public ShipCameraActivityBundle(WorldSystem system, Ship ship) {
             super(new ShipCameraData(system, ship));
         }
         
-        WorldSystemState getSystem() {
+        WorldSystem getSystem() {
             return ((ShipCameraData) getObject()).system;
         }
         
-        ShipState getShip() {
+        Ship getShip() {
             return ((ShipCameraData) getObject()).ship;
         }
     }

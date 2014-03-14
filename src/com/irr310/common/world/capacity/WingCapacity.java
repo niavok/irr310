@@ -2,7 +2,6 @@ package com.irr310.common.world.capacity;
 
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.World;
-import com.irr310.common.world.state.CapacityState;
 
 public class WingCapacity extends Capacity {
 
@@ -34,31 +33,5 @@ public class WingCapacity extends Capacity {
     public double getYield() {
         return yield;
     }
-    
-    @Override
-    public CapacityState toState() {
-        CapacityState view = new CapacityState();
-        view.id = getId();
-        view.name = getName();
-        view.type = CapacityType.WING.ordinal();
-
-        view.pushDouble(yield);
-        view.pushDouble(friction);
-        view.pushVect3(breakAxis);
-        view.pushVect3(thrustAxis);
-        return view;
-    }
-
-    @Override
-    public void fromState(CapacityState view) {
-        setName(view.name);
-        yield = view.popDouble();
-        friction = view.popDouble();
-        breakAxis = view.popVect3();
-        thrustAxis = view.popVect3();
-    }
-
-    
-
 }
 

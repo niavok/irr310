@@ -17,7 +17,6 @@ import com.irr310.client.graphics.fragments.UpgradeMenu;
 import com.irr310.client.graphics.skin.AsteroidSkin;
 import com.irr310.client.graphics.skin.CameraSkin;
 import com.irr310.client.graphics.skin.FactorySkin;
-import com.irr310.client.graphics.skin.GenericSkin;
 import com.irr310.client.graphics.skin.HullSkin;
 import com.irr310.client.graphics.skin.LootSkin;
 import com.irr310.client.graphics.skin.MonolithSkin;
@@ -31,8 +30,6 @@ import com.irr310.client.graphics.skin.ThrusterBlockSkin;
 import com.irr310.client.graphics.skin.WeaponSkin;
 import com.irr310.client.graphics.skin.WingSkin;
 import com.irr310.client.navigation.LoginManager;
-import com.irr310.common.event.system.DefaultSystemEventVisitor;
-import com.irr310.common.event.system.SystemEventVisitor;
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.system.CelestialObject;
@@ -46,6 +43,7 @@ import com.irr310.i3d.scene.controller.I3dFollow3DCameraController;
 import com.irr310.i3d.scene.element.I3dElement;
 import com.irr310.i3d.scene.element.I3dGroupElement;
 import com.irr310.server.Time;
+import com.irr310.server.Time.Timestamp;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
@@ -266,7 +264,11 @@ public class WorldRenderer implements GraphicRenderer {
             }
 
             @Override
-            public void update() {
+            public void init(Timestamp time) {
+            }
+            
+            @Override
+            public void update(Timestamp time) {
                 clockIndicator.setText("Time: " + format.format(Time.now(true).getSeconds()) + " s");
 
             }
@@ -294,7 +296,11 @@ public class WorldRenderer implements GraphicRenderer {
             }
 
             @Override
-            public void update() {
+            public void init(Timestamp time) {
+            }
+            
+            @Override
+            public void update(Timestamp time) {
                 fpsIndicator.setText("" + format.format(engine.getFps()) + " fps");
 
             }
@@ -558,7 +564,7 @@ public class WorldRenderer implements GraphicRenderer {
 //        }
 //    }
 
-    public void frame() {
+    public void frame(Timestamp timestamp) {
 
 //        Game.getInstance().getWorld().lock();
 
@@ -566,7 +572,7 @@ public class WorldRenderer implements GraphicRenderer {
 
         // amination
         for (GraphicalElement animated : animatedList) {
-            animated.update();
+            animated.update(timestamp);
         }
         Log.perfEnd();
 
@@ -856,7 +862,7 @@ public class WorldRenderer implements GraphicRenderer {
         reloadGui();
     }
 
-    private final class WorldRendererEventVisitor extends DefaultSystemEventVisitor {
+//    private final class WorldRendererEventVisitor extends DefaultSystemEventVisitor {
 
 //        @Override
 //        public void visit(CelestialObjectAddedEvent event) {
@@ -1021,17 +1027,17 @@ public class WorldRenderer implements GraphicRenderer {
 //            
 //
 //        }
-    }
+//    }
 
     @Override
     public V3DCameraBinding getCameraBinding() {
         return fullscreenBinding;
     }
 
-    @Override
-    public SystemEventVisitor getEventVisitor() {
-        return new WorldRendererEventVisitor();
-    }
+//    @Override
+//    public SystemEventVisitor getEventVisitor() {
+//        return new WorldRendererEventVisitor();
+//    }
 
     public UiEngine getEngine() {
         return engine;

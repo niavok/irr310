@@ -6,6 +6,9 @@ import com.irr310.client.graphics.WorldRenderer;
 import com.irr310.common.tools.Vec3;
 import com.irr310.i3d.scene.element.I3dElement;
 import com.irr310.i3d.scene.element.I3dGroupElement;
+import com.irr310.server.Duration;
+import com.irr310.server.Time;
+import com.irr310.server.Time.Timestamp;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
@@ -15,7 +18,7 @@ public class BulletEffect extends GenericGraphicalElement{
 
     private I3dGroupElement elements;
     private float speed = 2000;
-    private float currentLocation = 0;
+    private float initialLocation = 0;
 
     private final Vec3 to;
     private final Vec3 from;
@@ -23,6 +26,7 @@ public class BulletEffect extends GenericGraphicalElement{
     private V3DLine bullet;
     private Vec3 bulletVector;
     private final UiEngine engine;
+    private Time initTime;
 
     public BulletEffect(WorldRenderer renderer, Vec3 from, Vec3 to) {
         this.engine = renderer.getEngine();
@@ -44,17 +48,26 @@ public class BulletEffect extends GenericGraphicalElement{
     }
 
     @Override
-    public void update() {
+    public void init(Timestamp timestamp) {
+        initTime = timestamp.getGameTime();
+    }
+    
+    @Override
+    public void update(Timestamp timestamp) {
 
+        float currentLocation =  initialLocation  + speed *  initTime.durationTo(timestamp.getGameTime()).getSeconds();
+        
         Vec3 start = from.plus(bulletVector.multiply(currentLocation));
         bullet.setLocation(start.toV3DVect3(), start.plus(bulletVector.multiply(speed/20)).toV3DVect3());
 
-        currentLocation += speed *  engine.getFramerate().getSeconds();
+        
         if (currentLocation > distance) {
             destroy();
         }
     }
 
+    
+    
     @Override
     public boolean isDisplayable() {
         return true;

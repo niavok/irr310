@@ -2,7 +2,7 @@ package com.irr310.client.graphics.ether.activities.production;
 
 import java.util.List;
 
-import com.irr310.common.world.state.ProductionTaskState;
+import com.irr310.common.world.ProductionTask;
 import com.irr310.i3d.I3dRessourceManager;
 import com.irr310.i3d.SelectionManager;
 import com.irr310.i3d.SelectionManager.OnSelectionChangeListener;
@@ -14,15 +14,15 @@ import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 
 public class ProductionTaskView extends ProxyView {
 
-    private final ProductionTaskState productionTask;
+    private final ProductionTask productionTask;
     private TextView productNameTextView;
 
-    public ProductionTaskView(ProductionTaskState productionTask, final SelectionManager<ProductionTaskState> selectionManager) {
+    public ProductionTaskView(ProductionTask productionTask, final SelectionManager<ProductionTask> selectionManager) {
         super(I3dRessourceManager.loadView("main@layout/production/production_task"));
         this.productionTask = productionTask;
         productNameTextView = (TextView) findViewById("productNameTextView@layout/production/production_task");
         
-        productNameTextView.setText(productionTask.product.name +" "+ productionTask.product.code);
+        productNameTextView.setText(productionTask.getProduct().getName() +" "+ productionTask.getProduct().getCode());
         
         this.setOnClickListener(new OnClickListener() {
             
@@ -32,9 +32,9 @@ public class ProductionTaskView extends ProxyView {
             }
         });
         
-        selectionManager.addOnSelectionChangeListener(new OnSelectionChangeListener<ProductionTaskState>() {
+        selectionManager.addOnSelectionChangeListener(new OnSelectionChangeListener<ProductionTask>() {
           
-            public void onSelectionChange(List<ProductionTaskState> selection) {
+            public void onSelectionChange(List<ProductionTask> selection) {
                 if(selection.contains(ProductionTaskView.this.productionTask)) {
                     setState(ViewState.SELECTED);
                 } else {

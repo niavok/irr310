@@ -3,15 +3,11 @@ package com.irr310.client.graphics;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
+import com.irr310.client.GameClient;
 import com.irr310.client.graphics.ether.activities.MainActivity;
-import com.irr310.common.engine.EventDispatcher;
-import com.irr310.common.engine.FramerateEngine;
-import com.irr310.common.event.game.DefaultGameEventVisitor;
-import com.irr310.common.event.game.GameEvent;
-import com.irr310.common.event.game.GameEventVisitor;
-import com.irr310.common.event.game.KeyEvent;
-import com.irr310.common.event.game.MouseEvent;
-import com.irr310.common.event.game.QuitGameEvent;
+import com.irr310.client.input.InputEngineObserver;
+import com.irr310.common.engine.Engine;
+import com.irr310.common.engine.Observable;
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.Vec2;
 import com.irr310.i3d.Color;
@@ -21,30 +17,31 @@ import com.irr310.i3d.Intent;
 import com.irr310.i3d.Surface;
 import com.irr310.server.Duration;
 import com.irr310.server.Time;
+import com.irr310.server.Time.Timestamp;
 
 import fr.def.iss.vd2.lib_v3d.V3DContext;
+import fr.def.iss.vd2.lib_v3d.V3DKeyEvent;
+import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 import fr.def.iss.vd2.lib_v3d.gui.V3DContainer;
 
-public class UiEngine extends FramerateEngine<GameEvent> {
+public class UiEngine implements Engine {
 
     private I3dContext context;
-    private GraphicEngineEventVisitor eventVisitor;
     private Surface mainSurface;
     private Surface statusSurface;
-    private final EventDispatcher<GameEventVisitor, GameEvent> dispatcher;
     private Time nextFpsTime;
     private int frameCount;
     private Duration totalDuration;
     private Duration usedDuration;
+    private Timestamp mLastTime;
+    private InputEngineObserver mInputEngineObserver;
     
     
-    public UiEngine(EventDispatcher<GameEventVisitor, GameEvent> dispatcher) {
-        this.dispatcher = dispatcher;
-        framerate = new Duration(16666666);
+    public UiEngine() {
     }
 
     @Override
-    protected void onInit() {
+    public void init() {
         context = I3dContext.getInstance();
         context.initCanvas("IRR310", 1280, 768);
         context.setContextListener(new UiContextListener());
@@ -67,7 +64,6 @@ public class UiEngine extends FramerateEngine<GameEvent> {
         context.addSurface(statusSurface);
         
         
-        eventVisitor = new GraphicEngineEventVisitor();
         //fpsIndicator = new GuiFpsIndicator(this);
         //changeRenderer(new BlankGraphicRenderer(this));
 
@@ -78,31 +74,48 @@ public class UiEngine extends FramerateEngine<GameEvent> {
             }
         });*/
         
-        context.update(Time.now(false), Time.now(true));
+        Timestamp time = Time.getTimestamp();
         
-        nextFpsTime = Time.now(false).add(new Duration(5.0f));
+        context.update(time);
+        
+        mLastTime = time;
+        nextFpsTime = time.getTime().add(new Duration(5.0f));
         frameCount = 0;
         usedDuration = new Duration(0);
         totalDuration = new Duration(0);
+        
+        mInputEngineObserver = new UiInputEngineObserver();
+        GameClient.getInstance().getInputEngine().getInputEnginObservable().register(this, mInputEngineObserver);
+        
     }
     
+    private final class UiContextListener implements ContextListener {
+        @Override
+        public void onQuit() {
+            notifyQuitEvent();
+        }
+    }
+
     @Override
-    protected void onStart() {
-        pause(false);
+    public void start() {
         mainSurface.startActivity(new Intent(MainActivity.class));
         context.show();
     }
 
 
     @Override
-    protected void onEnd() {
-        Display.destroy();
+    public void stop() {
     }
 
     @Override
-    protected void frame() {
-        Time beginTime = Time.now(false);
-        context.update(Time.now(false), Time.now(true));
+    public void destroy() {
+        context.destroy();
+    }
+    
+    @Override
+    public void tick(Timestamp time) {
+        Time beginTime = time.getTime();
+        context.update(time);
         //currentActivity.frame(Time.now(false), Time.now(true));
         //renderer.frame();
         //canvas.frame();
@@ -110,7 +123,7 @@ public class UiEngine extends FramerateEngine<GameEvent> {
         Duration durationToNow = beginTime.getDurationToNow(false);
         
         usedDuration = usedDuration.add(durationToNow);
-        totalDuration = totalDuration.add(framerate);
+        totalDuration = totalDuration.add(mLastTime.getTime().durationTo(time.getTime()));
         frameCount++;
         
         if(beginTime.after(nextFpsTime)) {
@@ -124,21 +137,36 @@ public class UiEngine extends FramerateEngine<GameEvent> {
             frameCount = 0;
             nextFpsTime = beginTime.add(new Duration(5.0f));
         }
+        
+        mLastTime =  time;
     }
 
-    @Override
-    protected void processEvent(GameEvent e) {
-        e.accept(eventVisitor);
-    }
-
-    private final class UiContextListener implements ContextListener {
+    private class UiInputEngineObserver implements InputEngineObserver {
         @Override
-        public void onQuit() {
-            dispatcher.sendToAll(new QuitGameEvent());
+        public void onMouseEvent(V3DMouseEvent event) {
+            context.onMouseEvent(event);            
+        }
+
+        @Override
+        public void onKeyEvent(V3DKeyEvent event) {
+            if (event.getKeyCode() == Keyboard.KEY_F11 && Keyboard.isKeyDown(Keyboard.KEY_RCONTROL)) {
+                Log.console("Reload ui");
+                context.clearCaches();
+                context.reloadUi();
+                //System.out.println("Reload shaders");
+                //context.reloadShader();
+                return;
+            } else {
+                context.onKeyEvent(event);
+            }            
+        }
+
+        @Override
+        public void onQuitEvent() {
         }
     }
-
-    private final class GraphicEngineEventVisitor extends DefaultGameEventVisitor {
+    
+//    private final class GraphicEngineEventVisitor extends DefaultGameEventVisitor {
 
 //        EngineEventVisitor rendererVisitor = new DefaultEngineEventVisitor();
 //
@@ -146,12 +174,6 @@ public class UiEngine extends FramerateEngine<GameEvent> {
 //            this.rendererVisitor = rendererVisitor;
 //        }
 //
-        @Override
-        public void visit(QuitGameEvent event) {
-            System.out.println("stopping graphic engine");
-            context.destroy();
-            setRunning(false);
-        }
 //
 //        @Override
 //        public void visit(StartEngineEvent event) {
@@ -173,10 +195,6 @@ public class UiEngine extends FramerateEngine<GameEvent> {
 //            changeRenderer(new WorldRenderer(UiEngine.this));
 //        }
 //
-        @Override
-        public void visit(MouseEvent event) {
-            context.onMouseEvent(event.getMouseEvent());
-        }
 //
 //        @Override
 //        public void visit(PauseEngineEvent event) {
@@ -188,20 +206,6 @@ public class UiEngine extends FramerateEngine<GameEvent> {
 //            /*canvas.hide();*/
 //        }
 //
-        @Override
-        public void visit(KeyEvent event) {
-            
-            if (event.getKeyEvent().getKeyCode() == Keyboard.KEY_F11 && Keyboard.isKeyDown(Keyboard.KEY_RCONTROL)) {
-                Log.console("Reload ui");
-                context.clearCaches();
-                context.reloadUi();
-                //System.out.println("Reload shaders");
-                //context.reloadShader();
-                return;
-            } else {
-                context.onKeyEvent(event.getKeyEvent());
-            }
-        }
 //
 //        @Override
 //        public void visit(CelestialObjectAddedEvent event) {
@@ -346,7 +350,7 @@ public class UiEngine extends FramerateEngine<GameEvent> {
 //            
 //        }
         
-    }
+//    }
 
     public V3DContext getV3DContext() {
         //return context;
@@ -399,5 +403,19 @@ public class UiEngine extends FramerateEngine<GameEvent> {
 
     public void removePopup(V3DContainer popup) {
         /*renderer.getPopupLayer().remove(popup);*/
+    }
+    
+    
+    // Observers
+    private Observable<UiEngineObserver> mUiEngineObservable = new Observable<UiEngineObserver>();
+    
+    public Observable<UiEngineObserver> getUiEnginObservable() {
+        return mUiEngineObservable;
+    }
+    
+    private void notifyQuitEvent() {
+        for(UiEngineObserver observer : mUiEngineObservable.getObservers()) {
+            observer.onQuitEvent();
+        }
     }
 }

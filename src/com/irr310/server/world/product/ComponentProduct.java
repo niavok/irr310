@@ -8,8 +8,6 @@ import java.util.Map;
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.RessourceLoadingException;
 import com.irr310.common.tools.Vec3;
-import com.irr310.common.world.state.ProductState;
-import com.irr310.server.world.product.ComponentProduct.ComponentPartProduct;
 
 public class ComponentProduct extends Product {
 
@@ -51,15 +49,8 @@ public class ComponentProduct extends Product {
     }
     
     @Override
-    public ProductState toState() {
-        ProductState productState = new ProductState();
-        productState.id = getId();
-        productState.name = getName();
-        productState.code = getCode();
-        productState.description = getDescription();
-        productState.type = ProductState.TYPE_COMPONENT;
-        
-        return productState;
+    public boolean isShip() {
+        return false;
     }
     
     public static class ComponentSlotProduct {

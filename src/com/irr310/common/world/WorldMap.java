@@ -5,9 +5,6 @@ import java.util.List;
 
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.Vec2;
-import com.irr310.common.world.state.FactionState;
-import com.irr310.common.world.state.WorldMapState;
-import com.irr310.common.world.state.WorldSystemState;
 import com.irr310.common.world.system.WorldSystem;
 
 public class WorldMap {
@@ -43,18 +40,5 @@ public class WorldMap {
 
     public List<WorldSystem> getSystems() {
         return systems;
-    }
-
-    public WorldMapState toState(int depth) {
-        WorldMapState worldMapState = new WorldMapState();
-        worldMapState.systems = new ArrayList<WorldSystemState>();
-        
-        if(depth != 0) {
-            for(WorldSystem system: systems) {
-                worldMapState.systems.add(system.toState(depth-1));
-            }
-        }
-        
-        return worldMapState;
     }
 }

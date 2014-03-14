@@ -30,6 +30,7 @@ import com.irr310.common.world.system.Part;
 import com.irr310.i3d.scene.I3dCamera;
 import com.irr310.i3d.scene.I3dEye3DCamera;
 import com.irr310.i3d.scene.element.I3dElement;
+import com.irr310.server.Time.Timestamp;
 
 import fr.def.iss.vd2.lib_v3d.V3DInputEvent;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
@@ -222,9 +223,15 @@ public class I3dFollow3DCameraController implements V3DCameraController, Graphic
     @Override
     public void notifyRemove() {
     }
-
+    
     @Override
-    public void update() {
+    public void init(Timestamp time) {
+        // TODO Auto-generated method stub
+        
+    }
+    
+    @Override
+    public void update(Timestamp time) {
         if (element != null) {
             TransformMatrix transform = element.getTransform();
             Vec3 translation = transform.getTranslation();

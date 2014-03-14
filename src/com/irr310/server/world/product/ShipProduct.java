@@ -1,18 +1,14 @@
 package com.irr310.server.world.product;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import sun.security.action.GetLongAction;
-
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.Vec3;
-import com.irr310.common.world.state.ProductState;
 import com.irr310.server.world.product.ComponentProduct.ComponentSlotProduct;
 
 public class ShipProduct extends Product {
@@ -153,16 +149,10 @@ public class ShipProduct extends Product {
             links.add(new ShipLinkProduct(refA, refB));
         }
     }
-    
+  
     @Override
-    public ProductState toState() {
-        ProductState productState = new ProductState();
-        productState.id = getId();
-        productState.name = getName();
-        productState.description = getDescription();
-        productState.code = getCode();
-        productState.type = ProductState.TYPE_SHIP;
-        return productState;
+    public boolean isShip() {
+        return true;
     }
     
     public static class ShipComponentProduct {

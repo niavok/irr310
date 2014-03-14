@@ -8,11 +8,6 @@ import java.util.Map;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.capacity.Capacity;
-import com.irr310.common.world.capacity.Capacity.CapacityType;
-import com.irr310.common.world.state.CapacityState;
-import com.irr310.common.world.state.ComponentState;
-import com.irr310.common.world.state.PartState;
-import com.irr310.common.world.state.SlotState;
 
 
 public final class  Component extends SystemObject {
@@ -165,72 +160,6 @@ public final class  Component extends SystemObject {
         
 		return tmp.getTranslation();
 	}
-
-    public ComponentState toState(int depth) {
-        ComponentState componentView = new ComponentState();
-        
-        componentView.id = getId();
-        componentView.name = getName();
-        componentView.shipPosition = locationInShip;
-        componentView.shipRotation = shipRotation;
-        
-        // WorldObject properties    
-        componentView.skin = getSkin();
-        componentView.durabilityMax = getDurabilityMax();
-        componentView.durability = getDurability();
-        componentView.physicalResistance = getPhysicalResistance();
-        componentView.heatResistance = getHeatResistance();
-        
-        componentView.quality = quality;
-        
-        if(depth != 0) {
-        
-            for(Part part: parts) {
-                componentView.parts.add(part.toState());    
-            }
-            
-            for(Slot slot: slots) {
-                componentView.slots.add(slot.toState());    
-            }
-            
-            for(Capacity capacity: capacities) {
-                componentView.capacities.add(capacity.toState());    
-            }
-        }
-        
-        return componentView;
-    }
-
-    public void fromState(ComponentState componentState) {
-        locationInShip = componentState.shipPosition;
-        shipRotation = componentState.shipRotation;
-        quality = componentState.quality;
-
-        // WorldObject properties
-        setSkin(componentState.skin);
-        setDurabilityMax(componentState.durabilityMax);
-        setDurability(componentState.durability);
-        setPhysicalResistance(componentState.physicalResistance);
-        setHeatResistance(componentState.heatResistance);
-        
-        
-        computeEfficiency();
-        
-        for(PartState part: componentState.parts) {
-            addPart(getSystem().loadPart(part, this));
-        }
-        
-        for(SlotState slot: componentState.slots) {
-            addSlot(slot.id, getSystem().getPartById(slot.partId), slot.position);
-        }
-        
-        for(CapacityState capacityView: componentState.capacities) {
-            Capacity capacity = Capacity.createFromType(getWorld(), capacityView.id,  CapacityType.values()[capacityView.type]);
-            capacity.fromState(capacityView);
-            addCapacity(capacity);
-        }
-        
-    }
 
     public void addCapacity(Capacity capacity) {
         capacities.add(capacity);

@@ -10,6 +10,7 @@ import com.irr310.i3d.view.View;
 import com.irr310.i3d.view.View.OnClickListener;
 import com.irr310.server.Duration;
 import com.irr310.server.Time;
+import com.irr310.server.Time.Timestamp;
 
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 
@@ -53,8 +54,8 @@ public class MainMenuActivity extends Activity {
     }
 
     @Override
-    protected void onUpdate(Time absTime, Time gameTime) {
-        Duration duration = startTime.durationTo(absTime);
+    protected void onUpdate(Timestamp time) {
+        Duration duration = startTime.durationTo(time.getTime());
         // Log.trace("Update animatation after "+duration.getMilliseconds()+" ms ("+(1f/duration.getSeconds())+"fps)");
         //startTime = absTime;
 

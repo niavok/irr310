@@ -1,13 +1,8 @@
 package com.irr310.common.world;
 
-import java.util.ArrayList;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import com.irr310.common.world.state.FactionProductionState;
-import com.irr310.common.world.state.FactionState;
-import com.irr310.common.world.state.ProductionTaskState;
-import com.irr310.common.world.system.WorldSystem;
 import com.irr310.server.world.product.Product;
 
 public class FactionProduction {
@@ -17,14 +12,14 @@ public class FactionProduction {
     public static final long FACTORY_CAPACITY_INCREASE_DELAY = 1; //TickCount
     public static final long FACTORY_MAINTENANCE_PRICE = 10;
     
-    private long factoryCapacity;
-    private long nextFactoryCapacityIncreaseTicks;
-    private FactoryCapacityOrder nextFactoryCapacityOrder;
+    private long mFactoryCapacity;
+    private long mNextFactoryCapacityIncreaseRounds;
+    private FactoryCapacityOrder mNextFactoryCapacityOrder;
     
     private Queue<FactoryCapacityOrder> factoryCapacityActiveList = new LinkedBlockingQueue<FactoryCapacityOrder>();
     
-    private Queue<FactoryCapacityOrder> factoryCapacityOrderList = new LinkedBlockingQueue<FactoryCapacityOrder>();
-    private final Faction faction;
+    private Queue<FactoryCapacityOrder> mFactoryCapacityOrderList = new LinkedBlockingQueue<FactoryCapacityOrder>();
+    private final Faction mFaction;
     
     private Queue<ProductionTask> productionTaskQueue = new LinkedBlockingQueue<ProductionTask>();
     private ProductionTask activeTask;
@@ -41,43 +36,43 @@ public class FactionProduction {
     }
     
     public FactionProduction(Faction faction) {
-        this.faction = faction;
+        this.mFaction = faction;
     }
     
     public long getFactoryCapacity() {
-        return factoryCapacity;
+        return mFactoryCapacity;
     }
     
     public Faction getFaction() {
-        return faction;
+        return mFaction;
     }
 
-    public long getNextFactoryCapacityIncreaseTicks() {
-        return nextFactoryCapacityIncreaseTicks;
+    public long getNextFactoryCapacityIncreaseRounds() {
+        return mNextFactoryCapacityIncreaseRounds;
     }
 
-    public void setNextFactoryCapacityIncreaseTicks(long ticks) {
-        this.nextFactoryCapacityIncreaseTicks = ticks;
+    public void setNextFactoryCapacityIncreaseRounds(long rounds) {
+        this.mNextFactoryCapacityIncreaseRounds = rounds;
     }
 
     public FactoryCapacityOrder getNextFactoryCapacityOrder() {
-        return nextFactoryCapacityOrder;
+        return mNextFactoryCapacityOrder;
     }
 
     public void setNextFactoryCapacityOrder(FactoryCapacityOrder nextFactoryCapacityOrder) {
-        this.nextFactoryCapacityOrder = nextFactoryCapacityOrder;
+        this.mNextFactoryCapacityOrder = nextFactoryCapacityOrder;
     }
 
     public void setFactoryCapacity(long factoryCapacity) {
-        this.factoryCapacity = factoryCapacity;
+        this.mFactoryCapacity = factoryCapacity;
     }
 
     public Queue<FactoryCapacityOrder> getFactoryCapacityOrderList() {
-        return factoryCapacityOrderList;
+        return mFactoryCapacityOrderList;
     }
 
     public void setFactoryCapacityOrderList(Queue<FactoryCapacityOrder> factoryCapacityOrderList) {
-        this.factoryCapacityOrderList = factoryCapacityOrderList;
+        this.mFactoryCapacityOrderList = factoryCapacityOrderList;
     }
 
     public Queue<FactoryCapacityOrder> getFactoryCapacityActiveList() {
@@ -88,33 +83,13 @@ public class FactionProduction {
         this.factoryCapacityActiveList = factoryCapacityActiveList;
     }
 
-    public FactionProductionState toState() {
-        FactionProductionState factionProductionState = new FactionProductionState();
-        factionProductionState.factionId = faction.getId();
-        factionProductionState.factoryCapacity = factoryCapacity;
-        factionProductionState.incomingCapacity = computeIncomingCapacity();
-        factionProductionState.nextFactoryCapacityIncreaseTicks = nextFactoryCapacityIncreaseTicks;
-        factionProductionState.maintenanceAmount = factoryCapacity * FACTORY_MAINTENANCE_PRICE;
-        factionProductionState.factoryRentCapacity = 0; 
-        factionProductionState.factoryTotalCapacity = factoryCapacity;
-
-        factionProductionState.productionTaskQueue = new ArrayList<ProductionTaskState>();
-        
-        for(ProductionTask task : productionTaskQueue) {
-            factionProductionState.productionTaskQueue.add(task.toState());
-        }
-        
-        
-        return factionProductionState;
-    }
-
     private long computeIncomingCapacity() {
         long capacity = 0;
-        if(nextFactoryCapacityOrder != null) {
-            capacity += nextFactoryCapacityOrder.count;
+        if(mNextFactoryCapacityOrder != null) {
+            capacity += mNextFactoryCapacityOrder.count;
         }
         
-        for(FactoryCapacityOrder order: factoryCapacityOrderList) {
+        for(FactoryCapacityOrder order: mFactoryCapacityOrderList) {
             capacity += order.count;
         }
         
@@ -122,7 +97,7 @@ public class FactionProduction {
     }
 
     public void addTask(long id, Product product, long count) {
-        if(product.isAvailable(faction)) {
+        if(product.isAvailable(mFaction)) {
             productionTaskQueue.add(new ProductionTask(this, id, product, count));
         }
         
@@ -159,6 +134,22 @@ public class FactionProduction {
         }
         activeTask = null;
         findActiveTask();
+    }
+
+    public long getMaintenanceAmount() {
+        return mFactoryCapacity * FACTORY_MAINTENANCE_PRICE;
+    }
+
+    public long getIncomingCapacity() {
+        return computeIncomingCapacity();
+    }
+
+    public long getFactoryRentCapacity() {
+        return 0;
+    }
+
+    public long getFactoryTotalCapacity() {
+        return mFactoryCapacity;
     }
    
     

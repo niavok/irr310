@@ -1,7 +1,6 @@
 package com.irr310.common.world.capacity;
 
 import com.irr310.common.world.World;
-import com.irr310.common.world.state.CapacityState;
 import com.irr310.common.world.system.DamageDescriptor.DamageType;
 
 public class ExplosiveCapacity extends Capacity {
@@ -20,24 +19,6 @@ public class ExplosiveCapacity extends Capacity {
         super(world, id);
         fire = false;
         consumed = false;
-    }
-
-    
-    @Override
-    public CapacityState toState() {
-        CapacityState view = new CapacityState();
-        view.id = getId();
-        view.name = getName();
-        view.type = CapacityType.LINEAR_ENGINE.ordinal();
-
-        //TODO
-        return view;
-    }
-
-    @Override
-    public void fromState(CapacityState view) {
-        setName(view.name);
-        //TODO
     }
     
     @Override

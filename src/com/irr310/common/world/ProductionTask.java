@@ -6,7 +6,6 @@ import java.util.Map;
 import com.irr310.common.tools.Log;
 import com.irr310.common.world.item.Item;
 import com.irr310.common.world.item.Item.State;
-import com.irr310.common.world.state.ProductionTaskState;
 import com.irr310.common.world.system.WorldEntity;
 import com.irr310.server.ProductionManager.ProductionStatus;
 import com.irr310.server.ProductionManager.ProductionStatus.ProductionEndCause;
@@ -18,41 +17,36 @@ import com.irr310.server.world.product.SubProduct;
 public class ProductionTask extends WorldEntity {
 
     // List<Item> reservedItems = new ArrayList<Item>();
-    private BatchWorkUnit rootWorkUnit;
+    private BatchWorkUnit mRootWorkUnit;
     private final FactionProduction factionProduction;
 
     public ProductionTask(FactionProduction factionProduction, long id, Product product, long quantity) {
         super(factionProduction.getFaction().getWorld(), id);
         this.factionProduction = factionProduction;
-        rootWorkUnit = new BatchWorkUnit(product, quantity);
+        mRootWorkUnit = new BatchWorkUnit(product, quantity);
 
     }
-
-    public ProductionTaskState toState() {
-        ProductionTaskState state = new ProductionTaskState();
-
-        state.id = getId();
-        state.requestedQuantity = rootWorkUnit.getRequestedQuantity();
-        state.doneQuantity = rootWorkUnit.getDoneQuantity();
-        state.product = rootWorkUnit.getProduct().toState();
-
-        // state.reservedItemIds = new ArrayList<Long>();
-        //
-        // for(Item item : reservedItems) {
-        // state.reservedItemIds.add(item.getId());
-        // }
-
-        return state;
+    
+    public Product getProduct() {
+        return mRootWorkUnit.getProduct();
+    }
+    
+    public long getDoneQuantity() {
+        return mRootWorkUnit.getDoneQuantity();
+    }
+    
+    public long getRequestedQuantity() {
+        return mRootWorkUnit.getRequestedQuantity();
     }
 
     public void produce(ProductionStatus productionStatus) {
 
-        if (rootWorkUnit.isFinished()) {
+        if (mRootWorkUnit.isFinished()) {
             productionStatus.setProductionEndCause(ProductionEndCause.NOTHING_TO_PRODUCE);
         } else {
-            rootWorkUnit.produce(productionStatus);
+            mRootWorkUnit.produce(productionStatus);
         }
-        if (rootWorkUnit.isFinished()) {
+        if (mRootWorkUnit.isFinished()) {
             factionProduction.notifyTaskFinished(this);
             productionStatus.setProductionEndCause(ProductionEndCause.NOTHING_TO_PRODUCE);
         }
@@ -102,7 +96,7 @@ public class ProductionTask extends WorldEntity {
     // }
 
     public void activate() {
-        rootWorkUnit.pause();
+        mRootWorkUnit.pause();
     }
 
     public boolean isPaused() {
@@ -110,11 +104,11 @@ public class ProductionTask extends WorldEntity {
     }
 
     public void desactivate() {
-        rootWorkUnit.cancel();
+        mRootWorkUnit.cancel();
     }
 
     public boolean isFinished() {
-        return rootWorkUnit.isFinished();
+        return mRootWorkUnit.isFinished();
     }
 
     private abstract class WorkUnit {
@@ -132,7 +126,7 @@ public class ProductionTask extends WorldEntity {
     private class BatchWorkUnit extends WorkUnit {
         private final Product product;
         private final long requestedQuantity;
-        private int doneQuantity;
+        private long doneQuantity;
         private WorkUnit currentWorkUnit;
 
         public BatchWorkUnit(Product product, long quantity) {
@@ -168,7 +162,7 @@ public class ProductionTask extends WorldEntity {
             return doneQuantity == requestedQuantity;
         }
 
-        public int getDoneQuantity() {
+        public long getDoneQuantity() {
             return doneQuantity;
         }
 

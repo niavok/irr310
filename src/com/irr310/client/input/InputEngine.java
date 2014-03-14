@@ -3,24 +3,18 @@ package com.irr310.client.input;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
-import com.irr310.common.engine.EventDispatcher;
-import com.irr310.common.engine.FramerateEngine;
-import com.irr310.common.event.game.DefaultGameEventVisitor;
-import com.irr310.common.event.game.GameEvent;
-import com.irr310.common.event.game.GameEventVisitor;
-import com.irr310.common.event.game.KeyEvent;
-import com.irr310.common.event.game.MouseEvent;
-import com.irr310.common.event.game.QuitGameEvent;
+import com.irr310.common.engine.Engine;
+import com.irr310.common.engine.Observable;
 import com.irr310.common.tools.Log;
 import com.irr310.i3d.view.Point;
-import com.irr310.server.Duration;
+import com.irr310.server.Time.Timestamp;
 
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent;
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent.KeyAction;
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent.Action;
 
-public class InputEngine extends FramerateEngine<GameEvent> {
+public class InputEngine implements Engine {
 
     private static final int CLICK_TIME = 500000000;
     private static final int DOUBLE_CLICK_TIME = 500000000;
@@ -31,26 +25,34 @@ public class InputEngine extends FramerateEngine<GameEvent> {
     private int[] clickCount;
     private Point[] pressLocation;
     // private String cheatString = "";
-    private final EventDispatcher<GameEventVisitor, GameEvent> dispatcher;
     
-    public InputEngine(EventDispatcher<GameEventVisitor, GameEvent> dispatcher) {
-        this.dispatcher = dispatcher;
-        framerate = new Duration(15000000);
+    public InputEngine() {
         dragging = false;
         pressTime = new long[10];
         clickTime = new long[10];
         pressLocation = new Point[10];
         clickCount = new int[10];
-        
     }
 
     @Override
-    protected void onStart() {
-        pause(false);        
+    public void init() {
+        Mouse.setGrabbed(false);
+    }
+
+    @Override
+    public void start() {
+    }
+
+    @Override
+    public void stop() {
     }
     
     @Override
-    protected void frame() {
+    public void destroy() {
+    }
+
+    @Override
+    public void tick(Timestamp time) {
         
         try { 
 
@@ -59,20 +61,21 @@ public class InputEngine extends FramerateEngine<GameEvent> {
             int dWheel = Mouse.getDWheel();
             
             if(dWheel > 0) {
+                
                 V3DMouseEvent mouseEvent = new V3DMouseEvent(Action.MOUSE_WHEEL_UP, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1, 0);
-                dispatcher.sendToAll(new MouseEvent(mouseEvent));
+                notifyMouseEvent(mouseEvent);
             } else if(dWheel < 0) {
                 V3DMouseEvent mouseEvent = new V3DMouseEvent(Action.MOUSE_WHEEL_DOWN, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1, 0);
-                dispatcher.sendToAll(new MouseEvent(mouseEvent));
+                notifyMouseEvent(mouseEvent);
             } else if (Mouse.getEventButton() == -1) {
                 if (dragging) {
                     // Drag
                     V3DMouseEvent mouseEvent = new V3DMouseEvent(Action.MOUSE_DRAGGED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1, 0);
-                    dispatcher.sendToAll(new MouseEvent(mouseEvent));
+                    notifyMouseEvent(mouseEvent);
                 } else {
                     // Move
                     V3DMouseEvent mouseEvent = new V3DMouseEvent(Action.MOUSE_MOVED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1, 0);
-                    dispatcher.sendToAll(new MouseEvent(mouseEvent));
+                    notifyMouseEvent(mouseEvent);
                 }
 
             } else {
@@ -82,12 +85,12 @@ public class InputEngine extends FramerateEngine<GameEvent> {
                     pressTime[Mouse.getEventButton()] = Mouse.getEventNanoseconds();
                     pressLocation[Mouse.getEventButton()] = new Point(Mouse.getX(), Mouse.getY());
                     V3DMouseEvent mouseEvent = new V3DMouseEvent(Action.MOUSE_PRESSED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1, 0);
-                    dispatcher.sendToAll(new MouseEvent(mouseEvent));
+                    notifyMouseEvent(mouseEvent);
                 } else {
                     // Released
                     dragging = false;
                     V3DMouseEvent mouseEvent = new V3DMouseEvent(Action.MOUSE_RELEASED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1, 0);
-                    dispatcher.sendToAll(new MouseEvent(mouseEvent));
+                    notifyMouseEvent(mouseEvent);
                     if( Mouse.getEventNanoseconds()  - pressTime[Mouse.getEventButton()] < CLICK_TIME && new Point(Mouse.getX(), Mouse.getY()).distanceTo(pressLocation[Mouse.getEventButton()])  < 10) {
                         
                         if( Mouse.getEventNanoseconds()  - clickTime[Mouse.getEventButton()] > DOUBLE_CLICK_TIME ) {
@@ -98,7 +101,7 @@ public class InputEngine extends FramerateEngine<GameEvent> {
                         clickTime[Mouse.getEventButton()] = Mouse.getEventNanoseconds();
                         Log.trace("click count set to "+clickCount[Mouse.getEventButton()]);
                         mouseEvent = new V3DMouseEvent(Action.MOUSE_CLICKED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1, clickCount[Mouse.getEventButton()]);
-                        dispatcher.sendToAll(new MouseEvent(mouseEvent));
+                        notifyMouseEvent(mouseEvent);
                     }
                 }
             }
@@ -113,19 +116,19 @@ public class InputEngine extends FramerateEngine<GameEvent> {
             if (Keyboard.getEventKeyState()) {
                 if (Keyboard.getEventCharacter() == 0) {
                     V3DKeyEvent keyEvent = new  V3DKeyEvent(KeyAction.KEY_PRESSED, Keyboard.getEventKey(), "", Mouse.getEventX(), Mouse.getEventY());
-                    dispatcher.sendToAll(new KeyEvent(keyEvent));
+                    notifyKeyEvent(keyEvent);
                 } else {
                     V3DKeyEvent keyEvent = new  V3DKeyEvent(KeyAction.KEY_PRESSED,Keyboard.getEventKey(), Character.toString(Keyboard.getEventCharacter()), Mouse.getEventX(), Mouse.getEventY());
-                    dispatcher.sendToAll(new KeyEvent(keyEvent));
+                    notifyKeyEvent(keyEvent);
                 }
 
             } else {
                 if (Keyboard.getEventCharacter() == 0) {
                     V3DKeyEvent keyEvent = new  V3DKeyEvent(KeyAction.KEY_RELEASED, Keyboard.getEventKey(), "", Mouse.getEventX(), Mouse.getEventY());
-                    dispatcher.sendToAll(new KeyEvent(keyEvent));
+                    notifyKeyEvent(keyEvent);
                 } else {
                     V3DKeyEvent keyEvent = new  V3DKeyEvent(KeyAction.KEY_RELEASED,Keyboard.getEventKey(), Character.toString(Keyboard.getEventCharacter()), Mouse.getEventX(), Mouse.getEventY());
-                    dispatcher.sendToAll(new KeyEvent(keyEvent));
+                    notifyKeyEvent(keyEvent);
                 }
             }
         }
@@ -139,7 +142,7 @@ public class InputEngine extends FramerateEngine<GameEvent> {
     private boolean interceptSpecialKeys() {
         if (Keyboard.getEventKeyState()) {
             if(Keyboard.getEventKey() == Keyboard.KEY_F4 && Keyboard.isKeyDown(Keyboard.KEY_LMENU)){
-                dispatcher.sendToAll(new QuitGameEvent());
+                notifyQuitEvent();
                 return true;
             }
             
@@ -151,18 +154,6 @@ public class InputEngine extends FramerateEngine<GameEvent> {
         }
         return false;
     }
-
-    @Override
-    protected void processEvent(GameEvent e) {
-        e.accept(new InputEngineEventVisitor());
-    }
-
-    private final class InputEngineEventVisitor extends DefaultGameEventVisitor {
-        @Override
-        public void visit(QuitGameEvent event) {
-            System.out.println("stopping input engine");
-            setRunning(false);
-        }
 //
 //        @Override
 //        public void visit(StartEngineEvent event) {
@@ -235,16 +226,29 @@ public class InputEngine extends FramerateEngine<GameEvent> {
 //            }
 //            
 //        }
-
+    
+    // Observers
+    private Observable<InputEngineObserver> mInputEngineObservable = new Observable<InputEngineObserver>();
+    
+    public Observable<InputEngineObserver> getInputEnginObservable() {
+        return mInputEngineObservable;
     }
-
-    @Override
-    protected void onInit() {
-        Mouse.setGrabbed(false);
+    
+    private void notifyMouseEvent(V3DMouseEvent event) {
+        for(InputEngineObserver observer : mInputEngineObservable.getObservers()) {
+            observer.onMouseEvent(event);
+        }
     }
-
-    @Override
-    protected void onEnd() {
+    
+    private void notifyKeyEvent(V3DKeyEvent event) {
+        for(InputEngineObserver observer : mInputEngineObservable.getObservers()) {
+            observer.onKeyEvent(event);
+        }
     }
-
+    
+    private void notifyQuitEvent() {
+        for(InputEngineObserver observer : mInputEngineObservable.getObservers()) {
+            observer.onQuitEvent();
+        }
+    }
 }

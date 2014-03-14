@@ -4,14 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.locks.ReentrantLock;
 
 import com.irr310.common.world.item.Item;
-import com.irr310.common.world.state.FactionState;
-import com.irr310.common.world.state.ItemState;
-import com.irr310.common.world.state.PlayerState;
-import com.irr310.common.world.state.WorldSystemState;
-import com.irr310.common.world.system.WorldSystem;
 import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.server.world.product.ProductManager;
 
@@ -69,18 +63,6 @@ public class World {
         return factions;
     }
     
-    public Player loadPlayer(PlayerState playerView) {
-        if (playerIdMap.containsKey(playerView.id)) {
-            return playerIdMap.get(playerView.id);
-        }
-
-        Player player = new Player(this, playerView.id, playerView.login);
-        player.fromState(playerView);
-        addPlayer(player);
-        return player;
-    }
-
-    
     public Player getPlayerById(long playerId) {
         return playerIdMap.get(playerId);
     }
@@ -115,27 +97,6 @@ public class World {
 //        return null;
 //    }
 
-
-
-    public Faction getFaction(FactionState factionState) {
-        for(Faction faction: factions) {
-            if(faction.isState(factionState)) {
-                return faction;
-            }
-        }
-        return null;
-    }
-
-    public Item getItem(ItemState itemState) {
-        for(Item item: items) {
-            if(item.isState(itemState)) {
-                return item;
-            }
-        }
-        return null;
-    }
-    
-
     public void setProductManager(ProductManager productManager) {
         this.productManager = productManager;
     }
@@ -148,17 +109,6 @@ public class World {
 
     public ItemFactory getItemFactory() {
         return itemFactory;
-    }
-
-
-
-    public WorldSystem getSystem(WorldSystemState systemState) {
-        for(WorldSystem system: map.getSystems()) {
-            if(system.isState(systemState)) {
-                return system;
-            }
-        }
-        return null;
     }
 
 //    public BinderServer getBinderServer() {

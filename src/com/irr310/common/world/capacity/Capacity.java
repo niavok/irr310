@@ -1,7 +1,6 @@
 package com.irr310.common.world.capacity;
 
 import com.irr310.common.world.World;
-import com.irr310.common.world.state.CapacityState;
 import com.irr310.common.world.system.WorldEntity;
 
 public abstract class Capacity extends WorldEntity{
@@ -20,10 +19,6 @@ public abstract class Capacity extends WorldEntity{
         ROCKET,
     }
     
-    public abstract CapacityState toState();
-
-    public abstract void fromState(CapacityState state);
-
     public static Capacity createFromType(World world, long id, CapacityType type) {
         switch (type) {
             case LINEAR_ENGINE:

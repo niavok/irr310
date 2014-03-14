@@ -7,10 +7,6 @@ import java.util.Map;
 
 import com.irr310.common.world.item.Item;
 import com.irr310.common.world.item.Item.State;
-import com.irr310.common.world.state.FactionProductionState;
-import com.irr310.common.world.state.FactionStocksState;
-import com.irr310.common.world.state.ItemState;
-import com.irr310.common.world.state.ProductionTaskState;
 import com.irr310.server.world.product.Product;
 
 public class FactionStocks {
@@ -56,24 +52,13 @@ public class FactionStocks {
             items.remove(item);
         }
     }
-
-    public FactionStocksState toState() {
-        FactionStocksState state = new FactionStocksState();
-        state.factionId = faction.getId();
-
-        state.stocks = new ArrayList<ItemState>();
+        
+    public List<Item> getStocks() {
+        List<Item> stocks = new ArrayList<Item>();
         
         for(List<Item> itemsList: itemsByProduct.values()) {
-            for(Item item: itemsList) {
-                state.stocks.add(item.toState());
-            }
+            stocks.addAll(itemsList);
         }
-        
-        
-        return state;
+        return stocks; 
     }
-    
-    
-
-    
 }

@@ -2,29 +2,26 @@ package com.irr310.client.graphics.ether.activities.systemmap;
 
 import com.irr310.client.graphics.ether.activities.shipcamera.ShipCameraActivity;
 import com.irr310.client.graphics.ether.activities.shipcamera.ShipCameraActivity.ShipCameraActivityBundle;
-import com.irr310.common.event.system.DefaultSystemEventVisitor;
-import com.irr310.common.event.system.QuerySystemStateEvent;
-import com.irr310.common.event.system.SystemStateEvent;
-import com.irr310.common.world.state.EntityState;
-import com.irr310.common.world.state.ShipState;
-import com.irr310.common.world.state.WorldSystemState;
+import com.irr310.common.tools.TransformMatrix;
+import com.irr310.common.world.system.Ship;
+import com.irr310.common.world.system.WorldSystem;
 import com.irr310.i3d.Bundle;
 import com.irr310.i3d.Intent;
 import com.irr310.i3d.Message;
 import com.irr310.i3d.view.Activity;
 import com.irr310.i3d.view.RelativeLayout;
 import com.irr310.server.GameServer;
-import com.irr310.server.SystemEngine;
+import com.irr310.server.engine.system.SystemEngine;
+import com.irr310.server.engine.system.SystemEngineObserver;
 
 public class SystemMapActivity extends Activity {
     private SystemEngine systemEngine;
-    private DefaultSystemEventVisitor visitor;
-    WorldSystemState systemState;
     private RelativeLayout systemDetailsRelativeLayout;
 
     private static final int UPDATE_SYSTEM_WHAT = 1;
     private static final int UPDATE_SYSTEM_CONTENT_WHAT = 1;
-    private WorldSystemState system;
+    private WorldSystem mSystem;
+    private SystemEngineObserver mSystemEngineObserver;
     
     @Override
     public void onCreate(Bundle bundle) {
@@ -32,31 +29,26 @@ public class SystemMapActivity extends Activity {
         
         systemDetailsRelativeLayout = (RelativeLayout) findViewById("systemDetailsRelativeLayout@layout/system_map/system_map");
         
-        system = (WorldSystemState) bundle.getObject();
-        systemEngine = GameServer.getWorldEngine().getSystemEngine(system);
+        mSystem = (WorldSystem) bundle.getObject();
+        systemEngine = GameServer.getWorldEngine().getSystemEngine(mSystem);
         
-        visitor = new DefaultSystemEventVisitor() {
+        mSystemEngineObserver = new SystemEngineObserver() {
+            
             @Override
-            public void visit(SystemStateEvent event) {
-                systemState = event.getSystemState();
-                getHandler().obtainMessage(UPDATE_SYSTEM_WHAT).send();
+            public void onDeployShip(Ship ship, TransformMatrix transform) {
             }
-            
-            
         };
-        
     }
 
 
     @Override
     public void onResume() {
-        systemEngine.registerEventVisitor(visitor);
-        systemEngine.sendToAll(new QuerySystemStateEvent(system, EntityState.FULL_DEPTH));
+        systemEngine.getSystemEnginObservable().register(this, mSystemEngineObserver);
     }
 
     @Override
     public void onPause() {
-        systemEngine.unregisterEventVisitor(visitor);
+        systemEngine.getSystemEnginObservable().unregister(this);
     }
 
     @Override
@@ -74,23 +66,23 @@ public class SystemMapActivity extends Activity {
     
     public static class SystemMapActivityBundle extends Bundle {
 
-        public SystemMapActivityBundle(WorldSystemState obj) {
+        public SystemMapActivityBundle(WorldSystem obj) {
             super(obj);
         }
         
-        WorldSystemState getSystem() {
-            return (WorldSystemState) getObject();
+        WorldSystem getSystem() {
+            return (WorldSystem) getObject();
         }
     }
     
     protected void updateAll() {
         systemDetailsRelativeLayout.removeAllView();
-        systemDetailsRelativeLayout.addViewInLayout(new SystemDetailsView(this, systemState));
+        systemDetailsRelativeLayout.addViewInLayout(new SystemDetailsView(this, mSystem));
     }
 
 
-    public void connectShip(ShipState ship) {
-        ShipCameraActivityBundle bundle = new ShipCameraActivityBundle(system, ship);
+    public void connectShip(Ship ship) {
+        ShipCameraActivityBundle bundle = new ShipCameraActivityBundle(mSystem, ship);
         startActivity(new Intent(ShipCameraActivity.class, bundle));
     }
     

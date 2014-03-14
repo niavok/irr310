@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.World;
-import com.irr310.common.world.state.CapacityState;
 import com.irr310.common.world.system.DamageDescriptor;
 
 public class BalisticWeaponCapacity extends Capacity {
@@ -47,49 +46,4 @@ public class BalisticWeaponCapacity extends Capacity {
 
         damageType = DamageDescriptor.DamageType.PHYSICAL;
     }
-
-    @Override
-    public CapacityState toState() {
-        CapacityState view = new CapacityState();
-        view.id = getId();
-        view.name = getName();
-        view.type = CapacityType.GUN.ordinal();
-
-        view.pushBoolean(fire);
-        view.pushDouble(damage);
-        view.pushDouble(range);
-        view.pushDouble(accuracy);
-        view.pushDouble(coolingSpeed);
-        view.pushDouble(heatingSpeed);
-        view.pushDouble(firerate);
-        view.pushDouble(armorPenetration);
-        view.pushInteger(barrels.size());
-        for (Vec3 barrel : barrels) {
-            view.pushVect3(barrel);
-        }
-
-        view.pushInteger(damageType.ordinal());
-        return view;
-    }
-
-    @Override
-    public void fromState(CapacityState view) {
-        setName(view.name);
-        fire = view.popBoolean();
-        damage = view.popDouble();
-        range = view.popDouble();
-        accuracy = view.popDouble();
-        coolingSpeed = view.popDouble();
-        heatingSpeed = view.popDouble();
-        firerate = view.popDouble();
-        armorPenetration = view.popDouble();
-
-        int barrelCount = view.popInteger();
-        for (int i = 0; i < barrelCount; i++) {
-            barrels.add(view.popVect3());
-        }
-
-        damageType = DamageDescriptor.DamageType.values()[view.popInteger()];
-    }
-
 }

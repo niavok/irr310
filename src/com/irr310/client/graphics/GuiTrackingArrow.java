@@ -5,6 +5,7 @@ import com.irr310.common.tools.Vec2;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.system.Part;
 import com.irr310.i3d.scene.controller.I3dFollow3DCameraController;
+import com.irr310.server.Time.Timestamp;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.gui.V3DContainer;
@@ -42,7 +43,11 @@ public class GuiTrackingArrow extends GuiAnimatedElement {
     }
 
     @Override
-    public void update() {
+    public void init(Timestamp time) {
+    }
+    
+    @Override
+    public void update(Timestamp time) {
 
         Vec3 eye = camera.getEye();
         Vec3 target = camera.getTarget();

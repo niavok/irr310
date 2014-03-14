@@ -10,12 +10,7 @@ public abstract class GenericGraphicalElement implements GraphicalElement {
     public abstract boolean isAnimated();
     
     public abstract I3dElement getV3DElement();
-
-    public abstract void update();
     
     public void destroy() {
     }
-    
-    
-    
 }

@@ -6,13 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.irr310.common.engine.Engine;
-import com.irr310.common.event.game.GameEvent;
-import com.irr310.common.event.game.QuitGameEvent;
 import com.irr310.common.world.Player;
-import com.irr310.common.world.World;
-import com.irr310.common.world.state.WorldSystemState;
 import com.irr310.server.ai.AIEngine;
-import com.irr310.server.network.ServerNetworkEngine;
+import com.irr310.server.engine.world.WorldEngine;
 
 public class GameServer {
     /*
@@ -21,7 +17,7 @@ public class GameServer {
      */
     // private ParameterAnalyser parameterAnalyser;
 
-    List<Engine<GameEvent>> engineList = new ArrayList<Engine<GameEvent>>();
+    List<Engine> engineList = new ArrayList<Engine>();
 
     // private boolean stillRunning;
     // private CommandManager commandManager;
@@ -79,7 +75,7 @@ public class GameServer {
         // physicEngine.start();
         // networkEngine.start();
         // debugGraphicEngine.start();
-        for (Engine<GameEvent> engine : engineList) {
+        for (Engine engine : engineList) {
             engine.start();
         }
 
@@ -88,17 +84,17 @@ public class GameServer {
         // std::string o;
 
         // Wait engines started
-        boolean waitStart = true;
-        while (waitStart) {
-            waitStart = false;
-            for (Engine<GameEvent> engine : engineList) {
-                if (!engine.isRunning()) {
-                    waitStart = true;
-                    break;
-                }
-            }
-            Duration.HUNDRED_MILLISECONDE.sleep();
-        }
+//        boolean waitStart = true;
+//        while (waitStart) {
+//            waitStart = false;
+//            for (Engine engine : engineList) {
+//                if (!engine.isRunning()) {
+//                    waitStart = true;
+//                    break;
+//                }
+//            }
+//            Duration.HUNDRED_MILLISECONDE.sleep();
+//        }
 
         // while ((Engine.getRunningEngineCount()) < 3) {
         // new Duration(100000000).sleep();
@@ -125,34 +121,34 @@ public class GameServer {
 
         boolean waitStop = true;
 
-        while (waitStop) {
-            waitStop = false;
-            for (Engine<GameEvent> engine : engineList) {
-                if (!engine.isStopped()) {
-                    waitStop = true;
-                    break;
-                }
-            }
-            Duration.HUNDRED_MILLISECONDE.sleep();
-        }
+//        while (waitStop) {
+//            waitStop = false;
+//            for (Engine<GameEvent> engine : engineList) {
+//                if (!engine.isStopped()) {
+//                    waitStop = true;
+//                    break;
+//                }
+//            }
+//            Duration.HUNDRED_MILLISECONDE.sleep();
+//        }
         System.out.println("Game Server: Stopped");
 
     }
 
     public void stop() {
-        sendToAll(new QuitGameEvent());
+//        sendToAll(new QuitGameEvent());
     }
 
-    public void sendToAll(GameEvent e) {
-        for (Engine<GameEvent> engine : engineList) {
-            engine.pushEvent(e);
-        }
-        /*
-         * gameEngine.pushEvent(e); physicEngine.pushEvent(e);
-         * networkEngine.pushEvent(e);
-         */
-        // debugGraphicEngine.pushEvent(e);
-    }
+//    public void sendToAll(GameEvent e) {
+//        for (Engine<GameEvent> engine : engineList) {
+//            engine.pushEvent(e);
+//        }
+//        /*
+//         * gameEngine.pushEvent(e); physicEngine.pushEvent(e);
+//         * networkEngine.pushEvent(e);
+//         */
+//        // debugGraphicEngine.pushEvent(e);
+//    }
 
     /*
      * public ServerGameEngine getGameEngine() { return gameEngine; } public

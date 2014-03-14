@@ -11,6 +11,7 @@ import com.irr310.i3d.view.LayoutParams;
 import com.irr310.i3d.view.Triangle;
 import com.irr310.server.Duration;
 import com.irr310.server.Time;
+import com.irr310.server.Time.Timestamp;
 
 public class MainActivity extends Activity {
 
@@ -52,15 +53,15 @@ public class MainActivity extends Activity {
     }
 
     @Override
-    protected void onUpdate(Time absTime, Time gameTime) {
+    protected void onUpdate(Timestamp time) {
         //Log.trace("onUpdate "+absTime.getSeconds()+ " "+ Time.now(false).getSeconds()+ " "+gameTime.getSeconds());
-        Duration duration = startTime.durationTo(absTime);
+        Duration duration = startTime.durationTo(time.getTime());
         //Log.trace("onUpdate duration "  +duration.getSeconds());
         // Log.trace("Update animatation after "+duration.getMilliseconds()+" ms ("+(1f/duration.getSeconds())+"fps)");
         //startTime = absTime;
 
         LayoutParams layout = mobileLogoPart.getLayoutParams();
-        animationMesure.setValue((float) (25f / 2.2f * (1 + Math.sin(absTime.getSeconds() * 4))));
+        animationMesure.setValue((float) (25f / 2.2f * (1 + Math.sin(time.getTime().getSeconds() * 4))));
 
         float offset = layout.computeMesure(animationMesure);
 

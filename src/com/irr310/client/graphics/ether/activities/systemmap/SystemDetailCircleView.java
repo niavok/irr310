@@ -4,9 +4,9 @@ package com.irr310.client.graphics.ether.activities.systemmap;
 
 import org.lwjgl.opengl.GL11;
 
-import com.irr310.common.world.state.NexusState;
-import com.irr310.common.world.state.ShipState;
-import com.irr310.common.world.state.WorldSystemState;
+import com.irr310.common.world.system.Nexus;
+import com.irr310.common.world.system.Ship;
+import com.irr310.common.world.system.WorldSystem;
 import com.irr310.i3d.Color;
 import com.irr310.i3d.Graphics;
 import com.irr310.i3d.I3dRessourceManager;
@@ -19,13 +19,13 @@ import com.irr310.i3d.view.View;
 
 public class SystemDetailCircleView extends RelativeLayout {
 
-    private final WorldSystemState system;
+    private final WorldSystem system;
     private Color selectionColor;
     private float scale;
     private float offset;
     private SystemMapActivity activity;
 
-    public SystemDetailCircleView(SystemMapActivity activity, WorldSystemState system) {
+    public SystemDetailCircleView(SystemMapActivity activity, WorldSystem system) {
         this.activity = activity;
         this.system = system;
         
@@ -40,11 +40,11 @@ public class SystemDetailCircleView extends RelativeLayout {
         
         removeAllView();
         
-        for(NexusState nexus: system.nexuses) {
+        for(Nexus nexus: system.getNexuses()) {
             addViewInLayout(new NexusView(nexus, this));
         }
         
-        for(ShipState ship: system.ships) {
+        for(Ship ship: system.getShips()) {
             addViewInLayout(new ShipView(activity, ship, this));
         }
     }
@@ -64,8 +64,8 @@ public class SystemDetailCircleView extends RelativeLayout {
     public void onDraw(Graphics g) {
         
         Color color = Color.grey;
-        if(system.ownerId != -1) {
-            color = system.ownerColor;
+        if(system.getOwner() != null) {
+            color = system.getOwner().getColor();
         }
         
         Color centerColor = Color.grey.setAlpha(0.03f);
@@ -97,7 +97,7 @@ public class SystemDetailCircleView extends RelativeLayout {
         
         
         
-        for(double i = 0; i < system.radius ; i+=1000) {
+        for(double i = 0; i < system.getRadius() ; i+=1000) {
             
             if((((int) i) /1000) % 10 == 0) {
                 g.setColor(Color.grey.setAlpha(0.6f));
@@ -132,7 +132,7 @@ public class SystemDetailCircleView extends RelativeLayout {
         
         g.setColor(color);
         
-        if(system.homeSystem) {
+        if(system.isHomeSystem()) {
         
             // Optimize allocation
             Point point1_1 = new Point(size/2, 0).rotate(Math.PI /45);
@@ -168,7 +168,7 @@ public class SystemDetailCircleView extends RelativeLayout {
     public void onLayout(float l, float t, float r, float b) {
         float size = Math.min(layoutParams.getWidth(), layoutParams.getHeight());
         offset = size/2;
-        scale = (float) (size / (2*system.radius));
+        scale = (float) (size / (2*system.getRadius()));
         
         super.onLayout(l, t, r, b);
     }

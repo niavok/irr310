@@ -7,19 +7,18 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import com.irr310.common.engine.FramerateEngine;
-import com.irr310.common.event.system.DefaultSystemEventVisitor;
-import com.irr310.common.event.system.SystemEvent;
+import com.irr310.common.engine.Engine;
 import com.irr310.common.tools.Vec3;
-import com.irr310.common.world.Player;
 import com.irr310.common.world.capacity.controller.CapacityController;
 import com.irr310.common.world.capacity.controller.ContactDetectorController;
 import com.irr310.common.world.system.Component;
 import com.irr310.common.world.system.Monolith;
 import com.irr310.common.world.system.Part;
+import com.irr310.server.Time.Timestamp;
+import com.irr310.server.engine.system.SystemEngine;
 import com.irr310.server.upgrade.UpgradeFactory;
 
-public class ServerSystemGameEngine extends FramerateEngine<SystemEvent> {
+public class ServerSystemGameEngine implements Engine {
 
     private List<CapacityController> capacityControllers;
     private Map<Component, ContactDetectorController> contactDetectorMap;
@@ -34,12 +33,13 @@ public class ServerSystemGameEngine extends FramerateEngine<SystemEvent> {
     private Duration interrestInterval;
     private boolean inited;
     private final SystemEngine systemEngine;
+    private Time mLastTime;
+
 
     public ServerSystemGameEngine(SystemEngine systemEngine) {
         this.systemEngine = systemEngine;
         capacityControllers = new ArrayList<CapacityController>();
         contactDetectorMap = new HashMap<Component, ContactDetectorController>();
-        framerate = new Duration(15000000);
         reputation = 0;
         currentWave = null;
         interrestInterval = new Duration(10f);
@@ -47,24 +47,37 @@ public class ServerSystemGameEngine extends FramerateEngine<SystemEvent> {
     }
 
     @Override
-    protected void onStart() {
+    public void init() {
+        // World
+        UpgradeFactory.initUpgrades();
+        UpgradeFactory.refresh();
+        initWorld();
+        lastInterrestTime = Time.now(true);
     }
     
     @Override
-    protected void processEvent(SystemEvent e) {
-        e.accept(new GameEngineEventVisitor());
+    public void start() {
+        mLastTime = Time.getGameTime();
     }
 
     @Override
-    protected void frame() {
+    public void stop() {
+    }
+    
+    @Override
+    public void destroy() {
+    }
+    
+    @Override
+    public void tick(Timestamp time) {
         if (!inited) {
             return;
         }
 
-        Time currentTime = Time.now(true);
+        Duration duration = mLastTime.durationTo(time.getGameTime());
 
         for (CapacityController controller : capacityControllers) {
-            controller.update(framerate.getSeconds());
+            controller.update(duration.getSeconds());
         }
 
         // Interrest
@@ -185,7 +198,7 @@ public class ServerSystemGameEngine extends FramerateEngine<SystemEvent> {
 //        if (stillPlaying) {
 //            currentWave.update(beginWaveTime.durationTo(currentTime));
 //        }
-
+        mLastTime = time.getGameTime();
     }
 
 //    private int distachRevenue(int amount) {
@@ -200,7 +213,7 @@ public class ServerSystemGameEngine extends FramerateEngine<SystemEvent> {
 //        return amountPerPlayer * players.size();
 //    }
 
-    private final class GameEngineEventVisitor extends DefaultSystemEventVisitor {
+//    private final class GameEngineEventVisitor extends DefaultSystemEventVisitor {
 
 //        @Override
 //        public void visit(QuitGameEvent event) {
@@ -438,7 +451,7 @@ public class ServerSystemGameEngine extends FramerateEngine<SystemEvent> {
 //                           event.getArmorPenetration());
 //        }
 
-    }
+//    }
 
 //    private void processCollision(Part part, Part collider, double impulse, Vec3 impact) {
 //        DamageDescriptor damage = new DamageDescriptor(DamageDescriptor.DamageType.PHYSICAL, 0, DamageCause.COLLISION);
@@ -533,15 +546,7 @@ public class ServerSystemGameEngine extends FramerateEngine<SystemEvent> {
         capacityControllers.add(controller);
     }
 
-    @Override
-    protected void onInit() {
-        // World
-        UpgradeFactory.initUpgrades();
-        UpgradeFactory.refresh();
-        initWorld();
-        lastInterrestTime = Time.now(true);
-
-    }
+ 
 
 //    void createWaves() {
 //        // Create waves
@@ -587,8 +592,5 @@ public class ServerSystemGameEngine extends FramerateEngine<SystemEvent> {
 
     }
 
-    @Override
-    protected void onEnd() {
-    }
 
 }

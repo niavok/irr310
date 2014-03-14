@@ -8,6 +8,7 @@ import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.world.system.Component;
 import com.irr310.i3d.scene.element.I3dElement;
 import com.irr310.i3d.scene.element.I3dGroupElement;
+import com.irr310.server.Time.Timestamp;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
@@ -35,7 +36,11 @@ public class WingSkin extends Skin {
     }
 
     @Override
-    public void update() {
+    public void init(Timestamp time) {
+    }
+    
+    @Override
+    public void update(Timestamp time) {
         elements.setTransformMatrix(transform.toFloatBuffer());
     }
 

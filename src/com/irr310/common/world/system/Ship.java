@@ -12,8 +12,7 @@ import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Faction;
 import com.irr310.common.world.capacity.KernelCapacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
-import com.irr310.common.world.state.ShipState;
-import com.irr310.server.SystemEngine;
+import com.irr310.server.engine.system.SystemEngine;
 
 public class Ship extends SystemEntity implements Container {
 
@@ -25,7 +24,7 @@ public class Ship extends SystemEntity implements Container {
     private Faction owner;
     private boolean destructible;
     private SystemEngine systemEngine;
-    private ShipState shipState;
+    private Ship Ship;
     private boolean stateChanged;
 
     public Ship(WorldSystem system, long id) {
@@ -121,42 +120,6 @@ public class Ship extends SystemEntity implements Container {
         return owner;
     }
 
-    public ShipState toState(int depth) {
-        if(stateChanged) {
-            stateChanged = false;
-            shipState = new ShipState();
-            
-            shipState.id = getId();
-            shipState.owner = owner.toState();
-
-            if(depth != 0) {
-                for (Link link : links) {
-                    shipState.links.add(link.toState());
-                }
-        
-                for (Component component : components) {
-                    shipState.components.add(component.toState(depth -1));
-                }
-            }
-        }
-
-        return shipState;
-    }
-
-    public void fromState(ShipState shipState) {
-//        World world = systemEngine.getWorld();
-//        setOwner(world.loadPlayer(shipView.owner));
-//
-//        for (ComponentView component : shipView.components) {
-//            assign(world.loadComponent(component));
-//        }
-//
-//        for (LinkView link : shipView.links) {
-//            link(world.getSlotById(link.slot1Id), world.getSlotById(link.slot2Id));
-//        }
-
-    }
-
     public Component getComponentByName(String name) {
         return componentNamesMap.get(name);
     }
@@ -174,12 +137,10 @@ public class Ship extends SystemEntity implements Container {
         double totalMassWithDamping = 0;
         double totalForce = 0;
 
-        double timeStep = systemEngine.getPhysicEngine().getFramerate().getSeconds();
-
         for (Component component : components) {
             for (Part part : component.getParts()) {
                 totalMass += part.getMass();
-                totalMassWithDamping += part.getMass() * (1 / Math.pow(1 - part.getLinearDamping(), timeStep) - 1);
+                //totalMassWithDamping += part.getMass() * 1 - part.getLinearDamping(), timeStep) - 1);
             }
 
             for (LinearEngineCapacity linearEngineCapacity : component.getCapacitiesByClass(LinearEngineCapacity.class)) {
@@ -193,7 +154,7 @@ public class Ship extends SystemEntity implements Container {
         
         // The 10 factor it for the 
         
-        double theoricalMaxSpeed = PhysicEngine.MASS_FACTOR *totalForce * timeStep / totalMassWithDamping;
+        double theoricalMaxSpeed = PhysicEngine.MASS_FACTOR *totalForce / totalMass;
 
 //        Log.trace("totalMass " + totalMass);
 //        Log.trace("totalMassWithDamping " + totalMassWithDamping);

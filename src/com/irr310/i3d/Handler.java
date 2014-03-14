@@ -3,8 +3,6 @@ package com.irr310.i3d;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import com.irr310.common.world.state.FactionState;
-
 public class Handler {
 
     Queue<Message> messages = new LinkedBlockingQueue<Message>();
@@ -35,5 +33,13 @@ public class Handler {
         message.what = what;
         message.obj = obj;
         return message;
+    }
+
+    public void removeMessages(int updateWhat) {
+        for(Message message: messages) {
+            if(message.what == updateWhat) {
+                messages.remove(message);
+            }
+        }
     }
 }

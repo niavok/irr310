@@ -12,6 +12,7 @@ import com.irr310.common.tools.RessourceLoadingException;
 import com.irr310.i3d.view.Activity;
 import com.irr310.i3d.view.Point;
 import com.irr310.server.Time;
+import com.irr310.server.Time.Timestamp;
 
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent;
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
@@ -93,11 +94,11 @@ public class Surface {
         }
     }
 
-    public void update(Time absTime, Time gameTime) {
+    public void update(Timestamp time) {
         Activity lastActivity = null;
         while (currentActivity != lastActivity && currentActivity != null) {
             lastActivity = currentActivity;
-            currentActivity.update(absTime, gameTime);
+            currentActivity.update(time);
         }
     }
 

@@ -3,16 +3,13 @@ package com.irr310.client.graphics.ether.activities.production;
 import java.util.List;
 
 import com.irr310.client.navigation.LoginManager;
-import com.irr310.common.event.world.ActionBuyProductEvent;
-import com.irr310.common.event.world.ActionDeployShipEvent;
-import com.irr310.common.event.world.DefaultWorldEventVisitor;
-import com.irr310.common.event.world.FactionStocksStateEvent;
-import com.irr310.common.event.world.QueryFactionStocksStateEvent;
-import com.irr310.common.event.world.WorldEventDispatcher;
-import com.irr310.common.world.item.Item.State;
-import com.irr310.common.world.state.FactionStocksState;
-import com.irr310.common.world.state.ItemState;
-import com.irr310.common.world.state.NexusState;
+import com.irr310.common.world.Faction;
+import com.irr310.common.world.FactionProduction;
+import com.irr310.common.world.FactionStocks;
+import com.irr310.common.world.Player;
+import com.irr310.common.world.item.Item;
+import com.irr310.common.world.item.ShipItem;
+import com.irr310.common.world.system.Nexus;
 import com.irr310.i3d.Bundle;
 import com.irr310.i3d.Intent;
 import com.irr310.i3d.Message;
@@ -24,28 +21,31 @@ import com.irr310.i3d.view.LinearLayout;
 import com.irr310.i3d.view.View;
 import com.irr310.i3d.view.View.OnClickListener;
 import com.irr310.i3d.view.View.ViewState;
+import com.irr310.server.engine.world.WorldEngine;
+import com.irr310.server.engine.world.WorldEngineObserver;
 
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 
 public class StocksActivity extends Activity {
 
     protected static StockItemDetailsView stockItemView;
-    private WorldEventDispatcher worldEngine;
+    private WorldEngine worldEngine;
     private Button productionCategoryFactoryButton;
     private Button productionCategoryStocksButton;
     private Button productionCategoryDesignButton;
-    private DefaultWorldEventVisitor visitor;
     private LinearLayout stocksListLinearLayout;
-    private FactionStocksState stocks;
-    private SelectionManager<ItemState> stockItemSelectionManager;
+    private FactionStocks mStocks;
+    private SelectionManager<Item> stockItemSelectionManager;
     private LinearLayout stockDetailsLinearLayout;
+    private WorldEngineObserver mWorldEngineObserver;
     
     private static final int UPDATE_STOCKS_WHAT = 1;
     
     @Override
     public void onCreate(Bundle bundle) {
         setContentView("main@layout/production/stocks");
-        worldEngine = (WorldEventDispatcher) bundle.getObject();
+        worldEngine = (WorldEngine) bundle.getObject();
+        mStocks =  LoginManager.getLocalPlayer().getFaction().getStocks(); 
         
         productionCategoryFactoryButton = (Button) findViewById("productionCategoryFactoryButton@layout/production/production_categories"); 
         productionCategoryStocksButton = (Button) findViewById("productionCategoryStocksButton@layout/production/production_categories");
@@ -67,21 +67,35 @@ public class StocksActivity extends Activity {
             }
         });
        
-        visitor = new DefaultWorldEventVisitor() {
+        
+        mWorldEngineObserver = new WorldEngineObserver() {
             @Override
-            public void visit(FactionStocksStateEvent event) {
-                if (LoginManager.getLocalPlayer().faction.id == event.getFactionStocks().factionId) {
-                    getHandler().obtainMessage(UPDATE_STOCKS_WHAT, event.getFactionStocks()).send();
+            public void onStocksChanged(FactionStocks stocks) {
+                if (mStocks.equals(stocks)) {
+                    getHandler().removeMessages(UPDATE_STOCKS_WHAT);
+                    getHandler().obtainMessage(UPDATE_STOCKS_WHAT).send();
                 }
+            }
+
+            @Override
+            public void onFactionChanged(Faction faction) {
+            }
+            
+            @Override
+            public void onPlayerConnected(Player player) {
+            }
+            
+            @Override
+            public void onProductionChanged(FactionProduction production) {
             }
         };
         
-        stockItemSelectionManager = new SelectionManager<ItemState>();
+        stockItemSelectionManager = new SelectionManager<Item>();
        
-        stockItemSelectionManager.addOnSelectionChangeListener(new OnSelectionChangeListener<ItemState>() {
+        stockItemSelectionManager.addOnSelectionChangeListener(new OnSelectionChangeListener<Item>() {
 
             @Override
-            public void onSelectionChange(List<ItemState> selection) {
+            public void onSelectionChange(List<Item> selection) {
                 if(selection.size() == 1) {
                    
                     stockDetailsLinearLayout.removeView(stockItemView);
@@ -99,13 +113,12 @@ public class StocksActivity extends Activity {
 
     @Override
     public void onResume() {
-        worldEngine.registerEventVisitor(visitor);
-        worldEngine.sendToAll(new QueryFactionStocksStateEvent(LoginManager.getLocalPlayer().faction));
+        worldEngine.getWorldEnginObservable().register(this, mWorldEngineObserver);
     }
 
     @Override
     public void onPause() {
-        worldEngine.unregisterEventVisitor(visitor);
+        worldEngine.getWorldEnginObservable().unregister(this);
     }
 
     @Override
@@ -117,7 +130,6 @@ public class StocksActivity extends Activity {
     protected void onMessage(Message message) {
         switch (message.what) {
             case UPDATE_STOCKS_WHAT:
-                stocks = (FactionStocksState) message.obj;
                 updateFields();
                 break;
         }
@@ -128,16 +140,16 @@ public class StocksActivity extends Activity {
         stocksListLinearLayout.removeAllView();
         stockItemSelectionManager.clear(StockItemView.class);
         
-        for(ItemState item: stocks.stocks) {
-            if(item.state == ItemState.STOCKED) {
+        for(Item item: mStocks.getStocks()) {
+            if(item.getState() == Item.State.STOCKED) {
                 stocksListLinearLayout.addViewInLayout(new StockItemView(item, stockItemSelectionManager));
             }
         }        
     }
 
-    public void deployShip(ItemState item) {
-        NexusState nexus = LoginManager.getLocalPlayer().faction.rootNexus;
-        worldEngine.sendToAll(new ActionDeployShipEvent(item, nexus));
+    public void deployShip(ShipItem ship) {
+        Nexus nexus = LoginManager.getLocalPlayer().getFaction().getRootNexus();
+        worldEngine.deployShipAction(ship, nexus);
     }
 
   

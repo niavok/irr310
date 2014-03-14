@@ -2,15 +2,9 @@ package com.irr310.common.world.item;
 
 import java.util.Map;
 
-import com.irr310.common.network.NetworkField;
-import com.irr310.common.tools.Log;
 import com.irr310.common.world.Faction;
 import com.irr310.common.world.World;
-import com.irr310.common.world.state.FactionState;
-import com.irr310.common.world.state.ItemState;
-import com.irr310.common.world.state.ProductState;
 import com.irr310.common.world.system.WorldEntity;
-import com.irr310.server.world.product.ComponentProduct;
 import com.irr310.server.world.product.Product;
 
 public class Item extends WorldEntity {
@@ -23,7 +17,6 @@ public class Item extends WorldEntity {
         STOCKED,
         RESERVED,
         DEPLOYED,
-        DEPLOYING,
         DESTROYED,
     }
     
@@ -74,40 +67,6 @@ public class Item extends WorldEntity {
     
     public Product getProduct() {
         return product;
-    }
-   
-
-    public ItemState toState() {
-        ItemState state  = new ItemState();
-        state.id = getId();
-        state.product = product.toState();
-        
-        switch (this.state) {
-            case STOCKED:
-                    state.state = ItemState.STOCKED;
-                break;
-            case DEPLOYED:
-                state.state = ItemState.DEPLOYED;
-            break;
-            case DEPLOYING:
-                state.state = ItemState.DEPLOYING;
-            break;
-            case RESERVED:
-                state.state = ItemState.RESERVED;
-            break;
-            case DESTROYED:
-                state.state = ItemState.DESTROYED;
-            break;
-            default:
-                Log.error("Unsupported state");
-                break;
-        }
-        
-        return state;
-    }
-    
-    public boolean isState(ItemState itemState) {
-        return getId() == itemState.id;
     }
     
     public Faction getOwner() {

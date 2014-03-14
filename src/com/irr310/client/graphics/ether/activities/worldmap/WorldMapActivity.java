@@ -8,16 +8,14 @@ import com.irr310.client.graphics.ether.activities.BoardActivity;
 import com.irr310.client.graphics.ether.activities.systemmap.SystemMapActivity;
 import com.irr310.client.graphics.ether.activities.systemmap.SystemMapActivity.SystemMapActivityBundle;
 import com.irr310.client.navigation.LoginManager;
-import com.irr310.common.event.world.DefaultWorldEventVisitor;
-import com.irr310.common.event.world.FactionStateEvent;
-import com.irr310.common.event.world.QueryFactionStateEvent;
-import com.irr310.common.event.world.QueryWorldMapStateEvent;
-import com.irr310.common.event.world.WorldEventDispatcher;
-import com.irr310.common.event.world.WorldEventVisitor;
-import com.irr310.common.event.world.WorldMapStateEvent;
-import com.irr310.common.world.state.FactionState;
-import com.irr310.common.world.state.WorldMapState;
-import com.irr310.common.world.state.WorldSystemState;
+import com.irr310.common.tools.TransformMatrix;
+import com.irr310.common.world.Faction;
+import com.irr310.common.world.FactionProduction;
+import com.irr310.common.world.FactionStocks;
+import com.irr310.common.world.Player;
+import com.irr310.common.world.WorldMap;
+import com.irr310.common.world.system.Ship;
+import com.irr310.common.world.system.WorldSystem;
 import com.irr310.i3d.Bundle;
 import com.irr310.i3d.Intent;
 import com.irr310.i3d.Message;
@@ -33,27 +31,30 @@ import com.irr310.i3d.view.TextView;
 import com.irr310.i3d.view.View;
 import com.irr310.i3d.view.View.OnClickListener;
 import com.irr310.i3d.view.View.OnMouseEventListener;
+import com.irr310.server.engine.system.SystemEngineObserver;
+import com.irr310.server.engine.world.WorldEngine;
+import com.irr310.server.engine.world.WorldEngineObserver;
 
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent.Action;
 
 public class WorldMapActivity extends Activity {
 
-    protected static WorldSystemState selectedSystem;
+    protected WorldSystem selectedSystem;
     private RelativeLayout map;
     private ScrollView mapScrollView;
     private boolean firstUpdate = true;
     private float zoom;
     private TextView selectedSystemTitle;
     private LinearLayout selectedSystemPanel;
-    private WorldEventVisitor visitor;
-    private WorldEventDispatcher worldEngine;
-    private FactionState faction;
-    private WorldMapState worldMap;
-    private SelectionManager<WorldSystemState> systemViewSelectionManager;
+    private WorldEngine worldEngine;
+    private Faction mFaction;
+    private WorldMap worldMap;
+    private SelectionManager<WorldSystem> systemViewSelectionManager;
     private Button inspectSystemButton;
     private static final int UPDATE_FACTION_WHAT = 1;
     private static final int UPDATE_MAP_WHAT = 2;
+    private WorldEngineObserver mWorldEngineObserver;
 
     @Override
     public void onCreate(Bundle bundle) {
@@ -66,7 +67,10 @@ public class WorldMapActivity extends Activity {
 
         zoom = 8f;
 
-        worldEngine = (WorldEventDispatcher) bundle.getObject();
+        worldEngine = (WorldEngine) bundle.getObject();
+        worldMap = worldEngine.getWorld().getMap();
+        mFaction = LoginManager.getLocalPlayer().getFaction();
+
 
         map.setOnMouseListener(new OnMouseEventListener() {
 
@@ -84,34 +88,41 @@ public class WorldMapActivity extends Activity {
             }
         });
 
-        visitor = new DefaultWorldEventVisitor() {
-
-            @Override
-            public void visit(FactionStateEvent event) {
-                if(LoginManager.getLocalPlayer().faction.id == event.getFaction().id) {
-                    getHandler().obtainMessage(UPDATE_FACTION_WHAT, event.getFaction()).send();
-                }
-            }
-
-            @Override
-            public void visit(WorldMapStateEvent event) {
-                getHandler().obtainMessage(UPDATE_MAP_WHAT, event.getWorldMap()).send();
-            }
-        };
-
-        systemViewSelectionManager = new SelectionManager<WorldSystemState>();
         
-        systemViewSelectionManager.addOnSelectionChangeListener(new OnSelectionChangeListener<WorldSystemState>() {
+        mWorldEngineObserver = new WorldEngineObserver() {
+            
+            @Override
+            public void onStocksChanged(FactionStocks stocks) {
+            }
+            
+            @Override
+            public void onProductionChanged(FactionProduction production) {
+            }
+            
+            @Override
+            public void onPlayerConnected(Player player) {
+            }
+            
+            @Override
+            public void onFactionChanged(Faction faction) {
+                    getHandler().removeMessages(UPDATE_FACTION_WHAT);
+                    getHandler().obtainMessage(UPDATE_FACTION_WHAT, faction).send();
+            }
+        };        
+        
+        systemViewSelectionManager = new SelectionManager<WorldSystem>();
+        
+        systemViewSelectionManager.addOnSelectionChangeListener(new OnSelectionChangeListener<WorldSystem>() {
 
             @Override
-            public void onSelectionChange(List<WorldSystemState> selection) {
+            public void onSelectionChange(List<WorldSystem> selection) {
                 if(selection.size() == 1) {
-                    WorldMapActivity.selectedSystem = selection.get(0);
+                    selectedSystem = selection.get(0);
 
-                    selectedSystemTitle.setText(selectedSystem.name);
+                    selectedSystemTitle.setText(selectedSystem.getName());
                     selectedSystemPanel.setVisible(true);
                 } else {
-                    WorldMapActivity.selectedSystem = null;
+                    selectedSystem = null;
                 }
             }
 
@@ -125,7 +136,7 @@ public class WorldMapActivity extends Activity {
             
             @Override
             public void onClick(V3DMouseEvent mouseEvent, View view) {
-                if(WorldMapActivity.selectedSystem != null) {
+                if(selectedSystem != null) {
                     inspectSystemAction(selectedSystem);
                 }
             }
@@ -133,21 +144,19 @@ public class WorldMapActivity extends Activity {
         
     }
 
-    public void inspectSystemAction(WorldSystemState selectedSystem) {
+    public void inspectSystemAction(WorldSystem selectedSystem) {
         SystemMapActivityBundle bundle = new SystemMapActivityBundle(selectedSystem);
         startActivity(new Intent(SystemMapActivity.class, bundle));
     }
     
     @Override
     public void onResume() {
-        worldEngine.registerEventVisitor(visitor);
-        worldEngine.sendToAll(new QueryWorldMapStateEvent(1));
-        worldEngine.sendToAll(new QueryFactionStateEvent(LoginManager.getLocalPlayer().faction));
+        worldEngine.getWorldEnginObservable().register(this, mWorldEngineObserver);
     }
 
     @Override
     public void onPause() {
-        worldEngine.unregisterEventVisitor(visitor);
+        worldEngine.getWorldEnginObservable().unregister(this);
     }
 
     @Override
@@ -158,11 +167,6 @@ public class WorldMapActivity extends Activity {
     protected void onMessage(Message message) {
          switch (message.what) {
             case UPDATE_FACTION_WHAT:
-                faction = (FactionState) message.obj;
-                updateMap();
-                break;
-            case UPDATE_MAP_WHAT:
-                worldMap = (WorldMapState) message.obj;
                 updateMap();
                 break;
         }
@@ -170,19 +174,12 @@ public class WorldMapActivity extends Activity {
 
     private void updateMap() {
 
-        if (faction == null || worldMap == null) {
-            return;
-        }
-
         map.removeAllView();
         
-        WorldSystemState homeSystem = null;
+        WorldSystem homeSystem = mFaction.getHomeSystem();
 
-        List<WorldSystemState> allSystems = worldMap.systems;
-        for (final WorldSystemState system : allSystems) {
-            if (system.id == faction.homeSystemId) {
-                homeSystem = system;
-            }
+        List<WorldSystem> allSystems = worldMap.getSystems();
+        for (final WorldSystem system : allSystems) {
             final SystemView systemView = new SystemView(this, system, systemViewSelectionManager);
             systemView.setZoom(zoom);
             map.addViewInLayout(systemView);
@@ -191,8 +188,8 @@ public class WorldMapActivity extends Activity {
         if (firstUpdate) {
             firstUpdate = false;
 
-            Log.debug("Home system at " + homeSystem.location);
-            mapScrollView.setScrollCenter(new Point((float) homeSystem.location.x * zoom, (float) homeSystem.location.y * zoom));
+            Log.debug("Home system at " + homeSystem.getLocation());
+            mapScrollView.setScrollCenter(new Point((float) homeSystem.getLocation().x * zoom, (float) homeSystem.getLocation().y * zoom));
         }
 
     }

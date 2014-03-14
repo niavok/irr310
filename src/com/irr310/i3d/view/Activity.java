@@ -9,6 +9,7 @@ import com.irr310.i3d.Intent;
 import com.irr310.i3d.Message;
 import com.irr310.i3d.Surface;
 import com.irr310.server.Time;
+import com.irr310.server.Time.Timestamp;
 
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 
@@ -93,12 +94,12 @@ public abstract class Activity implements ViewParent {
         mview.draw(g);
     }
     
-    public void update(Time absTime, Time gameTime) {
+    public void update(Timestamp time) {
         updateLayout();
         
         
         executeHandler();
-        onUpdate(absTime, gameTime);
+        onUpdate(time);
         //The update may have changed the layout. Check that
         updateLayout();
     }
@@ -119,7 +120,7 @@ public abstract class Activity implements ViewParent {
         }
     }
 
-    protected void onUpdate(Time absTime, Time gameTime) {
+    protected void onUpdate(Timestamp time) {
     }
     
     @Override

@@ -1,6 +1,5 @@
 package com.irr310.common.world.system;
 
-import com.irr310.common.world.state.LinkState;
 
 public class Link {
 
@@ -19,14 +18,4 @@ public class Link {
 	public Slot getSlot2() {
 		return slot2;
 	}
-
-    public LinkState toState() {
-        LinkState linkState = new LinkState();
-        linkState.slot1Id = slot1.getId();
-        linkState.slot2Id = slot2.getId();
-        return linkState;
-    }
-	
-	
-
 }

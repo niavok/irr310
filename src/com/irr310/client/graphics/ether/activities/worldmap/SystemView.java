@@ -5,7 +5,7 @@ import java.util.List;
 import org.lwjgl.input.Mouse;
 
 import com.irr310.common.tools.Log;
-import com.irr310.common.world.state.WorldSystemState;
+import com.irr310.common.world.system.WorldSystem;
 import com.irr310.i3d.I3dRessourceManager;
 import com.irr310.i3d.Measure;
 import com.irr310.i3d.Measure.Axis;
@@ -21,14 +21,14 @@ import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 
 public class SystemView extends RelativeLayout {
 
-    private final WorldSystemState system;
+    private final WorldSystem system;
     private float size;
     private float zoom;
     private float zoomedSize;
     private SystemCircleView systemCircleView;
     private TextView textView;
 
-    public SystemView(final WorldMapActivity activity, final WorldSystemState system, final SelectionManager<WorldSystemState>selectionManager) {
+    public SystemView(final WorldMapActivity activity, final WorldSystem system, final SelectionManager<WorldSystem>selectionManager) {
         this.system = system;
         
         size = 30;
@@ -38,7 +38,7 @@ public class SystemView extends RelativeLayout {
         systemCircleView = new SystemCircleView(system);
         
         textView = new TextView();
-        textView.setText(system.name);
+        textView.setText(system.getName());
         textView.setFont(I3dRessourceManager.getInstance().loadFont("systemNameWorldMap@fonts"));
         textView.setTextColor(I3dRessourceManager.getInstance().loadColor("systemNameWorldMap@color")); 
         addViewInLayout(systemCircleView);
@@ -58,9 +58,9 @@ public class SystemView extends RelativeLayout {
 
         });
         
-        selectionManager.addOnSelectionChangeListener(new OnSelectionChangeListener<WorldSystemState>() {
+        selectionManager.addOnSelectionChangeListener(new OnSelectionChangeListener<WorldSystem>() {
             
-            public void onSelectionChange(List<WorldSystemState> selection) {
+            public void onSelectionChange(List<WorldSystem> selection) {
                 if(selection.contains(SystemView.this.system)) {
                     systemCircleView.setState(ViewState.SELECTED);
                 } else {
@@ -82,7 +82,7 @@ public class SystemView extends RelativeLayout {
         reshape();
     }
     
-    public WorldSystemState getSystem() {
+    public WorldSystem getSystem() {
         return system;
     }
     
@@ -97,8 +97,8 @@ public class SystemView extends RelativeLayout {
         layoutParams.setLayoutHeightMeasure(LayoutMeasure.FIXED);
         layoutParams.setHeightMeasure(new Measure(zoomedSize, false, Axis.VERTICAL));
         
-        layoutParams.setMarginLeftMeasure(new Measure((float) (system.location.x * zoom) - zoomedSize/2, false, Axis.HORIZONTAL));
-        layoutParams.setMarginTopMeasure(new Measure((float) (system.location.y * zoom) - zoomedSize/2, false, Axis.VERTICAL));
+        layoutParams.setMarginLeftMeasure(new Measure((float) (system.getLocation().x * zoom) - zoomedSize/2, false, Axis.HORIZONTAL));
+        layoutParams.setMarginTopMeasure(new Measure((float) (system.getLocation().y * zoom) - zoomedSize/2, false, Axis.VERTICAL));
         
         textView.getLayoutParams().setMarginTopMeasure(new Measure(-15 - zoomedSize/20 , false, Axis.VERTICAL));
         textView.getLayoutParams().setLayoutWidthMeasure(LayoutMeasure.FIXED);

@@ -46,11 +46,6 @@ import com.bulletphysics.linearmath.MatrixUtil;
 import com.bulletphysics.linearmath.MotionState;
 import com.bulletphysics.linearmath.Transform;
 import com.bulletphysics.util.ObjectArrayList;
-import com.irr310.common.event.system.CollisionEvent;
-import com.irr310.common.event.system.DefaultSystemEventVisitor;
-import com.irr310.common.event.system.ShipDeployedSystemEvent;
-import com.irr310.common.event.system.SystemEvent;
-import com.irr310.common.event.system.SystemEventVisitor;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.capacity.Capacity;
@@ -63,10 +58,11 @@ import com.irr310.common.world.system.Part;
 import com.irr310.common.world.system.Ship;
 import com.irr310.common.world.system.Slot;
 import com.irr310.common.world.system.SystemObject;
-import com.irr310.server.Duration;
-import com.irr310.server.SystemEngine;
+import com.irr310.server.Time.Timestamp;
+import com.irr310.server.engine.system.SystemEngine;
+import com.irr310.server.engine.system.SystemEngineObserver;
 
-public class PhysicEngine extends FramerateEngine<SystemEvent> {
+public class PhysicEngine implements Engine {
 
     public static final int MASS_FACTOR = 10;
     public static final float PI_2 = 1.57079632679489661923f;
@@ -91,42 +87,32 @@ public class PhysicEngine extends FramerateEngine<SystemEvent> {
     private List<Ship> ships;
     private List<Link> links;
 
-    private PhysicEngineEventVisitor eventVisitor;
     private Random random;
     private OverlapFilterCallback overlapFilterCallback;
     private NearCallback nearCallback;
-    ReentrantLock mutex;
     private final SystemEngine systemEngine;
+    private Timestamp mLastTime;
 
     public PhysicEngine(SystemEngine systemEngine) {
         this.systemEngine = systemEngine;
-        framerate = new Duration(10000000); // 10 ms
 
         linearEngines = new ArrayList<Pair<LinearEngineCapacity, RigidBody>>();
         wings = new ArrayList<Pair<WingCapacity, RigidBody>>();
         rockets = new ArrayList<Pair<RocketCapacity, RigidBody>>();
-        eventVisitor = new PhysicEngineEventVisitor();
         components = new ArrayList<Component>();
         ships = new ArrayList<Ship>();
         links = new ArrayList<Link>();
         initPhysics();
         random = new Random();
-        mutex = new ReentrantLock();
-    }
-    
-    public SystemEventVisitor getEventVisitor() {
-        return eventVisitor;
     }
 
     @Override
-    protected void onStart() {
-        pause(false);        
+    public void start() {
     }
     
     @Override
-    protected void frame() {
+    public void tick(Timestamp time) {
 
-        mutex.lock();
 
         // Apply forces
         // Linear Engines
@@ -224,18 +210,13 @@ public class PhysicEngine extends FramerateEngine<SystemEvent> {
             body.setActivationState(RigidBody.ACTIVE_TAG);
 
         }
-        mutex.unlock();
-
-        systemEngine.getSystem().lock();
-        mutex.lock();
 
         // step the simulation
         if (dynamicsWorld != null) {
-            dynamicsWorld.stepSimulation(framerate.getSeconds());
+            dynamicsWorld.stepSimulation(mLastTime.getGameTime().durationTo(time.getGameTime()).getSeconds());
         }
-        mutex.unlock();
-        systemEngine.getSystem().unlock();
-
+        
+        mLastTime = time;
     }
 
     private float getDeltaTimeMicroseconds() {
@@ -245,8 +226,6 @@ public class PhysicEngine extends FramerateEngine<SystemEvent> {
     }
 
     public List<SphereResultDescriptor> sphereTest(final Vec3 from, final double radius) {
-
-        mutex.lock();
 
         // Log.trace("sphereTest at "+from+" radius "+radius);
 
@@ -343,13 +322,11 @@ public class PhysicEngine extends FramerateEngine<SystemEvent> {
         dispatcher.setNearCallback(nearCallback);
         dynamicsWorld.getPairCache().setOverlapFilterCallback(overlapFilterCallback);
 
-        mutex.unlock();
         return sphereResultDescriptorList;
     }
 
     public List<RayResultDescriptor> rayTest(final Vec3 from, final Vec3 to) {
 
-        mutex.lock();
         final List<RayResultDescriptor> rayResultDescriptorList = new ArrayList<RayResultDescriptor>();
 
         dynamicsWorld.rayTest(from.toVector3d(), to.toVector3d(), new RayResultCallback() {
@@ -379,7 +356,6 @@ public class PhysicEngine extends FramerateEngine<SystemEvent> {
             }
         });
 
-        mutex.unlock();
         if (rayResultDescriptorList.size() > 1) {
             Collections.sort(rayResultDescriptorList);
         }
@@ -504,24 +480,20 @@ public class PhysicEngine extends FramerateEngine<SystemEvent> {
     }
 
     public void reloadStates() {
-        mutex.lock();
         for (Entry<Part, RigidBody> partEntry : partToBodyMap.entrySet()) {
             // TODO: fix concurrent modification on the map
             RigidBody body = partEntry.getValue();
             PartMotionState motionState = (PartMotionState) body.getMotionState();
             motionState.reload();
         }
-        mutex.unlock();
     }
 
     public void reloadStates(Part part) {
-        mutex.lock();
         RigidBody body = partToBodyMap.get(part);
         if (body != null) {
             PartMotionState motionState = (PartMotionState) body.getMotionState();
             motionState.reload();
         }
-        mutex.unlock();
     }
 
     private void addShip(Ship ship, TransformMatrix transform) {
@@ -744,8 +716,7 @@ public class PhysicEngine extends FramerateEngine<SystemEvent> {
 
                         collisionDescriptor.setImpulse(pt.appliedImpulse);
 
-                        systemEngine.sendToAll(new CollisionEvent(collisionDescriptor));
-
+                        systemEngine.notifyCollision(collisionDescriptor);
                     }
                 }
             }
@@ -811,14 +782,7 @@ public class PhysicEngine extends FramerateEngine<SystemEvent> {
         }
     }
 
-    @Override
-    protected void processEvent(SystemEvent e) {
-        mutex.lock();
-        e.accept(eventVisitor);
-        mutex.unlock();
-    }
-
-    private final class PhysicEngineEventVisitor extends DefaultSystemEventVisitor {
+    //private final class PhysicEngineEventVisitor extends DefaultSystemEventVisitor {
 //        @Override
 //        public void visit(QuitGameEvent event) {
 //            System.out.println("stopping physic engine");
@@ -872,24 +836,28 @@ public class PhysicEngine extends FramerateEngine<SystemEvent> {
 //            }
 //        }
 //
-        @Override
-        public void visit(ShipDeployedSystemEvent event) {
-            addShip(event.getShip(), event.getTransform());
-        }
-
-    }
+//    }
 
     
     @Override
-    protected void onInit() {
-        // TODO Auto-generated method stub
-
+    public void init() {
+        systemEngine.getSystemEnginObservable().register(this, new SystemEngineObserver() {
+            @Override
+            public void onDeployShip(Ship ship, TransformMatrix transform) {
+                addShip(ship, transform);
+            }
+        });
     }
 
     @Override
-    protected void onEnd() {
+    public void stop() {
         // TODO Auto-generated method stub
 
+    }
+    
+    @Override
+    public void destroy() {
+        systemEngine.getSystemEnginObservable().unregister(this);
     }
 
     public void impulse(Part part, double energy, Vec3 localPosition, Vec3 axis) {

@@ -1,6 +1,5 @@
 package com.irr310.client.graphics.ether.activities.shipcamera;
 
-import java.awt.image.ComponentSampleModel;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,34 +12,12 @@ import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
 
 import com.irr310.client.graphics.GraphicalElement;
-import com.irr310.client.graphics.GuiTrackingArrow;
-import com.irr310.client.graphics.skin.AsteroidSkin;
-import com.irr310.client.graphics.skin.CameraSkin;
-import com.irr310.client.graphics.skin.FactorySkin;
 import com.irr310.client.graphics.skin.GenericSkin;
-import com.irr310.client.graphics.skin.HullSkin;
-import com.irr310.client.graphics.skin.LootSkin;
-import com.irr310.client.graphics.skin.MonolithSkin;
-import com.irr310.client.graphics.skin.PropellerSkin;
-import com.irr310.client.graphics.skin.PvCellSkin;
-import com.irr310.client.graphics.skin.ReactorSkin;
-import com.irr310.client.graphics.skin.RocketSkin;
 import com.irr310.client.graphics.skin.Skin;
-import com.irr310.client.graphics.skin.TankSkin;
-import com.irr310.client.graphics.skin.ThrusterBlockSkin;
-import com.irr310.client.graphics.skin.WeaponSkin;
-import com.irr310.client.graphics.skin.WingSkin;
-import com.irr310.client.navigation.LoginManager;
-import com.irr310.common.world.item.ShipSchema;
-import com.irr310.common.world.state.ComponentState;
-import com.irr310.common.world.state.ShipState;
-import com.irr310.common.world.state.WorldSystemState;
-import com.irr310.common.world.system.CelestialObject;
 import com.irr310.common.world.system.Component;
 import com.irr310.common.world.system.Ship;
-import com.irr310.common.world.system.SystemObject;
+import com.irr310.common.world.system.WorldSystem;
 import com.irr310.i3d.Graphics;
-import com.irr310.i3d.I3dContext;
 import com.irr310.i3d.scene.I3dEye3DCamera;
 import com.irr310.i3d.scene.I3dScene;
 import com.irr310.i3d.scene.controller.I3dFollow3DCameraController;
@@ -60,20 +37,20 @@ import fr.def.iss.vd2.lib_v3d.element.V3DrawElement;
 
 public class ShipCameraView extends View {
 
-    private ShipState focusedShip;
+    private Ship focusedShip;
     private I3dEye3DCamera activeCamera;
     private I3dFollow3DCameraController cameraController;
     private List<GraphicalElement> animatedList = new CopyOnWriteArrayList<GraphicalElement>();
     private V3DCameraBinding fullscreenBinding;
     private I3dScene scene;
     private V3DCameraBinding binding;
-    private Map<ComponentState, List<GraphicalElement>> componentToV3DElementMap = new HashMap<ComponentState, List<GraphicalElement>>();
-    private WorldSystemState systemState;
+    private Map<Component, List<GraphicalElement>> componentToV3DElementMap = new HashMap<Component, List<GraphicalElement>>();
+    private WorldSystem mSystem;
 
     
-    public ShipCameraView(ShipState ship, WorldSystemState systemState) {
+    public ShipCameraView(Ship ship, WorldSystem systemState) {
         this.focusedShip = ship;
-        this.systemState = systemState;
+        this.mSystem = systemState;
         
         init();
         binding = new V3DCameraBinding();
@@ -94,10 +71,10 @@ public class ShipCameraView extends View {
         
      // amination
         for (GraphicalElement animated : animatedList) {
-            animated.update();
+            animated.update(g.getTime());
         }
         
-        cameraController.update();
+        cameraController.update(g.getTime());
         
         GL11.glColor3f(1, 0, 0);
         GL11.glBegin(GL11.GL_LINES);
@@ -197,7 +174,7 @@ private void init() {
         scene = new I3dScene();
         activeCamera.setScene(scene);
         
-        ComponentState kernel = focusedShip.getComponentByName("Kernel");
+        Component kernel = focusedShip.getComponentByName("Kernel");
         cameraController.setFollowed(new FollowablePart(kernel.getFirstPart()));
 
         /*
@@ -247,7 +224,7 @@ private void init() {
       File v3drawFileStructure = new File("graphics/output/bubble.v3draw");
       V3DrawElement bubbleElement = V3DrawElement.LoadFromFile(v3drawFileStructure);
       // elementStructure.setShader("bubble");
-      bubbleElement.setScale((float) systemState.radius);
+      bubbleElement.setScale((float) mSystem.getRadius());
 
       V3DShader shader = new V3DShader("bubble") {
           private int resolution;
@@ -294,9 +271,9 @@ private void init() {
         return group;
     }
     
-    protected void addShip(final ShipState ship) {
+    protected void addShip(final Ship ship) {
 
-        for (ComponentState component : ship.components) {
+        for (Component component : ship.getComponents()) {
             addComponent(component);
         }
 
@@ -311,7 +288,7 @@ private void init() {
 //        }
     }
     
-    private void addComponent(ComponentState component) {
+    private void addComponent(Component component) {
         if(componentToV3DElementMap.get(component) != null) {
             return;
         }
@@ -320,7 +297,7 @@ private void init() {
         componentToV3DElementMap.get(component).add(graphicalElement);
     }
     
-    protected GraphicalElement addObject(final ComponentState object) {
+    protected GraphicalElement addObject(final Component object) {
 
         Skin skin = null;
 

@@ -8,6 +8,7 @@ import com.irr310.i3d.scene.element.I3dElement;
 import com.irr310.i3d.scene.element.I3dGroupElement;
 import com.irr310.server.Duration;
 import com.irr310.server.Time;
+import com.irr310.server.Time.Timestamp;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
@@ -48,7 +49,11 @@ public class RocketSteam extends GenericGraphicalElement{
     }
 
     @Override
-    public void update() {
+    public void init(Timestamp time) {
+    }
+    
+    @Override
+    public void update(Timestamp time) {
         
         double mix = creationTime.getDurationToNow(true).getSeconds() / lifeDuration.getSeconds();
         

@@ -1,7 +1,6 @@
 package com.irr310.common.world.capacity;
 
 import com.irr310.common.world.World;
-import com.irr310.common.world.state.CapacityState;
 
 public class LinearEngineCapacity extends Capacity {
 
@@ -59,40 +58,4 @@ public class LinearEngineCapacity extends Capacity {
     public double getTargetThrustInput() {
         return targetThrustInput;
     }
-
-    @Override
-    public CapacityState toState() {
-        CapacityState view = new CapacityState();
-        view.id = getId();
-        view.name = getName();
-        view.type = CapacityType.LINEAR_ENGINE.ordinal();
-
-        view.pushDouble(currentThrust);
-        view.pushDouble(targetThrust);
-        view.pushDouble(theoricalMaxThrust);
-        view.pushDouble(theoricalMinThrust);
-        view.pushDouble(theoricalVariationSpeed);
-        view.pushDouble(maxThrust);
-        view.pushDouble(minThrust);
-        view.pushDouble(variationSpeed);
-        view.pushDouble(targetThrustInput);
-        return view;
-    }
-
-    @Override
-    public void fromState(CapacityState view) {
-        setName(view.name);
-        currentThrust = view.popDouble();
-        targetThrust = view.popDouble();
-        theoricalMaxThrust = view.popDouble();
-        theoricalMinThrust = view.popDouble();
-        theoricalVariationSpeed = view.popDouble();
-        maxThrust = view.popDouble();
-        minThrust = view.popDouble();
-        variationSpeed = view.popDouble();
-        targetThrustInput = view.popDouble();
-    }
-
-    
-
 }

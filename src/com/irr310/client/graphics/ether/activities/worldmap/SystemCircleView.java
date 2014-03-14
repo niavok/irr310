@@ -2,7 +2,7 @@ package com.irr310.client.graphics.ether.activities.worldmap;
 
 
 
-import com.irr310.common.world.state.WorldSystemState;
+import com.irr310.common.world.system.WorldSystem;
 import com.irr310.i3d.Color;
 import com.irr310.i3d.Graphics;
 import com.irr310.i3d.I3dRessourceManager;
@@ -14,13 +14,13 @@ import com.irr310.i3d.view.View;
 
 public class SystemCircleView extends View {
 
-    private final WorldSystemState system;
+    private final WorldSystem system;
     private float size;
     private float zoom;
     private float zoomedSize;
     private Color selectionColor;
 
-    public SystemCircleView(WorldSystemState system) {
+    public SystemCircleView(WorldSystem system) {
         this.system = system;
         
         size = 30;
@@ -56,8 +56,8 @@ public class SystemCircleView extends View {
     public void onDraw(Graphics g) {
         
         Color color = Color.grey;
-        if(system.ownerId != -1) {
-            color = system.ownerColor;
+        if(system.getOwner() != null) {
+            color = system.getOwner().getColor();
         }
         
         Color centerColor = color.setAlpha(0.2f);
@@ -74,7 +74,7 @@ public class SystemCircleView extends View {
         g.drawRing(radius,radius, radius, radius * 0.90f - 3f, color, color, 64);
         g.drawRing(radius,radius, radius * 0.90f - 3f, 0 , centerColor, centerColor, 64);
         
-        if(system.homeSystem) {
+        if(system.isHomeSystem()) {
         
             // Optimize allocation
             Point point1_1 = new Point(zoomedSize/2, 0).rotate(Math.PI /15);

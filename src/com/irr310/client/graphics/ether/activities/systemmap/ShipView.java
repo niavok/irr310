@@ -2,11 +2,11 @@ package com.irr310.client.graphics.ether.activities.systemmap;
 
 import org.lwjgl.opengl.GL11;
 
+import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
-import com.irr310.common.world.state.ComponentState;
-import com.irr310.common.world.state.NexusState;
-import com.irr310.common.world.state.PartState;
-import com.irr310.common.world.state.ShipState;
+import com.irr310.common.world.system.Component;
+import com.irr310.common.world.system.Part;
+import com.irr310.common.world.system.Ship;
 import com.irr310.i3d.Color;
 import com.irr310.i3d.Graphics;
 import com.irr310.i3d.I3dRessourceManager;
@@ -18,12 +18,12 @@ public class ShipView extends View {
 
     private static final double TARGET_SIZE = 20;
     private SystemDetailCircleView parentView;
-    private ShipState ship;
+    private Ship ship;
     private boolean selected = false;
     private Color selectionColor;
     
     
-    public ShipView(final SystemMapActivity activity, final ShipState ship, SystemDetailCircleView parentView) {
+    public ShipView(final SystemMapActivity activity, final Ship ship, SystemDetailCircleView parentView) {
         this.ship = ship;
         this.parentView = parentView;
         selectionColor = I3dRessourceManager.getInstance().loadColor("selection@color");
@@ -53,13 +53,13 @@ public class ShipView extends View {
         double maxX = -Double.MAX_VALUE;
         double maxY = -Double.MAX_VALUE;
         
-        for(ComponentState component : ship.components) {
+        for(Component component : ship.getComponents()) {
         
-            for(PartState part : component.parts) {
-                Vec3 absoluteCorner1 = new Vec3(part.shape.x/2,part.shape.y/2,0).transform(part.transform);
-                Vec3 absoluteCorner2 = new Vec3(-part.shape.x/2,part.shape.y/2,0).transform(part.transform);
-                Vec3 absoluteCorner3 = new Vec3(-part.shape.x/2,-part.shape.y/2,0).transform(part.transform);
-                Vec3 absoluteCorner4 = new Vec3(part.shape.x/2,-part.shape.y/2,0).transform(part.transform);
+            for(Part part : component.getParts()) {
+                Vec3 absoluteCorner1 = new Vec3(part.getShape().x/2,part.getShape().y/2,0).transform(part.getTransform());
+                Vec3 absoluteCorner2 = new Vec3(-part.getShape().x/2,part.getShape().y/2,0).transform(part.getTransform());
+                Vec3 absoluteCorner3 = new Vec3(-part.getShape().x/2,-part.getShape().y/2,0).transform(part.getTransform());
+                Vec3 absoluteCorner4 = new Vec3(part.getShape().x/2,-part.getShape().y/2,0).transform(part.getTransform());
                 
                 minX = Math.min(absoluteCorner1.x, minX);
                 minX = Math.min(absoluteCorner2.x, minX);
@@ -117,17 +117,19 @@ public class ShipView extends View {
         }
         
         
-        g.setColor(ship.owner.color);
+        g.setColor(ship.getOwner().getColor());
         
         GL11.glBegin(GL11.GL_QUADS);
         
-        for(ComponentState component : ship.components) {
+        for(Component component : ship.getComponents()) {
             
-            for(PartState part : component.parts) {
-                Vec3 absoluteCorner1 = new Vec3(part.shape.x/2,part.shape.y/2,0).transform(part.transform).minus(baseLocation);
-                Vec3 absoluteCorner2 = new Vec3(-part.shape.x/2,part.shape.y/2,0).transform(part.transform).minus(baseLocation);
-                Vec3 absoluteCorner3 = new Vec3(-part.shape.x/2,-part.shape.y/2,0).transform(part.transform).minus(baseLocation);
-                Vec3 absoluteCorner4 = new Vec3(part.shape.x/2,-part.shape.y/2,0).transform(part.transform).minus(baseLocation);
+            for(Part part : component.getParts()) {
+                Vec3 shape = part.getShape();
+                TransformMatrix transform = part.getTransform();
+                Vec3 absoluteCorner1 = new Vec3(shape.x/2,shape.y/2,0).transform(transform).minus(baseLocation);
+                Vec3 absoluteCorner2 = new Vec3(-shape.x/2,shape.y/2,0).transform(transform).minus(baseLocation);
+                Vec3 absoluteCorner3 = new Vec3(-shape.x/2,-shape.y/2,0).transform(transform).minus(baseLocation);
+                Vec3 absoluteCorner4 = new Vec3(shape.x/2,-shape.y/2,0).transform(transform).minus(baseLocation);
                 
                 GL11.glVertex2d((absoluteCorner1.x + width/2) * scale, (absoluteCorner1.y + height/2) * scale);
                 GL11.glVertex2d((absoluteCorner2.x + width/2) * scale, (absoluteCorner2.y + height/2) * scale);
@@ -141,16 +143,16 @@ public class ShipView extends View {
 //        
 //        boolean first = true;
 //        
-//        ComponentState componentState = ship.components.get(0);
-//        PartState firstPart = componentState.parts.get(0);
+//        Component Component = ship.components.get(0);
+//        Part firstPart = Component.parts.get(0);
 //        baseLocation = firstPart.transform.getTranslation();
 //        
 //        
 //        g.drawRing((float) (baseLocation.x * parentView.getScale()), (float) (baseLocation.y * parentView.getScale()  - 0), 20, 19, Color.red, Color.red, 32);
 //        
 //        
-//        for(ComponentState component : ship.components) {
-//            for(PartState part : component.parts) {
+//        for(Component component : ship.components) {
+//            for(Part part : component.parts) {
 //                
 //                
 //                
@@ -179,9 +181,9 @@ public class ShipView extends View {
     @Override
     public void onLayout(float l, float t, float r, float b) {
         
-        ComponentState componentState = ship.components.get(0);
-        PartState firstPart = componentState.parts.get(0);
-        Vec3 baseLocation = firstPart.transform.getTranslation();
+        Component component = ship.getComponents().get(0);
+        Part firstPart = component.getParts().get(0);
+        Vec3 baseLocation = firstPart.getTransform().getTranslation();
         
         
 //        getLayoutParams().mLeft = (float) (baseLocation.x * parentView.getScale() + parentView.getOffset() - 0);

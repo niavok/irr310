@@ -3,14 +3,11 @@ package com.irr310.common.world;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.irr310.common.world.state.FactionState;
-import com.irr310.common.world.state.ProductState;
 import com.irr310.common.world.system.Nexus;
 import com.irr310.common.world.system.Ship;
 import com.irr310.common.world.system.WorldEntity;
 import com.irr310.common.world.system.WorldSystem;
 import com.irr310.i3d.Color;
-import com.irr310.server.world.product.Product;
 
 public class Faction extends WorldEntity{
 
@@ -27,7 +24,6 @@ public class Faction extends WorldEntity{
     private FactionStocks stocks;
     private FactionAvailableProductList availableProductList;
     private Nexus rootNexus;
-    private FactionState factionState;
     private boolean stateChanged;
     
     public Faction(World world, long id) {
@@ -129,33 +125,6 @@ public class Faction extends WorldEntity{
         this.rootNexus = rootNexus;
     }
     
-    public FactionState toState() {
-        if(stateChanged) {
-            stateChanged = false;
-            factionState = new FactionState();
-        
-            factionState.id = getId();
-            factionState.statersAmount = statersAmount;
-            factionState.oresAmount = oresAmount;
-            factionState.koliumAmount = koliumAmount;
-            factionState.neuridiumAmount = neuridiumAmount;
-            factionState.color = color;
-            factionState.homeSystemId = homeSystem.getId();
-            factionState.rootNexus = rootNexus.toState();
-            
-            factionState.knownSystemIds = new ArrayList<Long>(); 
-            for(WorldSystem system: knownSystems) {
-                factionState.knownSystemIds.add(system.getId());
-            }
-        }
-
-        return factionState;
-    }
-    
-    public boolean isState(FactionState factionState) {
-        return getId() == toState().id;
-    }
-
     public boolean takeStaters(long price) {
         if(getStatersAmount() >= price) {
             setStatersAmount(getStatersAmount() - price);
@@ -176,10 +145,6 @@ public class Faction extends WorldEntity{
         return availableProductList;
     }
 
-    public Product getProduct(ProductState product) {
-        return availableProductList.getProduct(product);
-    }
-    
     public boolean takeOres(long price) {
         if(getOresAmount() >= price) {
             setOresAmount(getOresAmount() - price);

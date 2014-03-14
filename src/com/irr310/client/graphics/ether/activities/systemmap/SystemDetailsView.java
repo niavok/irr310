@@ -1,7 +1,7 @@
 package com.irr310.client.graphics.ether.activities.systemmap;
 
 
-import com.irr310.common.world.state.WorldSystemState;
+import com.irr310.common.world.system.WorldSystem;
 import com.irr310.i3d.I3dRessourceManager;
 import com.irr310.i3d.Measure;
 import com.irr310.i3d.Measure.Axis;
@@ -12,17 +12,17 @@ import com.irr310.i3d.view.TextView.Gravity;
 
 public class SystemDetailsView extends RelativeLayout {
 
-    private final WorldSystemState system;
+    private final WorldSystem mSystem;
     private SystemDetailCircleView systemCircleView;
     private TextView textView;
 
-    public SystemDetailsView(SystemMapActivity activity, final WorldSystemState system) {
-        this.system = system;
+    public SystemDetailsView(SystemMapActivity activity, final WorldSystem system) {
+        this.mSystem = system;
         
         systemCircleView = new SystemDetailCircleView(activity, system);
         
         textView = new TextView();
-        textView.setText(system.name);
+        textView.setText(system.getName());
         textView.setFont(I3dRessourceManager.getInstance().loadFont("systemNameWorldMap@fonts"));
         textView.setTextColor(I3dRessourceManager.getInstance().loadColor("systemNameWorldMap@color"));
         
@@ -34,8 +34,8 @@ public class SystemDetailsView extends RelativeLayout {
     
    
 
-    public WorldSystemState getSystem() {
-        return system;
+    public WorldSystem getSystem() {
+        return mSystem;
     }
     
     private void reshape() {

@@ -3,12 +3,11 @@ package com.irr310.server.ai;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import com.irr310.common.engine.FramerateEngine;
-import com.irr310.common.event.system.DefaultSystemEventVisitor;
-import com.irr310.common.event.system.SystemEvent;
+import com.irr310.common.engine.Engine;
 import com.irr310.common.world.system.Ship;
+import com.irr310.server.Time.Timestamp;
 
-public class AIEngine extends FramerateEngine<SystemEvent> {
+public class AIEngine implements Engine {
 
     List<AIProcessor> activeProcessors = new CopyOnWriteArrayList<AIProcessor>();
     List<Ship> activeShips = new CopyOnWriteArrayList<Ship>();
@@ -17,36 +16,38 @@ public class AIEngine extends FramerateEngine<SystemEvent> {
     public AIEngine() {
     }
 
-    @Override
-    protected void processEvent(SystemEvent e) {
-        e.accept(new AIEngineEventVisitor());
-    }
-
-    @Override
-    protected void frame() {
-        //TODO remove procesoir for destroyed ships
-        for(AIProcessor processor: activeProcessors) {
-            processor.process();
-        }
-    }
     
     @Override
-    protected void onStart() {
+    public void start() {
         // TODO Auto-generated method stub
         
     }
 
     @Override
-    protected void onInit() {
+    public void init() {
         
     }
 
     @Override
-    protected void onEnd() {
+    public void stop() {
+        
+    }
+    
+    @Override
+    public void destroy() {
+        // TODO Auto-generated method stub
         
     }
 
-    private final class AIEngineEventVisitor extends DefaultSystemEventVisitor {
+    @Override
+    public void tick(Timestamp time) {
+        //TODO remove procesoir for destroyed ships
+        for(AIProcessor processor: activeProcessors) {
+            processor.process();
+        }
+    }
+
+//    private final class AIEngineEventVisitor extends DefaultSystemEventVisitor {
 
 //        @Override
 //        public void visit(QuitGameEvent event) {
@@ -89,7 +90,7 @@ public class AIEngine extends FramerateEngine<SystemEvent> {
 //                }
 //            }
 //        }
-    }
+//    }
 
     private void createAI(Ship ship) {
         AIProcessor processor = new AISucideProcessor(ship);
