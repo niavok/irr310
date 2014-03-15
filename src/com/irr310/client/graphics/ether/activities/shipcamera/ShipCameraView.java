@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
 
@@ -29,6 +30,7 @@ import com.irr310.i3d.view.View;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent;
+import fr.def.iss.vd2.lib_v3d.V3DKeyEvent.KeyAction;
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 import fr.def.iss.vd2.lib_v3d.V3DShader;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
@@ -49,7 +51,13 @@ public class ShipCameraView extends View {
     private V3DCameraBinding binding;
     private Map<Component, List<GraphicalElement>> componentToV3DElementMap = new HashMap<Component, List<GraphicalElement>>();
     private WorldSystem mSystem;
+    private ControlMode mControlMode = ControlMode.PILOT;
+    
 
+    private enum ControlMode {
+        PILOT,
+        CAMERA,
+    }
     
     public ShipCameraView(Ship ship, WorldSystem systemState) {
         this.focusedShip = ship;
@@ -60,11 +68,18 @@ public class ShipCameraView extends View {
         reshape();
         
         setOnKeyListener(new OnKeyEventListener() {
-            
+
             @Override
             public boolean onKeyEvent(V3DKeyEvent keyEvent) {
                 
-                Log.log("key char="+keyEvent.getCharacter()+ " code="+keyEvent.getKeyCode());
+                if(keyEvent.getAction() == KeyAction.KEY_PRESSED) {
+                    if( keyEvent.getKeyCode() == Keyboard.KEY_C) {
+                        mControlMode = ControlMode.CAMERA; 
+                    } else if( keyEvent.getKeyCode() == Keyboard.KEY_V) {
+                        mControlMode = ControlMode.PILOT; 
+                    }    
+                }
+//                Log.log("key char="+keyEvent.getCharacter()+ " code="+keyEvent.getKeyCode());
                 
                 return false;
             }
@@ -74,7 +89,9 @@ public class ShipCameraView extends View {
             
             @Override
             public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
-                mCameraController.onEvent(mouseEvent);
+                if(mControlMode == ControlMode.CAMERA) {
+                    mCameraController.onEvent(mouseEvent);
+                }
                 return true;
             }
         });

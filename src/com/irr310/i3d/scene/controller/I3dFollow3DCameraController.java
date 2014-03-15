@@ -24,6 +24,7 @@ import java.awt.geom.Point2D;
 
 import com.irr310.client.graphics.GraphicalElement;
 import com.irr310.client.graphics.WorldRenderer;
+import com.irr310.common.tools.Log;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.system.Part;
@@ -46,14 +47,16 @@ public class I3dFollow3DCameraController implements V3DCameraController, Graphic
     I3dEye3DCamera camera;
     float cameraXInitial = 0;
     float cameraYInitial = 0;
+    float cameraTheta = 0;
+    float cameraPhi = 0;
     float cameraThetaInitial = 0;
     float cameraPhiInitial = 0;
     float mouseXInitial = 0;
     float mouseYInitial = 0;
     float kx = -0.00060f;
     float ky = -0.00060f;
-    float ktheta = 0.4f;
-    float kphi = 0.4f;
+    float ktheta = -0.005f;
+    float kphi = -0.005f;
     boolean translating = false;
     boolean rotating = false;
     private Point2D.Float mouseInitialPick;
@@ -158,11 +161,13 @@ public class I3dFollow3DCameraController implements V3DCameraController, Graphic
 
     public void mousePressed(V3DMouseEvent e) {
 
-        if (e.getButton() == translationButton) {
-            beginMove(MovementType.TRANSLATE, e);
-        } else if (e.getButton() == rotationButton) {
-            beginMove(MovementType.ROTATE, e);
-        }
+        beginMove(MovementType.ROTATE, e);
+        
+//        if (e.getButton() == translationButton) {
+//            beginMove(MovementType.TRANSLATE, e);
+//        } else if (e.getButton() == rotationButton) {
+//            beginMove(MovementType.ROTATE, e);
+//        }
 
     }
 
@@ -179,10 +184,10 @@ public class I3dFollow3DCameraController implements V3DCameraController, Graphic
         mouseXInitial = e.getX();
         mouseYInitial = e.getY();
 
-        cameraXInitial = camera.getPosition().x;
-        cameraYInitial = camera.getPosition().y;
-        cameraThetaInitial = camera.getRotation().z;
-        cameraPhiInitial = camera.getRotation().x;
+//        cameraXInitial = camera.getPosition().x;
+//        cameraYInitial = camera.getPosition().y;
+        cameraThetaInitial = cameraTheta;
+        cameraPhiInitial = cameraPhi;
     }
 
     public void mouseReleased(V3DMouseEvent e) {
@@ -198,19 +203,34 @@ public class I3dFollow3DCameraController implements V3DCameraController, Graphic
 
     private void mouseMoving(V3DMouseEvent e) {
 
-        
-//         if (translating) { Point2D.Float mousePick = camera.pick(e.getX(),
-//         e.getY(), 0); float x = cameraXInitial - mousePick.x +
-//         mouseInitialPick.x; float y = cameraYInitial - mousePick.y +
-//         mouseInitialPick.y; //mouseInitialPick = mousePick;
-//         camera.setPosition(x, y, camera.getPosition().z); cameraXInitial = x;
-//         cameraYInitial = y; } if (rotating) { float theta =
-//         cameraThetaInitial + ((float) e.getX() - mouseXInitial) * ktheta;
-//         float phi = cameraPhiInitial + ((float) e.getY() - mouseYInitial) *
-//         kphi; if (phi < 0) { phi = 0; mouseYInitial = (float) e.getY();
-//         cameraPhiInitial = 0; } if (phi >= 90) { phi = 90; mouseYInitial =
-//         (float) e.getY(); cameraPhiInitial = 90; } camera.setRotation(phi, 0,
-//         theta); }
+//        
+//        if (translating) {
+//            Point2D.Float mousePick = camera.pick(e.getX(), e.getY(), 0);
+//            float x = cameraXInitial - mousePick.x + mouseInitialPick.x;
+//            float y = cameraYInitial - mousePick.y + mouseInitialPick.y; // mouseInitialPick
+//                                                                         // =
+//                                                                         // mousePick;
+//            camera.setPosition(x, y, camera.getPosition().z);
+//            cameraXInitial = x;
+//            cameraYInitial = y;
+//        }
+        if (rotating) {
+            float theta = cameraThetaInitial + ((float) e.getX() - mouseXInitial) * ktheta;
+            float phi = cameraPhiInitial + ((float) e.getY() - mouseYInitial) * kphi;
+            if (phi <= -Math.PI/2) {
+                phi = (float) -(Math.PI/2);
+                mouseYInitial = (float) e.getY();
+                cameraPhiInitial = (float) -(Math.PI/2);;
+            }
+            if (phi >= Math.PI/2) {
+                phi = (float) (Math.PI/2);
+                mouseYInitial = (float) e.getY();
+                cameraPhiInitial = (float) (Math.PI/2);
+            }
+            
+            cameraPhi = phi;
+            cameraTheta = theta;
+        }
          
     }
 
@@ -261,8 +281,12 @@ public class I3dFollow3DCameraController implements V3DCameraController, Graphic
             // target.translate(0,0,2);
             target.translate(xOffset, yOffset, zOffset);
             // target.translate(0,0,0);
-
+            
+            target.rotateX(cameraPhi);
+            target.rotateZ(cameraTheta);
             target.preMultiply(transform);
+            
+            
             V3DVect3 targetPosition = target.getTranslation().toV3DVect3();
             camera.setPosition(targetPosition);
 
@@ -273,9 +297,15 @@ public class I3dFollow3DCameraController implements V3DCameraController, Graphic
             // eye.translate(0,4,2);
             
             eye.translate(xOffset, yOffset, zOffset);
+            
+            
             eye.translate(0, -distance, 0);
+            
+            eye.rotateX(cameraPhi);
+            eye.rotateZ(cameraTheta);
             // eye.translate(4,10,5);
             eye.preMultiply(transform);
+            
             
             V3DVect3 eyePosition = eye.getTranslation().toV3DVect3();
             camera.setEye(eyePosition);
@@ -286,13 +316,24 @@ public class I3dFollow3DCameraController implements V3DCameraController, Graphic
             rotation.preMultiply(transform);
             rotation.translate(transform.getTranslation().negative());
 
-            Vec3 topVect = new Vec3(distance - yOffset, -xOffset, 0).cross(new Vec3(-xOffset, distance - yOffset, -zOffset)).normalize();
+//            Vec3 topVect = new Vec3(distance - yOffset, -xOffset, 0).cross(new Vec3(-xOffset, distance - yOffset, -zOffset)).normalize();
+            Vec3 topVect = new Vec3(0, 0, 1);
+            
+            
+            
+            
+            
+            
+            
 
             // top.translate(1,0,1);
             top.translate(topVect);
+            top.rotate(new Vec3(Math.toDegrees(cameraPhi), 0, 0));
+            top.rotate(new Vec3(0, 0, Math.toDegrees(cameraTheta)));
 
             top.preMultiply(rotation);
             V3DVect3 topPosition = top.getTranslation().toV3DVect3();
+            
             camera.setTop(topPosition);
         }
     }
