@@ -33,6 +33,8 @@ import com.irr310.i3d.scene.element.I3dElement;
 import com.irr310.server.Time.Timestamp;
 
 import fr.def.iss.vd2.lib_v3d.V3DInputEvent;
+import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
+import fr.def.iss.vd2.lib_v3d.V3DMouseEvent.Action;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraController;
 
@@ -111,32 +113,50 @@ public class I3dFollow3DCameraController implements V3DCameraController, Graphic
             return;
         }
 
-        /*
-         * if (e instanceof MouseEvent) { MouseEvent em = (MouseEvent) e;
-         * switch(em.getID()) { case MouseEvent.MOUSE_DRAGGED: {
-         * mouseDragged(em); }break; case MouseEvent.MOUSE_MOVED: {
-         * mouseMoved(em); }break; case MouseEvent.MOUSE_CLICKED: {
-         * mouseClicked(em); }break; case MouseEvent.MOUSE_ENTERED: {
-         * mouseEntered(em); }break; case MouseEvent.MOUSE_EXITED: {
-         * mouseExited(em); }break; case MouseEvent.MOUSE_PRESSED: {
-         * mousePressed(em); }break; case MouseEvent.MOUSE_RELEASED: {
-         * mouseReleased(em); }break; } } if (e instanceof MouseWheelEvent) {
-         * mouseWheelMoved((MouseWheelEvent) e); }
-         */
+        if (e instanceof V3DMouseEvent) {
+            V3DMouseEvent em = (V3DMouseEvent) e;
+            switch (em.getAction()) {
+                case MOUSE_DRAGGED: {
+                    mouseDragged(em);
+                }
+                    break;
+                case MOUSE_MOVED: {
+                    mouseMoved(em);
+                }
+                    break;
+                case MOUSE_CLICKED: {
+                    mouseClicked(em);
+                }
+                    break;
+                case MOUSE_PRESSED: {
+                    mousePressed(em);
+                }
+                    break;
+                case MOUSE_RELEASED: {
+                    mouseReleased(em);
+                }
+                    break;
+                case MOUSE_WHEEL_UP:
+                case MOUSE_WHEEL_DOWN:{
+                    mouseWheelMoved(em);        
+                }
+                    break;
+            }
+        }
     }
 
-    public void mouseDragged(MouseEvent e) {
+    public void mouseDragged(V3DMouseEvent e) {
         mouseMoving(e);
     }
 
-    public void mouseMoved(MouseEvent e) {
+    public void mouseMoved(V3DMouseEvent e) {
         // mouseMoving(e);
     }
 
-    public void mouseClicked(MouseEvent e) {
+    public void mouseClicked(V3DMouseEvent e) {
     }
 
-    public void mousePressed(MouseEvent e) {
+    public void mousePressed(V3DMouseEvent e) {
 
         if (e.getButton() == translationButton) {
             beginMove(MovementType.TRANSLATE, e);
@@ -146,7 +166,7 @@ public class I3dFollow3DCameraController implements V3DCameraController, Graphic
 
     }
 
-    private void beginMove(MovementType type, MouseEvent e) {
+    private void beginMove(MovementType type, V3DMouseEvent e) {
         if (type == MovementType.TRANSLATE) {
             translating = true;
             rotating = false;
@@ -165,33 +185,33 @@ public class I3dFollow3DCameraController implements V3DCameraController, Graphic
         cameraPhiInitial = camera.getRotation().x;
     }
 
-    public void mouseReleased(MouseEvent e) {
+    public void mouseReleased(V3DMouseEvent e) {
         translating = false;
         rotating = false;
     }
 
-    public void mouseEntered(MouseEvent e) {
+    public void mouseEntered(V3DMouseEvent e) {
     }
 
-    public void mouseExited(MouseEvent e) {
+    public void mouseExited(V3DMouseEvent e) {
     }
 
-    private void mouseMoving(MouseEvent e) {
+    private void mouseMoving(V3DMouseEvent e) {
 
-        /*
-         * if (translating) { Point2D.Float mousePick = camera.pick(e.getX(),
-         * e.getY(), 0); float x = cameraXInitial - mousePick.x +
-         * mouseInitialPick.x; float y = cameraYInitial - mousePick.y +
-         * mouseInitialPick.y; //mouseInitialPick = mousePick;
-         * camera.setPosition(x, y, camera.getPosition().z); cameraXInitial = x;
-         * cameraYInitial = y; } if (rotating) { float theta =
-         * cameraThetaInitial + ((float) e.getX() - mouseXInitial) * ktheta;
-         * float phi = cameraPhiInitial + ((float) e.getY() - mouseYInitial) *
-         * kphi; if (phi < 0) { phi = 0; mouseYInitial = (float) e.getY();
-         * cameraPhiInitial = 0; } if (phi >= 90) { phi = 90; mouseYInitial =
-         * (float) e.getY(); cameraPhiInitial = 90; } camera.setRotation(phi, 0,
-         * theta); }
-         */
+        
+//         if (translating) { Point2D.Float mousePick = camera.pick(e.getX(),
+//         e.getY(), 0); float x = cameraXInitial - mousePick.x +
+//         mouseInitialPick.x; float y = cameraYInitial - mousePick.y +
+//         mouseInitialPick.y; //mouseInitialPick = mousePick;
+//         camera.setPosition(x, y, camera.getPosition().z); cameraXInitial = x;
+//         cameraYInitial = y; } if (rotating) { float theta =
+//         cameraThetaInitial + ((float) e.getX() - mouseXInitial) * ktheta;
+//         float phi = cameraPhiInitial + ((float) e.getY() - mouseYInitial) *
+//         kphi; if (phi < 0) { phi = 0; mouseYInitial = (float) e.getY();
+//         cameraPhiInitial = 0; } if (phi >= 90) { phi = 90; mouseYInitial =
+//         (float) e.getY(); cameraPhiInitial = 90; } camera.setRotation(phi, 0,
+//         theta); }
+         
     }
 
     public void keyTyped(KeyEvent e) {
@@ -209,14 +229,13 @@ public class I3dFollow3DCameraController implements V3DCameraController, Graphic
     public void keyReleased(KeyEvent e) {
     }
 
-    public void mouseWheelMoved(MouseWheelEvent e) {
+    public void mouseWheelMoved(V3DMouseEvent e) {
 
-        float distance = camera.getDistance();
-
-        /*
-         * if (e.getWheelRotation() == -1) { camera.setDistance(distance /
-         * 1.08f); } else { camera.setDistance(distance * 1.08f); }
-         */
+        if (e.getAction() == Action.MOUSE_WHEEL_UP) {
+            distance = distance / 1.08f;
+        } else {
+            distance = distance * 1.08f;
+        }
 
     }
 
@@ -240,7 +259,7 @@ public class I3dFollow3DCameraController implements V3DCameraController, Graphic
             target = TransformMatrix.identity();
             // target.translate(2,0,2);
             // target.translate(0,0,2);
-            target.translate(0, distance, 0);
+            target.translate(xOffset, yOffset, zOffset);
             // target.translate(0,0,0);
 
             target.preMultiply(transform);
@@ -252,9 +271,12 @@ public class I3dFollow3DCameraController implements V3DCameraController, Graphic
             // eye.translate(2,-20,2);
             // eye.translate(0,-20,2);
             // eye.translate(0,4,2);
+            
             eye.translate(xOffset, yOffset, zOffset);
+            eye.translate(0, -distance, 0);
             // eye.translate(4,10,5);
             eye.preMultiply(transform);
+            
             V3DVect3 eyePosition = eye.getTranslation().toV3DVect3();
             camera.setEye(eyePosition);
 

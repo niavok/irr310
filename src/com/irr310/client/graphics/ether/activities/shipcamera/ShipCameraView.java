@@ -29,6 +29,7 @@ import com.irr310.i3d.view.View;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent;
+import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 import fr.def.iss.vd2.lib_v3d.V3DShader;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
@@ -41,7 +42,7 @@ public class ShipCameraView extends View {
 
     private Ship focusedShip;
     private I3dEye3DCamera activeCamera;
-    private I3dFollow3DCameraController cameraController;
+    private I3dFollow3DCameraController mCameraController;
     private List<GraphicalElement> animatedList = new CopyOnWriteArrayList<GraphicalElement>();
     private V3DCameraBinding fullscreenBinding;
     private I3dScene scene;
@@ -69,6 +70,15 @@ public class ShipCameraView extends View {
             }
         });
         
+        setOnMouseListener(new OnMouseEventListener() {
+            
+            @Override
+            public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
+                mCameraController.onEvent(mouseEvent);
+                return true;
+            }
+        });
+        
     }
 
     private void reshape() {
@@ -88,7 +98,7 @@ public class ShipCameraView extends View {
             animated.update(g.getTime());
         }
         
-        cameraController.update(g.getTime());
+        mCameraController.update(g.getTime());
         
         GL11.glColor3f(1, 0, 0);
         GL11.glBegin(GL11.GL_LINES);
@@ -96,7 +106,7 @@ public class ShipCameraView extends View {
         GL11.glVertex3d(100, 100, 100);
         GL11.glEnd();
         
-        activeCamera.fitAll();
+        
         GL11.glViewport(binding.x, binding.y, binding.width, binding.height);
 
         //Clean Background
@@ -175,9 +185,9 @@ private void init() {
         
         activeCamera = new I3dEye3DCamera();
 
-        cameraController = new I3dFollow3DCameraController(activeCamera);
+        mCameraController = new I3dFollow3DCameraController(activeCamera);
         configureDefaultCamera();
-        animatedList.add(cameraController);
+        animatedList.add(mCameraController);
 
         fullscreenBinding = V3DCameraBinding.buildFullscreenCamera(activeCamera);
         activeCamera.setBackgroundColor(V3DColor.white);
@@ -189,7 +199,7 @@ private void init() {
         activeCamera.setScene(scene);
         
         Component kernel = focusedShip.getComponentByName("Kernel");
-        cameraController.setFollowed(new FollowablePart(kernel.getFirstPart()));
+        mCameraController.setFollowed(new FollowablePart(kernel.getFirstPart()));
 
         /*
          * V3DBox sky = new V3DBox(context); sky.setSize(new V3DVect3(1024, 768,
@@ -228,7 +238,7 @@ private void init() {
     }
     
     private void configureDefaultCamera() {
-        cameraController.configure(500,-2,-15, 2);
+        mCameraController.configure(10,-2,-10, 2);
     }
     
     private void createBubble() {
@@ -256,7 +266,7 @@ private void init() {
               // V3DVect3 rotation = camera.getRotation();
               // ARBShaderObjects.glUniform3fARB(inputRotation, rotation.x,
               // rotation.y, rotation.z);
-              ARBShaderObjects.glUniform2fARB(resolution, cameraController.getCamera().getCurrentWidth(), cameraController.getCamera()
+              ARBShaderObjects.glUniform2fARB(resolution, mCameraController.getCamera().getCurrentWidth(), mCameraController.getCamera()
                                                                                                                           .getCurrentHeight());
               float time2 = ((float) (new Date().getTime() - startTime)) / 10000.0f;
               ARBShaderObjects.glUniform1fARB(time, time2);
