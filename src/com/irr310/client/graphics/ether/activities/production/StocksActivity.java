@@ -114,6 +114,7 @@ public class StocksActivity extends Activity {
     @Override
     public void onResume() {
         worldEngine.getWorldEnginObservable().register(this, mWorldEngineObserver);
+        updateFields();
     }
 
     @Override

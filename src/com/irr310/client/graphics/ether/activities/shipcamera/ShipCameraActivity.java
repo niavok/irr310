@@ -15,9 +15,8 @@ import com.sun.org.apache.xerces.internal.impl.validation.EntityState;
 public class ShipCameraActivity extends Activity {
 
     private RelativeLayout mainRelativeLayout;
-    private WorldSystem system;
+    private WorldSystem mSystem;
     private Ship ship;
-    private WorldSystem systemState;
     private SystemEngine systemEngine;
     private SystemEngineObserver mSystemEngineObserver;
     private static final int UPDATE_SYSTEM_WHAT = 1;
@@ -29,10 +28,10 @@ setContentView("main@layout/camera/ship_camera");
         mainRelativeLayout = (RelativeLayout) findViewById("main@layout/camera/ship_camera");
         
         ShipCameraActivityBundle shipCameraActivityBundle = (ShipCameraActivityBundle) bundle;
-        system = shipCameraActivityBundle.getSystem();
+        mSystem = shipCameraActivityBundle.getSystem();
         ship = shipCameraActivityBundle.getShip();
         
-        systemEngine = GameServer.getWorldEngine().getSystemEngine(system);
+        systemEngine = GameServer.getWorldEngine().getSystemEngine(mSystem);
         
         
         mSystemEngineObserver = new SystemEngineObserver() {
@@ -47,6 +46,7 @@ setContentView("main@layout/camera/ship_camera");
     @Override
     public void onResume() {
         systemEngine.getSystemEnginObservable().register(this, mSystemEngineObserver);
+        updateAll();
     }
 
     @Override
@@ -68,7 +68,7 @@ setContentView("main@layout/camera/ship_camera");
     }
 
     private void updateAll() {
-        mainRelativeLayout.addViewInLayout(new ShipCameraView(ship, systemState));
+        mainRelativeLayout.addViewInLayout(new ShipCameraView(ship, mSystem));
     }
 
     public static class ShipCameraActivityBundle extends Bundle {

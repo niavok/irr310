@@ -44,6 +44,7 @@ public class SystemMapActivity extends Activity {
     @Override
     public void onResume() {
         systemEngine.getSystemEnginObservable().register(this, mSystemEngineObserver);
+        updateAll();
     }
 
     @Override
