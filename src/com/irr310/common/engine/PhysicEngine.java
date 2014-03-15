@@ -58,6 +58,7 @@ import com.irr310.common.world.system.Part;
 import com.irr310.common.world.system.Ship;
 import com.irr310.common.world.system.Slot;
 import com.irr310.common.world.system.SystemObject;
+import com.irr310.server.Time;
 import com.irr310.server.Time.Timestamp;
 import com.irr310.server.engine.system.SystemEngine;
 import com.irr310.server.engine.system.SystemEngineObserver;
@@ -108,6 +109,7 @@ public class PhysicEngine implements Engine {
 
     @Override
     public void start() {
+        mLastTime = Time.getTimestamp();
     }
     
     @Override

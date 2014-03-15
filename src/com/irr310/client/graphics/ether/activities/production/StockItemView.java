@@ -22,7 +22,7 @@ public class StockItemView extends ProxyView {
         this.item = item;
         itemNameTextView = (TextView) findViewById("itemNameTextView@layout/production/stock_item");
         
-        itemNameTextView.setText(item.getProduct().getName() +" "+ item.getProduct().getName());
+        itemNameTextView.setText(item.getProduct().getName() +" "+ item.getProduct().getCode());
         
         this.setOnClickListener(new OnClickListener() {
             

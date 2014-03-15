@@ -317,7 +317,10 @@ public class Surface {
     
     public void onKeyEvent(V3DKeyEvent keyEvent) {
         if(keyEvent.getAction() == V3DKeyEvent.KeyAction.KEY_PRESSED &&  keyEvent.getKeyCode() == V3DKeyEvent.KEY_ESCAPE) {
+            // TODO : make loose focus if focused item
             unstackActivity();
+        } else {
+            currentActivity.onKeyEvent(keyEvent);
         }
     }
 

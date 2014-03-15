@@ -50,10 +50,27 @@ public class GenericSkin extends Skin {
                     
                 final V3DBox max = new V3DBox();
                 max.setRenderMode(RenderMode.PLAIN);
-                max.setPosition(part.getShape().toV3DVect3().divideBy(2));
+                max.setPosition(V3DVect3.ZERO);
+                //max.setPosition();
                 max.setSize(new V3DVect3(0.1f, 0.1f, 0.1f));
                 
-                element.add(new V3DColorElement(max, V3DColor.red));
+                element.add(new V3DColorElement(max, V3DColor.black));
+                
+                V3DVect3 halfShape = part.getShape().toV3DVect3().divideBy(2);
+                V3DLine xLine = new V3DLine();
+                xLine.setThickness(1);
+                xLine.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(halfShape.x, 0, 0));
+                element.add(new V3DColorElement(xLine, V3DColor.red));
+                
+                V3DLine yLine = new V3DLine();
+                yLine.setThickness(1);
+                yLine.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, halfShape.y, 0));
+                element.add(new V3DColorElement(yLine, V3DColor.green));
+                
+                V3DLine zLine = new V3DLine();
+                zLine.setThickness(1);
+                zLine.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, 0, halfShape.z));
+                element.add(new V3DColorElement(zLine, V3DColor.blue));
                 
                 
                 V3DLine speedLine = new V3DLine();

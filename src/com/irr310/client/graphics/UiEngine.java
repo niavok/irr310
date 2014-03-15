@@ -114,7 +114,7 @@ public class UiEngine implements Engine {
     
     @Override
     public void tick(Timestamp time) {
-        Time beginTime = time.getTime();
+        Time beginTime = Time.now(false);
         context.update(time);
         //currentActivity.frame(Time.now(false), Time.now(true));
         //renderer.frame();

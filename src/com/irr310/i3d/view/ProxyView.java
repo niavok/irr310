@@ -73,6 +73,11 @@ public class ProxyView extends View {
     public void setOnMouseListener(OnMouseEventListener onMouseEventListener) {
         client.setOnMouseListener(onMouseEventListener);
     }
+    
+    @Override
+    public void setOnKeyListener(OnKeyEventListener onKeyEventListener) {
+        client.setOnKeyListener(onKeyEventListener);
+    }
 
     public boolean performClick(V3DMouseEvent mouseEvent) {
         return client.performClick(mouseEvent);

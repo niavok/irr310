@@ -14,6 +14,7 @@ import org.lwjgl.opengl.GL11;
 import com.irr310.client.graphics.GraphicalElement;
 import com.irr310.client.graphics.skin.GenericSkin;
 import com.irr310.client.graphics.skin.Skin;
+import com.irr310.common.tools.Log;
 import com.irr310.common.world.system.Component;
 import com.irr310.common.world.system.Ship;
 import com.irr310.common.world.system.WorldSystem;
@@ -27,6 +28,7 @@ import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 import com.irr310.i3d.view.View;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
+import fr.def.iss.vd2.lib_v3d.V3DKeyEvent;
 import fr.def.iss.vd2.lib_v3d.V3DShader;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
@@ -55,6 +57,18 @@ public class ShipCameraView extends View {
         init();
         binding = new V3DCameraBinding();
         reshape();
+        
+        setOnKeyListener(new OnKeyEventListener() {
+            
+            @Override
+            public boolean onKeyEvent(V3DKeyEvent keyEvent) {
+                
+                Log.log("key char="+keyEvent.getCharacter()+ " code="+keyEvent.getKeyCode());
+                
+                return false;
+            }
+        });
+        
     }
 
     private void reshape() {
@@ -214,7 +228,7 @@ private void init() {
     }
     
     private void configureDefaultCamera() {
-        cameraController.configure(500,-2,-30, 2);
+        cameraController.configure(500,-2,-15, 2);
     }
     
     private void createBubble() {

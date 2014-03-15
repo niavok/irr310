@@ -64,6 +64,9 @@ public class WorldEngine implements Engine {
 
     @Override
     public void start() {
+        for(SystemEngine engine: systemEngineMap.values()) {
+            engine.start();
+        }
     }
     
     @Override
@@ -88,6 +91,11 @@ public class WorldEngine implements Engine {
         // - One at each tick for use input managerment (tick)
         // - One per second for short cooldown (round)
         // - One per 10 seconds for long cooldown (turn)
+        
+        
+        for(SystemEngine engine: systemEngineMap.values()) {
+            engine.tick(time);
+        }
         
         Time frameTime = time.getGameTime();
         
@@ -198,6 +206,7 @@ public class WorldEngine implements Engine {
             SystemEngine systemEngine = new SystemEngine(this, system);
             systemEngineMap.put(system, systemEngine);
             systemEngine.init();
+            systemEngine.start();
             
             int nameIndex = random.nextInt(availableNames.size());
             String name = availableNames.remove(nameIndex);
