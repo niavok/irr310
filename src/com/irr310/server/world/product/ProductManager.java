@@ -228,11 +228,16 @@ public class ProductManager {
         String key = element.getAttribute("key");
         String ref = element.getAttribute("ref");
         String locationString = element.getAttribute("location");
+        String rotationString = element.getAttribute("rotation");
         if(locationString == null || locationString.isEmpty()) {
             throw new RessourceLoadingException("No valid location for component '"+key+"'for ship '"+ship.getId()+"'");
         }
+        if(rotationString == null || rotationString.isEmpty()) {
+            rotationString = "vec3(0,0,0)";
+        }
         Vec3 location = parseVec3(locationString);
-        ship.addComponent(key, ref, location);
+        Vec3 rotation = parseVec3(rotationString);
+        ship.addComponent(key, ref, location, rotation);
     }
     
     private void parseShipProductLinks(Element element, ShipProduct ship) {

@@ -49,6 +49,10 @@ public final class  Component extends SystemObject {
 		return minSlot;
 	}
 	
+	public List<Slot> getSlots() {
+        return slots;
+    }
+	
 	public Slot addSlot(long slotId, Part part, Vec3 position) {
 		Slot slot = new Slot(slotId, this,part, position);
 		getSystem().addSlot(slot);
@@ -192,6 +196,11 @@ public final class  Component extends SystemObject {
     public void initDurability(double durability) {
         setDurabilityMax(durability);
         setDurability(durability);
+    }
+    
+    @Override
+    public String toString() {
+        return "Component "+getName()+" "+getId();
     }
 	
 }

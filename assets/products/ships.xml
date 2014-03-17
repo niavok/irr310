@@ -17,13 +17,16 @@
                  location="vec3(0,-1.75,1.0)" />
             <component key="engineBottom"
                  ref="smallPropeller1"
-                 location="vec3(0,-1.75,-1.0)" />
+                 location="vec3(0,-1.75,-1.0)"
+                 rotation="vec3(0,180,0)" />
             <component key="engineLeft"
                  ref="smallPropeller1"
-                 location="vec3(-1.5,-1.75,0)" />
+                 location="vec3(-1.5,-1.75,0)"
+                 rotation="vec3(0,-90,0)" />
             <component key="engineRight"
                  ref="smallPropeller1"
-                 location="vec3(1.5,-1.75,0)" />
+                 location="vec3(1.5,-1.75,0)"
+                 rotation="vec3(0,90,0)" />
         </components>
         <links>
             <link a="back@kernel" b="front@battery" /> 

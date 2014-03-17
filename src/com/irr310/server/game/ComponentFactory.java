@@ -44,9 +44,6 @@ public class ComponentFactory {
             }
         }
         
-        
-        
-        
         for(ComponentPartProduct partProduct: product.getParts()) {
             Part part = new Part(GameServer.pickNewId(), component);
             component.addPart(part);

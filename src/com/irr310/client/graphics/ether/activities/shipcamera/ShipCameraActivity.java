@@ -40,7 +40,7 @@ setContentView("main@layout/camera/ship_camera");
         for(Component component : ship.getComponents()) {
             List<LinearEngineCapacity> engines = component.getCapacitiesByClass(LinearEngineCapacity.class);
             for(LinearEngineCapacity engine : engines) {
-                engine.setTargetThrust(engine.theoricalMaxThrust);
+                engine.setTargetThrust(engine.theoricalMaxThrust/10);
             }
         }
         

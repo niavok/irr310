@@ -33,7 +33,7 @@ public class ShipFactory {
         ship.setOwner(shipItem.getOwner());
         
         List<Component> components = new ArrayList<Component>();
-        Map<ComponentProduct, Component> componentCache = new HashMap<ComponentProduct, Component>();
+        Map<ShipComponentProduct, Component> componentCache = new HashMap<ShipComponentProduct, Component>();
         
         ShipProduct shipProduct = (ShipProduct) shipItem.getProduct();
         
@@ -41,24 +41,26 @@ public class ShipFactory {
         for(ShipComponentProduct shipComponentProduct: shipProduct.getComponents().values()) {
             
             Vec3 componentLocation = shipComponentProduct.getLocation();
+            Vec3 componentRotation = shipComponentProduct.getRotation();
             ComponentItem componentItem = (ComponentItem) shipItem.getSubItems().get(shipComponentProduct.getKey());
             
             Component component = componentFactory.createComponent(componentItem);
             component.setLocationInShip(componentLocation);
+            component.setShipRotation(componentRotation);
             ship.assign(component);
             
-            componentCache.put((ComponentProduct) componentItem.getProduct(), component);
+            componentCache.put(shipComponentProduct, component);
         }
         
         // Link components
         for(ShipLinkProduct shipLinkProduct: shipProduct.getLinks()) {
             
             
-            ComponentProduct componentProductA = shipLinkProduct.getSlotA().getPart().getComponent();
-            ComponentProduct componentProductB = shipLinkProduct.getSlotA().getPart().getComponent();
+//            ComponentProduct componentProductA = shipLinkProduct.getSlotA().getPart().getComponent();
+//            ComponentProduct componentProductB = shipLinkProduct.getSlotB().getPart().getComponent();
             
-            Component componentA = componentCache.get(componentProductA);
-            Component componentB = componentCache.get(componentProductB);
+            Component componentA = componentCache.get(shipLinkProduct.getComponentA());
+            Component componentB = componentCache.get(shipLinkProduct.getComponentB()) ;
             
             
             Vec3 localSlotLocation = shipLinkProduct.getSlotA().getLocation();

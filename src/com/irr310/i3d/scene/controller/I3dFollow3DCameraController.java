@@ -279,7 +279,7 @@ public class I3dFollow3DCameraController implements V3DCameraController, Graphic
             target = TransformMatrix.identity();
             // target.translate(2,0,2);
             // target.translate(0,0,2);
-            target.translate(xOffset, yOffset, zOffset);
+//            target.translate(xOffset, yOffset, zOffset);
             // target.translate(0,0,0);
             
             target.rotateX(cameraPhi);
@@ -289,6 +289,7 @@ public class I3dFollow3DCameraController implements V3DCameraController, Graphic
             
             V3DVect3 targetPosition = target.getTranslation().toV3DVect3();
             camera.setPosition(targetPosition);
+            Log.log("camera="+targetPosition);
 
             // Eye
             eye = TransformMatrix.identity();
@@ -296,7 +297,7 @@ public class I3dFollow3DCameraController implements V3DCameraController, Graphic
             // eye.translate(0,-20,2);
             // eye.translate(0,4,2);
             
-            eye.translate(xOffset, yOffset, zOffset);
+//            eye.translate(xOffset, yOffset, zOffset);
             
             
             eye.translate(0, -distance, 0);
@@ -310,6 +311,8 @@ public class I3dFollow3DCameraController implements V3DCameraController, Graphic
             V3DVect3 eyePosition = eye.getTranslation().toV3DVect3();
             camera.setEye(eyePosition);
 
+            Log.log("cameye="+eyePosition);
+            
             top = TransformMatrix.identity();
 
             TransformMatrix rotation = transform.identity();

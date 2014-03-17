@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.world.system.Component;
 import com.irr310.common.world.system.Part;
+import com.irr310.common.world.system.Slot;
 import com.irr310.i3d.scene.element.I3dElement;
 import com.irr310.i3d.scene.element.I3dGroupElement;
 import com.irr310.server.Time.Timestamp;
@@ -30,6 +31,8 @@ public class GenericSkin extends Skin {
         this.component = component;
         elements = new I3dGroupElement();
         
+        
+        
         for (final Part part : component.getParts()) {
 
                 final V3DBox box = new V3DBox();
@@ -48,13 +51,13 @@ public class GenericSkin extends Skin {
                     element = new V3DColorElement(box, V3DColor.red);
                 }*/
                     
-                final V3DBox max = new V3DBox();
-                max.setRenderMode(RenderMode.PLAIN);
-                max.setPosition(V3DVect3.ZERO);
+                final V3DBox center = new V3DBox();
+                center.setRenderMode(RenderMode.PLAIN);
+                center.setPosition(V3DVect3.ZERO);
                 //max.setPosition();
-                max.setSize(new V3DVect3(0.1f, 0.1f, 0.1f));
+                center.setSize(new V3DVect3(0.1f, 0.1f, 0.1f));
                 
-                element.add(new V3DColorElement(max, V3DColor.black));
+                element.add(new V3DColorElement(center, V3DColor.black));
                 
                 V3DVect3 halfShape = part.getShape().toV3DVect3().divideBy(2);
                 V3DLine xLine = new V3DLine();
@@ -72,17 +75,32 @@ public class GenericSkin extends Skin {
                 zLine.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, 0, halfShape.z));
                 element.add(new V3DColorElement(zLine, V3DColor.blue));
                 
+        
+                for(Slot slot : component.getSlots()) {
+                    if(slot.getPart().equals(part)) {
+                        final V3DBox slotBox = new V3DBox();
+                        slotBox.setRenderMode(RenderMode.PLAIN);
+                        slotBox.setPosition(slot.getPosition().toV3DVect3());
+                        //max.setPosition();
+                        slotBox.setSize(new V3DVect3(0.05f, 0.05f, 0.05f));
+                        
+                        element.add(new V3DColorElement(slotBox, V3DColor.darkblue));
+                    }
+                }
+                
                 
                 V3DLine speedLine = new V3DLine();
                 speedLine.setThickness(3);
                 speedLine.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, 0, 0));
 
-                
                 elements.add(new V3DColorElement(speedLine, V3DColor.emerald));
                 elements.add(element);
                 elementsMap.put(part, element);
                 speedLineMap.put(part, speedLine);
         }
+        
+        
+        
     }
 
     @Override

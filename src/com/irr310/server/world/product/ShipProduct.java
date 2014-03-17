@@ -118,22 +118,22 @@ public class ShipProduct extends Product {
             }
             
             // Both slot ok, link the slots
-            link.setSlotA(componentASlot);
-            link.setSlotB(componentBSlot);
+            link.setSlotA(componentASlot, componentA);
+            link.setSlotB(componentBSlot, componentB);
             
             
         }
         return true;
     }
     
-    public void addComponent(String key, String ref, Vec3 location) {
+    public void addComponent(String key, String ref, Vec3 location, Vec3 rotation) {
         if(key == null | key.isEmpty()) {
             Log.warn("A component of ship '"+getId()+"' has no key. Skip");
         } else if(ref == null | ref.isEmpty()) {
             Log.warn("A component of ship '"+getId()+"' has no ref. Skip");
         } else {
             // All is ok, let's add the component to ship
-            components.put(key,new ShipComponentProduct(key, ref, location));
+            components.put(key,new ShipComponentProduct(key, ref, location, rotation));
         }
         
         
@@ -157,73 +157,91 @@ public class ShipProduct extends Product {
     
     public static class ShipComponentProduct {
 
-        private final String key;
-        private final String ref;
-        private ComponentProduct component;
-        private Vec3 location;
+        private final String mKey;
+        private final String mRef;
+        private ComponentProduct mComponent;
+        private Vec3 mLocation;
+        private Vec3 mRotation;
 
-        public ShipComponentProduct(String key, String ref, Vec3 location) {
-            this.key = key;
-            this.ref = ref;
-            this.location = location;
+        public ShipComponentProduct(String key, String ref, Vec3 location, Vec3 rotation) {
+            this.mKey = key;
+            this.mRef = ref;
+            this.mLocation = location;
+            mRotation = rotation;
         }
         
         public void setComponent(ComponentProduct component) {
-            this.component = component;
+            this.mComponent = component;
         }
 
         public String getRef() {
-            return ref;
+            return mRef;
         }
         
         public String getKey() {
-            return key;
+            return mKey;
         }
 
         public ComponentProduct getComponent() {
-            return component;
+            return mComponent;
         }
         
         public Vec3 getLocation() {
-            return location;
+            return mLocation;
+        }
+        
+        public Vec3 getRotation() {
+            return mRotation;
         }
         
     }
     
     public static class ShipLinkProduct {
         
-        private String refA;
-        private String refB;
-        private ComponentSlotProduct slotA;
-        private ComponentSlotProduct slotB;
+        private String mRefA;
+        private String mRefB;
+        private ComponentSlotProduct mSlotA;
+        private ComponentSlotProduct mSlotB;
+        private ShipComponentProduct mComponentA;
+        private ShipComponentProduct mComponentB;
         
         public ShipLinkProduct(String refA, String refB) {
-            this.refA = refA;
-            this.refB = refB;
+            this.mRefA = refA;
+            this.mRefB = refB;
         }
         
         public String getRefA() {
-            return refA;
+            return mRefA;
         }
         
         public String getRefB() {
-            return refB;
+            return mRefB;
         }
         
-        public void setSlotA(ComponentSlotProduct slotA) {
-            this.slotA = slotA;
+        public void setSlotA(ComponentSlotProduct slotA, ShipComponentProduct componentA) {
+            this.mSlotA = slotA;
+            mComponentA = componentA;
         }
         
-        public void setSlotB(ComponentSlotProduct slotB) {
-            this.slotB = slotB;
+        public void setSlotB(ComponentSlotProduct slotB, ShipComponentProduct componentB) {
+            this.mSlotB = slotB;
+            mComponentB = componentB;
         }
         
         public ComponentSlotProduct getSlotA() {
-            return slotA;
+            return mSlotA;
         }
         
         public ComponentSlotProduct getSlotB() {
-            return slotB;
+            return mSlotB;
+        }
+        
+        public ShipComponentProduct getComponentA() {
+            return mComponentA;
+        }
+        
+        public ShipComponentProduct getComponentB() {
+            return mComponentB;
         }
     }
 
