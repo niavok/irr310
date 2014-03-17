@@ -21,7 +21,7 @@
 		</parts>
 		
         <capacities>
-			<kernelCapacity electricConsomation="1" />
+			<kernelCapacity electricConsumption="1" />
 		</capacities>
     </component>
 
@@ -80,7 +80,6 @@
 
             <linearEngineCapacity
                 airFriction="10"
-                currentThrust="0"
                 theoricalMaxThrust="10"
                 theoricalMinThrust="-4"
                 theoricalVariationSpeed="8" />

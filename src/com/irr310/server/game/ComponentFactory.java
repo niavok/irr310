@@ -1,27 +1,19 @@
 package com.irr310.server.game;
 
+
+import com.irr310.common.tools.Log;
 import com.irr310.common.tools.Vec3;
-import com.irr310.common.world.Faction;
-import com.irr310.common.world.Player;
-import com.irr310.common.world.World;
-import com.irr310.common.world.capacity.BalisticWeaponCapacity;
-import com.irr310.common.world.capacity.ContactDetectorCapacity;
-import com.irr310.common.world.capacity.ExplosiveCapacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
-import com.irr310.common.world.capacity.RocketCapacity;
-import com.irr310.common.world.capacity.RocketWeaponCapacity;
-import com.irr310.common.world.capacity.WingCapacity;
 import com.irr310.common.world.item.ComponentItem;
 import com.irr310.common.world.system.Component;
 import com.irr310.common.world.system.Part;
-import com.irr310.common.world.system.RocketDescriptor;
-import com.irr310.common.world.system.Ship;
 import com.irr310.common.world.system.WorldSystem;
 import com.irr310.server.GameServer;
 import com.irr310.server.world.product.ComponentProduct;
+import com.irr310.server.world.product.ComponentProduct.ComponentCapacityProduct;
+import com.irr310.server.world.product.ComponentProduct.ComponentLinearEngineCapacityProduct;
 import com.irr310.server.world.product.ComponentProduct.ComponentPartProduct;
 import com.irr310.server.world.product.ComponentProduct.ComponentSlotProduct;
-import com.irr310.server.world.product.Product;
 
 public class ComponentFactory {
     
@@ -36,9 +28,24 @@ public class ComponentFactory {
         ComponentProduct product = (ComponentProduct) componentItem.getProduct();
         Component component = new Component(system, GameServer.pickNewId(), product.getName());
         // TODO init resistances
-        // TODO init capacities
         
         //TODO restore previous state
+        for(ComponentCapacityProduct genericCapacity : product.getCapacities()) {
+            if(genericCapacity instanceof ComponentLinearEngineCapacityProduct) {
+                ComponentLinearEngineCapacityProduct capacity = (ComponentLinearEngineCapacityProduct) genericCapacity;
+                
+                LinearEngineCapacity linearEngineCapacity = new LinearEngineCapacity(system, GameServer.pickNewId());
+                linearEngineCapacity.theoricalMaxThrust = capacity.getTheoricalMaxThrust();
+                linearEngineCapacity.theoricalMinThrust = capacity.getTheoricalMinThrust();
+                linearEngineCapacity.theoricalVariationSpeed = capacity.getTheoricalVariationSpeed();
+                component.addCapacity(linearEngineCapacity);
+            } else {
+                Log.warn("TODO : create capacity : "+genericCapacity.getClass().getSimpleName());
+            }
+        }
+        
+        
+        
         
         for(ComponentPartProduct partProduct: product.getParts()) {
             Part part = new Part(GameServer.pickNewId(), component);

@@ -8,16 +8,18 @@ import java.util.Map;
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.RessourceLoadingException;
 import com.irr310.common.tools.Vec3;
+import com.irr310.server.world.product.ComponentProduct.ComponentLinearEngineCapacityProduct;
 
 public class ComponentProduct extends Product {
 
-    private Map<String, ComponentSlotProduct> slots = new HashMap<String, ComponentSlotProduct>();
-    private List<ComponentPartProduct> parts = new ArrayList<ComponentPartProduct>();
-    private long oreCost = -1;
-    private long factoryCost = -1;
+    private Map<String, ComponentSlotProduct> mSlots = new HashMap<String, ComponentSlotProduct>();
+    private List<ComponentPartProduct> mParts = new ArrayList<ComponentPartProduct>();
+    private List<ComponentCapacityProduct> mCapacities = new ArrayList<ComponentCapacityProduct>();
+    private long mOreCost = -1;
+    private long mFactoryCost = -1;
     
     public ComponentSlotProduct getSlot(String key) {
-        return slots.get(key);
+        return mSlots.get(key);
     }
 
     
@@ -27,12 +29,12 @@ public class ComponentProduct extends Product {
             return false;
         }
         
-        if(oreCost == -1) {
+        if(mOreCost == -1) {
             Log.warn("Product '"+getId()+"' has no ore cost.");
             return false;
         }
         
-        if(factoryCost == -1) {
+        if(mFactoryCost == -1) {
             Log.warn("Product '"+getId()+"' has no production capacity cost.");
             return false;
         }
@@ -41,11 +43,11 @@ public class ComponentProduct extends Product {
     }
     
     public void notifyNewSlot(ComponentSlotProduct slotProduct) {
-        if(slots.containsKey(slotProduct.getKey())) {
+        if(mSlots.containsKey(slotProduct.getKey())) {
             throw new RessourceLoadingException("The component '"+getId()+"' has already a slot with '"+slotProduct.getKey()+"' as key");
         }
         
-        slots.put(slotProduct.getKey(), slotProduct);
+        mSlots.put(slotProduct.getKey(), slotProduct);
     }
     
     @Override
@@ -149,26 +151,133 @@ public class ComponentProduct extends Product {
     
     
     public long getOreCost() {
-        return oreCost;
+        return mOreCost;
     }
     
     public long getFactoryCost() {
-        return factoryCost;
+        return mFactoryCost;
     }
     
     public void setOreCost(long oreCost) {
-        this.oreCost = oreCost;
+        this.mOreCost = oreCost;
     }
     
     public void setFactoryCost(long factoryCost) {
-        this.factoryCost = factoryCost;
+        this.mFactoryCost = factoryCost;
     }
 
     public void addPart(ComponentPartProduct part) {
-        parts.add(part);
+        mParts.add(part);
+    }
+    
+    public void addCapacity(ComponentCapacityProduct capacity) {
+        mCapacities.add(capacity);
     }
     
     public List<ComponentPartProduct> getParts() {
-        return parts;
+        return mParts;
+    }
+    
+    public List<ComponentCapacityProduct> getCapacities() {
+        return mCapacities;
+    }
+    
+    public interface ComponentCapacityProduct {
+        
+    }
+    
+    public static class ComponentLinearEngineCapacityProduct implements ComponentCapacityProduct {
+        double mAirFriction = 0;
+        double mTheoricalMaxThrust=0;
+        double mTheoricalMinThrust=0;
+        double mTheoricalVariationSpeed=0; 
+        private final ComponentProduct component;
+
+        
+        public ComponentLinearEngineCapacityProduct(ComponentProduct component) {
+            this.component = component;
+        }
+        
+        public ComponentProduct getComponent() {
+            return component;
+        }
+        
+        public double getAirFriction() {
+            return mAirFriction;
+        }
+        public void setAirFriction(double airFriction) {
+            mAirFriction = airFriction;
+        }
+        public double getTheoricalMaxThrust() {
+            return mTheoricalMaxThrust;
+        }
+        public void setTheoricalMaxThrust(double theoricalMaxThrust) {
+            mTheoricalMaxThrust = theoricalMaxThrust;
+        }
+        public double getTheoricalMinThrust() {
+            return mTheoricalMinThrust;
+        }
+        public void setTheoricalMinThrust(double theoricalMinThrust) {
+            mTheoricalMinThrust = theoricalMinThrust;
+        }
+        public double getTheoricalVariationSpeed() {
+            return mTheoricalVariationSpeed;
+        }
+        public void setTheoricalVariationSpeed(double theoricalVariationSpeed) {
+            mTheoricalVariationSpeed = theoricalVariationSpeed;
+        }
+    }
+    
+    public static class ComponentElectricStorageCapacityProduct implements ComponentCapacityProduct {
+        double mCapacity = 0;
+        double mYield=0;
+        private final ComponentProduct component;
+
+        
+        public ComponentElectricStorageCapacityProduct(ComponentProduct component) {
+            this.component = component;
+        }
+        
+        public ComponentProduct getComponent() {
+            return component;
+        }
+
+        public double getCapacity() {
+            return mCapacity;
+        }
+
+        public void setCapacity(double capacity) {
+            mCapacity = capacity;
+        }
+
+        public double getYield() {
+            return mYield;
+        }
+
+        public void setYield(double yield) {
+            mYield = yield;
+        }
+    }
+    
+    public static class ComponentKernelCapacityProduct implements ComponentCapacityProduct {
+        double mElectricConsumption=0;
+        private final ComponentProduct component;
+
+        
+        public ComponentKernelCapacityProduct(ComponentProduct component) {
+            this.component = component;
+        }
+        
+        public ComponentProduct getComponent() {
+            return component;
+        }
+
+        public double getElectricConsumption() {
+            return mElectricConsumption;
+        }
+
+        public void setElectricConsumption(double electricConsumption) {
+            mElectricConsumption = electricConsumption;
+        }
     }
 }

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.irr310.common.tools.Vec3;
-import com.irr310.common.world.World;
 import com.irr310.common.world.system.DamageDescriptor;
+import com.irr310.common.world.system.WorldSystem;
 
 public class BalisticWeaponCapacity extends Capacity {
 
@@ -32,8 +32,8 @@ public class BalisticWeaponCapacity extends Capacity {
 
     public DamageDescriptor.DamageType damageType;
 
-    public BalisticWeaponCapacity(World world, long id) {
-        super(world, id);
+    public BalisticWeaponCapacity(WorldSystem worldsystem, long id) {
+        super(worldsystem, id);
         fire = false;
         damage = 50;
         range = 1000;

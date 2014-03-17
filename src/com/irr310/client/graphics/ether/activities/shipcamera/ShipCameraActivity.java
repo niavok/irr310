@@ -1,6 +1,10 @@
 package com.irr310.client.graphics.ether.activities.shipcamera;
 
+import java.util.List;
+
 import com.irr310.common.tools.TransformMatrix;
+import com.irr310.common.world.capacity.LinearEngineCapacity;
+import com.irr310.common.world.system.Component;
 import com.irr310.common.world.system.Ship;
 import com.irr310.common.world.system.WorldSystem;
 import com.irr310.i3d.Bundle;
@@ -30,6 +34,15 @@ setContentView("main@layout/camera/ship_camera");
         ShipCameraActivityBundle shipCameraActivityBundle = (ShipCameraActivityBundle) bundle;
         mSystem = shipCameraActivityBundle.getSystem();
         ship = shipCameraActivityBundle.getShip();
+        
+        
+        
+        for(Component component : ship.getComponents()) {
+            List<LinearEngineCapacity> engines = component.getCapacitiesByClass(LinearEngineCapacity.class);
+            for(LinearEngineCapacity engine : engines) {
+                engine.setTargetThrust(engine.theoricalMaxThrust);
+            }
+        }
         
         systemEngine = GameServer.getWorldEngine().getSystemEngine(mSystem);
         

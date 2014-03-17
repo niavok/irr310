@@ -1,7 +1,7 @@
 package com.irr310.common.world.capacity;
 
 import com.irr310.common.tools.Vec3;
-import com.irr310.common.world.World;
+import com.irr310.common.world.system.WorldSystem;
 
 public class WingCapacity extends Capacity {
 
@@ -10,8 +10,8 @@ public class WingCapacity extends Capacity {
     public double yield;
     public double friction;
 
-    public WingCapacity(World world, long id) {
-        super(world, id);
+    public WingCapacity(WorldSystem worldSystem, long id) {
+        super(worldSystem, id);
         this.breakAxis = new Vec3(0, 0, 1);
         this.thrustAxis = new Vec3(0, 1, 0);
         yield = 0.2;

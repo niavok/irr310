@@ -22,6 +22,9 @@ import org.xml.sax.SAXException;
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.RessourceLoadingException;
 import com.irr310.common.tools.Vec3;
+import com.irr310.server.world.product.ComponentProduct.ComponentElectricStorageCapacityProduct;
+import com.irr310.server.world.product.ComponentProduct.ComponentKernelCapacityProduct;
+import com.irr310.server.world.product.ComponentProduct.ComponentLinearEngineCapacityProduct;
 import com.irr310.server.world.product.ComponentProduct.ComponentPartProduct;
 import com.irr310.server.world.product.ComponentProduct.PartShapeProduct;
 import com.irr310.server.world.product.ComponentProduct.PartShapeProduct.ShapeType;
@@ -155,7 +158,7 @@ public class ProductManager {
             } else if (subElement.getNodeName().equals("production")) {
                 parseComponentProductProduction(subElement, component);
             } else if (subElement.getNodeName().equals("capacities")) {
-                Log.warn("TODO : parse capacities");
+                parseComponentProductCapacities(subElement, component);
             } else {
                 throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for tag component for component '"+component.getId()+"'");
             }
@@ -264,6 +267,95 @@ public class ProductManager {
                 throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for tag component/parts for component '"+component.getId()+"'");
             }
         }        
+    }
+    
+    private void parseComponentProductCapacities(Element element, ComponentProduct component) {
+        NodeList childNodes = element.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {           
+            Node node = childNodes.item(i);
+            if (node.getNodeType() != Node.ELEMENT_NODE) {
+                // TODO error
+                continue;
+            }
+            Element subElement = (Element) node;
+            if (subElement.getNodeName().equals("linearEngineCapacity")) {
+                parseComponentProductLinearEngineCapacity(subElement, component);
+            } else if (subElement.getNodeName().equals("kernelCapacity")) {
+                    parseComponentProductKernelCapacity(subElement, component);
+            } else if (subElement.getNodeName().equals("electricStorageCapacity")) {
+                parseComponentProductElectricStorageCapacity(subElement, component);
+            } else {
+                throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for tag component/parts for component '"+component.getId()+"'");
+            }
+        }        
+    }
+
+    private void parseComponentProductLinearEngineCapacity(Element element, ComponentProduct component) {
+        ComponentLinearEngineCapacityProduct capacity = new ComponentLinearEngineCapacityProduct(component);
+        
+        NamedNodeMap attributes = element.getAttributes();
+        for (int j = 0; j < attributes.getLength(); j++) {
+            Node item = attributes.item(j);
+            Attr attr = (Attr) item;
+            String attrName = attr.getName();
+            String attrValue = attr.getValue();
+
+            if (attrName.equals("airFriction")) {
+                capacity.setAirFriction(Double.parseDouble(attrValue));
+            } else if (attrName.equals("theoricalMaxThrust")) {
+                capacity.setTheoricalMaxThrust(Double.parseDouble(attrValue));
+            } else if (attrName.equals("theoricalMinThrust")) {
+                capacity.setTheoricalMinThrust(Double.parseDouble(attrValue));
+            } else if (attrName.equals("theoricalVariationSpeed")) {
+                capacity.setTheoricalVariationSpeed(Double.parseDouble(attrValue));
+            } else {
+                throw new RessourceLoadingException("Unknown attrib '" + attrName + "=" + attrValue + "' for ComponentLinearEngineCapacityProduct");
+            }
+        }
+        
+        component.addCapacity(capacity);
+    }
+    
+    private void parseComponentProductElectricStorageCapacity(Element element, ComponentProduct component) {
+        ComponentElectricStorageCapacityProduct capacity = new ComponentElectricStorageCapacityProduct(component);
+        
+        NamedNodeMap attributes = element.getAttributes();
+        for (int j = 0; j < attributes.getLength(); j++) {
+            Node item = attributes.item(j);
+            Attr attr = (Attr) item;
+            String attrName = attr.getName();
+            String attrValue = attr.getValue();
+
+            if (attrName.equals("capacity")) {
+                capacity.setCapacity(Double.parseDouble(attrValue));
+            } else if (attrName.equals("yield")) {
+                capacity.setYield(Double.parseDouble(attrValue));
+            } else {
+                throw new RessourceLoadingException("Unknown attrib '" + attrName + "=" + attrValue + "' for ComponentElectricStorageCapacityProduct");
+            }
+        }
+        
+        component.addCapacity(capacity);
+    }
+    
+    private void parseComponentProductKernelCapacity(Element element, ComponentProduct component) {
+        ComponentKernelCapacityProduct capacity = new ComponentKernelCapacityProduct(component);
+        
+        NamedNodeMap attributes = element.getAttributes();
+        for (int j = 0; j < attributes.getLength(); j++) {
+            Node item = attributes.item(j);
+            Attr attr = (Attr) item;
+            String attrName = attr.getName();
+            String attrValue = attr.getValue();
+
+            if (attrName.equals("electricConsumption")) {
+                capacity.setElectricConsumption(Double.parseDouble(attrValue));
+            } else {
+                throw new RessourceLoadingException("Unknown attrib '" + attrName + "=" + attrValue + "' for ComponentElectricStorageCapacityProduct");
+            }
+        }
+        
+        component.addCapacity(capacity);
     }
     
     private void parseComponentProductProduction(Element element, ComponentProduct component) {

@@ -1,7 +1,7 @@
 package com.irr310.common.world.capacity;
 
-import com.irr310.common.world.World;
 import com.irr310.common.world.system.Ship;
+import com.irr310.common.world.system.WorldSystem;
 
 public class ContactDetectorCapacity extends Capacity {
 
@@ -12,8 +12,8 @@ public class ContactDetectorCapacity extends Capacity {
     public Ship sourceShip;
     
 
-    public ContactDetectorCapacity(World world, long id) {
-        super(world, id);
+    public ContactDetectorCapacity(WorldSystem worldSystem, long id) {
+        super(worldSystem, id);
         minImpulse = 0;
         minTime = 0;
         triggerTarget = null;
