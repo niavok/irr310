@@ -91,7 +91,7 @@ public class TransformMatrix {
 
     public TransformMatrix preMultiply(TransformMatrix mat) { // mat × this
         TransformMatrix tmp = new TransformMatrix();
-        float f;
+        double f;
 
         for (int j = 0; j < 4; j++) {
             for (int i = 0; i < 4; i++) {
