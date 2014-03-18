@@ -169,4 +169,8 @@ public class Vec3 {
         return new Vec3(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x);
     }
 
+    public Vec3 divide(Vec3 v) {
+        return new Vec3(x / v.x, y / v.y, z / v.z );
+    }
+
 }

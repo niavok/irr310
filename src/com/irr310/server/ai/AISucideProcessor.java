@@ -13,13 +13,13 @@ import com.irr310.common.world.system.Ship;
  */
 public class AISucideProcessor extends AIProcessor {
 
-    private final SimpleShipDriver driver;
+    private final SimpleShipDriverOld driver;
     private Component kernel;
 
     public AISucideProcessor(Ship ship) {
         super(ship);
-        this.driver = new SimpleShipDriver(ship);
-        kernel = getShip().getComponentByName("kernel");
+        this.driver = new SimpleShipDriverOld(ship);
+        kernel = getShip().getComponentByKey("kernel");
 
     }
 
@@ -38,7 +38,7 @@ public class AISucideProcessor extends AIProcessor {
 
         for (Ship ship :kernel.getSystem().getShips()) {
             if (ship.getOwner() != getShip().getOwner()) {
-                Part enemyKernel = ship.getComponentByName("kernel").getFirstPart();
+                Part enemyKernel = ship.getComponentByKey("kernel").getFirstPart();
                 TransformMatrix enemyShipTransform = enemyKernel.getTransform();
                 Vec3 enemyShipPosition = enemyShipTransform.getTranslation();
                 double shipDistance = enemyShipPosition.distanceTo(shipPosition);

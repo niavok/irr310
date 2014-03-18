@@ -36,14 +36,6 @@ setContentView("main@layout/camera/ship_camera");
         ship = shipCameraActivityBundle.getShip();
         
         
-        
-        for(Component component : ship.getComponents()) {
-            List<LinearEngineCapacity> engines = component.getCapacitiesByClass(LinearEngineCapacity.class);
-            for(LinearEngineCapacity engine : engines) {
-                engine.setTargetThrust(engine.theoricalMaxThrust/10);
-            }
-        }
-        
         systemEngine = GameServer.getWorldEngine().getSystemEngine(mSystem);
         
         
@@ -81,7 +73,7 @@ setContentView("main@layout/camera/ship_camera");
     }
 
     private void updateAll() {
-        mainRelativeLayout.addViewInLayout(new ShipCameraView(ship, mSystem));
+        mainRelativeLayout.addViewInLayout(new ShipCameraView(ship, systemEngine));
     }
 
     public static class ShipCameraActivityBundle extends Bundle {

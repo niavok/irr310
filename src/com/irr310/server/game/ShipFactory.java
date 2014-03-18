@@ -44,7 +44,7 @@ public class ShipFactory {
             Vec3 componentRotation = shipComponentProduct.getRotation();
             ComponentItem componentItem = (ComponentItem) shipItem.getSubItems().get(shipComponentProduct.getKey());
             
-            Component component = componentFactory.createComponent(componentItem);
+            Component component = componentFactory.createComponent(componentItem, shipComponentProduct.getKey());
             component.setLocationInShip(componentLocation);
             component.setShipRotation(componentRotation);
             ship.assign(component);

@@ -16,9 +16,11 @@ import com.irr310.client.graphics.GraphicalElement;
 import com.irr310.client.graphics.skin.GenericSkin;
 import com.irr310.client.graphics.skin.Skin;
 import com.irr310.common.tools.Log;
+import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.system.Component;
 import com.irr310.common.world.system.Ship;
 import com.irr310.common.world.system.WorldSystem;
+import com.irr310.common.world.system.WorldSystemEntity;
 import com.irr310.i3d.Graphics;
 import com.irr310.i3d.scene.I3dEye3DCamera;
 import com.irr310.i3d.scene.I3dScene;
@@ -27,6 +29,8 @@ import com.irr310.i3d.scene.element.I3dElement;
 import com.irr310.i3d.scene.element.I3dGroupElement;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 import com.irr310.i3d.view.View;
+import com.irr310.server.ai.ShipDriver;
+import com.irr310.server.engine.system.SystemEngine;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent;
@@ -59,9 +63,11 @@ public class ShipCameraView extends View {
         CAMERA,
     }
     
-    public ShipCameraView(Ship ship, WorldSystem systemState) {
+    public ShipCameraView(Ship ship, SystemEngine systemEngine) {
         this.focusedShip = ship;
-        this.mSystem = systemState;
+        this.mSystem = systemEngine.getSystem();
+        
+        final ShipDriver driver = systemEngine.getDriver(ship);
         
         init();
         binding = new V3DCameraBinding();
@@ -77,9 +83,15 @@ public class ShipCameraView extends View {
                         mControlMode = ControlMode.CAMERA; 
                     } else if( keyEvent.getKeyCode() == Keyboard.KEY_V) {
                         mControlMode = ControlMode.PILOT; 
-                    }    
+                    } else if( keyEvent.getKeyCode() == Keyboard.KEY_ADD) {
+                        driver.setLinearVelocityCommand(new Vec3(0,20,0));
+                    } else if( keyEvent.getKeyCode() == Keyboard.KEY_SUBTRACT) {
+                        driver.setLinearVelocityCommand(new Vec3(0,-10,0));
+                    } else if( keyEvent.getKeyCode() == Keyboard.KEY_NUMPAD0) {
+                        driver.setLinearVelocityCommand(new Vec3(0,0,0));
+                    }
                 }
-//                Log.log("key char="+keyEvent.getCharacter()+ " code="+keyEvent.getKeyCode());
+                Log.log("key char="+keyEvent.getCharacter()+ " code="+keyEvent.getKeyCode());
                 
                 return false;
             }
@@ -215,7 +227,7 @@ private void init() {
         scene = new I3dScene();
         activeCamera.setScene(scene);
         
-        Component kernel = focusedShip.getComponentByName("Kernel");
+        Component kernel = focusedShip.getComponentByKey("kernel");
         mCameraController.setFollowed(new FollowablePart(kernel.getFirstPart()));
 
         /*

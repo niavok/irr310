@@ -1,10 +1,12 @@
 package com.irr310.client.graphics.skin;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import com.irr310.common.tools.TransformMatrix;
+import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.common.world.system.Component;
 import com.irr310.common.world.system.Part;
 import com.irr310.common.world.system.Slot;
@@ -24,6 +26,7 @@ public class GenericSkin extends Skin {
     private final Component component;
     private final Map<Part, I3dElement> elementsMap = new HashMap<Part, I3dElement>();
     private final Map<Part, V3DLine> speedLineMap = new HashMap<Part, V3DLine>();
+    private final Map<LinearEngineCapacity, V3DLine> thrustLineMap = new HashMap<LinearEngineCapacity, V3DLine>();
     private I3dGroupElement elements;
 
     public GenericSkin(Component component) {
@@ -88,18 +91,27 @@ public class GenericSkin extends Skin {
                     }
                 }
                 
-                
                 V3DLine speedLine = new V3DLine();
                 speedLine.setThickness(3);
                 speedLine.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, 0, 0));
 
+                
+                
+              
                 elements.add(new V3DColorElement(speedLine, V3DColor.emerald));
                 elements.add(element);
                 elementsMap.put(part, element);
                 speedLineMap.put(part, speedLine);
         }
         
-        
+        List<LinearEngineCapacity> engines = component.getCapacitiesByClass(LinearEngineCapacity.class);
+        for (LinearEngineCapacity engine : engines) {
+            V3DLine thrustLine = new V3DLine();
+            thrustLine.setThickness(3);
+            thrustLine.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, 0, 0));
+            elements.add(new V3DColorElement(thrustLine, V3DColor.magenta));
+            thrustLineMap.put(engine, thrustLine);
+        }
         
     }
 
@@ -119,6 +131,12 @@ public class GenericSkin extends Skin {
             entry.getValue().setPosition(entry.getKey().getTransform().getTranslation().toV3DVect3());
             entry.getValue().setLocation(new V3DVect3(0, 0, 0), entry.getKey().getLinearSpeed().toV3DVect3());
         }
+        
+        for (Entry<LinearEngineCapacity, V3DLine> entry : thrustLineMap.entrySet()) {
+            entry.getValue().setPosition(component.getParts().get(0).getTransform().getTranslation().toV3DVect3());
+            entry.getValue().setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, (float) entry.getKey().getCurrentThrust(), 0));
+        }
+        
         
     }
     @Override

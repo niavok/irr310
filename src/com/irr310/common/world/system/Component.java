@@ -23,9 +23,11 @@ public final class  Component extends SystemObject {
 	private List<Capacity> capacities;
 	private Map<String, Capacity> capacityNameMap;
 	private boolean attached;
+    private String mKey;
 	
-	public Component(WorldSystem system, long id, String name) {
+	public Component(WorldSystem system, long id, String name, String key) {
 	    super(system, id, name);
+        mKey = key;
 		slots = new ArrayList<Slot>();
 		capacities = new ArrayList<Capacity>();
 		capacityNameMap = new HashMap<String, Capacity>();
@@ -35,6 +37,10 @@ public final class  Component extends SystemObject {
 		computeEfficiency();
 		attached = true;
 	}
+	
+	public String getKey() {
+        return mKey;
+    }
 	
 	public Slot getSlot(Vec3 position) {
 		Slot minSlot = null;

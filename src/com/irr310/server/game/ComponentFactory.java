@@ -24,9 +24,9 @@ public class ComponentFactory {
     }
     
     
-    public Component createComponent(ComponentItem componentItem) {
+    public Component createComponent(ComponentItem componentItem, String key) {
         ComponentProduct product = (ComponentProduct) componentItem.getProduct();
-        Component component = new Component(system, GameServer.pickNewId(), product.getName());
+        Component component = new Component(system, GameServer.pickNewId(), product.getName(), key);
         // TODO init resistances
         
         //TODO restore previous state

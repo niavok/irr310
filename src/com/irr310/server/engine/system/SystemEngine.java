@@ -1,7 +1,9 @@
 package com.irr310.server.engine.system;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import com.irr310.common.engine.CollisionDescriptor;
@@ -19,6 +21,8 @@ import com.irr310.common.world.system.WorldSystem;
 import com.irr310.server.Duration;
 import com.irr310.server.Time;
 import com.irr310.server.Time.Timestamp;
+import com.irr310.server.ai.ShipDriver;
+import com.irr310.server.ai.SimpleShipDriver;
 import com.irr310.server.engine.world.WorldEngine;
 import com.irr310.server.game.ShipFactory;
 
@@ -31,12 +35,14 @@ public class SystemEngine implements Engine {
     private PhysicEngine mPhysicEngine;
     private List<CapacityController> mCapacityControllers;
     private Time mLastTime;
+    private Map<Ship,ShipDriver> mDrivers;
     
     public SystemEngine(WorldEngine worldEngine, WorldSystem system) {
 //        this.mWorldEngine = worldEngine;
         this.mSystem = system;
         mCapacityControllers = new ArrayList<CapacityController>();
         mShipFactory = new ShipFactory(system);
+        mDrivers = new HashMap<Ship, ShipDriver>();
         
         mPhysicEngine = new PhysicEngine(this);
     }
@@ -68,6 +74,9 @@ public class SystemEngine implements Engine {
         
         Duration duration = mLastTime.durationTo(time.getGameTime());
 
+        for (ShipDriver driver: mDrivers.values()) {
+            driver.update(duration.getSeconds());
+        }
         
         for (CapacityController controller : mCapacityControllers) {
             controller.update(duration.getSeconds());
@@ -105,6 +114,11 @@ public class SystemEngine implements Engine {
                 mCapacityControllers.add(sCapacityControler.createController(component, capacity));
             }
         }
+
+        SimpleShipDriver driver = new SimpleShipDriver();
+        driver.init(ship);
+        mDrivers.put(ship, driver);
+        
         
         notifyShipDeployed(ship, shipTransform);
     }
@@ -126,5 +140,8 @@ public class SystemEngine implements Engine {
         }
     }
 
+    public ShipDriver getDriver(Ship ship) {
+        return mDrivers.get(ship);
+    }
     
 }

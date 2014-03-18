@@ -16,7 +16,7 @@ public class AttachChecker {
 
     public AttachChecker(Ship ship) {
         this.ship = ship;
-        kernel = ship.getComponentByName("kernel");
+        kernel = ship.getComponentByKey("kernel");
     }
 
     private void propagateAttached(Component component) {

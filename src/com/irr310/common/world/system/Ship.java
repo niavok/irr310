@@ -19,7 +19,7 @@ public class Ship extends SystemEntity implements Container {
     private static final double MIN_LINK_DISTANCE = 0.1;
     List<Link> links = new ArrayList<Link>();
     List<Component> components = new CopyOnWriteArrayList<Component>();
-    Map<String, Component> componentNamesMap = new HashMap<String, Component>();
+    Map<String, Component> componentKeysMap = new HashMap<String, Component>();
     KernelCapacity kernel;
     private Faction owner;
     private boolean destructible;
@@ -40,7 +40,7 @@ public class Ship extends SystemEntity implements Container {
             component.getShip().remove(component);
         }
         components.add(component);
-        componentNamesMap.put(component.getName(), component);
+        componentKeysMap.put(component.getKey(), component);
         component.setShip(this);
 
         return true;
@@ -120,8 +120,8 @@ public class Ship extends SystemEntity implements Container {
         return owner;
     }
 
-    public Component getComponentByName(String name) {
-        return componentNamesMap.get(name);
+    public Component getComponentByKey(String key) {
+        return componentKeysMap.get(key);
     }
 
     public void setDestructible(boolean destructible) {

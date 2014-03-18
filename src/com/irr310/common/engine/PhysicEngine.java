@@ -115,7 +115,7 @@ public class PhysicEngine implements Engine {
     @Override
     public void tick(Timestamp time) {
 
-
+        float duration = mLastTime.getGameTime().durationTo(time.getGameTime()).getSeconds();
         // Apply forces
         // Linear Engines
         for (Pair<LinearEngineCapacity, RigidBody> linearEngine : linearEngines) {
@@ -131,7 +131,59 @@ public class PhysicEngine implements Engine {
             t.getOpenGLMatrix(rotation.getData());
             rotation.setTranslation(0, 0, 0);
             force.preMultiply(rotation);
-            body.applyCentralForce(force.getTranslation().toVector3d());
+            
+            
+            Vector3d lv = new Vector3d();
+            body.getLinearVelocity(lv);
+            
+            Vec3 linearVelocity = new Vec3(lv);
+            Vec3 power = force.getTranslation();
+//            if(power.length() > 0.01) {
+//                com.irr310.common.tools.Log.log("boum");
+//            }
+            
+//            if(Math.abs(linearVelocity.x) < 0.01) {
+//                
+//                double ec = Math.abs(duration * power.x);
+//                double v = Math.sqrt(2 * ec * body.getInvMass());
+//                power.x = (power.x > 0 ? 1 : -1) * v / duration;
+//            } else {
+//                power.x = power.x / Math.abs(linearVelocity.x);
+//            }
+//            
+//            if(Math.abs(linearVelocity.y) < 0.01) {
+//                double ec = Math.abs(duration * power.y);
+//                double v = Math.sqrt(2 * ec * body.getInvMass());
+//                power.y = (power.y > 0 ? 1 : -1) * v / duration;
+//            } else {
+//                power.y = power.y / Math.abs(linearVelocity.y);
+//            }
+//            
+//            if(Math.abs(linearVelocity.z) < 0.01) {
+//                double ec = Math.abs(duration * power.z);
+//                double v = Math.sqrt(2 * ec * body.getInvMass());
+//                power.z = (power.z > 0 ? 1 : -1) * v / duration;
+//            } else {
+//                power.z = power.z / Math.abs(linearVelocity.z);
+//            }
+            
+            if(linearVelocity.length() > 1) {
+                power = power.divide(linearVelocity.length());
+            }
+            
+//              if(Math.abs(linearVelocity.x) > 1) {
+//                  power.x = power.x / Math.abs(linearVelocity.x);
+//              }
+//              
+//              if(Math.abs(linearVelocity.y) > 1) {
+//                  power.y = power.y / Math.abs(linearVelocity.y);
+//              }
+//              
+//              if(Math.abs(linearVelocity.z) > 1) {
+//                  power.z = power.z / Math.abs(linearVelocity.z);
+//              }
+            
+            body.applyCentralForce(power.toVector3d());
             body.setActivationState(RigidBody.ACTIVE_TAG);
         }
 
@@ -159,6 +211,8 @@ public class PhysicEngine implements Engine {
             force.translate(new Vec3(0, rocket.getLeft().getCurrentThrust(), 0));
 
             body.applyTorque(imprecision.toVector3d());
+            
+            
 
             TransformMatrix rotation = new TransformMatrix();
             t.getOpenGLMatrix(rotation.getData());
@@ -215,7 +269,7 @@ public class PhysicEngine implements Engine {
 
         // step the simulation
         if (dynamicsWorld != null) {
-            dynamicsWorld.stepSimulation(mLastTime.getGameTime().durationTo(time.getGameTime()).getSeconds());
+            dynamicsWorld.stepSimulation(duration);
         }
         
         mLastTime = time;
