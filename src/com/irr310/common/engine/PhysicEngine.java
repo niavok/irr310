@@ -167,21 +167,21 @@ public class PhysicEngine implements Engine {
 //                power.z = power.z / Math.abs(linearVelocity.z);
 //            }
             
-            if(linearVelocity.length() > 1) {
-                power = power.divide(linearVelocity.length());
-            }
+//            if(linearVelocity.length() > 1) {
+//                power = power.divide(linearVelocity.length());
+//            }
             
-//              if(Math.abs(linearVelocity.x) > 1) {
-//                  power.x = power.x / Math.abs(linearVelocity.x);
-//              }
-//              
-//              if(Math.abs(linearVelocity.y) > 1) {
-//                  power.y = power.y / Math.abs(linearVelocity.y);
-//              }
-//              
-//              if(Math.abs(linearVelocity.z) > 1) {
-//                  power.z = power.z / Math.abs(linearVelocity.z);
-//              }
+              if(Math.abs(linearVelocity.x) > 1) {
+                  power.x = power.x / Math.abs(linearVelocity.x);
+              }
+
+              if(Math.abs(linearVelocity.y) > 1) {
+                  power.y = power.y / Math.abs(linearVelocity.y);
+              }
+
+              if(Math.abs(linearVelocity.z) > 1) {
+                  power.z = power.z / Math.abs(linearVelocity.z);
+              }
             
             body.applyCentralForce(power.toVector3d());
             body.setActivationState(RigidBody.ACTIVE_TAG);
