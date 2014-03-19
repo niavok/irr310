@@ -1,5 +1,6 @@
 package com.irr310.common.world.capacity;
 
+import com.irr310.common.world.system.Component;
 import com.irr310.common.world.system.WorldSystem;
 
 public class LinearEngineCapacity extends Capacity {
@@ -15,8 +16,8 @@ public class LinearEngineCapacity extends Capacity {
 
     public double targetThrustInput;
 
-    public LinearEngineCapacity(WorldSystem worldSystem, long id) {
-        super(worldSystem, id);
+    public LinearEngineCapacity(WorldSystem worldSystem, long id, Component component) {
+        super(worldSystem, id, component);
         currentThrust = 0;
         targetThrust = 0;
         targetThrustInput =0 ;

@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.World;
+import com.irr310.common.world.system.Component;
 import com.irr310.common.world.system.DamageDescriptor;
 import com.irr310.common.world.system.WorldSystem;
 
@@ -34,8 +35,8 @@ public class RocketWeaponCapacity extends Capacity {
     public double armorPenetration;
     public DamageDescriptor.DamageType damageType;
 
-    public RocketWeaponCapacity(WorldSystem worldSystem, long id) {
-        super(worldSystem, id);
+    public RocketWeaponCapacity(WorldSystem worldSystem, long id, Component component) {
+        super(worldSystem, id, component);
         fire = false;
         barrels = new ArrayList<Vec3>();
         cooldown = 5;

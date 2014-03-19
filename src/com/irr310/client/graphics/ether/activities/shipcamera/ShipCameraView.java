@@ -36,6 +36,7 @@ import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent;
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent.KeyAction;
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
+import fr.def.iss.vd2.lib_v3d.V3DMouseEvent.Action;
 import fr.def.iss.vd2.lib_v3d.V3DShader;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
@@ -67,8 +68,6 @@ public class ShipCameraView extends View {
         this.focusedShip = ship;
         this.mSystem = systemEngine.getSystem();
         
-        final ShipDriver driver = systemEngine.getDriver(ship);
-        
         init();
         binding = new V3DCameraBinding();
         reshape();
@@ -83,13 +82,7 @@ public class ShipCameraView extends View {
                         mControlMode = ControlMode.CAMERA; 
                     } else if( keyEvent.getKeyCode() == Keyboard.KEY_V) {
                         mControlMode = ControlMode.PILOT; 
-                    } else if( keyEvent.getKeyCode() == Keyboard.KEY_ADD) {
-                        driver.setLinearVelocityCommand(new Vec3(0,20,0));
-                    } else if( keyEvent.getKeyCode() == Keyboard.KEY_SUBTRACT) {
-                        driver.setLinearVelocityCommand(new Vec3(0,-10,0));
-                    } else if( keyEvent.getKeyCode() == Keyboard.KEY_NUMPAD0) {
-                        driver.setLinearVelocityCommand(new Vec3(0,0,0));
-                    }
+                    } 
                 }
                 Log.log("key char="+keyEvent.getCharacter()+ " code="+keyEvent.getKeyCode());
                 
@@ -101,10 +94,18 @@ public class ShipCameraView extends View {
             
             @Override
             public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
+                Log.log("camera action="+mouseEvent.getAction());
                 if(mControlMode == ControlMode.CAMERA) {
                     mCameraController.onEvent(mouseEvent);
+                    return true;
+                } else if(mControlMode == ControlMode.PILOT) {
+                    if(mouseEvent.getAction() == Action.MOUSE_CLICKED && mouseEvent.getButton() == 0) {
+//                        mBaseMouseX = mouseEvent.getX();
+//                        mBaseMouseY = mouseEvent.getY();
+//                        mSteering = false;
+                    }
                 }
-                return true;
+                return false;
             }
         });
         

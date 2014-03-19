@@ -1,6 +1,7 @@
 package com.irr310.common.world.capacity;
 
 import com.irr310.common.world.World;
+import com.irr310.common.world.system.Component;
 import com.irr310.common.world.system.WorldEntity;
 import com.irr310.common.world.system.WorldSystem;
 import com.irr310.common.world.system.WorldSystemEntity;
@@ -8,9 +9,11 @@ import com.irr310.common.world.system.WorldSystemEntity;
 public abstract class Capacity extends WorldSystemEntity{
 
     private String name;
+    private Component mComponent;
 
-    public Capacity(WorldSystem worldSystem, long id) {
+    public Capacity(WorldSystem worldSystem, long id, Component component) {
         super(worldSystem, id);
+        mComponent = component;
         this.name = "undefined";
     }
 
@@ -19,6 +22,10 @@ public abstract class Capacity extends WorldSystemEntity{
         WING,
         GUN,
         ROCKET,
+    }
+    
+    public Component getComponent() {
+        return mComponent;
     }
     
 //    public static Capacity createFromType(World world, long id, CapacityType type) {

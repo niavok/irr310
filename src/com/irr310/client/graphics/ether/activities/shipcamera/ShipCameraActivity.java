@@ -27,7 +27,7 @@ public class ShipCameraActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle bundle) {
-setContentView("main@layout/camera/ship_camera");
+        setContentView("main@layout/camera/ship_camera");
         
         mainRelativeLayout = (RelativeLayout) findViewById("main@layout/camera/ship_camera");
         
@@ -73,7 +73,9 @@ setContentView("main@layout/camera/ship_camera");
     }
 
     private void updateAll() {
+        mainRelativeLayout.removeAllView();
         mainRelativeLayout.addViewInLayout(new ShipCameraView(ship, systemEngine));
+        mainRelativeLayout.addViewInLayout(new ShipDriverView(ship, systemEngine));
     }
 
     public static class ShipCameraActivityBundle extends Bundle {

@@ -1,6 +1,7 @@
 package com.irr310.common.world.capacity;
 
 import com.irr310.common.world.system.DamageDescriptor.DamageType;
+import com.irr310.common.world.system.Component;
 import com.irr310.common.world.system.WorldSystem;
 
 public class ExplosiveCapacity extends Capacity {
@@ -15,8 +16,8 @@ public class ExplosiveCapacity extends Capacity {
     public DamageType damageType;
 
 
-    public ExplosiveCapacity(WorldSystem worldSystem, long id) {
-        super(worldSystem, id);
+    public ExplosiveCapacity(WorldSystem worldSystem, long id, Component component) {
+        super(worldSystem, id, component);
         fire = false;
         consumed = false;
     }

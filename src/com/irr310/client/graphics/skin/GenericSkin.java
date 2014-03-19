@@ -96,7 +96,14 @@ public class GenericSkin extends Skin {
                 speedLine.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, 0, 0));
 
                 
-                
+                List<LinearEngineCapacity> engines = component.getCapacitiesByClass(LinearEngineCapacity.class);
+                for (LinearEngineCapacity engine : engines) {
+                    V3DLine thrustLine = new V3DLine();
+                    thrustLine.setThickness(3);
+                    thrustLine.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, 0, 0));
+                    element.add(new V3DColorElement(thrustLine, V3DColor.magenta));
+                    thrustLineMap.put(engine, thrustLine);
+                }
               
                 elements.add(new V3DColorElement(speedLine, V3DColor.emerald));
                 elements.add(element);
@@ -104,14 +111,7 @@ public class GenericSkin extends Skin {
                 speedLineMap.put(part, speedLine);
         }
         
-        List<LinearEngineCapacity> engines = component.getCapacitiesByClass(LinearEngineCapacity.class);
-        for (LinearEngineCapacity engine : engines) {
-            V3DLine thrustLine = new V3DLine();
-            thrustLine.setThickness(3);
-            thrustLine.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, 0, 0));
-            elements.add(new V3DColorElement(thrustLine, V3DColor.magenta));
-            thrustLineMap.put(engine, thrustLine);
-        }
+       
         
     }
 
@@ -133,7 +133,7 @@ public class GenericSkin extends Skin {
         }
         
         for (Entry<LinearEngineCapacity, V3DLine> entry : thrustLineMap.entrySet()) {
-            entry.getValue().setPosition(component.getParts().get(0).getTransform().getTranslation().toV3DVect3());
+            entry.getValue().setPosition(new V3DVect3(0, 0, 0));
             entry.getValue().setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, (float) entry.getKey().getCurrentThrust(), 0));
         }
         

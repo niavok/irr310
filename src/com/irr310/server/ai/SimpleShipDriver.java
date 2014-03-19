@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.irr310.common.tools.Log;
+import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.common.world.system.Component;
@@ -50,12 +51,14 @@ public class SimpleShipDriver implements ShipDriver {
     @Override
     public void setAngularVelocityCommand(Vec3 angularVelocity) {
         mAngularVelocityCommand = angularVelocity;
+        Log.log("setAngularVelocityCommand " + angularVelocity);
     }
 
     @Override
     public void update(float seconds) {
 
-        double currentSpeedY = mKernel.getFirstPart().getLinearSpeed().dot(new Vec3(0, 1, 0).rotate(mKernel.getFirstPart().getTransform()));
+        Vec3 linearSpeed = mKernel.getFirstPart().getLinearSpeed();
+        double currentSpeedY = linearSpeed.dot(new Vec3(0, 1, 0).rotate(mKernel.getFirstPart().getTransform()));
 
         double currentEnergy = 0.5 * mTotalMass * currentSpeedY * currentSpeedY * (currentSpeedY > 0 ? 1 : -1); 
         
@@ -94,9 +97,88 @@ public class SimpleShipDriver implements ShipDriver {
             }
         }
         
+        Vec3 aim = new Vec3(0,0,0);
+        
+        Vec3 rotationSpeed = mKernel.getFirstPart().getRotationSpeed().rotate(mKernel.getFirstPart().getTransform().inverse());
+        
+        
+        
+        double mMaxAngularSpeed = 1;
+        double mSoftModeAngularLimit = 0.2;
+        
+        aim.x = computeSoftAngularCommand(rotationSpeed.x, mMaxAngularSpeed, mSoftModeAngularLimit, mAngularVelocityCommand.x);
+        aim.y = computeSoftAngularCommand(rotationSpeed.y, mMaxAngularSpeed, mSoftModeAngularLimit, mAngularVelocityCommand.y);
+        aim.z = computeSoftAngularCommand(rotationSpeed.z, mMaxAngularSpeed, mSoftModeAngularLimit, mAngularVelocityCommand.z);
+
+
+        
+        
+        
+        for (LinearEngineCapacity engine : mEngines) {
+//            Vector3 direction = mNode->getOrientation() * Vector3(0, 0, -1);
+//            Vector3 rotAxis = mRelPosition.crossProduct(direction);
+//            Vector3 target = mShip->getDirectionCommand();
+//            Vector3 aim = mShip->getRotationCommand();
+            
+            
+            
+            Vec3 shipRotation = engine.getComponent().getShipRotation();
+            TransformMatrix tmp = TransformMatrix.identity();
+            
+            tmp.translate(new Vec3(0,-1,0));
+            
+            tmp.rotateX(Math.toRadians(shipRotation.x));
+            tmp.rotateY(Math.toRadians(shipRotation.y));
+            tmp.rotateZ(Math.toRadians(shipRotation.z));
+
+            Vec3 direction = tmp.getTranslation();
+            
+            Vec3 locationInShip = engine.getComponent().getLocationInShip();
+            
+            Vec3 rotAxis = locationInShip.cross(direction);
+            
+            float alpha = 0;
+            
+            if (Math.abs(rotAxis.x) > 0.001)
+            {
+                alpha +=  aim.x * (rotAxis.x > 0 ? 1: -1);
+            }
+            
+            if (Math.abs(rotAxis.y) > 0.001)
+            {
+                alpha += aim.y * (rotAxis.y > 0 ? 1: -1);
+            }
+            
+            if (Math.abs(rotAxis.z) > 0.001)
+            {
+                alpha += aim.z * (rotAxis.z > 0 ? 1: -1);
+            }
+            
+            engine.setTargetThrust(engine.getTargetThrustInput() + alpha);
+        }
+        
+        
+        
 //        for (LinearEngineCapacity engine : mEngines) {
 //            engine.setTargetThrust(0);
 //        }
 
+    }
+
+    private double computeSoftAngularCommand(double measure, double mMaxAngularSpeed, double mSoftModeAngularLimit, double command) {
+        double result;
+        if (measure - (command * mMaxAngularSpeed) < -mSoftModeAngularLimit)
+        {
+        result = -1;
+        }
+        else if (measure - (command * mMaxAngularSpeed) > mSoftModeAngularLimit)
+        {
+        result = 1;
+        }
+        else
+        {
+        result = (1.0f / mSoftModeAngularLimit) * (measure - (command * mMaxAngularSpeed));
+        }
+        return result;
     }
 }
