@@ -103,15 +103,30 @@ public class SimpleShipDriver implements ShipDriver {
         
         
         
-        double mMaxAngularSpeed = 1;
-        double mSoftModeAngularLimit = 0.2;
+        double mMaxAngularSpeed = 2;
+        double mSoftModeAngularLimit = 0.5;
+        
+//        Log.log("mAngularVelocityCommand=" + mAngularVelocityCommand);
+//        Log.log("rotationSpeed=" + rotationSpeed);
+        
+        
+        double maxDiff = Double.MAX_VALUE;
+        
+        for (LinearEngineCapacity engine : mEngines) {
+            maxDiff = Math.min(maxDiff, Math.min(-engine.getMinThrust(), engine.getMaxThrust()));
+        }
+        
+//        Log.log("maxDiff=" + maxDiff);
+        
+        
+        
         
         aim.x = computeSoftAngularCommand(rotationSpeed.x, mMaxAngularSpeed, mSoftModeAngularLimit, mAngularVelocityCommand.x);
         aim.y = computeSoftAngularCommand(rotationSpeed.y, mMaxAngularSpeed, mSoftModeAngularLimit, mAngularVelocityCommand.y);
         aim.z = computeSoftAngularCommand(rotationSpeed.z, mMaxAngularSpeed, mSoftModeAngularLimit, mAngularVelocityCommand.z);
-
-
-        
+          
+//        Log.log("aim=" + aim);
+//          aim = aim.multiply(maxDiff);
         
         
         for (LinearEngineCapacity engine : mEngines) {
@@ -139,19 +154,19 @@ public class SimpleShipDriver implements ShipDriver {
             
             float alpha = 0;
             
-            if (Math.abs(rotAxis.x) > 0.001)
+            if (Math.abs(rotAxis.x) > 0.001 && Math.abs(aim.x) > 0.001)
             {
-                alpha +=  aim.x * (rotAxis.x > 0 ? 1: -1);
+                alpha +=  (engine.getMaxThrust() - engine.getMinThrust()) * aim.x  * (rotAxis.x > 0 ? 1: -1);
             }
             
-            if (Math.abs(rotAxis.y) > 0.001)
+            if (Math.abs(rotAxis.y) > 0.001  && Math.abs(aim.y) > 0.001)
             {
-                alpha += aim.y * (rotAxis.y > 0 ? 1: -1);
+                alpha += (engine.getMaxThrust() - engine.getMinThrust()) * aim.y * (rotAxis.y > 0 ? 1: -1);
             }
             
-            if (Math.abs(rotAxis.z) > 0.001)
+            if (Math.abs(rotAxis.z) > 0.001  && Math.abs(aim.z) > 0.001)
             {
-                alpha += aim.z * (rotAxis.z > 0 ? 1: -1);
+                alpha += (engine.getMaxThrust() - engine.getMinThrust()) * aim.z * (rotAxis.z > 0 ? 1: -1);
             }
             
             engine.setTargetThrust(engine.getTargetThrustInput() + alpha);

@@ -279,7 +279,7 @@ public class I3dFollow3DCameraController implements V3DCameraController, Graphic
             target = TransformMatrix.identity();
             // target.translate(2,0,2);
             // target.translate(0,0,2);
-//            target.translate(xOffset, yOffset, zOffset);
+            target.translate(xOffset, yOffset, zOffset);
             // target.translate(0,0,0);
             
             target.rotateX(cameraPhi);
@@ -297,7 +297,7 @@ public class I3dFollow3DCameraController implements V3DCameraController, Graphic
             // eye.translate(0,-20,2);
             // eye.translate(0,4,2);
             
-//            eye.translate(xOffset, yOffset, zOffset);
+            eye.translate(xOffset, yOffset, zOffset);
             
             
             eye.translate(0, -distance, 0);

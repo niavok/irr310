@@ -80,7 +80,7 @@ public class ShipDriverView extends View {
                             double zAngularVelocity = (mCurrentMouseX - mBaseMouseX);
                             double xAngularVelocity = (mCurrentMouseY - mBaseMouseY);
                             
-                            float maxRotationSpeed = 100;
+                            float maxRotationSpeed = 200;
                             float rotationSpeed =  (float) Math.sqrt(zAngularVelocity * zAngularVelocity + xAngularVelocity * xAngularVelocity);
     
                             if(rotationSpeed > maxRotationSpeed) {
@@ -88,8 +88,11 @@ public class ShipDriverView extends View {
                                 zAngularVelocity =  zAngularVelocity *  maxRotationSpeed / rotationSpeed;
                             }
                             
-                            xAngularVelocity /= -100;
-                            zAngularVelocity /= -100;
+                            xAngularVelocity /= -200;
+                            zAngularVelocity /= -200;
+                            
+                            xAngularVelocity = xAngularVelocity * xAngularVelocity * (xAngularVelocity > 0 ? 1 : -1);
+                            zAngularVelocity = zAngularVelocity * zAngularVelocity * (zAngularVelocity > 0 ? 1 : -1);
                             
                             driver.setAngularVelocityCommand(new Vec3(xAngularVelocity, 0, zAngularVelocity));
                         }
@@ -118,7 +121,7 @@ public class ShipDriverView extends View {
             float y =getLayoutParams().getHeight()- mBaseMouseY;
             float cx = mCurrentMouseX;
             float cy =getLayoutParams().getHeight()- mCurrentMouseY;
-            float maxRadius = 100;
+            float maxRadius = 200;
             float deadRadius = 5;
             
             g.drawRing(x, y, maxRadius, 0, backColor, backColor, 32);
