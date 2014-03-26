@@ -10,6 +10,7 @@ import com.irr310.i3d.view.drawable.BitmapFactory;
 import com.irr310.server.Time;
 import com.irr310.server.Time.Timestamp;
 
+import fr.def.iss.vd2.lib_v3d.V3DControllerEvent;
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent;
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent.Action;
@@ -119,6 +120,18 @@ public class I3dContext {
         }
     }
 
+    public void onControllerEvent(V3DControllerEvent controllerEvent) {
+        for (Surface surface : surfaceList) {
+            if (surface.contains(controllerEvent.getMouseX(), controllerEvent.getMouseY())) {
+                V3DControllerEvent topLeftEvent = new V3DControllerEvent(controllerEvent.getAction(), controllerEvent.getName(), controllerEvent.getIndex(), controllerEvent.getState(), controllerEvent.getMouseX() - surface.x, (surface.y + surface.height)
+                        - controllerEvent.getMouseY());
+
+                surface.onControllerEvent(topLeftEvent);
+                break;
+            }
+        }
+    }
+    
     public void notifyQuit() {
         listener.onQuit();
     };

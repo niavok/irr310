@@ -8,6 +8,7 @@ import com.irr310.common.engine.EngineManager;
 import com.irr310.common.tools.Log;
 import com.irr310.server.ParameterAnalyser;
 
+import fr.def.iss.vd2.lib_v3d.V3DControllerEvent;
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent;
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 
@@ -49,6 +50,10 @@ public class GameClient {
             
             @Override
             public void onKeyEvent(V3DKeyEvent event) {
+            }
+
+            @Override
+            public void onControllerEvent(V3DControllerEvent event) {
             }
         });
         

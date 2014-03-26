@@ -2,6 +2,7 @@ package com.irr310.i3d.view;
 
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 
+import fr.def.iss.vd2.lib_v3d.V3DControllerEvent;
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent;
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent.Action;
@@ -168,6 +169,22 @@ public class RelativeLayout extends ViewGroup {
         return used;
     }
     
-    
+    @Override
+    public boolean onControllerEvent(V3DControllerEvent controllerEvent) {
+        boolean used = false;
+        
+        for (View view : children) {
+            if(view.onControllerEvent(controllerEvent)) {
+                used = true;
+                break;
+            }
+        }
+        
+        if(!used) {
+            used = super.onControllerEvent(controllerEvent);
+        }
+        
+        return used;
+    }
     
 }

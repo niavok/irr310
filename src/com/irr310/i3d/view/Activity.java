@@ -11,6 +11,7 @@ import com.irr310.i3d.Surface;
 import com.irr310.server.Time;
 import com.irr310.server.Time.Timestamp;
 
+import fr.def.iss.vd2.lib_v3d.V3DControllerEvent;
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent;
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 
@@ -184,7 +185,10 @@ public abstract class Activity implements ViewParent {
     public void onKeyEvent(V3DKeyEvent keyEvent) {
         mview.onKeyEvent(keyEvent);
     }
-   
+    public void onControllerEvent(V3DControllerEvent keyEvent) {
+        mview.onControllerEvent(keyEvent);
+    }
+    
     public Handler getHandler() {
         return handler;
     }

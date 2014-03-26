@@ -20,6 +20,7 @@ import com.irr310.server.Time;
 import com.irr310.server.Time.Timestamp;
 
 import fr.def.iss.vd2.lib_v3d.V3DContext;
+import fr.def.iss.vd2.lib_v3d.V3DControllerEvent;
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent;
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 import fr.def.iss.vd2.lib_v3d.gui.V3DContainer;
@@ -144,7 +145,7 @@ public class UiEngine implements Engine {
     private class UiInputEngineObserver implements InputEngineObserver {
         @Override
         public void onMouseEvent(V3DMouseEvent event) {
-            context.onMouseEvent(event);            
+            context.onMouseEvent(event);
         }
 
         @Override
@@ -159,6 +160,11 @@ public class UiEngine implements Engine {
             } else {
                 context.onKeyEvent(event);
             }            
+        }
+        
+        @Override
+        public void onControllerEvent(V3DControllerEvent event) {
+            context.onControllerEvent(event);
         }
 
         @Override

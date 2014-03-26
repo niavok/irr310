@@ -1,14 +1,19 @@
 package com.irr310.client.input;
 
+import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Controller;
+import org.lwjgl.input.Controllers;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
+import com.irr310.client.input.ControllerManager.ControllerEventObserver;
 import com.irr310.common.engine.Engine;
 import com.irr310.common.engine.Observable;
 import com.irr310.common.tools.Log;
 import com.irr310.i3d.view.Point;
 import com.irr310.server.Time.Timestamp;
 
+import fr.def.iss.vd2.lib_v3d.V3DControllerEvent;
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent;
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent.KeyAction;
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
@@ -24,6 +29,7 @@ public class InputEngine implements Engine {
     private long[] clickTime;
     private int[] clickCount;
     private Point[] pressLocation;
+    private ControllerManager[] controllers;
     // private String cheatString = "";
     
     public InputEngine() {
@@ -41,6 +47,29 @@ public class InputEngine implements Engine {
 
     @Override
     public void start() {
+        try {
+            Controllers.create();
+        } catch (LWJGLException e) {
+            e.printStackTrace();
+        }
+        
+        Controllers.poll();
+        
+        controllers = new ControllerManager[Controllers.getControllerCount()];
+        
+        ControllerEventObserver observer = new ControllerEventObserver() {
+            
+            @Override
+            public void onControllerEvent(V3DControllerEvent event) {
+                notifyControllerEvent(event);
+            }
+        };
+        
+        for(int i = 0; i < Controllers.getControllerCount(); i++) {
+            controllers[i] = new ControllerManager(Controllers.getController(i), observer);
+            controllers[i].dump();
+        }
+        
     }
 
     @Override
@@ -106,6 +135,10 @@ public class InputEngine implements Engine {
                 }
             }
 
+        }
+        
+        for(ControllerManager controller : controllers) {
+            controller.update(Mouse.getEventX(), Mouse.getEventY());
         }
         
         while (Keyboard.next()) {
@@ -243,6 +276,12 @@ public class InputEngine implements Engine {
     private void notifyKeyEvent(V3DKeyEvent event) {
         for(InputEngineObserver observer : mInputEngineObservable.getObservers()) {
             observer.onKeyEvent(event);
+        }
+    }
+    
+    private void notifyControllerEvent(V3DControllerEvent event) {
+        for(InputEngineObserver observer : mInputEngineObservable.getObservers()) {
+            observer.onControllerEvent(event);
         }
     }
     

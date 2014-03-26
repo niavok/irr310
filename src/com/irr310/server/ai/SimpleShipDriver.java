@@ -73,7 +73,11 @@ public class SimpleShipDriver implements ShipDriver {
             energyToZero += thrustSign * 0.5 * engine.getCurrentThrust() * engine.getCurrentThrust() / engine.getVariationSpeed();
         }
         
-        double e = Math.abs(targetEnergy / ENERGY_EPSILON) + 0.1;
+        //double e = Math.abs(targetEnergy / 1000) + 0.1;
+        double e = 10;
+        Log.log("targetEnergy="+targetEnergy);
+        Log.log("currentEnergy="+currentEnergy);
+        Log.log("energyToZero="+energyToZero);
         
         if (currentEnergy + energyToZero < targetEnergy - e) {
             for (LinearEngineCapacity engine : mEngines) {
@@ -104,7 +108,7 @@ public class SimpleShipDriver implements ShipDriver {
         
         
         double mMaxAngularSpeed = 2;
-        double mSoftModeAngularLimit = 0.5;
+        double mSoftModeAngularLimit = 1.0;
         
 //        Log.log("mAngularVelocityCommand=" + mAngularVelocityCommand);
 //        Log.log("rotationSpeed=" + rotationSpeed);

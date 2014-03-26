@@ -13,6 +13,7 @@ import com.irr310.i3d.view.View;
 import com.irr310.server.ai.ShipDriver;
 import com.irr310.server.engine.system.SystemEngine;
 
+import fr.def.iss.vd2.lib_v3d.V3DControllerEvent;
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent;
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent.KeyAction;
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
@@ -101,6 +102,48 @@ public class ShipDriverView extends View {
                         break;
                 }
                 return true;
+            }
+        });
+        
+        setOnControllerListener(new OnControllerEventListener() {
+            
+            @Override
+            public boolean onControllerEvent(V3DControllerEvent controllerEvent) {
+
+                switch (controllerEvent.getAction()) {
+                    case AXIS_MOVED:
+                    {
+                     switch (controllerEvent.getIndex()) {
+                        case 3:
+                            float y = (- controllerEvent.getAxisValue(3)+1) * 10;
+                            Log.log("y="+y);
+                            driver.setLinearVelocityCommand(new Vec3(0, y,0));
+                            break;                        
+                        case 0:
+                        case 1:
+                        case 2:
+                            
+                            double zAngularVelocity = controllerEvent.getAxisValue(0);
+                            double xAngularVelocity = controllerEvent.getAxisValue(1);
+                            
+                            
+                            xAngularVelocity = xAngularVelocity * xAngularVelocity * (xAngularVelocity > 0 ? 1 : -1);
+                            zAngularVelocity = zAngularVelocity * zAngularVelocity * (zAngularVelocity < 0 ? 1 : -1);
+                            
+                            driver.setAngularVelocityCommand(new Vec3(xAngularVelocity, 0, zAngularVelocity));
+                            break;
+                        default:
+                            break;
+                    }
+                    }
+                        
+                        break;
+
+                    default:
+                        break;
+                }
+                
+                return false;
             }
         });
         

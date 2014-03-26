@@ -8,6 +8,7 @@ import com.irr310.i3d.Graphics;
 import com.irr310.i3d.Style;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 
+import fr.def.iss.vd2.lib_v3d.V3DControllerEvent;
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent;
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent.Action;
@@ -28,6 +29,7 @@ public abstract class View {
     private String help;
     private OnMouseEventListener onMouseEventListener;
     private OnKeyEventListener onKeyEventListener;
+    private OnControllerEventListener onControllerEventListener;
     private boolean visible = true;
     private StyleRenderer styleRenderer;
     private Style selectedStyle = new Style();
@@ -232,6 +234,10 @@ public abstract class View {
     public void setOnKeyListener(OnKeyEventListener onKeyEventListener) {
         this.onKeyEventListener = onKeyEventListener;
     }
+    
+    public void setOnControllerListener(OnControllerEventListener onControllerEventListener) {
+        this.onControllerEventListener = onControllerEventListener;
+    }
 
     public boolean performClick(V3DMouseEvent mouseEvent) {
         if (onClickListener != null) {
@@ -251,6 +257,10 @@ public abstract class View {
     
     public static interface OnKeyEventListener {
         boolean onKeyEvent(V3DKeyEvent keyEvent);
+    }
+    
+    public static interface OnControllerEventListener {
+        boolean onControllerEvent(V3DControllerEvent controllerEvent);
     }
 
     public void setHelp(String help) {
@@ -284,6 +294,18 @@ public abstract class View {
 
         if (onKeyEventListener != null) {
             return onKeyEventListener.onKeyEvent(keyEvent);
+        }
+
+        return false;
+    }
+    
+    public boolean onControllerEvent(V3DControllerEvent controllerEvent) {
+        if (!visible) {
+            return false;
+        }
+
+        if (onControllerEventListener != null) {
+            return onControllerEventListener.onControllerEvent(controllerEvent);
         }
 
         return false;
