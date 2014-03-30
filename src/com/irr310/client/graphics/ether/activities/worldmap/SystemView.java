@@ -97,8 +97,8 @@ public class SystemView extends RelativeLayout {
         mLayoutParams.setLayoutHeightMeasure(LayoutMeasure.FIXED);
         mLayoutParams.setHeightMeasure(new Measure(zoomedSize, false, Axis.VERTICAL));
         
-        mLayoutParams.setMarginLeftMeasure(new Measure((float) (system.getLocation().x * zoom), false, Axis.HORIZONTAL));
-        mLayoutParams.setMarginTopMeasure(new Measure((float) (system.getLocation().y * zoom) , false, Axis.VERTICAL));
+        mLayoutParams.setMarginLeftMeasure(new Measure((float) (system.getLocation().x * zoom) - zoomedSize/2, false, Axis.HORIZONTAL));
+        mLayoutParams.setMarginTopMeasure(new Measure((float) (system.getLocation().y * zoom) - zoomedSize/2, false, Axis.VERTICAL));
         
         textView.getLayoutParams().setMarginTopMeasure(new Measure(-15 - zoomedSize/20 , false, Axis.VERTICAL));
         textView.getLayoutParams().setLayoutWidthMeasure(LayoutMeasure.FIXED);
