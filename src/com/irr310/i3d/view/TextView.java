@@ -18,7 +18,7 @@ import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 
 public class TextView extends View {
 
-    protected String text = "plop";
+    protected String text = "";
     protected Font font;
     private String[] wrappedText;
     protected Color textColor = Color.black;

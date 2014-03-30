@@ -54,12 +54,16 @@ public class WorldEngine implements Engine {
     
     @Override
     public void init() {
+        
         initWorld();    
         
         mRoundDuration = new Duration(1000000000l); // 1s
         mTurnDuration = new Duration(10000000000l); // 10s
         mNextRoundTime = Time.now(true);
         mNextTurnTime = Time.now(true);
+        
+        Time.startGame(mNextRoundTime);
+        
     }
 
     @Override

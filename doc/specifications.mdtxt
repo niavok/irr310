@@ -131,6 +131,14 @@ qualité*(1-(((%etat-30)/70)-1)^2)
 
 à 80% de la durabilité, l'efficacité sera de 73%.
 
+- la température : c'est une variable locale à chaque composant et à vitesse de variation moyenne, et à la zone a une certaine température, chaque composant du vaisseau chauffe plus ou moins et des échanges thermiques se créent. Mal refroidit, ou trop utilisé certains composants peuvent surchauffer. Chaque composant a une réponse en température différente : une tuyère aura parfois besoin d'être très chaude pour avoir un bon rendement, mais un système de bouclier peut devenir moins efficace en cas de surchauffe. Avec la chaleur les blindage se ramollissent de viennent plus fragile. Un simple bombe incendiaire peut faire augmenter la température d'une bonne partie d'un vaisseau sans système de refroidissement d'urgence ou ayant négligé la ventilation.
+- le charge électrique : c'est une variable globale au vaisseau, et à vitesse de variation lente. Le vaisseau a une charge, celle du système la plupart du temps. mais peu augmenter sous l'effet d'armes à ion. Chaque composant à une tolérance à la charge. Si la charge du vaisseau dépasse le seuil de tolérance d'un composant, il va commencer à déconner et aura un probabilité de buger : il va rebooter devenant inopérant pendant un certains temps, ou même conserver l'ordre en cours, comme tirer pour une arme, ou puissance max  pour un moteur. Pareil, il y a des moyens de s'en protéger, avec des améliorations logiciel pour accélérer la vitesse des reboots ou des blindages ou autres. Il y a par exemple un composant permettant de transformer la charge en chaleur, ou en energie.
+- la vibration : c'est une variable locale à chaque composant, à vitesse de variation très rapide et à propagation rapide. En cas de choc, explosion proche, ou attaque à l'arme sonique, des composants, puis tout le vaisseau va se mettre a vibrer. la vibration de disparaît naturellement assez rapidement. Lors que les canons tirent ou quand certains moteurs fonctionnent, il vont générer des vibrations. À faible dose, les vibrations vont juste réduire rapidement la précision des armes. À plus forte doses, certains système peuvent perdre momentanément en efficacité et à forte dose, des dégâts définitifs peuvent être subits. Ainsi, certains vaisseau sniper doivent couper tous leurs systèmes pour avoir la précision maximale.
+
+- Coef de destruction. Les balles peuvent difficilement finir de détruire un vaisseau. Les explosions elle n'ont pas de décroissance pour finir de détruire. les collisions sont aussi très efficace. Le feu est très très nul.
+
+
+
 Liens
 -----
 

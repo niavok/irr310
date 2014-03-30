@@ -11,6 +11,7 @@ import com.irr310.common.engine.Engine;
 import com.irr310.common.engine.Observable;
 import com.irr310.common.tools.Log;
 import com.irr310.i3d.view.Point;
+import com.irr310.server.Time;
 import com.irr310.server.Time.Timestamp;
 
 import fr.def.iss.vd2.lib_v3d.V3DControllerEvent;
@@ -142,7 +143,7 @@ public class InputEngine implements Engine {
         }
         
         while (Keyboard.next()) {
-            if(interceptSpecialKeys()) {
+            if(interceptSpecialKeys(time)) {
                 continue;
             }
             
@@ -172,10 +173,21 @@ public class InputEngine implements Engine {
 
     }
 
-    private boolean interceptSpecialKeys() {
+    private boolean interceptSpecialKeys(Timestamp time) {
         if (Keyboard.getEventKeyState()) {
             if(Keyboard.getEventKey() == Keyboard.KEY_F4 && Keyboard.isKeyDown(Keyboard.KEY_LMENU)){
                 notifyQuitEvent();
+                return true;
+            }
+            
+            if(Keyboard.getEventKey() == Keyboard.KEY_SPACE){
+                // TODO : handle ui grab
+                if(Time.isPaused()) {
+                    Time.resumeGame(time.getTime());
+                } else {
+                    Time.pauseGame(time.getTime());
+                }
+                
                 return true;
             }
             

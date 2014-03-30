@@ -31,6 +31,7 @@ import com.irr310.i3d.view.TextView;
 import com.irr310.i3d.view.View;
 import com.irr310.i3d.view.View.OnClickListener;
 import com.irr310.i3d.view.View.OnMouseEventListener;
+import com.irr310.server.Time.Timestamp;
 import com.irr310.server.engine.system.SystemEngineObserver;
 import com.irr310.server.engine.world.WorldEngine;
 import com.irr310.server.engine.world.WorldEngineObserver;
@@ -152,6 +153,7 @@ public class WorldMapActivity extends Activity {
     @Override
     public void onResume() {
         worldEngine.getWorldEnginObservable().register(this, mWorldEngineObserver);
+//        updateMap();
     }
 
     @Override
@@ -172,6 +174,13 @@ public class WorldMapActivity extends Activity {
         }
     }
 
+    @Override
+    protected void onUpdate(Timestamp time) {
+        if(firstUpdate) {
+            updateMap();
+        }
+    }
+    
     private void updateMap() {
 
         map.removeAllView();

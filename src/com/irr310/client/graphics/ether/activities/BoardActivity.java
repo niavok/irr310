@@ -33,8 +33,10 @@ public class BoardActivity extends Activity {
     private TextView boardOresAmountTextView;
     private TextView boardKoliumAmountTextView;
     private TextView boardNeuridiumAmountTextView;
+    private TextView boardGameTimeTextView;
     private Faction mFaction;
     private WorldEngineObserver mWorldEngineObserver;
+    
     private static final int UPDATE_FACTION_WHAT = 1;
     
     @Override
@@ -46,6 +48,9 @@ public class BoardActivity extends Activity {
         
         worldMapButton = (Button) findViewById("seeWorldMapButton@layout/board");
         productionButton = (Button) findViewById("manageProductionButton@layout/board");
+        
+        
+        boardGameTimeTextView = (TextView) findViewById("boardGameTimeTextView@layout/board");
         boardStatersAmountTextView = (TextView) findViewById("boardStatersAmountTextView@layout/board");
         boardOresAmountTextView = (TextView) findViewById("boardOresAmountTextView@layout/board");
         boardKoliumAmountTextView = (TextView) findViewById("boardKoliumAmountTextView@layout/board");
@@ -120,6 +125,7 @@ public class BoardActivity extends Activity {
 
     @Override
     protected void onUpdate(Timestamp time) {
+        boardGameTimeTextView.setText(""+time.getGameTime().format());
     }
     
     @Override

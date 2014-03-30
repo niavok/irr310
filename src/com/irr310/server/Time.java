@@ -1,8 +1,12 @@
 package com.irr310.server;
 
+import java.text.DecimalFormat;
+
 public class Time {
 	private final long nanotime;
 	private static long initialTime = System.nanoTime();
+	private static boolean sIsPaused = true;
+	private static long pausedTime = initialTime;
 	
 	public Time(long nanotime) {
 		this.nanotime = nanotime;
@@ -44,14 +48,42 @@ public class Time {
         }
     }
     
+    public static void startGame(Time time) {
+        initialTime = time.nanotime;
+        pausedTime = time.nanotime;
+        sIsPaused = true;
+    }
+    
+    public static void pauseGame(Time time) {
+        sIsPaused = true;
+        pausedTime = time.nanotime;
+    }
+    
+    public static void resumeGame(Time time) {
+        initialTime += time.nanotime - pausedTime;
+        sIsPaused = false;
+    }
+    
+    private static long computeGameNanotime(long now) {
+        if(sIsPaused) {
+            return pausedTime - initialTime;
+        } else {
+            return now - initialTime;
+        }
+    }
+    
+    public static boolean isPaused() {
+        return sIsPaused;
+    }
+    
     public static Time getGameTime() {
-        return new Time(System.nanoTime() - initialTime);
+        return new Time(computeGameNanotime(System.nanoTime()));
     }
 
 	public static Timestamp getTimestamp() {
 		long now = System.nanoTime();
 		
-		return new Timestamp(new Time(now), new Time(now - initialTime));
+		return new Timestamp(new Time(now), new Time(computeGameNanotime(now)));
 	}
 	
 	public static class Timestamp {
@@ -72,4 +104,35 @@ public class Time {
 			return time;
 		}
 	}
+
+    public String format() {
+        long millitime = nanotime / 1000000;
+        long hours = millitime / (60 * 60 * 1000 );
+        long minutes = millitime / (60 * 1000 ) - hours * 60;
+        long seconds = millitime / (1000 ) - hours * 60 - minutes * 60;
+        
+        String formatted = "";
+        
+        if(hours > 0) {
+            formatted += hours+ " h" + formatted;
+        }
+        
+        if(minutes > 0) {
+            if(formatted.length() > 0) {
+                DecimalFormat df = new DecimalFormat("00");
+                formatted += df.format(minutes)+ " min ";
+            } else {
+                formatted += minutes+ " min ";
+            }
+        }
+        
+        if(formatted.length() > 0) {
+            DecimalFormat df = new DecimalFormat("00");
+            formatted += df.format(seconds)+ " s ";
+        } else {
+            formatted += seconds+ " s ";
+        }
+        
+        return formatted;
+    }
 }
