@@ -19,6 +19,7 @@ public class LayoutParams {
     public float mTop;
     public float mBottom;
 
+    
     public float mExtraLeft;
     public float mExtraRight;
     public float mExtraTop;
@@ -29,12 +30,25 @@ public class LayoutParams {
     public float mTopPadding;
     public float mBottomPadding;
     
+    public float mLeftMargin;
+    public float mRightMargin;
+    public float mTopMargin;
+    public float mBottomMargin;
+    
+    public float mTotalWidth;
+    public float mBorderWidth;
+    public float mContentWidth;
+    public float mTotalHeight;
+    public float mBorderHeight;
+    public float mContentHeight;
+    
+    
     public float mComputedLeft;
     public float mComputedRight;
     public float mComputedTop;
     public float mComputedBottom;
-    public float mContentWidth;
-    public float mContentHeight;
+    public float mMeasuredContentWidth;
+    public float mMeasuredContentHeight;
 
     // Input
     private LayoutMeasure layoutWidthMeasure;
@@ -88,8 +102,8 @@ public class LayoutParams {
         mComputedTop = 0;
         mComputedRight = 0;
         mComputedBottom = 0;
-        mContentHeight = 0;
-        mContentWidth = 0;
+        mMeasuredContentHeight = 0;
+        mMeasuredContentWidth = 0;
         mLeftPadding = 0;
         mRightPadding = 0;
         mTopPadding = 0;
@@ -132,10 +146,24 @@ public class LayoutParams {
             mBottom = bottom;
         }
         
+        mTotalWidth = mRight - mLeft;
+        mTotalHeight = mBottom - mTop;
+        
+        mTopMargin = computeMesure(layoutMarginTopMeasure);
+        mBottomMargin = computeMesure(layoutMarginBottomMeasure);
+        mLeftMargin = computeMesure(layoutMarginLeftMeasure);
+        mRightMargin = computeMesure(layoutMarginRightMeasure);
+        
+        mBorderWidth = mTotalWidth - mLeftMargin - mRightMargin;
+        mBorderHeight = mTotalHeight - mTopMargin - mBottomMargin;
+        
         mTopPadding  = computeMesure(layoutPaddingTopMeasure);
         mBottomPadding  = computeMesure(layoutPaddingBottomMeasure);
         mLeftPadding  = computeMesure(layoutPaddingLeftMeasure);
         mRightPadding  = computeMesure(layoutPaddingRightMeasure);
+        
+        mContentWidth = mBorderWidth - mLeftPadding - mRightPadding;
+        mContentHeight = mBorderHeight - mTopPadding - mBottomPadding;
         
         layouted = true;
         return changed;
@@ -157,17 +185,34 @@ public class LayoutParams {
     }
     
     
-    public float getWidth() {
-        return mRight - mLeft;
+    public float getTotalWidth() {
+        return mTotalWidth;
     }
-
+    
+    public float getBorderWidth() {
+        return mBorderWidth;
+    }
+    
+    public float getContentWidth() {
+        return mContentWidth;
+    }
+    
 //    public void setWidth(int width) {
 //        this.width = width;
 //    }
 
-    public float getHeight() {
-        return mBottom - mTop;
+    public float getTotalHeight() {
+        return mTotalHeight;
     }
+    
+    public float getBorderHeight() {
+        return mBorderHeight;
+    }
+    
+    public float getContentHeight() {
+        return mContentHeight;
+    }
+    
 
 //    public void setHeight(float height) {
 //        this.height = height;
@@ -288,9 +333,9 @@ public class LayoutParams {
         if(mesure.isRelative()) {
             if(isLayouted()) {
                 if(mesure.getAxis() == Axis.HORIZONTAL) {
-                    value = relativeHorizontalRatio * getWidth() * mesure.getValue() / 100;
+                    value = relativeHorizontalRatio * getTotalWidth() * mesure.getValue() / 100;
                 } else {
-                    value = relativeVerticalRatio * getHeight() * mesure.getValue() / 100;
+                    value = relativeVerticalRatio * getTotalWidth() * mesure.getValue() / 100;
                 }
             } else {
                 Log.error("Relative width in undefined width parent");
@@ -309,7 +354,7 @@ public class LayoutParams {
         float height = 0;
         
         if(getLayoutWidthMeasure() == LayoutMeasure.MATCH_PARENT) {
-              width = parentLayout.mRight - parentLayout.mLeft;
+              width = parentLayout.getContentWidth();
           } else if (getLayoutWidthMeasure() == LayoutMeasure.FIXED) {
               width = parentLayout.computeMesure(getMeasurePoint().getX());
               width += parentLayout.computeMesure(getLayoutMarginLeft());
@@ -318,13 +363,13 @@ public class LayoutParams {
 //              width += parentLayout.computeMesure(getLayoutPaddingLeft());
 //              width += parentLayout.computeMesure(getLayoutPaddingRight());
           } else if (getLayoutWidthMeasure() == LayoutMeasure.WRAP_CONTENT) {
-              width = mContentWidth;
+              width = mMeasuredContentWidth;
           } else {
               throw new RuntimeException("Not implemented");
           }
           
           if(getLayoutHeightMeasure() == LayoutMeasure.MATCH_PARENT) {
-              height = parentLayout.mBottom - parentLayout.mTop;
+              height = parentLayout.getContentHeight();
           } else if (getLayoutHeightMeasure() == LayoutMeasure.FIXED) {
               height = parentLayout.computeMesure(getMeasurePoint().getY());
               height += parentLayout.computeMesure(getLayoutMarginTop());
@@ -333,25 +378,25 @@ public class LayoutParams {
 //              height += parentLayout.computeMesure(getLayoutPaddingTop());
 //              height += parentLayout.computeMesure(getLayoutPaddingBottom());
           } else if (getLayoutHeightMeasure() == LayoutMeasure.WRAP_CONTENT) {
-              height = mContentHeight;
+              height = mMeasuredContentHeight;
           } else {
               throw new RuntimeException("Not implemented");
           }
           
           if(getLayoutGravityX() == LayoutGravity.CENTER) {
-              mComputedLeft = parentLayout.getWidth() /2 - width /2;
+              mComputedLeft = parentLayout.getContentWidth() /2 - width /2;
           } else if (getLayoutGravityX() == LayoutGravity.LEFT) {
               mComputedLeft = 0;
           } else if (getLayoutGravityX() == LayoutGravity.RIGHT) {
-              mComputedLeft = parentLayout.getWidth() - width;
+              mComputedLeft = parentLayout.getContentWidth() - width;
           }
     
           if(getLayoutGravityY() == LayoutGravity.CENTER) {
-              mComputedTop = parentLayout.getHeight()/2 - height /2;
+              mComputedTop = parentLayout.getContentHeight()/2 - height /2;
           }else if (getLayoutGravityY() == LayoutGravity.TOP) {
               mComputedTop = 0;
           } else if (getLayoutGravityY() == LayoutGravity.BOTTOM) {
-              mComputedTop = parentLayout.getHeight() - height;
+              mComputedTop = parentLayout.getContentHeight() - height;
           }
           
           mComputedRight = mComputedLeft + width;

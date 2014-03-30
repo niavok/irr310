@@ -1,5 +1,6 @@
 package com.irr310.i3d.view;
 
+import com.irr310.common.tools.Log;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 
 import fr.def.iss.vd2.lib_v3d.V3DControllerEvent;
@@ -21,12 +22,18 @@ public class RelativeLayout extends ViewGroup {
 	    
         for (View view : children) {
             LayoutParams childLayoutParams = view.getLayoutParams();
-            childLayoutParams.computeFrame(layoutParams);
+            childLayoutParams.computeFrame(mLayoutParams);
             //view.layout(childLayoutParams.mComputedLeft, childLayoutParams.mComputedTop, childLayoutParams.mComputedRight, childLayoutParams.mComputedBottom);
-            float left = childLayoutParams.mComputedLeft + layoutParams.computeMesure(childLayoutParams.getLayoutMarginLeft()) + layoutParams.computeMesure(childLayoutParams.getLayoutPaddingLeft());
-            float top = childLayoutParams.mComputedTop + layoutParams.computeMesure(childLayoutParams.getLayoutMarginTop()) + layoutParams.computeMesure(childLayoutParams.getLayoutPaddingTop());
-            float right = childLayoutParams.mComputedRight - layoutParams.computeMesure(childLayoutParams.getLayoutMarginRight()) - layoutParams.computeMesure(childLayoutParams.getLayoutPaddingRight());
-            float bottom = childLayoutParams.mComputedBottom - layoutParams.computeMesure(childLayoutParams.getLayoutMarginBottom()) - layoutParams.computeMesure(childLayoutParams.getLayoutPaddingBottom());
+//            float left = childLayoutParams.mComputedLeft + layoutParams.computeMesure(childLayoutParams.getLayoutMarginLeft()) + layoutParams.computeMesure(childLayoutParams.getLayoutPaddingLeft());
+//            float top = childLayoutParams.mComputedTop + layoutParams.computeMesure(childLayoutParams.getLayoutMarginTop()) + layoutParams.computeMesure(childLayoutParams.getLayoutPaddingTop());
+//            float right = childLayoutParams.mComputedRight - layoutParams.computeMesure(childLayoutParams.getLayoutMarginRight()) - layoutParams.computeMesure(childLayoutParams.getLayoutPaddingRight());
+//            float bottom = childLayoutParams.mComputedBottom - layoutParams.computeMesure(childLayoutParams.getLayoutMarginBottom()) - layoutParams.computeMesure(childLayoutParams.getLayoutPaddingBottom());
+
+            float left = childLayoutParams.mComputedLeft;
+            float top = childLayoutParams.mComputedTop;
+            float right = childLayoutParams.mComputedRight;
+            float bottom = childLayoutParams.mComputedBottom;
+
             
             view.layout(left  ,
                         top,
@@ -74,50 +81,56 @@ public class RelativeLayout extends ViewGroup {
         float measuredWidth = 0;
         float measuredHeight= 0;
         
-        if(!layoutParams.getLayoutMarginTop().isRelative()) {
-            measuredHeight +=   layoutParams.computeMesure(layoutParams.getLayoutMarginTop());  
+        if(!mLayoutParams.getLayoutMarginTop().isRelative()) {
+            measuredHeight +=   mLayoutParams.computeMesure(mLayoutParams.getLayoutMarginTop());  
         }
-        if(!layoutParams.getLayoutMarginBottom().isRelative()) {
-            measuredHeight +=   layoutParams.computeMesure(layoutParams.getLayoutMarginBottom());  
+        if(!mLayoutParams.getLayoutMarginBottom().isRelative()) {
+            measuredHeight +=   mLayoutParams.computeMesure(mLayoutParams.getLayoutMarginBottom());  
         }
-        if(!layoutParams.getLayoutMarginLeft().isRelative()) {
-            measuredWidth +=   layoutParams.computeMesure(layoutParams.getLayoutMarginLeft());  
+        if(!mLayoutParams.getLayoutMarginLeft().isRelative()) {
+            measuredWidth +=   mLayoutParams.computeMesure(mLayoutParams.getLayoutMarginLeft());  
         }
-        if(!layoutParams.getLayoutMarginRight().isRelative()) {
-            measuredWidth +=   layoutParams.computeMesure(layoutParams.getLayoutMarginRight());  
+        if(!mLayoutParams.getLayoutMarginRight().isRelative()) {
+            measuredWidth +=   mLayoutParams.computeMesure(mLayoutParams.getLayoutMarginRight());  
         }
         
-        if(!layoutParams.getLayoutPaddingTop().isRelative()) {
-            measuredHeight +=   layoutParams.computeMesure(layoutParams.getLayoutPaddingTop());  
+        if(!mLayoutParams.getLayoutPaddingTop().isRelative()) {
+            measuredHeight +=   mLayoutParams.computeMesure(mLayoutParams.getLayoutPaddingTop());  
         }
-        if(!layoutParams.getLayoutPaddingBottom().isRelative()) {
-            measuredHeight +=   layoutParams.computeMesure(layoutParams.getLayoutPaddingBottom());  
+        if(!mLayoutParams.getLayoutPaddingBottom().isRelative()) {
+            measuredHeight +=   mLayoutParams.computeMesure(mLayoutParams.getLayoutPaddingBottom());  
         }
-        if(!layoutParams.getLayoutPaddingLeft().isRelative()) {
-            measuredWidth +=   layoutParams.computeMesure(layoutParams.getLayoutPaddingLeft());  
+        if(!mLayoutParams.getLayoutPaddingLeft().isRelative()) {
+            measuredWidth +=   mLayoutParams.computeMesure(mLayoutParams.getLayoutPaddingLeft());  
         }
-        if(!layoutParams.getLayoutPaddingRight().isRelative()) {
-            measuredWidth +=   layoutParams.computeMesure(layoutParams.getLayoutPaddingRight());  
+        if(!mLayoutParams.getLayoutPaddingRight().isRelative()) {
+            measuredWidth +=   mLayoutParams.computeMesure(mLayoutParams.getLayoutPaddingRight());  
         }
+        
+        float minLeft = 0;
+        float minTop = 0;
+        float maxBottom = 0;
+        float maxRight = 0;
         
         
         for (View view : children) {
             view.measure();
-            if(view.getLayoutParams().mContentWidth > measuredWidth) {
-                measuredWidth = view.getLayoutParams().mContentWidth;
+            
+            if(view.getLayoutParams().mMeasuredContentWidth > measuredWidth) {
+                measuredWidth = view.getLayoutParams().mMeasuredContentWidth;
             }
             
-            if(view.getLayoutParams().mContentHeight > measuredHeight) {
-                measuredHeight = view.getLayoutParams().mContentHeight;
+            if(view.getLayoutParams().mMeasuredContentHeight > measuredHeight) {
+                measuredHeight = view.getLayoutParams().mMeasuredContentHeight;
             }
         }
         
         
-        if(layoutParams.getLayoutWidthMeasure() != LayoutMeasure.FIXED || layoutParams.getMeasurePoint().getX().isRelative()) {
-            layoutParams.mContentWidth = measuredWidth;
+        if(mLayoutParams.getLayoutWidthMeasure() != LayoutMeasure.FIXED || mLayoutParams.getMeasurePoint().getX().isRelative()) {
+            mLayoutParams.mMeasuredContentWidth = measuredWidth;
         }
-        if(layoutParams.getLayoutHeightMeasure() != LayoutMeasure.FIXED || layoutParams.getMeasurePoint().getY().isRelative()) {
-            layoutParams.mContentHeight = measuredHeight;
+        if(mLayoutParams.getLayoutHeightMeasure() != LayoutMeasure.FIXED || mLayoutParams.getMeasurePoint().getY().isRelative()) {
+            mLayoutParams.mMeasuredContentHeight = measuredHeight;
         }
     }
 
@@ -126,19 +139,26 @@ public class RelativeLayout extends ViewGroup {
     public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
         boolean used = false;
         
+        if(mouseEvent.getAction() == Action.MOUSE_PRESSED) {
+            Log.log("plop");
+        }
+        
+        float localXOffset = mLayoutParams.mLeftMargin + mLayoutParams.mLeftPadding;
+        float localYOffset = mLayoutParams.mTopMargin + mLayoutParams.mTopPadding;
+        
         for (View view : children) {
             
             if(mouseEvent.getAction() != Action.MOUSE_DRAGGED) {
-                if(mouseEvent.getX() < view.layoutParams.mLeft - view.layoutParams.mLeftPadding || mouseEvent.getX() > view.layoutParams.mRight + view.layoutParams.mRightPadding) {
+                if(mouseEvent.getX() < localXOffset + view.getLayoutParams().mLeft + view.getLayoutParams().mLeftMargin || mouseEvent.getX() > localXOffset + view.getLayoutParams().mRight - view.getLayoutParams().mRightMargin) {
                     continue;
                 }
                 
-                if(mouseEvent.getY() < view.layoutParams.mTop - view.layoutParams.mTopPadding || mouseEvent.getY() > view.layoutParams.mBottom + view.layoutParams.mBottomPadding) {
+                if(mouseEvent.getY() < localYOffset + view.getLayoutParams().mTop + view.getLayoutParams().mTopMargin || mouseEvent.getY() > localYOffset + view.getLayoutParams().mBottom - view.getLayoutParams().mBottomMargin) {
                     continue;
                 }
             }
             
-            if(view.onMouseEvent(mouseEvent.relativeTo((int) view.layoutParams.mLeft,(int)  view.layoutParams.mTop))) {
+            if(view.onMouseEvent(mouseEvent.relativeTo((int) (view.getLayoutParams().mLeft + localXOffset) ,(int) (view.getLayoutParams().mTop + localYOffset)))) {
                 used = true;
                 break;
             }

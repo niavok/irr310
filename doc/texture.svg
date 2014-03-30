@@ -13,7 +13,7 @@
    height="512"
    id="svg4956"
    version="1.1"
-   inkscape:version="0.48.3.1 r9886"
+   inkscape:version="0.48.4 r9939"
    inkscape:export-filename="/home/fred/projets/irr310/res/drawable/icons/texture.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90"
@@ -22,14 +22,14 @@
      id="defs4958" />
   <sodipodi:namedview
      id="base"
-     pagecolor="#cfcfcf"
+     pagecolor="#3c3c3c"
      bordercolor="#666666"
      borderopacity="1.0"
-     inkscape:pageopacity="0.57647059"
+     inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="22.4"
-     inkscape:cx="92.718369"
-     inkscape:cy="493.87531"
+     inkscape:zoom="7.919596"
+     inkscape:cx="163.56091"
+     inkscape:cy="471.2271"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -37,10 +37,10 @@
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     inkscape:window-width="1680"
-     inkscape:window-height="1026"
-     inkscape:window-x="1920"
-     inkscape:window-y="285"
+     inkscape:window-width="1920"
+     inkscape:window-height="1145"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
      inkscape:window-maximized="1"
      inkscape:snap-global="false">
     <inkscape:grid
@@ -121,7 +121,7 @@
          style="fill:#ffffff;fill-opacity:1;stroke:none" />
     </g>
     <path
-       d="m 2580,3289.1667 a 72.5,72.5 0 1 1 -145,0 72.5,72.5 0 1 1 145,0 z"
+       d="m 2580,3289.1667 c 0,40.0407 -32.4594,72.5 -72.5,72.5 -40.0406,0 -72.5,-32.4593 -72.5,-72.5 0,-40.0406 32.4594,-72.5 72.5,-72.5 40.0406,0 72.5,32.4594 72.5,72.5 z"
        sodipodi:ry="72.5"
        sodipodi:rx="72.5"
        sodipodi:cy="3289.1667"
@@ -248,5 +248,21 @@
        id="path8943"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccccccccc" />
+    <path
+       style="fill:#ffffff;stroke:#ffffff;stroke-width:4.67944335999999961;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="M 109.60472,-110.49612 82.308008,-83.199405"
+       id="path7461"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path7463"
+       d="m 82.308008,-110.49612 27.296712,27.296715"
+       style="fill:#ffffff;stroke:#ffffff;stroke-width:4.67944335999999961;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+    <path
+       style="fill:#ffffff;fill-opacity:1;stroke:none"
+       d="m 85.510693,-70.538396 20.861607,0 -10.430875,13.44715 z"
+       id="path6027"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc" />
   </g>
 </svg>

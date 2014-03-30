@@ -37,7 +37,7 @@ public class StyleRenderer {
         this.g = g;
         initDraw();
 
-        // drawDebugBox();
+//         drawDebugBox();
         drawBackground(g);
         drawBorder(g);
     }
@@ -297,15 +297,15 @@ public class StyleRenderer {
     }
 
     private void initDraw() {
-        layoutParams = view.layoutParams;
-        borderParams = view.borderParams;
+        layoutParams = view.getLayoutParams();
+        borderParams = view.getBorderParams();
 
-        height = layoutParams.getHeight() + layoutParams.computeMesure(layoutParams.getLayoutPaddingTop())
-                + layoutParams.computeMesure(layoutParams.getLayoutPaddingBottom());
-        width = layoutParams.getWidth() + layoutParams.computeMesure(layoutParams.getLayoutPaddingLeft())
-                + layoutParams.computeMesure(layoutParams.getLayoutPaddingRight());
-        left = -layoutParams.computeMesure(layoutParams.getLayoutPaddingLeft());
-        top = -layoutParams.computeMesure(layoutParams.getLayoutPaddingTop());
+        height = layoutParams.getBorderHeight();// + layoutParams.computeMesure(layoutParams.getLayoutPaddingTop())
+                //+ layoutParams.computeMesure(layoutParams.getLayoutPaddingBottom());
+        width = layoutParams.getBorderWidth();// + layoutParams.computeMesure(layoutParams.getLayoutPaddingLeft())
+                //+ layoutParams.computeMesure(layoutParams.getLayoutPaddingRight());
+        left = 0;//-layoutParams.computeMesure(layoutParams.getLayoutPaddingLeft());
+        top = 0;//-layoutParams.computeMesure(layoutParams.getLayoutPaddingTop());
         right = left + width;
         bottom = top + height;
 

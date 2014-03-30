@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    i3d:id="main"
+    i3d:layout_width="match_parent"
+    i3d:layout_height="match_parent"
+    i3d:orientation="horizontal" >
+
+
+	<LinearLayout
+	    i3d:id="left"
+	    i3d:layout_width="100%"
+	    i3d:layout_height="match_parent"
+	    i3d:orientation="horizontal" >
+	    	<View
+		        i3d:id="logo"
+		        i3d:layout_width="100px"
+		        i3d:layout_height="100px"
+		        i3d:ref="main@layout/logo" />
+        </LinearLayout>
+
+	<LinearLayout
+	    i3d:id="right"
+	    i3d:layout_width="wrap_content"
+	    i3d:layout_height="match_parent"
+	    i3d:orientation="horizontal" >
+	    	<Button
+	                i3d:id="settingsButton"
+	                i3d:layout_width="wrap_content"
+	                i3d:layout_height="match_parent"
+	                i3d:layout_paddingTop="6px"
+	                i3d:layout_paddingBottom="6px"
+	                i3d:layout_paddingLeft="6px"
+	                i3d:layout_paddingRight="6px"
+	                i3d:text="settingsButton@strings"
+	                i3d:color="status@color"
+	                i3d:help="newGameButtonHelp@help/mainmenu"
+                 />
+    	</LinearLayout>
+
+</LinearLayout>

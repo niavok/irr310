@@ -66,6 +66,7 @@ public class Surface {
             if(currentActivity.isStackable()) {
                 intentStack.push(intent);
             }
+            currentActivity.setPreferredPosition(mPopupPreferredPosition);
             currentActivity.forceLayout();
             currentActivity.resume();
         }
@@ -120,9 +121,12 @@ public class Surface {
         g.initUiTranslation(new Point(x, y-height));
         
         
+        
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
-        GL11.glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
-        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+        if(!backgroundColor.isSame(Color.transparent)) {
+            GL11.glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
+            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+        }
 
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
@@ -175,6 +179,7 @@ public class Surface {
 //    public int mouseY = 0;
     //private Point lastMousePosition = new Point();
     private I3dContext context;
+    private I3dVec2 mPopupPreferredPosition;
 
     /**
      * Internal private method
@@ -341,5 +346,9 @@ public class Surface {
         } else if(!intentStack.empty()) {
             startActivity(intentStack.peek());
         }
+    }
+
+    public void setPopupPreferredPosition(I3dVec2 popupPreferredPosition) {
+        mPopupPreferredPosition = popupPreferredPosition;
     }
 }

@@ -16,25 +16,25 @@ public class Button extends TextView {
     @Override
     public void onDraw(Graphics g) {
         
-        float bevel = 10;
-        float height = layoutParams.getHeight() + layoutParams.computeMesure(layoutParams.getLayoutPaddingTop()) + layoutParams.computeMesure(layoutParams.getLayoutPaddingBottom());
-        float width = layoutParams.getWidth() + layoutParams.computeMesure(layoutParams.getLayoutPaddingLeft()) + layoutParams.computeMesure(layoutParams.getLayoutPaddingRight());
-        float offsetX = - layoutParams.computeMesure(layoutParams.getLayoutPaddingLeft());
-        float offsetY = - layoutParams.computeMesure(layoutParams.getLayoutPaddingTop());
+//        float bevel = 10;
+//        float height = layoutParams.getHeight() + layoutParams.computeMesure(layoutParams.getLayoutPaddingTop()) + layoutParams.computeMesure(layoutParams.getLayoutPaddingBottom());
+//        float width = layoutParams.getWidth() + layoutParams.computeMesure(layoutParams.getLayoutPaddingLeft()) + layoutParams.computeMesure(layoutParams.getLayoutPaddingRight());
+//        float offsetX = - layoutParams.computeMesure(layoutParams.getLayoutPaddingLeft());
+//        float offsetY = - layoutParams.computeMesure(layoutParams.getLayoutPaddingTop());
+//        
+//        Color color1 = new Color(239, 239, 239);
+//        Color color2 = new Color(214, 214, 214);
+//        Color borderColor = new Color(95,95,95);
         
-        Color color1 = new Color(239, 239, 239);
-        Color color2 = new Color(214, 214, 214);
-        Color borderColor = new Color(95,95,95);
+//        Color firstStepColor = Color.mix(color1, color2, bevel/height);
+//        Color secondStepColor = Color.mix(color1, color2, 1 - bevel/height);
         
-        Color firstStepColor = Color.mix(color1, color2, bevel/height);
-        Color secondStepColor = Color.mix(color1, color2, 1 - bevel/height);
-        
-        GL11.glPushMatrix();
-        GL11.glTranslatef(offsetX, offsetY, 0);
+//        GL11.glPushMatrix();
+//        GL11.glTranslatef(offsetX, offsetY, 0);
         
       
         
-        g.setColor(Color.emerald);
+//        g.setColor(Color.emerald);
         
 //        GL11.glBegin(GL11.GL_TRIANGLES);
 //        //Corner 1
@@ -94,7 +94,7 @@ public class Button extends TextView {
 //        GL11.glEnd();
         
         
-        GL11.glPopMatrix();
+//        GL11.glPopMatrix();
         
         
         super.onDraw(g);

@@ -92,13 +92,13 @@ public class SystemView extends RelativeLayout {
         
         zoomedSize = size * zoom;
         
-        layoutParams.setLayoutWidthMeasure(LayoutMeasure.FIXED);
-        layoutParams.setWidthMeasure(new Measure(zoomedSize, false, Axis.HORIZONTAL));
-        layoutParams.setLayoutHeightMeasure(LayoutMeasure.FIXED);
-        layoutParams.setHeightMeasure(new Measure(zoomedSize, false, Axis.VERTICAL));
+        mLayoutParams.setLayoutWidthMeasure(LayoutMeasure.FIXED);
+        mLayoutParams.setWidthMeasure(new Measure(zoomedSize, false, Axis.HORIZONTAL));
+        mLayoutParams.setLayoutHeightMeasure(LayoutMeasure.FIXED);
+        mLayoutParams.setHeightMeasure(new Measure(zoomedSize, false, Axis.VERTICAL));
         
-        layoutParams.setMarginLeftMeasure(new Measure((float) (system.getLocation().x * zoom) - zoomedSize/2, false, Axis.HORIZONTAL));
-        layoutParams.setMarginTopMeasure(new Measure((float) (system.getLocation().y * zoom) - zoomedSize/2, false, Axis.VERTICAL));
+        mLayoutParams.setMarginLeftMeasure(new Measure((float) (system.getLocation().x * zoom), false, Axis.HORIZONTAL));
+        mLayoutParams.setMarginTopMeasure(new Measure((float) (system.getLocation().y * zoom) , false, Axis.VERTICAL));
         
         textView.getLayoutParams().setMarginTopMeasure(new Measure(-15 - zoomedSize/20 , false, Axis.VERTICAL));
         textView.getLayoutParams().setLayoutWidthMeasure(LayoutMeasure.FIXED);

@@ -193,8 +193,8 @@ public class ShipView extends View {
 
     @Override
     public void onMeasure() {
-        layoutParams.mContentWidth = 20;
-        layoutParams.mContentHeight = 20;
+        mLayoutParams.mMeasuredContentWidth = 20;
+        mLayoutParams.mMeasuredContentHeight = 20;
     }
 
     @Override

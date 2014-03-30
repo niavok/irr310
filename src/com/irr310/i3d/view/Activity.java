@@ -5,6 +5,7 @@ import com.irr310.i3d.Graphics;
 import com.irr310.i3d.Handler;
 import com.irr310.i3d.I3dContext;
 import com.irr310.i3d.I3dRessourceManager;
+import com.irr310.i3d.I3dVec2;
 import com.irr310.i3d.Intent;
 import com.irr310.i3d.Message;
 import com.irr310.i3d.Surface;
@@ -26,6 +27,7 @@ public abstract class Activity implements ViewParent {
     private boolean stackable = true;
     private State state = State.STOPPED;
     private Handler handler = new Handler();
+    private I3dVec2 mPreferredPosition;
 
     protected abstract void onCreate(Bundle bundle);
     protected abstract void onResume();
@@ -118,7 +120,33 @@ public abstract class Activity implements ViewParent {
         if(!mLayoutUpdated) {
             mLayoutUpdated = true;
             mview.measure();
-            mview.layout(mLayout.mLeft, mLayout.mTop, mLayout.mRight,mLayout.mBottom);
+            
+            float left  = mLayout.mLeft;
+            float top  = mLayout.mTop;
+            float right  = mLayout.mRight;
+            float bottom  = mLayout.mBottom;
+            
+            // This is the case for popup
+            if(mview.getLayoutParams().mMeasuredContentWidth < right - left && mview.getLayoutParams().getLayoutWidthMeasure() != LayoutParams.LayoutMeasure.MATCH_PARENT) {
+                left = mPreferredPosition.getWidth();
+                right = left + mview.getLayoutParams().mMeasuredContentWidth;
+                if(right > mLayout.mRight) {
+                    right = mLayout.mRight;
+                    left = right - mview.getLayoutParams().mMeasuredContentWidth;
+                }
+            }
+            
+            if(mview.getLayoutParams().mMeasuredContentHeight < bottom - top && mview.getLayoutParams().getLayoutHeightMeasure() != LayoutParams.LayoutMeasure.MATCH_PARENT) {
+                top = mPreferredPosition.getHeight();
+                bottom = top + mview.getLayoutParams().mMeasuredContentHeight;
+                
+                if(bottom > mLayout.mBottom) {
+                    bottom = mLayout.mBottom;
+                    top = bottom - mview.getLayoutParams().mMeasuredContentHeight;
+                }
+            }
+            
+            mview.layout(left, top, right, bottom);
         }
     }
 
@@ -191,6 +219,9 @@ public abstract class Activity implements ViewParent {
     
     public Handler getHandler() {
         return handler;
+    }
+    public void setPreferredPosition(I3dVec2 preferredPosition) {
+        mPreferredPosition = preferredPosition;
     }
 
     

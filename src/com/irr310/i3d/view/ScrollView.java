@@ -3,17 +3,8 @@ package com.irr310.i3d.view;
 import org.lwjgl.opengl.GL11;
 
 import com.irr310.common.tools.Log;
-import com.irr310.i3d.Color;
 import com.irr310.i3d.Graphics;
-import com.irr310.i3d.I3dContext;
-import com.irr310.i3d.Texture;
-import com.irr310.i3d.fonts.CharacterPixmap;
-import com.irr310.i3d.fonts.Font;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
-import com.irr310.i3d.view.LinearLayout.LayoutOrientation;
-import com.irr310.i3d.view.ScrollView.ScrollAxis;
-import com.irr310.i3d.view.TextView.Gravity;
-import com.irr310.server.Time;
 
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent.Action;
@@ -67,13 +58,12 @@ public class ScrollView extends View implements ViewParent {
 
     @Override
     public void onDraw(Graphics g) {
-
         
         GL11.glPushMatrix();
         GL11.glPushAttrib(GL11.GL_SCISSOR_BIT);
         
         Point translation = g.getUiTranslation();
-        GL11.glScissor((int)( translation.x), (int) (translation.y+ layoutParams.getHeight()), (int) layoutParams.getWidth(), (int) layoutParams.getHeight());
+        GL11.glScissor((int)( translation.x), (int) (translation.y+ mLayoutParams.getContentHeight()), (int) mLayoutParams.getContentWidth(), (int) mLayoutParams.getContentHeight());
         
         
         g.pushUiTranslation(new Point(scrollOffsetX, scrollOffsetY));
@@ -114,23 +104,23 @@ public class ScrollView extends View implements ViewParent {
     public void onLayout(float l, float t, float r, float b) {
 
         LayoutParams childLayoutParams = child.getLayoutParams();
-        childLayoutParams.computeFrame(layoutParams);
-        child.layout(childLayoutParams.mComputedLeft + layoutParams.computeMesure(childLayoutParams.getLayoutMarginLeft())
-                             + layoutParams.computeMesure(childLayoutParams.getLayoutPaddingLeft()),
-                     childLayoutParams.mComputedTop + layoutParams.computeMesure(childLayoutParams.getLayoutMarginTop())
-                             + layoutParams.computeMesure(childLayoutParams.getLayoutPaddingTop()),
-                     childLayoutParams.mComputedRight - layoutParams.computeMesure(childLayoutParams.getLayoutMarginRight())
-                             - layoutParams.computeMesure(childLayoutParams.getLayoutPaddingRight()),
-                     childLayoutParams.mComputedBottom - layoutParams.computeMesure(childLayoutParams.getLayoutMarginBottom())
-                             - layoutParams.computeMesure(childLayoutParams.getLayoutPaddingBottom()));
+        childLayoutParams.computeFrame(mLayoutParams);
+        child.layout(childLayoutParams.mComputedLeft + mLayoutParams.computeMesure(childLayoutParams.getLayoutMarginLeft())
+                             + mLayoutParams.computeMesure(childLayoutParams.getLayoutPaddingLeft()),
+                     childLayoutParams.mComputedTop + mLayoutParams.computeMesure(childLayoutParams.getLayoutMarginTop())
+                             + mLayoutParams.computeMesure(childLayoutParams.getLayoutPaddingTop()),
+                     childLayoutParams.mComputedRight - mLayoutParams.computeMesure(childLayoutParams.getLayoutMarginRight())
+                             - mLayoutParams.computeMesure(childLayoutParams.getLayoutPaddingRight()),
+                     childLayoutParams.mComputedBottom - mLayoutParams.computeMesure(childLayoutParams.getLayoutMarginBottom())
+                             - mLayoutParams.computeMesure(childLayoutParams.getLayoutPaddingBottom()));
 
         // float oldCenterX = oldWidth / 2 - scrollOffsetX;
         // float oldCenterY = oldHeight / 2 - scrollOffsetY;
         //
         // setScrollCenter(new Point(oldCenterX, oldCenterY));
 
-        oldWidth = layoutParams.getWidth();
-        oldHeight = layoutParams.getHeight();
+        oldWidth = mLayoutParams.getContentWidth();
+        oldHeight = mLayoutParams.getContentHeight();
     }
 
     @Override
@@ -139,40 +129,40 @@ public class ScrollView extends View implements ViewParent {
         float measuredHeight = 0;
 
         child.measure();
-        measuredHeight = child.getLayoutParams().mContentHeight;
-        measuredWidth = child.getLayoutParams().mContentWidth;
+        measuredHeight = child.getLayoutParams().mMeasuredContentHeight;
+        measuredWidth = child.getLayoutParams().mMeasuredContentWidth;
 
-        if (!layoutParams.getLayoutMarginTop().isRelative()) {
-            measuredHeight += layoutParams.computeMesure(layoutParams.getLayoutMarginTop());
+        if (!mLayoutParams.getLayoutMarginTop().isRelative()) {
+            measuredHeight += mLayoutParams.computeMesure(mLayoutParams.getLayoutMarginTop());
         }
-        if (!layoutParams.getLayoutMarginBottom().isRelative()) {
-            measuredHeight += layoutParams.computeMesure(layoutParams.getLayoutMarginBottom());
+        if (!mLayoutParams.getLayoutMarginBottom().isRelative()) {
+            measuredHeight += mLayoutParams.computeMesure(mLayoutParams.getLayoutMarginBottom());
         }
-        if (!layoutParams.getLayoutMarginLeft().isRelative()) {
-            measuredWidth += layoutParams.computeMesure(layoutParams.getLayoutMarginLeft());
+        if (!mLayoutParams.getLayoutMarginLeft().isRelative()) {
+            measuredWidth += mLayoutParams.computeMesure(mLayoutParams.getLayoutMarginLeft());
         }
-        if (!layoutParams.getLayoutMarginRight().isRelative()) {
-            measuredWidth += layoutParams.computeMesure(layoutParams.getLayoutMarginRight());
-        }
-
-        if (!layoutParams.getLayoutPaddingTop().isRelative()) {
-            measuredHeight += layoutParams.computeMesure(layoutParams.getLayoutPaddingTop());
-        }
-        if (!layoutParams.getLayoutPaddingBottom().isRelative()) {
-            measuredHeight += layoutParams.computeMesure(layoutParams.getLayoutPaddingBottom());
-        }
-        if (!layoutParams.getLayoutPaddingLeft().isRelative()) {
-            measuredWidth += layoutParams.computeMesure(layoutParams.getLayoutPaddingLeft());
-        }
-        if (!layoutParams.getLayoutPaddingRight().isRelative()) {
-            measuredWidth += layoutParams.computeMesure(layoutParams.getLayoutPaddingRight());
+        if (!mLayoutParams.getLayoutMarginRight().isRelative()) {
+            measuredWidth += mLayoutParams.computeMesure(mLayoutParams.getLayoutMarginRight());
         }
 
-        if (layoutParams.getLayoutWidthMeasure() != LayoutMeasure.FIXED || layoutParams.getMeasurePoint().getX().isRelative()) {
-            layoutParams.mContentWidth = measuredWidth;
+        if (!mLayoutParams.getLayoutPaddingTop().isRelative()) {
+            measuredHeight += mLayoutParams.computeMesure(mLayoutParams.getLayoutPaddingTop());
         }
-        if (layoutParams.getLayoutHeightMeasure() != LayoutMeasure.FIXED || layoutParams.getMeasurePoint().getY().isRelative()) {
-            layoutParams.mContentHeight = measuredHeight;
+        if (!mLayoutParams.getLayoutPaddingBottom().isRelative()) {
+            measuredHeight += mLayoutParams.computeMesure(mLayoutParams.getLayoutPaddingBottom());
+        }
+        if (!mLayoutParams.getLayoutPaddingLeft().isRelative()) {
+            measuredWidth += mLayoutParams.computeMesure(mLayoutParams.getLayoutPaddingLeft());
+        }
+        if (!mLayoutParams.getLayoutPaddingRight().isRelative()) {
+            measuredWidth += mLayoutParams.computeMesure(mLayoutParams.getLayoutPaddingRight());
+        }
+
+        if (mLayoutParams.getLayoutWidthMeasure() != LayoutMeasure.FIXED || mLayoutParams.getMeasurePoint().getX().isRelative()) {
+            mLayoutParams.mMeasuredContentWidth = measuredWidth;
+        }
+        if (mLayoutParams.getLayoutHeightMeasure() != LayoutMeasure.FIXED || mLayoutParams.getMeasurePoint().getY().isRelative()) {
+            mLayoutParams.mMeasuredContentHeight = measuredHeight;
         }
     }
 
@@ -180,10 +170,31 @@ public class ScrollView extends View implements ViewParent {
     public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
         boolean used = false;
 
+        
+        
+        if(mouseEvent.getAction() != Action.MOUSE_MOVED) {
+            Log.log("mouse" +mouseEvent.getAction());
+            Log.log("scrollLimits" +scrollLimits);
+            
+            Log.log("begin scrollOffsetX="+scrollOffsetX);
+            Log.log("begin scrollOffsetY="+scrollOffsetY);
+            Log.log("begin scrollingBaseOffsetX="+scrollingBaseOffsetX);
+            Log.log("begin scrollingBaseOffsetY="+scrollingBaseOffsetY);
+            Log.log("begin scrollingBaseX="+scrollingBaseX);
+            Log.log("begin scrollingBaseY="+scrollingBaseY);
+            
+            Log.log("begin mExtraRight="+child.getLayoutParams().mExtraRight);
+            Log.log("begin mExtraLeft="+child.getLayoutParams().mExtraLeft);
+            Log.log("begin mExtraTop="+child.getLayoutParams().mExtraTop);
+            Log.log("begin mExtraBottom="+child.getLayoutParams().mExtraBottom);
+            Log.log("begin getContentWidth="+child.getLayoutParams().getContentWidth());
+            
+        }
+        
         if (mouseEvent.getAction() == Action.MOUSE_PRESSED) {
 
-            if (child.onMouseEvent(mouseEvent.relativeTo((int) (child.layoutParams.mLeft + scrollOffsetX),
-                                                         (int) (child.layoutParams.mTop + scrollOffsetY)))) {
+            if (child.onMouseEvent(mouseEvent.relativeTo((int) (child.getLayoutParams().mLeft + scrollOffsetX),
+                                                         (int) (child.getLayoutParams().mTop + scrollOffsetY)))) {
                 used = true;
             } else {
                 scrolling = true;
@@ -207,7 +218,7 @@ public class ScrollView extends View implements ViewParent {
                     switch (scrollLimits) {
 
                         case STRICT:
-                            if (child.getLayoutParams().mExtraRight - child.getLayoutParams().mExtraLeft < getLayoutParams().getWidth()) {
+                            if (child.getLayoutParams().mExtraRight - child.getLayoutParams().mExtraLeft < getLayoutParams().getContentWidth()) {
                                 hitLimit = true;
                                 scrollOffsetX = -child.getLayoutParams().mExtraLeft;
                                 scrollingBaseOffsetX = scrollOffsetX;
@@ -217,23 +228,23 @@ public class ScrollView extends View implements ViewParent {
                                 scrollOffsetX = -child.getLayoutParams().mExtraLeft;
                                 scrollingBaseOffsetX = scrollOffsetX;
                                 scrollingBaseX = mouseEvent.getX();
-                            } else if (nextScrollOffsetX < getLayoutParams().getWidth() - child.getLayoutParams().mExtraRight) {
+                            } else if (nextScrollOffsetX < getLayoutParams().getContentWidth() - child.getLayoutParams().mExtraRight) {
                                 hitLimit = true;
-                                scrollOffsetX = getLayoutParams().getWidth() - child.getLayoutParams().getWidth();
+                                scrollOffsetX = getLayoutParams().getContentWidth() - child.getLayoutParams().getContentWidth();
                                 scrollingBaseOffsetX = scrollOffsetX;
                                 scrollingBaseX = mouseEvent.getX();
                             }
                             break;
                         case SOFT:
-                            if (child.getLayoutParams().mExtraRight - child.getLayoutParams().mExtraLeft < getLayoutParams().getWidth()) {
+                            if (child.getLayoutParams().mExtraRight - child.getLayoutParams().mExtraLeft < getLayoutParams().getContentWidth()) {
                                 if (nextScrollOffsetX <= -child.getLayoutParams().mExtraLeft) {
                                     hitLimit = true;
                                     scrollOffsetX = -child.getLayoutParams().mExtraLeft;
                                     scrollingBaseOffsetX = scrollOffsetX;
                                     scrollingBaseX = mouseEvent.getX();
-                                } else if (nextScrollOffsetX > getLayoutParams().getWidth() - child.getLayoutParams().mExtraRight) {
+                                } else if (nextScrollOffsetX > getLayoutParams().getContentWidth() - child.getLayoutParams().mExtraRight) {
                                     hitLimit = true;
-                                    scrollOffsetX = getLayoutParams().getWidth() - child.getLayoutParams().mExtraRight;
+                                    scrollOffsetX = getLayoutParams().getContentWidth() - child.getLayoutParams().mExtraRight;
                                     scrollingBaseOffsetX = scrollOffsetX;
                                     scrollingBaseX = mouseEvent.getX();
                                 }
@@ -243,9 +254,9 @@ public class ScrollView extends View implements ViewParent {
                                     scrollOffsetX = -child.getLayoutParams().mExtraLeft;
                                     scrollingBaseOffsetX = scrollOffsetX;
                                     scrollingBaseX = mouseEvent.getX();
-                                } else if (nextScrollOffsetX < getLayoutParams().getWidth() - child.getLayoutParams().mExtraRight) {
+                                } else if (nextScrollOffsetX < getLayoutParams().getContentWidth() - child.getLayoutParams().mExtraRight) {
                                     hitLimit = true;
-                                    scrollOffsetX = getLayoutParams().getWidth() - child.getLayoutParams().mExtraRight;
+                                    scrollOffsetX = getLayoutParams().getContentWidth() - child.getLayoutParams().mExtraRight;
                                     scrollingBaseOffsetX = scrollOffsetX;
                                     scrollingBaseX = mouseEvent.getX();
                                 }
@@ -257,9 +268,9 @@ public class ScrollView extends View implements ViewParent {
                                 scrollOffsetX = -child.getLayoutParams().mExtraRight;
                                 scrollingBaseOffsetX = scrollOffsetX;
                                 scrollingBaseX = mouseEvent.getX();
-                            } else if (nextScrollOffsetX > getLayoutParams().getWidth() - child.getLayoutParams().mExtraLeft) {
+                            } else if (nextScrollOffsetX > getLayoutParams().getContentWidth() - child.getLayoutParams().mExtraLeft) {
                                 hitLimit = true;
-                                scrollOffsetX = getLayoutParams().getWidth() - child.getLayoutParams().mExtraLeft;
+                                scrollOffsetX = getLayoutParams().getContentWidth() - child.getLayoutParams().mExtraLeft;
                                 scrollingBaseOffsetX = scrollOffsetX;
                                 scrollingBaseX = mouseEvent.getX();
                             }
@@ -279,7 +290,7 @@ public class ScrollView extends View implements ViewParent {
                     switch (scrollLimits) {
 
                         case STRICT:
-                            if (child.getLayoutParams().mExtraBottom - child.getLayoutParams().mExtraTop < getLayoutParams().getHeight()) {
+                            if (child.getLayoutParams().mExtraBottom - child.getLayoutParams().mExtraTop < getLayoutParams().getContentHeight()) {
                                 hitLimit = true;
                                 scrollOffsetY = -child.getLayoutParams().mExtraTop;
                                 scrollingBaseOffsetY = scrollOffsetY;
@@ -289,23 +300,23 @@ public class ScrollView extends View implements ViewParent {
                                 scrollOffsetY = -child.getLayoutParams().mExtraTop;
                                 scrollingBaseOffsetY = scrollOffsetY;
                                 scrollingBaseY = mouseEvent.getY();
-                            } else if (nextScrollOffsetY < getLayoutParams().getHeight() - child.getLayoutParams().mExtraBottom) {
+                            } else if (nextScrollOffsetY < getLayoutParams().getContentHeight() - child.getLayoutParams().mExtraBottom) {
                                 hitLimit = true;
-                                scrollOffsetY = getLayoutParams().getHeight() - child.getLayoutParams().getHeight();
+                                scrollOffsetY = getLayoutParams().getContentHeight() - child.getLayoutParams().getContentHeight();
                                 scrollingBaseOffsetY = scrollOffsetY;
                                 scrollingBaseY = mouseEvent.getY();
                             }
                             break;
                         case SOFT:
-                            if (child.getLayoutParams().mExtraBottom - child.getLayoutParams().mExtraTop < getLayoutParams().getHeight()) {
+                            if (child.getLayoutParams().mExtraBottom - child.getLayoutParams().mExtraTop < getLayoutParams().getContentHeight()) {
                                 if (nextScrollOffsetY <= -child.getLayoutParams().mExtraTop) {
                                     hitLimit = true;
                                     scrollOffsetY = -child.getLayoutParams().mExtraTop;
                                     scrollingBaseOffsetY = scrollOffsetY;
                                     scrollingBaseY = mouseEvent.getY();
-                                } else if (nextScrollOffsetY > getLayoutParams().getHeight() - child.getLayoutParams().mExtraBottom) {
+                                } else if (nextScrollOffsetY > getLayoutParams().getContentHeight() - child.getLayoutParams().mExtraBottom) {
                                     hitLimit = true;
-                                    scrollOffsetY = getLayoutParams().getHeight() - child.getLayoutParams().mExtraBottom;
+                                    scrollOffsetY = getLayoutParams().getContentHeight() - child.getLayoutParams().mExtraBottom;
                                     scrollingBaseOffsetY = scrollOffsetY;
                                     scrollingBaseY = mouseEvent.getY();
                                 }
@@ -315,9 +326,9 @@ public class ScrollView extends View implements ViewParent {
                                     scrollOffsetY = -child.getLayoutParams().mExtraTop;
                                     scrollingBaseOffsetY = scrollOffsetY;
                                     scrollingBaseY = mouseEvent.getY();
-                                } else if (nextScrollOffsetY < getLayoutParams().getHeight() - child.getLayoutParams().mExtraBottom) {
+                                } else if (nextScrollOffsetY < getLayoutParams().getContentHeight() - child.getLayoutParams().mExtraBottom) {
                                     hitLimit = true;
-                                    scrollOffsetY = getLayoutParams().getHeight() - child.getLayoutParams().mExtraBottom;
+                                    scrollOffsetY = getLayoutParams().getContentHeight() - child.getLayoutParams().mExtraBottom;
                                     scrollingBaseOffsetY = scrollOffsetY;
                                     scrollingBaseY = mouseEvent.getY();
                                 }
@@ -329,9 +340,9 @@ public class ScrollView extends View implements ViewParent {
                                 scrollOffsetY = -child.getLayoutParams().mExtraBottom;
                                 scrollingBaseOffsetY = scrollOffsetY;
                                 scrollingBaseY = mouseEvent.getY();
-                            } else if (nextScrollOffsetY > getLayoutParams().getHeight() - child.getLayoutParams().mExtraTop) {
+                            } else if (nextScrollOffsetY > getLayoutParams().getContentHeight() - child.getLayoutParams().mExtraTop) {
                                 hitLimit = true;
-                                scrollOffsetY = getLayoutParams().getHeight() - child.getLayoutParams().mExtraTop;
+                                scrollOffsetY = getLayoutParams().getContentHeight() - child.getLayoutParams().mExtraTop;
                                 scrollingBaseOffsetY = scrollOffsetY;
                                 scrollingBaseY = mouseEvent.getY();
                             }
@@ -349,8 +360,13 @@ public class ScrollView extends View implements ViewParent {
         }
 
         if (!used) {
-            if (child.onMouseEvent(mouseEvent.relativeTo((int) (child.layoutParams.mLeft + scrollOffsetX),
-                                                         (int) (child.layoutParams.mTop + scrollOffsetY)))) {
+            
+            if(mouseEvent.getAction() == Action.MOUSE_PRESSED) {
+                Log.log("plop");
+            }
+            
+            if (child.onMouseEvent(mouseEvent.relativeTo((int) (child.getLayoutParams().mLeft + scrollOffsetX),
+                                                         (int) (child.getLayoutParams().mTop + scrollOffsetY)))) {
                 used = true;
             } else {
                 used = super.onMouseEvent(mouseEvent);
@@ -376,12 +392,12 @@ public class ScrollView extends View implements ViewParent {
     }
 
     public Point getScrollCenter() {
-        return new Point(layoutParams.getWidth() / 2 - scrollOffsetX, layoutParams.getHeight() / 2 - scrollOffsetY);
+        return new Point(mLayoutParams.getContentWidth() / 2 - scrollOffsetX, mLayoutParams.getContentHeight() / 2 - scrollOffsetY);
     }
 
     public void setScrollCenter(Point point) {
-        scrollOffsetX = layoutParams.getWidth() / 2 - point.x;
-        scrollOffsetY = layoutParams.getHeight() / 2 - point.y;
+        scrollOffsetX = mLayoutParams.getContentWidth() / 2 - point.x;
+        scrollOffsetY = mLayoutParams.getContentHeight() / 2 - point.y;
     }
 
     public Point getScrollOffset() {

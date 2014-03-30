@@ -29,8 +29,8 @@ public class ShipDriverView extends View {
     public ShipDriverView(Ship ship, SystemEngine systemEngine) {
         
         final ShipDriver driver = systemEngine.getDriver(ship);
-        layoutParams.setLayoutWidthMeasure(LayoutMeasure.MATCH_PARENT);
-        layoutParams.setLayoutHeightMeasure(LayoutMeasure.MATCH_PARENT);
+        mLayoutParams.setLayoutWidthMeasure(LayoutMeasure.MATCH_PARENT);
+        mLayoutParams.setLayoutHeightMeasure(LayoutMeasure.MATCH_PARENT);
         
         setOnKeyListener(new OnKeyEventListener() {
 
@@ -161,9 +161,9 @@ public class ShipDriverView extends View {
             
             
             float x = mBaseMouseX;
-            float y =getLayoutParams().getHeight()- mBaseMouseY;
+            float y =getLayoutParams().getContentHeight()- mBaseMouseY;
             float cx = mCurrentMouseX;
-            float cy =getLayoutParams().getHeight()- mCurrentMouseY;
+            float cy =getLayoutParams().getContentHeight()- mCurrentMouseY;
             float maxRadius = 200;
             float deadRadius = 5;
             

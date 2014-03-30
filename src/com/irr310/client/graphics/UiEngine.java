@@ -1,15 +1,16 @@
 package com.irr310.client.graphics;
 
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.Display;
 
 import com.irr310.client.GameClient;
 import com.irr310.client.graphics.ether.activities.MainActivity;
+import com.irr310.client.graphics.ether.activities.StatusActivity;
 import com.irr310.client.input.InputEngineObserver;
 import com.irr310.common.engine.Engine;
 import com.irr310.common.engine.Observable;
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.Vec2;
+import com.irr310.i3d.Bundle;
 import com.irr310.i3d.Color;
 import com.irr310.i3d.I3dContext;
 import com.irr310.i3d.I3dContext.ContextListener;
@@ -99,7 +100,32 @@ public class UiEngine implements Engine {
 
     @Override
     public void start() {
-        mainSurface.startActivity(new Intent(MainActivity.class));
+        
+        
+        
+        
+        Bundle bundle = new Bundle(new MainActivity.MainActivityListener() {
+
+            @Override
+            public void onDone() {
+                Bundle statusBundle = new Bundle(new StatusActivity.StatusActivityListener() {
+
+                    @Override
+                    public void onQuit() {
+                        notifyQuitEvent();
+                    }
+                    
+                });
+                
+                statusSurface.startActivity(new Intent(StatusActivity.class, statusBundle));                
+            }
+            
+        });
+        
+      
+        
+        // The main activity will start the StatusActivity
+        mainSurface.startActivity(new Intent(MainActivity.class, bundle));
         context.show();
     }
 

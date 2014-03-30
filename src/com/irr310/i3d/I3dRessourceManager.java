@@ -25,6 +25,7 @@ import com.irr310.i3d.fonts.FontFactory;
 import com.irr310.i3d.view.BorderParams.CornerStyle;
 import com.irr310.i3d.view.Button;
 import com.irr310.i3d.view.DrawableView;
+import com.irr310.i3d.view.ImageButton;
 import com.irr310.i3d.view.LayoutParams.LayoutGravity;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 import com.irr310.i3d.view.LinearLayout;
@@ -144,6 +145,8 @@ public class I3dRessourceManager {
             view = NewRect(element, ressourceFileCache.getFileId());
         } else if (nodeName.equals("Button")) {
             view = NewButton(element, ressourceFileCache.getFileId());
+        } else if (nodeName.equals("ImageButton")) {
+            view = NewImageButton(element, ressourceFileCache.getFileId());
         } else if (nodeName.equals("Triangle")) {
             view = NewTriangle(element, ressourceFileCache.getFileId());
         } else if (nodeName.equals("Waiter")) {
@@ -574,6 +577,40 @@ public class I3dRessourceManager {
 
         return button;
     }
+    
+    private ImageButton NewImageButton(Element element, String fileId) {
+        ImageButton drawableView = new ImageButton();
+
+        String ref = element.getAttribute("i3d:ref");
+        
+        if (ref == null || ref.isEmpty()) {
+            throw new RessourceLoadingException("Missing 'ref' attribute for ImageButton in file '" + fileId+ "'");
+        }
+        
+        drawableView.setDrawable(loadDrawable(ref));
+        
+        checkStyles(element, drawableView);
+
+        NamedNodeMap attributes = element.getAttributes();
+        for (int i = 0; i < attributes.getLength(); i++) {
+            Node item = attributes.item(i);
+            Attr attr = (Attr) item;
+            String attrName = attr.getName();
+            String attrValue = attr.getValue();
+
+            ViewFactory viewFactory = new ViewFactory(drawableView);
+
+            if (checkViewAttrs(attrName, attrValue, fileId, viewFactory)) {
+            } else if (attrName.equals("i3d:ref")) {
+                // Already processed
+            } else {
+                throw new RessourceLoadingException("Unknown attrib '" + attrName + "=" + attrValue + "' for DrawableView");
+            }
+        }
+
+        return drawableView;
+    }
+    
 
     private void checkStyles(Element element, View view) {
         Style idleStyle = loadStyle(element.getAttribute("i3d:style")).duplicate();
@@ -1083,9 +1120,12 @@ public class I3dRessourceManager {
         Drawable drawable = null;
 
         drawable = getDrawable(drawableId);
-        if (drawable == null) {
+        if (drawable == null && !drawableId.isEmpty()) {
 
             String[] drawableParts = drawableId.split("@");
+            if(drawableParts.length != 2) {
+                throw new RessourceLoadingException("Fail to load drawable '" + drawableId + "' : no @ found");
+            }
             String fileId = drawableParts[1];
 
             parseDrawableFile(fileId);
@@ -1094,7 +1134,7 @@ public class I3dRessourceManager {
         }
 
         if (drawable == null) {
-            Log.warn("Unknown drawable '" + drawableId);
+            Log.warn("Unknown drawable '" + drawableId+"'");
             SolidDrawable mockdrawable = new SolidDrawable();
             mockdrawable.setColor(Color.pink);
             drawable = mockdrawable;

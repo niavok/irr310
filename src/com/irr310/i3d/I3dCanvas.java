@@ -170,6 +170,8 @@ public class I3dCanvas {
     }
     
     public boolean draw(Graphics g) {
+        Color.resetSeed();
+        
         if(pauseDisplay || Display.isCloseRequested()) {
             return false;
         }

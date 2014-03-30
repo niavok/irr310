@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.RessourceLoadingException;
+import com.irr310.i3d.Color;
 import com.irr310.i3d.Graphics;
 import com.irr310.i3d.Style;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
@@ -21,8 +22,8 @@ public abstract class View {
      * @see #getParent()
      */
     protected ViewParent mParent;
-    protected LayoutParams layoutParams;
-    protected BorderParams borderParams;
+    protected LayoutParams mLayoutParams;
+    private BorderParams borderParams;
 
     private String id = "";
     private OnClickListener onClickListener = null;
@@ -44,7 +45,7 @@ public abstract class View {
     }
     
     public View() {
-        layoutParams = new LayoutParams();
+        mLayoutParams = new LayoutParams();
         borderParams = new BorderParams();
         styleRenderer = new StyleRenderer(this);
     }
@@ -56,11 +57,36 @@ public abstract class View {
 
         GL11.glPushMatrix();
         // GL11.glTranslatef(layout.offset.x, layout.offset.y, 0);
+        g.setColor(Color.randomLightOpaqueColor());
+//        g.drawFilledRectangle(mLayoutParams.mLeft, mLayoutParams.mTop, mLayoutParams.getTotalWidth(), mLayoutParams.getTotalHeight());
         
-        GL11.glTranslatef(layoutParams.mLeft, layoutParams.mTop, 0);
-        g.pushUiTranslation(new Point(layoutParams.mLeft, layoutParams.mTop));
+        // Margin
+        float tranlationXIncludingMargin = mLayoutParams.mLeft+ mLayoutParams.computeMesure(mLayoutParams.getLayoutMarginLeft());
+        float tranlationYIncludingMargin = mLayoutParams.mTop + mLayoutParams.computeMesure(mLayoutParams.getLayoutMarginTop());
+        GL11.glTranslatef(tranlationXIncludingMargin, tranlationYIncludingMargin, 0);
+        g.pushUiTranslation(new Point(tranlationXIncludingMargin, tranlationYIncludingMargin));
+        g.setColor(Color.randomDarkOpaqueColor());
+//        g.drawFilledRectangle(0, 0, layoutParams.getBorderWidth(), layoutParams.getBorderHeight());
         styleRenderer.draw(g);
+        
+        
+        
+        //Padding
+        float tranlationXPadding = mLayoutParams.computeMesure(mLayoutParams.getLayoutPaddingLeft());
+        float tranlationYPadding= mLayoutParams.computeMesure(mLayoutParams.getLayoutPaddingTop());
+        
+        GL11.glTranslatef(tranlationXPadding, tranlationYPadding, 0);
+        g.pushUiTranslation(new Point(tranlationXPadding, tranlationYPadding));
+        
+        
+        g.setColor(Color.randomLightOpaqueColor());
+//        g.drawFilledRectangle(0, 0, mLayoutParams.getContentWidth(), mLayoutParams.getContentHeight());
         onDraw(g);
+        
+        // Pop padding
+        g.popUiTranslation();
+
+        // Pop margin
         g.popUiTranslation();
         
         
@@ -70,48 +96,48 @@ public abstract class View {
     public abstract void onDraw(Graphics g);
 
     public void measure() {
-        if (layoutParams.getLayoutWidthMeasure() == LayoutMeasure.FIXED) {
-            if (!layoutParams.getMeasurePoint().getX().isRelative()) {
-                layoutParams.mContentWidth = layoutParams.computeMesure(layoutParams.getMeasurePoint().getX());
+        if (mLayoutParams.getLayoutWidthMeasure() == LayoutMeasure.FIXED) {
+            if (!mLayoutParams.getMeasurePoint().getX().isRelative()) {
+                mLayoutParams.mMeasuredContentWidth = mLayoutParams.computeMesure(mLayoutParams.getMeasurePoint().getX());
             }
         }
 
-        if (layoutParams.getLayoutHeightMeasure() == LayoutMeasure.FIXED) {
-            if (!layoutParams.getMeasurePoint().getY().isRelative()) {
-                layoutParams.mContentHeight = layoutParams.computeMesure(layoutParams.getMeasurePoint().getY());
+        if (mLayoutParams.getLayoutHeightMeasure() == LayoutMeasure.FIXED) {
+            if (!mLayoutParams.getMeasurePoint().getY().isRelative()) {
+                mLayoutParams.mMeasuredContentHeight = mLayoutParams.computeMesure(mLayoutParams.getMeasurePoint().getY());
             }
         }
 
         // Set margin
-        if (!layoutParams.getLayoutMarginTop().isRelative()) {
-            layoutParams.mContentHeight += layoutParams.computeMesure(layoutParams.getLayoutMarginTop());
+        if (!mLayoutParams.getLayoutMarginTop().isRelative()) {
+            mLayoutParams.mMeasuredContentHeight += mLayoutParams.computeMesure(mLayoutParams.getLayoutMarginTop());
         }
-        if (!layoutParams.getLayoutMarginBottom().isRelative()) {
-            layoutParams.mContentHeight += layoutParams.computeMesure(layoutParams.getLayoutMarginBottom());
+        if (!mLayoutParams.getLayoutMarginBottom().isRelative()) {
+            mLayoutParams.mMeasuredContentHeight += mLayoutParams.computeMesure(mLayoutParams.getLayoutMarginBottom());
         }
-        if (!layoutParams.getLayoutMarginLeft().isRelative()) {
-            layoutParams.mContentWidth += layoutParams.computeMesure(layoutParams.getLayoutMarginLeft());
+        if (!mLayoutParams.getLayoutMarginLeft().isRelative()) {
+            mLayoutParams.mMeasuredContentWidth += mLayoutParams.computeMesure(mLayoutParams.getLayoutMarginLeft());
         }
-        if (!layoutParams.getLayoutMarginRight().isRelative()) {
-            layoutParams.mContentWidth += layoutParams.computeMesure(layoutParams.getLayoutMarginRight());
+        if (!mLayoutParams.getLayoutMarginRight().isRelative()) {
+            mLayoutParams.mMeasuredContentWidth += mLayoutParams.computeMesure(mLayoutParams.getLayoutMarginRight());
         }
 
         // Set padding
-        if (layoutParams.getLayoutHeightMeasure() != LayoutMeasure.FIXED) {
-            if (!layoutParams.getLayoutPaddingTop().isRelative()) {
-                layoutParams.mContentHeight += layoutParams.computeMesure(layoutParams.getLayoutPaddingTop());
+        if (mLayoutParams.getLayoutHeightMeasure() != LayoutMeasure.FIXED) {
+            if (!mLayoutParams.getLayoutPaddingTop().isRelative()) {
+                mLayoutParams.mMeasuredContentHeight += mLayoutParams.computeMesure(mLayoutParams.getLayoutPaddingTop());
             }
-            if (!layoutParams.getLayoutPaddingBottom().isRelative()) {
-                layoutParams.mContentHeight += layoutParams.computeMesure(layoutParams.getLayoutPaddingBottom());
+            if (!mLayoutParams.getLayoutPaddingBottom().isRelative()) {
+                mLayoutParams.mMeasuredContentHeight += mLayoutParams.computeMesure(mLayoutParams.getLayoutPaddingBottom());
             }
         }
         
-        if (layoutParams.getLayoutWidthMeasure() != LayoutMeasure.FIXED) {
-            if (!layoutParams.getLayoutPaddingLeft().isRelative()) {
-                layoutParams.mContentWidth += layoutParams.computeMesure(layoutParams.getLayoutPaddingLeft());
+        if (mLayoutParams.getLayoutWidthMeasure() != LayoutMeasure.FIXED) {
+            if (!mLayoutParams.getLayoutPaddingLeft().isRelative()) {
+                mLayoutParams.mMeasuredContentWidth += mLayoutParams.computeMesure(mLayoutParams.getLayoutPaddingLeft());
             }
-            if (!layoutParams.getLayoutPaddingRight().isRelative()) {
-                layoutParams.mContentWidth += layoutParams.computeMesure(layoutParams.getLayoutPaddingRight());
+            if (!mLayoutParams.getLayoutPaddingRight().isRelative()) {
+                mLayoutParams.mMeasuredContentWidth += mLayoutParams.computeMesure(mLayoutParams.getLayoutPaddingRight());
             }
         }
 
@@ -119,8 +145,8 @@ public abstract class View {
     }
 
     public void layout(float l, float t, float r, float b) {
-        boolean changed = layoutParams.setFrame(l, t, r, b);
-        layoutParams.setExtrasFrame(l, t, r, b);
+        boolean changed = mLayoutParams.setFrame(l, t, r, b);
+        mLayoutParams.setExtrasFrame(l, t, r, b);
         // if (changed) {
         onLayout(l, t, r, b);
         // }
@@ -141,7 +167,7 @@ public abstract class View {
     public abstract View duplicate();
 
     public LayoutParams getLayoutParams() {
-        return layoutParams;
+        return mLayoutParams;
     }
     
     public void setState(ViewState state) {
@@ -188,7 +214,7 @@ public abstract class View {
     }
 
     protected void setLayout(LayoutParams layout) {
-        this.layoutParams = layout;
+        mLayoutParams = layout;
     }
 
     protected void setBorder(BorderParams border) {

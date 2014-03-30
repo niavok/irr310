@@ -1,5 +1,6 @@
 package com.irr310.client.graphics.ether.activities;
 
+import com.irr310.client.graphics.ether.activities.StatusActivity.StatusActivityListener;
 import com.irr310.common.tools.Log;
 import com.irr310.i3d.Bundle;
 import com.irr310.i3d.I3dContext;
@@ -21,12 +22,15 @@ public class MainActivity extends Activity {
     private boolean axisX;
     private float lastOffset;
     private float lastLastOffset;
+    private MainActivityListener mListener;
 
     @Override
     public void onCreate(Bundle bundle) {
         setContentView("main@layout/main");
         setStackable(false);
         //Log.trace("onCreate");
+        mListener = (MainActivityListener) bundle.getObject();
+        
         mobileLogoPart = (Triangle) findViewById("logoRedPart@layout/logo");
         animationMesure = new Measure(0, true, Axis.VERTICAL);
         I3dContext.getInstance().preload();
@@ -86,7 +90,12 @@ public class MainActivity extends Activity {
         }
         if(getContext().isPreloaded())  {
             startActivity(new Intent(MainMenuActivity.class));
+            mListener.onDone();
         }
+    }
+    
+    public interface MainActivityListener {
+        void onDone();
     }
 
 }

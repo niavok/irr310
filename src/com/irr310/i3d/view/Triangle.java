@@ -57,9 +57,9 @@ public class Triangle extends View {
     @Override
     public void onLayout(float l, float t, float r, float b) {
         points = new Point[3];
-        points[0] = new Point(layoutParams.computeMesure(mesures[0].getX()), layoutParams.computeMesure(mesures[0].getY()));
-        points[1] = new Point(layoutParams.computeMesure(mesures[1].getX()), layoutParams.computeMesure(mesures[1].getY()));
-        points[2] = new Point(layoutParams.computeMesure(mesures[2].getX()), layoutParams.computeMesure(mesures[2].getY()));
+        points[0] = new Point(mLayoutParams.computeMesure(mesures[0].getX()), mLayoutParams.computeMesure(mesures[0].getY()));
+        points[1] = new Point(mLayoutParams.computeMesure(mesures[1].getX()), mLayoutParams.computeMesure(mesures[1].getY()));
+        points[2] = new Point(mLayoutParams.computeMesure(mesures[2].getX()), mLayoutParams.computeMesure(mesures[2].getY()));
     }
 
     @Override

@@ -6,7 +6,7 @@
     <string name="continueGameButton">Continue</string>
     <string name="joinGameButton">Join game</string>
     
-    
+    <string name="settingsButton">[down@icons]</string>
     
     <!-- Board -->
     <string name="boardBoardTitle">[board@icons] Board</string>

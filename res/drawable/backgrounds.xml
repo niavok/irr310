@@ -8,6 +8,9 @@
 <solid
     name="lightBlock"
     i3d:color="lightBlock@color" />
+ <solid
+    name="blackBlock"
+    i3d:color="black@color" />
 <solid
     name="buttonSelectedBackground"
     i3d:color="logoSecondary@color" />

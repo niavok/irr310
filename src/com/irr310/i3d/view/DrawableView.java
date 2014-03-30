@@ -2,6 +2,7 @@ package com.irr310.i3d.view;
 
 import com.irr310.common.tools.Log;
 import com.irr310.i3d.Graphics;
+import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 import com.irr310.i3d.view.drawable.Drawable;
 
 public class DrawableView extends View {
@@ -15,16 +16,21 @@ public class DrawableView extends View {
     @Override
     public void onDraw(Graphics g) {
         drawable.setGraphics(g);
-        drawable.setBounds(0, 0, layoutParams.getWidth(), layoutParams.getHeight());
+        drawable.setBounds(0, 0, getLayoutParams().getContentWidth(), getLayoutParams().getContentHeight());
         drawable.draw();
     }
 
     @Override
+    protected void duplicateTo(View view) {
+        super.duplicateTo(view);
+        DrawableView myView = (DrawableView) view;
+        myView.setDrawable(drawable);
+    }
+    
+    @Override
     public View duplicate() {
         DrawableView view = new DrawableView();
-        view.setLayout(getLayoutParams());
-        view.setBorder(getBorderParams().duplicate());
-        view.setDrawable(drawable);
+        duplicateTo(view);
         return view;
     }
 

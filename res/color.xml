@@ -7,6 +7,7 @@
     <color name="debugBlue">#0000ff</color>
     <color name="selection">#f0bd4eff</color>
     <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
     <color name="logoPrimary">#000000</color>
     <color name="logoSecondary">#800000</color>
     <color name="borderButtonBase">#5f5f5fff</color>
@@ -17,6 +18,11 @@
     <color name="lightBlock">#f2f2f2c8</color>
     <color name="separatorBase">#00000000</color>
     <color name="separatorTop">#000000ff</color>
+    
+    <color name="lightSeparatorBase">#ffffff00</color>
+    <color name="lightSeparatorTop">#ffffffff</color>
+    
+    <color name="status">#ccccccff</color>
     
     <!-- Ressources colors -->
     <color name="staters">#f1ce11ff</color>

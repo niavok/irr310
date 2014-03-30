@@ -113,8 +113,8 @@ public class ShipCameraView extends View {
 
     private void reshape() {
         
-        layoutParams.setLayoutWidthMeasure(LayoutMeasure.MATCH_PARENT);
-        layoutParams.setLayoutHeightMeasure(LayoutMeasure.MATCH_PARENT);
+        mLayoutParams.setLayoutWidthMeasure(LayoutMeasure.MATCH_PARENT);
+        mLayoutParams.setLayoutHeightMeasure(LayoutMeasure.MATCH_PARENT);
     }
         
         

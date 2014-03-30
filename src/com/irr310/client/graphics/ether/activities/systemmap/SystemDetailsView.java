@@ -43,8 +43,8 @@ public class SystemDetailsView extends RelativeLayout {
         systemCircleView.reshape();
         
         
-        layoutParams.setLayoutWidthMeasure(LayoutMeasure.MATCH_PARENT);
-        layoutParams.setLayoutHeightMeasure(LayoutMeasure.MATCH_PARENT);
+        mLayoutParams.setLayoutWidthMeasure(LayoutMeasure.MATCH_PARENT);
+        mLayoutParams.setLayoutHeightMeasure(LayoutMeasure.MATCH_PARENT);
         
         
         

@@ -51,13 +51,13 @@ public class SystemDetailCircleView extends RelativeLayout {
     
     void reshape() {
         
-        layoutParams.setLayoutWidthMeasure(LayoutMeasure.MATCH_PARENT);
-        layoutParams.setLayoutHeightMeasure(LayoutMeasure.MATCH_PARENT);
+        mLayoutParams.setLayoutWidthMeasure(LayoutMeasure.MATCH_PARENT);
+        mLayoutParams.setLayoutHeightMeasure(LayoutMeasure.MATCH_PARENT);
         
-        layoutParams.setMarginLeftMeasure(new Measure(20, false, Axis.HORIZONTAL));
-        layoutParams.setMarginTopMeasure(new Measure(20, false, Axis.HORIZONTAL));
-        layoutParams.setMarginRightMeasure(new Measure(20, false, Axis.HORIZONTAL));
-        layoutParams.setMarginBottomMeasure(new Measure(20, false, Axis.HORIZONTAL));
+        mLayoutParams.setMarginLeftMeasure(new Measure(20, false, Axis.HORIZONTAL));
+        mLayoutParams.setMarginTopMeasure(new Measure(20, false, Axis.HORIZONTAL));
+        mLayoutParams.setMarginRightMeasure(new Measure(20, false, Axis.HORIZONTAL));
+        mLayoutParams.setMarginBottomMeasure(new Measure(20, false, Axis.HORIZONTAL));
     }
 
     @Override
@@ -75,7 +75,7 @@ public class SystemDetailCircleView extends RelativeLayout {
         g.setColor(color);
         //g.drawFilledRectangle(0, 0, zoomedSize, zoomedSize);
         
-        float size = Math.min(layoutParams.getWidth(), layoutParams.getHeight());
+        float size = Math.min(mLayoutParams.getContentWidth(), mLayoutParams.getContentHeight());
         float radius = size / 2f;
         
         if(getState() == ViewState.SELECTED) {
@@ -166,7 +166,7 @@ public class SystemDetailCircleView extends RelativeLayout {
 
     @Override
     public void onLayout(float l, float t, float r, float b) {
-        float size = Math.min(layoutParams.getWidth(), layoutParams.getHeight());
+        float size = Math.min(mLayoutParams.getContentWidth(), mLayoutParams.getContentHeight());
         offset = size/2;
         scale = (float) (size / (2*system.getRadius()));
         

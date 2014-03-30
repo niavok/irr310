@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    i3d:id="main"
+    i3d:layout_width="match_parent"
+    i3d:layout_height="match_parent"
+    i3d:layout_gravity_y="center" >
+
+    <LinearLayout
+        i3d:layout_width="match_parent"
+        i3d:layout_height="wrap_content"
+        i3d:layout_gravity_y="center"
+        i3d:orientation="horizontal" >
+
+        <Drawable
+            i3d:layout_width="30%"
+            i3d:layout_height="0.5px"
+            i3d:layout_marginLeft="0px"
+            i3d:layout_marginRight="0px"
+            i3d:ref="leftLightSeparatorH@ui" />
+
+        <Drawable
+            i3d:layout_width="40%"
+            i3d:layout_height="0.5px"
+            i3d:ref="centerLightSeparatorH@ui" />
+
+        <Drawable
+            i3d:layout_width="30%"
+            i3d:layout_height="0.5px"
+            i3d:ref="rightLightSeparatorH@ui" />
+    </LinearLayout>
+
+</RelativeLayout>

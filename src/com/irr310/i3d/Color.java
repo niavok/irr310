@@ -17,6 +17,7 @@
 
 package com.irr310.i3d;
 
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,11 +33,18 @@ import fr.def.iss.vd2.lib_v3d.V3DColor;
  */
 public class Color {
 
+    
+    public static Random random = new Random();
+    
+    public static void resetSeed() {
+        random.setSeed(1000);
+    }
+    
     public static Color randomLightOpaqueColor() {
 
-        float r = (float) Math.random();
-        float g = (float) Math.random();
-        float b = (float) Math.random();
+        float r = random.nextFloat();
+        float g = random.nextFloat();
+        float b = random.nextFloat();
 
         if (r + g + b < 0.3) {
             return randomLightOpaqueColor();
@@ -48,9 +56,9 @@ public class Color {
     
     public static Color randomDarkOpaqueColor() {
 
-        float r = (float) Math.random();
-        float g = (float) Math.random();
-        float b = (float) Math.random();
+        float r = random.nextFloat();
+        float g = random.nextFloat();
+        float b = random.nextFloat();
 
         if (r + g + b > 0.7) {
             return randomDarkOpaqueColor();

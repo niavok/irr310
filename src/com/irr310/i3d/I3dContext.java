@@ -3,9 +3,12 @@ package com.irr310.i3d;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.irr310.client.graphics.SettingsPopupActivity;
+import com.irr310.client.graphics.SurfaceFactory;
 import com.irr310.i3d.fonts.Font;
 import com.irr310.i3d.fonts.FontFactory;
 import com.irr310.i3d.scene.I3dSceneManager;
+import com.irr310.i3d.view.Activity;
 import com.irr310.i3d.view.drawable.BitmapFactory;
 import com.irr310.server.Time;
 import com.irr310.server.Time.Timestamp;
@@ -25,6 +28,8 @@ public class I3dContext {
     private boolean preloaded;
     private ContextListener listener;
     private I3dSceneManager sceneManager = new I3dSceneManager();
+    private SettingsPopupActivity mPopupView;
+    private Surface mPopupSurface;
     
     public static I3dContext getInstance() {
         return instance;
@@ -38,10 +43,16 @@ public class I3dContext {
         canvas = new I3dCanvas(this, title, width, height, iconPath);
         graphics = Graphics.getInstance();
         I3dRessourceManager.getInstance().setGraphics(graphics);
+
+        
     }
 
     public void start() {
         canvas.init();
+        mPopupSurface = SurfaceFactory.buildFullscreenSurface(this);
+        mPopupSurface.setBackgroundColor(Color.transparent);
+        mPopupSurface.configure(canvas.getWidth(), canvas.getHeight());
+        surfaceList.add(mPopupSurface);
     }
 
     public I3dCanvas getCanvas() {
@@ -49,7 +60,11 @@ public class I3dContext {
     }
 
     public void addSurface(Surface surface) {
+        
+        surfaceList.remove(mPopupSurface);
         surfaceList.add(surface);
+        surfaceList.add(mPopupSurface);
+        
         surface.configure(canvas.getWidth(), canvas.getHeight());
     }
 
@@ -89,6 +104,9 @@ public class I3dContext {
     }
 
     public Font getDefaultFont() {
+        if(defaultFont ==null) {
+            defaultFont = I3dRessourceManager.getInstance().loadFont("default@fonts");
+        }
         return defaultFont;
     }
 
@@ -101,7 +119,8 @@ public class I3dContext {
             if (surface.contains(mouseEvent.getX(), mouseEvent.getY()) ||mouseEvent.getAction() == Action.MOUSE_DRAGGED) {
                 V3DMouseEvent topLeftEvent = new V3DMouseEvent(mouseEvent.getAction(), mouseEvent.getX() - surface.x, (surface.y + surface.height)
                         - mouseEvent.getY(), mouseEvent.getButton(), mouseEvent.getClickCount());
-
+                topLeftEvent.setParentEvent(mouseEvent);
+                
                 surface.onMouseEvent(topLeftEvent);
                 break;
             }
@@ -149,6 +168,7 @@ public class I3dContext {
         TextureManager.clearCache();
         FontFactory.clearCache();
         BitmapFactory.clearCache();
+        defaultFont = null;
     }
 
     public void reloadUi() {
@@ -159,6 +179,13 @@ public class I3dContext {
  
     public I3dSceneManager getSceneManager() {
         return sceneManager;
+    }
+
+    public void setPopUpActivity(Intent popupActivity, I3dVec2 popupPreferredPosition) {
+        mPopupSurface.setPopupPreferredPosition(popupPreferredPosition);
+        mPopupSurface.startActivity(popupActivity);
+        
+        
     }
     
     

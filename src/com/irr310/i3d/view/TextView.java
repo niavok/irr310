@@ -191,8 +191,8 @@ public class TextView extends View {
 
     @Override
     public void onLayout(float l, float t, float r, float b) {
-        float height = layoutParams.getHeight();
-        float width = layoutParams.getWidth();
+        float height = mLayoutParams.getContentHeight();
+        float width = mLayoutParams.getContentWidth();
 
         // Horizontal gravity
         if (gravity == Gravity.TOP_LEFT || gravity == Gravity.CENTER_LEFT || gravity == Gravity.TOP_LEFT) {
@@ -210,6 +210,10 @@ public class TextView extends View {
             offsetY = height - innerHeight;
         } else { // Center
             offsetY = (height - innerHeight) / 2;
+        }
+        
+        if(text.equals("Antares")) {
+            Log.log("plop");
         }
 
     }
@@ -266,37 +270,37 @@ public class TextView extends View {
         // Log.trace("measuredWidth "+measuredWidth);
         // Log.trace("measuredHeight "+measuredHeight);
 
-        if (!layoutParams.getLayoutMarginTop().isRelative()) {
-            measuredHeight += layoutParams.computeMesure(layoutParams.getLayoutMarginTop());
+        if (!mLayoutParams.getLayoutMarginTop().isRelative()) {
+            measuredHeight += mLayoutParams.computeMesure(mLayoutParams.getLayoutMarginTop());
         }
-        if (!layoutParams.getLayoutMarginBottom().isRelative()) {
-            measuredHeight += layoutParams.computeMesure(layoutParams.getLayoutMarginBottom());
+        if (!mLayoutParams.getLayoutMarginBottom().isRelative()) {
+            measuredHeight += mLayoutParams.computeMesure(mLayoutParams.getLayoutMarginBottom());
         }
-        if (!layoutParams.getLayoutMarginLeft().isRelative()) {
-            measuredWidth += layoutParams.computeMesure(layoutParams.getLayoutMarginLeft());
+        if (!mLayoutParams.getLayoutMarginLeft().isRelative()) {
+            measuredWidth += mLayoutParams.computeMesure(mLayoutParams.getLayoutMarginLeft());
         }
-        if (!layoutParams.getLayoutMarginRight().isRelative()) {
-            measuredWidth += layoutParams.computeMesure(layoutParams.getLayoutMarginRight());
-        }
-
-        if (!layoutParams.getLayoutPaddingTop().isRelative()) {
-            measuredHeight += layoutParams.computeMesure(layoutParams.getLayoutPaddingTop());
-        }
-        if (!layoutParams.getLayoutPaddingBottom().isRelative()) {
-            measuredHeight += layoutParams.computeMesure(layoutParams.getLayoutPaddingBottom());
-        }
-        if (!layoutParams.getLayoutPaddingLeft().isRelative()) {
-            measuredWidth += layoutParams.computeMesure(layoutParams.getLayoutPaddingLeft());
-        }
-        if (!layoutParams.getLayoutPaddingRight().isRelative()) {
-            measuredWidth += layoutParams.computeMesure(layoutParams.getLayoutPaddingRight());
+        if (!mLayoutParams.getLayoutMarginRight().isRelative()) {
+            measuredWidth += mLayoutParams.computeMesure(mLayoutParams.getLayoutMarginRight());
         }
 
-        if (layoutParams.getLayoutWidthMeasure() != LayoutMeasure.FIXED || layoutParams.getMeasurePoint().getX().isRelative()) {
-            layoutParams.mContentWidth = measuredWidth;
+        if (!mLayoutParams.getLayoutPaddingTop().isRelative()) {
+            measuredHeight += mLayoutParams.computeMesure(mLayoutParams.getLayoutPaddingTop());
         }
-        if (layoutParams.getLayoutHeightMeasure() != LayoutMeasure.FIXED || layoutParams.getMeasurePoint().getY().isRelative()) {
-            layoutParams.mContentHeight = measuredHeight;
+        if (!mLayoutParams.getLayoutPaddingBottom().isRelative()) {
+            measuredHeight += mLayoutParams.computeMesure(mLayoutParams.getLayoutPaddingBottom());
+        }
+        if (!mLayoutParams.getLayoutPaddingLeft().isRelative()) {
+            measuredWidth += mLayoutParams.computeMesure(mLayoutParams.getLayoutPaddingLeft());
+        }
+        if (!mLayoutParams.getLayoutPaddingRight().isRelative()) {
+            measuredWidth += mLayoutParams.computeMesure(mLayoutParams.getLayoutPaddingRight());
+        }
+
+        if (mLayoutParams.getLayoutWidthMeasure() != LayoutMeasure.FIXED || mLayoutParams.getMeasurePoint().getX().isRelative()) {
+            mLayoutParams.mMeasuredContentWidth = measuredWidth;
+        }
+        if (mLayoutParams.getLayoutHeightMeasure() != LayoutMeasure.FIXED || mLayoutParams.getMeasurePoint().getY().isRelative()) {
+            mLayoutParams.mMeasuredContentHeight = measuredHeight;
         }
     }
 }

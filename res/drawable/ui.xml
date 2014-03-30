@@ -10,9 +10,25 @@
         i3d:startColor="separatorTop@color"
         i3d:stopColor="separatorBase@color"
         i3d:angle="90" />
-
+        
     <solid
         name="centerSeparatorH"
         i3d:color="separatorTop@color" />
 
+    <solid
+        name="centerLightSeparatorH"
+        i3d:color="lightSeparatorTop@color" />
+        
+   	<gradient
+        name="leftLightSeparatorH"
+        i3d:startColor="lightSeparatorBase@color"
+        i3d:stopColor="lightSeparatorTop@color"
+        i3d:angle="90" />
+    <gradient
+        name="rightLightSeparatorH"
+        i3d:startColor="lightSeparatorTop@color"
+        i3d:stopColor="lightSeparatorBase@color"
+        i3d:angle="90" />
+
+    
 </drawables>

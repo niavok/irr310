@@ -59,6 +59,19 @@
         <item name="i3d:background">lightBlock@backgrounds</item>
     </style>
 
+	<style name="blackBlock">
+        <item name="i3d:borderSize">0px</item>
+        <item name="i3d:cornerLeftTopStyle">bevel</item>
+        <item name="i3d:cornerLeftTopSize">10px</item>
+        <item name="i3d:cornerRightBottomStyle">bevel</item>
+        <item name="i3d:cornerRightBottomSize">10px</item>
+        <item name="i3d:layout_paddingLeft">25px</item>
+        <item name="i3d:layout_paddingRight">25px</item>
+        <item name="i3d:layout_paddingTop">15px</item>
+        <item name="i3d:layout_paddingBottom">5px</item>
+        <item name="i3d:background">blackBlock@backgrounds</item>
+    </style>
+
     <style name="selectedLightBlock" parent="lightBlock@styles">
         <item name="i3d:borderSize">3px</item>
         <item name="i3d:borderColor">selection@color</item>

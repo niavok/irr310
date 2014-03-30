@@ -34,53 +34,53 @@ public class LinearLayout extends ViewGroup {
         if(orientation == LayoutOrientation.HORIZONTAL) {
             for (View view : children) {
                 view.measure();
-                measuredWidth += view.getLayoutParams().mContentWidth;
-                if(view.getLayoutParams().mContentHeight > measuredHeight) {
-                    measuredHeight = view.getLayoutParams().mContentHeight;
+                measuredWidth += view.getLayoutParams().mMeasuredContentWidth;
+                if(view.getLayoutParams().mMeasuredContentHeight > measuredHeight) {
+                    measuredHeight = view.getLayoutParams().mMeasuredContentHeight;
                 }
             }
         } else {
             for (View view : children) {
                 view.measure();
-                measuredHeight += view.getLayoutParams().mContentHeight;
-                if(view.getLayoutParams().mContentWidth > measuredWidth) {
-                    measuredWidth = view.getLayoutParams().mContentWidth;
+                measuredHeight += view.getLayoutParams().mMeasuredContentHeight;
+                if(view.getLayoutParams().mMeasuredContentWidth > measuredWidth) {
+                    measuredWidth = view.getLayoutParams().mMeasuredContentWidth;
                 }
             }
         }
         
-        if(!layoutParams.getLayoutMarginTop().isRelative()) {
-            measuredHeight +=   layoutParams.computeMesure(layoutParams.getLayoutMarginTop());  
+        if(!getLayoutParams().getLayoutMarginTop().isRelative()) {
+            measuredHeight +=   mLayoutParams.computeMesure(mLayoutParams.getLayoutMarginTop());  
         }
-        if(!layoutParams.getLayoutMarginBottom().isRelative()) {
-            measuredHeight +=   layoutParams.computeMesure(layoutParams.getLayoutMarginBottom());  
+        if(!mLayoutParams.getLayoutMarginBottom().isRelative()) {
+            measuredHeight +=   mLayoutParams.computeMesure(mLayoutParams.getLayoutMarginBottom());  
         }
-        if(!layoutParams.getLayoutMarginLeft().isRelative()) {
-            measuredWidth +=   layoutParams.computeMesure(layoutParams.getLayoutMarginLeft());  
+        if(!mLayoutParams.getLayoutMarginLeft().isRelative()) {
+            measuredWidth +=   mLayoutParams.computeMesure(mLayoutParams.getLayoutMarginLeft());  
         }
-        if(!layoutParams.getLayoutMarginRight().isRelative()) {
-            measuredWidth +=   layoutParams.computeMesure(layoutParams.getLayoutMarginRight());  
+        if(!mLayoutParams.getLayoutMarginRight().isRelative()) {
+            measuredWidth +=   mLayoutParams.computeMesure(mLayoutParams.getLayoutMarginRight());  
         }
         
-        if(!layoutParams.getLayoutPaddingTop().isRelative()) {
-            measuredHeight +=   layoutParams.computeMesure(layoutParams.getLayoutPaddingTop());  
+        if(!mLayoutParams.getLayoutPaddingTop().isRelative()) {
+            measuredHeight +=   mLayoutParams.computeMesure(mLayoutParams.getLayoutPaddingTop());  
         }
-        if(!layoutParams.getLayoutPaddingBottom().isRelative()) {
-            measuredHeight +=   layoutParams.computeMesure(layoutParams.getLayoutPaddingBottom());  
+        if(!mLayoutParams.getLayoutPaddingBottom().isRelative()) {
+            measuredHeight +=   mLayoutParams.computeMesure(mLayoutParams.getLayoutPaddingBottom());  
         }
-        if(!layoutParams.getLayoutPaddingLeft().isRelative()) {
-            measuredWidth +=   layoutParams.computeMesure(layoutParams.getLayoutPaddingLeft());  
+        if(!mLayoutParams.getLayoutPaddingLeft().isRelative()) {
+            measuredWidth +=   mLayoutParams.computeMesure(mLayoutParams.getLayoutPaddingLeft());  
         }
-        if(!layoutParams.getLayoutPaddingRight().isRelative()) {
-            measuredWidth +=   layoutParams.computeMesure(layoutParams.getLayoutPaddingRight());  
+        if(!mLayoutParams.getLayoutPaddingRight().isRelative()) {
+            measuredWidth +=   mLayoutParams.computeMesure(mLayoutParams.getLayoutPaddingRight());  
         }
         
 
-        if(layoutParams.getLayoutWidthMeasure() != LayoutMeasure.FIXED || layoutParams.getMeasurePoint().getX().isRelative()) {
-            layoutParams.mContentWidth = measuredWidth;
+        if(mLayoutParams.getLayoutWidthMeasure() != LayoutMeasure.FIXED || mLayoutParams.getMeasurePoint().getX().isRelative()) {
+            mLayoutParams.mMeasuredContentWidth = measuredWidth;
         }
-        if(layoutParams.getLayoutHeightMeasure() != LayoutMeasure.FIXED || layoutParams.getMeasurePoint().getY().isRelative()) {
-            layoutParams.mContentHeight = measuredHeight;
+        if(mLayoutParams.getLayoutHeightMeasure() != LayoutMeasure.FIXED || mLayoutParams.getMeasurePoint().getY().isRelative()) {
+            mLayoutParams.mMeasuredContentHeight = measuredHeight;
         }
     }
     
@@ -99,7 +99,7 @@ public class LinearLayout extends ViewGroup {
         //Simulation pass
         float fixedWidth = 0;
         float variableWidth = 0;
-        layoutParams.setRelativeHorizontalRatio(1);
+        mLayoutParams.setRelativeHorizontalRatio(1);
         for (View view : children) {
             LayoutParams childLayoutParams = view.getLayoutParams();
             childLayoutParams.computeFrame(getLayoutParams());
@@ -112,8 +112,8 @@ public class LinearLayout extends ViewGroup {
            
         }
         
-        float relativeRatio = (layoutParams.getWidth() - fixedWidth) / variableWidth;
-        layoutParams.setRelativeHorizontalRatio(relativeRatio);
+        float relativeRatio = (mLayoutParams.getContentWidth() - fixedWidth) / variableWidth;
+        mLayoutParams.setRelativeHorizontalRatio(relativeRatio);
         
         int currentLeft = 0;
 
@@ -123,11 +123,16 @@ public class LinearLayout extends ViewGroup {
             childLayoutParams.computeFrame(getLayoutParams());
             
             float computedWidth = childLayoutParams.mComputedRight - childLayoutParams.mComputedLeft;
+//            
+//            float l = currentLeft + layoutParams.computeMesure(childLayoutParams.getLayoutMarginLeft()) + layoutParams.computeMesure(childLayoutParams.getLayoutPaddingLeft());
+//            float t = childLayoutParams.mComputedTop + layoutParams.computeMesure(childLayoutParams.getLayoutMarginTop()) + layoutParams.computeMesure(childLayoutParams.getLayoutPaddingTop());
+//            float r = currentLeft + computedWidth - layoutParams.computeMesure(childLayoutParams.getLayoutMarginRight()) - layoutParams.computeMesure(childLayoutParams.getLayoutPaddingRight());
+//            float b = childLayoutParams.mComputedBottom - layoutParams.computeMesure(childLayoutParams.getLayoutMarginBottom()) - layoutParams.computeMesure(childLayoutParams.getLayoutPaddingBottom());
             
-            float l = currentLeft + layoutParams.computeMesure(childLayoutParams.getLayoutMarginLeft()) + layoutParams.computeMesure(childLayoutParams.getLayoutPaddingLeft());
-            float t = childLayoutParams.mComputedTop + layoutParams.computeMesure(childLayoutParams.getLayoutMarginTop()) + layoutParams.computeMesure(childLayoutParams.getLayoutPaddingTop());
-            float r = currentLeft + computedWidth - layoutParams.computeMesure(childLayoutParams.getLayoutMarginRight()) - layoutParams.computeMesure(childLayoutParams.getLayoutPaddingRight());
-            float b = childLayoutParams.mComputedBottom - layoutParams.computeMesure(childLayoutParams.getLayoutMarginBottom()) - layoutParams.computeMesure(childLayoutParams.getLayoutPaddingBottom());
+            float l = currentLeft;
+            float t = childLayoutParams.mComputedTop;
+            float r = currentLeft + computedWidth;
+            float b = childLayoutParams.mComputedBottom;
             view.layout(l, t, r, b);
             
             currentLeft += computedWidth;
@@ -139,7 +144,7 @@ public class LinearLayout extends ViewGroup {
       //Simulation pass
         float fixedHeight = 0;
         float variableHeight = 0;
-        layoutParams.setRelativeVerticalRatio(1);
+        mLayoutParams.setRelativeVerticalRatio(1);
         for (View view : children) {
             LayoutParams childLayoutParams = view.getLayoutParams();
             childLayoutParams.computeFrame(getLayoutParams());
@@ -152,8 +157,8 @@ public class LinearLayout extends ViewGroup {
            
         }
         
-        float relativeRatio = (layoutParams.getHeight() - fixedHeight) / variableHeight;
-        layoutParams.setRelativeVerticalRatio(relativeRatio);
+        float relativeRatio = (mLayoutParams.getContentHeight() - fixedHeight) / variableHeight;
+        mLayoutParams.setRelativeVerticalRatio(relativeRatio);
         
         
         int currentTop = 0;
@@ -164,10 +169,14 @@ public class LinearLayout extends ViewGroup {
             
             float computedHeight = childLayoutParams.mComputedBottom - childLayoutParams.mComputedTop;
             
-            view.layout(childLayoutParams.mComputedLeft + layoutParams.computeMesure(childLayoutParams.getLayoutMarginLeft()) + layoutParams.computeMesure(childLayoutParams.getLayoutPaddingLeft() ) ,
-                        currentTop + layoutParams.computeMesure(childLayoutParams.getLayoutMarginTop()) + layoutParams.computeMesure(childLayoutParams.getLayoutPaddingTop()),
-                        childLayoutParams.mComputedRight - layoutParams.computeMesure(childLayoutParams.getLayoutMarginRight()) - layoutParams.computeMesure(childLayoutParams.getLayoutPaddingRight()),
-                        currentTop + computedHeight - layoutParams.computeMesure(childLayoutParams.getLayoutMarginBottom()) - layoutParams.computeMesure(childLayoutParams.getLayoutPaddingBottom()));
+            float l = childLayoutParams.mComputedLeft;// + layoutParams.computeMesure(childLayoutParams.getLayoutMarginLeft()) + layoutParams.computeMesure(childLayoutParams.getLayoutPaddingLeft() );
+            float t = currentTop;// + layoutParams.computeMesure(childLayoutParams.getLayoutMarginTop()) + layoutParams.computeMesure(childLayoutParams.getLayoutPaddingTop());
+            float r = childLayoutParams.mComputedRight;// - layoutParams.computeMesure(childLayoutParams.getLayoutMarginRight()) - layoutParams.computeMesure(childLayoutParams.getLayoutPaddingRight());
+            float b = currentTop + computedHeight; //- layoutParams.computeMesure(childLayoutParams.getLayoutMarginBottom()) - layoutParams.computeMesure(childLayoutParams.getLayoutPaddingBottom());
+            view.layout(l ,
+                        t,
+                        r,
+                        b);
             currentTop += computedHeight;
         }
     }
@@ -194,18 +203,22 @@ public class LinearLayout extends ViewGroup {
     public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
         boolean used = false;
         
+        float localXOffset = mLayoutParams.mLeftMargin + mLayoutParams.mLeftPadding;
+        float localYOffset = mLayoutParams.mTopMargin + mLayoutParams.mTopPadding;
+        
         for (View view : children) {
+            
             if(mouseEvent.getAction() != Action.MOUSE_DRAGGED) {
-                if(mouseEvent.getX() < view.getLayoutParams().mLeft - view.getLayoutParams().mLeftPadding || mouseEvent.getX() > view.getLayoutParams().mRight + view.getLayoutParams().mRightPadding) {
+                if(mouseEvent.getX() < localXOffset + view.getLayoutParams().mLeft + view.getLayoutParams().mLeftMargin || mouseEvent.getX() > localXOffset + view.getLayoutParams().mRight - view.getLayoutParams().mRightMargin) {
                     continue;
                 }
                 
-                if(mouseEvent.getY() < view.getLayoutParams().mTop - view.getLayoutParams().mTopPadding || mouseEvent.getY() > view.getLayoutParams().mBottom + view.getLayoutParams().mBottomPadding) {
+                if(mouseEvent.getY() < localYOffset + view.getLayoutParams().mTop + view.getLayoutParams().mTopMargin || mouseEvent.getY() > localYOffset + view.getLayoutParams().mBottom - view.getLayoutParams().mBottomMargin) {
                     continue;
                 }
             }
             
-            if(view.onMouseEvent(mouseEvent.relativeTo((int) view.getLayoutParams().mLeft,(int)  view.getLayoutParams().mTop))) {
+            if(view.onMouseEvent(mouseEvent.relativeTo((int) (view.getLayoutParams().mLeft + localXOffset) ,(int) (view.getLayoutParams().mTop + localYOffset)))) {
                 used = true;
                 break;
             }
