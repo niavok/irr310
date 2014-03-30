@@ -125,11 +125,11 @@ public class InputEngine implements Engine {
                         
                         if( Mouse.getEventNanoseconds()  - clickTime[Mouse.getEventButton()] > DOUBLE_CLICK_TIME ) {
                             clickCount[Mouse.getEventButton()] = 0;
-                            Log.trace("Too long click");
+//                            Log.trace("Too long click");
                         }
                         clickCount[Mouse.getEventButton()]++;
                         clickTime[Mouse.getEventButton()] = Mouse.getEventNanoseconds();
-                        Log.trace("click count set to "+clickCount[Mouse.getEventButton()]);
+//                        Log.trace("click count set to "+clickCount[Mouse.getEventButton()]);
                         mouseEvent = new V3DMouseEvent(Action.MOUSE_CLICKED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1, clickCount[Mouse.getEventButton()]);
                         notifyMouseEvent(mouseEvent);
                     }
