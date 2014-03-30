@@ -40,20 +40,29 @@ public class RelativeLayout extends ViewGroup {
                         right,
                         bottom);
             
-            if(left < getLayoutParams().mExtraLeft) {
-                getLayoutParams().mExtraLeft = left;
+            
+            float extraLeft = childLayoutParams.mComputedLeft + mLayoutParams.computeMesure(childLayoutParams.getLayoutMarginLeft()) + mLayoutParams.computeMesure(childLayoutParams.getLayoutPaddingLeft());
+            float extraTop = childLayoutParams.mComputedTop + mLayoutParams.computeMesure(childLayoutParams.getLayoutMarginTop()) + mLayoutParams.computeMesure(childLayoutParams.getLayoutPaddingTop());
+            float extraRight = childLayoutParams.mComputedRight - mLayoutParams.computeMesure(childLayoutParams.getLayoutMarginRight()) - mLayoutParams.computeMesure(childLayoutParams.getLayoutPaddingRight());
+            float extraBottom = childLayoutParams.mComputedBottom - mLayoutParams.computeMesure(childLayoutParams.getLayoutMarginBottom()) - mLayoutParams.computeMesure(childLayoutParams.getLayoutPaddingBottom());
+          
+            
+            
+            
+            if(extraLeft < getLayoutParams().mExtraLeft) {
+                getLayoutParams().mExtraLeft = extraLeft;
             }
             
-            if(top < getLayoutParams().mExtraTop) {
-                getLayoutParams().mExtraTop= top;
+            if(extraTop < getLayoutParams().mExtraTop) {
+                getLayoutParams().mExtraTop= extraTop;
             }
             
-            if(right > getLayoutParams().mExtraRight) {
-                getLayoutParams().mExtraRight = right;
+            if(extraRight > getLayoutParams().mExtraRight) {
+                getLayoutParams().mExtraRight = extraRight;
             }
             
-            if(bottom > getLayoutParams().mExtraBottom) {
-                getLayoutParams().mExtraBottom = bottom;
+            if(extraBottom > getLayoutParams().mExtraBottom) {
+                getLayoutParams().mExtraBottom = extraBottom;
             }
         }
         
