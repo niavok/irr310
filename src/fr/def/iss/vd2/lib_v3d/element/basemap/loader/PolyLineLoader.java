@@ -100,6 +100,9 @@ public class PolyLineLoader {
         line = scanner.nextLine();
         maxY = Float.parseFloat(line);
 
+        scanner.close();
+        vertexLineStream.close();
+        vertexStream.close();
     }
 
     public void loadFile(File lineFile) throws FileNotFoundException {
@@ -217,21 +220,25 @@ public class PolyLineLoader {
 
         {
             File dumpFile = new File(lineFile.getAbsolutePath()+".vertices.dump");
-            FileChannel fc = new RandomAccessFile(dumpFile,"rw").getChannel();
+            RandomAccessFile randomAccessFile = new RandomAccessFile(dumpFile,"rw");
+            FileChannel fc = randomAccessFile.getChannel();
             dumpFile.createNewFile();
             FloatBuffer outVertex = fc.map(FileChannel.MapMode.READ_WRITE, 0, vertices.capacity()*4).asFloatBuffer();
             vertices.rewind();
             outVertex.put(vertices);
             fc.close();
+            randomAccessFile.close();
         }
 
         {
             File dumpFile = new File(lineFile.getAbsolutePath()+".lines.dump");
-            FileChannel fc =new RandomAccessFile(dumpFile,"rw").getChannel();
+            RandomAccessFile randomAccessFile = new RandomAccessFile(dumpFile,"rw");
+            FileChannel fc =randomAccessFile.getChannel();
             dumpFile.createNewFile();
             IntBuffer outVertex = fc.map(FileChannel.MapMode.READ_WRITE, 0, stripVertexCounts.capacity()*4).asIntBuffer();
             outVertex.put(stripVertexCounts);
             fc.close();
+            randomAccessFile.close();
         }
 
         {

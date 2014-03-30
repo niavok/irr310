@@ -159,6 +159,8 @@ public class FontFactory {
             
             font = new Font(img, hashtable, height);
             fontCache.put(name, font);
+            
+            fileInputStream.close();
         } catch (FileNotFoundException e) {
             Log.error("Failed to initialize reader on glfont file "+cachedFontDescriptor.getAbsolutePath());
             return null;

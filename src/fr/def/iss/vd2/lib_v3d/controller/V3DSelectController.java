@@ -39,7 +39,7 @@ public class V3DSelectController implements V3DCameraController {
 
     public V3DSelectController() {
         assert (context != null);
-        this.context = context;
+//        this.context = context;
     }
 
     public void setWhiteList(List<I3dElement> whiteList) {

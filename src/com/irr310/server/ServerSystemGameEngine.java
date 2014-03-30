@@ -133,7 +133,7 @@ public class ServerSystemGameEngine implements Engine {
 //            }
 //        }
 
-        if (monolith != null) {
+//        if (monolith != null) {
 //            for (CelestialObject object : Game.getInstance().getWorld().getCelestialsObjects()) {
 //                if (object instanceof Loot) {
 //                    double distanceTo = object.getFirstPart()
@@ -198,8 +198,8 @@ public class ServerSystemGameEngine implements Engine {
 //        if (stillPlaying) {
 //            currentWave.update(beginWaveTime.durationTo(currentTime));
 //        }
-        mLastTime = time.getGameTime();
-    }
+//        mLastTime = time.getGameTime();
+//    }
 
 //    private int distachRevenue(int amount) {
 //        List<Player> players = systemEngine.getWorld().getPlayers();

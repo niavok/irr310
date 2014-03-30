@@ -386,6 +386,7 @@ public class ObjToV3Draw {
         inputStream.read(image);
         textureMapName.add(string);
         textureMapData.add(image);
+        inputStream.close();
     }
 
     private void writeTextures() throws IOException {

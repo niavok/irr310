@@ -119,6 +119,7 @@ public class Box {
             while((line=reader.readLine())!=null){
                 vertexCode+=line + "\n";
             }
+            reader.close();
         }catch(Exception e){
             System.out.println("Fail reading vertex shading code: "+ filename);
             return 0;
@@ -149,6 +150,7 @@ public class Box {
             while((line=reader.readLine())!=null){
                 fragCode+=line + "\n";
             }
+            reader.close();
         }catch(Exception e){
             System.out.println("Fail reading fragment shading code"+ filename);
             return 0;

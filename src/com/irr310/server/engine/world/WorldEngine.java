@@ -303,6 +303,7 @@ public class WorldEngine implements Engine {
             while ((line = br.readLine()) != null) {
                 names.add(line);
             }
+            br.close();
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

@@ -162,6 +162,7 @@ public class ScreenshotActor implements IActor
 
       // close the file channel
       ch.close();
+      out.close();
     }
     catch (Exception e)
     {

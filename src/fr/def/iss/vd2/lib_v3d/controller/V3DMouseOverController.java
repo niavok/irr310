@@ -36,7 +36,7 @@ public class V3DMouseOverController implements V3DCameraController {
     private V3DSelectionListener listener;
 
     public V3DMouseOverController() {
-        this.context = context;
+//        this.context = context;
     }
 
     public void setWhiteList(List<I3dElement> whiteList) {

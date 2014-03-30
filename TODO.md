@@ -14,11 +14,13 @@ Graphisme
 - Mouse hover
 - Active button
 
-Bug fix
+
+Bug fix 
 -------
 
-Corriger le rendu des :
-
+- Corriger le rendu des :
+-fix warnings
+- corriger le process name
 
 Outils
 ------

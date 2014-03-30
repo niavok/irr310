@@ -42,7 +42,7 @@ public class V3DDoubleClickController implements V3DCameraController {
     private boolean strict = false;
 
     public V3DDoubleClickController() {
-        this.context = context;
+//        this.context = CONTEXT;
     }
 
 

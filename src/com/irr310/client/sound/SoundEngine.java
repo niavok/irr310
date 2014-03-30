@@ -249,6 +249,7 @@ public class SoundEngine implements Engine {
           case 'h': AL10.alSourcePause(source.get(0)); break;
         };
       }
+      stdin.close();
       killALData();
       AL.destroy();
     }
