@@ -44,7 +44,7 @@ public class UiEngine implements Engine {
     @Override
     public void init() {
         context = I3dContext.getInstance();
-        context.initCanvas("IRR310", 1280, 768);
+        context.initCanvas("IRR310", 1280, 768, "graphics/icons/logo.png");
         context.setContextListener(new UiContextListener());
         
         context.start();

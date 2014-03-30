@@ -34,8 +34,8 @@ public class I3dContext {
         preloaded = false;
     }
 
-    public void initCanvas(String title, int width, int height) {
-        canvas = new I3dCanvas(this, title, width, height);
+    public void initCanvas(String title, int width, int height, String iconPath) {
+        canvas = new I3dCanvas(this, title, width, height, iconPath);
         graphics = Graphics.getInstance();
         I3dRessourceManager.getInstance().setGraphics(graphics);
     }

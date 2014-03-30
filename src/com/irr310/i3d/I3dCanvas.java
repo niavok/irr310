@@ -2,11 +2,13 @@ package com.irr310.i3d;
 
 import java.awt.Canvas;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.event.HierarchyBoundsListener;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 import org.fenggui.binding.render.lwjgl.LWJGLBinding;
@@ -25,18 +27,23 @@ public class I3dCanvas {
     private boolean pauseDisplay = false;
     
     private boolean polygonOffset = false;
+    private String mIconPath;
 
-    public I3dCanvas(final I3dContext context,String title, int width, int height) {
+    public I3dCanvas(final I3dContext context,String title, int width, int height, String iconPath) {
         this.context = context;
         this.title = title;
         this.width = width;
         this.height = height;
+        mIconPath = iconPath;
     }
     
     public void init() {
         try{
             
             frame = new JFrame(title);
+            Image image = new ImageIcon(mIconPath).getImage();
+            frame.setIconImage(image);
+            frame.setTitle(title);
             //frame.setSize(width,height);
             //frame.setUndecorated(true);  //here
             //frame.setAlwaysOnTop(true);
