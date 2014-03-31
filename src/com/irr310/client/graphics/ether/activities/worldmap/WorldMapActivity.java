@@ -107,7 +107,7 @@ public class WorldMapActivity extends Activity {
             @Override
             public void onFactionChanged(Faction faction) {
                     getHandler().removeMessages(UPDATE_FACTION_WHAT);
-                    getHandler().obtainMessage(UPDATE_FACTION_WHAT, faction).send();
+                    getHandler().obtainMessage(UPDATE_FACTION_WHAT).send();
             }
         };        
         
@@ -152,13 +152,16 @@ public class WorldMapActivity extends Activity {
     
     @Override
     public void onResume() {
+        firstUpdate = true;
         worldEngine.getWorldEnginObservable().register(this, mWorldEngineObserver);
-//        updateMap();
+        getHandler().removeMessages(UPDATE_FACTION_WHAT);
+        getHandler().obtainMessage(UPDATE_FACTION_WHAT).send();
     }
 
     @Override
     public void onPause() {
         worldEngine.getWorldEnginObservable().unregister(this);
+        
     }
 
     @Override

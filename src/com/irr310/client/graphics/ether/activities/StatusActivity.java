@@ -20,7 +20,7 @@ public class StatusActivity extends Activity {
     private StatusActivityListener mListener;
 
     @Override
-    public void onCreate(Bundle bundle) {
+    public void onCreate(final Bundle bundle) {
         setContentView("main@layout/status");
         setStackable(false);
         
@@ -32,7 +32,7 @@ public class StatusActivity extends Activity {
             
             @Override
             public void onClick(V3DMouseEvent mouseEvent, View view) {
-                getContext().setPopUpActivity(new Intent(SettingsPopupActivity.class), new I3dVec2(mouseEvent.getRootEvent().getX(), 25));
+                getContext().setPopUpActivity(new Intent(SettingsPopupActivity.class, bundle), new I3dVec2(mouseEvent.getRootEvent().getX(), 25));
             }
         });
     }

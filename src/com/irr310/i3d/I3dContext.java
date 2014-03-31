@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.irr310.client.graphics.SettingsPopupActivity;
 import com.irr310.client.graphics.SurfaceFactory;
+import com.irr310.common.tools.Log;
 import com.irr310.i3d.fonts.Font;
 import com.irr310.i3d.fonts.FontFactory;
 import com.irr310.i3d.scene.I3dSceneManager;
@@ -52,6 +53,10 @@ public class I3dContext {
         
         mPopupSurface = new Surface(this) {
             public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
+                if(mouseEvent.getAction() == Action.MOUSE_PRESSED) {
+                    Log.log("plop");
+                }
+                
                 if(!super.onMouseEvent(mouseEvent) ) {
                     if(mouseEvent.getAction() == Action.MOUSE_PRESSED) {
                         mPopupSurface.unstackActivity();

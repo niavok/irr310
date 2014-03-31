@@ -207,7 +207,7 @@ public abstract class Activity implements ViewParent {
     }
     
     public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
-        return mview.onMouseEvent(mouseEvent);
+        return mview.onMouseEvent(mouseEvent.relativeTo((int) mview.getLayoutParams().mLeft,(int)  mview.getLayoutParams().mTop));
     }
     
     public boolean onKeyEvent(V3DKeyEvent keyEvent) {

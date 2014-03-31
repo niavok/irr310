@@ -169,27 +169,6 @@ public class ScrollView extends View implements ViewParent {
     @Override
     public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
         boolean used = false;
-
-        
-        
-        if(mouseEvent.getAction() != Action.MOUSE_MOVED) {
-            Log.log("mouse" +mouseEvent.getAction());
-            Log.log("scrollLimits" +scrollLimits);
-            
-            Log.log("begin scrollOffsetX="+scrollOffsetX);
-            Log.log("begin scrollOffsetY="+scrollOffsetY);
-            Log.log("begin scrollingBaseOffsetX="+scrollingBaseOffsetX);
-            Log.log("begin scrollingBaseOffsetY="+scrollingBaseOffsetY);
-            Log.log("begin scrollingBaseX="+scrollingBaseX);
-            Log.log("begin scrollingBaseY="+scrollingBaseY);
-            
-            Log.log("begin mExtraRight="+child.getLayoutParams().mExtraRight);
-            Log.log("begin mExtraLeft="+child.getLayoutParams().mExtraLeft);
-            Log.log("begin mExtraTop="+child.getLayoutParams().mExtraTop);
-            Log.log("begin mExtraBottom="+child.getLayoutParams().mExtraBottom);
-            Log.log("begin getContentWidth="+child.getLayoutParams().getContentWidth());
-            
-        }
         
         if (mouseEvent.getAction() == Action.MOUSE_PRESSED) {
 
