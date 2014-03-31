@@ -206,12 +206,12 @@ public abstract class Activity implements ViewParent {
         return context;
     }
     
-    public void onMouseEvent(V3DMouseEvent mouseEvent) {
-        mview.onMouseEvent(mouseEvent);
+    public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
+        return mview.onMouseEvent(mouseEvent);
     }
     
-    public void onKeyEvent(V3DKeyEvent keyEvent) {
-        mview.onKeyEvent(keyEvent);
+    public boolean onKeyEvent(V3DKeyEvent keyEvent) {
+        return mview.onKeyEvent(keyEvent);
     }
     public void onControllerEvent(V3DControllerEvent keyEvent) {
         mview.onControllerEvent(keyEvent);

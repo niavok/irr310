@@ -49,9 +49,32 @@ public class I3dContext {
 
     public void start() {
         canvas.init();
-        mPopupSurface = SurfaceFactory.buildFullscreenSurface(this);
+        
+        mPopupSurface = new Surface(this) {
+            public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
+                if(!super.onMouseEvent(mouseEvent) ) {
+                    if(mouseEvent.getAction() == Action.MOUSE_PRESSED) {
+                        mPopupSurface.unstackActivity();
+                    }
+                    return false;
+                } else {
+                    return true;
+                }
+                
+            };
+        };
+        
+        mPopupSurface.preferredWidth = 100;
+        mPopupSurface.preferredHeight = 100;
+        mPopupSurface.preferredXMode = Surface.LocationMode.RELATIVE;
+        mPopupSurface.preferredYMode = Surface.LocationMode.RELATIVE;
+        mPopupSurface.preferredWidthMode = Surface.LocationMode.RELATIVE;
+        mPopupSurface.preferredHeightMode = Surface.LocationMode.RELATIVE;
         mPopupSurface.setBackgroundColor(Color.transparent);
         mPopupSurface.configure(canvas.getWidth(), canvas.getHeight());
+        
+        
+        
         surfaceList.add(mPopupSurface);
     }
 
@@ -115,26 +138,30 @@ public class I3dContext {
     }
 
     public void onMouseEvent(V3DMouseEvent mouseEvent) {
-        for (Surface surface : surfaceList) {
+        for(int i = surfaceList.size() -1 ; i >= 0; i--) {
+            Surface surface = surfaceList.get(i);
             if (surface.contains(mouseEvent.getX(), mouseEvent.getY()) ||mouseEvent.getAction() == Action.MOUSE_DRAGGED) {
                 V3DMouseEvent topLeftEvent = new V3DMouseEvent(mouseEvent.getAction(), mouseEvent.getX() - surface.x, (surface.y + surface.height)
                         - mouseEvent.getY(), mouseEvent.getButton(), mouseEvent.getClickCount());
                 topLeftEvent.setParentEvent(mouseEvent);
                 
-                surface.onMouseEvent(topLeftEvent);
-                break;
+                if(surface.onMouseEvent(topLeftEvent)) {
+                    break;
+                }
             }
         }
     }
 
     public void onKeyEvent(V3DKeyEvent keyEvent) {
-        for (Surface surface : surfaceList) {
+        for(int i = surfaceList.size() -1 ; i >= 0; i--) {
+            Surface surface = surfaceList.get(i);
             if (surface.contains(keyEvent.getMouseX(), keyEvent.getMouseY())) {
                 V3DKeyEvent topLeftEvent = new V3DKeyEvent(keyEvent.getAction(), keyEvent.getKeyCode(), keyEvent.getCharacter(), keyEvent.getMouseX() - surface.x, (surface.y + surface.height)
                         - keyEvent.getMouseY());
 
-                surface.onKeyEvent(topLeftEvent);
-                break;
+                if(surface.onKeyEvent(topLeftEvent)) {
+                    break;
+                }
             }
         }
     }
@@ -184,8 +211,6 @@ public class I3dContext {
     public void setPopUpActivity(Intent popupActivity, I3dVec2 popupPreferredPosition) {
         mPopupSurface.setPopupPreferredPosition(popupPreferredPosition);
         mPopupSurface.startActivity(popupActivity);
-        
-        
     }
     
     

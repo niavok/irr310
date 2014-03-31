@@ -10,7 +10,7 @@
         i3d:layout_paddingBottom="0px"
         i3d:font="big@fonts"
         i3d:layout_gravity_x="center"
-        i3d:text="factoryStaters@strings"
+        i3d:text="Settings"
         i3d:color="white@color" />
         
     <View
@@ -23,6 +23,19 @@
         i3d:layout_paddingBottom="0px"
         i3d:font="big@fonts"
         i3d:layout_gravity_x="center"
-        i3d:text="factoryStaters@strings"
+        i3d:text="Save"
+        i3d:color="white@color" />
+        
+        <View
+        i3d:layout_width="match_parent"
+        i3d:layout_height="20px"
+        i3d:layout_gravity_x="center"
+        i3d:ref="main@layout/light_separator_horizontal" />
+
+    <TextView
+        i3d:layout_paddingBottom="0px"
+        i3d:font="big@fonts"
+        i3d:layout_gravity_x="center"
+        i3d:text="Quit"
         i3d:color="white@color" />
 </LinearLayout>

@@ -76,24 +76,35 @@ public class Surface {
         }
     }
     
-    public void unstackActivity() {
+    public boolean unstackActivity() {
         
-        
+        boolean unstack = false;
         
         // Drop current intent
         if(currentActivity != null) {
             Intent dropedIntent = currentActivity.getIntent();
             intentStack.remove(dropedIntent);
             activityMap.remove(dropedIntent);
+            unstack  = true;
         }
         
         if(intentStack.size() == 0) {
-            // No activity yo unstack, restart the current one
-            startActivity(currentActivity.getIntent());
+            if(currentActivity != null) {
+                if(currentActivity.isStackable()) {
+                    // No activity yo unstack, restart the current one
+                    startActivity(currentActivity.getIntent());
+                } else {
+                    currentActivity.pause();
+                    currentActivity.destroy();
+                    currentActivity = null;
+                }
+            }
         } else {
             // Restart new top intent 
             startActivity(intentStack.peek());
         }
+        
+        return unstack;
     }
 
     public void update(Timestamp time) {
@@ -315,19 +326,23 @@ public class Surface {
         this.context = context;
     }
     
-    public void onMouseEvent(V3DMouseEvent mouseEvent) {
+    public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
         if (currentActivity != null) {
-            currentActivity.onMouseEvent(mouseEvent);
+            return currentActivity.onMouseEvent(mouseEvent);
         }
+        return false;
     }
     
-    public void onKeyEvent(V3DKeyEvent keyEvent) {
+    public boolean onKeyEvent(V3DKeyEvent keyEvent) {
         if(keyEvent.getAction() == V3DKeyEvent.KeyAction.KEY_PRESSED &&  keyEvent.getKeyCode() == V3DKeyEvent.KEY_ESCAPE) {
             // TODO : make loose focus if focused item
-            unstackActivity();
+            return unstackActivity();
         } else {
-            currentActivity.onKeyEvent(keyEvent);
+            if(currentActivity != null) {
+                return currentActivity.onKeyEvent(keyEvent);
+            }
         }
+        return false;
     }
     
     public void onControllerEvent(V3DControllerEvent controllerEvent) {
