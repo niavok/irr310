@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    i3d:id="main"
+    i3d:layout_width="match_parent"
+    i3d:layout_height="match_parent" >
+
+    <LinearLayout
+        i3d:layout_width="match_parent"
+        i3d:layout_height="match_parent"
+        i3d:layout_marginLeft="70px"
+        i3d:orientation="vertical" >
+
+        <View
+            i3d:id="logo"
+            i3d:layout_marginTop="40px"
+            i3d:ref="main@layout/logo_text" />
+
+     
+    </LinearLayout>
+
+</RelativeLayout>

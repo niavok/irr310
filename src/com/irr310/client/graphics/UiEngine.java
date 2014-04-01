@@ -29,7 +29,7 @@ import fr.def.iss.vd2.lib_v3d.gui.V3DContainer;
 public class UiEngine implements Engine {
 
     private I3dContext context;
-    private Surface mainSurface;
+    private Surface mMainSurface;
     private Surface statusSurface;
     private Time nextFpsTime;
     private int frameCount;
@@ -60,9 +60,9 @@ public class UiEngine implements Engine {
         
         
         statusSurface.setBackgroundColor(Color.black);
-        mainSurface = SurfaceFactory.buildFullscreenSurface(context, 25,0,0,0);
-        mainSurface.setBackgroundColor(Color.white);
-        context.addSurface(mainSurface);
+        mMainSurface = SurfaceFactory.buildFullscreenSurface(context, 25,0,0,0);
+        mMainSurface.setBackgroundColor(Color.white);
+        context.addSurface(mMainSurface);
         context.addSurface(statusSurface);
         
         
@@ -108,8 +108,13 @@ public class UiEngine implements Engine {
 
             @Override
             public void onDone() {
-                Bundle statusBundle = new Bundle(new StatusActivity.StatusActivityListener() {
+                Bundle statusBundle = new Bundle(new StatusActivity.StatusActivityController() {
 
+                    @Override
+                    public Surface getControlledSurface() {
+                        return mMainSurface;
+                    }
+                    
                     @Override
                     public void onQuit() {
                         notifyQuitEvent();
@@ -125,7 +130,7 @@ public class UiEngine implements Engine {
       
         
         // The main activity will start the StatusActivity
-        mainSurface.startActivity(new Intent(MainActivity.class, bundle));
+        mMainSurface.startActivity(new Intent(MainActivity.class, bundle));
         context.show();
     }
 

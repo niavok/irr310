@@ -5,6 +5,7 @@ import com.irr310.client.graphics.ether.activities.worldmap.SystemView;
 import com.irr310.i3d.Bundle;
 import com.irr310.i3d.I3dVec2;
 import com.irr310.i3d.Intent;
+import com.irr310.i3d.Surface;
 import com.irr310.i3d.view.Activity;
 import com.irr310.i3d.view.Button;
 import com.irr310.i3d.view.ImageButton;
@@ -17,14 +18,14 @@ public class StatusActivity extends Activity {
 
 
     private Button settingsButton;
-    private StatusActivityListener mListener;
+    private StatusActivityController mListener;
 
     @Override
     public void onCreate(final Bundle bundle) {
         setContentView("main@layout/status");
         setStackable(false);
         
-        mListener = (StatusActivityListener) bundle.getObject();
+        mListener = (StatusActivityController) bundle.getObject();
         
         settingsButton = (Button) findViewById("settingsButton@layout/status");
         
@@ -37,7 +38,10 @@ public class StatusActivity extends Activity {
         });
     }
     
-    public interface StatusActivityListener {
+    public interface StatusActivityController {
+        
+        Surface getControlledSurface();
+        
         void onQuit();
     }
 

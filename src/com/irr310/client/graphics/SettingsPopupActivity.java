@@ -1,7 +1,9 @@
 package com.irr310.client.graphics;
 
-import com.irr310.client.graphics.ether.activities.StatusActivity.StatusActivityListener;
+import com.irr310.client.graphics.ether.activities.SettingsActivity;
+import com.irr310.client.graphics.ether.activities.StatusActivity.StatusActivityController;
 import com.irr310.i3d.Bundle;
+import com.irr310.i3d.Intent;
 import com.irr310.i3d.view.Activity;
 import com.irr310.i3d.view.Button;
 import com.irr310.i3d.view.View;
@@ -15,16 +17,17 @@ public class SettingsPopupActivity extends Activity {
 
 
     private Button settingsButton;
-    private StatusActivityListener mListener;
+    private StatusActivityController mListener;
 
     @Override
     public void onCreate(Bundle bundle) {
         setContentView("main@layout/status_settings_popup");
         setStackable(false);
         
-        mListener = (StatusActivityListener) bundle.getObject();
+        mListener = (StatusActivityController) bundle.getObject();
         
         Button quitButton = (Button) findViewById("quitButton@layout/status_settings_popup");
+        Button settingsButton = (Button) findViewById("settingsButton@layout/status_settings_popup");
         
         
         quitButton.setOnMouseListener(new OnMouseEventListener() {
@@ -34,6 +37,18 @@ public class SettingsPopupActivity extends Activity {
                 if(mouseEvent.getAction() == Action.MOUSE_PRESSED && mouseEvent.getButton() == 1) {
                 mListener.onQuit();
                 return true;
+                }
+                return false;
+            }
+        });
+        
+        settingsButton.setOnMouseListener(new OnMouseEventListener() {
+            
+            @Override
+            public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
+                if(mouseEvent.getAction() == Action.MOUSE_PRESSED && mouseEvent.getButton() == 1) {
+                mListener.getControlledSurface().startActivity(new Intent(SettingsActivity.class));
+                // Do not return true to exit the popup
                 }
                 return false;
             }

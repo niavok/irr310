@@ -6,7 +6,8 @@
     i3d:layout_gravity_x="center"
     i3d:orientation="vertical" >
 
-    <TextView
+    <Button
+    	i3d:id="settingsButton"
         i3d:layout_paddingBottom="0px"
         i3d:font="big@fonts"
         i3d:layout_gravity_x="center"
