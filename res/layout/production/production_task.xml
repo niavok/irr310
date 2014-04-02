@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     i3d:id="main"
-    i3d:style="lightBlock@styles"
-    i3d:selected_style="selectedLightBlock@styles"
+    i3d:style="lightBlock-selectable@styles"
     i3d:layout_width="match_parent"
     i3d:layout_height="wrap_content"
     i3d:orientation="vertical"

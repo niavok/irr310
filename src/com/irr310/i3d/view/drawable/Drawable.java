@@ -2,9 +2,10 @@ package com.irr310.i3d.view.drawable;
 
 import org.lwjgl.opengl.GL11;
 
+import com.irr310.i3d.Duplicable;
 import com.irr310.i3d.Graphics;
 
-public abstract class Drawable {
+public abstract class Drawable implements Duplicable<Drawable> {
 
     protected Graphics g;
     protected float bottom;
@@ -49,4 +50,9 @@ public abstract class Drawable {
     public abstract int getIntrinsicWidth();
 
     public abstract int getIntrinsicHeight();
+    
+    @Override
+    public Drawable duplicate() {
+        return this;
+    }
 }

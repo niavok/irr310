@@ -17,6 +17,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import sun.swing.plaf.synth.Paint9Painter.PaintType;
+
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.RessourceLoadingException;
 import com.irr310.i3d.Measure.Axis;
@@ -33,10 +35,15 @@ import com.irr310.i3d.view.LinearLayout.LayoutOrientation;
 import com.irr310.i3d.view.Rect;
 import com.irr310.i3d.view.RelativeLayout;
 import com.irr310.i3d.view.ScrollView;
-import com.irr310.i3d.view.TextView;
 import com.irr310.i3d.view.ScrollView.ScrollAxis;
 import com.irr310.i3d.view.ScrollView.ScrollLimits;
+import com.irr310.i3d.view.TextView;
 import com.irr310.i3d.view.TextView.Gravity;
+import com.irr310.i3d.view.Triangle;
+import com.irr310.i3d.view.View;
+import com.irr310.i3d.view.View.ViewState;
+import com.irr310.i3d.view.ViewParent;
+import com.irr310.i3d.view.Waiter;
 import com.irr310.i3d.view.drawable.BitmapDrawable;
 import com.irr310.i3d.view.drawable.BitmapFactory;
 import com.irr310.i3d.view.drawable.CircleDrawable;
@@ -45,10 +52,6 @@ import com.irr310.i3d.view.drawable.Drawable;
 import com.irr310.i3d.view.drawable.GradientDrawable;
 import com.irr310.i3d.view.drawable.InsetDrawable;
 import com.irr310.i3d.view.drawable.SolidDrawable;
-import com.irr310.i3d.view.Triangle;
-import com.irr310.i3d.view.View;
-import com.irr310.i3d.view.ViewParent;
-import com.irr310.i3d.view.Waiter;
 
 public class I3dRessourceManager {
 
@@ -284,17 +287,18 @@ public class I3dRessourceManager {
             }
 
             String attrName = subElement.getAttribute("name");
+            ViewState attrState = parseState(subElement.getAttribute("state"));
             String attrValue = subElement.getTextContent();
 
             StyleFactory styleFactory = new StyleFactory(style);
 
             if (checkViewAttrs(attrName, attrValue, null, styleFactory)) {
-            } else if (checkColor(attrName, attrValue, styleFactory)) {
+            } else if (checkColor(attrName, attrState, attrValue, styleFactory)) {
             } else if (checkFont(attrName, attrValue, styleFactory)) {
             } else if (checkGravity(attrName, attrValue, styleFactory)) {
-            } else if (checkBorderColor(attrName, attrValue, styleFactory)) {
-            } else if (checkBorderSize(attrName, attrValue, styleFactory)) {
-            } else if (checkBackground(attrName, attrValue, styleFactory)) {
+            } else if (checkBorderColor(attrName, attrState, attrValue, styleFactory)) {
+            } else if (checkBorderSize(attrName, attrState, attrValue, styleFactory)) {
+            } else if (checkBackground(attrName, attrState, attrValue, styleFactory)) {
             } else if (checkCornerLeftTopStyle(attrName, attrValue, styleFactory)) {
             } else if (checkCornerRightTopStyle(attrName, attrValue, styleFactory)) {
             } else if (checkCornerLeftBottomStyle(attrName, attrValue, styleFactory)) {
@@ -465,9 +469,10 @@ public class I3dRessourceManager {
         NamedNodeMap attributes = element.getAttributes();
         for (int i = 0; i < attributes.getLength(); i++) {
             Node item = attributes.item(i);
-            Attr attr = (Attr) item;
+            Attribute attr = new Attribute((Attr) item);
             String attrName = attr.getName();
             String attrValue = attr.getValue();
+            ViewState attrState = attr.getState();
 
             ViewFactory viewFactory = new ViewFactory(linearLayout);
 
@@ -489,14 +494,15 @@ public class I3dRessourceManager {
         NamedNodeMap attributes = element.getAttributes();
         for (int i = 0; i < attributes.getLength(); i++) {
             Node item = attributes.item(i);
-            Attr attr = (Attr) item;
+            Attribute attr = new Attribute((Attr) item);
             String attrName = attr.getName();
             String attrValue = attr.getValue();
-
+            ViewState attrState = attr.getState();
+            
             TextViewFactory textViewFactory = new TextViewFactory(textView);
 
             if (checkViewAttrs(attrName, attrValue, fileId, textViewFactory)) {
-            } else if (checkColor(attrName, attrValue, textViewFactory)) {
+            } else if (checkColor(attrName, attrState, attrValue, textViewFactory)) {
             } else if (checkText(attrName, attrValue, textViewFactory)) {
             } else if (checkFont(attrName, attrValue, textViewFactory)) {
             } else if (checkGravity(attrName, attrValue, textViewFactory)) {
@@ -560,14 +566,15 @@ public class I3dRessourceManager {
         NamedNodeMap attributes = element.getAttributes();
         for (int i = 0; i < attributes.getLength(); i++) {
             Node item = attributes.item(i);
-            Attr attr = (Attr) item;
+            Attribute attr = new Attribute((Attr) item);
             String attrName = attr.getName();
             String attrValue = attr.getValue();
+            ViewState attrState = attr.getState();
 
             TextViewFactory textViewFactory = new TextViewFactory(button);
 
             if (checkViewAttrs(attrName, attrValue, fileId, textViewFactory)) {
-            } else if (checkColor(attrName, attrValue, textViewFactory)) {
+            } else if (checkColor(attrName, attrState, attrValue, textViewFactory)) {
             } else if (checkText(attrName, attrValue, textViewFactory)) {
             } else if (checkFont(attrName, attrValue, textViewFactory)) {
             } else {
@@ -615,16 +622,12 @@ public class I3dRessourceManager {
     private void checkStyles(Element element, View view) {
         Style idleStyle = loadStyle(element.getAttribute("i3d:style")).duplicate();
         view.setIdleStyle(idleStyle);
-        Style selectedStyle = loadStyle(element.getAttribute("i3d:selected_style")).duplicate();
-        view.setSelectedStyle(selectedStyle);
     }
 
     private boolean checkViewAttrs(String attrName, String attrValue, String fileId, LayoutFactory view) {
         boolean used = true;
         if (checkId(attrName, attrValue, fileId, view)) {
         } else if (attrName.equals("i3d:style")) {
-            // Already checked
-        } else if (attrName.equals("i3d:selected_style")) {
             // Already checked
         } else if (checkHelp(attrName, attrValue, view)) {
         } else if (checkLayoutWidth(attrName, attrValue, view)) {
@@ -663,10 +666,10 @@ public class I3dRessourceManager {
         return used;
     }
 
-    private boolean checkColor(String attrName, String attrValue, TextFactory view) {
+    private boolean checkColor(String attrName, ViewState attrState, String attrValue, TextFactory view) {
         boolean used = false;
         if (attrName.equals("i3d:color")) {
-            view.setTextColor(loadColor(attrValue));
+            view.setTextColor(attrState, loadColor(attrValue));
             used = true;
         }
         return used;
@@ -936,21 +939,21 @@ public class I3dRessourceManager {
         return used;
     }
 
-    private boolean checkBorderColor(String attrName, String attrValue, LayoutFactory view) {
+    private boolean checkBorderColor(String attrName, ViewState attrState, String attrValue, LayoutFactory view) {
         boolean used = false;
         if (attrName.equals("i3d:borderColor")) {
-            view.setBorderColor(loadColor(attrValue));
+            view.setBorderColor(attrState, loadColor(attrValue));
             used = true;
         }
         return used;
     }
 
-    private boolean checkBorderSize(String attrName, String attrValue, LayoutFactory view) {
+    private boolean checkBorderSize(String attrName, ViewState attrState, String attrValue, LayoutFactory view) {
         boolean used = false;
         if (attrName.equals("i3d:borderSize")) {
             Measure measure = null;
             if ((measure = parseMeasure(attrValue, Axis.VERTICAL)) != null) {
-                view.setBorderSize(measure);
+                view.setBorderSize(attrState, measure);
                 used = true;
             } else {
                 throw new RessourceLoadingException("Unsupported value '" + attrValue + "' for i3d:borderSize attribute");
@@ -1079,10 +1082,10 @@ public class I3dRessourceManager {
         return used;
     }
 
-    private boolean checkBackground(String attrName, String attrValue, LayoutFactory view) {
+    private boolean checkBackground(String attrName, ViewState state, String attrValue, LayoutFactory view) {
         boolean used = false;
         if (attrName.equals("i3d:background")) {
-            view.setBackground(loadDrawable(attrValue));
+            view.setBackground(state, loadDrawable(attrValue));
             used = true;
         }
         return used;
@@ -1440,8 +1443,6 @@ public class I3dRessourceManager {
 
         void setId(String attrValue);
 
-        void setSelectedStyle(Style style);
-
         void setHelp(String help);
 
         void setLayoutGravityY(LayoutGravity left);
@@ -1472,7 +1473,7 @@ public class I3dRessourceManager {
 
         void setLayoutWidthMeasure(LayoutMeasure matchParent);
 
-        void setBackground(Drawable loadDrawable);
+        void setBackground(ViewState state, Drawable loadDrawable);
 
         void setCornerRightBottomStyle(CornerStyle square);
 
@@ -1490,14 +1491,14 @@ public class I3dRessourceManager {
 
         void setCornerLeftTopSize(Measure measure);
 
-        void setBorderSize(Measure measure);
+        void setBorderSize(ViewState state, Measure measure);
 
-        void setBorderColor(Color loadColor);
+        void setBorderColor(ViewState state, Color loadColor);
     }
 
     private interface TextFactory {
 
-        void setTextColor(Color loadColor);
+        void setTextColor(ViewState state, Color loadColor);
 
         void setGravity(Gravity topLeft);
 
@@ -1521,164 +1522,133 @@ public class I3dRessourceManager {
         }
 
         @Override
-        public void setBackground(Drawable drawable) {
-            view.getIdleStyle().setBackground(drawable);
-            view.getSelectedStyle().setBackground(drawable);
+        public void setBackground(ViewState state, Drawable drawable) {
+            view.getIdleStyle().setBackground(state, drawable);
         }
 
         @Override
         public void setCornerRightBottomStyle(CornerStyle style) {
             view.getIdleStyle().setCornerRightBottomStyle(style);
-            view.getSelectedStyle().setCornerRightBottomStyle(style);
         }
 
         @Override
         public void setCornerLeftBottomStyle(CornerStyle style) {
             view.getIdleStyle().setCornerLeftBottomStyle(style);
-            view.getSelectedStyle().setCornerLeftBottomStyle(style);
         }
 
         @Override
         public void setCornerRightTopStyle(CornerStyle style) {
             view.getIdleStyle().setCornerRightTopStyle(style);
-            view.getSelectedStyle().setCornerRightTopStyle(style);
         }
 
         @Override
         public void setCornerLeftTopStyle(CornerStyle style) {
             view.getIdleStyle().setCornerLeftTopStyle(style);
-            view.getSelectedStyle().setCornerLeftTopStyle(style);
         }
 
         @Override
         public void setCornerRightBottomSize(Measure measure) {
             view.getIdleStyle().setCornerRightBottomSize(measure);
-            view.getSelectedStyle().setCornerRightBottomSize(measure);
         }
 
         @Override
         public void setCornerLeftBottomSize(Measure measure) {
             view.getIdleStyle().setCornerLeftBottomSize(measure);
-            view.getSelectedStyle().setCornerLeftBottomSize(measure);
         }
 
         @Override
         public void setCornerRightTopSize(Measure measure) {
             view.getIdleStyle().setCornerRightTopSize(measure);
-            view.getSelectedStyle().setCornerRightTopSize(measure);
         }
 
         @Override
         public void setCornerLeftTopSize(Measure measure) {
             view.getIdleStyle().setCornerLeftTopSize(measure);
-            view.getSelectedStyle().setCornerLeftTopSize(measure);
         }
 
         @Override
-        public void setBorderSize(Measure measure) {
-            view.getIdleStyle().setBorderSize(measure);
-            view.getSelectedStyle().setBorderSize(measure);
+        public void setBorderSize(ViewState state, Measure measure) {
+            view.getIdleStyle().setBorderSize(state, measure);
         }
 
         @Override
-        public void setBorderColor(Color color) {
-            view.getIdleStyle().setBorderColor(color);
-            view.getSelectedStyle().setBorderColor(color);
+        public void setBorderColor(ViewState state, Color color) {
+            view.getIdleStyle().setBorderColor(state, color);
         }
 
         @Override
         public void setLayoutGravityY(LayoutGravity align) {
             view.getIdleStyle().setLayoutGravityY(align);
-            view.getSelectedStyle().setLayoutGravityY(align);
         }
 
         @Override
         public void setLayoutGravityX(LayoutGravity align) {
             view.getIdleStyle().setLayoutGravityX(align);
-            view.getSelectedStyle().setLayoutGravityX(align);
         }
 
         @Override
         public void setMarginRightMeasure(Measure measure) {
             view.getIdleStyle().setMarginRightMeasure(measure);
-            view.getSelectedStyle().setMarginRightMeasure(measure);
         }
 
         @Override
         public void setMarginLeftMeasure(Measure measure) {
             view.getIdleStyle().setMarginLeftMeasure(measure);
-            view.getSelectedStyle().setMarginLeftMeasure(measure);
         }
 
         @Override
         public void setMarginBottomMeasure(Measure measure) {
             view.getIdleStyle().setMarginBottomMeasure(measure);
-            view.getSelectedStyle().setMarginBottomMeasure(measure);
         }
 
         @Override
         public void setMarginTopMeasure(Measure measure) {
             view.getIdleStyle().setMarginTopMeasure(measure);
-            view.getSelectedStyle().setMarginTopMeasure(measure);
         }
 
         @Override
         public void setPaddingRightMeasure(Measure measure) {
             view.getIdleStyle().setPaddingRightMeasure(measure);
-            view.getSelectedStyle().setPaddingRightMeasure(measure);
         }
 
         @Override
         public void setPaddingLeftMeasure(Measure measure) {
             view.getIdleStyle().setPaddingLeftMeasure(measure);
-            view.getSelectedStyle().setPaddingLeftMeasure(measure);
         }
 
         @Override
         public void setPaddingBottomMeasure(Measure measure) {
             view.getIdleStyle().setPaddingBottomMeasure(measure);
-            view.getSelectedStyle().setPaddingBottomMeasure(measure);
         }
 
         @Override
         public void setPaddingTopMeasure(Measure measure) {
             view.getIdleStyle().setPaddingTopMeasure(measure);
-            view.getSelectedStyle().setPaddingTopMeasure(measure);
         }
 
         @Override
         public void setHeightMeasure(Measure measure) {
             view.getIdleStyle().setHeightMeasure(measure);
-            view.getSelectedStyle().setHeightMeasure(measure);
         }
 
         @Override
         public void setLayoutHeightMeasure(LayoutMeasure measure) {
             view.getIdleStyle().setLayoutHeightMeasure(measure);
-            view.getSelectedStyle().setLayoutHeightMeasure(measure);
         }
 
         @Override
         public void setWidthMeasure(Measure measure) {
             view.getIdleStyle().setWidthMeasure(measure);
-            view.getSelectedStyle().setWidthMeasure(measure);
         }
 
         @Override
         public void setLayoutWidthMeasure(LayoutMeasure measure) {
             view.getIdleStyle().setLayoutWidthMeasure(measure);
-            view.getSelectedStyle().setLayoutWidthMeasure(measure);
         }
 
         @Override
         public void setHelp(String help) {
             view.setHelp(help);
-        }
-
-        @Override
-        public void setSelectedStyle(Style style) {
-            view.getIdleStyle().setSelectedStyle(style);
-            view.getSelectedStyle().setSelectedStyle(style);
         }
     }
 
@@ -1692,8 +1662,8 @@ public class I3dRessourceManager {
         }
 
         @Override
-        public void setTextColor(Color color) {
-            textView.getIdleStyle().setTextColor(color);
+        public void setTextColor(ViewState state, Color color) {
+            textView.getIdleStyle().setTextColor(state, color);
         }
 
         @Override
@@ -1726,8 +1696,8 @@ public class I3dRessourceManager {
         }
 
         @Override
-        public void setBackground(Drawable drawable) {
-            style.setBackground(drawable);
+        public void setBackground(ViewState state, Drawable drawable) {
+            style.setBackground(state, drawable);
         }
 
         @Override
@@ -1771,18 +1741,18 @@ public class I3dRessourceManager {
         }
 
         @Override
-        public void setBorderSize(Measure measure) {
-            style.setBorderSize(measure);
+        public void setBorderSize(ViewState state, Measure measure) {
+            style.setBorderSize(state, measure);
         }
 
         @Override
-        public void setBorderColor(Color color) {
-            style.setBorderColor(color);
+        public void setBorderColor(ViewState state, Color color) {
+            style.setBorderColor(state, color);
         }
 
         @Override
-        public void setTextColor(Color color) {
-            style.setTextColor(color);
+        public void setTextColor(ViewState state, Color color) {
+            style.setTextColor(state, color);
         }
 
         @Override
@@ -1874,16 +1844,52 @@ public class I3dRessourceManager {
         public void setHelp(String help) {
             // Style cannot define help
         }
-        
-        @Override
-        public void setSelectedStyle(Style style) {
-            style.setSelectedStyle(style);
-        }
-
     }
 
     public void clearCache() {
         fileCache.clear();
         drawableCache.clear();
+    }
+    
+    private static class Attribute {
+
+        ViewState mState = ViewState.IDLE;
+        String mName;
+        String mValue;
+        
+        public Attribute(Attr item) {
+            String[] splitName = item.getName().split("::");
+            mName = splitName[0];
+            if(splitName.length > 1) {
+                mState = parseState(splitName[1]); 
+            }
+            mValue = item.getValue();
+        }
+
+        public ViewState getState() {
+            return mState;
+        }
+
+        public String getValue() {
+            return mValue;
+        }
+
+        public String getName() {
+            return mName;
+        }
+    }
+    
+    private static ViewState parseState(String attribute) {
+        ViewState state = ViewState.IDLE;
+        if(attribute != null && !attribute.isEmpty()) {
+            if(attribute.equals("over")) {
+                state = ViewState.OVER;
+            } else if(attribute.equals("selected")) {
+                    state = ViewState.SELECTED;
+            } else {
+                throw new RessourceLoadingException("Unknown value '" + attribute + "' for State");
+            }
+        }
+        return state;
     }
 }

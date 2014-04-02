@@ -31,6 +31,7 @@ public class I3dContext {
     private I3dSceneManager sceneManager = new I3dSceneManager();
     private SettingsPopupActivity mPopupView;
     private Surface mPopupSurface;
+    private V3DMouseEvent mLastMouseEvent;
     
     public static I3dContext getInstance() {
         return instance;
@@ -141,8 +142,13 @@ public class I3dContext {
     public boolean isPreloaded() {
         return preloaded;
     }
+    
+    public V3DMouseEvent getLastMouseEvent() {
+        return mLastMouseEvent;
+    }
 
     public void onMouseEvent(V3DMouseEvent mouseEvent) {
+        mLastMouseEvent = mouseEvent;
         for(int i = surfaceList.size() -1 ; i >= 0; i--) {
             Surface surface = surfaceList.get(i);
             if (surface.contains(mouseEvent.getX(), mouseEvent.getY()) ||mouseEvent.getAction() == Action.MOUSE_DRAGGED) {

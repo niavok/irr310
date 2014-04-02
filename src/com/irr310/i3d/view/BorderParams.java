@@ -3,6 +3,7 @@ package com.irr310.i3d.view;
 import com.irr310.i3d.Color;
 import com.irr310.i3d.Measure;
 import com.irr310.i3d.Measure.Axis;
+import com.irr310.i3d.StyleSelector;
 import com.irr310.i3d.view.drawable.Drawable;
 
 public class BorderParams {
@@ -11,8 +12,8 @@ public class BorderParams {
         SQUARE, BEVEL,
     }
 
-    private Measure borderSize;
-    private Color borderColor;
+    private StyleSelector<Measure> borderSize;
+    private StyleSelector<Color> borderColor;
     private CornerStyle cornerLeftTopStyle;
     private CornerStyle cornerRightTopStyle;
     private CornerStyle cornerLeftBottomStyle;
@@ -23,11 +24,11 @@ public class BorderParams {
     private Measure cornerLeftBottomSize;
     private Measure cornerRightBottomSize;
 
-    private Drawable background;
+    private StyleSelector<Drawable> background;
 
     public BorderParams() {
-        borderSize = new Measure(0, false, Axis.VERTICAL);
-        borderColor = Color.black;
+        borderSize = new StyleSelector<Measure>(new Measure(0, false, Axis.VERTICAL));
+        borderColor = new StyleSelector<Color>(Color.black);
         
         
         cornerLeftTopStyle = CornerStyle.SQUARE;
@@ -43,19 +44,19 @@ public class BorderParams {
         background = null;
     }
 
-    public void setBorderSize(Measure borderSize) {
+    public void setBorderSize(StyleSelector<Measure> borderSize) {
         this.borderSize = borderSize;
     }
 
-    public Measure getBorderSize() {
+    public StyleSelector<Measure> getBorderSize() {
         return borderSize;
     }
 
-    public Color getBorderColor() {
+    public StyleSelector<Color> getBorderColor() {
         return borderColor;
     }
 
-    public void setBorderColor(Color borderColor) {
+    public void setBorderColor(StyleSelector<Color> borderColor) {
         this.borderColor = borderColor;
     }
 
@@ -123,17 +124,17 @@ public class BorderParams {
         this.cornerRightBottomSize = cornerRightBottomSize;
     }
 
-    public Drawable getBackground() {
+    public StyleSelector<Drawable> getBackground() {
         return background;
     }
 
-    public void setBackground(Drawable background) {
+    public void setBackground(StyleSelector<Drawable> background) {
         this.background = background;
     }
 
     public BorderParams duplicate() {
         BorderParams border = new BorderParams();
-        border.borderSize = new Measure(borderSize);
+        border.borderSize = borderSize.duplicate();
         border.borderColor = borderColor;
         border.cornerLeftTopStyle = cornerLeftTopStyle;
         border.cornerRightTopStyle = cornerRightTopStyle;

@@ -15,6 +15,7 @@ import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 import com.irr310.i3d.view.RelativeLayout;
 import com.irr310.i3d.view.TextView;
 import com.irr310.i3d.view.TextView.Gravity;
+import com.irr310.i3d.view.View.ViewState;
 import com.irr310.i3d.view.View;
 
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
@@ -40,7 +41,8 @@ public class SystemView extends RelativeLayout {
         textView = new TextView();
         textView.setText(system.getName());
         textView.setFont(I3dRessourceManager.getInstance().loadFont("systemNameWorldMap@fonts"));
-        textView.setTextColor(I3dRessourceManager.getInstance().loadColor("systemNameWorldMap@color")); 
+        textView.getTextColor().set(ViewState.IDLE, I3dRessourceManager.getInstance().loadColor("systemNameWorldMap@color"));
+        
         addViewInLayout(systemCircleView);
         addViewInLayout(textView);
         

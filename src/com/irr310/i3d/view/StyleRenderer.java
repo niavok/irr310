@@ -1,10 +1,12 @@
 package com.irr310.i3d.view;
 
+
 import org.lwjgl.opengl.GL11;
 
 import com.irr310.i3d.Color;
 import com.irr310.i3d.Graphics;
 import com.irr310.i3d.view.BorderParams.CornerStyle;
+import com.irr310.i3d.view.View.ViewState;
 import com.irr310.i3d.view.drawable.Drawable;
 
 public class StyleRenderer {
@@ -43,9 +45,10 @@ public class StyleRenderer {
     }
 
     private void drawBorder(Graphics g) {
-        float borderSize = layoutParams.computeMesure(borderParams.getBorderSize()) / 2f;
+        ViewState state = view.getState();
+        float borderSize = layoutParams.computeMesure(borderParams.getBorderSize().get(state)) / 2f;
         if (borderSize > 0) {
-            g.setColor(borderParams.getBorderColor());
+            g.setColor(borderParams.getBorderColor().get(state));
 
             GL11.glBegin(GL11.GL_QUADS);
 
@@ -165,7 +168,7 @@ public class StyleRenderer {
     private void drawBackground(Graphics g) {
         if (borderParams.getBackground() != null) {
 
-            Drawable background = borderParams.getBackground();
+            Drawable background = borderParams.getBackground().get(view.getState());
             background.setGraphics(g);
             background.setBounds(left, top, right, bottom);
 

@@ -10,7 +10,7 @@
     <Button
         i3d:id="productionCategoryFactoryButton"
         i3d:style="bigButton@styles"
-        i3d:selected_style="selectedBigButton@styles"
+        i3d:style::selected="selectedBigButton@styles"
         i3d:layout_width="match_parent"
         i3d:layout_marginBottom="10px"
         i3d:layout_marginTop="10px"
@@ -20,7 +20,7 @@
     <Button
         i3d:id="productionCategoryStocksButton"
         i3d:style="bigButton@styles"
-        i3d:selected_style="selectedBigButton@styles"
+        i3d:style::selected="selectedBigButton@styles"
         i3d:layout_width="match_parent"
         i3d:layout_marginBottom="10px"
         i3d:layout_marginTop="10px"
@@ -30,7 +30,7 @@
     <Button
         i3d:id="productionCategoryDesignButton"
         i3d:style="bigButton@styles"
-        i3d:selected_style="selectedBigButton@styles"
+        i3d:style::selected="selectedBigButton@styles"
         i3d:layout_width="match_parent"
         i3d:layout_marginBottom="10px"
         i3d:layout_marginTop="10px"

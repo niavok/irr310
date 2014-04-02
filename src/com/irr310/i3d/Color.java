@@ -31,7 +31,7 @@ import fr.def.iss.vd2.lib_v3d.V3DColor;
  * 
  * @author fberto
  */
-public class Color {
+public class Color implements Duplicable<Color> {
 
     
     public static Random random = new Random();
@@ -247,5 +247,10 @@ public class Color {
                             baseColor.g * (1 - mix) + targetColor.g * mix, //
                             baseColor.b * (1 - mix) + targetColor.b * mix, //
                             baseColor.a * (1 - mix) + targetColor.a * mix); //
+    }
+
+    @Override
+    public Color duplicate() {
+        return this;
     }
 }

@@ -12,7 +12,8 @@
         i3d:font="big@fonts"
         i3d:layout_gravity_x="center"
         i3d:text="Settings"
-        i3d:color="white@color" />
+        i3d:color="white@color"
+        i3d:color::over="selection@color" />
         
     <View
         i3d:layout_width="match_parent"
@@ -25,7 +26,8 @@
         i3d:font="big@fonts"
         i3d:layout_gravity_x="center"
         i3d:text="Save"
-        i3d:color="white@color" />
+        i3d:color="white@color"
+        i3d:color::over="selection@color" />
         
         <View
         i3d:layout_width="match_parent"
@@ -39,5 +41,6 @@
         i3d:font="big@fonts"
         i3d:layout_gravity_x="center"
         i3d:text="Quit"
-        i3d:color="white@color" />
+        i3d:color="white@color"
+        i3d:color::over="selection@color" />
 </LinearLayout>

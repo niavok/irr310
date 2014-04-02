@@ -24,7 +24,8 @@ public class SystemDetailsView extends RelativeLayout {
         textView = new TextView();
         textView.setText(system.getName());
         textView.setFont(I3dRessourceManager.getInstance().loadFont("systemNameWorldMap@fonts"));
-        textView.setTextColor(I3dRessourceManager.getInstance().loadColor("systemNameWorldMap@color"));
+        
+        textView.getTextColor().set(ViewState.IDLE, I3dRessourceManager.getInstance().loadColor("systemNameWorldMap@color"));
         
         addViewInLayout(systemCircleView);
         addViewInLayout(textView);

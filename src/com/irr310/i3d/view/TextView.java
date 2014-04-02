@@ -8,6 +8,7 @@ import com.irr310.i3d.Graphics;
 import com.irr310.i3d.I3dContext;
 import com.irr310.i3d.I3dRessourceManager;
 import com.irr310.i3d.RessourceFileCache;
+import com.irr310.i3d.StyleSelector;
 import com.irr310.i3d.Texture;
 import com.irr310.i3d.fonts.CharacterPixmap;
 import com.irr310.i3d.fonts.Font;
@@ -21,7 +22,7 @@ public class TextView extends View {
     protected String text = "";
     protected Font font;
     private String[] wrappedText;
-    protected Color textColor = Color.black;
+    protected StyleSelector<Color> textColor = new StyleSelector<>(Color.black);
     protected Gravity gravity = Gravity.TOP_LEFT;
     private float offsetX;
     private float offsetY;
@@ -51,7 +52,7 @@ public class TextView extends View {
         float localXbase = offsetX;
         float localY = offsetY;
 
-        g.setColor(textColor);
+        g.setColor(textColor.get(getState()));
         GL11.glEnable(GL11.GL_TEXTURE_2D);
 
         CharacterPixmap pixmap;
@@ -149,10 +150,14 @@ public class TextView extends View {
         GL11.glDisable(GL11.GL_TEXTURE_2D);
     }
 
-    public void setTextColor(Color textColor) {
+    public void setTextColor(StyleSelector<Color> textColor) {
         this.textColor = textColor;
     }
 
+    public StyleSelector<Color> getTextColor() {
+        return textColor;
+    }
+    
     /**
      * Text property Example i3d:gravity="top|center" Possible values : -
      * top|left - top|center - top|right - center|left - center - center|right -

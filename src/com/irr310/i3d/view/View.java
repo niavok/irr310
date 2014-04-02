@@ -6,6 +6,7 @@ import com.irr310.common.tools.Log;
 import com.irr310.common.tools.RessourceLoadingException;
 import com.irr310.i3d.Color;
 import com.irr310.i3d.Graphics;
+import com.irr310.i3d.I3dContext;
 import com.irr310.i3d.Style;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 
@@ -33,15 +34,20 @@ public abstract class View {
     private OnControllerEventListener onControllerEventListener;
     private boolean visible = true;
     private StyleRenderer styleRenderer;
-    private Style selectedStyle = new Style();
+//    private Style selectedStyle = new Style();
     private Style idleStyle = new Style();
     private ViewState state = ViewState.IDLE;
+    private boolean mMouseOver;
 
     public enum ViewState {
-        IDLE,
-        OVER,
-        ACTIVE,
-        SELECTED
+        DISABLED, // The view is disabled, no interaction possible
+        IDLE, // Idle state
+        OVER, // The mouse is over the view
+        FOCUSED, // The view has the focus
+        FOCUSED_OVER,  // The view has the focus and the mouse is over
+        SELECTED, // The view is selected
+        SELECTED_OVER, // The view is selected and the mouse is over
+        ACTIVE, // The button is pressing the view
     }
     
     public View() {
@@ -54,11 +60,17 @@ public abstract class View {
         if (!visible) {
             return;
         }
+        mMouseOver = isMouseOver(g.getUiTranslation());
+        
 
         GL11.glPushMatrix();
         // GL11.glTranslatef(layout.offset.x, layout.offset.y, 0);
         g.setColor(Color.randomLightOpaqueColor());
-//        g.drawFilledRectangle(mLayoutParams.mLeft, mLayoutParams.mTop, mLayoutParams.getTotalWidth(), mLayoutParams.getTotalHeight());
+        
+        
+//        if(isMouseOver(g.getUiTranslation())) {
+//            g.drawFilledRectangle(mLayoutParams.mLeft, mLayoutParams.mTop, mLayoutParams.getTotalWidth(), mLayoutParams.getTotalHeight());
+//        }
         
         // Margin
         float tranlationXIncludingMargin = mLayoutParams.mLeft+ mLayoutParams.computeMesure(mLayoutParams.getLayoutMarginLeft());
@@ -91,6 +103,25 @@ public abstract class View {
         
         
         GL11.glPopMatrix();
+    }
+
+    private boolean isMouseOver(Point point) {
+        V3DMouseEvent lastMouseEvent = I3dContext.getInstance().getLastMouseEvent();
+        if(lastMouseEvent == null) {
+            return false;
+        }
+        
+        float y = I3dContext.getInstance().getCanvas().getHeight() - lastMouseEvent.getY();
+         float py = I3dContext.getInstance().getCanvas().getHeight() + point.y;
+        
+        if(lastMouseEvent.getX() > point.x + mLayoutParams.mLeft + mLayoutParams.mLeftMargin 
+                && lastMouseEvent.getX() < point.x + mLayoutParams.mRight - mLayoutParams.mRightMargin
+                && y  >  py + mLayoutParams.mTop  + mLayoutParams.mTopMargin
+                && y < py + mLayoutParams.mBottom -  + mLayoutParams.mBottomMargin
+                ) {
+            return true;
+        }
+        return false;
     }
 
     public abstract void onDraw(Graphics g);
@@ -175,11 +206,11 @@ public abstract class View {
             this.state = state;
             switch (state) {
                 case SELECTED:
-                    if(selectedStyle != null) {
-                        selectedStyle.apply(this);
-                    } else {
-                        idleStyle.apply(this);
-                    }
+//                    if(selectedStyle != null) {
+//                        selectedStyle.apply(this);
+//                    } else {
+//                        idleStyle.apply(this);
+//                    }
                 break;
                 case IDLE:
                 default:
@@ -190,7 +221,21 @@ public abstract class View {
     }
 
     public ViewState getState() {
-        return state;
+        if(mMouseOver) {
+            switch (state) {
+                case IDLE:
+                    return ViewState.OVER;
+                case FOCUSED:
+                    return ViewState.FOCUSED_OVER;
+                case SELECTED:
+                    return ViewState.SELECTED_OVER;
+                default:    
+                    return state;
+            }
+        } else {
+            return state;
+        }
+        
     }
     
     void assignParent(ViewParent parent) {
@@ -242,7 +287,6 @@ public abstract class View {
 
     protected void duplicateTo(View view) {
         view.setId(getId());
-        view.setSelectedStyle(selectedStyle.duplicate());
         view.setIdleStyle(idleStyle.duplicate());
         view.setLayout(getLayoutParams().duplicate());
         view.setBorder(getBorderParams().duplicate());
@@ -345,9 +389,9 @@ public abstract class View {
         this.visible = visible;
     }
 
-    public void setSelectedStyle(Style style) {
-        selectedStyle = style;
-    }
+//    public void setSelectedStyle(Style style) {
+//        selectedStyle = style;
+//    }
     
     public void setIdleStyle(Style style) {
         idleStyle = style;
@@ -357,8 +401,8 @@ public abstract class View {
         return idleStyle;
     }
     
-    public Style getSelectedStyle() {
-        return selectedStyle;
-    }
+//    public Style getSelectedStyle() {
+//        return selectedStyle;
+//    }
 
 }

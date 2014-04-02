@@ -23,8 +23,9 @@ import com.irr310.i3d.view.LayoutParams.LayoutGravity;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 import com.irr310.i3d.view.TextView;
 import com.irr310.i3d.view.TextView.Gravity;
-import com.irr310.i3d.view.drawable.Drawable;
 import com.irr310.i3d.view.View;
+import com.irr310.i3d.view.View.ViewState;
+import com.irr310.i3d.view.drawable.Drawable;
 
 /**
  * Class representing a color with alpha channel
@@ -39,8 +40,8 @@ public class Style {
     private String parentName = null;
     private Style parent = null;
     private Font font;
-    private Color textColor;
-    private Color borderColor;
+    private StyleSelector<Color> textColor = new StyleSelector<Color>();
+    private StyleSelector<Color> borderColor = new StyleSelector<Color>();
     private String text;
     private LayoutGravity gravityY;
     private LayoutGravity gravityX;
@@ -48,12 +49,12 @@ public class Style {
     private Measure cornerLeftBottomSize;
     private Measure cornerRightTopSize;
     private Measure cornerLeftTopSize;
-    private Measure borderSize;
+    private StyleSelector<Measure> borderSize = new StyleSelector<Measure>();
     private CornerStyle cornerLeftTopStyle;
     private CornerStyle cornerRightTopStyle;
     private CornerStyle cornerLeftBottomStyle;
     private CornerStyle cornerRightBottomStyle;
-    private Drawable background;
+    private StyleSelector<Drawable> background = new StyleSelector<Drawable>();
     private Measure marginRight;
     private Measure marginLeft;
     private Measure marginBottom;
@@ -67,7 +68,6 @@ public class Style {
     private Measure widthMeasure;
     private LayoutMeasure layoutHeightMeasure;
     private Measure heightMeasure;
-    private Style selectedStyle;
     private boolean heightMeasureDefined = false;
     private boolean layoutHeightMeasureDefined = false;
     private boolean widthMeasureDefined = false;
@@ -96,7 +96,6 @@ public class Style {
     private boolean fontDefined = false;
     private boolean textColorDefined = false;
     private boolean borderColorDefined = false;
-    private boolean selectedStyleDefined = false;
 
     public void setParent(String parentName) {
         this.parentName = parentName;
@@ -141,12 +140,12 @@ public class Style {
             view.getLayoutParams().setPaddingRightMeasure(paddingRight);
 
         if (backgroundDefined)
-            view.getBorderParams().setBackground(background);
+            view.getBorderParams().setBackground(background.squashIn(view.getBorderParams().getBackground()));
 
         if (borderColorDefined)
-            view.getBorderParams().setBorderColor(borderColor);
+            view.getBorderParams().setBorderColor(borderColor.squashIn(view.getBorderParams().getBorderColor()));
         if (borderSizeDefined)
-            view.getBorderParams().setBorderSize(borderSize);
+            view.getBorderParams().setBorderSize(borderSize.squashIn(view.getBorderParams().getBorderSize()));
 
         if (cornerLeftTopStyleDefined)
             view.getBorderParams().setCornerLeftTopStyle(cornerLeftTopStyle);
@@ -165,15 +164,12 @@ public class Style {
         if (cornerRightBottomSizeDefined)
             view.getBorderParams().setCornerRightBottomSize(cornerRightBottomSize);
 
-        if (selectedStyleDefined)
-            view.setSelectedStyle(selectedStyle);
-
         if (view instanceof TextView) {
             TextView textView = (TextView) view;
             if (fontDefined)
                 textView.setFont(font);
             if (textColorDefined)
-                textView.setTextColor(textColor);
+                textView.setTextColor(textColor.squashIn(textView.getTextColor()));
             if (gravityDefined)
                 textView.setGravity(gravity);
         }
@@ -257,8 +253,8 @@ public class Style {
         this.marginRightDefined = true;
     }
 
-    public void setBackground(Drawable drawable) {
-        this.background = drawable;
+    public void setBackground(ViewState state, Drawable drawable) {
+        this.background.set(state, drawable);
         this.backgroundDefined = true;
     }
 
@@ -302,8 +298,8 @@ public class Style {
         this.cornerLeftTopSizeDefined = true;
     }
 
-    public void setBorderSize(Measure measure) {
-        this.borderSize = measure;
+    public void setBorderSize(ViewState state, Measure measure) {
+        this.borderSize.set(state, measure);
         this.borderSizeDefined = true;
     }
 
@@ -322,19 +318,14 @@ public class Style {
         this.fontDefined = true;
     }
 
-    public void setTextColor(Color textColor) {
-        this.textColor = textColor;
+    public void setTextColor(ViewState state, Color textColor) {
+        this.textColor.set(state, textColor);
         this.textColorDefined = true;
     }
 
-    public void setBorderColor(Color borderColor) {
-        this.borderColor = borderColor;
+    public void setBorderColor(ViewState state, Color borderColor) {
+        this.borderColor.set(state, borderColor);
         this.borderColorDefined = true;
-    }
-
-    public void setSelectedStyle(Style style) {
-        this.selectedStyle = style;
-        this.selectedStyleDefined = true;
     }
 
     public Style duplicate() {
@@ -377,7 +368,6 @@ public class Style {
         style.widthMeasure = widthMeasure;
         style.layoutHeightMeasure = layoutHeightMeasure;
         style.heightMeasure = heightMeasure;
-        style.selectedStyle = selectedStyle;
         style.heightMeasureDefined = heightMeasureDefined;
         style.layoutHeightMeasureDefined = layoutHeightMeasureDefined;
         style.widthMeasureDefined = widthMeasureDefined;
@@ -406,7 +396,6 @@ public class Style {
         style.fontDefined = fontDefined;
         style.textColorDefined = textColorDefined;
         style.borderColorDefined = borderColorDefined;
-        style.selectedStyleDefined = selectedStyleDefined;
 
         return style;
     }

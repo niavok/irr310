@@ -33,6 +33,7 @@
 	                i3d:layout_paddingRight="6px"
 	                i3d:text="settingsButton@strings"
 	                i3d:color="status@color"
+	                i3d:color::over="selection@color"
 	                i3d:help="newGameButtonHelp@help/mainmenu"
                  />
     	</LinearLayout>

@@ -129,7 +129,7 @@ public class Surface {
 
         GL11.glViewport(x, y, width, height);
         GL11.glScissor(x, y, width, height);
-        g.initUiTranslation(new Point(x, y-height));
+        g.initUiTranslation(new Point(x, -y-height));
         
         
         

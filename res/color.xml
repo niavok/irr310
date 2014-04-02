@@ -13,6 +13,9 @@
     <color name="borderButtonBase">#5f5f5fff</color>
     <color name="topButtonBase">#efefefff</color>
     <color name="bottomButtonBase">#ccccccff</color>
+    <color name="topButtonBase-over">#ffffffff</color>
+    <color name="bottomButtonBase-over">#dcdcdcff</color>
+    
     <color name="systemNameWorldMap">#646464ff</color>
     <color name="blockTitle">#000000</color>
     <color name="lightBlock">#f2f2f2c8</color>

@@ -1,7 +1,7 @@
 package com.irr310.i3d;
 
 
-public class Measure {
+public class Measure implements Duplicable<Measure> {
 
     private float value;
     private final boolean relative;
@@ -38,5 +38,10 @@ public class Measure {
     
     public Axis getAxis() {
         return axis;
+    }
+
+    @Override
+    public Measure duplicate() {
+        return new Measure(this);
     }
 }

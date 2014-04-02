@@ -115,10 +115,6 @@ public class ProxyView extends View {
         client.setState(state);
     }
 
-    public void setSelectedStyle(Style style) {
-        client.setSelectedStyle(style);
-    }
-
     public void setIdleStyle(Style style) {
         client.setIdleStyle(style);
     }
@@ -126,13 +122,4 @@ public class ProxyView extends View {
     public Style getIdleStyle() {
         return client.getIdleStyle();
     }
-
-    public Style getSelectedStyle() {
-        return client.getSelectedStyle();
-    }
-    
-    
-	    
-    
-    
 }

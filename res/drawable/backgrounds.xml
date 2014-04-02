@@ -5,6 +5,11 @@
     i3d:startColor="topButtonBase@color"
     i3d:stopColor="bottomButtonBase@color"
      />
+<gradient
+    name="buttonBaseBackground-over"
+    i3d:startColor="topButtonBase-over@color"
+    i3d:stopColor="bottomButtonBase-over@color"
+     />
 <solid
     name="lightBlock"
     i3d:color="lightBlock@color" />
