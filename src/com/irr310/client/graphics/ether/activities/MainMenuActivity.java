@@ -4,6 +4,7 @@ import com.irr310.i3d.Bundle;
 import com.irr310.i3d.Intent;
 import com.irr310.i3d.Measure;
 import com.irr310.i3d.Measure.Axis;
+import com.irr310.i3d.input.I3dMouseEvent;
 import com.irr310.i3d.view.Activity;
 import com.irr310.i3d.view.Button;
 import com.irr310.i3d.view.View;
@@ -11,8 +12,6 @@ import com.irr310.i3d.view.View.OnClickListener;
 import com.irr310.server.Duration;
 import com.irr310.server.Time;
 import com.irr310.server.Time.Timestamp;
-
-import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 
 public class MainMenuActivity extends Activity {
 
@@ -32,7 +31,7 @@ public class MainMenuActivity extends Activity {
         newGameMenu.setOnClickListener(new OnClickListener() {
             
             @Override
-            public void onClick(V3DMouseEvent mouseEvent, View view) {
+            public void onClick(I3dMouseEvent mouseEvent, View view) {
                 startActivity(new Intent(NewGameActivity.class));
             }
         });

@@ -18,7 +18,8 @@ package fr.def.iss.vd2.lib_v3d.element;
 
 import org.lwjgl.opengl.GL11;
 
-import fr.def.iss.vd2.lib_v3d.V3DColor;
+import com.irr310.i3d.utils.I3dColor;
+
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 
 /**
@@ -30,9 +31,9 @@ public class V3DBoundingBox {
     private V3DVect3 position = new V3DVect3(0, 0, 0);
     private V3DVect3 size = new V3DVect3(0, 0, 0);
     private V3DVect3 center = new V3DVect3(0, 0, 0);
-    private V3DColor lineColor = new V3DColor(0.8f, 0.8f, 1.0f, 1.0f);
-    private V3DColor faceColor = new V3DColor(0.8f, 0.8f, 1.0f, 1.0f);
-    private V3DColor centerColor = new V3DColor(1.0f, 0.0f, 0.0f, 1.0f);
+    private I3dColor lineColor = new I3dColor(0.8f, 0.8f, 1.0f, 1.0f);
+    private I3dColor faceColor = new I3dColor(0.8f, 0.8f, 1.0f, 1.0f);
+    private I3dColor centerColor = new I3dColor(1.0f, 0.0f, 0.0f, 1.0f);
     private float margin = 0.1f;
     private boolean flat = false;
     private boolean showLines = true;
@@ -252,27 +253,27 @@ public class V3DBoundingBox {
         return center;
     }
 
-    public V3DColor getCenterColor() {
+    public I3dColor getCenterColor() {
         return centerColor;
     }
 
-    public void setCenterColor(V3DColor centerColor) {
+    public void setCenterColor(I3dColor centerColor) {
         this.centerColor = centerColor;
     }
 
-    public V3DColor getFaceColor() {
+    public I3dColor getFaceColor() {
         return faceColor;
     }
 
-    public void setFaceColor(V3DColor faceColor) {
+    public void setFaceColor(I3dColor faceColor) {
         this.faceColor = faceColor;
     }
 
-    public V3DColor getLineColor() {
+    public I3dColor getLineColor() {
         return lineColor;
     }
 
-    public void setLineColor(V3DColor lineColor) {
+    public void setLineColor(I3dColor lineColor) {
         this.lineColor = lineColor;
     }
 

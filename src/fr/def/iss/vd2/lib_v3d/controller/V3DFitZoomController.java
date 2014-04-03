@@ -21,7 +21,8 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Float;
 
-import fr.def.iss.vd2.lib_v3d.V3DColor;
+import com.irr310.i3d.utils.I3dColor;
+
 import fr.def.iss.vd2.lib_v3d.V3DInputEvent;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraController;
 import fr.def.iss.vd2.lib_v3d.camera.V3DSimple2DCamera;
@@ -122,7 +123,7 @@ public class V3DFitZoomController implements V3DCameraController {
 
         targetFrame.setPosition(beginPosition.x, beginPosition.y, 100);
 
-        targetFrameColor = new V3DColorElement(targetFrame, V3DColor.blue);
+        targetFrameColor = new V3DColorElement(targetFrame, I3dColor.blue);
 
         targetCamera.getScene().add(targetFrameColor);
 
@@ -132,7 +133,7 @@ public class V3DFitZoomController implements V3DCameraController {
         inputFrame.setSize(0, 0);
         inputFrame.setPosition(beginPosition.x, beginPosition.y, 100);
         
-        inputFrameColor = new V3DColorElement(inputFrame, V3DColor.blue);
+        inputFrameColor = new V3DColorElement(inputFrame, I3dColor.blue);
 
         inputCamera.getScene().add(inputFrameColor);
 

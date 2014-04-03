@@ -2,12 +2,11 @@ package com.irr310.client.graphics.ether.activities.production;
 
 import com.irr310.common.world.ProductionTask;
 import com.irr310.i3d.I3dRessourceManager;
+import com.irr310.i3d.input.I3dMouseEvent;
 import com.irr310.i3d.view.Button;
 import com.irr310.i3d.view.ProxyView;
 import com.irr310.i3d.view.TextView;
 import com.irr310.i3d.view.View;
-
-import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 
 public class ProductionTaskDetailsView extends ProxyView {
 
@@ -30,7 +29,7 @@ public class ProductionTaskDetailsView extends ProxyView {
         cancelProductButton.setOnClickListener(new OnClickListener() {
             
             @Override
-            public void onClick(V3DMouseEvent mouseEvent, View view) {
+            public void onClick(I3dMouseEvent mouseEvent, View view) {
             }
         });
     }

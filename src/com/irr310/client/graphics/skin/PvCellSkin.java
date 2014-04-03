@@ -8,9 +8,9 @@ import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.world.system.Component;
 import com.irr310.i3d.scene.element.I3dElement;
 import com.irr310.i3d.scene.element.I3dGroupElement;
+import com.irr310.i3d.utils.I3dColor;
 import com.irr310.server.Time.Timestamp;
 
-import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DrawElement;
 
@@ -27,12 +27,12 @@ public class PvCellSkin extends Skin {
         // structure
         File v3drawFileStructure = new File("graphics/output/pvcell_structure.v3draw");
         final V3DrawElement elementStructure = V3DrawElement.LoadFromFile(v3drawFileStructure);
-        elements.add(new V3DColorElement(elementStructure, new V3DColor(135, 158, 255)));
+        elements.add(new V3DColorElement(elementStructure, new I3dColor(135, 158, 255)));
 
         // panel
         File v3drawFilePanel = new File("graphics/output/pvcell_panel.v3draw");
         elementPanel = V3DrawElement.LoadFromFile(v3drawFilePanel);
-        elements.add(new V3DColorElement(elementPanel, new V3DColor(0,20,60)));
+        elements.add(new V3DColorElement(elementPanel, new I3dColor(0,20,60)));
 
         transform = object.getFirstPart().getTransform();
         elements.setTransformMatrix(transform.toFloatBuffer());

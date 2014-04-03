@@ -20,9 +20,9 @@ import org.lwjgl.LWJGLException;
 
 import com.irr310.i3d.scene.I3dScene;
 import com.irr310.i3d.scene.element.I3dElement;
+import com.irr310.i3d.utils.I3dColor;
 
 import fr.def.iss.vd2.lib_v3d.V3DCanvas;
-import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
@@ -96,22 +96,22 @@ public class CylinderDemo {
         element = getCircle();
         // element.setPosition(-R3S2 * SPAG, -DEMI * SPAG, 0);
         element.setPosition(-9, 0, 0);
-        scene.add(new V3DColorElement(element, V3DColor.emerald));
+        scene.add(new V3DColorElement(element, I3dColor.emerald));
 
         element = getTube();
         // element.setPosition(-R3S2 * SPAG, DEMI * SPAG, 0);
         element.setPosition(-3, 0, 0);
-        scene.add(new V3DColorElement(element, V3DColor.fushia));
+        scene.add(new V3DColorElement(element, I3dColor.fushia));
 
         element = getRoundBox();
         // element.setPosition(-R3S2 * SPAG, DEMI * SPAG, 0);
         element.setPosition(3 , 0, 0);
-        scene.add(new V3DColorElement(element, V3DColor.lavander));
+        scene.add(new V3DColorElement(element, I3dColor.lavander));
 
         element = getCylinder();
         // element.setPosition(-R3S2 * SPAG, DEMI * SPAG, 0);
         element.setPosition(9 , 0, 0);
-        scene.add(new V3DColorElement(element, V3DColor.mauve));
+        scene.add(new V3DColorElement(element, I3dColor.mauve));
 
         return scene;
     }

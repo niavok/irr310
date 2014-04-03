@@ -2,8 +2,7 @@ package com.irr310.i3d.view;
 
 import com.irr310.i3d.Graphics;
 import com.irr310.i3d.Style;
-
-import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
+import com.irr310.i3d.input.I3dMouseEvent;
 
 
 public class ProxyView extends View {
@@ -79,7 +78,7 @@ public class ProxyView extends View {
         client.setOnKeyListener(onKeyEventListener);
     }
 
-    public boolean performClick(V3DMouseEvent mouseEvent) {
+    public boolean performClick(I3dMouseEvent mouseEvent) {
         return client.performClick(mouseEvent);
     }
 
@@ -87,7 +86,7 @@ public class ProxyView extends View {
         client.setHelp(help);
     }
 
-    public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
+    public boolean onMouseEvent(I3dMouseEvent mouseEvent) {
         return client.onMouseEvent(mouseEvent);
     }
 

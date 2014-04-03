@@ -4,14 +4,13 @@ import com.irr310.client.graphics.ether.activities.SettingsActivity;
 import com.irr310.client.graphics.ether.activities.StatusActivity.StatusActivityController;
 import com.irr310.i3d.Bundle;
 import com.irr310.i3d.Intent;
+import com.irr310.i3d.input.I3dMouseEvent;
+import com.irr310.i3d.input.I3dMouseEvent.Action;
 import com.irr310.i3d.view.Activity;
 import com.irr310.i3d.view.Button;
 import com.irr310.i3d.view.View;
 import com.irr310.i3d.view.View.OnClickListener;
 import com.irr310.i3d.view.View.OnMouseEventListener;
-
-import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
-import fr.def.iss.vd2.lib_v3d.V3DMouseEvent.Action;
 
 public class SettingsPopupActivity extends Activity {
 
@@ -33,7 +32,7 @@ public class SettingsPopupActivity extends Activity {
         quitButton.setOnMouseListener(new OnMouseEventListener() {
             
             @Override
-            public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
+            public boolean onMouseEvent(I3dMouseEvent mouseEvent) {
                 if(mouseEvent.getAction() == Action.MOUSE_PRESSED && mouseEvent.getButton() == 1) {
                 mListener.onQuit();
                 return true;
@@ -45,7 +44,7 @@ public class SettingsPopupActivity extends Activity {
         settingsButton.setOnMouseListener(new OnMouseEventListener() {
             
             @Override
-            public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
+            public boolean onMouseEvent(I3dMouseEvent mouseEvent) {
                 if(mouseEvent.getAction() == Action.MOUSE_PRESSED && mouseEvent.getButton() == 1) {
                 mListener.getControlledSurface().startActivity(new Intent(SettingsActivity.class));
                 // Do not return true to exit the popup

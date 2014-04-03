@@ -8,6 +8,8 @@ import com.irr310.client.graphics.SurfaceFactory;
 import com.irr310.common.tools.Log;
 import com.irr310.i3d.fonts.Font;
 import com.irr310.i3d.fonts.FontFactory;
+import com.irr310.i3d.input.I3dMouseEvent;
+import com.irr310.i3d.input.I3dMouseEvent.Action;
 import com.irr310.i3d.scene.I3dSceneManager;
 import com.irr310.i3d.view.Activity;
 import com.irr310.i3d.view.drawable.BitmapFactory;
@@ -16,8 +18,6 @@ import com.irr310.server.Time.Timestamp;
 
 import fr.def.iss.vd2.lib_v3d.V3DControllerEvent;
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent;
-import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
-import fr.def.iss.vd2.lib_v3d.V3DMouseEvent.Action;
 
 public class I3dContext {
 
@@ -31,7 +31,7 @@ public class I3dContext {
     private I3dSceneManager sceneManager = new I3dSceneManager();
     private SettingsPopupActivity mPopupView;
     private Surface mPopupSurface;
-    private V3DMouseEvent mLastMouseEvent;
+    private I3dMouseEvent mLastMouseEvent;
     
     public static I3dContext getInstance() {
         return instance;
@@ -53,7 +53,7 @@ public class I3dContext {
         canvas.init();
         
         mPopupSurface = new Surface(this) {
-            public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
+            public boolean onMouseEvent(I3dMouseEvent mouseEvent) {
                 if(mouseEvent.getAction() == Action.MOUSE_PRESSED) {
                     Log.log("plop");
                 }
@@ -143,16 +143,16 @@ public class I3dContext {
         return preloaded;
     }
     
-    public V3DMouseEvent getLastMouseEvent() {
+    public I3dMouseEvent getLastMouseEvent() {
         return mLastMouseEvent;
     }
 
-    public void onMouseEvent(V3DMouseEvent mouseEvent) {
+    public void onMouseEvent(I3dMouseEvent mouseEvent) {
         mLastMouseEvent = mouseEvent;
         for(int i = surfaceList.size() -1 ; i >= 0; i--) {
             Surface surface = surfaceList.get(i);
             if (surface.contains(mouseEvent.getX(), mouseEvent.getY()) ||mouseEvent.getAction() == Action.MOUSE_DRAGGED) {
-                V3DMouseEvent topLeftEvent = new V3DMouseEvent(mouseEvent.getAction(), mouseEvent.getX() - surface.x, (surface.y + surface.height)
+                I3dMouseEvent topLeftEvent = new I3dMouseEvent(mouseEvent.getAction(), mouseEvent.getX() - surface.x, (surface.y + surface.height)
                         - mouseEvent.getY(), mouseEvent.getButton(), mouseEvent.getClickCount());
                 topLeftEvent.setParentEvent(mouseEvent);
                 

@@ -1,6 +1,8 @@
-package fr.def.iss.vd2.lib_v3d;
+package com.irr310.i3d.input;
 
-public class V3DMouseEvent extends V3DInputEvent {
+import fr.def.iss.vd2.lib_v3d.V3DInputEvent;
+
+public class I3dMouseEvent extends V3DInputEvent {
 
     public enum Action {
         MOUSE_DRAGGED, MOUSE_MOVED, MOUSE_CLICKED, MOUSE_PRESSED, MOUSE_RELEASED, MOUSE_WHEEL_DOWN, MOUSE_WHEEL_UP,
@@ -14,9 +16,9 @@ public class V3DMouseEvent extends V3DInputEvent {
 
     private final int clickCount;
 
-    private V3DMouseEvent mParentEvent;
+    private I3dMouseEvent mParentEvent;
     
-    public V3DMouseEvent(Action action, int x, int y, int button, int clickCount) {
+    public I3dMouseEvent(Action action, int x, int y, int button, int clickCount) {
         this.action = action;
         this.x = x;
         this.y = y;
@@ -25,15 +27,15 @@ public class V3DMouseEvent extends V3DInputEvent {
         mParentEvent = null;
     }
     
-    public void setParentEvent(V3DMouseEvent parentEvent) {
+    public void setParentEvent(I3dMouseEvent parentEvent) {
         mParentEvent = parentEvent;
     }
     
-    public V3DMouseEvent getParentEvent() {
+    public I3dMouseEvent getParentEvent() {
         return mParentEvent;
     }
     
-    public V3DMouseEvent getRootEvent() {
+    public I3dMouseEvent getRootEvent() {
         if(mParentEvent == null) {
             return this;
         } else {
@@ -61,8 +63,8 @@ public class V3DMouseEvent extends V3DInputEvent {
         return button;
     }
     
-    public V3DMouseEvent relativeTo(int xOffset, int yOffset) {
-        V3DMouseEvent mouseEvent = new V3DMouseEvent(action, x - xOffset, y - yOffset, button, clickCount);
+    public I3dMouseEvent relativeTo(int xOffset, int yOffset) {
+        I3dMouseEvent mouseEvent = new I3dMouseEvent(action, x - xOffset, y - yOffset, button, clickCount);
         mouseEvent.setParentEvent(this);
         return mouseEvent;
     }

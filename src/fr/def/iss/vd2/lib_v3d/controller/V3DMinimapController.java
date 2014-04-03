@@ -21,7 +21,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.geom.Point2D;
 
-import fr.def.iss.vd2.lib_v3d.V3DColor;
+import com.irr310.i3d.utils.I3dColor;
+
 import fr.def.iss.vd2.lib_v3d.V3DInputEvent;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraController;
 import fr.def.iss.vd2.lib_v3d.camera.V3DSimple2DCamera;
@@ -46,7 +47,7 @@ public class V3DMinimapController implements V3DCameraController {
     private float zoomMaxFactor = -1;
     private float zoomMinFactor = 0.5f;
 
-    public V3DMinimapController(V3DSimple2DCamera controllingCamera, V3DSimple2DCamera controlledCamera, V3DColor borderColor, V3DColor maskColor) {
+    public V3DMinimapController(V3DSimple2DCamera controllingCamera, V3DSimple2DCamera controlledCamera, I3dColor borderColor, I3dColor maskColor) {
         this.controllingCamera = controllingCamera;
         this.controlledCamera = controlledCamera;
 

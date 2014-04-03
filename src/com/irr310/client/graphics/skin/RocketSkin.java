@@ -11,11 +11,11 @@ import com.irr310.common.world.capacity.RocketCapacity;
 import com.irr310.common.world.system.Component;
 import com.irr310.i3d.scene.element.I3dElement;
 import com.irr310.i3d.scene.element.I3dGroupElement;
+import com.irr310.i3d.utils.I3dColor;
 import com.irr310.server.Duration;
 import com.irr310.server.Time;
 import com.irr310.server.Time.Timestamp;
 
-import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DShaderElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DrawElement;
@@ -38,13 +38,13 @@ public class RocketSkin extends Skin {
 
         File v3drawFileStructure = new File("graphics/output/rocket_tube.v3draw");
         final V3DrawElement elementStructure = V3DrawElement.LoadFromFile(v3drawFileStructure);
-        elements.add(new V3DColorElement(new V3DShaderElement(elementStructure, "propeller"), new V3DColor(103, 0, 7)));
+        elements.add(new V3DColorElement(new V3DShaderElement(elementStructure, "propeller"), new I3dColor(103, 0, 7)));
         
         
         // fins
         File v3drawFileFins = new File("graphics/output/rocket_fins.v3draw");
         final V3DrawElement elementFins = V3DrawElement.LoadFromFile(v3drawFileFins);
-        elements.add(new V3DColorElement(new V3DShaderElement(elementFins, "propeller"), new V3DColor(103, 103, 103)));
+        elements.add(new V3DColorElement(new V3DShaderElement(elementFins, "propeller"), new I3dColor(103, 103, 103)));
         
         transform = object.getFirstPart().getTransform();
         elements.setTransformMatrix(transform.toFloatBuffer());
@@ -68,7 +68,7 @@ public class RocketSkin extends Skin {
             lastDustEmission = Time.getGameTime();
             
             if(lastPosition != null) {
-                renderer.addElement(new RocketSteam(renderer, transform.getTranslation(), transform.getTranslation().diff(lastPosition) , new V3DColor(255, 255, 255,0.8f), 10, 1));
+                renderer.addElement(new RocketSteam(renderer, transform.getTranslation(), transform.getTranslation().diff(lastPosition) , new I3dColor(255, 255, 255,0.8f), 10, 1));
             }
             
             if(transform.getTranslation().length() > 0) {

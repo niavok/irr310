@@ -22,8 +22,8 @@ import org.lwjgl.util.glu.GLU;
 
 import com.irr310.i3d.scene.I3dCamera;
 import com.irr310.i3d.scene.element.I3dElement;
+import com.irr310.i3d.utils.I3dColor;
 
-import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 
 /**
@@ -41,8 +41,8 @@ public class V3DCircle extends I3dElement {
     private RenderMode renderMode = RenderMode.PLAIN;
     private int quality = 16;
     private boolean customColor = false;
-    private V3DColor innerColor = V3DColor.white;
-    private V3DColor outerColor = V3DColor.white;
+    private I3dColor innerColor = I3dColor.white;
+    private I3dColor outerColor = I3dColor.white;
 
 
 
@@ -65,7 +65,7 @@ public class V3DCircle extends I3dElement {
         this.quality = quality;
     }
 
-    public void setColors(V3DColor innerColor,V3DColor outerColor) {
+    public void setColors(I3dColor innerColor,I3dColor outerColor) {
         this.innerColor = innerColor;
         this.outerColor = outerColor;
         customColor = true;

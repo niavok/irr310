@@ -36,9 +36,9 @@ import com.irr310.i3d.scene.I3dScene;
 import com.irr310.i3d.scene.controller.I3dFollow3DCameraController;
 import com.irr310.i3d.scene.element.I3dElement;
 import com.irr310.i3d.scene.element.I3dGroupElement;
+import com.irr310.i3d.utils.I3dColor;
 import com.irr310.server.Time.Timestamp;
 
-import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
@@ -99,7 +99,7 @@ public class WorldRenderer implements GraphicRenderer {
         animatedList.add(cameraController);
 
         fullscreenBinding = V3DCameraBinding.buildFullscreenCamera(activeCamera);
-        activeCamera.setBackgroundColor(V3DColor.white);
+        activeCamera.setBackgroundColor(I3dColor.white);
 
         // Add zoom and pane camera controlleur
         // cameraController.setLimitBound(false);
@@ -615,9 +615,9 @@ public class WorldRenderer implements GraphicRenderer {
 
         I3dGroupElement group = new I3dGroupElement();
 
-        group.add(new V3DColorElement(xAxis, V3DColor.red));
-        group.add(new V3DColorElement(yAxis, V3DColor.green));
-        group.add(new V3DColorElement(zAxis, V3DColor.blue));
+        group.add(new V3DColorElement(xAxis, I3dColor.red));
+        group.add(new V3DColorElement(yAxis, I3dColor.green));
+        group.add(new V3DColorElement(zAxis, I3dColor.blue));
         return group;
     }
 
@@ -670,7 +670,7 @@ public class WorldRenderer implements GraphicRenderer {
         } else {
             Component kernel = ship.getComponentByKey("kernel");
             GuiTrackingArrow guiTrackingArrow = new GuiTrackingArrow(this, cameraController, kernel.getFirstPart());
-            guiTrackingArrow.setColor(V3DColor.fromI3d(ship.getOwner().getColor().copy().setAlpha(0.8f)));
+            guiTrackingArrow.setColor(I3dColor.fromI3d(ship.getOwner().getColor().copy().setAlpha(0.8f)));
             addPersistantGuiElement(guiTrackingArrow);
             worldObjectToV3DElementMap.get(kernel).add(guiTrackingArrow);    
         }
@@ -727,7 +727,7 @@ public class WorldRenderer implements GraphicRenderer {
                 skin = new AsteroidSkin(this, (CelestialObject) object);
 
                 GuiTrackingArrow guiTrackingArrow = new GuiTrackingArrow(this, cameraController, object.getFirstPart());
-                guiTrackingArrow.setColor(new V3DColor(255, 0, 0, 0.8f));
+                guiTrackingArrow.setColor(new I3dColor(255, 0, 0, 0.8f));
                 addPersistantGuiElement(guiTrackingArrow);
                 worldObjectToV3DElementMap.get(object).add(guiTrackingArrow);
 
@@ -735,14 +735,14 @@ public class WorldRenderer implements GraphicRenderer {
                 skin = new MonolithSkin(this, (CelestialObject) object);
 
                 GuiTrackingArrow guiTrackingArrow = new GuiTrackingArrow(this, cameraController, object.getFirstPart());
-                guiTrackingArrow.setColor(new V3DColor(88, 9, 168, 0.8f));
+                guiTrackingArrow.setColor(new I3dColor(88, 9, 168, 0.8f));
                 addPersistantGuiElement(guiTrackingArrow);
                 worldObjectToV3DElementMap.get(object).add(guiTrackingArrow);
             } else if (object.getSkin().equals("loot")) {
                 skin = new LootSkin(this, (CelestialObject) object);
 
                 GuiTrackingArrow guiTrackingArrow = new GuiTrackingArrow(this, cameraController, object.getFirstPart());
-                guiTrackingArrow.setColor(new V3DColor(32, 200, 32, 0.8f));
+                guiTrackingArrow.setColor(new I3dColor(32, 200, 32, 0.8f));
                 addPersistantGuiElement(guiTrackingArrow);
                 worldObjectToV3DElementMap.get(object).add(guiTrackingArrow);
             } else {

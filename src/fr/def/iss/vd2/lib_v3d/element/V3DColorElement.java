@@ -21,8 +21,8 @@ import org.lwjgl.opengl.GL11;
 
 import com.irr310.i3d.scene.I3dCamera;
 import com.irr310.i3d.scene.element.I3dElement;
+import com.irr310.i3d.utils.I3dColor;
 
-import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 
 /**
@@ -33,12 +33,12 @@ public class V3DColorElement extends I3dElement {
 
     private I3dElement childElement = null;
     private V3DBoundingBox boundingBox = new V3DBoundingBox();
-    private V3DColor color = V3DColor.white;
+    private I3dColor color = I3dColor.white;
 
     public V3DColorElement() {
     }
 
-    public V3DColorElement(I3dElement element, V3DColor color) {
+    public V3DColorElement(I3dElement element, I3dColor color) {
         super();
         childElement = element;
         this.color = color;
@@ -98,11 +98,11 @@ public class V3DColorElement extends I3dElement {
         return boundingBox;
     }
 
-    public void setColor(V3DColor v3DColor) {
+    public void setColor(I3dColor v3DColor) {
         color = v3DColor.copy();
     }
 
-    public V3DColor getColor() {
+    public I3dColor getColor() {
         return color;
     }
 

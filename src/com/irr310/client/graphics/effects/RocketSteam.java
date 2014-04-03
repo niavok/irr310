@@ -6,11 +6,11 @@ import com.irr310.client.graphics.WorldRenderer;
 import com.irr310.common.tools.Vec3;
 import com.irr310.i3d.scene.element.I3dElement;
 import com.irr310.i3d.scene.element.I3dGroupElement;
+import com.irr310.i3d.utils.I3dColor;
 import com.irr310.server.Duration;
 import com.irr310.server.Time;
 import com.irr310.server.Time.Timestamp;
 
-import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DLine;
@@ -24,12 +24,12 @@ public class RocketSteam extends GenericGraphicalElement{
 
     private final UiEngine engine;
     private V3DLine element;
-    private final V3DColor color;
+    private final I3dColor color;
     private final Vec3 baseSize;
     private V3DColorElement colorElement;
-    private V3DColor targetColor;
+    private I3dColor targetColor;
 
-    public RocketSteam(WorldRenderer renderer, Vec3 position , Vec3 size, V3DColor color, double duration, double deltaTime) {
+    public RocketSteam(WorldRenderer renderer, Vec3 position , Vec3 size, I3dColor color, double duration, double deltaTime) {
         this.baseSize = size;
         this.color = color;
         this.targetColor = color.copy().setAlpha(0);
@@ -58,7 +58,7 @@ public class RocketSteam extends GenericGraphicalElement{
         double mix = creationTime.getDurationToNow(true).getSeconds() / lifeDuration.getSeconds();
         
         element.setThickness((float) (5*(1-mix)));
-        colorElement.setColor(V3DColor.mix(color, targetColor, (float) mix));
+        colorElement.setColor(I3dColor.mix(color, targetColor, (float) mix));
         if (creationTime.getDurationToNow(true).longer(lifeDuration)) {
             destroy();
         }

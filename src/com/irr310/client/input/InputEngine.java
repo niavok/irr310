@@ -10,6 +10,8 @@ import com.irr310.client.input.ControllerManager.ControllerEventObserver;
 import com.irr310.common.engine.Engine;
 import com.irr310.common.engine.Observable;
 import com.irr310.common.tools.Log;
+import com.irr310.i3d.input.I3dMouseEvent;
+import com.irr310.i3d.input.I3dMouseEvent.Action;
 import com.irr310.i3d.view.Point;
 import com.irr310.server.Time;
 import com.irr310.server.Time.Timestamp;
@@ -17,8 +19,6 @@ import com.irr310.server.Time.Timestamp;
 import fr.def.iss.vd2.lib_v3d.V3DControllerEvent;
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent;
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent.KeyAction;
-import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
-import fr.def.iss.vd2.lib_v3d.V3DMouseEvent.Action;
 
 public class InputEngine implements Engine {
 
@@ -92,19 +92,19 @@ public class InputEngine implements Engine {
             
             if(dWheel > 0) {
                 
-                V3DMouseEvent mouseEvent = new V3DMouseEvent(Action.MOUSE_WHEEL_UP, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1, 0);
+                I3dMouseEvent mouseEvent = new I3dMouseEvent(Action.MOUSE_WHEEL_UP, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1, 0);
                 notifyMouseEvent(mouseEvent);
             } else if(dWheel < 0) {
-                V3DMouseEvent mouseEvent = new V3DMouseEvent(Action.MOUSE_WHEEL_DOWN, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1, 0);
+                I3dMouseEvent mouseEvent = new I3dMouseEvent(Action.MOUSE_WHEEL_DOWN, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1, 0);
                 notifyMouseEvent(mouseEvent);
             } else if (Mouse.getEventButton() == -1) {
                 if (dragging) {
                     // Drag
-                    V3DMouseEvent mouseEvent = new V3DMouseEvent(Action.MOUSE_DRAGGED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1, 0);
+                    I3dMouseEvent mouseEvent = new I3dMouseEvent(Action.MOUSE_DRAGGED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1, 0);
                     notifyMouseEvent(mouseEvent);
                 } else {
                     // Move
-                    V3DMouseEvent mouseEvent = new V3DMouseEvent(Action.MOUSE_MOVED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1, 0);
+                    I3dMouseEvent mouseEvent = new I3dMouseEvent(Action.MOUSE_MOVED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1, 0);
                     notifyMouseEvent(mouseEvent);
                 }
 
@@ -114,12 +114,12 @@ public class InputEngine implements Engine {
                     dragging = true;
                     pressTime[Mouse.getEventButton()] = Mouse.getEventNanoseconds();
                     pressLocation[Mouse.getEventButton()] = new Point(Mouse.getX(), Mouse.getY());
-                    V3DMouseEvent mouseEvent = new V3DMouseEvent(Action.MOUSE_PRESSED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1, 0);
+                    I3dMouseEvent mouseEvent = new I3dMouseEvent(Action.MOUSE_PRESSED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1, 0);
                     notifyMouseEvent(mouseEvent);
                 } else {
                     // Released
                     dragging = false;
-                    V3DMouseEvent mouseEvent = new V3DMouseEvent(Action.MOUSE_RELEASED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1, 0);
+                    I3dMouseEvent mouseEvent = new I3dMouseEvent(Action.MOUSE_RELEASED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1, 0);
                     notifyMouseEvent(mouseEvent);
                     if( Mouse.getEventNanoseconds()  - pressTime[Mouse.getEventButton()] < CLICK_TIME && new Point(Mouse.getX(), Mouse.getY()).distanceTo(pressLocation[Mouse.getEventButton()])  < 10) {
                         
@@ -130,7 +130,7 @@ public class InputEngine implements Engine {
                         clickCount[Mouse.getEventButton()]++;
                         clickTime[Mouse.getEventButton()] = Mouse.getEventNanoseconds();
 //                        Log.trace("click count set to "+clickCount[Mouse.getEventButton()]);
-                        mouseEvent = new V3DMouseEvent(Action.MOUSE_CLICKED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1, clickCount[Mouse.getEventButton()]);
+                        mouseEvent = new I3dMouseEvent(Action.MOUSE_CLICKED, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton()+1, clickCount[Mouse.getEventButton()]);
                         notifyMouseEvent(mouseEvent);
                     }
                 }
@@ -279,7 +279,7 @@ public class InputEngine implements Engine {
         return mInputEngineObservable;
     }
     
-    private void notifyMouseEvent(V3DMouseEvent event) {
+    private void notifyMouseEvent(I3dMouseEvent event) {
         for(InputEngineObserver observer : mInputEngineObservable.getObservers()) {
             observer.onMouseEvent(event);
         }

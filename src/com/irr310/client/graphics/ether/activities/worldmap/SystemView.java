@@ -11,14 +11,13 @@ import com.irr310.i3d.Measure;
 import com.irr310.i3d.Measure.Axis;
 import com.irr310.i3d.SelectionManager;
 import com.irr310.i3d.SelectionManager.OnSelectionChangeListener;
+import com.irr310.i3d.input.I3dMouseEvent;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 import com.irr310.i3d.view.RelativeLayout;
 import com.irr310.i3d.view.TextView;
 import com.irr310.i3d.view.TextView.Gravity;
 import com.irr310.i3d.view.View.ViewState;
 import com.irr310.i3d.view.View;
-
-import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 
 public class SystemView extends RelativeLayout {
 
@@ -49,7 +48,7 @@ public class SystemView extends RelativeLayout {
         this.setOnClickListener(new OnClickListener() {
 
             @Override
-            public void onClick(V3DMouseEvent mouseEvent, View view) {
+            public void onClick(I3dMouseEvent mouseEvent, View view) {
                 Log.trace("click on system count="+mouseEvent.getClickCount());
                 if(mouseEvent.getClickCount() == 2) {
                     activity.inspectSystemAction(system);

@@ -9,12 +9,12 @@ import com.irr310.i3d.I3dVec2;
 import com.irr310.i3d.Intent;
 import com.irr310.i3d.Message;
 import com.irr310.i3d.Surface;
+import com.irr310.i3d.input.I3dMouseEvent;
 import com.irr310.server.Time;
 import com.irr310.server.Time.Timestamp;
 
 import fr.def.iss.vd2.lib_v3d.V3DControllerEvent;
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent;
-import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 
 public abstract class Activity implements ViewParent {
 
@@ -206,7 +206,7 @@ public abstract class Activity implements ViewParent {
         return context;
     }
     
-    public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
+    public boolean onMouseEvent(I3dMouseEvent mouseEvent) {
         return mview.onMouseEvent(mouseEvent.relativeTo((int) mview.getLayoutParams().mLeft,(int)  mview.getLayoutParams().mTop));
     }
     

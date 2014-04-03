@@ -1,12 +1,12 @@
 package com.irr310.i3d.view;
 
 import com.irr310.common.tools.Log;
+import com.irr310.i3d.input.I3dMouseEvent;
+import com.irr310.i3d.input.I3dMouseEvent.Action;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 
 import fr.def.iss.vd2.lib_v3d.V3DControllerEvent;
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent;
-import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
-import fr.def.iss.vd2.lib_v3d.V3DMouseEvent.Action;
 
 public class RelativeLayout extends ViewGroup {
 
@@ -145,7 +145,7 @@ public class RelativeLayout extends ViewGroup {
 
     
     @Override
-    public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
+    public boolean onMouseEvent(I3dMouseEvent mouseEvent) {
         boolean used = false;
         
         if(mouseEvent.getAction() == Action.MOUSE_PRESSED) {

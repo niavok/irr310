@@ -18,8 +18,9 @@ package fr.def.iss.vd2.lib_v3d.demo;
 
 import org.lwjgl.LWJGLException;
 
+import com.irr310.i3d.utils.I3dColor;
+
 import fr.def.iss.vd2.lib_v3d.V3DCanvas;
-import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
 import fr.def.iss.vd2.lib_v3d.camera.V3DSimple2DCamera;
@@ -60,7 +61,7 @@ public class EmptyCanvasDemo {
 
 
         activeCamera.setShowCenter(true);
-        activeCamera.setBackgroundColor(V3DColor.darkblue);
+        activeCamera.setBackgroundColor(I3dColor.darkblue);
         canvas.addCamera(fullscreenBinding);
 
         canvas.setShowFps(true);

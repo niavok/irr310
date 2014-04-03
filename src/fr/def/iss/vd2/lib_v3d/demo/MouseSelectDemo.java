@@ -23,9 +23,9 @@ import org.lwjgl.LWJGLException;
 
 import com.irr310.i3d.scene.I3dScene;
 import com.irr310.i3d.scene.element.I3dElement;
+import com.irr310.i3d.utils.I3dColor;
 
 import fr.def.iss.vd2.lib_v3d.V3DCanvas;
-import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
@@ -80,7 +80,7 @@ public class MouseSelectDemo{
 
 
         activeCamera.setShowCenter(true);
-        activeCamera.setBackgroundColor(V3DColor.darkblue);
+        activeCamera.setBackgroundColor(I3dColor.darkblue);
 
         activeCamera.setScene(generateScene());
 
@@ -107,7 +107,7 @@ public class MouseSelectDemo{
         {
             V3DBox box = new V3DBox();
             box.setSize(new V3DVect3(1, 2, 3));
-            V3DColorElement colorElement = new V3DColorElement(box, V3DColor.azure);
+            V3DColorElement colorElement = new V3DColorElement(box, I3dColor.azure);
 
             colorElement.setPosition(4, 2, 0);
             colorElement.setSelectable(true);
@@ -117,7 +117,7 @@ public class MouseSelectDemo{
         {
             V3DBox box = new V3DBox();
             box.setSize(new V3DVect3(1, 1, 2));
-            V3DColorElement colorElement = new V3DColorElement(box, V3DColor.azure);
+            V3DColorElement colorElement = new V3DColorElement(box, I3dColor.azure);
 
             colorElement.setPosition(2, 1, 0);
             colorElement.setSelectable(true);
@@ -127,7 +127,7 @@ public class MouseSelectDemo{
         {
             V3DBox box = new V3DBox();
             box.setSize(new V3DVect3(4, 4, 1));
-            V3DColorElement colorElement = new V3DColorElement(box, V3DColor.azure);
+            V3DColorElement colorElement = new V3DColorElement(box, I3dColor.azure);
 
             colorElement.setPosition(0, -3, 0);
             colorElement.setSelectable(true);
@@ -137,7 +137,7 @@ public class MouseSelectDemo{
         {
             V3DBox box = new V3DBox();
             box.setSize(new V3DVect3(2, 2, 6));
-            V3DColorElement colorElement = new V3DColorElement(box, V3DColor.azure);
+            V3DColorElement colorElement = new V3DColorElement(box, I3dColor.azure);
 
             colorElement.setPosition(-4, -3, 0);
             colorElement.setSelectable(true);
@@ -146,7 +146,7 @@ public class MouseSelectDemo{
 
         {
             I3dElement box = getBoxHexaGon();
-            V3DColorElement colorElement = new V3DColorElement(box, V3DColor.azure);
+            V3DColorElement colorElement = new V3DColorElement(box, I3dColor.azure);
 
             colorElement.setPosition(4, -4, 0);
             colorElement.setSelectable(true);
@@ -168,10 +168,10 @@ public class MouseSelectDemo{
                 public boolean select(I3dElement selection) {
                     if (selection instanceof V3DColorElement) {
                         V3DColorElement colorElement = (V3DColorElement) selection;
-                        if (colorElement.getColor().isSame(V3DColor.violet) || colorElement.getColor().isSame(V3DColor.mauve)) {
-                            colorElement.setColor(V3DColor.fushia);
-                        } else if( colorElement.getColor().isSame(V3DColor.fushia)) {
-                            colorElement.setColor(V3DColor.violet);
+                        if (colorElement.getColor().isSame(I3dColor.violet) || colorElement.getColor().isSame(I3dColor.mauve)) {
+                            colorElement.setColor(I3dColor.fushia);
+                        } else if( colorElement.getColor().isSame(I3dColor.fushia)) {
+                            colorElement.setColor(I3dColor.violet);
                         }
                     }
 
@@ -191,10 +191,10 @@ public class MouseSelectDemo{
                 public boolean select(I3dElement selection) {
                     if (selection instanceof V3DColorElement) {
                         V3DColorElement colorElement = (V3DColorElement) selection;
-                        if (colorElement.getColor().isSame(V3DColor.violet)) {
-                            colorElement.setColor(V3DColor.mauve);
-                        } else if( colorElement.getColor().isSame(V3DColor.mauve)) {
-                            colorElement.setColor(V3DColor.violet);
+                        if (colorElement.getColor().isSame(I3dColor.violet)) {
+                            colorElement.setColor(I3dColor.mauve);
+                        } else if( colorElement.getColor().isSame(I3dColor.mauve)) {
+                            colorElement.setColor(I3dColor.violet);
                         }
                     }
 
@@ -220,16 +220,16 @@ public class MouseSelectDemo{
                     //System.err.println("over");
 
                     if (over != null) {
-                        if (over.getColor().isSame(V3DColor.violet)) {
-                            over.setColor(V3DColor.azure);
+                        if (over.getColor().isSame(I3dColor.violet)) {
+                            over.setColor(I3dColor.azure);
                         }
                     }
                     over = null;
 
                     if (selection instanceof V3DColorElement) {
                         V3DColorElement colorElement = (V3DColorElement) selection;
-                        if (colorElement.getColor().isSame(V3DColor.azure) || colorElement.getColor().isSame(V3DColor.violet)) {
-                            colorElement.setColor(V3DColor.violet);
+                        if (colorElement.getColor().isSame(I3dColor.azure) || colorElement.getColor().isSame(I3dColor.violet)) {
+                            colorElement.setColor(I3dColor.violet);
                             over = colorElement;
                         }
                     }

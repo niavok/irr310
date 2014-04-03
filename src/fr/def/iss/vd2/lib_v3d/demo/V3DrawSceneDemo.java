@@ -21,9 +21,9 @@ import java.io.File;
 import org.lwjgl.LWJGLException;
 
 import com.irr310.i3d.scene.I3dScene;
+import com.irr310.i3d.utils.I3dColor;
 
 import fr.def.iss.vd2.lib_v3d.V3DCanvas;
-import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
 import fr.def.iss.vd2.lib_v3d.camera.V3DSimple3DCamera;
@@ -71,7 +71,7 @@ public class V3DrawSceneDemo  {
         //activeCamera.fitAll();        // Centre sur les objets avant leurs rotations !
         activeCamera.fitAllIfInvalid(); // Centre sur les objets après leurs rotations !
         activeCamera.setShowCenter(true);
-        activeCamera.setBackgroundColor(V3DColor.black);
+        activeCamera.setBackgroundColor(I3dColor.black);
 
         canvas.addCamera(fullscreenBinding);
         canvas.setShowFps(true);
@@ -118,7 +118,7 @@ public class V3DrawSceneDemo  {
             v3DrawElement.setRotation(0, 90, 90);
             v3DrawElement.setScale(1);
 
-            V3DColorElement colorElement = new V3DColorElement(v3DrawElement, V3DColor.white);
+            V3DColorElement colorElement = new V3DColorElement(v3DrawElement, I3dColor.white);
 
             V3DrawReader v3drawReader = v3DrawElement.getV3drawReader();
             float dx = -((v3drawReader.getMaxZ() -v3drawReader.getMinZ())/2);
@@ -145,7 +145,7 @@ public class V3DrawSceneDemo  {
             v3DrawElement.setRotation(0, 90, 90);
             v3DrawElement.setScale(1);
 
-            V3DColorElement colorElement = new V3DColorElement(v3DrawElement, V3DColor.white);
+            V3DColorElement colorElement = new V3DColorElement(v3DrawElement, I3dColor.white);
 
             V3DrawReader v3drawReader = v3DrawElement.getV3drawReader();
             float dx = -((v3drawReader.getMaxZ() - v3drawReader.getMinZ())/2 );
@@ -169,7 +169,7 @@ public class V3DrawSceneDemo  {
             
             // Offsets d'ajustement "à la main"
             v3DrawElement.setPosition(0, -0.165f, 0.03f);
-            scene.add(new V3DColorElement(v3DrawElement, V3DColor.red));
+            scene.add(new V3DColorElement(v3DrawElement, I3dColor.red));
 
         } else {
             System.err.println("Fail to load file graphics/output/boule.v3draw");

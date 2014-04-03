@@ -19,9 +19,9 @@ package fr.def.iss.vd2.lib_v3d.demo;
 import org.lwjgl.LWJGLException;
 
 import com.irr310.i3d.scene.I3dScene;
+import com.irr310.i3d.utils.I3dColor;
 
 import fr.def.iss.vd2.lib_v3d.V3DCanvas;
-import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
@@ -75,7 +75,7 @@ public class CameraDemo{
         {
 
             V3DSimple2DCamera camera = new V3DSimple2DCamera();
-            camera.setBackgroundColor(V3DColor.violet);
+            camera.setBackgroundColor(I3dColor.violet);
             camera.setShowCenter(true);
             V3DCameraBinding binding = new V3DCameraBinding();
 
@@ -103,7 +103,7 @@ public class CameraDemo{
         {
 
             V3DSimple3DCamera camera = new V3DSimple3DCamera();
-            camera.setBackgroundColor(V3DColor.mauve);
+            camera.setBackgroundColor(I3dColor.mauve);
             camera.setShowCenter(true);
             V3DCameraBinding binding = new V3DCameraBinding();
 
@@ -132,7 +132,7 @@ public class CameraDemo{
 
 
             V3DSimple3DCamera camera = new V3DSimple3DCamera();
-            camera.setBackgroundColor(V3DColor.lavander);
+            camera.setBackgroundColor(I3dColor.lavander);
             camera.setShowCenter(true);
             V3DCameraBinding binding = new V3DCameraBinding();
 
@@ -174,6 +174,6 @@ public class CameraDemo{
         V3DBox box = new V3DBox();
         box.setSize(new V3DVect3(1, 1, 2));
 
-        scene.add(new V3DColorElement(box, V3DColor.emerald));
+        scene.add(new V3DColorElement(box, I3dColor.emerald));
     }
 }

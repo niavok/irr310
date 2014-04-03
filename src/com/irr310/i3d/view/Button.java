@@ -4,9 +4,8 @@ import org.lwjgl.opengl.GL11;
 
 import com.irr310.i3d.Color;
 import com.irr310.i3d.Graphics;
-
-import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
-import fr.def.iss.vd2.lib_v3d.V3DMouseEvent.Action;
+import com.irr310.i3d.input.I3dMouseEvent;
+import com.irr310.i3d.input.I3dMouseEvent.Action;
 
 public class Button extends TextView {
 

@@ -9,6 +9,7 @@ import org.lwjgl.util.glu.GLU;
 
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.RessourceLoadingException;
+import com.irr310.i3d.input.I3dMouseEvent;
 import com.irr310.i3d.view.Activity;
 import com.irr310.i3d.view.Point;
 import com.irr310.server.Time;
@@ -16,7 +17,6 @@ import com.irr310.server.Time.Timestamp;
 
 import fr.def.iss.vd2.lib_v3d.V3DControllerEvent;
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent;
-import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 
 public class Surface {
 
@@ -326,7 +326,7 @@ public class Surface {
         this.context = context;
     }
     
-    public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
+    public boolean onMouseEvent(I3dMouseEvent mouseEvent) {
         if (currentActivity != null) {
             return currentActivity.onMouseEvent(mouseEvent);
         }

@@ -28,14 +28,14 @@ import com.irr310.common.tools.Log;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.system.Part;
+import com.irr310.i3d.input.I3dMouseEvent;
+import com.irr310.i3d.input.I3dMouseEvent.Action;
 import com.irr310.i3d.scene.I3dCamera;
 import com.irr310.i3d.scene.I3dEye3DCamera;
 import com.irr310.i3d.scene.element.I3dElement;
 import com.irr310.server.Time.Timestamp;
 
 import fr.def.iss.vd2.lib_v3d.V3DInputEvent;
-import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
-import fr.def.iss.vd2.lib_v3d.V3DMouseEvent.Action;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraController;
 
@@ -116,8 +116,8 @@ public class I3dFollow3DCameraController implements V3DCameraController, Graphic
             return;
         }
 
-        if (e instanceof V3DMouseEvent) {
-            V3DMouseEvent em = (V3DMouseEvent) e;
+        if (e instanceof I3dMouseEvent) {
+            I3dMouseEvent em = (I3dMouseEvent) e;
             switch (em.getAction()) {
                 case MOUSE_DRAGGED: {
                     mouseDragged(em);
@@ -148,18 +148,18 @@ public class I3dFollow3DCameraController implements V3DCameraController, Graphic
         }
     }
 
-    public void mouseDragged(V3DMouseEvent e) {
+    public void mouseDragged(I3dMouseEvent e) {
         mouseMoving(e);
     }
 
-    public void mouseMoved(V3DMouseEvent e) {
+    public void mouseMoved(I3dMouseEvent e) {
         // mouseMoving(e);
     }
 
-    public void mouseClicked(V3DMouseEvent e) {
+    public void mouseClicked(I3dMouseEvent e) {
     }
 
-    public void mousePressed(V3DMouseEvent e) {
+    public void mousePressed(I3dMouseEvent e) {
 
         beginMove(MovementType.ROTATE, e);
         
@@ -171,7 +171,7 @@ public class I3dFollow3DCameraController implements V3DCameraController, Graphic
 
     }
 
-    private void beginMove(MovementType type, V3DMouseEvent e) {
+    private void beginMove(MovementType type, I3dMouseEvent e) {
         if (type == MovementType.TRANSLATE) {
             translating = true;
             rotating = false;
@@ -190,18 +190,18 @@ public class I3dFollow3DCameraController implements V3DCameraController, Graphic
         cameraPhiInitial = cameraPhi;
     }
 
-    public void mouseReleased(V3DMouseEvent e) {
+    public void mouseReleased(I3dMouseEvent e) {
         translating = false;
         rotating = false;
     }
 
-    public void mouseEntered(V3DMouseEvent e) {
+    public void mouseEntered(I3dMouseEvent e) {
     }
 
-    public void mouseExited(V3DMouseEvent e) {
+    public void mouseExited(I3dMouseEvent e) {
     }
 
-    private void mouseMoving(V3DMouseEvent e) {
+    private void mouseMoving(I3dMouseEvent e) {
 
 //        
 //        if (translating) {
@@ -249,7 +249,7 @@ public class I3dFollow3DCameraController implements V3DCameraController, Graphic
     public void keyReleased(KeyEvent e) {
     }
 
-    public void mouseWheelMoved(V3DMouseEvent e) {
+    public void mouseWheelMoved(I3dMouseEvent e) {
 
         if (e.getAction() == Action.MOUSE_WHEEL_UP) {
             distance = distance / 1.08f;

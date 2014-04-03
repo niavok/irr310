@@ -14,6 +14,7 @@ import com.irr310.i3d.Bundle;
 import com.irr310.i3d.Color;
 import com.irr310.i3d.I3dContext;
 import com.irr310.i3d.I3dContext.ContextListener;
+import com.irr310.i3d.input.I3dMouseEvent;
 import com.irr310.i3d.Intent;
 import com.irr310.i3d.Surface;
 import com.irr310.server.Duration;
@@ -23,7 +24,6 @@ import com.irr310.server.Time.Timestamp;
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.V3DControllerEvent;
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent;
-import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 
 public class UiEngine implements Engine {
 
@@ -174,7 +174,7 @@ public class UiEngine implements Engine {
 
     private class UiInputEngineObserver implements InputEngineObserver {
         @Override
-        public void onMouseEvent(V3DMouseEvent event) {
+        public void onMouseEvent(I3dMouseEvent event) {
             context.onMouseEvent(event);
         }
 

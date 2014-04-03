@@ -18,8 +18,9 @@ package fr.def.iss.vd2.lib_v3d.demo;
 
 import org.lwjgl.LWJGLException;
 
+import com.irr310.i3d.utils.I3dColor;
+
 import fr.def.iss.vd2.lib_v3d.V3DCanvas;
-import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
 import fr.def.iss.vd2.lib_v3d.camera.V3DSimple2DCamera;
@@ -72,7 +73,7 @@ public class CameraBindingDemo{
 
 
         activeCamera.setShowCenter(true);
-        activeCamera.setBackgroundColor(V3DColor.darkblue);
+        activeCamera.setBackgroundColor(I3dColor.darkblue);
         canvas.addCamera(fullscreenBinding);
         canvas.addCamera(miniBinding);
 
@@ -104,7 +105,7 @@ public class CameraBindingDemo{
         
 
         leftCamera = new V3DSimple2DCamera();
-        leftCamera.setBackgroundColor(V3DColor.emerald);
+        leftCamera.setBackgroundColor(I3dColor.emerald);
         leftCamera.setShowCenter(true);
         leftBinding = new V3DCameraBinding();
 
@@ -132,7 +133,7 @@ public class CameraBindingDemo{
 
 
         topRightLeftCamera = new V3DSimple2DCamera();
-        topRightLeftCamera.setBackgroundColor(V3DColor.azure);
+        topRightLeftCamera.setBackgroundColor(I3dColor.azure);
         topRightLeftCamera.setShowCenter(true);
         topRightLeftBinding = new V3DCameraBinding();
 
@@ -160,7 +161,7 @@ public class CameraBindingDemo{
 
 
         topRightRightCamera = new V3DSimple2DCamera();
-        topRightRightCamera.setBackgroundColor(V3DColor.fushia);
+        topRightRightCamera.setBackgroundColor(I3dColor.fushia);
         topRightRightCamera.setShowCenter(true);
         topRightRightinding = new V3DCameraBinding();
 
@@ -189,7 +190,7 @@ public class CameraBindingDemo{
 
 
         bottomRightCamera = new V3DSimple2DCamera();
-        bottomRightCamera.setBackgroundColor(V3DColor.lavander);
+        bottomRightCamera.setBackgroundColor(I3dColor.lavander);
         bottomRightCamera.setShowCenter(true);
         bottomRightinding = new V3DCameraBinding();
 

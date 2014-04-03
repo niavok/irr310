@@ -8,6 +8,7 @@ import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.system.Ship;
 import com.irr310.i3d.Color;
 import com.irr310.i3d.Graphics;
+import com.irr310.i3d.input.I3dMouseEvent;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 import com.irr310.i3d.view.View;
 import com.irr310.server.ai.ShipDriver;
@@ -16,7 +17,6 @@ import com.irr310.server.engine.system.SystemEngine;
 import fr.def.iss.vd2.lib_v3d.V3DControllerEvent;
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent;
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent.KeyAction;
-import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 
 public class ShipDriverView extends View {
 
@@ -54,7 +54,7 @@ public class ShipDriverView extends View {
         setOnMouseListener(new OnMouseEventListener() {
 
             @Override
-            public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
+            public boolean onMouseEvent(I3dMouseEvent mouseEvent) {
                 Log.log("driver action="+mouseEvent.getAction());
                 switch (mouseEvent.getAction()) {
                     case MOUSE_PRESSED:

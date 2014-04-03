@@ -8,9 +8,9 @@ import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.world.system.Component;
 import com.irr310.i3d.scene.element.I3dElement;
 import com.irr310.i3d.scene.element.I3dGroupElement;
+import com.irr310.i3d.utils.I3dColor;
 import com.irr310.server.Time.Timestamp;
 
-import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DShaderElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DrawElement;
@@ -26,7 +26,7 @@ public class CameraSkin extends Skin {
 
         File v3drawFileStructure = new File("graphics/output/camera.v3draw");
         final V3DrawElement elementStructure = V3DrawElement.LoadFromFile(v3drawFileStructure);
-        elements.add(new V3DColorElement(new V3DShaderElement(elementStructure, "propeller"), new V3DColor(255, 255, 255)));
+        elements.add(new V3DColorElement(new V3DShaderElement(elementStructure, "propeller"), new I3dColor(255, 255, 255)));
         
         transform = object.getFirstPart().getTransform();
         elements.setTransformMatrix(transform.toFloatBuffer());

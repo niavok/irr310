@@ -6,11 +6,11 @@ import com.irr310.client.input.InputEngine;
 import com.irr310.client.input.InputEngineObserver;
 import com.irr310.common.engine.EngineManager;
 import com.irr310.common.tools.Log;
+import com.irr310.i3d.input.I3dMouseEvent;
 import com.irr310.server.ParameterAnalyser;
 
 import fr.def.iss.vd2.lib_v3d.V3DControllerEvent;
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent;
-import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 
 public class GameClient {
    
@@ -45,7 +45,7 @@ public class GameClient {
             }
             
             @Override
-            public void onMouseEvent(V3DMouseEvent event) {
+            public void onMouseEvent(I3dMouseEvent event) {
             }
             
             @Override

@@ -12,10 +12,9 @@ import com.irr310.i3d.StyleSelector;
 import com.irr310.i3d.Texture;
 import com.irr310.i3d.fonts.CharacterPixmap;
 import com.irr310.i3d.fonts.Font;
+import com.irr310.i3d.input.I3dMouseEvent;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 import com.irr310.i3d.view.drawable.Drawable;
-
-import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 
 public class TextView extends View {
 

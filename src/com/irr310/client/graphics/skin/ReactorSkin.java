@@ -11,11 +11,11 @@ import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.common.world.system.Component;
 import com.irr310.i3d.scene.element.I3dElement;
 import com.irr310.i3d.scene.element.I3dGroupElement;
+import com.irr310.i3d.utils.I3dColor;
 import com.irr310.server.Duration;
 import com.irr310.server.Time;
 import com.irr310.server.Time.Timestamp;
 
-import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DShaderElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DTriangle;
@@ -44,12 +44,12 @@ public class ReactorSkin extends Skin {
         // stator
         File v3drawFileStator = new File("graphics/output/reactor_stator.v3draw");
         final V3DrawElement elementStator = V3DrawElement.LoadFromFile(v3drawFileStator);
-        elements.add(new V3DColorElement(new V3DShaderElement(elementStator, "propeller"), V3DColor.fromI3d(object.getShip().getOwner().getColor())));
+        elements.add(new V3DColorElement(new V3DShaderElement(elementStator, "propeller"), I3dColor.fromI3d(object.getShip().getOwner().getColor())));
 
         // rotor
         File v3drawFileRotor = new File("graphics/output/reactor_rotor.v3draw");
         elementRotor = V3DrawElement.LoadFromFile(v3drawFileRotor);
-        elements.add(new V3DColorElement(new V3DShaderElement(elementRotor, "propeller"), new V3DColor(135, 158, 169)));
+        elements.add(new V3DColorElement(new V3DShaderElement(elementRotor, "propeller"), new I3dColor(135, 158, 169)));
 
         // Flame
         flame1 = new V3DTriangle();
@@ -63,7 +63,7 @@ public class ReactorSkin extends Skin {
         I3dGroupElement flames = new I3dGroupElement();
         flames.add(flame1);
         flames.add(flame2);
-        colorFlame = new V3DColorElement(flames, V3DColor.transparent);
+        colorFlame = new V3DColorElement(flames, I3dColor.transparent);
         elements.add(colorFlame);
         
         

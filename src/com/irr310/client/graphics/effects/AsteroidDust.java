@@ -6,11 +6,11 @@ import com.irr310.client.graphics.WorldRenderer;
 import com.irr310.common.tools.Vec3;
 import com.irr310.i3d.scene.element.I3dElement;
 import com.irr310.i3d.scene.element.I3dGroupElement;
+import com.irr310.i3d.utils.I3dColor;
 import com.irr310.server.Duration;
 import com.irr310.server.Time;
 import com.irr310.server.Time.Timestamp;
 
-import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.element.V3DBox;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
 
@@ -23,12 +23,12 @@ public class AsteroidDust extends GenericGraphicalElement{
 
     private final UiEngine engine;
     private I3dElement element;
-    private final V3DColor color;
+    private final I3dColor color;
     private final Vec3 baseSize;
     private V3DColorElement colorElement;
-    private V3DColor targetColor;
+    private I3dColor targetColor;
 
-    public AsteroidDust(WorldRenderer renderer, Vec3 position , Vec3 size, V3DColor color) {
+    public AsteroidDust(WorldRenderer renderer, Vec3 position , Vec3 size, I3dColor color) {
         this.baseSize = size;
         this.color = color;
         this.targetColor = color.copy().setAlpha(0);
@@ -59,7 +59,7 @@ public class AsteroidDust extends GenericGraphicalElement{
         double mix = duration.getSeconds() / lifeDuration.getSeconds();
         
         element.setScale(baseSize.multiply(1-mix).plus(baseSize.multiply(5).multiply(mix)).toV3DVect3());
-        colorElement.setColor(V3DColor.mix(color, targetColor, (float) mix));
+        colorElement.setColor(I3dColor.mix(color, targetColor, (float) mix));
         if (duration.longer(lifeDuration)) {
             destroy();
         }

@@ -124,7 +124,7 @@ public class GraphicGenerator {
 
         writer.addMetadata("author: Frédéric Bertolus");
         writer.addMetadata("licence: CC-BY-SA");
-        writer.addMetadata("url: https://github.com/fredb219/irr310");
+        writer.addMetadata("url: https://github.com/niavok/irr310");
 
         objConverter.setAcceptedObjects(objects);
         // objConverter.setConfig("graphics/big_propeller.v3dconf");

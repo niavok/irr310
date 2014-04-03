@@ -22,21 +22,21 @@ import com.irr310.common.world.system.Ship;
 import com.irr310.common.world.system.WorldSystem;
 import com.irr310.common.world.system.WorldSystemEntity;
 import com.irr310.i3d.Graphics;
+import com.irr310.i3d.input.I3dMouseEvent;
+import com.irr310.i3d.input.I3dMouseEvent.Action;
 import com.irr310.i3d.scene.I3dEye3DCamera;
 import com.irr310.i3d.scene.I3dScene;
 import com.irr310.i3d.scene.controller.I3dFollow3DCameraController;
 import com.irr310.i3d.scene.element.I3dElement;
 import com.irr310.i3d.scene.element.I3dGroupElement;
+import com.irr310.i3d.utils.I3dColor;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 import com.irr310.i3d.view.View;
 import com.irr310.server.ai.ShipDriver;
 import com.irr310.server.engine.system.SystemEngine;
 
-import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent;
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent.KeyAction;
-import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
-import fr.def.iss.vd2.lib_v3d.V3DMouseEvent.Action;
 import fr.def.iss.vd2.lib_v3d.V3DShader;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
@@ -93,7 +93,7 @@ public class ShipCameraView extends View {
         setOnMouseListener(new OnMouseEventListener() {
             
             @Override
-            public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
+            public boolean onMouseEvent(I3dMouseEvent mouseEvent) {
                 Log.log("camera action="+mouseEvent.getAction());
                 if(mControlMode == ControlMode.CAMERA) {
                     mCameraController.onEvent(mouseEvent);
@@ -140,8 +140,8 @@ public class ShipCameraView extends View {
         GL11.glViewport(binding.x, binding.y, binding.width, binding.height);
 
         //Clean Background
-        V3DColor color = activeCamera.getBackgroundColor();
-        color = V3DColor.azure;
+        I3dColor color = activeCamera.getBackgroundColor();
+        color = I3dColor.azure;
         GL11.glClearColor(color.r, color.g, color.b, color.a);
 
         GL11.glScissor(binding.x, binding.y, binding.width, binding.height);
@@ -220,7 +220,7 @@ private void init() {
         animatedList.add(mCameraController);
 
         fullscreenBinding = V3DCameraBinding.buildFullscreenCamera(activeCamera);
-        activeCamera.setBackgroundColor(V3DColor.white);
+        activeCamera.setBackgroundColor(I3dColor.white);
 
         // Add zoom and pane camera controlleur
         // cameraController.setLimitBound(false);
@@ -304,7 +304,7 @@ private void init() {
           }
       };
 
-      scene.add(new V3DColorElement(new V3DShaderElement(bubbleElement, shader), new V3DColor(255, 255, 255)));
+      scene.add(new V3DColorElement(new V3DShaderElement(bubbleElement, shader), new I3dColor(255, 255, 255)));
   }
     
     private I3dElement generateReference() {
@@ -319,9 +319,9 @@ private void init() {
 
         I3dGroupElement group = new I3dGroupElement();
 
-        group.add(new V3DColorElement(xAxis, V3DColor.red));
-        group.add(new V3DColorElement(yAxis, V3DColor.green));
-        group.add(new V3DColorElement(zAxis, V3DColor.blue));
+        group.add(new V3DColorElement(xAxis, I3dColor.red));
+        group.add(new V3DColorElement(yAxis, I3dColor.green));
+        group.add(new V3DColorElement(zAxis, I3dColor.blue));
         return group;
     }
     

@@ -22,8 +22,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.irr310.common.tools.Log;
-
-import fr.def.iss.vd2.lib_v3d.V3DColor;
+import com.irr310.i3d.utils.I3dColor;
 
 
 /**

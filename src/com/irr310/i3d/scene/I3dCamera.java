@@ -28,8 +28,8 @@ import org.lwjgl.util.glu.GLU;
 import com.irr310.i3d.I3dContext;
 import com.irr310.i3d.scene.I3dSceneManager.FloatValuedElement;
 import com.irr310.i3d.scene.element.I3dElement;
+import com.irr310.i3d.utils.I3dColor;
 
-import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.V3DInputEvent;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
@@ -47,7 +47,7 @@ public abstract class I3dCamera {
     // 1000 object max
     //private IntBuffer buff = BufferUtils.newIntBuffer(4000);
     
-    private V3DColor backgroundColor = new V3DColor(0, 0, 0, 1);
+    private I3dColor backgroundColor = new I3dColor(0, 0, 0, 1);
     protected GLU glu = new GLU();
     
     private List<V3DCameraController> controllerList = new CopyOnWriteArrayList<V3DCameraController>();
@@ -193,11 +193,11 @@ public abstract class I3dCamera {
         return currentScene;
     }
 
-    public V3DColor getBackgroundColor() {
+    public I3dColor getBackgroundColor() {
         return backgroundColor;
     }
 
-    public void setBackgroundColor(V3DColor color) {
+    public void setBackgroundColor(I3dColor color) {
         backgroundColor = color;
     }
 

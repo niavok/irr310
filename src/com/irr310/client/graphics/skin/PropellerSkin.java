@@ -9,9 +9,9 @@ import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.common.world.system.Component;
 import com.irr310.i3d.scene.element.I3dElement;
 import com.irr310.i3d.scene.element.I3dGroupElement;
+import com.irr310.i3d.utils.I3dColor;
 import com.irr310.server.Time.Timestamp;
 
-import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DrawElement;
 
@@ -31,12 +31,12 @@ public class PropellerSkin extends Skin {
         // stator
         File v3drawFileStator = new File("graphics/output/big_propeller_stator.v3draw");
         final V3DrawElement elementStator = V3DrawElement.LoadFromFile(v3drawFileStator);
-        elements.add(new V3DColorElement(elementStator, new V3DColor(135, 158, 255)));
+        elements.add(new V3DColorElement(elementStator, new I3dColor(135, 158, 255)));
 
         // stator
         File v3drawFileRotor = new File("graphics/output/big_propeller_rotor.v3draw");
         elementRotor = V3DrawElement.LoadFromFile(v3drawFileRotor);
-        elements.add(new V3DColorElement(elementRotor, new V3DColor(135, 158, 169)));
+        elements.add(new V3DColorElement(elementRotor, new I3dColor(135, 158, 169)));
 
         transform = object.getFirstPart().getTransform();
         elements.setTransformMatrix(transform.toFloatBuffer());

@@ -24,10 +24,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.irr310.i3d.I3dContext;
+import com.irr310.i3d.input.I3dMouseEvent;
 import com.irr310.i3d.scene.element.I3dElement;
 
 import fr.def.iss.vd2.lib_v3d.V3DInputEvent;
-import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraController;
 import fr.def.iss.vd2.lib_v3d.camera.V3DSimple3DCamera;
 import fr.def.iss.vd2.lib_v3d.controller.listener.V3DMoveListener;
@@ -76,18 +76,18 @@ public class V3DMove3DController implements V3DCameraController {
             return;
         }
 
-        if (e instanceof V3DMouseEvent) {
-            V3DMouseEvent em = (V3DMouseEvent) e;
+        if (e instanceof I3dMouseEvent) {
+            I3dMouseEvent em = (I3dMouseEvent) e;
 
-            if (em.getAction() == V3DMouseEvent.Action.MOUSE_PRESSED) {
+            if (em.getAction() == I3dMouseEvent.Action.MOUSE_PRESSED) {
                 lastPressedButton = em.getButton();
             }
 
-            if (em.getAction() == V3DMouseEvent.Action.MOUSE_RELEASED) {
+            if (em.getAction() == I3dMouseEvent.Action.MOUSE_RELEASED) {
                 mouseReleased(em);
             }
 
-            if (em.getAction() == V3DMouseEvent.Action.MOUSE_DRAGGED && lastPressedButton == translationButton) {
+            if (em.getAction() == I3dMouseEvent.Action.MOUSE_DRAGGED && lastPressedButton == translationButton) {
 
                 beginMove(em);
             }
@@ -95,7 +95,7 @@ public class V3DMove3DController implements V3DCameraController {
 
     }
 
-    private void beginMove(V3DMouseEvent e) {
+    private void beginMove(I3dMouseEvent e) {
 
         I3dElement overElement = I3dContext.getInstance().getSceneManager().getMouseOverlapTop();
 
@@ -126,7 +126,7 @@ public class V3DMove3DController implements V3DCameraController {
         }
     }
 
-    public void mouseReleased(V3DMouseEvent e) {
+    public void mouseReleased(I3dMouseEvent e) {
         moving = false;
         if (listener != null) {
             listener.moveEnded(clickedElement, elementToMove);
@@ -134,7 +134,7 @@ public class V3DMove3DController implements V3DCameraController {
 
     }
 
-    private void mouseMoving(V3DMouseEvent e) {
+    private void mouseMoving(I3dMouseEvent e) {
 
 
 

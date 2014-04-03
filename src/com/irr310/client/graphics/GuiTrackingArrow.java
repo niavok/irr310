@@ -5,9 +5,8 @@ import com.irr310.common.tools.Vec2;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.system.Part;
 import com.irr310.i3d.scene.controller.I3dFollow3DCameraController;
+import com.irr310.i3d.utils.I3dColor;
 import com.irr310.server.Time.Timestamp;
-
-import fr.def.iss.vd2.lib_v3d.V3DColor;
 
 public class GuiTrackingArrow extends GuiAnimatedElement {
 
@@ -17,7 +16,7 @@ public class GuiTrackingArrow extends GuiAnimatedElement {
 //    private V3DLabel v3dLabel;
 //    private V3DContainer container;
     private final WorldRenderer renderer;
-    private V3DColor color;
+    private I3dColor color;
 
     public GuiTrackingArrow(WorldRenderer renderer, I3dFollow3DCameraController cameraController, Part followed) {
         super(renderer);
@@ -30,10 +29,10 @@ public class GuiTrackingArrow extends GuiAnimatedElement {
 //        v3dLabel.setFontStyle("Ubuntu", "", 10);
 //        container.add(v3dGuiTriangle);
 //        container.add(v3dLabel);
-        color = V3DColor.black;
+        color = I3dColor.black;
     }
 
-    public void setColor(V3DColor color) {
+    public void setColor(I3dColor color) {
         this.color = color;
        
     }

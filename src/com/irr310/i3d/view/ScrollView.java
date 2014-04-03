@@ -4,10 +4,9 @@ import org.lwjgl.opengl.GL11;
 
 import com.irr310.common.tools.Log;
 import com.irr310.i3d.Graphics;
+import com.irr310.i3d.input.I3dMouseEvent;
+import com.irr310.i3d.input.I3dMouseEvent.Action;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
-
-import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
-import fr.def.iss.vd2.lib_v3d.V3DMouseEvent.Action;
 
 public class ScrollView extends View implements ViewParent {
 
@@ -167,7 +166,7 @@ public class ScrollView extends View implements ViewParent {
     }
 
     @Override
-    public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
+    public boolean onMouseEvent(I3dMouseEvent mouseEvent) {
         boolean used = false;
         
         if (mouseEvent.getAction() == Action.MOUSE_PRESSED) {

@@ -21,6 +21,8 @@ import com.irr310.i3d.Intent;
 import com.irr310.i3d.Message;
 import com.irr310.i3d.SelectionManager;
 import com.irr310.i3d.SelectionManager.OnSelectionChangeListener;
+import com.irr310.i3d.input.I3dMouseEvent;
+import com.irr310.i3d.input.I3dMouseEvent.Action;
 import com.irr310.i3d.view.Activity;
 import com.irr310.i3d.view.Button;
 import com.irr310.i3d.view.LinearLayout;
@@ -35,9 +37,6 @@ import com.irr310.server.Time.Timestamp;
 import com.irr310.server.engine.system.SystemEngineObserver;
 import com.irr310.server.engine.world.WorldEngine;
 import com.irr310.server.engine.world.WorldEngineObserver;
-
-import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
-import fr.def.iss.vd2.lib_v3d.V3DMouseEvent.Action;
 
 public class WorldMapActivity extends Activity {
 
@@ -76,7 +75,7 @@ public class WorldMapActivity extends Activity {
         map.setOnMouseListener(new OnMouseEventListener() {
 
             @Override
-            public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
+            public boolean onMouseEvent(I3dMouseEvent mouseEvent) {
 
                 Point point = new Point(mouseEvent.getX(), mouseEvent.getY());
 
@@ -136,7 +135,7 @@ public class WorldMapActivity extends Activity {
         inspectSystemButton.setOnClickListener(new OnClickListener() {
             
             @Override
-            public void onClick(V3DMouseEvent mouseEvent, View view) {
+            public void onClick(I3dMouseEvent mouseEvent, View view) {
                 if(selectedSystem != null) {
                     inspectSystemAction(selectedSystem);
                 }

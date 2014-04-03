@@ -8,9 +8,9 @@ import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.world.system.Component;
 import com.irr310.i3d.scene.element.I3dElement;
 import com.irr310.i3d.scene.element.I3dGroupElement;
+import com.irr310.i3d.utils.I3dColor;
 import com.irr310.server.Time.Timestamp;
 
-import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DrawElement;
 
@@ -25,12 +25,12 @@ public class TankSkin extends Skin {
 
         File v3drawFile = new File("graphics/output/tank_structure.v3draw");
         final V3DrawElement element = V3DrawElement.LoadFromFile(v3drawFile);
-        elements.add(new V3DColorElement(element, new V3DColor(135, 158, 255)));
+        elements.add(new V3DColorElement(element, new I3dColor(135, 158, 255)));
         
         
         File v3drawFileTank = new File("graphics/output/tank_tank.v3draw");
         final V3DrawElement elementTank = V3DrawElement.LoadFromFile(v3drawFileTank);
-        elements.add(new V3DColorElement(elementTank, new V3DColor(151, 32, 0)));
+        elements.add(new V3DColorElement(elementTank, new I3dColor(151, 32, 0)));
         
         transform = object.getFirstPart().getTransform();
         elements.setTransformMatrix(transform.toFloatBuffer());

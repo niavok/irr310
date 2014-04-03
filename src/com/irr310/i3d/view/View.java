@@ -8,12 +8,12 @@ import com.irr310.i3d.Color;
 import com.irr310.i3d.Graphics;
 import com.irr310.i3d.I3dContext;
 import com.irr310.i3d.Style;
+import com.irr310.i3d.input.I3dMouseEvent;
+import com.irr310.i3d.input.I3dMouseEvent.Action;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 
 import fr.def.iss.vd2.lib_v3d.V3DControllerEvent;
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent;
-import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
-import fr.def.iss.vd2.lib_v3d.V3DMouseEvent.Action;
 
 public abstract class View {
 
@@ -106,7 +106,7 @@ public abstract class View {
     }
 
     private boolean isMouseOver(Point point) {
-        V3DMouseEvent lastMouseEvent = I3dContext.getInstance().getLastMouseEvent();
+        I3dMouseEvent lastMouseEvent = I3dContext.getInstance().getLastMouseEvent();
         if(lastMouseEvent == null) {
             return false;
         }
@@ -309,7 +309,7 @@ public abstract class View {
         this.onControllerEventListener = onControllerEventListener;
     }
 
-    public boolean performClick(V3DMouseEvent mouseEvent) {
+    public boolean performClick(I3dMouseEvent mouseEvent) {
         if (onClickListener != null) {
             onClickListener.onClick(mouseEvent, this);
             return true;
@@ -318,11 +318,11 @@ public abstract class View {
     }
 
     public static interface OnClickListener {
-        void onClick(V3DMouseEvent mouseEvent, View view);
+        void onClick(I3dMouseEvent mouseEvent, View view);
     }
 
     public static interface OnMouseEventListener {
-        boolean onMouseEvent(V3DMouseEvent mouseEvent);
+        boolean onMouseEvent(I3dMouseEvent mouseEvent);
     }
     
     public static interface OnKeyEventListener {
@@ -339,7 +339,7 @@ public abstract class View {
 
     // public abstract boolean onMouseEvent(V3DMouseEvent mouseEvent);
 
-    public boolean onMouseEvent(V3DMouseEvent mouseEvent) {
+    public boolean onMouseEvent(I3dMouseEvent mouseEvent) {
         if (!visible) {
             return false;
         }

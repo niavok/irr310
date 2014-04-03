@@ -23,9 +23,9 @@ import org.lwjgl.LWJGLException;
 
 import com.irr310.i3d.scene.I3dScene;
 import com.irr310.i3d.scene.element.I3dElement;
+import com.irr310.i3d.utils.I3dColor;
 
 import fr.def.iss.vd2.lib_v3d.V3DCanvas;
-import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
@@ -99,27 +99,27 @@ public class PolygonDemo {
 
         element = getFlatHexaGon();
         element.setPosition(-R3S2*SPAG, -DEMI*SPAG, 0);
-        scene.add(new V3DColorElement(element, V3DColor.violet));
+        scene.add(new V3DColorElement(element, I3dColor.violet));
 
         element = getWallHexaGon();
         element.setPosition(-R3S2*SPAG, DEMI*SPAG, 0);
-        scene.add(new V3DColorElement(element, V3DColor.lavander));
+        scene.add(new V3DColorElement(element, I3dColor.lavander));
 
         element = getBoxHexaGonNoTop();
         element.setPosition(ZERO*SPAG, UN*SPAG, 0);
-        scene.add(new V3DColorElement(element, V3DColor.lilas));
+        scene.add(new V3DColorElement(element, I3dColor.lilas));
 
         element = getBoxHexaGon();
         element.setPosition(R3S2*SPAG, DEMI*SPAG, 0);
-        scene.add(new V3DColorElement(element, V3DColor.fushia));
+        scene.add(new V3DColorElement(element, I3dColor.fushia));
 
         element = getHollowHexaGon();
         element.setPosition(R3S2*SPAG, -DEMI*SPAG, 0);
-        scene.add(new V3DColorElement(element, V3DColor.emerald));
+        scene.add(new V3DColorElement(element, I3dColor.emerald));
 
         element = getStarPolyGon();
         element.setPosition(ZERO*SPAG, -UN*SPAG, 0);
-        scene.add(new V3DColorElement(element, V3DColor.mauve));
+        scene.add(new V3DColorElement(element, I3dColor.mauve));
         
         return scene;
     }

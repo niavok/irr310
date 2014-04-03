@@ -38,7 +38,9 @@ import org.lwjgl.opengl.GL11;
 
 import com.irr310.common.tools.Log;
 import com.irr310.i3d.TextureManager;
+import com.irr310.i3d.input.I3dMouseEvent;
 import com.irr310.i3d.scene.element.I3dElement;
+import com.irr310.i3d.utils.I3dColor;
 
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
 
@@ -298,7 +300,7 @@ public class V3DCanvas {
             GL11.glViewport(binding.x, binding.y, binding.width, binding.height);
 
             //Clean Background
-            V3DColor color = binding.camera.getBackgroundColor();
+            I3dColor color = binding.camera.getBackgroundColor();
             GL11.glClearColor(color.r, color.g, color.b, color.a);
 
             GL11.glScissor(binding.x, binding.y, binding.width, binding.height);
@@ -423,13 +425,13 @@ public class V3DCanvas {
         select(e.getX(), e.getY());*/
     }
 	
-	public void onMouseEvent(V3DMouseEvent e) {
+	public void onMouseEvent(I3dMouseEvent e) {
 	    
         for (V3DCameraBinding binding : cameraList) {
             
 //            binding.getGui().onEvent(e);
             
-            V3DMouseEvent localEvent = new V3DMouseEvent(
+            I3dMouseEvent localEvent = new I3dMouseEvent(
                     e.getAction(),
                     e.getX() - binding.mouseX,
                     mouseY = (getHeight() - e.getY()) - binding.mouseY,

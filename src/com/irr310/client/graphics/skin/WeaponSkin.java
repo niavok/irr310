@@ -10,9 +10,9 @@ import com.irr310.common.world.capacity.BalisticWeaponCapacity;
 import com.irr310.common.world.system.Component;
 import com.irr310.i3d.scene.element.I3dElement;
 import com.irr310.i3d.scene.element.I3dGroupElement;
+import com.irr310.i3d.utils.I3dColor;
 import com.irr310.server.Time.Timestamp;
 
-import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DLine;
@@ -31,7 +31,7 @@ public class WeaponSkin extends Skin {
 
         File v3drawFileStructure = new File("graphics/output/gun.v3draw");
         final V3DrawElement elementStructure = V3DrawElement.LoadFromFile(v3drawFileStructure);
-        elements.add(new V3DColorElement(new V3DShaderElement(elementStructure, "propeller"), V3DColor.fromI3d(object.getShip().getOwner().getColor())));
+        elements.add(new V3DColorElement(new V3DShaderElement(elementStructure, "propeller"), I3dColor.fromI3d(object.getShip().getOwner().getColor())));
         
         transform = object.getFirstPart().getTransform();
         elements.setTransformMatrix(transform.toFloatBuffer());
@@ -49,13 +49,13 @@ public class WeaponSkin extends Skin {
         final V3DLine line = new V3DLine();
         line.setThickness(1);
         line.setLocation(new V3DVect3(0, 0, 0), new V3DVect3(0, (float) range, 0));
-        elements.add(new V3DColorElement(line, new V3DColor(255, 135,  158 , 0.7f)));
+        elements.add(new V3DColorElement(line, new I3dColor(255, 135,  158 , 0.7f)));
 
         
         final V3DPoint point100 = new V3DPoint();
         point100.setSize(5);
         point100.setPosition(new V3DVect3(0, (float) range, 0));
-        elements.add(new V3DColorElement(point100, new V3DColor(255, 35, 58, 0.8f)));
+        elements.add(new V3DColorElement(point100, new I3dColor(255, 35, 58, 0.8f)));
         
     }
 

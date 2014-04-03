@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with V3dScene.  If not, see <http://www.gnu.org/licenses/>.
 
-package fr.def.iss.vd2.lib_v3d;
+package com.irr310.i3d.utils;
 
 import java.awt.Color;
 
@@ -24,9 +24,9 @@ import java.awt.Color;
  * 
  * @author fberto
  */
-public class V3DColor {
+public class I3dColor {
 
-    public static V3DColor randomLightOpaqueColor() {
+    public static I3dColor randomLightOpaqueColor() {
 
         float r = (float) Math.random();
         float g = (float) Math.random();
@@ -35,7 +35,7 @@ public class V3DColor {
         if (r + g + b < 0.3) {
             return randomLightOpaqueColor();
         } else {
-            return new V3DColor(r, g, b);
+            return new I3dColor(r, g, b);
         }
 
     }
@@ -48,7 +48,7 @@ public class V3DColor {
     /**
      * Initialize black opaque color
      */
-    public V3DColor() {
+    public I3dColor() {
     }
 
     /**
@@ -59,7 +59,7 @@ public class V3DColor {
      * @param b blue between 0.0 and 1.0
      * @param a alpha between 0.0 and 1.0
      */
-    public V3DColor(float r, float g, float b, float a) {
+    public I3dColor(float r, float g, float b, float a) {
         this.r = r;
         this.g = g;
         this.b = b;
@@ -74,7 +74,7 @@ public class V3DColor {
      * @param b blue between 0 and 255
      * @param a alpha between 0.0 and 1.0
      */
-    public V3DColor(int r, int g, int b, float a) {
+    public I3dColor(int r, int g, int b, float a) {
         this.r = r / 255f;
         this.g = g / 255f;
         this.b = b / 255f;
@@ -86,7 +86,7 @@ public class V3DColor {
      * 
      * @param color copied color
      */
-    public V3DColor(V3DColor color) {
+    public I3dColor(I3dColor color) {
         this(color.r, color.g, color.b, color.a);
     }
 
@@ -97,7 +97,7 @@ public class V3DColor {
      * @param g green between 0.0 and 1.0
      * @param b blue between 0.0 and 1.0
      */
-    public V3DColor(float r, float g, float b) {
+    public I3dColor(float r, float g, float b) {
         this(r, g, b, 1f);
     }
 
@@ -108,7 +108,7 @@ public class V3DColor {
      * @param g green between 0 and 1
      * @param b blue between 0 and 1
      */
-    public V3DColor(int r, int g, int b) {
+    public I3dColor(int r, int g, int b) {
         this(r, g, b, 1f);
     }
 
@@ -117,59 +117,59 @@ public class V3DColor {
      * 
      * @param color awt color
      */
-    public V3DColor(Color color) {
+    public I3dColor(Color color) {
         this(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha() / 255f);
     }
 
-    public static V3DColor transparent = new V3DColor(1.0f, 1.0f, 1.0f, 0.0f);
-    public static V3DColor fadetoblack = new V3DColor(0.0f, 0.0f, 0.0f, 0.0f);
+    public static I3dColor transparent = new I3dColor(1.0f, 1.0f, 1.0f, 0.0f);
+    public static I3dColor fadetoblack = new I3dColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-    public static V3DColor azure = new V3DColor(204, 204, 255);
-    public static V3DColor black = new V3DColor(0, 0, 0);
-    public static V3DColor blue = new V3DColor(0, 0, 255);
-    public static V3DColor darkblue = new V3DColor(0, 0, 51);
-    public static V3DColor darkgrey = new V3DColor(64, 64, 64);
-    public static V3DColor emerald = new V3DColor(1, 215, 88);
-    public static V3DColor fushia = new V3DColor(244, 0, 161);
-    public static V3DColor green = new V3DColor(0, 255, 0);
-    public static V3DColor grey = new V3DColor(128, 128, 128);
-    public static V3DColor lightgrey = new V3DColor(192, 192, 192);
-    public static V3DColor lavander = new V3DColor(150, 131, 236);
-    public static V3DColor lilas = new V3DColor(182, 102, 210);
-    public static V3DColor magenta = new V3DColor(255, 0, 255);
-    public static V3DColor mauve = new V3DColor(212, 115, 212);
-    public static V3DColor pink = new V3DColor(253, 108, 158);
-    public static V3DColor red = new V3DColor(255, 0, 0);
-    public static V3DColor violet = new V3DColor(207, 160, 233);
-    public static V3DColor white = new V3DColor(255, 255, 255);
-    public static V3DColor yellow = new V3DColor(255, 255, 0);
+    public static I3dColor azure = new I3dColor(204, 204, 255);
+    public static I3dColor black = new I3dColor(0, 0, 0);
+    public static I3dColor blue = new I3dColor(0, 0, 255);
+    public static I3dColor darkblue = new I3dColor(0, 0, 51);
+    public static I3dColor darkgrey = new I3dColor(64, 64, 64);
+    public static I3dColor emerald = new I3dColor(1, 215, 88);
+    public static I3dColor fushia = new I3dColor(244, 0, 161);
+    public static I3dColor green = new I3dColor(0, 255, 0);
+    public static I3dColor grey = new I3dColor(128, 128, 128);
+    public static I3dColor lightgrey = new I3dColor(192, 192, 192);
+    public static I3dColor lavander = new I3dColor(150, 131, 236);
+    public static I3dColor lilas = new I3dColor(182, 102, 210);
+    public static I3dColor magenta = new I3dColor(255, 0, 255);
+    public static I3dColor mauve = new I3dColor(212, 115, 212);
+    public static I3dColor pink = new I3dColor(253, 108, 158);
+    public static I3dColor red = new I3dColor(255, 0, 0);
+    public static I3dColor violet = new I3dColor(207, 160, 233);
+    public static I3dColor white = new I3dColor(255, 255, 255);
+    public static I3dColor yellow = new I3dColor(255, 255, 0);
 
     /**
      * Return a new instance of the same color
      * 
      * @return copied color
      */
-    public V3DColor copy() {
-        return new V3DColor(r, g, b, a);
+    public I3dColor copy() {
+        return new I3dColor(r, g, b, a);
     }
 
-    public boolean isSame(V3DColor sameColor) {
+    public boolean isSame(I3dColor sameColor) {
         return a == sameColor.a && r == sameColor.r && g == sameColor.g && b == sameColor.b;
     }
 
-    public V3DColor setAlpha(float alpha) {
+    public I3dColor setAlpha(float alpha) {
         a = alpha;
         return this;
     }
 
-    public static V3DColor mix(V3DColor baseColor, V3DColor targetColor, float mix) {
-        return new V3DColor(baseColor.r * (1 - mix) + targetColor.r * mix, //
+    public static I3dColor mix(I3dColor baseColor, I3dColor targetColor, float mix) {
+        return new I3dColor(baseColor.r * (1 - mix) + targetColor.r * mix, //
                             baseColor.g * (1 - mix) + targetColor.g * mix, //
                             baseColor.b * (1 - mix) + targetColor.b * mix, //
                             baseColor.a * (1 - mix) + targetColor.a * mix); //
     }
 
-    public static V3DColor fromI3d(com.irr310.i3d.Color color) {
-        return new V3DColor(color.r, color.g, color.b, color.a);
+    public static I3dColor fromI3d(com.irr310.i3d.Color color) {
+        return new I3dColor(color.r, color.g, color.b, color.a);
     }
 }

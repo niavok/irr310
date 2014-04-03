@@ -10,6 +10,7 @@ import com.irr310.common.world.Player;
 import com.irr310.i3d.Bundle;
 import com.irr310.i3d.Intent;
 import com.irr310.i3d.Message;
+import com.irr310.i3d.input.I3dMouseEvent;
 import com.irr310.i3d.view.Activity;
 import com.irr310.i3d.view.Button;
 import com.irr310.i3d.view.TextView;
@@ -20,8 +21,6 @@ import com.irr310.server.Time;
 import com.irr310.server.Time.Timestamp;
 import com.irr310.server.engine.world.WorldEngine;
 import com.irr310.server.engine.world.WorldEngineObserver;
-
-import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 
 public class BoardActivity extends Activity {
 
@@ -60,7 +59,7 @@ public class BoardActivity extends Activity {
         worldMapButton.setOnClickListener(new OnClickListener() {
             
             @Override
-            public void onClick(V3DMouseEvent mouseEvent, View view) {
+            public void onClick(I3dMouseEvent mouseEvent, View view) {
                 Bundle bundle = new Bundle(worldEngine);
                 startActivity(new Intent(WorldMapActivity.class, bundle));
             }
@@ -69,7 +68,7 @@ public class BoardActivity extends Activity {
         productionButton.setOnClickListener(new OnClickListener() {
             
             @Override
-            public void onClick(V3DMouseEvent mouseEvent, View view) {
+            public void onClick(I3dMouseEvent mouseEvent, View view) {
                 Bundle bundle = new Bundle(worldEngine);
                 startActivity(new Intent(FactoryActivity.class, bundle));
             }

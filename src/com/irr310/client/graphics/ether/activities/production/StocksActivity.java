@@ -15,6 +15,7 @@ import com.irr310.i3d.Intent;
 import com.irr310.i3d.Message;
 import com.irr310.i3d.SelectionManager;
 import com.irr310.i3d.SelectionManager.OnSelectionChangeListener;
+import com.irr310.i3d.input.I3dMouseEvent;
 import com.irr310.i3d.view.Activity;
 import com.irr310.i3d.view.Button;
 import com.irr310.i3d.view.LinearLayout;
@@ -23,8 +24,6 @@ import com.irr310.i3d.view.View.OnClickListener;
 import com.irr310.i3d.view.View.ViewState;
 import com.irr310.server.engine.world.WorldEngine;
 import com.irr310.server.engine.world.WorldEngineObserver;
-
-import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
 
 public class StocksActivity extends Activity {
 
@@ -61,7 +60,7 @@ public class StocksActivity extends Activity {
         productionCategoryFactoryButton.setOnClickListener(new OnClickListener() {
             
             @Override
-            public void onClick(V3DMouseEvent mouseEvent, View view) {
+            public void onClick(I3dMouseEvent mouseEvent, View view) {
                 Bundle bundle = new Bundle(worldEngine);
                 startActivity(new Intent(FactoryActivity.class, bundle));
             }

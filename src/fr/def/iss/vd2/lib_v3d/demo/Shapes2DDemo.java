@@ -21,9 +21,9 @@ import org.lwjgl.LWJGLException;
 import com.irr310.i3d.scene.I3dScene;
 import com.irr310.i3d.scene.element.I3dElement;
 import com.irr310.i3d.scene.element.I3dGroupElement;
+import com.irr310.i3d.utils.I3dColor;
 
 import fr.def.iss.vd2.lib_v3d.V3DCanvas;
-import fr.def.iss.vd2.lib_v3d.V3DColor;
 import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
@@ -120,7 +120,7 @@ public class Shapes2DDemo  {
 
     private void addElement(I3dElement element) {
 
-        V3DColor color = V3DColor.randomLightOpaqueColor();
+        I3dColor color = I3dColor.randomLightOpaqueColor();
 
         element.setPosition(offsetY, offsetX, 0);
         offsetX += 2;
@@ -176,7 +176,7 @@ public class Shapes2DDemo  {
 
         circle.setRenderMode(V3DCircle.RenderMode.PLAIN);
         circle.setInnerRadius(0.4f);
-        circle.setColors(V3DColor.emerald, V3DColor.mauve);
+        circle.setColors(I3dColor.emerald, I3dColor.mauve);
         circle.setQuality(64);
         circle.setSize(0.8f);
         return circle;
@@ -184,13 +184,13 @@ public class Shapes2DDemo  {
 
     private I3dElement generateHaloCircle() {
 
-        V3DColor color = V3DColor.randomLightOpaqueColor();
+        I3dColor color = I3dColor.randomLightOpaqueColor();
         //Add green circle
         V3DCircle iCircle = new V3DCircle();
 
         iCircle.setRenderMode(V3DCircle.RenderMode.PLAIN);
         iCircle.setInnerRadius(0.4f);
-        iCircle.setColors(color, V3DColor.transparent);
+        iCircle.setColors(color, I3dColor.transparent);
         iCircle.setQuality(64);
         iCircle.setSize(0.8f);
 
