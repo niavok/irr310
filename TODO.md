@@ -11,7 +11,6 @@ Graphisme
 ---------
 
 - Concept art
-- Mouse hover
 - Active button
 
 
