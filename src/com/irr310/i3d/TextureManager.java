@@ -7,8 +7,9 @@ import java.nio.IntBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.fenggui.util.ImageConverter;
 import org.lwjgl.opengl.GL11;
+
+import com.irr310.i3d.fonts.ImageConverter;
 
 
 public class TextureManager {

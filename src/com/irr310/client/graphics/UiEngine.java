@@ -24,7 +24,6 @@ import fr.def.iss.vd2.lib_v3d.V3DContext;
 import fr.def.iss.vd2.lib_v3d.V3DControllerEvent;
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent;
 import fr.def.iss.vd2.lib_v3d.V3DMouseEvent;
-import fr.def.iss.vd2.lib_v3d.gui.V3DContainer;
 
 public class UiEngine implements Engine {
 
@@ -423,7 +422,7 @@ public class UiEngine implements Engine {
 //
 //    }
 
-    public void addPopup(V3DContainer popup, V3DContainer parent) {
+//    public void addPopup(V3DContainer popup, V3DContainer parent) {
         /*renderer.getPopupLayer().removeAll();
         int parentAbsoluteX = parent.getAbsoluteX();
         int parentAbsoluteY = parent.getAbsoluteY();
@@ -436,11 +435,11 @@ public class UiEngine implements Engine {
 
         popup.setPosition(defaultX + 15, canvas.getHeight() - defaultY + 15);
         renderer.getPopupLayer().add(popup);*/
-    }
+//    }
 
-    public void removePopup(V3DContainer popup) {
+//    public void removePopup(V3DContainer popup) {
         /*renderer.getPopupLayer().remove(popup);*/
-    }
+//    }
     
     
     // Observers

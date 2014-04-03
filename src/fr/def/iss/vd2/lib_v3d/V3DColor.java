@@ -157,17 +157,9 @@ public class V3DColor {
         return a == sameColor.a && r == sameColor.r && g == sameColor.g && b == sameColor.b;
     }
 
-    public org.fenggui.util.Color toColor() {
-        return new org.fenggui.util.Color(r, g, b, a);
-    }
-
     public V3DColor setAlpha(float alpha) {
         a = alpha;
         return this;
-    }
-
-    public org.fenggui.util.Color getFengguiColor() {
-        return new org.fenggui.util.Color(r, g, b, a);
     }
 
     public static V3DColor mix(V3DColor baseColor, V3DColor targetColor, float mix) {

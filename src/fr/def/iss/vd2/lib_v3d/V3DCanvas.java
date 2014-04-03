@@ -31,7 +31,6 @@ import java.util.List;
 
 import javax.swing.JFrame;
 
-import org.fenggui.binding.render.lwjgl.LWJGLBinding;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -167,7 +166,7 @@ public class V3DCanvas {
         TextureManager.clearCache();
         initied = true;
         
-        new LWJGLBinding();
+//        new LWJGLBinding();
         
     }
 
@@ -329,7 +328,7 @@ public class V3DCanvas {
             binding.camera.display( binding.width, binding.height);
 
             GL11.glDisable(GL11.GL_DEPTH_TEST);
-            binding.getGui().display();
+//            binding.getGui().display();
             GL11.glEnable(GL11.GL_DEPTH_TEST);
 
             if (select && binding == focusCamera) {
@@ -428,7 +427,7 @@ public class V3DCanvas {
 	    
         for (V3DCameraBinding binding : cameraList) {
             
-            binding.getGui().onEvent(e);
+//            binding.getGui().onEvent(e);
             
             V3DMouseEvent localEvent = new V3DMouseEvent(
                     e.getAction(),

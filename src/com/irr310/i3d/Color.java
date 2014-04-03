@@ -230,16 +230,8 @@ public class Color implements Duplicable<Color> {
         return a == sameColor.a && r == sameColor.r && g == sameColor.g && b == sameColor.b;
     }
 
-    public org.fenggui.util.Color toColor() {
-        return new org.fenggui.util.Color(r, g, b, a);
-    }
-
     public Color setAlpha(float alpha) {
         return new Color(r, g, b, alpha);
-    }
-
-    public org.fenggui.util.Color getFengguiColor() {
-        return new org.fenggui.util.Color(r, g, b, a);
     }
 
     public static Color mix(Color baseColor, Color targetColor, float mix) {

@@ -28,11 +28,7 @@ import javax.imageio.ImageIO;
 
 import org.lwjgl.opengl.GL11;
 
-import com.irr310.i3d.I3dContext;
 import com.irr310.i3d.scene.I3dCamera;
-
-import fr.def.iss.vd2.lib_v3d.V3DContext;
-import fr.def.iss.vd2.lib_v3d.element.TextureHandler;
 
 /**
  *
@@ -53,7 +49,7 @@ public class V3DrawReader {
     private int initCommandListOffset;
     private I3dCamera camera;
     private List<Tesselation> concavePolygonList = new ArrayList<Tesselation>();
-    private List<TextureHandler> textureList = new ArrayList<TextureHandler>();
+//    private List<TextureHandler> textureList = new ArrayList<TextureHandler>();
 
     public V3DrawReader(ByteBuffer buffer) throws V3DrawBadFormatError {
         this.buffer = buffer;
@@ -342,9 +338,9 @@ public class V3DrawReader {
         } catch (IOException e) {
             return;
         }
-        TextureHandler texture = new TextureHandler(image);
+//        TextureHandler texture = new TextureHandler(image);
 
-        textureList.add(texture);
+//        textureList.add(texture);
     }
 
     private void drawRegistrated3dConcavePolygon() {
@@ -378,7 +374,7 @@ public class V3DrawReader {
         GL11.glAlphaFunc(GL11.GL_GREATER, 0.1f);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
 
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureList.get(textureIndex).getID());
+//        GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureList.get(textureIndex).getID());
     }
 
     private void disableTexture() {

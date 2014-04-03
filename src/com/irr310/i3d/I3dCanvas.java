@@ -11,7 +11,6 @@ import java.awt.event.WindowListener;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
-import org.fenggui.binding.render.lwjgl.LWJGLBinding;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
@@ -112,7 +111,7 @@ public class I3dCanvas {
         TextureManager.clearCache();
         //initied = true;
         
-        new LWJGLBinding();
+//        new LWJGLBinding();
         
     }
     

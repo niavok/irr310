@@ -1,19 +1,13 @@
 package com.irr310.client.graphics;
 
-import java.text.DecimalFormat;
+import java.awt.MenuContainer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.fenggui.event.ButtonPressedEvent;
-import org.fenggui.event.IButtonPressedListener;
-
 import com.irr310.client.graphics.effects.BulletEffect;
-import com.irr310.client.graphics.fragments.GuiConstants;
-import com.irr310.client.graphics.fragments.InventoryMenu;
-import com.irr310.client.graphics.fragments.UpgradeMenu;
 import com.irr310.client.graphics.skin.AsteroidSkin;
 import com.irr310.client.graphics.skin.CameraSkin;
 import com.irr310.client.graphics.skin.FactorySkin;
@@ -42,7 +36,6 @@ import com.irr310.i3d.scene.I3dScene;
 import com.irr310.i3d.scene.controller.I3dFollow3DCameraController;
 import com.irr310.i3d.scene.element.I3dElement;
 import com.irr310.i3d.scene.element.I3dGroupElement;
-import com.irr310.server.Time;
 import com.irr310.server.Time.Timestamp;
 
 import fr.def.iss.vd2.lib_v3d.V3DColor;
@@ -51,15 +44,6 @@ import fr.def.iss.vd2.lib_v3d.camera.V3DCameraBinding;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DLine;
 import fr.def.iss.vd2.lib_v3d.element.V3DrawElement;
-import fr.def.iss.vd2.lib_v3d.gui.V3DButton;
-import fr.def.iss.vd2.lib_v3d.gui.V3DContainer;
-import fr.def.iss.vd2.lib_v3d.gui.V3DGui;
-import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent;
-import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent.GuiXAlignment;
-import fr.def.iss.vd2.lib_v3d.gui.V3DGuiComponent.GuiYAlignment;
-import fr.def.iss.vd2.lib_v3d.gui.V3DGuiLayer;
-import fr.def.iss.vd2.lib_v3d.gui.V3DGuiRectangle;
-import fr.def.iss.vd2.lib_v3d.gui.V3DLabel;
 
 public class WorldRenderer implements GraphicRenderer {
     V3DCameraBinding fullscreenBinding;
@@ -75,10 +59,10 @@ public class WorldRenderer implements GraphicRenderer {
 
     I3dEye3DCamera activeCamera;
     private final UiEngine engine;
-    private V3DGuiLayer interfaceLayer;
-    private V3DGuiLayer hudLayer;
-    private V3DGuiLayer mainMenuLayer;
-    private V3DGuiLayer popupLayer;
+//    private V3DGuiLayer interfaceLayer;
+//    private V3DGuiLayer hudLayer;
+//    private V3DGuiLayer mainMenuLayer;
+//    private V3DGuiLayer popupLayer;
     private GuiKeyMode currentGuiMode;
 
     public enum GuiLayer {
@@ -90,11 +74,11 @@ public class WorldRenderer implements GraphicRenderer {
     }
 
     // Game
-    private V3DLabel waveCountText;
-    private Monolith monolith;
-    private V3DGuiRectangle monolithStatus;
-    private V3DLabel monolithStatusText;
-    private V3DLabel moneyText;
+//    private V3DLabel waveCountText;
+//    private Monolith monolith;
+//    private V3DGuiRectangle monolithStatus;
+//    private V3DLabel monolithStatusText;
+//    private V3DLabel moneyText;
     private MenuContainer upgradeMenu;
     private MenuContainer inventoryMenu;
     boolean upgradeMenuEnabled = false;
@@ -192,32 +176,32 @@ public class WorldRenderer implements GraphicRenderer {
         inventoryMenuEnabled = false;
 
         // Generate logo
-        V3DLabel logoIRR = new V3DLabel("IRR");
-        logoIRR.setFontStyle("Ubuntu", "bold", 24);
-        logoIRR.setColor(GuiConstants.irrRed, V3DColor.transparent);
-        logoIRR.setPosition(10, 10);
-        mainMenuLayer.add(logoIRR);
-
-        V3DLabel logo310 = new V3DLabel("310");
-        logo310.setFontStyle("Ubuntu", "bold", 24);
-        logo310.setColor(V3DColor.black, V3DColor.transparent);
-        logo310.setPosition(50, 10);
-        mainMenuLayer.add(logo310);
-
-        // Generate stats box
-        V3DGuiRectangle indicatorBorder = new V3DGuiRectangle();
-        indicatorBorder.setyAlignment(GuiYAlignment.TOP);
-        indicatorBorder.setPosition(120, 10);
-        indicatorBorder.setSize(300, 30);
-        indicatorBorder.setFillColor(GuiConstants.irrFill);
-        indicatorBorder.setBorderColor(GuiConstants.irrRed);
-        mainMenuLayer.add(indicatorBorder);
-
-        final V3DLabel resolutionIndicator = new V3DLabel("" + (int) engine.getViewportSize().x + "x" + (int) engine.getViewportSize().y + " px");
-        resolutionIndicator.setPosition(300, 17);
-        resolutionIndicator.setFontStyle("Ubuntu", "bold", 16);
-        resolutionIndicator.setColor(V3DColor.black, V3DColor.transparent);
-        mainMenuLayer.add(resolutionIndicator);
+//        V3DLabel logoIRR = new V3DLabel("IRR");
+//        logoIRR.setFontStyle("Ubuntu", "bold", 24);
+//        logoIRR.setColor(GuiConstants.irrRed, V3DColor.transparent);
+//        logoIRR.setPosition(10, 10);
+//        mainMenuLayer.add(logoIRR);
+//
+//        V3DLabel logo310 = new V3DLabel("310");
+//        logo310.setFontStyle("Ubuntu", "bold", 24);
+//        logo310.setColor(V3DColor.black, V3DColor.transparent);
+//        logo310.setPosition(50, 10);
+//        mainMenuLayer.add(logo310);
+//
+//        // Generate stats box
+//        V3DGuiRectangle indicatorBorder = new V3DGuiRectangle();
+//        indicatorBorder.setyAlignment(GuiYAlignment.TOP);
+//        indicatorBorder.setPosition(120, 10);
+//        indicatorBorder.setSize(300, 30);
+//        indicatorBorder.setFillColor(GuiConstants.irrFill);
+//        indicatorBorder.setBorderColor(GuiConstants.irrRed);
+//        mainMenuLayer.add(indicatorBorder);
+//
+//        final V3DLabel resolutionIndicator = new V3DLabel("" + (int) engine.getViewportSize().x + "x" + (int) engine.getViewportSize().y + " px");
+//        resolutionIndicator.setPosition(300, 17);
+//        resolutionIndicator.setFontStyle("Ubuntu", "bold", 16);
+//        resolutionIndicator.setColor(V3DColor.black, V3DColor.transparent);
+//        mainMenuLayer.add(resolutionIndicator);
 
         generateUpgradeBox();
         generateReputationBox();
@@ -225,132 +209,132 @@ public class WorldRenderer implements GraphicRenderer {
         generateDamageBox();
 
         for (GuiAnimatedElement element : persistantGuiElementList) {
-            addGuiComponent(element.getGuiElement(), element.getLayer());
+//            addGuiComponent(element.getGuiElement(), element.getLayer());
         }
     }
 
     private void generateGuiStructure() {
-        V3DGui gui = fullscreenBinding.getGui();
-
-        hudLayer = new V3DGuiLayer(gui);
-        hudLayer.getFenGUIWidget().setBlockClick(false);
-        interfaceLayer = new V3DGuiLayer(gui);
-        interfaceLayer.getFenGUIWidget().setBlockClick(false);
-        mainMenuLayer = new V3DGuiLayer(gui);
-        mainMenuLayer.getFenGUIWidget().setBlockClick(false);
-
-        V3DGuiLayer menuLayer = new V3DGuiLayer(gui);
-        menuLayer.getFenGUIWidget().setBlockClick(false);
-        V3DGuiLayer pauseLayer = new V3DGuiLayer(gui);
-        pauseLayer.getFenGUIWidget().setBlockClick(false);
-        // pauseLayer.setColor(new V3DColor(0,0,0,0.5f));
-        popupLayer = new V3DGuiLayer(gui);
-        popupLayer.getFenGUIWidget().setBlockClick(false);
-
-        gui.add(hudLayer);
-        gui.add(interfaceLayer);
-        gui.add(menuLayer);
-        gui.add(pauseLayer);
-        gui.add(mainMenuLayer);
-        gui.add(popupLayer);
-
-        addPersistantGuiElement(new GuiAnimatedElement(this) {
-            final V3DLabel clockIndicator = new V3DLabel("Time: --");
-            DecimalFormat format = new DecimalFormat("0");
-            {
-                clockIndicator.setPosition(128, 17);
-                clockIndicator.setFontStyle("Ubuntu", "bold", 16);
-                clockIndicator.setColor(V3DColor.black, V3DColor.transparent);
-            }
-
-            @Override
-            public void init(Timestamp time) {
-            }
-            
-            @Override
-            public void update(Timestamp time) {
-                clockIndicator.setText("Time: " + format.format(Time.now(true).getSeconds()) + " s");
-
-            }
-
-            @Override
-            public V3DGuiComponent getGuiElement() {
-                return clockIndicator;
-            }
-
-            @Override
-            public GuiLayer getLayer() {
-                return GuiLayer.MAIN_MENU;
-            }
-
-        });
-
-        addPersistantGuiElement(new GuiAnimatedElement(this) {
-            DecimalFormat format = new DecimalFormat("0");
-            final V3DLabel fpsIndicator = new V3DLabel("-- fps");
-
-            {
-                fpsIndicator.setPosition(235, 17);
-                fpsIndicator.setFontStyle("Ubuntu", "bold", 16);
-                fpsIndicator.setColor(V3DColor.black, V3DColor.transparent);
-            }
-
-            @Override
-            public void init(Timestamp time) {
-            }
-            
-            @Override
-            public void update(Timestamp time) {
-                fpsIndicator.setText("" + format.format(engine.getFps()) + " fps");
-
-            }
-
-            @Override
-            public V3DGuiComponent getGuiElement() {
-                return fpsIndicator;
-            }
-
-            @Override
-            public GuiLayer getLayer() {
-                return GuiLayer.MAIN_MENU;
-            }
-
-        });
+//        V3DGui gui = fullscreenBinding.getGui();
+//
+//        hudLayer = new V3DGuiLayer(gui);
+//        hudLayer.getFenGUIWidget().setBlockClick(false);
+//        interfaceLayer = new V3DGuiLayer(gui);
+//        interfaceLayer.getFenGUIWidget().setBlockClick(false);
+//        mainMenuLayer = new V3DGuiLayer(gui);
+//        mainMenuLayer.getFenGUIWidget().setBlockClick(false);
+//
+//        V3DGuiLayer menuLayer = new V3DGuiLayer(gui);
+//        menuLayer.getFenGUIWidget().setBlockClick(false);
+//        V3DGuiLayer pauseLayer = new V3DGuiLayer(gui);
+//        pauseLayer.getFenGUIWidget().setBlockClick(false);
+//        // pauseLayer.setColor(new V3DColor(0,0,0,0.5f));
+//        popupLayer = new V3DGuiLayer(gui);
+//        popupLayer.getFenGUIWidget().setBlockClick(false);
+//
+//        gui.add(hudLayer);
+//        gui.add(interfaceLayer);
+//        gui.add(menuLayer);
+//        gui.add(pauseLayer);
+//        gui.add(mainMenuLayer);
+//        gui.add(popupLayer);
+//
+//        addPersistantGuiElement(new GuiAnimatedElement(this) {
+//            final V3DLabel clockIndicator = new V3DLabel("Time: --");
+//            DecimalFormat format = new DecimalFormat("0");
+//            {
+//                clockIndicator.setPosition(128, 17);
+//                clockIndicator.setFontStyle("Ubuntu", "bold", 16);
+//                clockIndicator.setColor(V3DColor.black, V3DColor.transparent);
+//            }
+//
+//            @Override
+//            public void init(Timestamp time) {
+//            }
+//            
+//            @Override
+//            public void update(Timestamp time) {
+//                clockIndicator.setText("Time: " + format.format(Time.now(true).getSeconds()) + " s");
+//
+//            }
+//
+//            @Override
+//            public V3DGuiComponent getGuiElement() {
+//                return clockIndicator;
+//            }
+//
+//            @Override
+//            public GuiLayer getLayer() {
+//                return GuiLayer.MAIN_MENU;
+//            }
+//
+//        });
+//
+//        addPersistantGuiElement(new GuiAnimatedElement(this) {
+//            DecimalFormat format = new DecimalFormat("0");
+//            final V3DLabel fpsIndicator = new V3DLabel("-- fps");
+//
+//            {
+//                fpsIndicator.setPosition(235, 17);
+//                fpsIndicator.setFontStyle("Ubuntu", "bold", 16);
+//                fpsIndicator.setColor(V3DColor.black, V3DColor.transparent);
+//            }
+//
+//            @Override
+//            public void init(Timestamp time) {
+//            }
+//            
+//            @Override
+//            public void update(Timestamp time) {
+//                fpsIndicator.setText("" + format.format(engine.getFps()) + " fps");
+//
+//            }
+//
+//            @Override
+//            public V3DGuiComponent getGuiElement() {
+//                return fpsIndicator;
+//            }
+//
+//            @Override
+//            public GuiLayer getLayer() {
+//                return GuiLayer.MAIN_MENU;
+//            }
+//
+//        });
 
     }
 
     private void generateUpgradeBox() {
 
-        V3DContainer container = new V3DContainer();
-        container.setPosition(10, 10);
-        container.setSize(200, 110);
-        container.setyAlignment(GuiYAlignment.BOTTOM);
-        interfaceLayer.add(container);
-
-        V3DGuiRectangle upgradeBase = new V3DGuiRectangle();
-        upgradeBase.setyAlignment(GuiYAlignment.BOTTOM);
-        upgradeBase.setPosition(0, 0);
-        upgradeBase.setSize(200, 80);
-        upgradeBase.setBorderWidth(4);
-        upgradeBase.setFillColor(GuiConstants.irrFill);
-        upgradeBase.setBorderColor(GuiConstants.irrGreen);
-        container.add(upgradeBase);
-
-        V3DGuiRectangle upgradeTop = new V3DGuiRectangle();
-        upgradeTop.setyAlignment(GuiYAlignment.BOTTOM);
-        upgradeTop.setPosition(0, 80);
-        upgradeTop.setBorderWidth(4);
-        upgradeTop.setSize(200, 30);
-        upgradeTop.setFillColor(GuiConstants.irrGreen);
-        upgradeTop.setBorderColor(GuiConstants.irrGreen);
-        container.add(upgradeTop);
-
-        final V3DLabel upgradeText = new V3DLabel("Upgrades");
-        upgradeText.setyAlignment(GuiYAlignment.BOTTOM);
-        upgradeText.setPosition(40, 80);
-        upgradeText.setFontStyle("Ubuntu", "bold", 24);
-        upgradeText.setColor(V3DColor.white, V3DColor.transparent);
-        container.add(upgradeText);
+//        V3DContainer container = new V3DContainer();
+//        container.setPosition(10, 10);
+//        container.setSize(200, 110);
+//        container.setyAlignment(GuiYAlignment.BOTTOM);
+//        interfaceLayer.add(container);
+//
+//        V3DGuiRectangle upgradeBase = new V3DGuiRectangle();
+//        upgradeBase.setyAlignment(GuiYAlignment.BOTTOM);
+//        upgradeBase.setPosition(0, 0);
+//        upgradeBase.setSize(200, 80);
+//        upgradeBase.setBorderWidth(4);
+//        upgradeBase.setFillColor(GuiConstants.irrFill);
+//        upgradeBase.setBorderColor(GuiConstants.irrGreen);
+//        container.add(upgradeBase);
+//
+//        V3DGuiRectangle upgradeTop = new V3DGuiRectangle();
+//        upgradeTop.setyAlignment(GuiYAlignment.BOTTOM);
+//        upgradeTop.setPosition(0, 80);
+//        upgradeTop.setBorderWidth(4);
+//        upgradeTop.setSize(200, 30);
+//        upgradeTop.setFillColor(GuiConstants.irrGreen);
+//        upgradeTop.setBorderColor(GuiConstants.irrGreen);
+//        container.add(upgradeTop);
+//
+//        final V3DLabel upgradeText = new V3DLabel("Upgrades");
+//        upgradeText.setyAlignment(GuiYAlignment.BOTTOM);
+//        upgradeText.setPosition(40, 80);
+//        upgradeText.setFontStyle("Ubuntu", "bold", 24);
+//        upgradeText.setColor(V3DColor.white, V3DColor.transparent);
+//        container.add(upgradeText);
 
 //        moneyText = new V3DLabel(LoginManager.localPlayer.getMoney() + " $");
 //        moneyText.setyAlignment(GuiYAlignment.BOTTOM);
@@ -360,197 +344,197 @@ public class WorldRenderer implements GraphicRenderer {
 //        moneyText.setColor(GuiConstants.irrGreen, V3DColor.transparent);
 //        container.add(moneyText);
 
-        V3DButton button = new V3DButton("");
-        button.setPosition(0, 0);
-        button.setPadding(140, 200, 0, 0);
-        button.getFenGUIWidget().addButtonPressedListener(new IButtonPressedListener() {
-
-            @Override
-            public void buttonPressed(ButtonPressedEvent e) {
-                toogleUpgradeMenu();
-            }
-
-        });
-        container.add(button);
+//        V3DButton button = new V3DButton("");
+//        button.setPosition(0, 0);
+//        button.setPadding(140, 200, 0, 0);
+//        button.getFenGUIWidget().addButtonPressedListener(new IButtonPressedListener() {
+//
+//            @Override
+//            public void buttonPressed(ButtonPressedEvent e) {
+//                toogleUpgradeMenu();
+//            }
+//
+//        });
+//        container.add(button);
     }
 
     private void generateReputationBox() {
 
-        V3DContainer container = new V3DContainer();
-        container.setPosition(250, 10);
-        container.setSize(200, 110);
-        container.setyAlignment(GuiYAlignment.BOTTOM);
-        interfaceLayer.add(container);
-
-        V3DGuiRectangle upgradeBase = new V3DGuiRectangle();
-        upgradeBase.setyAlignment(GuiYAlignment.BOTTOM);
-        upgradeBase.setPosition(0, 0);
-        upgradeBase.setSize(200, 80);
-        upgradeBase.setBorderWidth(4);
-        upgradeBase.setFillColor(GuiConstants.irrFill);
-        upgradeBase.setBorderColor(GuiConstants.irrBlue);
-        container.add(upgradeBase);
-
-        V3DGuiRectangle upgradeTop = new V3DGuiRectangle();
-        upgradeTop.setyAlignment(GuiYAlignment.BOTTOM);
-        upgradeTop.setPosition(0, 80);
-        upgradeTop.setBorderWidth(4);
-        upgradeTop.setSize(200, 30);
-        upgradeTop.setFillColor(GuiConstants.irrBlue);
-        upgradeTop.setBorderColor(GuiConstants.irrBlue);
-        container.add(upgradeTop);
-
-        final V3DLabel upgradeText = new V3DLabel("Reputation");
-        upgradeText.setyAlignment(GuiYAlignment.BOTTOM);
-        upgradeText.setPosition(40, 80);
-        upgradeText.setFontStyle("Ubuntu", "bold", 24);
-        upgradeText.setColor(V3DColor.white, V3DColor.transparent);
-        container.add(upgradeText);
-
-        final V3DLabel moneyText = new V3DLabel("0");
-        moneyText.setxAlignment(GuiXAlignment.RIGHT);
-        moneyText.setyAlignment(GuiYAlignment.BOTTOM);
-        moneyText.setPosition(40, 15);
-        moneyText.setFontStyle("Ubuntu", "bold", 45);
-        moneyText.setColor(GuiConstants.irrBlue, V3DColor.transparent);
-        container.add(moneyText);
+//        V3DContainer container = new V3DContainer();
+//        container.setPosition(250, 10);
+//        container.setSize(200, 110);
+//        container.setyAlignment(GuiYAlignment.BOTTOM);
+//        interfaceLayer.add(container);
+//
+//        V3DGuiRectangle upgradeBase = new V3DGuiRectangle();
+//        upgradeBase.setyAlignment(GuiYAlignment.BOTTOM);
+//        upgradeBase.setPosition(0, 0);
+//        upgradeBase.setSize(200, 80);
+//        upgradeBase.setBorderWidth(4);
+//        upgradeBase.setFillColor(GuiConstants.irrFill);
+//        upgradeBase.setBorderColor(GuiConstants.irrBlue);
+//        container.add(upgradeBase);
+//
+//        V3DGuiRectangle upgradeTop = new V3DGuiRectangle();
+//        upgradeTop.setyAlignment(GuiYAlignment.BOTTOM);
+//        upgradeTop.setPosition(0, 80);
+//        upgradeTop.setBorderWidth(4);
+//        upgradeTop.setSize(200, 30);
+//        upgradeTop.setFillColor(GuiConstants.irrBlue);
+//        upgradeTop.setBorderColor(GuiConstants.irrBlue);
+//        container.add(upgradeTop);
+//
+//        final V3DLabel upgradeText = new V3DLabel("Reputation");
+//        upgradeText.setyAlignment(GuiYAlignment.BOTTOM);
+//        upgradeText.setPosition(40, 80);
+//        upgradeText.setFontStyle("Ubuntu", "bold", 24);
+//        upgradeText.setColor(V3DColor.white, V3DColor.transparent);
+//        container.add(upgradeText);
+//
+//        final V3DLabel moneyText = new V3DLabel("0");
+//        moneyText.setxAlignment(GuiXAlignment.RIGHT);
+//        moneyText.setyAlignment(GuiYAlignment.BOTTOM);
+//        moneyText.setPosition(40, 15);
+//        moneyText.setFontStyle("Ubuntu", "bold", 45);
+//        moneyText.setColor(GuiConstants.irrBlue, V3DColor.transparent);
+//        container.add(moneyText);
 
     }
 
     private void generateWaveBox() {
 
-        V3DContainer container = new V3DContainer();
-        container.setxAlignment(GuiXAlignment.RIGHT);
-        container.setSize(240, 130);
-        container.setPosition(10, 10);
-        container.setyAlignment(GuiYAlignment.BOTTOM);
-        interfaceLayer.add(container);
-
-        V3DGuiRectangle upgradeBase = new V3DGuiRectangle();
-        upgradeBase.setyAlignment(GuiYAlignment.BOTTOM);
-        upgradeBase.setPosition(0, 0);
-        upgradeBase.setSize(240, 110);
-        upgradeBase.setBorderWidth(4);
-        upgradeBase.setFillColor(GuiConstants.irrFill);
-        upgradeBase.setBorderColor(GuiConstants.irrRed);
-        container.add(upgradeBase);
-
-//        waveCountText = new V3DLabel("Wave " + (lastWaveEvent == null ? "--" : lastWaveEvent.getWaveId()));
-        waveCountText.setyAlignment(GuiYAlignment.BOTTOM);
-        waveCountText.setPosition(25, 32);
-        waveCountText.setFontStyle("Ubuntu", "bold", 45);
-        waveCountText.setColor(GuiConstants.irrRed, V3DColor.transparent);
-        container.add(waveCountText);
+//        V3DContainer container = new V3DContainer();
+//        container.setxAlignment(GuiXAlignment.RIGHT);
+//        container.setSize(240, 130);
+//        container.setPosition(10, 10);
+//        container.setyAlignment(GuiYAlignment.BOTTOM);
+//        interfaceLayer.add(container);
+//
+//        V3DGuiRectangle upgradeBase = new V3DGuiRectangle();
+//        upgradeBase.setyAlignment(GuiYAlignment.BOTTOM);
+//        upgradeBase.setPosition(0, 0);
+//        upgradeBase.setSize(240, 110);
+//        upgradeBase.setBorderWidth(4);
+//        upgradeBase.setFillColor(GuiConstants.irrFill);
+//        upgradeBase.setBorderColor(GuiConstants.irrRed);
+//        container.add(upgradeBase);
+//
+////        waveCountText = new V3DLabel("Wave " + (lastWaveEvent == null ? "--" : lastWaveEvent.getWaveId()));
+//        waveCountText.setyAlignment(GuiYAlignment.BOTTOM);
+//        waveCountText.setPosition(25, 32);
+//        waveCountText.setFontStyle("Ubuntu", "bold", 45);
+//        waveCountText.setColor(GuiConstants.irrRed, V3DColor.transparent);
+//        container.add(waveCountText);
 
     }
 
     private void generateDamageBox() {
 
-        V3DContainer container = new V3DContainer();
-        container.setxAlignment(GuiXAlignment.RIGHT);
-        container.setSize(120, 200);
-        container.setPosition(10, 10);
-        container.setyAlignment(GuiYAlignment.TOP);
-        interfaceLayer.add(container);
-
-        V3DGuiRectangle upgradeBase = new V3DGuiRectangle();
-        upgradeBase.setyAlignment(GuiYAlignment.BOTTOM);
-        upgradeBase.setPosition(0, 0);
-        upgradeBase.setSize(120, 200);
-        upgradeBase.setBorderWidth(4);
-        upgradeBase.setFillColor(GuiConstants.irrFill);
-        upgradeBase.setBorderColor(GuiConstants.irrRed);
-        container.add(upgradeBase);
-
-        monolithStatus = new V3DGuiRectangle();
-        monolithStatus.setyAlignment(GuiYAlignment.TOP);
-        monolithStatus.setPosition(10, 30);
-        monolithStatus.setSize(10, 20);
-        monolithStatus.setBorderWidth(2);
-        monolithStatus.setFillColor(new V3DColor(0, 150, 0, 0.5f));
-        monolithStatus.setBorderColor(new V3DColor(0, 150, 0));
-        container.add(monolithStatus);
-
-        monolithStatusText = new V3DLabel("");
-        monolithStatusText.setyAlignment(GuiYAlignment.TOP);
-        monolithStatusText.setPosition(25, 32);
-        monolithStatusText.setFontStyle("Ubuntu", "", 16);
-        monolithStatusText.setColor(V3DColor.black, V3DColor.transparent);
-        container.add(monolithStatusText);
-        updateMonolithStatus();
+//        V3DContainer container = new V3DContainer();
+//        container.setxAlignment(GuiXAlignment.RIGHT);
+//        container.setSize(120, 200);
+//        container.setPosition(10, 10);
+//        container.setyAlignment(GuiYAlignment.TOP);
+//        interfaceLayer.add(container);
+//
+//        V3DGuiRectangle upgradeBase = new V3DGuiRectangle();
+//        upgradeBase.setyAlignment(GuiYAlignment.BOTTOM);
+//        upgradeBase.setPosition(0, 0);
+//        upgradeBase.setSize(120, 200);
+//        upgradeBase.setBorderWidth(4);
+//        upgradeBase.setFillColor(GuiConstants.irrFill);
+//        upgradeBase.setBorderColor(GuiConstants.irrRed);
+//        container.add(upgradeBase);
+//
+//        monolithStatus = new V3DGuiRectangle();
+//        monolithStatus.setyAlignment(GuiYAlignment.TOP);
+//        monolithStatus.setPosition(10, 30);
+//        monolithStatus.setSize(10, 20);
+//        monolithStatus.setBorderWidth(2);
+//        monolithStatus.setFillColor(new V3DColor(0, 150, 0, 0.5f));
+//        monolithStatus.setBorderColor(new V3DColor(0, 150, 0));
+//        container.add(monolithStatus);
+//
+//        monolithStatusText = new V3DLabel("");
+//        monolithStatusText.setyAlignment(GuiYAlignment.TOP);
+//        monolithStatusText.setPosition(25, 32);
+//        monolithStatusText.setFontStyle("Ubuntu", "", 16);
+//        monolithStatusText.setColor(V3DColor.black, V3DColor.transparent);
+//        container.add(monolithStatusText);
+//        updateMonolithStatus();
 
     }
 
     private void toogleUpgradeMenu() {
-        if (upgradeMenu == null) {
-            upgradeMenu = new UpgradeMenu(engine);
-        }
-
-        if (!upgradeMenuEnabled) {
-            interfaceLayer.add(upgradeMenu);
-            upgradeMenuEnabled = true;
-        } else {
-            interfaceLayer.remove(upgradeMenu);
-            upgradeMenuEnabled = false;
-        }
+//        if (upgradeMenu == null) {
+//            upgradeMenu = new UpgradeMenu(engine);
+//        }
+//
+//        if (!upgradeMenuEnabled) {
+//            interfaceLayer.add(upgradeMenu);
+//            upgradeMenuEnabled = true;
+//        } else {
+//            interfaceLayer.remove(upgradeMenu);
+//            upgradeMenuEnabled = false;
+//        }
 
     }
 
     private void enabledUpgradeMenu() {
-        if (upgradeMenu == null) {
-            upgradeMenu = new UpgradeMenu(engine);
-        }
-
-        if (!upgradeMenuEnabled) {
-            interfaceLayer.add(upgradeMenu);
-            upgradeMenuEnabled = true;
-        }
+//        if (upgradeMenu == null) {
+//            upgradeMenu = new UpgradeMenu(engine);
+//        }
+//
+//        if (!upgradeMenuEnabled) {
+//            interfaceLayer.add(upgradeMenu);
+//            upgradeMenuEnabled = true;
+//        }
     }
 
     private void disableUpgradeMenu() {
-        interfaceLayer.remove(upgradeMenu);
-        upgradeMenuEnabled = false;
+//        interfaceLayer.remove(upgradeMenu);
+//        upgradeMenuEnabled = false;
     }
 
     private void enabledInventoryMenu() {
-        if (inventoryMenu == null) {
-            inventoryMenu = new InventoryMenu(engine);
-        }
-
-        if (!inventoryMenuEnabled) {
-            interfaceLayer.add(inventoryMenu);
-            inventoryMenuEnabled = true;
-        }
+//        if (inventoryMenu == null) {
+//            inventoryMenu = new InventoryMenu(engine);
+//        }
+//
+//        if (!inventoryMenuEnabled) {
+//            interfaceLayer.add(inventoryMenu);
+//            inventoryMenuEnabled = true;
+//        }
     }
 
     private void disableInventoryMenu() {
-        interfaceLayer.remove(inventoryMenu);
+//        interfaceLayer.remove(inventoryMenu);
         inventoryMenuEnabled = false;
     }
 
     private void toogleInventoryMenu() {
         if (inventoryMenu == null) {
-            inventoryMenu = new InventoryMenu(engine);
+//            inventoryMenu = new InventoryMenu(engine);
         }
 
         if (!inventoryMenuEnabled) {
-            interfaceLayer.add(inventoryMenu);
+//            interfaceLayer.add(inventoryMenu);
             inventoryMenuEnabled = true;
         } else {
-            interfaceLayer.remove(inventoryMenu);
+//            interfaceLayer.remove(inventoryMenu);
             inventoryMenuEnabled = false;
         }
 
     }
 
     private void updateMonolithStatus() {
-        if (monolithStatusText != null && monolith != null) {
-            int color = (int) (150 * monolith.getDurability() / monolith.getDurabilityMax());
-
-            monolithStatus.setFillColor(new V3DColor(150 - color, color, 0, 0.5f));
-            monolithStatus.setBorderColor(new V3DColor(150 - color, color, 0));
-            monolithStatusText.setText("" + (int) monolith.getDurability() + "/" + (int) monolith.getDurabilityMax());
-        }
+//        if (monolithStatusText != null && monolith != null) {
+//            int color = (int) (150 * monolith.getDurability() / monolith.getDurabilityMax());
+//
+//            monolithStatus.setFillColor(new V3DColor(150 - color, color, 0, 0.5f));
+//            monolithStatus.setBorderColor(new V3DColor(150 - color, color, 0));
+//            monolithStatusText.setText("" + (int) monolith.getDurability() + "/" + (int) monolith.getDurabilityMax());
+//        }
     }
 
 //    private void loadCurrentWorld() {
@@ -645,7 +629,7 @@ public class WorldRenderer implements GraphicRenderer {
         worldObjectToV3DElementMap.get(object).add(element);
 
         if (object instanceof Monolith) {
-            monolith = (Monolith) object;
+//            monolith = (Monolith) object;
             updateMonolithStatus();
         }
     }
@@ -797,7 +781,7 @@ public class WorldRenderer implements GraphicRenderer {
         if (graphicalElement instanceof GuiAnimatedElement) {
             GuiAnimatedElement guiElement = (GuiAnimatedElement) graphicalElement;
             persistantGuiElementList.remove(guiElement);
-            removeGuiComponent(guiElement.getGuiElement(), guiElement.getLayer());
+//            removeGuiComponent(guiElement.getGuiElement(), guiElement.getLayer());
         }
 
     }
@@ -806,61 +790,61 @@ public class WorldRenderer implements GraphicRenderer {
         elementList.add(graphicalElement);
         animatedList.add(graphicalElement);
         persistantGuiElementList.add(graphicalElement);
-        addGuiComponent(graphicalElement.getGuiElement(), graphicalElement.getLayer());
+//        addGuiComponent(graphicalElement.getGuiElement(), graphicalElement.getLayer());
     }
 
-    public void addGuiComponent(V3DGuiComponent component) {
-        interfaceLayer.add(component);
-    }
+//    public void addGuiComponent(V3DGuiComponent component) {
+//        interfaceLayer.add(component);
+//    }
 
-    public void addGuiComponent(V3DGuiComponent component, GuiLayer layer) {
-        switch (layer) {
-            case HUD:
-                hudLayer.add(component);
-                break;
-            case INTEFACE:
-                interfaceLayer.add(component);
-                break;
-            case MAIN_MENU:
-                mainMenuLayer.add(component);
-                break;
-            default:
-                break;
-        }
-
-    }
-
-    public void removeGuiComponent(V3DGuiComponent component) {
-        interfaceLayer.remove(component);
-    }
-
-    public void removeGuiComponent(V3DGuiComponent component, GuiLayer layer) {
-        switch (layer) {
-            case HUD:
-                hudLayer.remove(component);
-                break;
-            case INTEFACE:
-                interfaceLayer.remove(component);
-                break;
-            case MAIN_MENU:
-                mainMenuLayer.remove(component);
-                break;
-            default:
-                break;
-        }
-    }
-
-    public void resetGui() {
-        interfaceLayer.removeAll();
-        hudLayer.removeAll();
-        mainMenuLayer.removeAll();
-
-        for (GraphicalElement element : guiAnimatedList) {
-            element.destroy();
-        }
-
-        reloadGui();
-    }
+//    public void addGuiComponent(V3DGuiComponent component, GuiLayer layer) {
+//        switch (layer) {
+//            case HUD:
+//                hudLayer.add(component);
+//                break;
+//            case INTEFACE:
+//                interfaceLayer.add(component);
+//                break;
+//            case MAIN_MENU:
+//                mainMenuLayer.add(component);
+//                break;
+//            default:
+//                break;
+//        }
+//
+//    }
+//
+//    public void removeGuiComponent(V3DGuiComponent component) {
+//        interfaceLayer.remove(component);
+//    }
+//
+//    public void removeGuiComponent(V3DGuiComponent component, GuiLayer layer) {
+//        switch (layer) {
+//            case HUD:
+//                hudLayer.remove(component);
+//                break;
+//            case INTEFACE:
+//                interfaceLayer.remove(component);
+//                break;
+//            case MAIN_MENU:
+//                mainMenuLayer.remove(component);
+//                break;
+//            default:
+//                break;
+//        }
+//    }
+//
+//    public void resetGui() {
+//        interfaceLayer.removeAll();
+//        hudLayer.removeAll();
+//        mainMenuLayer.removeAll();
+//
+//        for (GraphicalElement element : guiAnimatedList) {
+//            element.destroy();
+//        }
+//
+//        reloadGui();
+//    }
 
 //    private final class WorldRendererEventVisitor extends DefaultSystemEventVisitor {
 
@@ -1044,8 +1028,14 @@ public class WorldRenderer implements GraphicRenderer {
     }
 
     @Override
-    public V3DGuiLayer getPopupLayer() {
-        return popupLayer;
+    public void resetGui() {
+        // TODO Auto-generated method stub
+        
     }
+
+//    @Override
+//    public V3DGuiLayer getPopupLayer() {
+//        return popupLayer;
+//    }
     
 }

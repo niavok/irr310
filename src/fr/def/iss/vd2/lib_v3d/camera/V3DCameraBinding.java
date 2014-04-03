@@ -21,8 +21,6 @@ import java.awt.Point;
 
 import com.irr310.i3d.scene.I3dCamera;
 
-import fr.def.iss.vd2.lib_v3d.gui.V3DGui;
-
 /**
  * Un V3DCameraBinding permet de definir dans quel zone du canvas sera dessinée
  * une camera.
@@ -56,16 +54,16 @@ public class V3DCameraBinding {
      * create a camera binding
      */
     public V3DCameraBinding() {
-        gui = new V3DGui(this);
+//        gui = new V3DGui(this);
     }
 
     /**
      * Return the gui root
      * @return
      */
-    public V3DGui getGui() {
-        return gui;
-    }
+//    public V3DGui getGui() {
+//        return gui;
+//    }
 
     /**
      * Define the bound camera
@@ -147,16 +145,16 @@ public class V3DCameraBinding {
     public int parentHeight;
     public int mouseX = 0;
     public int mouseY = 0;
-    private V3DGui gui;
+//    private V3DGui gui;
     private Point lastMousePosition = new Point();
     
     /**
      * Internal private method
      * @return
      */
-    public boolean isFocused() {
-        return gui.isFocused();
-    }
+//    public boolean isFocused() {
+//        return gui.isFocused();
+//    }
 
     /**
      * Internal private method
@@ -211,7 +209,7 @@ public class V3DCameraBinding {
         width = tempWidth;
         height = tempHeight;
 
-        gui.repack();
+//        gui.repack();
         camera.setSize(width, height);
         //gui.generate();
 
