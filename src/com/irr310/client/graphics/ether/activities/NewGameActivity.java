@@ -13,6 +13,7 @@ import com.irr310.i3d.Message;
 import com.irr310.i3d.view.Activity;
 import com.irr310.server.engine.world.WorldEngine;
 import com.irr310.server.engine.world.WorldEngineObserver;
+import com.irr310.server.game.Game;
 
 public class NewGameActivity extends Activity {
 
@@ -28,7 +29,13 @@ public class NewGameActivity extends Activity {
         
         engineManager = GameClient.getInstance().getEngineManager();
         
-        worldEngine = new WorldEngine();
+        Game game = GameClient.getInstance().getGameManager().createGame();
+        
+        GameClient.getInstance().getGameManager().setActiveGame(game);
+        
+        game.load();
+        
+        worldEngine = new WorldEngine(game.getWorld());
         engineManager.add(worldEngine);
         worldEngine.start();
         

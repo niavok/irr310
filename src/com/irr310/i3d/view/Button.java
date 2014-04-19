@@ -110,5 +110,6 @@ public class Button extends TextView {
         duplicateTo(view);
         return view;
     }
+
     
 }

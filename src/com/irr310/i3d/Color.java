@@ -88,6 +88,11 @@ public class Color implements Duplicable<Color> {
         this.a = 1;
     }
 
+    @Override
+    public String toString() {
+        return "rgba("+r+","+g+","+b+","+a+")";
+    }
+
     /**
      * Initialize color
      * 

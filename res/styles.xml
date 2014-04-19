@@ -9,9 +9,6 @@
         <item name="i3d:layout_paddingRight">30px</item>
         <item name="i3d:layout_paddingTop">10px</item>
         <item name="i3d:layout_paddingBottom">10px</item>
-        <item state="selected" name="i3d:borderSize">0px</item>
-        <item state="selected" name="i3d:background">buttonSelectedBackground@backgrounds</item>
-        <item state="selected" name="i3d:color">white@color</item>
     </style>
     
     <style name="smallButton" parent="buttonBase@styles">
@@ -38,6 +35,13 @@
         <item name="i3d:cornerRightBottomSize">10px</item>
         <item name="i3d:background">buttonBaseBackground@backgrounds</item>
         <item state="over" name="i3d:background">buttonBaseBackground-over@backgrounds</item>
+        <item state="selected" name="i3d:borderSize">0px</item>
+        <item state="selected" name="i3d:background">buttonSelectedBackground@backgrounds</item>
+        <item state="selected" name="i3d:color">white@color</item>
+        <item state="disabled" name="i3d:background">buttonBaseBackground-disabled@backgrounds</item>
+        <item state="disabled" name="i3d:borderColor">borderButtonBase-disabled@color</item>
+        <item state="disabled" name="i3d:color">disabledDarkText@color</item>
+        
     </style>
     
 

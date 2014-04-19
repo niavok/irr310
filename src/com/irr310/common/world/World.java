@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.irr310.common.world.item.Item;
-import com.irr310.common.world.upgrade.Upgrade;
 import com.irr310.server.world.product.ProductManager;
 
 public class World {
@@ -15,7 +14,7 @@ public class World {
     private final List<Player> players;
     private final List<Faction> factions;
     
-    private final List<Upgrade> availableUpgrades;
+//    private final List<Upgrade> availableUpgrades;
     private final Map<Long, Player> playerIdMap;
     private final Map<Long, Faction> factionIdMap;
     private final Map<Long, Item> itemIdMap;
@@ -38,7 +37,7 @@ public class World {
         factionIdMap = new HashMap<Long, Faction>();
         
         itemIdMap = new HashMap<Long, Item>();
-        availableUpgrades = new CopyOnWriteArrayList<Upgrade>();
+//        availableUpgrades = new CopyOnWriteArrayList<Upgrade>();
        
         map = new com.irr310.common.world.WorldMap();
         
@@ -71,13 +70,13 @@ public class World {
         return players;
     }
 
-    public void addUpgrade(Upgrade upgrade) {
-        availableUpgrades.add(upgrade);
-    }
-
-    public List<Upgrade> getAvailableUpgrades() {
-        return availableUpgrades;
-    }
+//    public void addUpgrade(Upgrade upgrade) {
+//        availableUpgrades.add(upgrade);
+//    }
+//
+//    public List<Upgrade> getAvailableUpgrades() {
+//        return availableUpgrades;
+//    }
 
     public com.irr310.common.world.WorldMap getMap() {
         return map;
@@ -109,6 +108,10 @@ public class World {
 
     public ItemFactory getItemFactory() {
         return itemFactory;
+    }
+    
+    public List<Item> getItems() {
+        return items;
     }
 
 //    public BinderServer getBinderServer() {

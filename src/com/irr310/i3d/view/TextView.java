@@ -215,11 +215,6 @@ public class TextView extends View {
         } else { // Center
             offsetY = (height - innerHeight) / 2;
         }
-        
-        if(text.equals("Antares")) {
-            Log.log("plop");
-        }
-
     }
 
     public void setFont(Font font) {

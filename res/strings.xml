@@ -4,7 +4,7 @@
     <string name="310">310</string>
     <string name="newGameButton">New game</string>
     <string name="continueGameButton">Continue</string>
-    <string name="joinGameButton">Join game</string>
+    <string name="loadGameButton">Load game</string>
     
     <string name="settingsButton">[down@icons]</string>
     

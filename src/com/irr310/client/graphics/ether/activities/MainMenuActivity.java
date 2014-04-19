@@ -1,5 +1,6 @@
 package com.irr310.client.graphics.ether.activities;
 
+import com.irr310.client.GameClient;
 import com.irr310.i3d.Bundle;
 import com.irr310.i3d.Intent;
 import com.irr310.i3d.Measure;
@@ -10,8 +11,10 @@ import com.irr310.i3d.view.Button;
 import com.irr310.i3d.view.View;
 import com.irr310.i3d.view.View.OnClickListener;
 import com.irr310.server.Duration;
+import com.irr310.server.GameServer;
 import com.irr310.server.Time;
 import com.irr310.server.Time.Timestamp;
+import com.irr310.server.game.Game;
 
 public class MainMenuActivity extends Activity {
 
@@ -19,6 +22,7 @@ public class MainMenuActivity extends Activity {
     private Measure animationMesure;
     private Time startTime;
     private Button newGameMenu;
+    private Button continueGameButton;
 
     @Override
     public void onCreate(Bundle bundle) {
@@ -28,6 +32,8 @@ public class MainMenuActivity extends Activity {
         animationMesure = new Measure(0, true, Axis.VERTICAL);
 
         newGameMenu = (Button) findViewById("newGameButton@layout/mainmenu");
+        continueGameButton = (Button) findViewById("continueGameButton@layout/mainmenu");
+        
         newGameMenu.setOnClickListener(new OnClickListener() {
             
             @Override
@@ -36,11 +42,22 @@ public class MainMenuActivity extends Activity {
             }
         });
         
+        continueGameButton.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(I3dMouseEvent mouseEvent, View view) {
+                startActivity(new Intent(ContinueGameActivity.class));
+            }
+        });
+        
     }
 
     @Override
     public void onResume() {
         startTime = Time.now(false);
+
+        // Pause the game in the main menu
+        Time.pauseGame(startTime);
     }
 
     @Override
@@ -54,25 +71,13 @@ public class MainMenuActivity extends Activity {
 
     @Override
     protected void onUpdate(Timestamp time) {
-        Duration duration = startTime.durationTo(time.getTime());
-        // Log.trace("Update animatation after "+duration.getMilliseconds()+" ms ("+(1f/duration.getSeconds())+"fps)");
-        //startTime = absTime;
-
-        /*Layout layout = mobileLogoPart.getLayout();
-        animationMesure.setValue((float) (25f / 4.2f * (1 + Math.sin(absTime.getSeconds() * 4))));
-
-        float offset = layout.computeMesure(animationMesure);
-
-        // Log.trace("Offset: "+offset);
-            layout.setOffsetX(offset);
-            layout.setOffsetY(offset);
-
         
-        // layout.setOffsetY(offset);
-         */   
-        /*if(duration.getSeconds() > 2) {
-            startActivity(new Intent(MainActivity.class));
-        }*/
+        Game activeGame = GameClient.getInstance().getGameManager().getPreviousGame();
+        if(activeGame == null) {
+            continueGameButton.setEnabled(false);
+        } else {
+            continueGameButton.setEnabled(true);
+        }
     }
 
 }

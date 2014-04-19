@@ -5,24 +5,26 @@ Refactoring
 -----------
 
 - virer V3D
-- virer fengui
-
+- limite et réguler les framerate des engines
+- préfixer les fields avec des "m"
+- virer le code mort
+- virer le code commenté
 Graphisme
 ---------
 
 - Concept art
 - Active button
-
+- Gros indicateur de pause
 
 Bug fix 
 -------
 
-- Corriger le rendu des :
 -fix warnings
 - corriger le process name
 
 Outils
 ------
+-ajouter des numero de version dans les sauvegarde et partout
 - Système de sauvegarde
 - Passer le moteur graphique à 1 fps s'il est minimisé
 - Diminution automatique des graphismes avec poids pour , models, texture, framerate, etc
@@ -34,11 +36,14 @@ Interface
 - HUD : indicateur de  puissance des moteurs
 - HUD : controle manuel
 
+- Toast layer pour notif de genre "saved", pause
 - Implémenter le bouton continue
 - Créer le système de widget
 - Ajouter le menu 
 - Ajouter le fil d'ariane
 - Prise de notes par activity
+
+- rendre la carte invisible tant qu'on a pas de techno d'exploration
 
 
 Gameplay
@@ -93,6 +98,7 @@ Gameplay
 - bobinne tesla à efet de pointe : basse portée mais chaffe pas mal et ionnise beaucoup
 - flak canon
 - module kernel d'acquisition : designation de cible
+- Systeme d'overburn : detrure la structure et le fonctionnel au bénéfice de mellieurs perfs
 
 Technologie
 -----------
@@ -130,7 +136,9 @@ Diplomatie
 - Ransonnage des vaisseaux
 
 
-
+Bonus
+-----
+- Commentaires sur les sauvegardes
 
 
     

@@ -1,5 +1,6 @@
 package com.irr310.client.graphics.ether.activities;
 
+import com.irr310.client.GameClient;
 import com.irr310.client.graphics.SettingsPopupActivity;
 import com.irr310.client.graphics.ether.activities.worldmap.SystemView;
 import com.irr310.i3d.Bundle;
@@ -12,6 +13,7 @@ import com.irr310.i3d.view.Button;
 import com.irr310.i3d.view.ImageButton;
 import com.irr310.i3d.view.View;
 import com.irr310.i3d.view.View.OnClickListener;
+import com.irr310.server.game.Game;
 
 public class StatusActivity extends Activity {
 
@@ -27,7 +29,7 @@ public class StatusActivity extends Activity {
         mListener = (StatusActivityController) bundle.getObject();
         
         settingsButton = (Button) findViewById("settingsButton@layout/status");
-        
+       
         settingsButton.setOnClickListener(new OnClickListener() {
             
             @Override
@@ -35,6 +37,7 @@ public class StatusActivity extends Activity {
                 getContext().setPopUpActivity(new Intent(SettingsPopupActivity.class, bundle), new I3dVec2(mouseEvent.getRootEvent().getX(), 25));
             }
         });
+        
     }
     
     public interface StatusActivityController {

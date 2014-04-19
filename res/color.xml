@@ -15,6 +15,11 @@
     <color name="bottomButtonBase">#ccccccff</color>
     <color name="topButtonBase-over">#ffffffff</color>
     <color name="bottomButtonBase-over">#dcdcdcff</color>
+    <color name="borderButtonBase-disabled">#afafafff</color>
+    <color name="topButtonBase-disabled">#efefefff</color>
+    <color name="bottomButtonBase-disabled">#e5e5e5ff</color>
+    
+    <color name="disabledDarkText">#999999</color>
     
     <color name="systemNameWorldMap">#646464ff</color>
     <color name="blockTitle">#000000</color>

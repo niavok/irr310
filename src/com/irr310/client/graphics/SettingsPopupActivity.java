@@ -1,5 +1,6 @@
 package com.irr310.client.graphics;
 
+import com.irr310.client.GameClient;
 import com.irr310.client.graphics.ether.activities.SettingsActivity;
 import com.irr310.client.graphics.ether.activities.StatusActivity.StatusActivityController;
 import com.irr310.i3d.Bundle;
@@ -15,7 +16,6 @@ import com.irr310.i3d.view.View.OnMouseEventListener;
 public class SettingsPopupActivity extends Activity {
 
 
-    private Button settingsButton;
     private StatusActivityController mListener;
 
     @Override
@@ -27,6 +27,7 @@ public class SettingsPopupActivity extends Activity {
         
         Button quitButton = (Button) findViewById("quitButton@layout/status_settings_popup");
         Button settingsButton = (Button) findViewById("settingsButton@layout/status_settings_popup");
+        Button saveButton = (Button) findViewById("saveButton@layout/status_settings_popup");
         
         
         quitButton.setOnMouseListener(new OnMouseEventListener() {
@@ -46,12 +47,25 @@ public class SettingsPopupActivity extends Activity {
             @Override
             public boolean onMouseEvent(I3dMouseEvent mouseEvent) {
                 if(mouseEvent.getAction() == Action.MOUSE_PRESSED && mouseEvent.getButton() == 1) {
-                mListener.getControlledSurface().startActivity(new Intent(SettingsActivity.class));
-                // Do not return true to exit the popup
+                    mListener.getControlledSurface().startActivity(new Intent(SettingsActivity.class));
+                    // Do not return true to exit the popup
                 }
                 return false;
             }
         });
+        
+        saveButton.setOnMouseListener(new OnMouseEventListener() {
+            
+            @Override
+            public boolean onMouseEvent(I3dMouseEvent mouseEvent) {
+                if(mouseEvent.getAction() == Action.MOUSE_PRESSED && mouseEvent.getButton() == 1) {
+                    GameClient.getInstance().getGameManager().save();
+                    // Do not return true to exit the popup
+                }
+                return false;
+            }
+        });
+        
     }
 
     @Override

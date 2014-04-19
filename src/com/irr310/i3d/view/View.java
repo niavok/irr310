@@ -32,12 +32,13 @@ public abstract class View {
     private OnMouseEventListener onMouseEventListener;
     private OnKeyEventListener onKeyEventListener;
     private OnControllerEventListener onControllerEventListener;
-    private boolean visible = true;
+    private boolean mVisible = true;
     private StyleRenderer styleRenderer;
 //    private Style selectedStyle = new Style();
     private Style idleStyle = new Style();
     private ViewState state = ViewState.IDLE;
     private boolean mMouseOver;
+    private boolean mEnabled = true;
 
     public enum ViewState {
         DISABLED, // The view is disabled, no interaction possible
@@ -57,7 +58,7 @@ public abstract class View {
     }
 
     public void draw(Graphics g) {
-        if (!visible) {
+        if (!mVisible) {
             return;
         }
         mMouseOver = isMouseOver(g.getUiTranslation());
@@ -221,6 +222,9 @@ public abstract class View {
     }
 
     public ViewState getState() {
+        if(!mEnabled) {
+            return ViewState.DISABLED;
+        }
         if(mMouseOver) {
             switch (state) {
                 case IDLE:
@@ -340,7 +344,7 @@ public abstract class View {
     // public abstract boolean onMouseEvent(V3DMouseEvent mouseEvent);
 
     public boolean onMouseEvent(I3dMouseEvent mouseEvent) {
-        if (!visible) {
+        if (!mVisible || ! mEnabled) {
             return false;
         }
 
@@ -358,7 +362,7 @@ public abstract class View {
     }
     
     public boolean onKeyEvent(V3DKeyEvent keyEvent) {
-        if (!visible) {
+        if (!mVisible || ! mEnabled) {
             return false;
         }
 
@@ -370,7 +374,7 @@ public abstract class View {
     }
     
     public boolean onControllerEvent(V3DControllerEvent controllerEvent) {
-        if (!visible) {
+        if (!mVisible || ! mEnabled) {
             return false;
         }
 
@@ -382,11 +386,11 @@ public abstract class View {
     }
 
     public boolean isVisible() {
-        return visible;
+        return mVisible;
     }
 
     public void setVisible(boolean visible) {
-        this.visible = visible;
+        this.mVisible = visible;
     }
 
 //    public void setSelectedStyle(Style style) {
@@ -399,6 +403,10 @@ public abstract class View {
     
     public Style getIdleStyle() {
         return idleStyle;
+    }
+    
+    public void setEnabled(boolean enabled) {
+        mEnabled = enabled;
     }
     
 //    public Style getSelectedStyle() {

@@ -17,8 +17,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import sun.swing.plaf.synth.Paint9Painter.PaintType;
-
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.RessourceLoadingException;
 import com.irr310.i3d.Measure.Axis;
@@ -1886,6 +1884,8 @@ public class I3dRessourceManager {
                 state = ViewState.OVER;
             } else if(attribute.equals("selected")) {
                     state = ViewState.SELECTED;
+            } else if(attribute.equals("disabled")) {
+                state = ViewState.DISABLED;
             } else {
                 throw new RessourceLoadingException("Unknown value '" + attribute + "' for State");
             }

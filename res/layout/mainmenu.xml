@@ -38,11 +38,11 @@
                 i3d:text="continueGameButton@strings" />
 
             <Button
-                i3d:id="joinGameButton"
+                i3d:id="loadGameButton"
                 i3d:style="bigButton@styles"
                 i3d:layout_width="match_parent"
                 i3d:layout_marginBottom="20px"
-                i3d:text="joinGameButton@strings" />
+                i3d:text="loadGameButton@strings" />
         </LinearLayout>
     </LinearLayout>
 

@@ -8,29 +8,32 @@ import com.irr310.common.engine.EngineManager;
 import com.irr310.common.tools.Log;
 import com.irr310.i3d.input.I3dMouseEvent;
 import com.irr310.server.ParameterAnalyser;
+import com.irr310.server.game.GameManager;
 
 import fr.def.iss.vd2.lib_v3d.V3DControllerEvent;
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent;
 
 public class GameClient {
    
-    private EngineManager engineManager;
+    private EngineManager mEngineManager;
 
     private InputEngine mInputEngine;
 
-    public static GameClient instance = null;
+    private GameManager mGameManager;
+
+    public static GameClient sInstance = null;
 
     public static GameClient getInstance() {
-        return instance;
+        return sInstance;
     }
 
     public GameClient(ParameterAnalyser parameterAnalyser) {
         // this.parameterAnalyser = parameterAnalyser;
-        instance = this;
+        sInstance = this;
         // stillRunning = true;
 
-
-        engineManager = new EngineManager();
+        mGameManager = new GameManager();
+        mEngineManager = new EngineManager();
         
         // clientNetworkEngine = new ClientNetworkEngine("127.0.0.10", 22310);
         // physicEngine = new PhysicEngine();
@@ -41,7 +44,7 @@ public class GameClient {
             
             @Override
             public void onQuitEvent() {
-                engineManager.stop();
+                mEngineManager.stop();
             }
             
             @Override
@@ -63,14 +66,14 @@ public class GameClient {
             
             @Override
             public void onQuitEvent() {
-                engineManager.stop();
+                mEngineManager.stop();
             }
         });
         
         
-        engineManager.add(mInputEngine);
+        mEngineManager.add(mInputEngine);
         
-        engineManager.add(uiEngine);
+        mEngineManager.add(uiEngine);
         
         
         
@@ -113,7 +116,7 @@ public class GameClient {
 
         java.lang.System.out.println("Irr310 Client - v0.1a");
 
-        engineManager.run();
+        mEngineManager.run();
         
         // autologin();
         /*
@@ -147,11 +150,15 @@ public class GameClient {
     }
 
     public EngineManager getEngineManager() {
-        return engineManager;
+        return mEngineManager;
     }
 
     public InputEngine getInputEngine() {
         return mInputEngine;
+    }
+
+    public GameManager getGameManager() {
+        return mGameManager;
     }
 
 

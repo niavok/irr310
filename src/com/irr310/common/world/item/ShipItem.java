@@ -8,10 +8,11 @@ import com.irr310.server.world.product.ShipProduct;
 
 public class ShipItem extends DeployableItem {
 
+    // TODO delete that and use a gat getter ?
     private final ShipProduct mProduct;
 
     public ShipItem(ShipProduct product,  long id, Faction owner, Map<String,Item> subItems) {
-        super(product , owner.getWorld(), id, owner, subItems);
+        super(product , ItemType.SHIP , owner.getWorld(), id, owner, subItems);
         this.mProduct = product;
     }
 

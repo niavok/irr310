@@ -11,7 +11,7 @@ public class ComponentItem extends DeployableItem {
     private final ComponentProduct product;
 
     public ComponentItem(ComponentProduct product,  long id, Faction owner, Map<String,Item> subItems) {
-        super(product , owner.getWorld(), id, owner, subItems);
+        super(product , ItemType.COMPONENT ,  owner.getWorld(), id, owner, subItems);
         this.product = product;
     }
 

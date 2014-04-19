@@ -7,10 +7,16 @@ import com.irr310.common.world.World;
 import com.irr310.common.world.system.WorldEntity;
 import com.irr310.server.world.product.Product;
 
+/**
+ * An Item is a physical object present in a faction inventory. Only components can be deplayed.
+ * 
+ */
 public class Item extends WorldEntity {
     
-    enum ItemType {
-        BUILDING
+    public enum ItemType {
+        INGREDIENT,
+        COMPONENT,
+        SHIP,
     }
     
     public enum State {
@@ -23,15 +29,15 @@ public class Item extends WorldEntity {
     private final Faction owner;
     private Faction usufruct;
     private State state;
-    private boolean deployable = false;
-    private ItemType type;
+    private final ItemType type;
     private Product product;
     private Map<String,Item> subItems;
 
     
-    public Item(Product product, World world, long id, Faction owner, Map<String,Item> subItems) {
+    public Item(Product product, ItemType type, World world, long id, Faction owner, Map<String,Item> subItems) {
         super(world, id);
         this.product = product;
+        this.type = type;
         this.owner = owner;
         this.subItems = subItems;
         this.state = State.STOCKED;
@@ -42,19 +48,9 @@ public class Item extends WorldEntity {
     private void setUsufruct(Faction usufruct) {
         this.usufruct = usufruct;
     }
-    
-    protected void setItemType(ItemType type) {
-        this.type = type;
-        
-    }
-
-    protected void setDeployable(boolean deployable) {
-        this.deployable = deployable;
-    }
-
        
     public boolean isDeployable() {
-        return deployable;
+        return false;
     }
    
     public State getState() {
@@ -71,6 +67,14 @@ public class Item extends WorldEntity {
     
     public Faction getOwner() {
         return owner;
+    }
+    
+    public Faction getUsufruct() {
+        return usufruct;
+    }
+    
+    public ItemType getType() {
+        return type;
     }
     
     public Map<String,Item> getSubItems() {
