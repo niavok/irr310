@@ -86,7 +86,7 @@ public class RelativeLayout extends ViewGroup {
     }
 
     @Override
-    public void onMeasure() {
+    public void onMeasure(float widthMeasureSpec, float heightMeasureSpec) {
         float measuredWidth = 0;
         float measuredHeight= 0;
         
@@ -123,7 +123,7 @@ public class RelativeLayout extends ViewGroup {
         
         
         for (View view : children) {
-            view.measure();
+            view.measure(widthMeasureSpec, heightMeasureSpec);
             
             if(view.getLayoutParams().mMeasuredContentWidth > measuredWidth) {
                 measuredWidth = view.getLayoutParams().mMeasuredContentWidth;

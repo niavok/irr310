@@ -27,13 +27,17 @@ public class LinearLayout extends ViewGroup {
     }
 
     @Override
-    public void onMeasure() {
+    public void onMeasure(float widthMeasureSpec, float heightMeasureSpec) {
         float measuredWidth = 0;
         float measuredHeight= 0;
         
+        if(mLayoutParams.getLayoutWidthMeasure() == LayoutMeasure.FIXED && !mLayoutParams.getMeasurePoint().getX().isRelative()) {
+            widthMeasureSpec = mLayoutParams.computeMesure(mLayoutParams.getMeasurePoint().getX());
+        }
+        
         if(orientation == LayoutOrientation.HORIZONTAL) {
             for (View view : children) {
-                view.measure();
+                view.measure(widthMeasureSpec, heightMeasureSpec);
                 measuredWidth += view.getLayoutParams().mMeasuredContentWidth;
                 if(view.getLayoutParams().mMeasuredContentHeight > measuredHeight) {
                     measuredHeight = view.getLayoutParams().mMeasuredContentHeight;
@@ -41,7 +45,7 @@ public class LinearLayout extends ViewGroup {
             }
         } else {
             for (View view : children) {
-                view.measure();
+                view.measure(widthMeasureSpec, heightMeasureSpec);
                 measuredHeight += view.getLayoutParams().mMeasuredContentHeight;
                 if(view.getLayoutParams().mMeasuredContentWidth > measuredWidth) {
                     measuredWidth = view.getLayoutParams().mMeasuredContentWidth;

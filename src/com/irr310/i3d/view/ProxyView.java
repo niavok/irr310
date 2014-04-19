@@ -21,8 +21,8 @@ public class ProxyView extends View {
         client.onDraw(g);
     }
 
-    public void measure() {
-        client.measure();
+    public void measure(float widthMeasureSpec, float heightMeasureSpec) {
+        client.measure(widthMeasureSpec, heightMeasureSpec);
     }
 
     public int hashCode() {
@@ -37,8 +37,8 @@ public class ProxyView extends View {
         client.onLayout(l, t, r, b);
     }
 
-    public void onMeasure() {
-        client.onMeasure();
+    public void onMeasure(float widthMeasureSpec, float heightMeasureSpec) {
+        client.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     public void setId(String id) {

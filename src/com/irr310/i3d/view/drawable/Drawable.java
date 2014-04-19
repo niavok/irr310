@@ -33,7 +33,7 @@ public abstract class Drawable implements Duplicable<Drawable> {
     }
 
     public void vertex(float x, float y) {
-        GL11.glVertex2f(x, y);
+        GL11.glVertex3f(x, y, 0);
     }
 
     public  abstract void close();

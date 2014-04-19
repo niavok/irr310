@@ -18,15 +18,12 @@ import com.irr310.i3d.view.drawable.Drawable;
 
 public class TextView extends View {
 
-    protected String text = "";
+    protected String mText = "";
     protected Font font;
-    private String[] wrappedText;
+    private List<Line> wrappedText = new ArrayList<Line>();
     protected StyleSelector<Color> textColor = new StyleSelector<>(Color.black);
     protected Gravity gravity = Gravity.TOP_LEFT;
-    private float offsetX;
     private float offsetY;
-    private float innerWidth;
-    private float innerHeight;
 
     public enum Gravity {
         TOP_LEFT, TOP_CENTER, TOP_RIGHT, CENTER_LEFT, CENTER, CENTER_RIGHT, BOTTOM_LEFT, BOTTOM_CENTER, BOTTOM_RIGHT,
@@ -34,21 +31,18 @@ public class TextView extends View {
 
     public TextView() {
         font = I3dContext.getInstance().getDefaultFont();
-        wrappedText = new String[0];
-
         // wrappedText[0] = "Bonjour ceci est un test de text assez long.";
         // wrappedText[1] = "plop";
     }
 
     @Override
     public void onDraw(Graphics g) {
-
         // int localX = x + g.getTranslation().getX();
         // int localXbase = localX;
         // int localY = y + g.getTranslation().getY() - getLineHeight();
 
-        float localX = offsetX;
-        float localXbase = offsetX;
+//        float localX = offsetX;
+//        float localXbase = offsetX;
         float localY = offsetY;
 
         g.setColor(textColor.get(getState()));
@@ -57,8 +51,14 @@ public class TextView extends View {
         CharacterPixmap pixmap;
 
         boolean init = true;
+        
+//        if(wrappedText.size() > 1) {
+//            Log.log("multiline");
+//        }
 
-        for (String text : wrappedText) {
+        for (Line line : wrappedText) {
+            float localX = line.getXoffset();
+            String text = line.getText();
             for (int i = 0; i < text.length(); i++) {
                 final char c = text.charAt(i);
                 if (c == '\r' || c == '\f' || c == '\t') {
@@ -66,40 +66,40 @@ public class TextView extends View {
                 } else if (c == ' ') {
                     localX += font.getWidth(' ');
                     continue;
-                } else if (c == '[') {
-                    // Tag begin
-                    int tagEndIndex = text.indexOf(']');
-                    if(tagEndIndex == -1) {
-                        Log.warn("Non terminated tag at index "+i+" in TextView '"+text+"'");
-                    } else {
-                          String tagName = text.substring(i+1, tagEndIndex);
-                          Drawable drawable = I3dRessourceManager.getInstance().loadDrawable(tagName);
-                          int intrinsicWidth = drawable.getIntrinsicWidth();
-                          int intrinsicHeight = drawable.getIntrinsicHeight();
-                          float height = font.getHeight();
-                          float width = height;
-                        
-                        if(intrinsicHeight != -1 && intrinsicWidth != -1) {
-                            width = (float) intrinsicWidth * height / (float) intrinsicHeight;
-                        }
-                        
-                        drawable.setGraphics(g);
-                        drawable.setBounds(localX, localY, localX+width, localY + height);
-                      
-                        if(!init) {
-                            GL11.glEnd();
-                        }
-                        GL11.glDisable(GL11.GL_TEXTURE_2D);
-                        drawable.draw();
-                        GL11.glEnable(GL11.GL_TEXTURE_2D);
-                        if(!init) {
-                            GL11.glBegin(GL11.GL_QUADS);
-                        }
-                        localX += width;
-                        // Skip all tag
-                        i = tagEndIndex;
-                    }
-                    continue;
+//                } else if (c == '[') {
+//                    // Tag begin
+//                    int tagEndIndex = text.indexOf(']');
+//                    if(tagEndIndex == -1) {
+//                        Log.warn("Non terminated tag at index "+i+" in TextView '"+text+"'");
+//                    } else {
+//                          String tagName = text.substring(i+1, tagEndIndex);
+//                          Drawable drawable = I3dRessourceManager.getInstance().loadDrawable(tagName);
+//                          int intrinsicWidth = drawable.getIntrinsicWidth();
+//                          int intrinsicHeight = drawable.getIntrinsicHeight();
+//                          float height = font.getHeight();
+//                          float width = height;
+//                        
+//                        if(intrinsicHeight != -1 && intrinsicWidth != -1) {
+//                            width = (float) intrinsicWidth * height / (float) intrinsicHeight;
+//                        }
+//                        
+//                        drawable.setGraphics(g);
+//                        drawable.setBounds(localX, localY, localX+width, localY + height);
+//                      
+//                        if(!init) {
+//                            GL11.glEnd();
+//                        }
+//                        GL11.glDisable(GL11.GL_TEXTURE_2D);
+//                        drawable.draw();
+//                        GL11.glEnable(GL11.GL_TEXTURE_2D);
+//                        if(!init) {
+//                            GL11.glBegin(GL11.GL_QUADS);
+//                        }
+//                        localX += width;
+//                        // Skip all tag
+//                        i = tagEndIndex;
+//                    }
+//                    continue;
                 }
                 pixmap = font.getCharPixMap(c);
 
@@ -142,7 +142,7 @@ public class TextView extends View {
             }
             // move to start of next line
             localY += font.getHeight();
-            localX = localXbase;
+            
         }
         if (!init)
             GL11.glEnd();
@@ -179,14 +179,14 @@ public class TextView extends View {
     protected void duplicateTo(View view) {
         super.duplicateTo(view);
         TextView myView = (TextView) view;
-        myView.setText(text);
+        myView.setText(mText);
     }
 
     public void setText(String text) {
-        if(!this.text.equals(text)) {
-            this.text = text;
-            wrappedText = new String[1];
-            wrappedText[0] = text;
+        if(!this.mText.equals(text)) {
+            this.mText = text;
+//            wrappedText = new String[1];
+//            wrappedText[0] = text;
             if(mParent != null) {
                 mParent.requestLayout();
             }
@@ -195,18 +195,40 @@ public class TextView extends View {
 
     @Override
     public void onLayout(float l, float t, float r, float b) {
-        float height = mLayoutParams.getContentHeight();
-        float width = mLayoutParams.getContentWidth();
+         float width = mLayoutParams.getContentWidth();
 
-        // Horizontal gravity
-        if (gravity == Gravity.TOP_LEFT || gravity == Gravity.CENTER_LEFT || gravity == Gravity.TOP_LEFT) {
-            offsetX = 0;
-        } else if (gravity == Gravity.TOP_RIGHT || gravity == Gravity.CENTER_RIGHT || gravity == Gravity.TOP_RIGHT) {
-            offsetX = width - innerWidth;
-        } else { // Center
-            offsetX = (width - innerWidth) / 2;
+        
+        wrappedText = new ArrayList<Line>();
+        String remainingText = mText;
+        
+        float innerHeight = 0;
+        
+        while(remainingText.length() > 0) { 
+            Line line = getLimitedText(remainingText, width);
+            wrappedText.add(line);
+            remainingText = remainingText.substring(line.getBaseText().length());
+            
+            
+            // Horizontal gravity
+            if (gravity == Gravity.TOP_LEFT || gravity == Gravity.CENTER_LEFT || gravity == Gravity.TOP_LEFT) {
+                line.setXoffset(0);
+            } else if (gravity == Gravity.TOP_RIGHT || gravity == Gravity.CENTER_RIGHT || gravity == Gravity.TOP_RIGHT) {
+                line.setXoffset(width - line.getWidth());
+            } else { // Center
+                line.setXoffset((width - line.getWidth()) / 2);
+            }
+            
+            innerHeight += line.getHeight();
         }
-
+        
+        
+        if(mLayoutParams.getContentHeight() < innerHeight) {
+            float diff = innerHeight - mLayoutParams.getContentHeight();
+            mLayoutParams.setFrame(l, t, r, b+diff);
+        }
+        
+        float height = mLayoutParams.getContentHeight();
+        
         // Vertical gravity
         if (gravity == Gravity.TOP_LEFT || gravity == Gravity.TOP_CENTER || gravity == Gravity.TOP_RIGHT) {
             offsetY = 0;
@@ -215,6 +237,96 @@ public class TextView extends View {
         } else { // Center
             offsetY = (height - innerHeight) / 2;
         }
+        
+        
+        
+    }
+
+    private Line getLimitedText(String text, float maxWidth) {
+
+        
+        
+        float bestMeasuredWidth = 0;
+        float bestMeasuredHeight = 0;
+        int bestIndex = 0;
+        int stripCount = 0;
+        
+        float measuredWidth = 0;
+        float measuredHeight = font.getHeight();
+
+        CharacterPixmap pixmap;
+        int i;
+        
+        for (i = 0; i < text.length(); i++) {
+            if(measuredWidth > maxWidth) {
+                break;
+            }
+            
+            final char c = text.charAt(i);
+            if (c == '\r' || c == '\f' || c == '\t') {
+                bestIndex = i;
+                bestMeasuredHeight = measuredHeight;
+                bestMeasuredWidth = measuredWidth;
+                stripCount = 1;
+                continue;
+            } else if (c == ' ') {
+                measuredWidth += font.getWidth(' ');
+                bestIndex = i;
+                bestMeasuredHeight = measuredHeight;
+                bestMeasuredWidth = measuredWidth;
+                stripCount = 1;
+            } else if (c == '\n') {
+                bestIndex = i;
+                bestMeasuredHeight = measuredHeight;
+                bestMeasuredWidth = measuredWidth;
+                stripCount = 1;
+                break;
+//            } else if (c == '[') {
+//                // Tag begin
+//                int tagEndIndex = text.indexOf(']');
+//                if(tagEndIndex == -1) {
+//                    Log.warn("Non terminated tag at index "+i+" in TextView '"+text+"'");
+//                } else {
+//                    String tagName = text.substring(i+1, tagEndIndex);
+//                    Drawable drawable = I3dRessourceManager.getInstance().loadDrawable(tagName);
+//                    int intrinsicWidth = drawable.getIntrinsicWidth();
+//                    int intrinsicHeight = drawable.getIntrinsicHeight();
+//                    float width = measuredHeight;
+//                    
+//                    if(intrinsicHeight != -1 && intrinsicWidth != -1) {
+//                        width = (float) intrinsicWidth * measuredHeight / (float) intrinsicHeight;
+//                    }
+//                    measuredWidth += width;
+//                    // Skip all tag
+//                    i = tagEndIndex;
+//                }
+//                continue;
+            }
+            pixmap = font.getCharPixMap(c);
+
+            measuredWidth += pixmap.getCharWidth();
+        }
+        
+        if(i == text.length()) {
+            bestIndex = i;
+            bestMeasuredHeight = measuredHeight;
+            bestMeasuredWidth = measuredWidth;
+            stripCount = 0;
+        } else if(bestIndex == 0 && text.length() > 0) {
+            // Avoid infinite loop
+            bestIndex = i+1;
+            bestMeasuredHeight = measuredHeight;
+            bestMeasuredWidth = measuredWidth;
+        } else {
+            bestIndex += 1;
+        }
+        Line line = new Line();
+        line.setText(text.substring(0, bestIndex - stripCount));
+        line.setBaseText(text.substring(0, bestIndex));
+        line.setWidth(bestMeasuredWidth);
+        line.setHeight(bestMeasuredHeight);
+        
+        return line;
     }
 
     public void setFont(Font font) {
@@ -223,8 +335,8 @@ public class TextView extends View {
         }
     }
 
-    @Override
-    public void onMeasure() {
+    Point getTextMeasure(String text) {
+        
         float measuredWidth = 0;
         float measuredHeight = font.getHeight();
 
@@ -237,38 +349,49 @@ public class TextView extends View {
             } else if (c == ' ') {
                 measuredWidth += font.getWidth(' ');
                 continue;
-            } else if (c == '[') {
-                // Tag begin
-                int tagEndIndex = text.indexOf(']');
-                if(tagEndIndex == -1) {
-                    Log.warn("Non terminated tag at index "+i+" in TextView '"+text+"'");
-                } else {
-                    String tagName = text.substring(i+1, tagEndIndex);
-                    Drawable drawable = I3dRessourceManager.getInstance().loadDrawable(tagName);
-                    int intrinsicWidth = drawable.getIntrinsicWidth();
-                    int intrinsicHeight = drawable.getIntrinsicHeight();
-                    float width = measuredHeight;
-                    
-                    if(intrinsicHeight != -1 && intrinsicWidth != -1) {
-                        width = (float) intrinsicWidth * measuredHeight / (float) intrinsicHeight;
-                    }
-                    measuredWidth += width;
-                    // Skip all tag
-                    i = tagEndIndex;
-                }
-                continue;
+//            } else if (c == '[') {
+//                // Tag begin
+//                int tagEndIndex = text.indexOf(']');
+//                if(tagEndIndex == -1) {
+//                    Log.warn("Non terminated tag at index "+i+" in TextView '"+text+"'");
+//                } else {
+//                    String tagName = text.substring(i+1, tagEndIndex);
+//                    Drawable drawable = I3dRessourceManager.getInstance().loadDrawable(tagName);
+//                    int intrinsicWidth = drawable.getIntrinsicWidth();
+//                    int intrinsicHeight = drawable.getIntrinsicHeight();
+//                    float width = measuredHeight;
+//                    
+//                    if(intrinsicHeight != -1 && intrinsicWidth != -1) {
+//                        width = (float) intrinsicWidth * measuredHeight / (float) intrinsicHeight;
+//                    }
+//                    measuredWidth += width;
+//                    // Skip all tag
+//                    i = tagEndIndex;
+//                }
+//                continue;
             }
             pixmap = font.getCharPixMap(c);
 
             measuredWidth += pixmap.getCharWidth();
         }
+        
+        return new Point(measuredWidth, measuredHeight);
+    }
+    
+    
+    
+    @Override
+    public void onMeasure(float widthMeasureSpec, float heightMeasureSpec) {
+        
+//        Point textMeasure = getTextMeasure(mText);
+//    
 
-        innerHeight = measuredHeight;
-        innerWidth = measuredWidth;
-        // Log.trace("TextView onMeasure "+ text);
-        // Log.trace("measuredWidth "+measuredWidth);
-        // Log.trace("measuredHeight "+measuredHeight);
-
+//        float innerHeight = measuredHeight;
+//        float innerWidth = textMeasure.y;
+        
+        float measuredWidth = 0;
+        float measuredHeight = 0;
+        
         if (!mLayoutParams.getLayoutMarginTop().isRelative()) {
             measuredHeight += mLayoutParams.computeMesure(mLayoutParams.getLayoutMarginTop());
         }
@@ -295,11 +418,93 @@ public class TextView extends View {
             measuredWidth += mLayoutParams.computeMesure(mLayoutParams.getLayoutPaddingRight());
         }
 
+        float limitWidth = widthMeasureSpec - measuredWidth;
+        
+        String remainingText = mText;
+        
+        float innerHeight = 0;
+        float innerWidth = 0;
+        
+        while(remainingText.length() > 0) { 
+            Line line = getLimitedText(remainingText, widthMeasureSpec);
+            remainingText = remainingText.substring(line.getBaseText().length());
+            
+            innerHeight += line.getHeight();
+            if(innerWidth < line.getWidth()) {
+                innerWidth = line.getWidth();
+            }
+        }
+        
+        measuredWidth += innerWidth;
+        measuredHeight += innerHeight;
+        
         if (mLayoutParams.getLayoutWidthMeasure() != LayoutMeasure.FIXED || mLayoutParams.getMeasurePoint().getX().isRelative()) {
             mLayoutParams.mMeasuredContentWidth = measuredWidth;
         }
         if (mLayoutParams.getLayoutHeightMeasure() != LayoutMeasure.FIXED || mLayoutParams.getMeasurePoint().getY().isRelative()) {
             mLayoutParams.mMeasuredContentHeight = measuredHeight;
+        }
+        
+        
+        // Log.trace("TextView onMeasure "+ text);
+        // Log.trace("measuredWidth "+measuredWidth);
+        // Log.trace("measuredHeight "+measuredHeight);
+    }
+    
+    private static class Line {
+        String mText;
+        float mXoffset;
+        float mYoffset;
+        float mWidth;
+        float mHeight;
+        private String mBaseText;
+        
+        public String getText() {
+            return mText;
+        }
+        
+        public void setBaseText(String baseText) {
+            mBaseText = baseText;
+        }
+        
+        public String getBaseText() {
+            return mBaseText;
+        }
+
+        public float getWidth() {
+            return mWidth;
+        }
+        
+        public float getHeight() {
+            return mHeight;
+        }
+        
+        public float getXoffset() {
+            return mXoffset;
+        }
+        
+        public float getYoffset() {
+            return mYoffset;
+        }
+        
+        public void setHeight(float height) {
+            mHeight = height;
+        }
+        
+        public void setText(String text) {
+            mText = text;
+        }
+        
+        public void setWidth(float width) {
+            mWidth = width;
+        }
+        
+        public void setXoffset(float xoffset) {
+            mXoffset = xoffset;
+        }
+        
+        public void setYoffset(float yoffset) {
+            mYoffset = yoffset;
         }
     }
 }

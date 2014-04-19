@@ -119,7 +119,7 @@ public abstract class Activity implements ViewParent {
     private void updateLayout() {
         if(!mLayoutUpdated) {
             mLayoutUpdated = true;
-            mview.measure();
+            mview.measure(mLayout.getContentWidth(), mLayout.getContentHeight());
             
             float left  = mLayout.mLeft;
             float top  = mLayout.mTop;

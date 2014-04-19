@@ -1202,7 +1202,7 @@ public class I3dRessourceManager {
         return font;
     }
 
-    Style loadStyle(String styleId) {
+    public Style loadStyle(String styleId) {
 
         if (styleId == null || styleId.isEmpty()) {
             return new Style();
@@ -1277,6 +1277,11 @@ public class I3dRessourceManager {
                 String fileName = file.getName();
                 if (fileName.endsWith(extension)) {
                     loadPngImage(file.getName().substring(0, fileName.length() - extension.length()), fileId, file);
+                }
+                
+                extension = ".jpg";
+                if (fileName.endsWith(extension)) {
+                    loadJpgImage(file.getName().substring(0, fileName.length() - extension.length()), fileId, file);
                 }
             }
         }
@@ -1425,6 +1430,13 @@ public class I3dRessourceManager {
     private void loadPngImage(String name, String fileId, File file) {
 
         BitmapDrawable drawable = new BitmapFactory().loadPngDrawable(file);
+
+        addDrawable(name + "@" + fileId, drawable);
+    }
+    
+    private void loadJpgImage(String name, String fileId, File file) {
+
+        BitmapDrawable drawable = new BitmapFactory().loadJpgDrawable(file);
 
         addDrawable(name + "@" + fileId, drawable);
     }

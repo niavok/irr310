@@ -62,8 +62,9 @@ public class ScrollView extends View implements ViewParent {
         GL11.glPushAttrib(GL11.GL_SCISSOR_BIT);
         
         Point translation = g.getUiTranslation();
-        GL11.glScissor((int)( translation.x), (int) (translation.y+ mLayoutParams.getContentHeight()), (int) mLayoutParams.getContentWidth(), (int) mLayoutParams.getContentHeight());
         
+        GL11.glScissor((int)( translation.x), (int) (- mLayoutParams.getContentHeight() - translation.y), (int) mLayoutParams.getContentWidth(), Math.max((int) mLayoutParams.getContentHeight(),0));
+//        GL11.glScissor((int)( translation.x), 700, (int) mLayoutParams.getTotalWidth(), (int) mLayoutParams.getTotalHeight());
         
         g.pushUiTranslation(new Point(scrollOffsetX, scrollOffsetY));
         GL11.glTranslatef(scrollOffsetX, scrollOffsetY, 0);
@@ -123,11 +124,24 @@ public class ScrollView extends View implements ViewParent {
     }
 
     @Override
-    public void onMeasure() {
+    public void onMeasure(float widthMeasureSpec, float heightMeasureSpec) {
         float measuredWidth = 0;
         float measuredHeight = 0;
 
-        child.measure();
+        if (!mLayoutParams.getLayoutMarginLeft().isRelative()) {
+            widthMeasureSpec -= mLayoutParams.computeMesure(mLayoutParams.getLayoutMarginLeft());
+        }
+        if (!mLayoutParams.getLayoutMarginRight().isRelative()) {
+            widthMeasureSpec -= mLayoutParams.computeMesure(mLayoutParams.getLayoutMarginRight());
+        }
+        if (!mLayoutParams.getLayoutPaddingLeft().isRelative()) {
+            widthMeasureSpec -= mLayoutParams.computeMesure(mLayoutParams.getLayoutPaddingLeft());
+        }
+        if (!mLayoutParams.getLayoutPaddingRight().isRelative()) {
+            widthMeasureSpec -= mLayoutParams.computeMesure(mLayoutParams.getLayoutPaddingRight());
+        }
+        
+        child.measure(widthMeasureSpec, heightMeasureSpec);
         measuredHeight = child.getLayoutParams().mMeasuredContentHeight;
         measuredWidth = child.getLayoutParams().mMeasuredContentWidth;
 
@@ -155,13 +169,6 @@ public class ScrollView extends View implements ViewParent {
         }
         if (!mLayoutParams.getLayoutPaddingRight().isRelative()) {
             measuredWidth += mLayoutParams.computeMesure(mLayoutParams.getLayoutPaddingRight());
-        }
-
-        if (mLayoutParams.getLayoutWidthMeasure() != LayoutMeasure.FIXED || mLayoutParams.getMeasurePoint().getX().isRelative()) {
-            mLayoutParams.mMeasuredContentWidth = measuredWidth;
-        }
-        if (mLayoutParams.getLayoutHeightMeasure() != LayoutMeasure.FIXED || mLayoutParams.getMeasurePoint().getY().isRelative()) {
-            mLayoutParams.mMeasuredContentHeight = measuredHeight;
         }
     }
 

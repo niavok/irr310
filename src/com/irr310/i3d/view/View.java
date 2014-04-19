@@ -127,7 +127,11 @@ public abstract class View {
 
     public abstract void onDraw(Graphics g);
 
-    public void measure() {
+    public void measure(float widthMeasureSpec, float heightMeasureSpec) {
+        
+        mLayoutParams.mMeasuredContentWidth = 0;
+        mLayoutParams.mMeasuredContentHeight = 0;
+        
         if (mLayoutParams.getLayoutWidthMeasure() == LayoutMeasure.FIXED) {
             if (!mLayoutParams.getMeasurePoint().getX().isRelative()) {
                 mLayoutParams.mMeasuredContentWidth = mLayoutParams.computeMesure(mLayoutParams.getMeasurePoint().getX());
@@ -173,7 +177,7 @@ public abstract class View {
             }
         }
 
-        onMeasure();
+        onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     public void layout(float l, float t, float r, float b) {
@@ -186,7 +190,7 @@ public abstract class View {
 
     public abstract void onLayout(float l, float t, float r, float b);
 
-    public abstract void onMeasure();
+    public abstract void onMeasure(float widthMeasureSpec, float heightMeasureSpec);
 
     public void setId(String id) {
         this.id = id;
@@ -399,6 +403,7 @@ public abstract class View {
     
     public void setIdleStyle(Style style) {
         idleStyle = style;
+        idleStyle.apply(this);
     }
     
     public Style getIdleStyle() {

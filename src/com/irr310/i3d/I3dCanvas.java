@@ -48,7 +48,7 @@ public class I3dCanvas {
             //frame.setAlwaysOnTop(true);
             frame.setLocation(0, 0);
             Canvas canvas = new Canvas();
-            canvas.setMinimumSize(new Dimension(800, 600));
+            canvas.setMinimumSize(new Dimension(width, height));
             canvas.setPreferredSize(new Dimension(width, height));
             frame.add(canvas);
             frame.pack();
@@ -70,7 +70,7 @@ public class I3dCanvas {
             Display.setDisplayMode(new DisplayMode(width, height));
             //Display.setFullscreen(true);
             Display.setVSyncEnabled(false);
-            Display.setTitle("Irr310");
+            Display.setTitle(title);
             Display.setParent(canvas);
             Display.create(new PixelFormat(8, 24, 0, 4));
             canvas.requestFocus();
@@ -181,7 +181,6 @@ public class I3dCanvas {
     }
 
     public void display(Graphics g) {
-
         GL11.glClear(GL11.GL_ACCUM_BUFFER_BIT);
 
         for (Surface surface: context.getSurfaceList()) {
@@ -191,12 +190,16 @@ public class I3dCanvas {
     }
 
     public void show() {
-        frame.setVisible(true);        
+        frame.setVisible(true);
     }
 
     public void destroy() {
         Display.destroy();
         frame.dispose();
+    }
+    
+    public void maximise() {
+        frame.setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
     }
     
 }

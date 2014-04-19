@@ -1,4 +1,4 @@
-package com.irr310.i3d.view;
+package com.spaceagencies.i3d.view;
 
 
 public class ImageButton extends DrawableView {
@@ -7,8 +7,8 @@ public class ImageButton extends DrawableView {
     }
    
     @Override
-    public void onMeasure() {
-        super.onMeasure();
+    public void onMeasure(float widthMeasureSpec, float heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
     
     @Override

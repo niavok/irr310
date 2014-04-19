@@ -43,6 +43,6 @@ public class Rect extends View {
     }
 
     @Override
-    public void onMeasure() {
+    public void onMeasure(float widthMeasureSpec, float heightMeasureSpec) {
     }
 }
