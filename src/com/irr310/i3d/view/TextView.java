@@ -1,5 +1,8 @@
 package com.irr310.i3d.view;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.lwjgl.opengl.GL11;
 
 import com.irr310.common.tools.Log;
@@ -7,12 +10,10 @@ import com.irr310.i3d.Color;
 import com.irr310.i3d.Graphics;
 import com.irr310.i3d.I3dContext;
 import com.irr310.i3d.I3dRessourceManager;
-import com.irr310.i3d.RessourceFileCache;
 import com.irr310.i3d.StyleSelector;
 import com.irr310.i3d.Texture;
 import com.irr310.i3d.fonts.CharacterPixmap;
 import com.irr310.i3d.fonts.Font;
-import com.irr310.i3d.input.I3dMouseEvent;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 import com.irr310.i3d.view.drawable.Drawable;
 
@@ -66,40 +67,40 @@ public class TextView extends View {
                 } else if (c == ' ') {
                     localX += font.getWidth(' ');
                     continue;
-//                } else if (c == '[') {
-//                    // Tag begin
-//                    int tagEndIndex = text.indexOf(']');
-//                    if(tagEndIndex == -1) {
-//                        Log.warn("Non terminated tag at index "+i+" in TextView '"+text+"'");
-//                    } else {
-//                          String tagName = text.substring(i+1, tagEndIndex);
-//                          Drawable drawable = I3dRessourceManager.getInstance().loadDrawable(tagName);
-//                          int intrinsicWidth = drawable.getIntrinsicWidth();
-//                          int intrinsicHeight = drawable.getIntrinsicHeight();
-//                          float height = font.getHeight();
-//                          float width = height;
-//                        
-//                        if(intrinsicHeight != -1 && intrinsicWidth != -1) {
-//                            width = (float) intrinsicWidth * height / (float) intrinsicHeight;
-//                        }
-//                        
-//                        drawable.setGraphics(g);
-//                        drawable.setBounds(localX, localY, localX+width, localY + height);
-//                      
-//                        if(!init) {
-//                            GL11.glEnd();
-//                        }
-//                        GL11.glDisable(GL11.GL_TEXTURE_2D);
-//                        drawable.draw();
-//                        GL11.glEnable(GL11.GL_TEXTURE_2D);
-//                        if(!init) {
-//                            GL11.glBegin(GL11.GL_QUADS);
-//                        }
-//                        localX += width;
-//                        // Skip all tag
-//                        i = tagEndIndex;
-//                    }
-//                    continue;
+                } else if (c == '[') {
+                    // Tag begin
+                    int tagEndIndex = text.indexOf(']');
+                    if(tagEndIndex == -1) {
+                        Log.warn("Non terminated tag at index "+i+" in TextView '"+text+"'");
+                    } else {
+                          String tagName = text.substring(i+1, tagEndIndex);
+                          Drawable drawable = I3dRessourceManager.getInstance().loadDrawable(tagName);
+                          int intrinsicWidth = drawable.getIntrinsicWidth();
+                          int intrinsicHeight = drawable.getIntrinsicHeight();
+                          float height = font.getHeight();
+                          float width = height;
+                        
+                        if(intrinsicHeight != -1 && intrinsicWidth != -1) {
+                            width = (float) intrinsicWidth * height / (float) intrinsicHeight;
+                        }
+                        
+                        drawable.setGraphics(g);
+                        drawable.setBounds(localX, localY, localX+width, localY + height);
+                      
+                        if(!init) {
+                            GL11.glEnd();
+                        }
+                        GL11.glDisable(GL11.GL_TEXTURE_2D);
+                        drawable.draw();
+                        GL11.glEnable(GL11.GL_TEXTURE_2D);
+                        if(!init) {
+                            GL11.glBegin(GL11.GL_QUADS);
+                        }
+                        localX += width;
+                        // Skip all tag
+                        i = tagEndIndex;
+                    }
+                    continue;
                 }
                 pixmap = font.getCharPixMap(c);
 
@@ -281,26 +282,26 @@ public class TextView extends View {
                 bestMeasuredWidth = measuredWidth;
                 stripCount = 1;
                 break;
-//            } else if (c == '[') {
-//                // Tag begin
-//                int tagEndIndex = text.indexOf(']');
-//                if(tagEndIndex == -1) {
-//                    Log.warn("Non terminated tag at index "+i+" in TextView '"+text+"'");
-//                } else {
-//                    String tagName = text.substring(i+1, tagEndIndex);
-//                    Drawable drawable = I3dRessourceManager.getInstance().loadDrawable(tagName);
-//                    int intrinsicWidth = drawable.getIntrinsicWidth();
-//                    int intrinsicHeight = drawable.getIntrinsicHeight();
-//                    float width = measuredHeight;
-//                    
-//                    if(intrinsicHeight != -1 && intrinsicWidth != -1) {
-//                        width = (float) intrinsicWidth * measuredHeight / (float) intrinsicHeight;
-//                    }
-//                    measuredWidth += width;
-//                    // Skip all tag
-//                    i = tagEndIndex;
-//                }
-//                continue;
+            } else if (c == '[') {
+                // Tag begin
+                int tagEndIndex = text.indexOf(']');
+                if(tagEndIndex == -1) {
+                    Log.warn("Non terminated tag at index "+i+" in TextView '"+text+"'");
+                } else {
+                    String tagName = text.substring(i+1, tagEndIndex);
+                    Drawable drawable = I3dRessourceManager.getInstance().loadDrawable(tagName);
+                    int intrinsicWidth = drawable.getIntrinsicWidth();
+                    int intrinsicHeight = drawable.getIntrinsicHeight();
+                    float width = measuredHeight;
+                    
+                    if(intrinsicHeight != -1 && intrinsicWidth != -1) {
+                        width = (float) intrinsicWidth * measuredHeight / (float) intrinsicHeight;
+                    }
+                    measuredWidth += width;
+                    // Skip all tag
+                    i = tagEndIndex;
+                }
+                continue;
             }
             pixmap = font.getCharPixMap(c);
 
@@ -349,26 +350,26 @@ public class TextView extends View {
             } else if (c == ' ') {
                 measuredWidth += font.getWidth(' ');
                 continue;
-//            } else if (c == '[') {
-//                // Tag begin
-//                int tagEndIndex = text.indexOf(']');
-//                if(tagEndIndex == -1) {
-//                    Log.warn("Non terminated tag at index "+i+" in TextView '"+text+"'");
-//                } else {
-//                    String tagName = text.substring(i+1, tagEndIndex);
-//                    Drawable drawable = I3dRessourceManager.getInstance().loadDrawable(tagName);
-//                    int intrinsicWidth = drawable.getIntrinsicWidth();
-//                    int intrinsicHeight = drawable.getIntrinsicHeight();
-//                    float width = measuredHeight;
-//                    
-//                    if(intrinsicHeight != -1 && intrinsicWidth != -1) {
-//                        width = (float) intrinsicWidth * measuredHeight / (float) intrinsicHeight;
-//                    }
-//                    measuredWidth += width;
-//                    // Skip all tag
-//                    i = tagEndIndex;
-//                }
-//                continue;
+            } else if (c == '[') {
+                // Tag begin
+                int tagEndIndex = text.indexOf(']');
+                if(tagEndIndex == -1) {
+                    Log.warn("Non terminated tag at index "+i+" in TextView '"+text+"'");
+                } else {
+                    String tagName = text.substring(i+1, tagEndIndex);
+                    Drawable drawable = I3dRessourceManager.getInstance().loadDrawable(tagName);
+                    int intrinsicWidth = drawable.getIntrinsicWidth();
+                    int intrinsicHeight = drawable.getIntrinsicHeight();
+                    float width = measuredHeight;
+                    
+                    if(intrinsicHeight != -1 && intrinsicWidth != -1) {
+                        width = (float) intrinsicWidth * measuredHeight / (float) intrinsicHeight;
+                    }
+                    measuredWidth += width;
+                    // Skip all tag
+                    i = tagEndIndex;
+                }
+                continue;
             }
             pixmap = font.getCharPixMap(c);
 

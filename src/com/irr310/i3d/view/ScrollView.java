@@ -63,7 +63,7 @@ public class ScrollView extends View implements ViewParent {
         
         Point translation = g.getUiTranslation();
         
-        GL11.glScissor((int)( translation.x), (int) (- mLayoutParams.getContentHeight() - translation.y), (int) mLayoutParams.getContentWidth(), Math.max((int) mLayoutParams.getContentHeight(),0));
+//        GL11.glScissor((int)( translation.x), (int) (- mLayoutParams.getContentHeight() - translation.y), (int) mLayoutParams.getContentWidth(), Math.max((int) mLayoutParams.getContentHeight(),0));
 //        GL11.glScissor((int)( translation.x), 700, (int) mLayoutParams.getTotalWidth(), (int) mLayoutParams.getTotalHeight());
         
         g.pushUiTranslation(new Point(scrollOffsetX, scrollOffsetY));
@@ -169,6 +169,13 @@ public class ScrollView extends View implements ViewParent {
         }
         if (!mLayoutParams.getLayoutPaddingRight().isRelative()) {
             measuredWidth += mLayoutParams.computeMesure(mLayoutParams.getLayoutPaddingRight());
+        }
+        
+        if(mLayoutParams.getLayoutWidthMeasure() != LayoutMeasure.FIXED || mLayoutParams.getMeasurePoint().getX().isRelative()) {
+            mLayoutParams.mMeasuredContentWidth = measuredWidth;
+        }
+        if(mLayoutParams.getLayoutHeightMeasure() != LayoutMeasure.FIXED || mLayoutParams.getMeasurePoint().getY().isRelative()) {
+            mLayoutParams.mMeasuredContentHeight = measuredHeight;
         }
     }
 

@@ -182,7 +182,7 @@ public class SystemDetailCircleView extends RelativeLayout {
     }
     
     @Override
-    public void onMeasure() {
+    public void onMeasure(float widthMeasureSpec, float heightMeasureSpec) {
     }
 
     @Override

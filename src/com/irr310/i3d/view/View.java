@@ -69,9 +69,9 @@ public abstract class View {
         g.setColor(Color.randomLightOpaqueColor());
         
         
-//        if(isMouseOver(g.getUiTranslation())) {
+        if(isMouseOver(g.getUiTranslation())) {
 //            g.drawFilledRectangle(mLayoutParams.mLeft, mLayoutParams.mTop, mLayoutParams.getTotalWidth(), mLayoutParams.getTotalHeight());
-//        }
+        }
         
         // Margin
         float tranlationXIncludingMargin = mLayoutParams.mLeft+ mLayoutParams.computeMesure(mLayoutParams.getLayoutMarginLeft());

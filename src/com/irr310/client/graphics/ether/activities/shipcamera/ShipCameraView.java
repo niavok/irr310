@@ -199,7 +199,7 @@ public class ShipCameraView extends View {
     }
 
     @Override
-    public void onMeasure() {
+    public void onMeasure(float widthMeasureSpec, float heightMeasureSpec) {
         // TODO Auto-generated method stub
 
     }
