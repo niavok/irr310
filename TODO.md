@@ -9,6 +9,8 @@ Refactoring
 - préfixer les fields avec des "m"
 - virer le code mort
 - virer le code commenté
+- xml schema pour l'auto completion
+
 Graphisme
 ---------
 

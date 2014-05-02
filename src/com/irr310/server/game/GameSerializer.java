@@ -168,13 +168,17 @@ public class GameSerializer {
             factionElement.setAttribute("kolium-amount", Long.toString(faction.getKoliumAmount()));
             factionElement.setAttribute("neuridium-amount", Long.toString(faction.getNeuridiumAmount()));
 
-//            Element factionElement = mDocument.createElement("known-systems");
-//            factionsElement.appendChild(factionElement);
+            Element knownSystemsElement = mDocument.createElement("known-systems");
+            factionElement.appendChild(knownSystemsElement);
+            for(WorldSystem system : faction.getKnownSystems()) {
+                Element knownSystemElement = mDocument.createElement("system");
+                knownSystemElement.setAttribute("id", Long.toString(system.getId()));
+                knownSystemsElement.appendChild(knownSystemElement);
+            }
 
         }
         
-//        
-//        private List<WorldSystem> knownSystems = new ArrayList<WorldSystem>();
+        
 //        private List<Player> players = new ArrayList<Player>();
 //        
 //        private List<Ship> shipList = new ArrayList<Ship>();
