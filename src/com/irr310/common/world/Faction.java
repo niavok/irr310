@@ -13,7 +13,7 @@ public class Faction extends WorldEntity{
 
     private WorldSystem homeSystem;
     private List<WorldSystem> knownSystems = new ArrayList<WorldSystem>();
-    private List<Player> players = new ArrayList<Player>();
+    private List<Player> mPlayers = new ArrayList<Player>();
     private Color color;
     private List<Ship> shipList = new ArrayList<Ship>();
     private long statersAmount;
@@ -55,7 +55,7 @@ public class Faction extends WorldEntity{
     }
 
     public void assignPlayer(Player player) {
-        players.add(player);
+        mPlayers.add(player);
         player.setFaction(this);
     }
 
@@ -154,5 +154,8 @@ public class Faction extends WorldEntity{
     public FactionStocks getStocks() {
         return stocks;
     }
-    
+
+    public List<Player> getPlayers() {
+        return mPlayers;
+    }
 }

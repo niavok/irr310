@@ -2,12 +2,11 @@ package com.irr310.client.graphics.ether.activities.worldmap;
 
 import java.util.List;
 
-import org.newdawn.slick.util.Log;
-
 import com.irr310.client.graphics.ether.activities.BoardActivity;
 import com.irr310.client.graphics.ether.activities.systemmap.SystemMapActivity;
 import com.irr310.client.graphics.ether.activities.systemmap.SystemMapActivity.SystemMapActivityBundle;
 import com.irr310.client.navigation.LoginManager;
+import com.irr310.common.tools.Log;
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.world.Faction;
 import com.irr310.common.world.FactionProduction;
@@ -199,7 +198,7 @@ public class WorldMapActivity extends Activity {
         if (firstUpdate) {
             firstUpdate = false;
 
-            Log.debug("Home system at " + homeSystem.getLocation());
+            Log.log("Home system at " + homeSystem.getLocation());
             mapScrollView.setScrollCenter(new Point((float) homeSystem.getLocation().x * zoom, (float) homeSystem.getLocation().y * zoom));
         }
 

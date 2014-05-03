@@ -20,16 +20,12 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import com.irr310.common.tools.Log;
+import com.irr310.common.world.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.irr310.client.ClientConfig;
-import com.irr310.common.world.Faction;
-import com.irr310.common.world.FactionAvailableProductList;
-import com.irr310.common.world.FactionProduction;
-import com.irr310.common.world.FactionStocks;
-import com.irr310.common.world.Player;
-import com.irr310.common.world.World;
 import com.irr310.common.world.item.DeployableItem;
 import com.irr310.common.world.item.Item;
 import com.irr310.common.world.item.Item.ItemType;
@@ -133,8 +129,6 @@ public class GameSerializer {
         Element worldElement = mDocument.createElement("world");
         parentElement.appendChild(worldElement);
 
-        
-        
         // Players
         Element playersElement = mDocument.createElement("players");
         worldElement.appendChild(playersElement);
@@ -176,19 +170,68 @@ public class GameSerializer {
                 knownSystemsElement.appendChild(knownSystemElement);
             }
 
+            Element factionPlayersElement = mDocument.createElement("players");
+            factionElement.appendChild(factionPlayersElement);
+            for (Player player : faction.getPlayers()) {
+                Element playerElement = mDocument.createElement("player");
+                playerElement.setAttribute("id", Long.toString(player.getId()));
+                factionPlayersElement.appendChild(playerElement);
+            }
+
+            Element shipsElement = mDocument.createElement("ships");
+            factionElement.appendChild(shipsElement);
+            for (Ship ship: faction.getShipList()) {
+                Element shipElement = mDocument.createElement("ship");
+                shipElement.setAttribute("id", Long.toString(ship.getId()));
+                shipsElement.appendChild(shipElement);
+            }
+
+            Element productionElement = mDocument.createElement("production");
+            factionElement.appendChild(productionElement);
+            {
+                FactionProduction production = faction.getProduction();
+                productionElement.setAttribute("factory-capacity", Long.toString(production.getFactoryCapacity()));
+                productionElement.setAttribute("next-factory-capacity-increase-round", Long.toString(production.getNextFactoryCapacityIncreaseRounds()));
+                if(production.getActiveProductionTask() != null) {
+                    productionElement.setAttribute("active-task", Long.toString(production.getActiveProductionTask().getId()));
+                }
+
+                if(production.getNextFactoryCapacityOrder() != null) {
+                    Element nextFactoryCapacityOrderElement = mDocument.createElement("next-factory-capacity-order");
+                    productionElement.appendChild(nextFactoryCapacityOrderElement);
+                    generateFactoryCapacityOrder(nextFactoryCapacityOrderElement, production.getNextFactoryCapacityOrder());
+                }
+
+                Element factoryCapacityOrderListElement = mDocument.createElement("factory-capacity-orders");
+                productionElement.appendChild(factoryCapacityOrderListElement);
+                for (FactionProduction.FactoryCapacityOrder factoryCapacityOrder : production.getFactoryCapacityOrderList()) {
+                    Element factoryCapacityOrderElement = mDocument.createElement("factory-capacity");
+                    factoryCapacityOrderListElement.appendChild(factoryCapacityOrderElement);
+                    generateFactoryCapacityOrder(factoryCapacityOrderElement, factoryCapacityOrder);
+                }
+
+                Element factoryCapacityActiveOrderListElement = mDocument.createElement("factory-capacity-active-orders");
+                productionElement.appendChild(factoryCapacityActiveOrderListElement);
+                for (FactionProduction.FactoryCapacityOrder factoryCapacityOrder : production.getFactoryCapacityActiveList()) {
+                    Element factoryCapacityOrderElement = mDocument.createElement("factory-capacity");
+                    factoryCapacityActiveOrderListElement.appendChild(factoryCapacityOrderElement);
+                    generateFactoryCapacityOrder(factoryCapacityOrderElement, factoryCapacityOrder);
+                }
+
+                Element productionTasksElement = mDocument.createElement("production-tasks");
+                productionElement.appendChild(productionTasksElement);
+                for (ProductionTask productionTask : production.getProductionTaskQueue()) {
+                    Element productionTaskElement = mDocument.createElement("production-task");
+                    productionTasksElement.appendChild(productionTaskElement);
+
+                    Element workUnitElement = mDocument.createElement("root-work-unit");
+                    productionTaskElement.appendChild(workUnitElement);
+                    generateWorkUnit(workUnitElement, productionTask.getRootWorkUnit());
+
+                }
+            }
         }
-        
-        
-//        private List<Player> players = new ArrayList<Player>();
-//        
-//        private List<Ship> shipList = new ArrayList<Ship>();
-//        
-//        private FactionProduction production;
-//        private FactionStocks stocks;
-//        private FactionAvailableProductList availableProductList;
-//        
-        
-        
+
         // Item full description
         Element itemsElement = mDocument.createElement("items");
         worldElement.appendChild(itemsElement);
@@ -221,6 +264,59 @@ public class GameSerializer {
             }
             
         }
+    }
+
+    private void generateWorkUnit(Element workUnitElement, ProductionTask.WorkUnit workUnit) {
+
+        if(workUnit instanceof ProductionTask.BatchWorkUnit) {
+            ProductionTask.BatchWorkUnit batchWorkUnit = (ProductionTask.BatchWorkUnit) workUnit;
+
+            workUnitElement.setAttribute("type", "batch");
+            workUnitElement.setAttribute("product", batchWorkUnit.getProduct().getId());
+            workUnitElement.setAttribute("requested-quantity", Long.toString(batchWorkUnit.getRequestedQuantity()));
+            workUnitElement.setAttribute("done-quantity", Long.toString(batchWorkUnit.getDoneQuantity()));
+
+            if(batchWorkUnit.getCurrentWorkUnit() != null) {
+                Element subItemElement = mDocument.createElement("current-work-unit");
+                workUnitElement.appendChild(subItemElement);
+                generateWorkUnit(subItemElement, batchWorkUnit.getCurrentWorkUnit());
+            }
+
+
+        } else if(workUnit instanceof ProductionTask.BuildWorkUnit) {
+            ProductionTask.BuildWorkUnit buildWorkUnit = (ProductionTask.BuildWorkUnit) workUnit;
+
+            workUnitElement.setAttribute("type", "build");
+            workUnitElement.setAttribute("product", buildWorkUnit.getProduct().getId());
+            workUnitElement.setAttribute("work-state", buildWorkUnit.getWorkState().toString());
+            workUnitElement.setAttribute("pending-ores", Long.toString(buildWorkUnit.getPendingOres()));
+            workUnitElement.setAttribute("accumulated-production-capacity", Long.toString(buildWorkUnit.getAccumulatedProductionCapacity()));
+
+            Element reservedItemsElement = mDocument.createElement("reserved-items");
+            workUnitElement.appendChild(reservedItemsElement);
+            for (Entry<String, Item> stringItemEntry : buildWorkUnit.getReservedItems().entrySet()) {
+                Element reservedItemElement = mDocument.createElement("reserved-item");
+                reservedItemsElement.appendChild(reservedItemElement);
+                reservedItemElement.setAttribute("key", stringItemEntry.getKey());
+                reservedItemElement.setAttribute("item", Long.toString(stringItemEntry.getValue().getId()));
+            }
+
+            if(buildWorkUnit.getSubItemWorkUnit() != null) {
+                Element subItemElement = mDocument.createElement("subitem-work-unit");
+                workUnitElement.appendChild(subItemElement);
+                generateWorkUnit(subItemElement, buildWorkUnit.getSubItemWorkUnit());
+            }
+        } else {
+            Log.warn("Not implemented WorkUnit type '"+workUnit.getClass().getSimpleName()+"'");
+        }
+
+
+
+    }
+
+    private void generateFactoryCapacityOrder(Element factoryCapacityOrderElement, FactionProduction.FactoryCapacityOrder factoryCapacityOrder) {
+        factoryCapacityOrderElement.setAttribute("sell-price-per-count", Long.toString(factoryCapacityOrder.sellPricePerCount));
+        factoryCapacityOrderElement.setAttribute("count", Long.toString(factoryCapacityOrder.count));
     }
 
 }

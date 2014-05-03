@@ -39,6 +39,10 @@ public class ProductionTask extends WorldEntity {
         return mRootWorkUnit.getRequestedQuantity();
     }
 
+    public BatchWorkUnit getRootWorkUnit() {
+        return mRootWorkUnit;
+    }
+
     public void produce(ProductionStatus productionStatus) {
 
         if (mRootWorkUnit.isFinished()) {
@@ -111,7 +115,7 @@ public class ProductionTask extends WorldEntity {
         return mRootWorkUnit.isFinished();
     }
 
-    private abstract class WorkUnit {
+    public abstract class WorkUnit {
 
         public abstract boolean isFinished();
 
@@ -123,7 +127,7 @@ public class ProductionTask extends WorldEntity {
 
     }
 
-    private class BatchWorkUnit extends WorkUnit {
+    public class BatchWorkUnit extends WorkUnit {
         private final Product product;
         private final long requestedQuantity;
         private long doneQuantity;
@@ -187,9 +191,13 @@ public class ProductionTask extends WorldEntity {
                 currentWorkUnit.cancel();
             }
         }
+
+        public WorkUnit getCurrentWorkUnit() {
+            return currentWorkUnit;
+        }
     }
 
-    private class BuildWorkUnit extends WorkUnit {
+    public class BuildWorkUnit extends WorkUnit {
 
         private final Product product;
         private WorkState workState;
@@ -204,6 +212,30 @@ public class ProductionTask extends WorldEntity {
             workState = WorkState.WAITING_FOR_ITEMS;
             //product.getSubProducts().size()
             reservedItems = new HashMap<String, Item>();
+        }
+
+        public WorkState getWorkState() {
+            return workState;
+        }
+
+        public Product getProduct() {
+            return product;
+        }
+
+        public long getPendingOres() {
+            return pendingOres;
+        }
+
+        public long getAccumulatedProductionCapacity() {
+            return accumulatedProductionCapacity;
+        }
+
+        public Map<String, Item> getReservedItems() {
+            return reservedItems;
+        }
+
+        public BuildWorkUnit getSubItemWorkUnit() {
+            return subItemWorkUnit;
         }
 
         @Override
@@ -306,7 +338,7 @@ public class ProductionTask extends WorldEntity {
 
     }
 
-    private enum WorkState {
+    public enum WorkState {
         WAITING_FOR_RESSOURCES, BUILDING, WAITING_FOR_ITEMS, BUILDING_ITEM, FINISHED,
     }
 
