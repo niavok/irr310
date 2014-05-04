@@ -264,6 +264,41 @@ public class GameSerializer {
             }
             
         }
+
+
+        //
+        Element mapElement = mDocument.createElement("map");
+        worldElement.appendChild(mapElement);
+        for (WorldSystem worldSystem : world.getMap().getSystems()) {
+            Element systemElement = mDocument.createElement("system");
+            mapElement.appendChild(systemElement);
+
+            systemElement.setAttribute("id", Long.toString(worldSystem.getId()));
+            systemElement.setAttribute("location", worldSystem.getLocation().toString());
+            systemElement.setAttribute("radius", Double.toString(worldSystem.getRadius()));
+            systemElement.setAttribute("name", worldSystem.getName());
+            if(worldSystem.getOwner() != null) {
+                systemElement.setAttribute("owner", Long.toString(worldSystem.getOwner().getId()));
+            }
+            systemElement.setAttribute("home-system", Boolean.toString(worldSystem.isHomeSystem()));
+
+//            private final List<CelestialObject> celestialObjects;
+//            private final List<Nexus> nexuses;
+//            private final List<Ship> ships;
+//            private final List<Part> parts;
+//            private final List<Part> myParts;
+//            private final Map<Long, CelestialObject> celestialObjectIdMap;
+//            private final Map<Long, Capacity> capacityIdMap;
+//            private final Map<Long, Component> componentIdMap;
+//            private final Map<Long, Slot> slotIdMap;
+//            private final Map<Long, Part> partIdMap;
+//            private final Map<Long, Ship> shipIdMap;
+//            private SystemEngine systemEngine;
+
+
+        }
+
+
     }
 
     private void generateWorkUnit(Element workUnitElement, ProductionTask.WorkUnit workUnit) {
