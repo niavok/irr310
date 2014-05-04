@@ -138,15 +138,21 @@ public class WorldEngine implements Engine {
 	}
     
     public void connectPlayerAction(String playerLogin, boolean isLocal) {
-        Player newPlayer = new Player(world, GameServer.pickNewId(), playerLogin);
-        newPlayer.setHuman(true);
-        newPlayer.setLocal(isLocal);
-        //Find faction
-        Faction faction = world.getFactions().get(0);
-        
-        faction.assignPlayer(newPlayer);
-        
-        world.addPlayer(newPlayer);
+
+        Player newPlayer = world.getPlayerByLogin(playerLogin);
+
+
+        if(newPlayer == null) {
+            newPlayer = new Player(world, GameServer.pickNewId(), playerLogin);
+            newPlayer.setHuman(true);
+            newPlayer.setLocal(isLocal);
+            //Find faction
+            Faction faction = world.getFactions().get(0);
+
+            faction.assignPlayer(newPlayer);
+
+            world.addPlayer(newPlayer);
+        }
         notifyPlayerConnected(newPlayer);
     }
     

@@ -1,15 +1,14 @@
 package com.irr310.server.game;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.irr310.client.ClientConfig;
 import com.irr310.common.tools.Log;
 import com.irr310.common.tools.RessourceLoadingException;
 import com.irr310.common.tools.Vec2;
@@ -195,15 +194,110 @@ public class GameManager {
     }
 
     public Game getPreviousGame() {
+        if(mPreviousGame == null) {
+            String saveFilePath = ClientConfig.getSaveDirectoryPath("previous_game.irr310");
+            if(new File(saveFilePath).isFile()) {
+                mPreviousGame =loadGame(saveFilePath);
+            }
+        }
         return mPreviousGame;
+    }
+
+    private Game loadGame(String saveFilePath) {
+        Game game = new Game();
+
+        // Init products
+        ProductManager productManager = new ProductManager();
+        try {
+            productManager.init();
+        } catch(RessourceLoadingException e) {
+            Log.warn("Fail to load products world correctly", e);
+        }
+        game.getWorld().setProductManager(productManager);
+
+
+
+        GameDeserializer loader = new GameDeserializer(game,saveFilePath);
+        loader.load();
+
+        String checkFilePath = saveFilePath + ".check";
+
+
+
+        //TODO add option
+        GameSerializer saver = new GameSerializer(checkFilePath);
+        saver.save(game);
+
+        if(!computeSha1(saveFilePath).equals(computeSha1(checkFilePath))) {
+            Log.warn("Load check failed !");
+        }
+
+        return game;
     }
 
     public void save() {
         Log.log("Begin save");
-        GameSerializer saver = new GameSerializer();
+
+
+        String saveFilePath = ClientConfig.getSaveDirectoryPath("previous_game.irr310");
+
+
+        GameSerializer saver = new GameSerializer(saveFilePath);
         saver.save(mActiveGame);
         
         
         Log.log("End save");
     }
+
+    public boolean hasPreviousGame() {
+        if(mPreviousGame != null) {
+            return true;
+        }
+
+        String saveFilePath = ClientConfig.getSaveDirectoryPath("previous_game.irr310");
+        if(new File(saveFilePath).isFile()) {
+            return true;
+        }
+
+        return false;
+    }
+
+
+    private static String computeSha1(String path) {
+        MessageDigest md = null;
+        try {
+            md = MessageDigest.getInstance("SHA1");
+
+            FileInputStream fis = new FileInputStream(path);
+            byte[] dataBytes = new byte[1024];
+
+            int nread = 0;
+
+
+                while ((nread = fis.read(dataBytes)) != -1) {
+                    md.update(dataBytes, 0, nread);
+                }
+
+
+
+            byte[] mdbytes = md.digest();
+
+            //convert the byte to hex format
+            StringBuffer sb = new StringBuffer("");
+            for (int i = 0; i < mdbytes.length; i++) {
+                sb.append(Integer.toString((mdbytes[i] & 0xff) + 0x100, 16).substring(1));
+            }
+            return sb.toString();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
+
+    }
+
 }

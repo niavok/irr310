@@ -114,6 +114,15 @@ public class World {
         return items;
     }
 
+    public Player getPlayerByLogin(String playerLogin) {
+        for (Player player : players) {
+            if(player.getLogin().equals(playerLogin)) {
+                return player;
+            }
+        }
+        return null;
+    }
+
 //    public BinderServer getBinderServer() {
 //        return binderServer;
 //    }

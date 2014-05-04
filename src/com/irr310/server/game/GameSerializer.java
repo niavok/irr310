@@ -38,7 +38,13 @@ import com.irr310.server.world.product.Product;
 
 public class GameSerializer {
 
+    private final String mSaveFilePath;
     private Document mDocument;
+
+    public GameSerializer(String saveFilePath) {
+
+        mSaveFilePath = saveFilePath;
+    }
 
     public void save(Game game) {
         
@@ -47,9 +53,7 @@ public class GameSerializer {
         if(!savesCacheDir.exists()) {
             savesCacheDir.mkdirs();
         }
-        
-        String saveFilePath = ClientConfig.getSaveDirectoryPath("previous_game.irr310");
-        
+
         File file;
         FileOutputStream fop = null;
         try {
@@ -71,8 +75,8 @@ public class GameSerializer {
         serializeWorld(game.getWorld(), rootElement);
 
         
-        file = new File(saveFilePath);
-        
+        file = new File(mSaveFilePath);
+
         // if file doesnt exists, then create it
         if (!file.exists()) {
             file.createNewFile();
@@ -282,8 +286,23 @@ public class GameSerializer {
             }
             systemElement.setAttribute("home-system", Boolean.toString(worldSystem.isHomeSystem()));
 
+            Element nexusesElement = mDocument.createElement("nexuses");
+            systemElement.appendChild(nexusesElement);
+            for (Nexus nexus : worldSystem.getNexuses()) {
+                Element nexusElement = mDocument.createElement("nexus");
+                nexusesElement.appendChild(nexusElement);
+
+                nexusElement.setAttribute("id", Long.toString(nexus.getId()));
+                nexusElement.setAttribute("location", nexus.getLocation().toString());
+                nexusElement.setAttribute("radius", Double.toString(nexus.getRadius()));
+                nexusElement.setAttribute("owner", Long.toString(nexus.getOwner().getId()));
+            }
+
+
+            //            private final List<Nexus> nexuses;
+
 //            private final List<CelestialObject> celestialObjects;
-//            private final List<Nexus> nexuses;
+
 //            private final List<Ship> ships;
 //            private final List<Part> parts;
 //            private final List<Part> myParts;

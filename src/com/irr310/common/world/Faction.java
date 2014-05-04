@@ -42,8 +42,10 @@ public class Faction extends WorldEntity{
         discoverSystem(system);
     }
 
-    private void discoverSystem(WorldSystem system) {
-        knownSystems.add(system);
+    public void discoverSystem(WorldSystem system) {
+        if(!knownSystems.contains(system)) {
+            knownSystems.add(system);
+        }
     }
     
     public WorldSystem getHomeSystem() {

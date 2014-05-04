@@ -4,6 +4,9 @@ import javax.vecmath.Vector3d;
 
 import fr.def.iss.vd2.lib_v3d.V3DVect3;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class Vec3 {
 
     public double x;
@@ -106,7 +109,7 @@ public class Vec3 {
 
     @Override
     public String toString() {
-        return "[x=" + x + ", y=" + y + ", z=" + z + "]";
+        return "[" + x + "," + y + "," + z + "]";
     }
 
     public Vec3 negative() {
@@ -173,4 +176,15 @@ public class Vec3 {
         return new Vec3(x / v.x, y / v.y, z / v.z );
     }
 
+    // TODO keep reference only during parsing
+    public static Pattern vec3Pattern = Pattern.compile("^\\[([-0-9]+\\.[0-9]+),([-0-9]+\\.[0-9]+),([-0-9]+\\.[0-9]+)\\]$");
+
+
+    public static Vec3 parseVec3(String vec3String) {
+        Matcher matcherVec3 = vec3Pattern.matcher(vec3String);
+        if(matcherVec3.matches()) {
+            return new Vec3(Double.parseDouble(matcherVec3.group(1)), Double.parseDouble(matcherVec3.group(2)), Double.parseDouble(matcherVec3.group(3)));
+        }
+        return null;
+    }
 }

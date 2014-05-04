@@ -71,12 +71,11 @@ public class MainMenuActivity extends Activity {
 
     @Override
     protected void onUpdate(Timestamp time) {
-        
-        Game activeGame = GameClient.getInstance().getGameManager().getPreviousGame();
-        if(activeGame == null) {
-            continueGameButton.setEnabled(false);
-        } else {
+
+        if(GameClient.getInstance().getGameManager().hasPreviousGame()) {
             continueGameButton.setEnabled(true);
+        } else {
+            continueGameButton.setEnabled(false);
         }
     }
 

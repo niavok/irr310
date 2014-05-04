@@ -71,12 +71,12 @@ public class Color implements Duplicable<Color> {
     public final float g;
     public final float b;
     public final float a;
-    
-    
+
+    // TODO keep reference only during parsing
     public static Pattern rgbHexaPattern = Pattern.compile("^#[0-9a-fA-F]{6}$");
     public static Pattern rgbaHexaPattern = Pattern.compile("^#[0-9a-fA-F]{8}$");
     public static Pattern rgbRgbPattern = Pattern.compile("^rgb\\(([0-9]{0,3}),([0-9]{0,3}),([0-9]{0,3})\\)$");
-    public static Pattern rgbaRgbPattern = Pattern.compile("^rgb\\(([0-9]{0,3}),([0-9]{0,3}),([0-9]{0,3}),([0-9]{0,3})\\)$");
+    public static Pattern rgbaRgbPattern = Pattern.compile("^rgba\\(([0-9]+\\.[0-9]+),([0-9]+\\.[0-9]+),([0-9]+\\.[0-9]+),([0-9]+\\.[0-9]+)\\)$");
 
     /**
      * Initialize black opaque color
@@ -176,13 +176,23 @@ public class Color implements Duplicable<Color> {
             a = 1;
             return;
         } 
-        
+        // #ffeea2ff
         Matcher matcherRgbaHexa = rgbaHexaPattern.matcher(colorString);
         if(matcherRgbaHexa.matches()) {
             r = Integer.parseInt(colorString.substring(1, 3), 16) / 255f;
             g = Integer.parseInt(colorString.substring(3, 5), 16) / 255f;
             b = Integer.parseInt(colorString.substring(5, 7), 16) / 255f;
             a = Integer.parseInt(colorString.substring(7, 9), 16) / 255f;
+            return;
+        }
+
+
+        Matcher matcherRgbaRgb = rgbaRgbPattern.matcher(colorString);
+        if(matcherRgbaRgb.matches()) {
+            r = Float.parseFloat(matcherRgbaRgb.group(1));
+            g = Float.parseFloat(matcherRgbaRgb.group(2));
+            b = Float.parseFloat(matcherRgbaRgb.group(3));
+            a = Float.parseFloat(matcherRgbaRgb.group(4));
             return;
         }
 
@@ -248,5 +258,9 @@ public class Color implements Duplicable<Color> {
     @Override
     public Color duplicate() {
         return this;
+    }
+
+    public static Color parseColor(String colorString) {
+        return new Color(colorString);
     }
 }
