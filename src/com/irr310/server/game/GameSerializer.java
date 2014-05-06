@@ -228,6 +228,8 @@ public class GameSerializer {
                     Element productionTaskElement = mDocument.createElement("production-task");
                     productionTasksElement.appendChild(productionTaskElement);
 
+                    productionTaskElement.setAttribute("id", Long.toString(productionTask.getId()));
+
                     Element workUnitElement = mDocument.createElement("root-work-unit");
                     productionTaskElement.appendChild(workUnitElement);
                     generateWorkUnit(workUnitElement, productionTask.getRootWorkUnit());

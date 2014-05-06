@@ -151,6 +151,8 @@ public class FactionProduction {
     public long getFactoryTotalCapacity() {
         return mFactoryCapacity;
     }
-   
-    
+
+    public void setActiveTask(ProductionTask activeTask) {
+        this.activeTask = activeTask;
+    }
 }

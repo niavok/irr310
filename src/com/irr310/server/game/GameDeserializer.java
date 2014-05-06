@@ -4,9 +4,7 @@ import com.irr310.common.tools.Log;
 import com.irr310.common.tools.RessourceLoadingException;
 import com.irr310.common.tools.Vec2;
 import com.irr310.common.tools.Vec3;
-import com.irr310.common.world.Faction;
-import com.irr310.common.world.Player;
-import com.irr310.common.world.World;
+import com.irr310.common.world.*;
 import com.irr310.common.world.system.Nexus;
 import com.irr310.common.world.system.WorldSystem;
 import com.irr310.i3d.Color;
@@ -210,6 +208,7 @@ public class GameDeserializer {
             } else if (subElement.getNodeName().equals("ships")) {
                 // TODO parse ships
             } else if (subElement.getNodeName().equals("production")) {
+                parseFactionProduction(subElement, pass, faction);
                 // TODO parse production
             } else {
                 throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for tag faction element");
@@ -236,6 +235,98 @@ public class GameDeserializer {
                 }
             }
         }
+    }
+
+    private void parseFactionProduction(Element element, Pass pass, Faction faction) {
+        switch(pass) {
+            case OBJECT_PASS: {
+                long factoryCapacity = getLongAttribute(element, "factory-capacity");
+                long factoryCapacityIncreaseRound = getLongAttribute(element, "next-factory-capacity-increase-round");
+                faction.getProduction().setFactoryCapacity(factoryCapacity);
+                faction.getProduction().setNextFactoryCapacityIncreaseRounds(factoryCapacityIncreaseRound);
+            }
+            break;
+            case LINK_PASS: {
+                if(element.hasAttribute("active-task")) {
+                    long activeTaskId = getLongAttribute(element, "active-task");
+
+                    for (ProductionTask productionTask : faction.getProduction().getProductionTaskQueue()) {
+                        if (productionTask.getId() == activeTaskId) {
+                            faction.getProduction().setActiveTask(productionTask);
+                        }
+                    }
+                }
+            }
+            break;
+        }
+
+        if(pass == Pass.OBJECT_PASS) {
+            NodeList childNodes = element.getChildNodes();
+            for (int i = 0; i < childNodes.getLength(); i++) {
+                Node node = childNodes.item(i);
+                if (node.getNodeType() != Node.ELEMENT_NODE) {
+                    // White space
+                    continue;
+                }
+                Element subElement = (Element) node;
+                if (subElement.getNodeName().equals("next-factory-capacity-order")) {
+                    FactionProduction.FactoryCapacityOrder factoryCapacityOrder = parseFactionProductionCapacityOrder(subElement);
+                    faction.getProduction().setNextFactoryCapacityOrder(factoryCapacityOrder);
+                } else if (subElement.getNodeName().equals("factory-capacity-orders")) {
+                    parseFactionProductionCapacityOrders(subElement, faction);
+                } else if (subElement.getNodeName().equals("factory-capacity-active-orders")) {
+                    parseFactionProductionActiveCapacityOrders(subElement, faction);
+                } else if (subElement.getNodeName().equals("production-tasks")) {
+                    //TODO
+                } else {
+                    throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for tag faction element");
+                }
+            }
+        }
+    }
+
+    private void parseFactionProductionCapacityOrders(Element element, Faction faction) {
+
+        NodeList childNodes = element.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            Node node = childNodes.item(i);
+            if (node.getNodeType() != Node.ELEMENT_NODE) {
+                // White space
+                continue;
+            }
+            Element subElement = (Element) node;
+            if (subElement.getNodeName().equals("factory-capacity")) {
+                FactionProduction.FactoryCapacityOrder factoryCapacityOrder = parseFactionProductionCapacityOrder(subElement);
+                faction.getProduction().getFactoryCapacityOrderList().add(factoryCapacityOrder);
+            } else {
+                throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for tag faction element");
+            }
+        }
+    }
+
+    private void parseFactionProductionActiveCapacityOrders(Element element, Faction faction) {
+
+        NodeList childNodes = element.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            Node node = childNodes.item(i);
+            if (node.getNodeType() != Node.ELEMENT_NODE) {
+                // White space
+                continue;
+            }
+            Element subElement = (Element) node;
+            if (subElement.getNodeName().equals("factory-capacity")) {
+                FactionProduction.FactoryCapacityOrder factoryCapacityOrder = parseFactionProductionCapacityOrder(subElement);
+                faction.getProduction().getFactoryCapacityActiveList().add(factoryCapacityOrder);
+            } else {
+                throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for tag faction element");
+            }
+        }
+    }
+
+    private FactionProduction.FactoryCapacityOrder parseFactionProductionCapacityOrder(Element element) {
+        long count = getLongAttribute(element, "count");
+        long sellPricePerCount = getLongAttribute(element, "sell-price-per-count");
+        return new FactionProduction.FactoryCapacityOrder(sellPricePerCount, count);
     }
 
     private void parseFactionKnownSystems(Element element, Pass pass, Faction faction) {
