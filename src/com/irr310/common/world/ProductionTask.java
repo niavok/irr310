@@ -23,7 +23,7 @@ public class ProductionTask extends WorldEntity {
     public ProductionTask(FactionProduction factionProduction, long id, Product product, long quantity) {
         super(factionProduction.getFaction().getWorld(), id);
         this.factionProduction = factionProduction;
-        mRootWorkUnit = new BatchWorkUnit(product, quantity);
+        mRootWorkUnit = new BatchWorkUnit(factionProduction,product, quantity);
 
     }
     
@@ -41,6 +41,10 @@ public class ProductionTask extends WorldEntity {
 
     public BatchWorkUnit getRootWorkUnit() {
         return mRootWorkUnit;
+    }
+
+    public void setRootWorkUnit(BatchWorkUnit rootWorkUnit) {
+        mRootWorkUnit = rootWorkUnit;
     }
 
     public void produce(ProductionStatus productionStatus) {
@@ -115,7 +119,14 @@ public class ProductionTask extends WorldEntity {
         return mRootWorkUnit.isFinished();
     }
 
-    public abstract class WorkUnit {
+    public static abstract class WorkUnit {
+
+        protected final FactionProduction mProduction;
+
+        WorkUnit(FactionProduction production) {
+
+            mProduction = production;
+        }
 
         public abstract boolean isFinished();
 
@@ -127,13 +138,14 @@ public class ProductionTask extends WorldEntity {
 
     }
 
-    public class BatchWorkUnit extends WorkUnit {
+    public static class BatchWorkUnit extends WorkUnit {
         private final Product product;
         private final long requestedQuantity;
         private long doneQuantity;
         private WorkUnit currentWorkUnit;
 
-        public BatchWorkUnit(Product product, long quantity) {
+        public BatchWorkUnit(FactionProduction production, Product product, long quantity) {
+            super(production);
             this.product = product;
             this.requestedQuantity = quantity;
             this.doneQuantity = 0;
@@ -155,7 +167,7 @@ public class ProductionTask extends WorldEntity {
 
         private void createNewWorkUnit() {
             if (product instanceof ShipProduct || product instanceof ComponentProduct) {
-                currentWorkUnit = new BuildWorkUnit(product);
+                currentWorkUnit = new BuildWorkUnit(mProduction, product);
             } else {
                 Log.error("Unknown product type: " + product.getClass().getSimpleName());
             }
@@ -195,9 +207,17 @@ public class ProductionTask extends WorldEntity {
         public WorkUnit getCurrentWorkUnit() {
             return currentWorkUnit;
         }
+
+        public void setDoneQuantity(long doneQuantity) {
+            this.doneQuantity = doneQuantity;
+        }
+
+        public void setCurrentWorkUnit(WorkUnit currentWorkUnit) {
+            this.currentWorkUnit = currentWorkUnit;
+        }
     }
 
-    public class BuildWorkUnit extends WorkUnit {
+    public static class BuildWorkUnit extends WorkUnit {
 
         private final Product product;
         private WorkState workState;
@@ -206,7 +226,8 @@ public class ProductionTask extends WorldEntity {
         private Map<String, Item> reservedItems;
         private BuildWorkUnit subItemWorkUnit;
 
-        public BuildWorkUnit(Product product) {
+        public BuildWorkUnit(FactionProduction production, Product product) {
+            super(production);
             this.product = product;
             pendingOres = 0;
             workState = WorkState.WAITING_FOR_ITEMS;
@@ -238,6 +259,26 @@ public class ProductionTask extends WorldEntity {
             return subItemWorkUnit;
         }
 
+        public void setWorkState(WorkState workState) {
+            this.workState = workState;
+        }
+
+        public void setPendingOres(long pendingOres) {
+            this.pendingOres = pendingOres;
+        }
+
+        public void setAccumulatedProductionCapacity(long accumulatedProductionCapacity) {
+            this.accumulatedProductionCapacity = accumulatedProductionCapacity;
+        }
+
+        public void setReservedItems(Map<String, Item> reservedItems) {
+            this.reservedItems = reservedItems;
+        }
+
+        public void setSubItemWorkUnit(BuildWorkUnit subItemWorkUnit) {
+            this.subItemWorkUnit = subItemWorkUnit;
+        }
+
         @Override
         public boolean isFinished() {
             return (workState == WorkState.FINISHED);
@@ -253,9 +294,9 @@ public class ProductionTask extends WorldEntity {
                     for(SubProduct subProduct: product.getSubProducts()) {
                         if(!reservedItems.containsKey(subProduct.getKey())) {
                             allItemsReady = false;
-                            Item item = factionProduction.getFaction().getStocks().getAvailableItem(subProduct.getProduct());
+                            Item item = mProduction.getFaction().getStocks().getAvailableItem(subProduct.getProduct());
                             if (item == null) {
-                                subItemWorkUnit = new BuildWorkUnit(subProduct.getProduct());
+                                subItemWorkUnit = new BuildWorkUnit(mProduction, subProduct.getProduct());
                                 workState = WorkState.BUILDING_ITEM;
                                 break;
                             } else {
@@ -279,10 +320,10 @@ public class ProductionTask extends WorldEntity {
                     }
                 break;
                 case WAITING_FOR_RESSOURCES:
-                    if (factionProduction.getFaction().getOresAmount() >= product.getOreCost()) {
+                    if (mProduction.getFaction().getOresAmount() >= product.getOreCost()) {
                         // Enougth ressource, grab them and start building
                         pendingOres = product.getOreCost();
-                        factionProduction.getFaction().takeOres(pendingOres);
+                        mProduction.getFaction().takeOres(pendingOres);
                         workState = WorkState.BUILDING;
                         produce(productionStatus);
                     } else {
@@ -294,7 +335,7 @@ public class ProductionTask extends WorldEntity {
                     Log.trace("" + product.getId() + ": " + accumulatedProductionCapacity + "/" + product.getFactoryCost());
                     if (missingProductionCapacity == 0) {
                         // Create item
-                        getWorld().getItemFactory().createItem(product, factionProduction.getFaction(), reservedItems);
+                        mProduction.getFaction().getWorld().getItemFactory().createItem(product, mProduction.getFaction(), reservedItems);
                         workState = WorkState.FINISHED;
                         pendingOres = 0;
                         accumulatedProductionCapacity = 0;
@@ -330,7 +371,7 @@ public class ProductionTask extends WorldEntity {
         @Override
         public void cancel() {
             pause();
-            factionProduction.getFaction().giveOres(pendingOres);
+            mProduction.getFaction().giveOres(pendingOres);
             pendingOres = 0;
             accumulatedProductionCapacity = 0;
             workState = WorkState.FINISHED;

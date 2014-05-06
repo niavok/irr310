@@ -5,6 +5,7 @@ import com.irr310.common.tools.RessourceLoadingException;
 import com.irr310.common.tools.Vec2;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.*;
+import com.irr310.common.world.item.Item;
 import com.irr310.common.world.system.Nexus;
 import com.irr310.common.world.system.WorldSystem;
 import com.irr310.i3d.Color;
@@ -23,6 +24,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.irr310.common.world.ProductionTask.*;
+
 /**
  * Created by fred on 04/05/14.
  */
@@ -36,6 +39,7 @@ public class GameDeserializer {
     private Map<Long, Faction> mFactionMap = new HashMap<Long, Faction>();
     private Map<Long, WorldSystem> mSystemMap = new HashMap<Long, WorldSystem>();
     private Map<Long, Nexus> mNexusMap = new HashMap<Long, Nexus>();
+    private Map<Long, Item> mItemMap = new HashMap<Long, Item>();
 
     private enum Pass {
         LINK_PASS, OBJECT_PASS
@@ -253,6 +257,7 @@ public class GameDeserializer {
                     for (ProductionTask productionTask : faction.getProduction().getProductionTaskQueue()) {
                         if (productionTask.getId() == activeTaskId) {
                             faction.getProduction().setActiveTask(productionTask);
+                            break;
                         }
                     }
                 }
@@ -277,11 +282,133 @@ public class GameDeserializer {
                 } else if (subElement.getNodeName().equals("factory-capacity-active-orders")) {
                     parseFactionProductionActiveCapacityOrders(subElement, faction);
                 } else if (subElement.getNodeName().equals("production-tasks")) {
-                    //TODO
+                    parseProductionTasks(subElement, pass, faction);
                 } else {
                     throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for tag faction element");
                 }
             }
+        }
+    }
+
+    private void parseProductionTasks(Element element, Pass pass, Faction faction) {
+        NodeList childNodes = element.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            Node node = childNodes.item(i);
+            if (node.getNodeType() != Node.ELEMENT_NODE) {
+                // White space
+                continue;
+            }
+            Element subElement = (Element) node;
+            if (subElement.getNodeName().equals("production-task")) {
+                parseProductionTask(subElement, pass, faction);
+            } else {
+                throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for tag faction element");
+            }
+        }
+    }
+
+    private void parseProductionTask(Element element, Pass pass, Faction faction) {
+        if(pass == Pass.OBJECT_PASS) {
+            long id = getLongAttribute(element, "id");
+            Element rootWorkUnitElement = (Element) element.getElementsByTagName("root-work-unit").item(0);
+            ProductionTask.BatchWorkUnit rootWorkUnit = (BatchWorkUnit) parseWorkUnit(rootWorkUnitElement, faction);
+            ProductionTask productionTask = new ProductionTask(faction.getProduction(), id, rootWorkUnit.getProduct(), rootWorkUnit.getRequestedQuantity());
+            faction.getProduction().getProductionTaskQueue().add(productionTask);
+            productionTask.setRootWorkUnit(rootWorkUnit);
+        } else {
+            long id = getLongAttribute(element, "id");
+
+            for (ProductionTask productionTask : faction.getProduction().getProductionTaskQueue()) {
+                if(productionTask.getId() == id) {
+                    Element rootWorkUnitElement = (Element) element.getElementsByTagName("root-work-unit").item(0);
+                    updateBatchWorkUnit(rootWorkUnitElement, productionTask.getRootWorkUnit());
+                    break;
+                }
+            }
+
+        }
+    }
+
+    private void updateBatchWorkUnit(Element workUnitElement, BatchWorkUnit batchWorkUnit) {
+        Element currentWorkUnitElement = (Element) workUnitElement.getElementsByTagName("current-work-unit").item(0);
+        if(batchWorkUnit.getCurrentWorkUnit() instanceof BatchWorkUnit) {
+            updateBatchWorkUnit(currentWorkUnitElement, (BatchWorkUnit) batchWorkUnit.getCurrentWorkUnit());
+        } else if (batchWorkUnit.getCurrentWorkUnit() instanceof BatchWorkUnit) {
+            updateBuildWorkUnit(currentWorkUnitElement, (BuildWorkUnit) batchWorkUnit.getCurrentWorkUnit());
+        } else {
+            throw new RessourceLoadingException("Unknown class '"+batchWorkUnit.getCurrentWorkUnit().getClass().getSimpleName());
+        }
+
+    }
+    private void updateBuildWorkUnit(Element workUnitElement, BuildWorkUnit buildWorkUnit) {
+        Element reservedItemsElement = (Element) workUnitElement.getElementsByTagName("reserved-items").item(0);
+
+        Map<String, Item> reservedItems = new HashMap<String, Item>();
+        buildWorkUnit.setReservedItems(reservedItems);
+
+        Element subitemWorkUnitElement = (Element) workUnitElement.getElementsByTagName("subitem-work-unit").item(0);
+        if(subitemWorkUnitElement != null) {
+            updateBuildWorkUnit(subitemWorkUnitElement, buildWorkUnit.getSubItemWorkUnit());
+        }
+
+        NodeList childNodes = reservedItemsElement.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            Node node = childNodes.item(i);
+            if (node.getNodeType() != Node.ELEMENT_NODE) {
+                // White space
+                continue;
+            }
+            Element subElement = (Element) node;
+            if (subElement.getNodeName().equals("reserved-items")) {
+                long itemId = getLongAttribute(subElement, "item");
+                String key = subElement.getAttribute("kernel");
+                Item item = mItemMap.get(itemId);
+                reservedItems.put(key, item);
+            } else {
+                throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for tag faction element");
+            }
+        }
+    }
+
+    private ProductionTask.WorkUnit parseWorkUnit(Element workUnitElement, Faction faction) {
+        String type = workUnitElement.getAttribute("type");
+        if(type.equals("batch")) {
+            String productId = workUnitElement.getAttribute("product");
+            long doneQuantity = getLongAttribute(workUnitElement, "done-quantity");
+            long requestedQuantity = getLongAttribute(workUnitElement, "requested-quantity");
+            Product product = mWorld.getProductManager().getProductById(productId);
+
+            Element currentWorkUnitElement = (Element) workUnitElement.getElementsByTagName("current-work-unit").item(0);
+            WorkUnit currentWorkUnit = parseWorkUnit(currentWorkUnitElement, faction);
+
+            ProductionTask.BatchWorkUnit batchWorkUnit = new ProductionTask.BatchWorkUnit(faction.getProduction(), product, requestedQuantity);
+            batchWorkUnit.setDoneQuantity(doneQuantity);
+            batchWorkUnit.setCurrentWorkUnit(currentWorkUnit);
+
+            return batchWorkUnit;
+        } else if (type.equals("build")) {
+            long accumulatedProductionCapacity = getLongAttribute(workUnitElement, "accumulated-production-capacity");
+            long pendingOres = getLongAttribute(workUnitElement, "accumulated-production-capacity");
+            String productId = workUnitElement.getAttribute("product");
+            WorkState workState = WorkState.valueOf(workUnitElement.getAttribute("work-state"));
+
+            Product product = mWorld.getProductManager().getProductById(productId);
+
+
+            BuildWorkUnit buildWorkUnit = new BuildWorkUnit(faction.getProduction(), product);
+            buildWorkUnit.setAccumulatedProductionCapacity(accumulatedProductionCapacity);
+            buildWorkUnit.setPendingOres(pendingOres);
+            buildWorkUnit.setWorkState(workState);
+
+            Element subitemWorkUnitElement = (Element) workUnitElement.getElementsByTagName("subitem-work-unit").item(0);
+            if(subitemWorkUnitElement != null) {
+                BuildWorkUnit subitemWorkUnit = (BuildWorkUnit) parseWorkUnit(subitemWorkUnitElement, faction);
+                buildWorkUnit.setSubItemWorkUnit(subitemWorkUnit);
+            }
+
+            return buildWorkUnit;
+        } else {
+            throw new RessourceLoadingException("Unknown type '"+type+"'for work-unit element");
         }
     }
 
