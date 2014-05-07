@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
-import java.util.concurrent.locks.ReentrantLock;
 
 import javax.vecmath.Vector3d;
 
@@ -720,7 +719,7 @@ public class PhysicEngine implements Engine {
         dynamicsWorld.addRigidBody(body);
         if (mass > 0) {
             body.setLinearVelocity(part.getLinearSpeed().multiply(PHYSICAL_SCALE).toVector3d());
-            body.setAngularVelocity(part.getRotationSpeed().toVector3d());
+            body.setAngularVelocity(part.getAngularSpeed().toVector3d());
         }
         body.setActivationState(RigidBody.ACTIVE_TAG);
         body.setCcdMotionThreshold(0f);
@@ -806,7 +805,7 @@ public class PhysicEngine implements Engine {
             getWorldTransform(transform);
             body.setWorldTransform(transform);
             body.setLinearVelocity(part.getLinearSpeed().multiply(PHYSICAL_SCALE).toVector3d());
-            body.setAngularVelocity(part.getRotationSpeed().toVector3d());
+            body.setAngularVelocity(part.getAngularSpeed().toVector3d());
             body.activate(true);
         }
 
@@ -836,7 +835,7 @@ public class PhysicEngine implements Engine {
 
             Vector3d av = new Vector3d();
             body.getAngularVelocity(av);
-            part.getRotationSpeed().set(av);
+            part.getAngularSpeed().set(av);
 
         }
     }

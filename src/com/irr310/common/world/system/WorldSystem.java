@@ -152,6 +152,18 @@ public class WorldSystem extends WorldEntity {
         shipIdMap.put(ship.getId(), ship);
     }
 
+    public Map<Long, Slot> getSlotIdMap() {
+        return slotIdMap;
+    }
+
+    public Map<Long, Component> getComponentIdMap() {
+        return componentIdMap;
+    }
+
+    public Map<Long, Capacity> getCapacityIdMap() {
+        return capacityIdMap;
+    }
+
     public List<Ship> getShips() {
         return ships;
     }

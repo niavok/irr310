@@ -252,7 +252,7 @@ public class SimpleShipDriverOld {
             }
         }
 
-        Vec3 worldRotationSpeed = kernel.getFirstPart().getRotationSpeed();
+        Vec3 worldRotationSpeed = kernel.getFirstPart().getAngularSpeed();
         Vec3 localRotationSpeed = worldRotationSpeed.rotate(kernel.getFirstPart().getTransform().inverse());
 
         double topRotThrust = 0;

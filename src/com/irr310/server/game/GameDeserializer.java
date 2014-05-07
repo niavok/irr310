@@ -667,6 +667,16 @@ public class GameDeserializer {
             Element subElement = (Element) node;
             if (subElement.getNodeName().equals("nexuses")) {
                 parseNexuses(subElement, pass, system);
+            } else if (subElement.getNodeName().equals("ships")) {
+                //TODO
+            } else if (subElement.getNodeName().equals("parts")) {
+                //TODO
+            } else if (subElement.getNodeName().equals("slots")) {
+                //TODO
+            } else if (subElement.getNodeName().equals("components")) {
+                //TODO
+            } else if (subElement.getNodeName().equals("capacities")) {
+                //TODO
             } else {
                 throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for tag system element");
             }

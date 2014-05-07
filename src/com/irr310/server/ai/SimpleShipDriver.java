@@ -10,7 +10,6 @@ import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.common.world.system.Component;
 import com.irr310.common.world.system.Part;
 import com.irr310.common.world.system.Ship;
-import com.irr310.server.Time.Timestamp;
 
 public class SimpleShipDriver implements ShipDriver {
 
@@ -103,7 +102,7 @@ public class SimpleShipDriver implements ShipDriver {
         
         Vec3 aim = new Vec3(0,0,0);
         
-        Vec3 rotationSpeed = mKernel.getFirstPart().getRotationSpeed().rotate(mKernel.getFirstPart().getTransform().inverse());
+        Vec3 rotationSpeed = mKernel.getFirstPart().getAngularSpeed().rotate(mKernel.getFirstPart().getTransform().inverse());
         
         
         

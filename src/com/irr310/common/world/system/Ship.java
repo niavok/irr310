@@ -20,18 +20,14 @@ public class Ship extends SystemEntity implements Container {
     List<Link> links = new ArrayList<Link>();
     List<Component> components = new CopyOnWriteArrayList<Component>();
     Map<String, Component> componentKeysMap = new HashMap<String, Component>();
-    KernelCapacity kernel;
+    //KernelCapacity kernel;
     private Faction owner;
     private boolean destructible;
-    private SystemEngine systemEngine;
-    private Ship Ship;
-    private boolean stateChanged;
 
     public Ship(WorldSystem system, long id) {
         super(system, id);
         owner = null;
         destructible = true;
-        stateChanged = true;
     }
 
     @Override
@@ -86,6 +82,15 @@ public class Ship extends SystemEntity implements Container {
         return link(component1.getSlot(component1.getLocalShipPosition(position)), component2.getSlot(component2.getLocalShipPosition(position)));
     }
 
+    public Map<String, Component> getComponentKeysMap() {
+        return componentKeysMap;
+    }
+
+    //TODO remove if found
+    //    public KernelCapacity getKernel() {
+    //        return kernel;
+    //    }
+
     public List<Component> getComponents() {
         return components;
     }
@@ -94,13 +99,15 @@ public class Ship extends SystemEntity implements Container {
         return links;
     }
 
-    public void setKernel(KernelCapacity kernel) {
-        this.kernel = kernel;
-    }
+    //TODO remove if found
+    //    public void setKernel(KernelCapacity kernel) {
+    //        this.kernel = kernel;
+    //    }
 
-    public KernelCapacity getController() {
-        return kernel;
-    }
+    //TODO remove if found
+    //    public KernelCapacity getController() {
+    //        return kernel;
+    //    }
 
     public void setOwner(Faction owner) {
         if (this.owner != null) {

@@ -37,8 +37,12 @@ public final class  Component extends SystemObject {
 		computeEfficiency();
 		attached = true;
 	}
-	
-	public String getKey() {
+
+    public double getQuality() {
+        return quality;
+    }
+
+    public String getKey() {
         return mKey;
     }
 	
@@ -137,7 +141,7 @@ public final class  Component extends SystemObject {
 
     public void changeRotationSpeed(Vec3 rotationSpeed) {
         for(Part part: parts) {
-            part.getRotationSpeed().set(rotationSpeed);
+            part.getAngularSpeed().set(rotationSpeed);
         }
     }
 	

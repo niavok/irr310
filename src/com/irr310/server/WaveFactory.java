@@ -47,7 +47,7 @@ public class WaveFactory {
 //                asteroid.getFirstPart().getTransform().translate(position);
 //                asteroid.getFirstPart().getLinearSpeed().set(linearSpeed);
 //                asteroid.getFirstPart()
-//                        .getRotationSpeed()
+//                        .getAngularSpeed()
 //                        .set(random.nextFloat() * angularSpeed - angularSpeed / 2f,
 //                             random.nextFloat() * angularSpeed - angularSpeed / 2f,
 //                             random.nextFloat() * angularSpeed - angularSpeed / 2f);
@@ -92,7 +92,7 @@ public class WaveFactory {
 //                    asteroid.getFirstPart().getTransform().translate(position);
 //                    asteroid.getFirstPart().getLinearSpeed().set(linearSpeed);
 //                    asteroid.getFirstPart()
-//                            .getRotationSpeed()
+//                            .getAngularSpeed()
 //                            .set(random.nextFloat() * angularSpeed - angularSpeed / 2f,
 //                                 random.nextFloat() * angularSpeed - angularSpeed / 2f,
 //                                 random.nextFloat() * angularSpeed - angularSpeed / 2f);
@@ -140,7 +140,7 @@ public class WaveFactory {
 //                    asteroid.getFirstPart().getTransform().translate(position);
 //                    asteroid.getFirstPart().getLinearSpeed().set(linearSpeed);
 //                    asteroid.getFirstPart()
-//                            .getRotationSpeed()
+//                            .getAngularSpeed()
 //                            .set(random.nextFloat() * angularSpeed - angularSpeed / 2f,
 //                                 random.nextFloat() * angularSpeed - angularSpeed / 2f,
 //                                 random.nextFloat() * angularSpeed - angularSpeed / 2f);
@@ -193,7 +193,7 @@ public class WaveFactory {
 //                        asteroid.getFirstPart().getTransform().translate(position);
 //                        asteroid.getFirstPart().getLinearSpeed().set(linearSpeed);
 //                        asteroid.getFirstPart()
-//                                .getRotationSpeed()
+//                                .getAngularSpeed()
 //                                .set(random.nextFloat() * angularSpeed - angularSpeed / 2f,
 //                                     random.nextFloat() * angularSpeed - angularSpeed / 2f,
 //                                     random.nextFloat() * angularSpeed - angularSpeed / 2f);

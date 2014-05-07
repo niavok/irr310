@@ -13,7 +13,7 @@ public class Part extends WorldEntity {
     private Double mass;
     private Double linearDamping;
     private Double angularDamping;
-    private final Vec3 rotationSpeed;
+    private final Vec3 angularSpeed;
     private final Vec3 linearSpeed;
     private final TransformMatrix transform;
     private Vec3 shape;
@@ -30,7 +30,7 @@ public class Part extends WorldEntity {
     public Part(long id, SystemObject parentObject) {
         super(parentObject.getWorld(), id);
         this.parentObject = parentObject;
-        rotationSpeed = Vec3.origin();
+        angularSpeed = Vec3.origin();
         linearSpeed = Vec3.origin();
         transform = TransformMatrix.identity();
         mass = 0.;
@@ -51,8 +51,8 @@ public class Part extends WorldEntity {
         return mass;
     }
 
-    public Vec3 getRotationSpeed() {
-        return rotationSpeed;
+    public Vec3 getAngularSpeed() {
+        return angularSpeed;
     }
 
     public Vec3 getLinearSpeed() {
@@ -120,5 +120,7 @@ public class Part extends WorldEntity {
     public List<Part> getCollisionExcludeList() {
         return collisionExcludeList;
     }
+
+
 
 }

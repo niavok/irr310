@@ -4,10 +4,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -21,21 +21,18 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import com.irr310.common.tools.Log;
+import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.*;
+import com.irr310.common.world.capacity.Capacity;
+import com.irr310.common.world.system.*;
 import com.irr310.server.GameServer;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.irr310.client.ClientConfig;
 import com.irr310.common.world.item.DeployableItem;
 import com.irr310.common.world.item.Item;
-import com.irr310.common.world.item.Item.ItemType;
-import com.irr310.common.world.item.Item.State;
-import com.irr310.common.world.system.Nexus;
-import com.irr310.common.world.system.Ship;
-import com.irr310.common.world.system.WorldSystem;
-import com.irr310.i3d.Color;
-import com.irr310.server.world.product.Product;
 
 public class GameSerializer {
 
@@ -309,25 +306,130 @@ public class GameSerializer {
             }
 
 
-            //            private final List<Nexus> nexuses;
+            Element shipsElement = mDocument.createElement("ships");
+            systemElement.appendChild(shipsElement);
+            for (Ship ship : worldSystem.getShips()) {
+                Element shipElement = mDocument.createElement("ship");
+                shipsElement.appendChild(shipElement);
 
-//            private final List<CelestialObject> celestialObjects;
+                shipElement.setAttribute("id", Long.toString(ship.getId()));
+                shipElement.setAttribute("owner", Long.toString(ship.getOwner().getId()));
+                shipElement.setAttribute("destructible", Boolean.toString(ship.isDestructible()));
 
-//            private final List<Ship> ships;
-//            private final List<Part> parts;
-//            private final List<Part> myParts;
-//            private final Map<Long, CelestialObject> celestialObjectIdMap;
-//            private final Map<Long, Capacity> capacityIdMap;
-//            private final Map<Long, Component> componentIdMap;
-//            private final Map<Long, Slot> slotIdMap;
-//            private final Map<Long, Part> partIdMap;
-//            private final Map<Long, Ship> shipIdMap;
-//            private SystemEngine systemEngine;
+                Element shipComponentsElement = mDocument.createElement("components");
+                shipElement.appendChild(shipComponentsElement);
+                for (Entry<String, Component> entry : ship.getComponentKeysMap().entrySet()) {
+                    Element shipComponentElement = mDocument.createElement("component");
+                    shipComponentsElement.appendChild(shipComponentElement);
+
+                    shipComponentElement.setAttribute("key", entry.getKey());
+                    shipComponentElement.setAttribute("id", Long.toString(entry.getValue().getId()));
+                }
 
 
+                Element shipLinksElement = mDocument.createElement("links");
+                shipElement.appendChild(shipComponentsElement);
+                for (Link link : ship.getLinks()) {
+                    Element shipLinkElement = mDocument.createElement("link");
+                    shipLinksElement.appendChild(shipLinkElement);
+                    shipLinkElement.setAttribute("slot1", Long.toString(link.getSlot1().getId()));
+                    shipLinkElement.setAttribute("slot1", Long.toString(link.getSlot2().getId()));
+                }
+            }
+
+            Element partsElement = mDocument.createElement("parts");
+            systemElement.appendChild(partsElement);
+            for (Part part : worldSystem.getParts()) {
+                Element partElement = mDocument.createElement("part");
+                partsElement.appendChild(partElement);
+                partElement.setAttribute("id", Long.toString(part.getId()));
+                if(part.getOwner() != null) {
+                    partElement.setAttribute("owner", Long.toString(part.getOwner().getId()));
+                }
+                partElement.setAttribute("mass", Double.toString(part.getMass()));
+                partElement.setAttribute("linear-dumping", Double.toString(part.getLinearDamping()));
+                partElement.setAttribute("angular-dumping", Double.toString(part.getAngularDamping()));
+                partElement.setAttribute("angular-speed", part.getAngularSpeed().toString());
+                partElement.setAttribute("linear-speed", part.getLinearSpeed().toString());
+                partElement.setAttribute("transform", part.getTransform().toString());
+                partElement.setAttribute("shape", part.getShape().toString());
+                partElement.setAttribute("parent", Long.toString(part.getParentObject().getId()));
+                partElement.setAttribute("collision-shape", part.getCollisionShape().toString());
+
+                if(part.getCollisionExcludeList() != null) {
+                    Element collisionExcludeListElement = mDocument.createElement("collision-exclude-list");
+                    partElement.appendChild(collisionExcludeListElement);
+                    for (Part collisionPart : part.getCollisionExcludeList()) {
+                        Element collisionExcludePartElement = mDocument.createElement("part");
+                        collisionExcludeListElement.appendChild(collisionExcludePartElement);
+                        partElement.setAttribute("id", Long.toString(collisionPart.getId()));
+                    }
+                }
+            }
+
+            Element slotsElement = mDocument.createElement("slots");
+            systemElement.appendChild(slotsElement);
+            for (Slot slot : worldSystem.getSlotIdMap().values()) {
+                Element slotElement = mDocument.createElement("slot");
+                slotsElement.appendChild(slotElement);
+
+                generateSlot(slotElement, slot);
+            }
+
+            Element componentsElement = mDocument.createElement("components");
+            systemElement.appendChild(componentsElement);
+            for (Component component : worldSystem.getComponentIdMap().values()) {
+                Element componentElement = mDocument.createElement("component");
+                componentsElement.appendChild(componentElement);
+
+                componentElement.setAttribute("id", Long.toString(component.getId()));
+                componentElement.setAttribute("key", component.getKey());
+                componentElement.setAttribute("efficiency", Double.toString(component.getEfficiency()));
+                componentElement.setAttribute("quality", Double.toString(component.getQuality()));
+                componentElement.setAttribute("ship", Long.toString(component.getShip().getId()));
+                componentElement.setAttribute("location-in-ship", component.getLocationInShip().toString());
+                componentElement.setAttribute("ship-rotation", component.getShipRotation().toString());
+                componentElement.setAttribute("attached", Boolean.toString(component.isAttached()));
+
+                Element componentSlotsElement = mDocument.createElement("slots");
+                componentElement.appendChild(componentSlotsElement);
+                for (Slot slot : component.getSlots()) {
+                    Element componentSlotElement = mDocument.createElement("slot");
+                    componentSlotsElement.appendChild(componentSlotElement);
+                    componentSlotElement.setAttribute("id", Long.toString(slot.getId()));
+                }
+
+                Element componentCapacitiesElement = mDocument.createElement("capacities");
+                componentElement.appendChild(componentCapacitiesElement);
+                for (Capacity capacity : component.getCapacities()) {
+                    Element componentCapacityElement = mDocument.createElement("capacity");
+                    componentCapacitiesElement.appendChild(componentCapacityElement);
+                    componentCapacityElement.setAttribute("id", Long.toString(capacity.getId()));
+                }
+            }
+
+            Element capacitiesElement = mDocument.createElement("capacities");
+            systemElement.appendChild(capacitiesElement);
+            for (Capacity capacity : worldSystem.getCapacityIdMap().values()) {
+                Element capacityElement = mDocument.createElement("capacity");
+                capacitiesElement.appendChild(capacityElement);
+
+                capacityElement.setAttribute("id", Long.toString(capacity.getId()));
+                capacityElement.setAttribute("name", capacity.getName());
+                capacityElement.setAttribute("component", Long.toString(capacity.getComponent().getId()));
+
+                //TODO custom properties
+            }
         }
 
 
+    }
+
+    private void generateSlot(Element element, Slot slot) {
+        element.setAttribute("id", Long.toString(slot.getId()));
+        element.setAttribute("position", slot.getPosition().toString());
+        element.setAttribute("part", Long.toString(slot.getPart().getId()));
+        element.setAttribute("component", Long.toString(slot.getComponent().getId()));
     }
 
     private void generateWorkUnit(Element workUnitElement, ProductionTask.WorkUnit workUnit) {

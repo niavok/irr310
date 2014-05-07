@@ -17,6 +17,7 @@ public abstract class Capacity extends WorldSystemEntity{
         this.name = "undefined";
     }
 
+    //TODO check usage
     public enum CapacityType {
         LINEAR_ENGINE,
         WING,

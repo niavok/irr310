@@ -247,8 +247,8 @@ public class ServerSystemGameEngine implements Engine {
 //                o.changeLinearSpeed(event.getLinearSpeed());
 //            }
 //
-//            if (event.getRotationSpeed() != null) {
-//                o.changeRotationSpeed(event.getRotationSpeed());
+//            if (event.getAngularSpeed() != null) {
+//                o.changeRotationSpeed(event.getAngularSpeed());
 //            }
 //
 //            o.setName(event.getName());
@@ -584,7 +584,7 @@ public class ServerSystemGameEngine implements Engine {
          * asteroid.getFirstPart().getLinearSpeed().set(random.nextFloat() *
          * linearSpeed - linearSpeed/2, random.nextFloat() * linearSpeed -
          * linearSpeed/2, random.nextFloat() * linearSpeed - linearSpeed/2);
-         * asteroid.getFirstPart().getRotationSpeed().set(random.nextFloat() *
+         * asteroid.getFirstPart().getAngularSpeed().set(random.nextFloat() *
          * angularSpeed - angularSpeed/2f, random.nextFloat() * angularSpeed -
          * angularSpeed/2f, random.nextFloat() * angularSpeed -
          * angularSpeed/2f); getWorld().addCelestialObject(asteroid); }
