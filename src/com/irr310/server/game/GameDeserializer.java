@@ -7,11 +7,14 @@ import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.*;
 import com.irr310.common.world.item.ComponentItem;
 import com.irr310.common.world.item.Item;
+import com.irr310.common.world.item.ShipItem;
 import com.irr310.common.world.system.Nexus;
 import com.irr310.common.world.system.WorldSystem;
 import com.irr310.i3d.Color;
+import com.irr310.server.GameServer;
 import com.irr310.server.world.product.ComponentProduct;
 import com.irr310.server.world.product.Product;
+import com.irr310.server.world.product.ShipProduct;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -102,6 +105,11 @@ public class GameDeserializer {
     }
 
     private void parseWorld(Element element, Pass pass) {
+        if(pass == Pass.OBJECT_PASS) {
+            GameServer.setNextId(getLongAttribute(element, "next-item-id"));
+        }
+
+
         NodeList childNodes = element.getChildNodes();
         // First pass create items
         for (int i = 0; i < childNodes.getLength(); i++) {
@@ -530,9 +538,32 @@ public class GameDeserializer {
     }
 
     private void parseItem(Element element, Pass pass) {
-        Item item;
+
         switch(pass) {
             case OBJECT_PASS: {
+
+                Map<String, Item> subitems = new HashMap<String, Item>();
+
+                if(element.getElementsByTagName("subitems").getLength() > 0) {
+                    NodeList childNodes = element.getElementsByTagName("subitems").item(0).getChildNodes();
+                    for (int i = 0; i < childNodes.getLength(); i++) {
+                        Node node = childNodes.item(i);
+                        if (node.getNodeType() != Node.ELEMENT_NODE) {
+                            // White space
+                            continue;
+                        }
+                        Element subElement = (Element) node;
+                        if (subElement.getNodeName().equals("subitem")) {
+                            String key = subElement.getAttribute("key");
+                            long itemId = getLongAttribute(subElement, "item");
+                            Item item = mItemMap.get(itemId);
+                            subitems.put(key, item);
+                        } else {
+                            throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for tag subtems element");
+                        }
+                    }
+                }
+
                 long id = getLongAttribute(element, "id");
                 String productId = element.getAttribute("product");
                 Product product = mWorld.getProductManager().getProductById(productId);
@@ -541,11 +572,15 @@ public class GameDeserializer {
 
                 switch (type) {
                     case COMPONENT:
-                        ComponentItem componentItem = new ComponentItem((ComponentProduct) product, mWorld, id, new HashMap<String, Item>());
+
+                        ComponentItem componentItem = new ComponentItem((ComponentProduct) product, mWorld, id, subitems);
                         componentItem.setState(state);
                         mItemMap.put(componentItem.getId(), componentItem);
                         break;
                     case SHIP:
+                        ShipItem shipItem = new ShipItem((ShipProduct) product, mWorld, id, subitems);
+                        shipItem.setState(state);
+                        mItemMap.put(shipItem.getId(), shipItem);
                         break;
 
                 }
@@ -556,7 +591,7 @@ public class GameDeserializer {
                     long ownerId = getLongAttribute(element, "owner");
                     long usufructId = getLongAttribute(element, "usufruct");
 
-                    item = mItemMap.get(id);
+                    Item item = mItemMap.get(id);
                     Faction owner = mFactionMap.get(ownerId);
                     Faction usufruct = mFactionMap.get(usufructId);
 

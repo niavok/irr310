@@ -22,6 +22,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import com.irr310.common.tools.Log;
 import com.irr310.common.world.*;
+import com.irr310.server.GameServer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -131,6 +132,9 @@ public class GameSerializer {
 
     private void serializeWorld(World world, Element parentElement) {
         Element worldElement = mDocument.createElement("world");
+
+        worldElement.setAttribute("next-item-id", Long.toString(GameServer.getNextId()));
+
         parentElement.appendChild(worldElement);
 
         // Players
@@ -248,8 +252,12 @@ public class GameSerializer {
             
             itemElement.setAttribute("id", Long.toString(item.getId()));
             itemElement.setAttribute("type", item.getType().toString());
-            itemElement.setAttribute("owner", Long.toString(item.getOwner().getId()));
-            itemElement.setAttribute("usufruct", Long.toString(item.getUsufruct().getId()));
+            if(item.getOwner() != null) {
+                itemElement.setAttribute("owner", Long.toString(item.getOwner().getId()));
+            }
+            if(item.getUsufruct() != null) {
+                itemElement.setAttribute("usufruct", Long.toString(item.getUsufruct().getId()));
+            }
             itemElement.setAttribute("state", item.getState().toString());
             itemElement.setAttribute("product", item.getProduct().getId());
 

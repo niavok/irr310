@@ -41,6 +41,14 @@ public class GameServer {
         return nextId++;
     }
 
+    public static long getNextId() {
+        return nextId;
+    }
+
+    public static void setNextId(long nextId) {
+        GameServer.nextId = nextId;
+    }
+
     public static GameServer getInstance() {
         return instance;
     }
