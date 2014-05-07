@@ -5,10 +5,12 @@ import com.irr310.common.tools.RessourceLoadingException;
 import com.irr310.common.tools.Vec2;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.*;
+import com.irr310.common.world.item.ComponentItem;
 import com.irr310.common.world.item.Item;
 import com.irr310.common.world.system.Nexus;
 import com.irr310.common.world.system.WorldSystem;
 import com.irr310.i3d.Color;
+import com.irr310.server.world.product.ComponentProduct;
 import com.irr310.server.world.product.Product;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -265,29 +267,34 @@ public class GameDeserializer {
             break;
         }
 
-        if(pass == Pass.OBJECT_PASS) {
-            NodeList childNodes = element.getChildNodes();
-            for (int i = 0; i < childNodes.getLength(); i++) {
-                Node node = childNodes.item(i);
-                if (node.getNodeType() != Node.ELEMENT_NODE) {
-                    // White space
-                    continue;
-                }
-                Element subElement = (Element) node;
-                if (subElement.getNodeName().equals("next-factory-capacity-order")) {
+        NodeList childNodes = element.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            Node node = childNodes.item(i);
+            if (node.getNodeType() != Node.ELEMENT_NODE) {
+                // White space
+                continue;
+            }
+            Element subElement = (Element) node;
+            if (subElement.getNodeName().equals("next-factory-capacity-order")) {
+                if(pass == Pass.OBJECT_PASS) {
                     FactionProduction.FactoryCapacityOrder factoryCapacityOrder = parseFactionProductionCapacityOrder(subElement);
                     faction.getProduction().setNextFactoryCapacityOrder(factoryCapacityOrder);
-                } else if (subElement.getNodeName().equals("factory-capacity-orders")) {
-                    parseFactionProductionCapacityOrders(subElement, faction);
-                } else if (subElement.getNodeName().equals("factory-capacity-active-orders")) {
-                    parseFactionProductionActiveCapacityOrders(subElement, faction);
-                } else if (subElement.getNodeName().equals("production-tasks")) {
-                    parseProductionTasks(subElement, pass, faction);
-                } else {
-                    throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for tag faction element");
                 }
+            } else if (subElement.getNodeName().equals("factory-capacity-orders")) {
+                if(pass == Pass.OBJECT_PASS) {
+                    parseFactionProductionCapacityOrders(subElement, faction);
+                }
+            } else if (subElement.getNodeName().equals("factory-capacity-active-orders")) {
+                if(pass == Pass.OBJECT_PASS) {
+                    parseFactionProductionActiveCapacityOrders(subElement, faction);
+                }
+            } else if (subElement.getNodeName().equals("production-tasks")) {
+                parseProductionTasks(subElement, pass, faction);
+            } else {
+                throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for tag faction element");
             }
         }
+
     }
 
     private void parseProductionTasks(Element element, Pass pass, Faction faction) {
@@ -333,7 +340,7 @@ public class GameDeserializer {
         Element currentWorkUnitElement = (Element) workUnitElement.getElementsByTagName("current-work-unit").item(0);
         if(batchWorkUnit.getCurrentWorkUnit() instanceof BatchWorkUnit) {
             updateBatchWorkUnit(currentWorkUnitElement, (BatchWorkUnit) batchWorkUnit.getCurrentWorkUnit());
-        } else if (batchWorkUnit.getCurrentWorkUnit() instanceof BatchWorkUnit) {
+        } else if (batchWorkUnit.getCurrentWorkUnit() instanceof BuildWorkUnit) {
             updateBuildWorkUnit(currentWorkUnitElement, (BuildWorkUnit) batchWorkUnit.getCurrentWorkUnit());
         } else {
             throw new RessourceLoadingException("Unknown class '"+batchWorkUnit.getCurrentWorkUnit().getClass().getSimpleName());
@@ -342,7 +349,6 @@ public class GameDeserializer {
     }
     private void updateBuildWorkUnit(Element workUnitElement, BuildWorkUnit buildWorkUnit) {
         Element reservedItemsElement = (Element) workUnitElement.getElementsByTagName("reserved-items").item(0);
-
         Map<String, Item> reservedItems = new HashMap<String, Item>();
         buildWorkUnit.setReservedItems(reservedItems);
 
@@ -359,9 +365,9 @@ public class GameDeserializer {
                 continue;
             }
             Element subElement = (Element) node;
-            if (subElement.getNodeName().equals("reserved-items")) {
+            if (subElement.getNodeName().equals("reserved-item")) {
                 long itemId = getLongAttribute(subElement, "item");
-                String key = subElement.getAttribute("kernel");
+                String key = subElement.getAttribute("key");
                 Item item = mItemMap.get(itemId);
                 reservedItems.put(key, item);
             } else {
@@ -388,7 +394,7 @@ public class GameDeserializer {
             return batchWorkUnit;
         } else if (type.equals("build")) {
             long accumulatedProductionCapacity = getLongAttribute(workUnitElement, "accumulated-production-capacity");
-            long pendingOres = getLongAttribute(workUnitElement, "accumulated-production-capacity");
+            long pendingOres = getLongAttribute(workUnitElement, "pending-ores");
             String productId = workUnitElement.getAttribute("product");
             WorkState workState = WorkState.valueOf(workUnitElement.getAttribute("work-state"));
 
@@ -516,11 +522,49 @@ public class GameDeserializer {
             }
             Element subElement = (Element) node;
             if (subElement.getNodeName().equals("item")) {
-                //TODO
-                //parseItem(subElement, pass);
+                parseItem(subElement, pass);
             } else {
                 throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for tag players element");
             }
+        }
+    }
+
+    private void parseItem(Element element, Pass pass) {
+        Item item;
+        switch(pass) {
+            case OBJECT_PASS: {
+                long id = getLongAttribute(element, "id");
+                String productId = element.getAttribute("product");
+                Product product = mWorld.getProductManager().getProductById(productId);
+                Item.ItemType type = Item.ItemType.valueOf(element.getAttribute("type"));
+                Item.State state = Item.State.valueOf(element.getAttribute("state"));
+
+                switch (type) {
+                    case COMPONENT:
+                        ComponentItem componentItem = new ComponentItem((ComponentProduct) product, mWorld, id, new HashMap<String, Item>());
+                        componentItem.setState(state);
+                        mItemMap.put(componentItem.getId(), componentItem);
+                        break;
+                    case SHIP:
+                        break;
+
+                }
+            }
+            break;
+            case LINK_PASS: {
+                    long id = getLongAttribute(element, "id");
+                    long ownerId = getLongAttribute(element, "owner");
+                    long usufructId = getLongAttribute(element, "usufruct");
+
+                    item = mItemMap.get(id);
+                    Faction owner = mFactionMap.get(ownerId);
+                    Faction usufruct = mFactionMap.get(usufructId);
+
+                    item.setOwner(owner);
+                    item.setUsufruct(usufruct);
+                    owner.getStocks().addItem(item);
+            }
+            break;
         }
     }
 

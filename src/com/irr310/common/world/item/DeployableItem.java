@@ -14,8 +14,8 @@ public abstract class DeployableItem extends Item {
 //    private double deployedRadius;
 //    protected WorldSystem currentSystem;
 
-    public DeployableItem(Product product, ItemType type, World world, long id, Faction owner, Map<String,Item> subItems) {
-        super(product, type, world, id, owner, subItems);
+    public DeployableItem(Product product, ItemType type, World world, long id, Map<String,Item> subItems) {
+        super(product, type, world, id, subItems);
     }
     
 //    protected void setDeployedRadius(double radius) {

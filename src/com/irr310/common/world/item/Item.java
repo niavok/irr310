@@ -26,7 +26,7 @@ public class Item extends WorldEntity {
         DESTROYED,
     }
     
-    private final Faction owner;
+    private Faction owner;
     private Faction usufruct;
     private State state;
     private final ItemType type;
@@ -34,18 +34,23 @@ public class Item extends WorldEntity {
     private Map<String,Item> subItems;
 
     
-    public Item(Product product, ItemType type, World world, long id, Faction owner, Map<String,Item> subItems) {
+    public Item(Product product, ItemType type, World world, long id, Map<String,Item> subItems) {
         super(world, id);
         this.product = product;
         this.type = type;
-        this.owner = owner;
         this.subItems = subItems;
         this.state = State.STOCKED;
-        setUsufruct(owner);
         world.addItem(this);
     }
 
-    private void setUsufruct(Faction usufruct) {
+    public void setOwner(Faction owner) {
+        this.owner = owner;
+        if(usufruct == null) {
+            setUsufruct(owner);
+        }
+    }
+
+    public void setUsufruct(Faction usufruct) {
         this.usufruct = usufruct;
     }
        

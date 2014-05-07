@@ -22,12 +22,14 @@ public class ItemFactory {
     public void createItem(Product product, Faction faction, Map<String,Item> subItems) {
         if(product instanceof ComponentProduct) {
             ComponentProduct componentProduct = (ComponentProduct) product;
-            ComponentItem componentItem = new ComponentItem(componentProduct, GameServer.pickNewId(), faction, subItems);
+            ComponentItem componentItem = new ComponentItem(componentProduct, world, GameServer.pickNewId(), subItems);
+            componentItem.setOwner(faction);
             faction.getStocks().addItem(componentItem);
         } else if(product instanceof ShipProduct) {
             ShipProduct shipProduct = (ShipProduct) product;
-            ShipItem componentItem = new ShipItem(shipProduct, GameServer.pickNewId(), faction, subItems);
-            faction.getStocks().addItem(componentItem);
+            ShipItem shipItem = new ShipItem(shipProduct, world, GameServer.pickNewId(), subItems);
+            shipItem.setOwner(faction);
+            faction.getStocks().addItem(shipItem);
         } else {
             Log.error("Not implement createItem for"+product.getClass().getSimpleName());
         }
