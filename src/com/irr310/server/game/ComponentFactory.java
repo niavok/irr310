@@ -34,7 +34,8 @@ public class ComponentFactory {
             if(genericCapacity instanceof ComponentLinearEngineCapacityProduct) {
                 ComponentLinearEngineCapacityProduct capacity = (ComponentLinearEngineCapacityProduct) genericCapacity;
                 
-                LinearEngineCapacity linearEngineCapacity = new LinearEngineCapacity(system, GameServer.pickNewId(), component);
+                LinearEngineCapacity linearEngineCapacity = new LinearEngineCapacity(system, GameServer.pickNewId());
+                linearEngineCapacity.setComponent(component);
                 linearEngineCapacity.theoricalMaxThrust = capacity.getTheoricalMaxThrust();
                 linearEngineCapacity.theoricalMinThrust = capacity.getTheoricalMinThrust();
                 linearEngineCapacity.theoricalVariationSpeed = capacity.getTheoricalVariationSpeed();
@@ -45,7 +46,8 @@ public class ComponentFactory {
         }
         
         for(ComponentPartProduct partProduct: product.getParts()) {
-            Part part = new Part(GameServer.pickNewId(), component);
+            Part part = new Part(system, GameServer.pickNewId());
+            part.setParentObject(component);
             component.addPart(part);
             
             part.setMass(partProduct.getMass());

@@ -13,8 +13,8 @@ public class RocketCapacity extends Capacity {
     public double thrustDuration;
     public double stability;
 
-    public RocketCapacity(WorldSystem worldSystem, long id, Component component) {
-        super(worldSystem, id, component);
+    public RocketCapacity(WorldSystem worldSystem, long id) {
+        super(worldSystem, id);
         currentThrust = 0;
         theoricalMaxThrust = 0;
         stability = 0.5;

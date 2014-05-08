@@ -11,8 +11,8 @@ public class WingCapacity extends Capacity {
     public double yield;
     public double friction;
 
-    public WingCapacity(WorldSystem worldSystem, long id, Component component) {
-        super(worldSystem, id, component);
+    public WingCapacity(WorldSystem worldSystem, long id) {
+        super(worldSystem, id);
         this.breakAxis = new Vec3(0, 0, 1);
         this.thrustAxis = new Vec3(0, 1, 0);
         yield = 0.2;

@@ -80,23 +80,23 @@ public class SimpleShipDriver implements ShipDriver {
         
         if (currentEnergy + energyToZero < targetEnergy - e) {
             for (LinearEngineCapacity engine : mEngines) {
-                engine.setTargetThrust(engine.theoricalMaxThrust);
+                engine.setTargetThrustInput(engine.theoricalMaxThrust);
             }
         } else if (currentEnergy + energyToZero > targetEnergy + e) {
             for (LinearEngineCapacity engine : mEngines) {
-                engine.setTargetThrust(engine.theoricalMinThrust);
+                engine.setTargetThrustInput(engine.theoricalMinThrust);
             }
         } else if (currentEnergy + energyToZero < targetEnergy ) {
             for (LinearEngineCapacity engine : mEngines) {
-                engine.setTargetThrust(engine.theoricalMaxThrust * (energyDelta - energyToZero) / e );
+                engine.setTargetThrustInput(engine.theoricalMaxThrust * (energyDelta - energyToZero) / e );
             }
         } else if (currentEnergy + energyToZero > targetEnergy) {
             for (LinearEngineCapacity engine : mEngines) {
-                engine.setTargetThrust(engine.theoricalMinThrust * (energyToZero - energyDelta) / e  );
+                engine.setTargetThrustInput(engine.theoricalMinThrust * (energyToZero - energyDelta) / e  );
             }
         } else {
             for (LinearEngineCapacity engine : mEngines) {
-                engine.setTargetThrust(0);
+                engine.setTargetThrustInput(0);
             }
         }
         
@@ -172,7 +172,7 @@ public class SimpleShipDriver implements ShipDriver {
                 alpha += (engine.getMaxThrust() - engine.getMinThrust()) * aim.z * (rotAxis.z > 0 ? 1: -1);
             }
             
-            engine.setTargetThrust(engine.getTargetThrustInput() + alpha);
+            engine.setTargetThrustInput(engine.getTargetThrustInput() + alpha);
         }
         
         

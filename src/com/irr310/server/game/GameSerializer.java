@@ -24,6 +24,7 @@ import com.irr310.common.tools.Log;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.*;
 import com.irr310.common.world.capacity.Capacity;
+import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.common.world.system.*;
 import com.irr310.server.GameServer;
 import com.sun.org.apache.xpath.internal.operations.Bool;
@@ -328,12 +329,12 @@ public class GameSerializer {
 
 
                 Element shipLinksElement = mDocument.createElement("links");
-                shipElement.appendChild(shipComponentsElement);
+                shipElement.appendChild(shipLinksElement);
                 for (Link link : ship.getLinks()) {
                     Element shipLinkElement = mDocument.createElement("link");
                     shipLinksElement.appendChild(shipLinkElement);
                     shipLinkElement.setAttribute("slot1", Long.toString(link.getSlot1().getId()));
-                    shipLinkElement.setAttribute("slot1", Long.toString(link.getSlot2().getId()));
+                    shipLinkElement.setAttribute("slot2", Long.toString(link.getSlot2().getId()));
                 }
             }
 
@@ -383,6 +384,10 @@ public class GameSerializer {
                 componentsElement.appendChild(componentElement);
 
                 componentElement.setAttribute("id", Long.toString(component.getId()));
+
+
+
+
                 componentElement.setAttribute("key", component.getKey());
                 componentElement.setAttribute("efficiency", Double.toString(component.getEfficiency()));
                 componentElement.setAttribute("quality", Double.toString(component.getQuality()));
@@ -390,6 +395,8 @@ public class GameSerializer {
                 componentElement.setAttribute("location-in-ship", component.getLocationInShip().toString());
                 componentElement.setAttribute("ship-rotation", component.getShipRotation().toString());
                 componentElement.setAttribute("attached", Boolean.toString(component.isAttached()));
+
+
 
                 Element componentSlotsElement = mDocument.createElement("slots");
                 componentElement.appendChild(componentSlotsElement);
@@ -406,6 +413,23 @@ public class GameSerializer {
                     componentCapacitiesElement.appendChild(componentCapacityElement);
                     componentCapacityElement.setAttribute("id", Long.toString(capacity.getId()));
                 }
+
+                //SystemObject properties
+                componentElement.setAttribute("name", component.getName());
+                componentElement.setAttribute("skin", component.getSkin());
+                componentElement.setAttribute("durability-max", Double.toString(component.getDurabilityMax()));
+                componentElement.setAttribute("durability", Double.toString(component.getDurability()));
+                componentElement.setAttribute("physical-resistance", Double.toString(component.getPhysicalResistance()));
+                componentElement.setAttribute("heat-resistance", Double.toString(component.getHeatResistance()));
+
+
+                Element componentPartsElement = mDocument.createElement("parts");
+                componentElement.appendChild(componentPartsElement);
+                for (Part part : component.getParts()) {
+                    Element componentPartElement = mDocument.createElement("part");
+                    componentPartsElement.appendChild(componentPartElement);
+                    componentPartElement.setAttribute("id", Long.toString(part.getId()));
+                }
             }
 
             Element capacitiesElement = mDocument.createElement("capacities");
@@ -417,6 +441,21 @@ public class GameSerializer {
                 capacityElement.setAttribute("id", Long.toString(capacity.getId()));
                 capacityElement.setAttribute("name", capacity.getName());
                 capacityElement.setAttribute("component", Long.toString(capacity.getComponent().getId()));
+
+                if(capacity instanceof LinearEngineCapacity) {
+                    LinearEngineCapacity linearEngineCapacity = (LinearEngineCapacity) capacity;
+                    capacityElement.setAttribute("type", "linear-engine");
+                    capacityElement.setAttribute("current-thrust", Double.toString(linearEngineCapacity.getCurrentThrust()));
+                    capacityElement.setAttribute("target-thrust", Double.toString(linearEngineCapacity.getTargetThrust()));
+                    capacityElement.setAttribute("base-max-thrust", Double.toString(linearEngineCapacity.getTheoricalMaxThrust()));
+                    capacityElement.setAttribute("base-min-thrust", Double.toString(linearEngineCapacity.getTheoricalMinThrust()));
+                    capacityElement.setAttribute("base-variation-speed", Double.toString(linearEngineCapacity.getTheoricalVariationSpeed()));
+                    capacityElement.setAttribute("max-thrust", Double.toString(linearEngineCapacity.getMaxThrust()));
+                    capacityElement.setAttribute("min-thrust", Double.toString(linearEngineCapacity.getMinThrust()));
+                    capacityElement.setAttribute("variation-speed", Double.toString(linearEngineCapacity.getVariationSpeed()));
+                    capacityElement.setAttribute("target-thrust-input", Double.toString(linearEngineCapacity.getTargetThrustInput()));
+                }
+
 
                 //TODO custom properties
             }

@@ -101,11 +101,14 @@ Gameplay
 - flak canon
 - module kernel d'acquisition : designation de cible
 - Systeme d'overburn : detrure la structure et le fonctionnel au bénéfice de mellieurs perfs
-
+- usure progressive si l'utilisation est supérieur à un seuil
+- missile que se split
 Technologie
 -----------
 
 Définir des domaines scientifiques ???
+
+concept débloqué par certaines actions : découverte du kolium, neuridium, découverte d'adversaire, etc ...
 
 
 Nexus technologies

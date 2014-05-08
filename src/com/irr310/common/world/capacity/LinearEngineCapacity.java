@@ -16,8 +16,8 @@ public class LinearEngineCapacity extends Capacity {
 
     public double targetThrustInput;
 
-    public LinearEngineCapacity(WorldSystem worldSystem, long id, Component component) {
-        super(worldSystem, id, component);
+    public LinearEngineCapacity(WorldSystem worldSystem, long id) {
+        super(worldSystem, id);
         currentThrust = 0;
         targetThrust = 0;
         targetThrustInput =0 ;
@@ -26,6 +26,10 @@ public class LinearEngineCapacity extends Capacity {
     public double getCurrentThrust() {
 
         return currentThrust;
+    }
+
+    public double getTheoricalVariationSpeed() {
+        return theoricalVariationSpeed;
     }
 
     public double getTargetThrust() {
@@ -52,11 +56,44 @@ public class LinearEngineCapacity extends Capacity {
         return variationSpeed;
     }
 
-    public void setTargetThrust(double targetThrustInput) {
-        this.targetThrustInput = targetThrustInput;
+
+    public void setTargetThrust(double targetThrust) {
+        this.targetThrust = targetThrust;
     }
     
     public double getTargetThrustInput() {
         return targetThrustInput;
+    }
+
+    public void setCurrentThrust(double currentThrust) {
+        this.currentThrust = currentThrust;
+    }
+
+    public void setTheoricalMaxThrust(double theoricalMaxThrust) {
+        this.theoricalMaxThrust = theoricalMaxThrust;
+    }
+
+    public void setTheoricalMinThrust(double theoricalMinThrust) {
+        this.theoricalMinThrust = theoricalMinThrust;
+    }
+
+    public void setTheoricalVariationSpeed(double theoricalVariationSpeed) {
+        this.theoricalVariationSpeed = theoricalVariationSpeed;
+    }
+
+    public void setMaxThrust(double maxThrust) {
+        this.maxThrust = maxThrust;
+    }
+
+    public void setMinThrust(double minThrust) {
+        this.minThrust = minThrust;
+    }
+
+    public void setVariationSpeed(double variationSpeed) {
+        this.variationSpeed = variationSpeed;
+    }
+
+    public void setTargetThrustInput(double targetThrustInput) {
+        this.targetThrustInput = targetThrustInput;
     }
 }

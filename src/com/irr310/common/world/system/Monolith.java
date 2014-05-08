@@ -14,7 +14,8 @@ public class Monolith extends CelestialObject {
         setDurability(1000);
         setSkin("monolith");
         
-        Part part = new Part(GameServer.pickNewId(), this);
+        Part part = new Part(system, GameServer.pickNewId());
+        part.setParentObject(this);
         part.setCollisionShape(CollisionShape.SPHERE);
         this.addPart(part);
         

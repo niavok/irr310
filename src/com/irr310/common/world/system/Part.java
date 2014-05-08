@@ -7,19 +7,21 @@ import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.Faction;
 
-public class Part extends WorldEntity {
+public class Part extends WorldSystemEntity {
 
     // private final Vect3 position;
     private Double mass;
     private Double linearDamping;
     private Double angularDamping;
-    private final Vec3 angularSpeed;
-    private final Vec3 linearSpeed;
+    private Vec3 angularSpeed;
+    private Vec3 linearSpeed;
     private final TransformMatrix transform;
     private Vec3 shape;
     private Faction owner;
-    private final SystemObject parentObject;
+    private SystemObject parentObject;
     private CollisionShape collisionShape;
+
+    // TODO : save this
     private List<Part> collisionExcludeList;
     
     
@@ -27,9 +29,8 @@ public class Part extends WorldEntity {
         BOX, SPHERE,
     }
 
-    public Part(long id, SystemObject parentObject) {
-        super(parentObject.getWorld(), id);
-        this.parentObject = parentObject;
+    public Part(WorldSystem system, long id) {
+        super(system, id);
         angularSpeed = Vec3.origin();
         linearSpeed = Vec3.origin();
         transform = TransformMatrix.identity();
@@ -41,6 +42,26 @@ public class Part extends WorldEntity {
         angularDamping = 0.9;
         
         collisionExcludeList = null;
+    }
+
+    public void setLinearDamping(Double linearDamping) {
+        this.linearDamping = linearDamping;
+    }
+
+    public void setAngularDamping(Double angularDamping) {
+        this.angularDamping = angularDamping;
+    }
+
+    public void setParentObject(SystemObject parentObject) {
+        this.parentObject = parentObject;
+    }
+
+    public void setAngularSpeed(Vec3 angularSpeed) {
+        this.angularSpeed = angularSpeed;
+    }
+
+    public void setLinearSpeed(Vec3 linearSpeed) {
+        this.linearSpeed = linearSpeed;
     }
 
     public void setMass(Double mass) {

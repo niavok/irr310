@@ -58,18 +58,35 @@ public final class  Component extends SystemObject {
 		}
 		return minSlot;
 	}
-	
-	public List<Slot> getSlots() {
+
+    public void setQuality(double quality) {
+        this.quality = quality;
+    }
+
+    public void setEfficiency(double efficiency) {
+        this.efficiency = efficiency;
+    }
+
+    public List<Slot> getSlots() {
         return slots;
     }
 	
 	public Slot addSlot(long slotId, Part part, Vec3 position) {
-		Slot slot = new Slot(slotId, this,part, position);
+		Slot slot = new Slot(getSystem(), slotId, position);
+        slot.setParentComponent(this);
+        slot.setPart(part);
+
 		getSystem().addSlot(slot);
 		slots.add(slot);
 		return slot;
 		
 	}
+
+    public Slot addSlot(Slot slot) {
+        getSystem().addSlot(slot);
+        slots.add(slot);
+        return slot;
+    }
 	
 	@Override
 	public void setDurability(double durability) {

@@ -36,7 +36,9 @@ public class WorldSystem extends WorldEntity {
     private Faction owner;
     private boolean homeSystem;
     private String name;
-    
+
+    //TODO check double add for all lists
+
     public WorldSystem(World world, long id, Vec2 location) {
         super(world, id);
         this.location = location;
@@ -117,6 +119,11 @@ public class WorldSystem extends WorldEntity {
 //        }
 //    }
 
+    public void addCapacity(Capacity capacity) {
+        capacityIdMap.put(capacity.getId(), capacity);
+    }
+
+
     private void addParts(List<Part> parts) {
         for (Part part : parts) {
             addPart(part);
@@ -129,7 +136,7 @@ public class WorldSystem extends WorldEntity {
         }
     }
 
-    private void addPart(Part part) {
+    public void addPart(Part part) {
         partIdMap.put(part.getId(), part);
         parts.add(part);
 //        if (part.getOwner() == LoginManager.localPlayer.getFaction()) {

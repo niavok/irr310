@@ -177,7 +177,7 @@ public class Vec3 {
     }
 
     // TODO keep reference only during parsing
-    public static Pattern vec3Pattern = Pattern.compile("^\\[([-0-9]+\\.[0-9]+),([-0-9]+\\.[0-9]+),([-0-9]+\\.[0-9]+)\\]$");
+    public static Pattern vec3Pattern = Pattern.compile("^\\[([-0-9]+\\.[-0-9E]+),([-0-9]+\\.[-0-9E]+),([-0-9]+\\.[-0-9E]+)\\]$");
 
 
     public static Vec3 parseVec3(String vec3String) {

@@ -11,9 +11,8 @@ public abstract class Capacity extends WorldSystemEntity{
     private String name;
     private Component mComponent;
 
-    public Capacity(WorldSystem worldSystem, long id, Component component) {
+    public Capacity(WorldSystem worldSystem, long id) {
         super(worldSystem, id);
-        mComponent = component;
         this.name = "undefined";
     }
 
@@ -24,7 +23,11 @@ public abstract class Capacity extends WorldSystemEntity{
         GUN,
         ROCKET,
     }
-    
+
+    public void setComponent(Component component) {
+        mComponent = component;
+    }
+
     public Component getComponent() {
         return mComponent;
     }

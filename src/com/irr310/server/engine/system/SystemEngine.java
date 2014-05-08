@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import com.irr310.common.engine.CollisionDescriptor;
 import com.irr310.common.engine.Engine;
@@ -50,6 +49,10 @@ public class SystemEngine implements Engine {
     @Override
     public void init() {
         mPhysicEngine.init();
+
+        for (Ship ship : mSystem.getShips()) {
+            generateShipControllers(ship, null);
+        }
     }
     
     @Override
@@ -107,7 +110,11 @@ public class SystemEngine implements Engine {
         shipTransform.translate(nexus.getLocation());
 
         mSystem.addShip(ship);
-        
+
+        generateShipControllers(ship, shipTransform);
+    }
+
+    private void generateShipControllers(Ship ship, TransformMatrix shipTransform) {
         // Create capacity listeners
         for(Component component : ship.getComponents()) {
             for(Capacity capacity : component.getCapacities()) {
@@ -118,8 +125,7 @@ public class SystemEngine implements Engine {
         SimpleShipDriver driver = new SimpleShipDriver();
         driver.init(ship);
         mDrivers.put(ship, driver);
-        
-        
+
         notifyShipDeployed(ship, shipTransform);
     }
 

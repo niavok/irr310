@@ -70,7 +70,9 @@ public class Faction extends WorldEntity{
     }
     
     public void giveShip(Ship ship) {
-        shipList.add(ship);
+        if(!shipList.contains(ship)) {
+            shipList.add(ship);
+        }
     }
     
     public void removeShip(Ship ship) {

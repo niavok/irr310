@@ -1,15 +1,13 @@
 package com.irr310.server.game;
 
-import com.irr310.common.tools.Log;
-import com.irr310.common.tools.RessourceLoadingException;
-import com.irr310.common.tools.Vec2;
-import com.irr310.common.tools.Vec3;
+import com.irr310.common.tools.*;
 import com.irr310.common.world.*;
+import com.irr310.common.world.capacity.Capacity;
+import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.common.world.item.ComponentItem;
 import com.irr310.common.world.item.Item;
 import com.irr310.common.world.item.ShipItem;
-import com.irr310.common.world.system.Nexus;
-import com.irr310.common.world.system.WorldSystem;
+import com.irr310.common.world.system.*;
 import com.irr310.i3d.Color;
 import com.irr310.server.GameServer;
 import com.irr310.server.world.product.ComponentProduct;
@@ -41,13 +39,18 @@ public class GameDeserializer {
     private final DocumentBuilderFactory docBuilderFactory;
     private final World mWorld;
     private Map<Long, Player> mPlayerMap = new HashMap<Long, Player>();
+    private Map<Long, Ship> mShipMap = new HashMap<Long, Ship>();
     private Map<Long, Faction> mFactionMap = new HashMap<Long, Faction>();
     private Map<Long, WorldSystem> mSystemMap = new HashMap<Long, WorldSystem>();
     private Map<Long, Nexus> mNexusMap = new HashMap<Long, Nexus>();
     private Map<Long, Item> mItemMap = new HashMap<Long, Item>();
+    private Map<Long, Component> mComponentMap = new HashMap<Long, Component>();
+    private Map<Long, Part> mPartMap = new HashMap<Long, Part>();
+    private Map<Long, Slot> mSlotMap = new HashMap<Long, Slot>();
+    private Map<Long, Capacity> mCapacityMap = new HashMap<Long, Capacity>();
 
     private enum Pass {
-        LINK_PASS, OBJECT_PASS
+        LINK_PASS, OBJECT_PASS, ASSEMBLE_PASS
 
     }
 
@@ -74,6 +77,7 @@ public class GameDeserializer {
 
             parseRoot(root, Pass.OBJECT_PASS);
             parseRoot(root, Pass.LINK_PASS);
+            parseRoot(root, Pass.ASSEMBLE_PASS);
 
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
@@ -218,14 +222,35 @@ public class GameDeserializer {
             if (subElement.getNodeName().equals("players")) {
                 parseFactionPlayers(subElement, pass, faction);
             } else if (subElement.getNodeName().equals("known-systems")) {
-                 parseFactionKnownSystems(subElement, pass, faction);
+                parseFactionKnownSystems(subElement, pass, faction);
             } else if (subElement.getNodeName().equals("ships")) {
-                // TODO parse ships
+                parseFactionShip(subElement, pass, faction);
             } else if (subElement.getNodeName().equals("production")) {
                 parseFactionProduction(subElement, pass, faction);
                 // TODO parse production
             } else {
                 throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for tag faction element");
+            }
+        }
+    }
+
+    private void parseFactionShip(Element element, Pass pass, Faction faction) {
+        if(pass == Pass.LINK_PASS) {
+            NodeList childNodes = element.getChildNodes();
+            for (int i = 0; i < childNodes.getLength(); i++) {
+                Node node = childNodes.item(i);
+                if (node.getNodeType() != Node.ELEMENT_NODE) {
+                    // White space
+                    continue;
+                }
+                Element subElement = (Element) node;
+                if (subElement.getNodeName().equals("ship")) {
+                    long shipId = getLongAttribute(subElement, "id");
+                    Ship ship = mShipMap.get(shipId);
+                    faction.giveShip(ship);
+                } else {
+                    throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for tag faction element");
+                }
             }
         }
     }
@@ -668,20 +693,476 @@ public class GameDeserializer {
             if (subElement.getNodeName().equals("nexuses")) {
                 parseNexuses(subElement, pass, system);
             } else if (subElement.getNodeName().equals("ships")) {
-                //TODO
+                parseShips(subElement, pass, system);
             } else if (subElement.getNodeName().equals("parts")) {
-                //TODO
+                parseParts(subElement, pass, system);
             } else if (subElement.getNodeName().equals("slots")) {
-                //TODO
+                parseSlots(subElement, pass, system);
             } else if (subElement.getNodeName().equals("components")) {
-                //TODO
+                parseComponents(subElement, pass, system);
             } else if (subElement.getNodeName().equals("capacities")) {
-                //TODO
+                parseCapacities(subElement, pass, system);
             } else {
                 throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for tag system element");
             }
         }
 
+    }
+
+    private void parseCapacities(Element element, Pass pass, WorldSystem system) {
+        NodeList childNodes = element.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            Node node = childNodes.item(i);
+            if (node.getNodeType() != Node.ELEMENT_NODE) {
+                // White space
+                continue;
+            }
+            Element subElement = (Element) node;
+            if (subElement.getNodeName().equals("capacity")) {
+                parseCapacity(subElement, pass, system);
+            } else {
+                throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for capacities element");
+            }
+        }
+    }
+
+    private void parseCapacity(Element element, Pass pass, WorldSystem system) {
+        Capacity capacity = null;
+        switch(pass) {
+            case OBJECT_PASS: {
+                long id = getLongAttribute(element, "id");
+                String name = element.getAttribute("name");
+                String type = element.getAttribute("type");
+
+                if(type.equals("linear-engine")) {
+                    LinearEngineCapacity linearEngineCapacity = new LinearEngineCapacity(system, id);
+                    capacity = linearEngineCapacity;
+
+                    double currentThrust = getDoubleAttribute(element, "current-thrust");
+                    double targetThrust = getDoubleAttribute(element, "target-thrust");
+                    double baseMaxThrust = getDoubleAttribute(element, "base-max-thrust");
+                    double baseMinThrust = getDoubleAttribute(element, "base-min-thrust");
+                    double baseVariationSpeed = getDoubleAttribute(element, "base-variation-speed");
+                    double maxThrust = getDoubleAttribute(element, "max-thrust");
+                    double minThrust = getDoubleAttribute(element, "min-thrust");
+                    double variationSpeed = getDoubleAttribute(element, "variation-speed");
+                    double targetThrustInput = getDoubleAttribute(element, "target-thrust-input");
+
+                    linearEngineCapacity.setCurrentThrust(currentThrust);
+                    linearEngineCapacity.setTargetThrust(targetThrust);
+                    linearEngineCapacity.setTheoricalMaxThrust(baseMaxThrust);
+                    linearEngineCapacity.setTheoricalMinThrust(baseMinThrust);
+                    linearEngineCapacity.setTheoricalVariationSpeed(baseVariationSpeed);
+                    linearEngineCapacity.setMaxThrust(maxThrust);
+                    linearEngineCapacity.setMinThrust(minThrust);
+                    linearEngineCapacity.setVariationSpeed(variationSpeed);
+                    linearEngineCapacity.setTargetThrustInput(targetThrustInput);
+                } else {
+                    throw new RessourceLoadingException("Unknown capacity type '"+type+"'");
+                }
+
+                capacity.setName(name);
+
+
+
+
+                mCapacityMap.put(id, capacity);
+                system.addCapacity(capacity);
+            }
+            break;
+            case LINK_PASS: {
+                long id = getLongAttribute(element, "id");
+                long componentId = getLongAttribute(element, "component");
+
+                capacity = mCapacityMap.get(id);
+                Component component = mComponentMap.get(componentId);
+                capacity.setComponent(component);
+            }
+            break;
+        }
+    }
+
+    private void parseComponents(Element element, Pass pass, WorldSystem system) {
+        NodeList childNodes = element.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            Node node = childNodes.item(i);
+            if (node.getNodeType() != Node.ELEMENT_NODE) {
+                // White space
+                continue;
+            }
+            Element subElement = (Element) node;
+            if (subElement.getNodeName().equals("component")) {
+                parseComponent(subElement, pass, system);
+            } else {
+                throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for components element");
+            }
+        }
+    }
+
+    private void parseComponent(Element element, Pass pass, WorldSystem system) {
+        Component component = null;
+        switch(pass) {
+            case OBJECT_PASS: {
+                long id = getLongAttribute(element, "id");
+                String key = element.getAttribute("key");
+                boolean attached = getBooleanAttribute(element,"attached");
+                double efficiency = getDoubleAttribute(element, "efficiency");
+                Vec3 locationInShip = getVec3Attribute(element, "location-in-ship");
+                double quality = getDoubleAttribute(element, "quality");
+                Vec3 shipRotation = getVec3Attribute(element, "ship-rotation");
+
+                //SystemObject
+                String name = element.getAttribute("name");
+                String skin = element.getAttribute("skin");
+                double durabilityMax = getDoubleAttribute(element, "durability-max");
+                double durability = getDoubleAttribute(element, "durability");
+                double physicalResistance = getDoubleAttribute(element, "physical-resistance");
+                double heatResistance = getDoubleAttribute(element, "heat-resistance");
+
+                component = new Component(system, id, name, key);
+                component.setAttached(attached);
+                component.setEfficiency(efficiency);
+                component.setLocationInShip(locationInShip);
+                component.setQuality(quality);
+                component.setShipRotation(shipRotation);
+
+                component.setSkin(skin);
+                component.setDurabilityMax(durabilityMax);
+                component.setDurability(durability);
+                component.setPhysicalResistance(physicalResistance);
+                component.setHeatResistance(heatResistance);
+
+                mComponentMap.put(id, component);
+                system.addComponent(component);
+            }
+            break;
+            case LINK_PASS: {
+                long id = getLongAttribute(element, "id");
+                long shipId = getLongAttribute(element, "ship");
+
+                Ship ship = mShipMap.get(shipId);
+                component = mComponentMap.get(id);
+                component.setShip(ship);
+            }
+            break;
+        }
+
+        NodeList childNodes = element.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            Node node = childNodes.item(i);
+            if (node.getNodeType() != Node.ELEMENT_NODE) {
+                // White space
+                continue;
+            }
+            Element subElement = (Element) node;
+            if (subElement.getNodeName().equals("parts")) {
+                parseComponentParts(subElement, pass, component);
+            } else if (subElement.getNodeName().equals("slots")) {
+                    parseComponentSlots(subElement, pass, component);
+            } else if (subElement.getNodeName().equals("capacities")) {
+                parseComponentCapacities(subElement, pass, component);
+            } else {
+                throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for component element");
+            }
+        }
+    }
+
+    private void parseComponentCapacities(Element element, Pass pass, Component component) {
+        NodeList childNodes = element.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            Node node = childNodes.item(i);
+            if (node.getNodeType() != Node.ELEMENT_NODE) {
+                // White space
+                continue;
+            }
+            Element subElement = (Element) node;
+            if (subElement.getNodeName().equals("capacity")) {
+                parseComponentCapacity(subElement, pass, component);
+            } else {
+                throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for capacities element in component element");
+            }
+        }
+    }
+
+    private void parseComponentCapacity(Element element, Pass pass, Component component) {
+        if(pass == Pass.LINK_PASS) {
+            long capacityId = getLongAttribute(element, "id");
+
+            Capacity capacity = mCapacityMap.get(capacityId);
+            component.addCapacity(capacity);
+        }
+    }
+
+    private void parseComponentSlots(Element element, Pass pass, Component component) {
+        NodeList childNodes = element.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            Node node = childNodes.item(i);
+            if (node.getNodeType() != Node.ELEMENT_NODE) {
+                // White space
+                continue;
+            }
+            Element subElement = (Element) node;
+            if (subElement.getNodeName().equals("slot")) {
+                parseComponentSlot(subElement, pass, component);
+            } else {
+                throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for slots element in component element");
+            }
+        }
+    }
+
+    private void parseComponentSlot(Element element, Pass pass, Component component) {
+        if(pass == Pass.LINK_PASS) {
+            long slotId = getLongAttribute(element, "id");
+
+            Slot slot = mSlotMap.get(slotId);
+            component.addSlot(slot);
+        }
+    }
+
+    private void parseComponentParts(Element element, Pass pass, Component component) {
+        NodeList childNodes = element.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            Node node = childNodes.item(i);
+            if (node.getNodeType() != Node.ELEMENT_NODE) {
+                // White space
+                continue;
+            }
+            Element subElement = (Element) node;
+            if (subElement.getNodeName().equals("part")) {
+                parseComponentPart(subElement, pass, component);
+            } else {
+                throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for tag nexuses element");
+            }
+        }
+    }
+
+    private void parseComponentPart(Element element, Pass pass, Component component) {
+        if(pass == Pass.LINK_PASS) {
+            long partId = getLongAttribute(element, "id");
+
+            Part part= mPartMap.get(partId);
+            component.addPart(part);
+        }
+    }
+
+    private void parseSlots(Element element, Pass pass, WorldSystem system) {
+        NodeList childNodes = element.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            Node node = childNodes.item(i);
+            if (node.getNodeType() != Node.ELEMENT_NODE) {
+                // White space
+                continue;
+            }
+            Element subElement = (Element) node;
+            if (subElement.getNodeName().equals("slot")) {
+                parseSlot(subElement, pass, system);
+            } else {
+                throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for tag nexuses element");
+            }
+        }
+    }
+
+    private void parseSlot(Element element, Pass pass, WorldSystem system) {
+        switch(pass) {
+            case OBJECT_PASS: {
+                long id = getLongAttribute(element, "id");
+                Vec3 position = getVec3Attribute(element, "position");
+
+                Slot slot = new Slot(system, id, position);
+
+                mSlotMap.put(id, slot);
+                system.addSlot(slot);
+            }
+            break;
+            case LINK_PASS: {
+                long id = getLongAttribute(element, "id");
+                long componentId = getLongAttribute(element, "component");
+                long partId = getLongAttribute(element, "part");
+
+                Slot slot= mSlotMap.get(id);
+                Part part = mPartMap.get(partId);
+                Component component = mComponentMap.get(componentId);
+                slot.setParentComponent(component);
+                slot.setPart(part);
+            }
+            break;
+        }
+    }
+
+    private void parseParts(Element element, Pass pass, WorldSystem system) {
+        NodeList childNodes = element.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            Node node = childNodes.item(i);
+            if (node.getNodeType() != Node.ELEMENT_NODE) {
+                // White space
+                continue;
+            }
+            Element subElement = (Element) node;
+            if (subElement.getNodeName().equals("part")) {
+                parsePart(subElement, pass, system);
+            } else {
+                throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for tag nexuses element");
+            }
+        }
+    }
+
+    private void parsePart(Element element, Pass pass, WorldSystem system) {
+        switch(pass) {
+            case OBJECT_PASS: {
+                long id = getLongAttribute(element, "id");
+                double angularDumping = getDoubleAttribute(element, "angular-dumping");
+                double linearDumping = getDoubleAttribute(element,"linear-dumping");
+                Part.CollisionShape collisionShape = Part.CollisionShape.valueOf(element.getAttribute("collision-shape"));
+                Vec3 linearSpeed = getVec3Attribute(element, "linear-speed");
+                Vec3 angularSpeed = getVec3Attribute(element, "angular-speed");
+                double mass = getDoubleAttribute(element,"mass");
+                Vec3 shape = getVec3Attribute(element, "shape");
+                TransformMatrix transform = getTransformMatrixAttribute(element, "transform");
+
+
+                Part part = new Part(system, id);
+                part.setAngularDamping(angularDumping);
+                part.setLinearDamping(linearDumping);
+                part.setCollisionShape(collisionShape);
+                part.setLinearSpeed(linearSpeed);
+                part.setAngularSpeed(angularSpeed);
+                part.setMass(mass);
+                part.setShape(shape);
+                part.getTransform().set(transform.getData());
+
+                mPartMap.put(id, part);
+                system.addPart(part);
+            }
+            break;
+            case LINK_PASS: {
+                long id = getLongAttribute(element, "id");
+                long componentId = getLongAttribute(element, "parent");
+
+                Part part = mPartMap.get(id);
+                Component parent = mComponentMap.get(componentId);
+                part.setParentObject(parent);
+            }
+            break;
+        }
+    }
+
+    private void parseShips(Element element, Pass pass, WorldSystem system) {
+        NodeList childNodes = element.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            Node node = childNodes.item(i);
+            if (node.getNodeType() != Node.ELEMENT_NODE) {
+                // White space
+                continue;
+            }
+            Element subElement = (Element) node;
+            if (subElement.getNodeName().equals("ship")) {
+                parseShip(subElement, pass, system);
+            } else {
+                throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for tag nexuses element");
+            }
+        }
+    }
+
+    private void parseShip(Element element, Pass pass, WorldSystem system) {
+        Ship ship = null;
+        switch(pass) {
+            case OBJECT_PASS: {
+                long id = getLongAttribute(element, "id");
+                boolean destructible = getBooleanAttribute(element, "destructible");
+
+                ship = new Ship(system, id);
+                ship.setDestructible(destructible);
+
+                mShipMap.put(id, ship);
+                system.addShip(ship);
+            }
+            break;
+            case LINK_PASS: {
+                long id = getLongAttribute(element, "id");
+                long factionId = getLongAttribute(element, "owner");
+
+                ship = mShipMap.get(id);
+                Faction faction = mFactionMap.get(factionId);
+
+                ship.setOwner(faction);
+            }
+            break;
+            case ASSEMBLE_PASS: {
+                long id = getLongAttribute(element, "id");
+                ship = mShipMap.get(id);
+            }
+        }
+
+        NodeList childNodes = element.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            Node node = childNodes.item(i);
+            if (node.getNodeType() != Node.ELEMENT_NODE) {
+                // White space
+                continue;
+            }
+            Element subElement = (Element) node;
+            if (subElement.getNodeName().equals("components")) {
+                parseShipComponents(subElement, pass, ship);
+            }else if (subElement.getNodeName().equals("links")) {
+                    parseShipLinks(subElement, pass, ship);
+            } else {
+                throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for ship element");
+            }
+        }
+    }
+
+    private void parseShipLinks(Element element, Pass pass, Ship ship) {
+        NodeList childNodes = element.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            Node node = childNodes.item(i);
+            if (node.getNodeType() != Node.ELEMENT_NODE) {
+                // White space
+                continue;
+            }
+            Element subElement = (Element) node;
+            if (subElement.getNodeName().equals("link")) {
+                parseShipLink(subElement, pass, ship);
+            } else {
+                throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for links element in ship element");
+            }
+        }
+    }
+
+    private void parseShipLink(Element element, Pass pass, Ship ship) {
+        if(pass == Pass.ASSEMBLE_PASS) {
+            long slot1Id = getLongAttribute(element, "slot1");
+            long slot2Id = getLongAttribute(element, "slot2");
+
+            Slot slot1= mSlotMap.get(slot1Id);
+            Slot slot2= mSlotMap.get(slot2Id);
+            ship.link(slot1, slot2);
+        }
+    }
+
+    private void parseShipComponents(Element element, Pass pass, Ship ship) {
+        NodeList childNodes = element.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            Node node = childNodes.item(i);
+            if (node.getNodeType() != Node.ELEMENT_NODE) {
+                // White space
+                continue;
+            }
+            Element subElement = (Element) node;
+            if (subElement.getNodeName().equals("component")) {
+                parseShipComponent(subElement, pass, ship);
+            } else {
+                throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for tag nexuses element");
+            }
+        }
+    }
+
+    private void parseShipComponent(Element element, Pass pass, Ship ship) {
+        if(pass == Pass.LINK_PASS) {
+            long componentId = getLongAttribute(element, "id");
+
+            Component component = mComponentMap.get(componentId);
+            ship.assign(component);
+        }
     }
 
     private void parseNexuses(Element element, Pass pass, WorldSystem system) {
@@ -751,5 +1232,9 @@ public class GameDeserializer {
 
     private Vec3 getVec3Attribute(Element element, String attribute) {
         return Vec3.parseVec3(element.getAttribute(attribute));
+    }
+
+    private TransformMatrix getTransformMatrixAttribute(Element element, String attribute) {
+        return TransformMatrix.parseTransformMatrix(element.getAttribute(attribute));
     }
 }

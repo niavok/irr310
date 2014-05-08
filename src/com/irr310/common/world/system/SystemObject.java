@@ -47,6 +47,7 @@ public abstract class SystemObject extends SystemEntity {
         }
     }
 
+
     public Part getFirstPart() {
         return firstPart;
     }

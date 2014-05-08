@@ -16,8 +16,8 @@ public class ExplosiveCapacity extends Capacity {
     public DamageType damageType;
 
 
-    public ExplosiveCapacity(WorldSystem worldSystem, long id, Component component) {
-        super(worldSystem, id, component);
+    public ExplosiveCapacity(WorldSystem worldSystem, long id) {
+        super(worldSystem, id);
         fire = false;
         consumed = false;
     }

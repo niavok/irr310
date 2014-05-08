@@ -5,6 +5,8 @@ import java.nio.ByteOrder;
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TransformMatrix {
 
@@ -234,4 +236,24 @@ public class TransformMatrix {
                 transform[14] + "," +
                 transform[15] + "]";
     }
+
+    // TODO keep reference only during parsing
+    public static Pattern transformMatrixPattern = Pattern.compile("^\\[([-0-9]+\\.[-0-9E]+),([-0-9]+\\.[-0-9E]+),([-0-9]+\\.[-0-9E]+),([-0-9]+\\.[-0-9E]+),([-0-9]+\\.[-0-9E]+),([-0-9]+\\.[-0-9E]+),([-0-9]+\\.[-0-9E]+),([-0-9]+\\.[-0-9E]+),([-0-9]+\\.[-0-9E]+),([-0-9]+\\.[-0-9E]+),([-0-9]+\\.[-0-9E]+),([-0-9]+\\.[-0-9E]+),([-0-9]+\\.[-0-9E]+),([-0-9]+\\.[-0-9E]+),([-0-9]+\\.[-0-9E]+),([-0-9]+\\.[-0-9E]+)\\]$");
+
+
+    public static TransformMatrix parseTransformMatrix(String vec3String) {
+        Matcher matcherTransformMatrix = transformMatrixPattern.matcher(vec3String);
+        if(matcherTransformMatrix.matches()) {
+            TransformMatrix transformMatrix = new TransformMatrix();
+
+            double[] values = new double[16];
+            for(int i = 0; i < 16; i++) {
+                values[i] = Double.parseDouble(matcherTransformMatrix.group(i+1));
+            }
+            transformMatrix.set(values);
+            return transformMatrix;
+        }
+        return null;
+    }
+
 }

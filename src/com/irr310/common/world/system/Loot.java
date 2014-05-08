@@ -17,7 +17,9 @@ public class Loot extends CelestialObject {
         setDurability(250);
         setSkin("loot");
         
-        Part part = new Part(GameServer.pickNewId(), this);
+        Part part = new Part(system, GameServer.pickNewId());
+        part.setParentObject(this);
+
         part.setMass(170.);
         part.setLinearDamping(0.1);
         part.setAngularDamping(0.1);

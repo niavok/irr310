@@ -13,8 +13,8 @@ public class ContactDetectorCapacity extends Capacity {
     public Ship sourceShip;
     
 
-    public ContactDetectorCapacity(WorldSystem worldSystem, long id, Component component) {
-        super(worldSystem, id, component);
+    public ContactDetectorCapacity(WorldSystem worldSystem, long id) {
+        super(worldSystem, id);
         minImpulse = 0;
         minTime = 0;
         triggerTarget = null;

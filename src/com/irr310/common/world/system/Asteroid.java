@@ -14,7 +14,8 @@ public class Asteroid extends CelestialObject {
         setDurability(250);
         setSkin("asteroid");
         
-        Part part = new Part(GameServer.pickNewId(), this);
+        Part part = new Part(system, GameServer.pickNewId());
+        part.setParentObject(this);
         part.setMass(170.);
         part.setLinearDamping(0.001);
         part.setAngularDamping(0.01);

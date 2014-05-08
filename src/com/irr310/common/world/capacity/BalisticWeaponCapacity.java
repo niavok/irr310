@@ -33,8 +33,8 @@ public class BalisticWeaponCapacity extends Capacity {
 
     public DamageDescriptor.DamageType damageType;
 
-    public BalisticWeaponCapacity(WorldSystem worldsystem, long id, Component component) {
-        super(worldsystem, id, component);
+    public BalisticWeaponCapacity(WorldSystem worldsystem, long id) {
+        super(worldsystem, id);
         fire = false;
         damage = 50;
         range = 1000;

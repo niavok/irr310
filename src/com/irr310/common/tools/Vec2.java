@@ -85,7 +85,7 @@ public class Vec2 {
     }
 
     // TODO keep reference only during parsing
-    public static Pattern vec2Pattern = Pattern.compile("^\\[([-0-9]+\\.[0-9]+),([-0-9]+\\.[0-9]+)\\]$");
+    public static Pattern vec2Pattern = Pattern.compile("^\\[([-0-9]+\\.[-0-9E]+),([-0-9]+\\.[-0-9E]+)\\]$");
 
     public static Vec2 parseVec2(String vec2String) {
         Matcher matcherVec2 = vec2Pattern.matcher(vec2String);

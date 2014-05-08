@@ -35,8 +35,8 @@ public class RocketWeaponCapacity extends Capacity {
     public double armorPenetration;
     public DamageDescriptor.DamageType damageType;
 
-    public RocketWeaponCapacity(WorldSystem worldSystem, long id, Component component) {
-        super(worldSystem, id, component);
+    public RocketWeaponCapacity(WorldSystem worldSystem, long id) {
+        super(worldSystem, id);
         fire = false;
         barrels = new ArrayList<Vec3>();
         cooldown = 5;
