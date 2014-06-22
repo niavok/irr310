@@ -2,6 +2,7 @@ package com.irr310.client.graphics.ether.activities.systemmap;
 
 
 
+import com.irr310.common.world.system.CelestialObject;
 import org.lwjgl.opengl.GL11;
 
 import com.irr310.common.world.system.Nexus;
@@ -39,11 +40,15 @@ public class SystemDetailCircleView extends RelativeLayout {
  private void reload() {
         
         removeAllView();
-        
+
         for(Nexus nexus: system.getNexuses()) {
             addViewInLayout(new NexusView(nexus, this));
         }
-        
+
+        for(CelestialObject celestialObject: system.getCelestialObjects()) {
+            addViewInLayout(new CelestialObjectView(celestialObject, this));
+        }
+
         for(Ship ship: system.getShips()) {
             addViewInLayout(new ShipView(activity, ship, this));
         }

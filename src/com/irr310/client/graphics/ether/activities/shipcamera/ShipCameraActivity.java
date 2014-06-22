@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
+import com.irr310.common.world.system.CelestialObject;
 import com.irr310.common.world.system.Component;
 import com.irr310.common.world.system.Ship;
 import com.irr310.common.world.system.WorldSystem;
@@ -43,6 +44,11 @@ public class ShipCameraActivity extends Activity {
             
             @Override
             public void onDeployShip(Ship ship, TransformMatrix transform) {
+            }
+
+            @Override
+            public void onDeployCelestialObject(CelestialObject celestialObject, TransformMatrix transform) {
+
             }
         };
         

@@ -21,7 +21,7 @@ import fr.def.iss.vd2.lib_v3d.element.V3DBox.RenderMode;
 import fr.def.iss.vd2.lib_v3d.element.V3DColorElement;
 import fr.def.iss.vd2.lib_v3d.element.V3DLine;
 
-public class GenericSkin extends Skin {
+public class GenericComponentSkin extends Skin {
 
     private final Component component;
     private final Map<Part, I3dElement> elementsMap = new HashMap<Part, I3dElement>();
@@ -29,7 +29,7 @@ public class GenericSkin extends Skin {
     private final Map<LinearEngineCapacity, V3DLine> thrustLineMap = new HashMap<LinearEngineCapacity, V3DLine>();
     private I3dGroupElement elements;
 
-    public GenericSkin(Component component) {
+    public GenericComponentSkin(Component component) {
 //        UiEngine engine = renderer.getEngine();
         this.component = component;
         elements = new I3dGroupElement();

@@ -9,13 +9,11 @@ import java.util.List;
 import java.util.Random;
 
 import com.irr310.client.ClientConfig;
-import com.irr310.common.tools.Log;
-import com.irr310.common.tools.RessourceLoadingException;
-import com.irr310.common.tools.Vec2;
-import com.irr310.common.tools.Vec3;
+import com.irr310.common.tools.*;
 import com.irr310.common.world.Faction;
 import com.irr310.common.world.World;
 import com.irr310.common.world.WorldMap;
+import com.irr310.common.world.system.Asteroid;
 import com.irr310.common.world.system.Nexus;
 import com.irr310.common.world.system.WorldSystem;
 import com.irr310.server.GameServer;
@@ -77,7 +75,7 @@ public class GameManager {
             WorldSystem system = new WorldSystem(world, GameServer.pickNewId(), location);
             
             
-            system.setRadius(1000 + (1 - random.nextDouble()) * 50000 );
+            system.setRadius(1000 + (1 - random.nextDouble()) * 5000 );
             
             int nameIndex = random.nextInt(availableNames.size());
             String name = availableNames.remove(nameIndex);
@@ -87,6 +85,22 @@ public class GameManager {
             mapMinDistance++;
             
             validSystem++;
+
+            // Generate system content
+            CelestialObjectFactory celestialObjectFactory = new CelestialObjectFactory(system);
+
+            for (int i = 0; i < 100; i++) {
+                Asteroid asteroid = celestialObjectFactory.createAsteroid(2);
+
+                TransformMatrix transform = asteroid.getFirstPart().getTransform();
+                transform.rotateX(random.nextDouble() * 360);
+                transform.rotateZ(random.nextDouble() * 360);
+                transform.rotateY(random.nextDouble() * 360);
+                transform.translate(system.getRandomEmptyUsefulSpace(2, 100));
+
+                system.addCelestialObject(asteroid);
+            }
+
         }
         
         // Find home system
@@ -131,7 +145,7 @@ public class GameManager {
             
             Nexus rootNexus = new Nexus(system, GameServer.pickNewId());
             rootNexus.setRadius(10);
-            Vec3 nexusLocation = system.getRandomEmptySpace(rootNexus.getRadius());
+            Vec3 nexusLocation = system.getRandomEmptyUsefulSpace(rootNexus.getRadius(), 100);
             rootNexus.setLocation(nexusLocation);
             rootNexus.setOwner(faction);
             

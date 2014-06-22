@@ -8,19 +8,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import com.irr310.client.graphics.skin.GenericCelestialObjectSkin;
+import com.irr310.client.graphics.skin.GenericComponentSkin;
+import com.irr310.common.world.system.*;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
 
 import com.irr310.client.graphics.GraphicalElement;
-import com.irr310.client.graphics.skin.GenericSkin;
 import com.irr310.client.graphics.skin.Skin;
 import com.irr310.common.tools.Log;
-import com.irr310.common.tools.Vec3;
-import com.irr310.common.world.system.Component;
-import com.irr310.common.world.system.Ship;
-import com.irr310.common.world.system.WorldSystem;
-import com.irr310.common.world.system.WorldSystemEntity;
 import com.irr310.i3d.Graphics;
 import com.irr310.i3d.input.I3dMouseEvent;
 import com.irr310.i3d.input.I3dMouseEvent.Action;
@@ -32,7 +29,6 @@ import com.irr310.i3d.scene.element.I3dGroupElement;
 import com.irr310.i3d.utils.I3dColor;
 import com.irr310.i3d.view.LayoutParams.LayoutMeasure;
 import com.irr310.i3d.view.View;
-import com.irr310.server.ai.ShipDriver;
 import com.irr310.server.engine.system.SystemEngine;
 
 import fr.def.iss.vd2.lib_v3d.V3DKeyEvent;
@@ -55,6 +51,7 @@ public class ShipCameraView extends View {
     private I3dScene scene;
     private V3DCameraBinding binding;
     private Map<Component, List<GraphicalElement>> componentToV3DElementMap = new HashMap<Component, List<GraphicalElement>>();
+    private Map<CelestialObject, List<GraphicalElement>> celestialObjectToV3DElementMap = new HashMap<CelestialObject, List<GraphicalElement>>();
     private WorldSystem mSystem;
     private ControlMode mControlMode = ControlMode.PILOT;
     
@@ -256,7 +253,11 @@ private void init() {
         scene.add(ref2);
         
         addShip(focusedShip);
-        
+
+        for (CelestialObject celestialObject : mSystem.getCelestialObjects()) {
+            addCelestialObject(celestialObject);
+        }
+
 
 //        generateGuiStructure();
 
@@ -350,6 +351,23 @@ private void init() {
         componentToV3DElementMap.put(component, new ArrayList<GraphicalElement>());
         componentToV3DElementMap.get(component).add(graphicalElement);
     }
+
+    private void addCelestialObject(CelestialObject celestialObject) {
+        if(componentToV3DElementMap.get(celestialObject) != null) {
+            return;
+        }
+        GraphicalElement graphicalElement = addObject(celestialObject);
+        celestialObjectToV3DElementMap.put(celestialObject, new ArrayList<GraphicalElement>());
+        celestialObjectToV3DElementMap.get(celestialObject).add(graphicalElement);
+    }
+
+    protected GraphicalElement addObject(final CelestialObject object) {
+        Skin skin = null;
+        skin = new GenericCelestialObjectSkin(object);
+
+        addElement(skin);
+        return skin;
+    }
     
     protected GraphicalElement addObject(final Component object) {
 
@@ -357,7 +375,7 @@ private void init() {
 
 //        if (object.getSkin().isEmpty()) {
             System.err.println("generic skin");
-            skin = new GenericSkin(object);
+            skin = new GenericComponentSkin(object);
 //        } else {
 //            if (object.getSkin().equals("big_propeller")) {
 //                skin = new PropellerSkin(this, (Component) object);

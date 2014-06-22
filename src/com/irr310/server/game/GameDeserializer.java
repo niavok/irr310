@@ -45,6 +45,7 @@ public class GameDeserializer {
     private Map<Long, Nexus> mNexusMap = new HashMap<Long, Nexus>();
     private Map<Long, Item> mItemMap = new HashMap<Long, Item>();
     private Map<Long, Component> mComponentMap = new HashMap<Long, Component>();
+    private Map<Long, CelestialObject> mCelestialObjectMap = new HashMap<Long, CelestialObject>();
     private Map<Long, Part> mPartMap = new HashMap<Long, Part>();
     private Map<Long, Slot> mSlotMap = new HashMap<Long, Slot>();
     private Map<Long, Capacity> mCapacityMap = new HashMap<Long, Capacity>();
@@ -700,6 +701,8 @@ public class GameDeserializer {
                 parseSlots(subElement, pass, system);
             } else if (subElement.getNodeName().equals("components")) {
                 parseComponents(subElement, pass, system);
+            } else if (subElement.getNodeName().equals("celestial-objects")) {
+                parseCelestialObjects(subElement, pass, system);
             } else if (subElement.getNodeName().equals("capacities")) {
                 parseCapacities(subElement, pass, system);
             } else {
@@ -799,6 +802,23 @@ public class GameDeserializer {
         }
     }
 
+    private void parseCelestialObjects(Element element, Pass pass, WorldSystem system) {
+        NodeList childNodes = element.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            Node node = childNodes.item(i);
+            if (node.getNodeType() != Node.ELEMENT_NODE) {
+                // White space
+                continue;
+            }
+            Element subElement = (Element) node;
+            if (subElement.getNodeName().equals("celestial-object")) {
+                parseCelestialObject(subElement, pass, system);
+            } else {
+                throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for celestial-objects element");
+            }
+        }
+    }
+
     private void parseComponent(Element element, Pass pass, WorldSystem system) {
         Component component = null;
         switch(pass) {
@@ -813,24 +833,15 @@ public class GameDeserializer {
 
                 //SystemObject
                 String name = element.getAttribute("name");
-                String skin = element.getAttribute("skin");
-                double durabilityMax = getDoubleAttribute(element, "durability-max");
-                double durability = getDoubleAttribute(element, "durability");
-                double physicalResistance = getDoubleAttribute(element, "physical-resistance");
-                double heatResistance = getDoubleAttribute(element, "heat-resistance");
-
                 component = new Component(system, id, name, key);
+
                 component.setAttached(attached);
                 component.setEfficiency(efficiency);
                 component.setLocationInShip(locationInShip);
                 component.setQuality(quality);
                 component.setShipRotation(shipRotation);
 
-                component.setSkin(skin);
-                component.setDurabilityMax(durabilityMax);
-                component.setDurability(durability);
-                component.setPhysicalResistance(physicalResistance);
-                component.setHeatResistance(heatResistance);
+                parseSystemObject(component, element, pass);
 
                 mComponentMap.put(id, component);
                 system.addComponent(component);
@@ -856,7 +867,7 @@ public class GameDeserializer {
             }
             Element subElement = (Element) node;
             if (subElement.getNodeName().equals("parts")) {
-                parseComponentParts(subElement, pass, component);
+                parseSystemObjectParts(subElement, pass, component);
             } else if (subElement.getNodeName().equals("slots")) {
                     parseComponentSlots(subElement, pass, component);
             } else if (subElement.getNodeName().equals("capacities")) {
@@ -864,6 +875,66 @@ public class GameDeserializer {
             } else {
                 throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for component element");
             }
+        }
+    }
+
+    private void parseCelestialObject(Element element, Pass pass, WorldSystem system) {
+        CelestialObject celestialObject = null;
+        switch(pass) {
+            case OBJECT_PASS: {
+                long id = getLongAttribute(element, "id");
+
+                //SystemObject
+                String name = element.getAttribute("name");
+                celestialObject = new CelestialObject(system, id, name);
+
+                parseSystemObject(celestialObject, element, pass);
+
+                mCelestialObjectMap.put(id, celestialObject);
+                system.addCelestialObject(celestialObject);
+            }
+            break;
+            case LINK_PASS: {
+                long id = getLongAttribute(element, "id");
+                celestialObject= mCelestialObjectMap.get(id);
+            }
+            default:
+            break;
+        }
+
+        NodeList childNodes = element.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            Node node = childNodes.item(i);
+            if (node.getNodeType() != Node.ELEMENT_NODE) {
+                // White space
+                continue;
+            }
+            Element subElement = (Element) node;
+            if (subElement.getNodeName().equals("parts")) {
+                parseSystemObjectParts(subElement, pass, celestialObject);
+            } else {
+                throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for celestialObject element");
+            }
+        }
+    }
+
+    private void parseSystemObject(SystemObject systemObject, Element element, Pass pass) {
+        switch(pass) {
+            case OBJECT_PASS: {
+                String skin = element.getAttribute("skin");
+                double durabilityMax = getDoubleAttribute(element, "durability-max");
+                double durability = getDoubleAttribute(element, "durability");
+                double physicalResistance = getDoubleAttribute(element, "physical-resistance");
+                double heatResistance = getDoubleAttribute(element, "heat-resistance");
+
+                systemObject.setSkin(skin);
+                systemObject.setDurabilityMax(durabilityMax);
+                systemObject.setDurability(durability);
+                systemObject.setPhysicalResistance(physicalResistance);
+                systemObject.setHeatResistance(heatResistance);
+            }
+            break;
+            default:
         }
     }
 
@@ -919,7 +990,7 @@ public class GameDeserializer {
         }
     }
 
-    private void parseComponentParts(Element element, Pass pass, Component component) {
+    private void parseSystemObjectParts(Element element, Pass pass, SystemObject systemObject) {
         NodeList childNodes = element.getChildNodes();
         for (int i = 0; i < childNodes.getLength(); i++) {
             Node node = childNodes.item(i);
@@ -929,19 +1000,19 @@ public class GameDeserializer {
             }
             Element subElement = (Element) node;
             if (subElement.getNodeName().equals("part")) {
-                parseComponentPart(subElement, pass, component);
+                parseSystemObjectPart(subElement, pass, systemObject);
             } else {
                 throw new RessourceLoadingException("Unknown tag '"+subElement.getNodeName()+"'for tag nexuses element");
             }
         }
     }
 
-    private void parseComponentPart(Element element, Pass pass, Component component) {
+    private void parseSystemObjectPart(Element element, Pass pass, SystemObject systemObject) {
         if(pass == Pass.LINK_PASS) {
             long partId = getLongAttribute(element, "id");
 
             Part part= mPartMap.get(partId);
-            component.addPart(part);
+            systemObject.addPart(part);
         }
     }
 
@@ -1036,10 +1107,14 @@ public class GameDeserializer {
             break;
             case LINK_PASS: {
                 long id = getLongAttribute(element, "id");
-                long componentId = getLongAttribute(element, "parent");
+                long systemObjectId = getLongAttribute(element, "parent");
 
                 Part part = mPartMap.get(id);
-                Component parent = mComponentMap.get(componentId);
+                SystemObject parent = mComponentMap.get(systemObjectId);
+                if(parent == null) {
+                    parent = mCelestialObjectMap.get(systemObjectId);
+                }
+
                 part.setParentObject(parent);
             }
             break;

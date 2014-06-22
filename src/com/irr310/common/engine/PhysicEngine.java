@@ -11,6 +11,7 @@ import java.util.Random;
 import javax.vecmath.Vector3d;
 
 import com.irr310.common.tools.Log;
+import com.irr310.common.world.system.*;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -51,12 +52,6 @@ import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.common.world.capacity.RocketCapacity;
 import com.irr310.common.world.capacity.WingCapacity;
-import com.irr310.common.world.system.Component;
-import com.irr310.common.world.system.Link;
-import com.irr310.common.world.system.Part;
-import com.irr310.common.world.system.Ship;
-import com.irr310.common.world.system.Slot;
-import com.irr310.common.world.system.SystemObject;
 import com.irr310.server.Time;
 import com.irr310.server.Time.Timestamp;
 import com.irr310.server.engine.system.SystemEngine;
@@ -505,8 +500,15 @@ public class PhysicEngine implements Engine {
 
     }
 
-    private void addObject(SystemObject object) {
+    private void addObject(SystemObject object, TransformMatrix transform) {
         for (final Part part : object.getParts()) {
+
+            if (transform != null) {
+                part.getTransform().preMultiply(transform);
+                Log.log("Deploy part of celestialObject'" + object.getName() + "' at " + part.getTransform().getTranslation());
+            }
+
+
             addPart(part, new UserData());
         }
     }
@@ -903,6 +905,11 @@ public class PhysicEngine implements Engine {
             @Override
             public void onDeployShip(Ship ship, TransformMatrix transform) {
                 addShip(ship, transform);
+            }
+
+            @Override
+            public void onDeployCelestialObject(CelestialObject celestialObject, TransformMatrix transform) {
+                addObject(celestialObject, transform);
             }
         });
     }

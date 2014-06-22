@@ -62,7 +62,8 @@ public class WorldSystem extends WorldEntity {
     }
 
     public Vec3 getRandomEmptySpace(double deployedRadius) {
-        
+
+        // TODO check this is really empty
         Random random = new Random();
         
         Vec3 position = new Vec3(random.nextDouble() * (radius - deployedRadius), 0, 0);
@@ -77,7 +78,48 @@ public class WorldSystem extends WorldEntity {
         
         return position;
     }
-    
+
+
+    public Vec3 getRandomEmptyUsefulSpace(double deployedRadius, double usefulHeight) {
+
+        // TODO check this is really empty
+        // TODO use global random
+        Random random = new Random();
+
+        boolean ok = false;
+        Vec3 position = null;
+
+        double innerRadius = radius - deployedRadius;
+        
+        while(!ok) {
+            ok = true;
+            double baseHeight = random.nextDouble() * 2 - 1; //between -1 and 1
+
+            double height = usefulHeight * baseHeight * baseHeight * baseHeight;
+
+            position = new Vec3(random.nextDouble() * (innerRadius), 0, height);
+
+            
+            if(position.length() > innerRadius) {
+                ok = false;
+                continue;
+            }
+            
+            TransformMatrix rotation = TransformMatrix.identity();
+            rotation.rotateZ(random.nextDouble() * 360);
+            position = position.rotate(rotation);
+
+            //Checks
+
+            
+
+        }
+
+
+
+        return position;
+    }
+
     public double getSystemSize() {
         return radius;
     }
@@ -203,7 +245,7 @@ public class WorldSystem extends WorldEntity {
         return capacityIdMap.get(capacityId);
     }
 
-    public List<CelestialObject> getCelestialsObjects() {
+    public List<CelestialObject> getCelestialObjects() {
         return celestialObjects;
     }
 

@@ -3,6 +3,7 @@ package com.irr310.client.graphics.ether.activities.systemmap;
 import com.irr310.client.graphics.ether.activities.shipcamera.ShipCameraActivity;
 import com.irr310.client.graphics.ether.activities.shipcamera.ShipCameraActivity.ShipCameraActivityBundle;
 import com.irr310.common.tools.TransformMatrix;
+import com.irr310.common.world.system.CelestialObject;
 import com.irr310.common.world.system.Ship;
 import com.irr310.common.world.system.WorldSystem;
 import com.irr310.i3d.Bundle;
@@ -36,6 +37,11 @@ public class SystemMapActivity extends Activity {
             
             @Override
             public void onDeployShip(Ship ship, TransformMatrix transform) {
+            }
+
+            @Override
+            public void onDeployCelestialObject(CelestialObject celestialObject, TransformMatrix transform) {
+
             }
         };
     }

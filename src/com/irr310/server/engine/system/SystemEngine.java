@@ -13,10 +13,7 @@ import com.irr310.common.tools.TransformMatrix;
 import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.capacity.controller.CapacityController;
 import com.irr310.common.world.item.ShipItem;
-import com.irr310.common.world.system.Component;
-import com.irr310.common.world.system.Nexus;
-import com.irr310.common.world.system.Ship;
-import com.irr310.common.world.system.WorldSystem;
+import com.irr310.common.world.system.*;
 import com.irr310.server.Duration;
 import com.irr310.server.Time;
 import com.irr310.server.Time.Timestamp;
@@ -50,9 +47,18 @@ public class SystemEngine implements Engine {
     public void init() {
         mPhysicEngine.init();
 
+        for (CelestialObject celestialObject : mSystem.getCelestialObjects()) {
+            notifyCelestialObjectDeployed(celestialObject, null);
+        }
+
+
         for (Ship ship : mSystem.getShips()) {
+            // TODO Load capacity controllers
             generateShipControllers(ship, null);
         }
+
+
+
     }
     
     @Override
@@ -143,6 +149,12 @@ public class SystemEngine implements Engine {
     private void notifyShipDeployed(Ship ship, TransformMatrix shipTransform) {
         for(SystemEngineObserver observer : mSystemEngineObservable.getObservers()) {
             observer.onDeployShip(ship, shipTransform);
+        }
+    }
+
+    private void notifyCelestialObjectDeployed(CelestialObject celestialObject, TransformMatrix shipTransform) {
+        for(SystemEngineObserver observer : mSystemEngineObservable.getObservers()) {
+            observer.onDeployCelestialObject(celestialObject, shipTransform);
         }
     }
 

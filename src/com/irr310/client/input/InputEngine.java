@@ -225,7 +225,7 @@ public class InputEngine implements Engine {
 //                }
 ////                if(cheatString.toLowerCase().equals("armor")) {
 ////                    Monolith monolith = null;
-////                    for (CelestialObject object : Game.getInstance().getWorld().getCelestialsObjects()) {
+////                    for (CelestialObject object : Game.getInstance().getWorld().getCelestialObjects()) {
 ////                        if (object instanceof Monolith) {
 ////                            monolith = (Monolith) object;
 ////                            break;

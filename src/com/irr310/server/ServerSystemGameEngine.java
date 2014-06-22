@@ -107,7 +107,7 @@ public class ServerSystemGameEngine implements Engine {
 //        }
         
 //        // Check loot gain
-//        for (CelestialObject object : Game.getInstance().getWorld().getCelestialsObjects()) {
+//        for (CelestialObject object : Game.getInstance().getWorld().getCelestialObjects()) {
 //            if (object instanceof Loot) {
 //                for (Ship ship : Game.getInstance().getWorld().getShips()) {
 //                    if (ship.getOwner().isHuman() && ship.getComponentByName("kernel")
@@ -126,7 +126,7 @@ public class ServerSystemGameEngine implements Engine {
 
         // Check player distance to monolith
         Monolith monolith = null;
-//        for (CelestialObject object : Game.getInstance().getWorld().getCelestialsObjects()) {
+//        for (CelestialObject object : Game.getInstance().getWorld().getCelestialObjects()) {
 //            if (object instanceof Monolith) {
 //                monolith = (Monolith) object;
 //                break;
@@ -134,7 +134,7 @@ public class ServerSystemGameEngine implements Engine {
 //        }
 
 //        if (monolith != null) {
-//            for (CelestialObject object : Game.getInstance().getWorld().getCelestialsObjects()) {
+//            for (CelestialObject object : Game.getInstance().getWorld().getCelestialObjects()) {
 //                if (object instanceof Loot) {
 //                    double distanceTo = object.getFirstPart()
 //                                              .getTransform()

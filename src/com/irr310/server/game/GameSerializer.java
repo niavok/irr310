@@ -4,10 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.Collection;
-import java.util.List;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -21,13 +18,11 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import com.irr310.common.tools.Log;
-import com.irr310.common.tools.Vec3;
 import com.irr310.common.world.*;
 import com.irr310.common.world.capacity.Capacity;
 import com.irr310.common.world.capacity.LinearEngineCapacity;
 import com.irr310.common.world.system.*;
 import com.irr310.server.GameServer;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -377,6 +372,17 @@ public class GameSerializer {
                 generateSlot(slotElement, slot);
             }
 
+            Element celestialObjectsElement = mDocument.createElement("celestial-objects");
+            systemElement.appendChild(celestialObjectsElement);
+            for (CelestialObject celestialObject : worldSystem.getCelestialObjects()) {
+                Element celestialObjectElement = mDocument.createElement("celestial-object");
+                celestialObjectsElement.appendChild(celestialObjectElement);
+
+                celestialObjectElement.setAttribute("id", Long.toString(celestialObject.getId()));
+
+                generateSystemObjectProperties(celestialObjectElement, celestialObject);
+            }
+
             Element componentsElement = mDocument.createElement("components");
             systemElement.appendChild(componentsElement);
             for (Component component : worldSystem.getComponentIdMap().values()) {
@@ -415,21 +421,9 @@ public class GameSerializer {
                 }
 
                 //SystemObject properties
-                componentElement.setAttribute("name", component.getName());
-                componentElement.setAttribute("skin", component.getSkin());
-                componentElement.setAttribute("durability-max", Double.toString(component.getDurabilityMax()));
-                componentElement.setAttribute("durability", Double.toString(component.getDurability()));
-                componentElement.setAttribute("physical-resistance", Double.toString(component.getPhysicalResistance()));
-                componentElement.setAttribute("heat-resistance", Double.toString(component.getHeatResistance()));
+                generateSystemObjectProperties(componentElement, component);
 
 
-                Element componentPartsElement = mDocument.createElement("parts");
-                componentElement.appendChild(componentPartsElement);
-                for (Part part : component.getParts()) {
-                    Element componentPartElement = mDocument.createElement("part");
-                    componentPartsElement.appendChild(componentPartElement);
-                    componentPartElement.setAttribute("id", Long.toString(part.getId()));
-                }
             }
 
             Element capacitiesElement = mDocument.createElement("capacities");
@@ -462,6 +456,24 @@ public class GameSerializer {
         }
 
 
+    }
+
+    private void generateSystemObjectProperties(Element element, SystemObject systemObject) {
+        element.setAttribute("name", systemObject.getName());
+        element.setAttribute("skin", systemObject.getSkin());
+        element.setAttribute("durability-max", Double.toString(systemObject.getDurabilityMax()));
+        element.setAttribute("durability", Double.toString(systemObject.getDurability()));
+        element.setAttribute("physical-resistance", Double.toString(systemObject.getPhysicalResistance()));
+        element.setAttribute("heat-resistance", Double.toString(systemObject.getHeatResistance()));
+
+
+        Element componentPartsElement = mDocument.createElement("parts");
+        element.appendChild(componentPartsElement);
+        for (Part part : systemObject.getParts()) {
+            Element componentPartElement = mDocument.createElement("part");
+            componentPartsElement.appendChild(componentPartElement);
+            componentPartElement.setAttribute("id", Long.toString(part.getId()));
+        }
     }
 
     private void generateSlot(Element element, Slot slot) {

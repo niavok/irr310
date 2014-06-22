@@ -539,7 +539,7 @@ public class WorldRenderer implements GraphicRenderer {
 
 //    private void loadCurrentWorld() {
 //        World world = Game.getInstance().getWorld();
-//        for (CelestialObject celestialObject : world.getCelestialsObjects()) {
+//        for (CelestialObject celestialObject : world.getCelestialObjects()) {
 //            addCelestialObject(celestialObject);
 //        }
 //        
